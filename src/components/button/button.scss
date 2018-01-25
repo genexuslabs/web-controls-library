@@ -1,0 +1,69 @@
+gx-button {
+  display: inline-block;
+  vertical-align: middle;
+
+  &[disabled] {
+    & > button {
+      & > img[slot="image"] {
+        display: none;
+      }
+
+      & > img[slot="disabled-image"] {
+        display: inline-block;
+      }
+    }
+  }
+
+  &[hidden] {
+    display: none;
+
+    &[invisible-mode="keep-space"] {
+      display: inline-block;
+      visibility: hidden;
+    }
+  }
+
+  & > button {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    & > img[slot="disabled-image"] {
+      display: none;
+    }
+  }
+
+  &[image-position="below"] {
+    & > button {
+      & > img {
+        order: 99;
+      }
+    }
+  }
+
+  &[image-position="before"] {
+    & > button {
+      flex-direction: row;
+    }
+  }
+
+  &[image-position="after"] {
+    & > button {
+      flex-direction: row;
+
+      & > img {
+        order: 99;
+      }
+    }
+  }
+
+  &[image-position="behind"] {
+    & > button {
+      flex-direction: column;
+
+      & > span {
+        position: absolute;
+      }
+    }
+  }
+}

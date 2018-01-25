@@ -1,0 +1,12 @@
+gx-textblock {
+  display: inline-block;
+
+  &[hidden] {
+    display: none;
+
+    &[invisible-mode="keep-space"] {
+      display: inline-block;
+      visibility: hidden;
+    }
+  }
+}
