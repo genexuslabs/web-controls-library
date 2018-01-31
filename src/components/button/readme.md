@@ -25,6 +25,7 @@ This attribute lets you specify if the element is disabled. If disabled, it will
 
 ### image-position
 This attribute lets you specify the relative location of the image to the text.
+
 | Value          | Details                                                                      |
 |----------------|------------------------------------------------------------------------------|
 | `above`        | The image is located above the text.                                         |
