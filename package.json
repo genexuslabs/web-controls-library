@@ -31,7 +31,7 @@
     "url": "git+https://github.com/genexuslabs/web-controls-library.git"
   },
   "author": "GeneXus",
-  "license": "",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/genexuslabs/web-controls-library"
   },

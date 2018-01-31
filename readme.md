@@ -34,4 +34,4 @@ See the list of [contributors](https://github.com/genexuslabs/web-controls-libra
 
 ## License
 
-To be defined.
+MIT
