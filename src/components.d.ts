@@ -38,6 +38,67 @@ declare global {
 
 
 import {
+  TableCell as GxTableCell
+} from './components/table-cell/table-cell';
+
+declare global {
+  interface HTMLGxTableCellElement extends GxTableCell, HTMLElement {
+  }
+  var HTMLGxTableCellElement: {
+    prototype: HTMLGxTableCellElement;
+    new (): HTMLGxTableCellElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gx-table-cell": HTMLGxTableCellElement;
+  }
+  interface ElementTagNameMap {
+    "gx-table-cell": HTMLGxTableCellElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gx-table-cell": JSXElements.GxTableCellAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GxTableCellAttributes extends HTMLAttributes {
+      
+    }
+  }
+}
+
+
+import {
+  Table as GxTable
+} from './components/table/table';
+
+declare global {
+  interface HTMLGxTableElement extends GxTable, HTMLElement {
+  }
+  var HTMLGxTableElement: {
+    prototype: HTMLGxTableElement;
+    new (): HTMLGxTableElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gx-table": HTMLGxTableElement;
+  }
+  interface ElementTagNameMap {
+    "gx-table": HTMLGxTableElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gx-table": JSXElements.GxTableAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GxTableAttributes extends HTMLAttributes {
+      disabled?: boolean;
+      invisibleMode?: "collapse" | "keep-space";
+    }
+  }
+}
+
+
+import {
   TextBlock as GxTextblock
 } from './components/textblock/textblock';
 
