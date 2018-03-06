@@ -1,0 +1,28 @@
+gx-table-cell {
+  display: flex;
+
+  &[hidden] {
+    display: none;
+
+    &[invisible-mode="keep-space"] {
+      display: flex;
+      visibility: hidden;
+    }
+  }
+
+  &[align="center"] {
+    justify-content: center;
+  }
+
+  &[align="right"] {
+    justify-content: flex-end;
+  }
+
+  &[valign="middle"] {
+    align-items: center;
+  }
+
+  &[valign="bottom"] {
+    align-items: flex-end;
+  }
+}

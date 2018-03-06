@@ -1,0 +1,16 @@
+gx-table {
+  display: grid;
+
+  &[hidden] {
+    display: none;
+
+    &[invisible-mode="keep-space"] {
+      display: grid;
+      visibility: hidden;
+    }
+  }
+
+  &[auto-grow="false"] {
+    overflow: auto;
+  }
+}

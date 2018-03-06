@@ -9,6 +9,7 @@ describe('gx-textblock', () => {
   describe('rendering', () => {
     let element;
     beforeEach(async () => {
+      TextBlock["is"] = "gx-textblock";
       element = await render({
         components: [TextBlock],
         html: '<gx-textblock>Hello world!</gx-textblock>'

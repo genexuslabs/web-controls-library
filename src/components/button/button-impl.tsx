@@ -9,7 +9,7 @@ export class ButtonImpl extends ComponentImpl<Button> {
     this.component.onClick.emit(event);
   }
 
-  componentDidLoad() {
+  componentDidUpdate() {
     // Main image and disabled image are set an empty alt as they are decorative images.
     const images = this.component.element.querySelectorAll('[slot="main-image"], [slot="disabled-image"]');
     Array.from(images).forEach(img => img.setAttribute('alt', ''));

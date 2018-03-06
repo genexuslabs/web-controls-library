@@ -3,6 +3,20 @@
  * It contains typing information for all components that exist in this project
  * and imports for stencil collections that might be configured in your stencil.config.js file
  */
+declare global {
+  namespace JSX {
+    interface Element {}
+    export interface IntrinsicElements {}
+  }
+  namespace JSXElements {}
+
+  interface HTMLStencilElement extends HTMLElement {
+    componentOnReady(): Promise<this>;
+    componentOnReady(done: (ele?: this) => void): void;
+  }
+
+  interface HTMLAttributes {}
+}
 
 
 import {
@@ -10,7 +24,7 @@ import {
 } from './components/button/button';
 
 declare global {
-  interface HTMLGxButtonElement extends GxButton, HTMLElement {
+  interface HTMLGxButtonElement extends GxButton, HTMLStencilElement {
   }
   var HTMLGxButtonElement: {
     prototype: HTMLGxButtonElement;
@@ -42,7 +56,7 @@ import {
 } from './components/table-cell/table-cell';
 
 declare global {
-  interface HTMLGxTableCellElement extends GxTableCell, HTMLElement {
+  interface HTMLGxTableCellElement extends GxTableCell, HTMLStencilElement {
   }
   var HTMLGxTableCellElement: {
     prototype: HTMLGxTableCellElement;
@@ -61,7 +75,9 @@ declare global {
   }
   namespace JSXElements {
     export interface GxTableCellAttributes extends HTMLAttributes {
-      
+      align?: "left" | "right" | "center";
+      area?: string;
+      valign?: "top" | "bottom" | "medium";
     }
   }
 }
@@ -72,7 +88,7 @@ import {
 } from './components/table/table';
 
 declare global {
-  interface HTMLGxTableElement extends GxTable, HTMLElement {
+  interface HTMLGxTableElement extends GxTable, HTMLStencilElement {
   }
   var HTMLGxTableElement: {
     prototype: HTMLGxTableElement;
@@ -91,8 +107,12 @@ declare global {
   }
   namespace JSXElements {
     export interface GxTableAttributes extends HTMLAttributes {
+      areasTemplate?: string;
+      autoGrow?: boolean;
+      columnsTemplate?: string;
       disabled?: boolean;
       invisibleMode?: "collapse" | "keep-space";
+      rowsTemplate?: string;
     }
   }
 }
@@ -103,7 +123,7 @@ import {
 } from './components/textblock/textblock';
 
 declare global {
-  interface HTMLGxTextblockElement extends GxTextblock, HTMLElement {
+  interface HTMLGxTextblockElement extends GxTextblock, HTMLStencilElement {
   }
   var HTMLGxTextblockElement: {
     prototype: HTMLGxTextblockElement;
@@ -129,3 +149,4 @@ declare global {
   }
 }
 
+declare global { namespace JSX { interface StencilJSX {} } }
