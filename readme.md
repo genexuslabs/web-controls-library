@@ -16,12 +16,15 @@ npm run dev
 ```
 
 ## Running the tests
+
 To run the unit tests for the custom elements, run:
 
 ```bash
 npm test
 ```
+
 ## Building for production
+
 To build the library for production, run:
 
 ```bash

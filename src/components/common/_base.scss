@@ -1,0 +1,18 @@
+@mixin visibility($display) {
+  display: $display;
+
+  &[hidden] {
+    display: none;
+
+    &[invisible-mode="keep-space"] {
+      display: $display;
+      visibility: hidden;
+    }
+  }
+}
+
+@mixin autoGrow() {
+  &[auto-grow="false"] {
+    overflow: auto;
+  }
+}

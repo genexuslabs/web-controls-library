@@ -9,6 +9,7 @@ Take a look at the [common attributes, events and methods](../common/readme.md).
 The text caption of the button will be its text content. Being a child instead of an attribute allows us to set text or HTML.
 
 ### Child images
+
 `gx-button` accepts two child `<img>` elements that work as the main image and the disbled image.
 To tag an image as the main one, use the `slot` attribute with value "main-image". For example:
 
@@ -23,12 +24,13 @@ The element will show one or the other, depending on the value of the [disabled]
 ## Attributes
 
 ### image-position
+
 This attribute lets you specify the relative location of the image to the text.
 
-| Value          | Details                                                                      |
-|----------------|------------------------------------------------------------------------------|
-| `above`        | The image is located above the text.                                         |
-| `before`       | The image is located before the text, in the same line.                      |
-| `after`        | The image is located after the text, in the same line.                       |
-| `below`        | The image is located below the text.                                         |
-| `behind`       | The image is located behind the text.                                        |
+| Value    | Details                                                 |
+| -------- | ------------------------------------------------------- |
+| `above`  | The image is located above the text.                    |
+| `before` | The image is located before the text, in the same line. |
+| `after`  | The image is located after the text, in the same line.  |
+| `below`  | The image is located below the text.                    |
+| `behind` | The image is located behind the text.                   |

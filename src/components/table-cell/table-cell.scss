@@ -1,14 +1,7 @@
+@import "../common/_base";
+
 gx-table-cell {
-  display: flex;
-
-  &[hidden] {
-    display: none;
-
-    &[invisible-mode="keep-space"] {
-      display: flex;
-      visibility: hidden;
-    }
-  }
+  @include visibility(flex);
 
   &[align="center"] {
     justify-content: center;

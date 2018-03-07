@@ -1,27 +1,23 @@
-import { Element, Component, Prop } from '@stencil/core';
+import { Element, Component, Prop } from "@stencil/core";
+import { BaseComponent } from "../common/base-component";
 
 @Component({
-  tag: 'gx-table-cell',
-  styleUrl: 'table-cell.scss',
+  tag: "gx-table-cell",
+  styleUrl: "table-cell.scss",
   shadow: false
 })
-
-export class TableCell {
+export class TableCell extends BaseComponent {
   @Element() element: HTMLElement;
 
   @Prop() area: string;
   @Prop() align: "left" | "right" | "center" = "left";
   @Prop() valign: "top" | "bottom" | "medium" = "top";
 
-  componentDidLoad()  {
+  render() {
     if (this.element) {
       this.element.style["gridArea"] = this.area;
     }
-  }
 
-  render() {
-    return (
-      <slot />
-    );
+    return <slot />;
   }
 }

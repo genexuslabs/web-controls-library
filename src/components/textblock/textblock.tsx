@@ -1,24 +1,23 @@
-import { Component, Prop, Event, EventEmitter } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter } from "@stencil/core";
+import { BaseComponent } from "../common/base-component";
 
 @Component({
-  tag: 'gx-textblock',
-  styleUrl: 'textblock.scss',
+  tag: "gx-textblock",
+  styleUrl: "textblock.scss",
   shadow: false
 })
-export class TextBlock {
-
+export class TextBlock extends BaseComponent {
   @Prop() href: string = "";
   @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
   @Prop() disabled: boolean = false;
 
   @Event() onClick: EventEmitter;
-  // TODO: Implement touch devices events (Tap, DoubleTap, LongTap, SwipeX)
 
   handleClick(event: UIEvent) {
-    if (this.disabled)
-      return;
+    if (this.disabled) return;
 
     this.onClick.emit(event);
+    event.preventDefault();
   }
 
   render() {

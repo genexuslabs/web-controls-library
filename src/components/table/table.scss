@@ -1,16 +1,7 @@
+@import "../common/_base";
+
 gx-table {
-  display: grid;
+  @include visibility(grid);
 
-  &[hidden] {
-    display: none;
-
-    &[invisible-mode="keep-space"] {
-      display: grid;
-      visibility: hidden;
-    }
-  }
-
-  &[auto-grow="false"] {
-    overflow: auto;
-  }
+  @include autoGrow();
 }

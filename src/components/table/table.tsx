@@ -1,11 +1,12 @@
-import { Element, Component, Prop, Event, EventEmitter } from '@stencil/core';
+import { Element, Component, Prop, Event, EventEmitter } from "@stencil/core";
+import { BaseComponent } from "../common/base-component";
 
 @Component({
-  tag: 'gx-table',
-  styleUrl: 'table.scss',
+  tag: "gx-table",
+  styleUrl: "table.scss",
   shadow: false
 })
-export class Table {
+export class Table extends BaseComponent {
   @Element() element: HTMLElement;
 
   @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
@@ -19,10 +20,10 @@ export class Table {
   // TODO: Implement touch devices events (Tap, DoubleTap, LongTap, SwipeX)
 
   handleClick(event: UIEvent) {
-    if (this.disabled)
-      return;
+    if (this.disabled) return;
 
     this.onClick.emit(event);
+    event.preventDefault();
   }
 
   render() {
@@ -36,8 +37,8 @@ export class Table {
       this.element.style["gridTemplateRows"] = this.rowsTemplate;
     }
 
-    return (
-      <slot />
-    );
+    this.element.addEventListener("click", this.handleClick.bind(this));
+
+    return <slot />;
   }
 }

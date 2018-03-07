@@ -1,5 +1,8 @@
+@import "../common/_base";
+
 gx-button {
-  display: inline-block;
+  @include visibility(inline-block);
+
   vertical-align: middle;
 
   &[disabled] {
@@ -14,16 +17,7 @@ gx-button {
     }
   }
 
-  &[hidden] {
-    display: none;
-
-    &[invisible-mode="keep-space"] {
-      display: inline-block;
-      visibility: hidden;
-    }
-  }
-
-  & > button {
+  & > button.gx-button {
     display: flex;
     flex-direction: column;
     position: relative;

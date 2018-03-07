@@ -8,7 +8,9 @@ declare global {
     interface Element {}
     export interface IntrinsicElements {}
   }
-  namespace JSXElements {}
+  namespace JSXElements {
+
+  }
 
   interface HTMLStencilElement extends HTMLElement {
     componentOnReady(): Promise<this>;
@@ -18,14 +20,10 @@ declare global {
   interface HTMLAttributes {}
 }
 
-
-import {
-  Button as GxButton
-} from './components/button/button';
+import { Button as GxButton } from "./components/button/button";
 
 declare global {
-  interface HTMLGxButtonElement extends GxButton, HTMLStencilElement {
-  }
+  interface HTMLGxButtonElement extends GxButton, HTMLStencilElement {}
   var HTMLGxButtonElement: {
     prototype: HTMLGxButtonElement;
     new (): HTMLGxButtonElement;
@@ -50,14 +48,39 @@ declare global {
   }
 }
 
-
-import {
-  TableCell as GxTableCell
-} from './components/table-cell/table-cell';
+import { Message as GxMessage } from "./components/message/message";
 
 declare global {
-  interface HTMLGxTableCellElement extends GxTableCell, HTMLStencilElement {
+  interface HTMLGxMessageElement extends GxMessage, HTMLStencilElement {}
+  var HTMLGxMessageElement: {
+    prototype: HTMLGxMessageElement;
+    new (): HTMLGxMessageElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gx-message": HTMLGxMessageElement;
   }
+  interface ElementTagNameMap {
+    "gx-message": HTMLGxMessageElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gx-message": JSXElements.GxMessageAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GxMessageAttributes extends HTMLAttributes {
+      closeButtonText?: string;
+      duration?: number;
+      showCloseButton?: boolean;
+      type?: "info" | "warning" | "error";
+    }
+  }
+}
+
+import { TableCell as GxTableCell } from "./components/table-cell/table-cell";
+
+declare global {
+  interface HTMLGxTableCellElement extends GxTableCell, HTMLStencilElement {}
   var HTMLGxTableCellElement: {
     prototype: HTMLGxTableCellElement;
     new (): HTMLGxTableCellElement;
@@ -82,14 +105,10 @@ declare global {
   }
 }
 
-
-import {
-  Table as GxTable
-} from './components/table/table';
+import { Table as GxTable } from "./components/table/table";
 
 declare global {
-  interface HTMLGxTableElement extends GxTable, HTMLStencilElement {
-  }
+  interface HTMLGxTableElement extends GxTable, HTMLStencilElement {}
   var HTMLGxTableElement: {
     prototype: HTMLGxTableElement;
     new (): HTMLGxTableElement;
@@ -117,14 +136,10 @@ declare global {
   }
 }
 
-
-import {
-  TextBlock as GxTextblock
-} from './components/textblock/textblock';
+import { TextBlock as GxTextblock } from "./components/textblock/textblock";
 
 declare global {
-  interface HTMLGxTextblockElement extends GxTextblock, HTMLStencilElement {
-  }
+  interface HTMLGxTextblockElement extends GxTextblock, HTMLStencilElement {}
   var HTMLGxTextblockElement: {
     prototype: HTMLGxTextblockElement;
     new (): HTMLGxTextblockElement;
@@ -149,4 +164,6 @@ declare global {
   }
 }
 
-declare global { namespace JSX { interface StencilJSX {} } }
+declare global {
+  namespace JSX { interface StencilJSX {} }
+}
