@@ -48,6 +48,81 @@ declare global {
   }
 }
 
+import { Edit as GxEdit } from "./components/edit/edit";
+
+declare global {
+  interface HTMLGxEditElement extends GxEdit, HTMLStencilElement {}
+  var HTMLGxEditElement: {
+    prototype: HTMLGxEditElement;
+    new (): HTMLGxEditElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gx-edit": HTMLGxEditElement;
+  }
+  interface ElementTagNameMap {
+    "gx-edit": HTMLGxEditElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gx-edit": JSXElements.GxEditAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GxEditAttributes extends HTMLAttributes {
+      autocapitalize?: "none" | "sentences" | "words" | "characters";
+      autocomplete?: "on" | "off";
+      autocorrect?: string;
+      cssClass?: string;
+      disabled?: boolean;
+      id?: string;
+      invisibleMode?: "collapse" | "keep-space";
+      multiline?: boolean;
+      placeholder?: string;
+      readonly?: boolean;
+      type?:
+        | "date"
+        | "datetime-local"
+        | "email"
+        | "file"
+        | "number"
+        | "password"
+        | "search"
+        | "tel"
+        | "text"
+        | "url";
+      value?: string;
+    }
+  }
+}
+
+import { FormField as GxFormField } from "./components/form-field/form-field";
+
+declare global {
+  interface HTMLGxFormFieldElement extends GxFormField, HTMLStencilElement {}
+  var HTMLGxFormFieldElement: {
+    prototype: HTMLGxFormFieldElement;
+    new (): HTMLGxFormFieldElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gx-form-field": HTMLGxFormFieldElement;
+  }
+  interface ElementTagNameMap {
+    "gx-form-field": HTMLGxFormFieldElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gx-form-field": JSXElements.GxFormFieldAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GxFormFieldAttributes extends HTMLAttributes {
+      labelCaption?: string;
+      labelClass?: string;
+      labelPosition?: "none" | "top" | "right" | "bottom" | "left" | "float";
+    }
+  }
+}
+
 import { Message as GxMessage } from "./components/message/message";
 
 declare global {
@@ -100,6 +175,7 @@ declare global {
     export interface GxTableCellAttributes extends HTMLAttributes {
       align?: "left" | "right" | "center";
       area?: string;
+      autoGrow?: boolean;
       valign?: "top" | "bottom" | "medium";
     }
   }

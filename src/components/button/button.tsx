@@ -5,11 +5,7 @@ import { ButtonRender } from "../renders";
 @Component({
   tag: "gx-button",
   styleUrl: "button.scss",
-  shadow: false,
-  host: {
-    role: "button",
-    tabIndex: "0"
-  }
+  shadow: false
 })
 export class Button extends ButtonRender(BaseComponent) {
   @Element() element: HTMLElement;
@@ -20,5 +16,10 @@ export class Button extends ButtonRender(BaseComponent) {
   imagePosition: "above" | "before" | "after" | "below" | "behind" = "above";
 
   @Event() onClick: EventEmitter;
-  // TODO: Implement touch devices events (Tap, DoubleTap, LongTap, SwipeX)
+
+  hostData() {
+    return {
+      role: "button"
+    };
+  }
 }

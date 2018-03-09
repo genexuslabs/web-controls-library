@@ -11,6 +11,7 @@ export class TableCell extends BaseComponent {
 
   @Prop() area: string;
   @Prop() align: "left" | "right" | "center" = "left";
+  @Prop() autoGrow: boolean;
   @Prop() valign: "top" | "bottom" | "medium" = "top";
 
   render() {

@@ -3,6 +3,8 @@
 gx-table-cell {
   @include visibility(flex);
 
+  @include autoGrow();
+
   &[align="center"] {
     justify-content: center;
   }

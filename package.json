@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "GeneXus Web Controls Library",
   "main": "dist/gx-web-controls.js",
-  "types": "dist/types/index.d.ts",
+  "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "files": ["dist/"],
   "browser": "dist/gx-web-controls.js",

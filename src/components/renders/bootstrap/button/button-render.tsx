@@ -18,12 +18,18 @@ export function ButtonRender<T extends Constructor<{}>>(Base: T) {
       const images = this.element.querySelectorAll(
         '[slot="main-image"], [slot="disabled-image"]'
       );
-      Array.from(images).forEach((img: HTMLElement) =>
-        img.setAttribute("alt", "")
-      );
+      Array.from(images).forEach((img: HTMLImageElement) => {
+        if (!img.alt) {
+          img.setAttribute("alt", "");
+        }
+      });
 
       return (
-        <button class="gx-button btn" onClick={this.handleClick.bind(this)}>
+        <button
+          class="gx-button btn"
+          onClick={this.handleClick.bind(this)}
+          tabindex="0"
+        >
           <slot name="main-image" />
           <slot name="disabled-image" />
           <span>

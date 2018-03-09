@@ -1,3 +1,5 @@
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
 # GeneXus Web Controls Library
 
 A custom elements based controls library for GeneXus web generators, created using [StencilJS](https://stenciljs.com/).
