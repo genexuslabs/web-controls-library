@@ -4,7 +4,7 @@ This control allows showing a label for a `gx-edit` control. The label's positio
 
 It also supports all the [common attributes](../common/readme.md#attributes).
 
-```
+```html
 <gx-form-field label-caption="User" label-position="top">
   <gx-edit id="edit1" value="" area="field"></gx-edit>
 </gx-form-field>

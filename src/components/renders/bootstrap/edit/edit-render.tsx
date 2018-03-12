@@ -32,7 +32,11 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
       if (this.readonly) {
         classList.push("form-control-plaintext");
       } else {
-        classList.push("form-control");
+        if (this.type == "file") {
+          classList.push("form-control-file");
+        } else {
+          classList.push("form-control");
+        }
       }
 
       if (this.cssClass) {
@@ -91,7 +95,7 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
       if (this.multiline) {
         return <textarea {...attris}>{this.value}</textarea>;
       } else {
-        return <input {...attris} value={this.value} />;
+        return <input {...attris} type={this.type} value={this.value} />;
       }
     }
   };

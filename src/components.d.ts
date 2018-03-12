@@ -48,6 +48,37 @@ declare global {
   }
 }
 
+import { CheckBox as GxCheckbox } from "./components/checkbox/checkbox";
+
+declare global {
+  interface HTMLGxCheckboxElement extends GxCheckbox, HTMLStencilElement {}
+  var HTMLGxCheckboxElement: {
+    prototype: HTMLGxCheckboxElement;
+    new (): HTMLGxCheckboxElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gx-checkbox": HTMLGxCheckboxElement;
+  }
+  interface ElementTagNameMap {
+    "gx-checkbox": HTMLGxCheckboxElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gx-checkbox": JSXElements.GxCheckboxAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GxCheckboxAttributes extends HTMLAttributes {
+      caption?: string;
+      checked?: boolean;
+      cssClass?: string;
+      disabled?: boolean;
+      id?: string;
+      invisibleMode?: "collapse" | "keep-space";
+    }
+  }
+}
+
 import { Edit as GxEdit } from "./components/edit/edit";
 
 declare global {
