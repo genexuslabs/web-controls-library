@@ -12,7 +12,12 @@ It also supports all the [common attributes](../common/readme.md#attributes).
 
 ## Children
 
-There must be a `gx-edit` custom element as a child with the `area` attribute set to `"field"`.
+There must be a "edit" custom element as a child with the `area` attribute set to `"field"`.
+An "edit" custom element can be on of these:
+
+* `gx-edit`
+* `gx-checkbox`
+
 The child element should have and id specified, so the inner `label` element rendered uses it in its `for` attribute.
 
 ## Attributes
