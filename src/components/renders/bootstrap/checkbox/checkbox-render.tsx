@@ -23,7 +23,7 @@ export function CheckBoxRender<T extends Constructor<{}>>(Base: T) {
     private getCssClasses() {
       const classList = [];
 
-      classList.push("form-check-input");
+      classList.push("custom-control-input");
 
       if (this.cssClass) {
         classList.push(this.cssClass);
@@ -74,13 +74,11 @@ export function CheckBoxRender<T extends Constructor<{}>>(Base: T) {
       };
 
       return (
-        <div class="form-check">
+        <div class="custom-control custom-checkbox">
           <input {...attris} type="checkbox" checked={this.checked} />
-          {this.caption ? (
-            <label class="form-check-label" {...forAttris}>
-              {this.caption}
-            </label>
-          ) : null}
+          <label class="custom-control-label" {...forAttris}>
+            {this.caption}
+          </label>
         </div>
       );
     }
