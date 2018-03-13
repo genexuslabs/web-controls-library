@@ -2,4 +2,9 @@
 
 gx-radio-group {
   @include visibility(block);
+
+  &[direction="horizontal"] > gx-radio-option {
+    display: inline-flex;
+    margin-right: 1rem;
+  }
 }

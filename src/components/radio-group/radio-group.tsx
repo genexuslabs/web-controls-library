@@ -21,6 +21,7 @@ export class RadioGroup extends BaseComponent {
 
   @Element() element: HTMLElement;
 
+  @Prop() direction: "horizontal" | "vertical" = "horizontal";
   @Prop() disabled: boolean = false;
   @Prop() id: string;
   @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";

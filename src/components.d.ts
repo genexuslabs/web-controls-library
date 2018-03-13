@@ -204,6 +204,7 @@ declare global {
   }
   namespace JSXElements {
     export interface GxRadioGroupAttributes extends HTMLAttributes {
+      direction?: "horizontal" | "vertical";
       disabled?: boolean;
       id?: string;
       invisibleMode?: "collapse" | "keep-space";
