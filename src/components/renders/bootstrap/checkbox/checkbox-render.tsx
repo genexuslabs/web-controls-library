@@ -60,12 +60,13 @@ export function CheckBoxRender<T extends Constructor<{}>>(Base: T) {
     }
 
     render() {
+      const id = this.id && `${this.id}__checkbox`;
       const attris = {
         ref: input => (this.nativeInput = input as any),
         "aria-disabled": this.disabled ? "true" : undefined,
         class: this.getCssClasses(),
         disabled: this.disabled,
-        id: `${this.id}__checkbox`,
+        id,
         onChange: this.handleChange.bind(this)
       };
 

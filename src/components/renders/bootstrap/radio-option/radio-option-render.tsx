@@ -93,12 +93,13 @@ export function RadioOptionRender<T extends Constructor<{}>>(Base: T) {
     }
 
     render() {
+      const id = this.id && `${this.id}__radio-option`;
       const attris = {
         ref: input => (this.nativeInput = input as any),
         "aria-disabled": this.disabled ? "true" : undefined,
         class: this.getCssClasses(),
         disabled: this.disabled,
-        id: `${this.id}__radio-option`,
+        id,
         name: this.name,
         value: this.value,
         onChange: this.handleChange.bind(this),

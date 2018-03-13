@@ -76,6 +76,7 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
 
     render() {
       const valueChangingHandler = this.handleValueChanging.bind(this);
+      const id = this.id && `${this.id}__edit`;
 
       const attris = {
         ref: input => (this.nativeInput = input as any),
@@ -85,7 +86,7 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
         autocorrect: this.autocorrect,
         class: this.getCssClasses(),
         disabled: this.disabled,
-        id: `${this.id}__edit`,
+        id,
         placeholder: this.placeholder,
         readonly: this.readonly,
         onChange: this.handleChange.bind(this),
