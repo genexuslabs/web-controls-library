@@ -56,34 +56,62 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
 
     componentDidLoad() {
       const innerControl: any = this.element.querySelector("[area='field']");
-      const forAttr = innerControl.getNativeInputId();
-      this.element.querySelector("label").setAttribute("for", forAttr);
+      if (innerControl.getNativeInputId) {
+        const forAttr = innerControl.getNativeInputId();
+        if (forAttr) {
+          this.element.querySelector("label").setAttribute("for", forAttr);
+        }
+      }
     }
 
-    render() {
-      const label = (
-        <label class={this.getLabelCssClass()}>{this.labelCaption}</label>
+    renderForRadio(renderLabelBefore: boolean) {
+      const legend = (
+        <legend class={this.getLabelCssClass()}>{this.labelCaption}</legend>
       );
-
-      const renderLabelBefore = this.shouldRenderLabelBefore();
-
-      if (this.labelPosition == "float") {
-        return (
-          <div>
-            <slot />
-            {label}
-          </div>
-        );
-      } else {
-        return (
-          <div class="form-group row">
-            {renderLabelBefore ? label : null}
+      return (
+        <fieldset class="form-group">
+          <div class="row">
+            {renderLabelBefore ? legend : null}
             <div class={this.getInnerControlContainerClass()}>
               <slot />
             </div>
-            {!renderLabelBefore ? label : null}
+            {!renderLabelBefore ? legend : null}
           </div>
+        </fieldset>
+      );
+    }
+
+    render() {
+      const isRadioGroup = !!this.element.querySelector(
+        "gx-radio-group[area='field']"
+      );
+      const renderLabelBefore = this.shouldRenderLabelBefore();
+
+      if (isRadioGroup) {
+        return this.renderForRadio(renderLabelBefore);
+      } else {
+        const label = (
+          <label class={this.getLabelCssClass()}>{this.labelCaption}</label>
         );
+
+        if (this.labelPosition == "float") {
+          return (
+            <div>
+              <slot />
+              {label}
+            </div>
+          );
+        } else {
+          return (
+            <div class="form-group row">
+              {renderLabelBefore ? label : null}
+              <div class={this.getInnerControlContainerClass()}>
+                <slot />
+              </div>
+              {!renderLabelBefore ? label : null}
+            </div>
+          );
+        }
       }
     }
   };

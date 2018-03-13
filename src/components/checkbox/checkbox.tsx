@@ -19,12 +19,12 @@ export class CheckBox extends CheckBoxRender(BaseComponent) {
   @Element() element: HTMLElement;
 
   @Prop() caption: string;
+  @Prop({ mutable: true })
+  checked: boolean;
   @Prop() cssClass: string;
   @Prop() disabled: boolean = false;
   @Prop() id: string;
   @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
-  @Prop({ mutable: true })
-  checked: boolean;
 
   @Event() onChange: EventEmitter;
 

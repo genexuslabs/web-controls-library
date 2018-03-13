@@ -70,4 +70,15 @@ gx-form-field {
       top: calc(0.25rem + 7px);
     }
   }
+
+  gx-radio-option {
+    .custom-radio {
+      padding-top: calc(0.375rem + 1px);
+    }
+
+    .custom-control-label:before,
+    .custom-control-label:after {
+      top: calc(0.25rem + 7px);
+    }
+  }
 }

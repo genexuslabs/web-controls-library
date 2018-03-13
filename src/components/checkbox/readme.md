@@ -20,7 +20,7 @@ Indicates that the control is selected by default.
 
 ### change
 
-The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus.
+The `change` event is emitted when a change to the element's value is committed by the user.
 
 ## Methods
 

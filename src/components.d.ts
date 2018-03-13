@@ -183,6 +183,71 @@ declare global {
   }
 }
 
+import { RadioGroup as GxRadioGroup } from "./components/radio-group/radio-group";
+
+declare global {
+  interface HTMLGxRadioGroupElement extends GxRadioGroup, HTMLStencilElement {}
+  var HTMLGxRadioGroupElement: {
+    prototype: HTMLGxRadioGroupElement;
+    new (): HTMLGxRadioGroupElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gx-radio-group": HTMLGxRadioGroupElement;
+  }
+  interface ElementTagNameMap {
+    "gx-radio-group": HTMLGxRadioGroupElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gx-radio-group": JSXElements.GxRadioGroupAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GxRadioGroupAttributes extends HTMLAttributes {
+      disabled?: boolean;
+      id?: string;
+      invisibleMode?: "collapse" | "keep-space";
+      name?: string;
+      value?: string;
+    }
+  }
+}
+
+import { RadioOption as GxRadioOption } from "./components/radio-option/radio-option";
+
+declare global {
+  interface HTMLGxRadioOptionElement
+    extends GxRadioOption,
+      HTMLStencilElement {}
+  var HTMLGxRadioOptionElement: {
+    prototype: HTMLGxRadioOptionElement;
+    new (): HTMLGxRadioOptionElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gx-radio-option": HTMLGxRadioOptionElement;
+  }
+  interface ElementTagNameMap {
+    "gx-radio-option": HTMLGxRadioOptionElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gx-radio-option": JSXElements.GxRadioOptionAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GxRadioOptionAttributes extends HTMLAttributes {
+      caption?: string;
+      checked?: boolean;
+      cssClass?: string;
+      disabled?: boolean;
+      id?: string;
+      invisibleMode?: "collapse" | "keep-space";
+      name?: string;
+      value?: string;
+    }
+  }
+}
+
 import { TableCell as GxTableCell } from "./components/table-cell/table-cell";
 
 declare global {
