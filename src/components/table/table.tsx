@@ -23,7 +23,6 @@ export class Table extends BaseComponent {
     if (this.disabled) return;
 
     this.onClick.emit(event);
-    event.preventDefault();
   }
 
   render() {
