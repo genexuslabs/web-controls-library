@@ -5,6 +5,8 @@ gx-table-cell {
 
   @include autoGrow();
 
+  width: 100%;
+
   &[align="center"] {
     justify-content: center;
   }
