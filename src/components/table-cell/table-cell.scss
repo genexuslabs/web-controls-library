@@ -5,7 +5,12 @@ gx-table-cell {
 
   @include autoGrow();
 
-  width: 100%;
+  &:not([align]),
+  &[align="left"] {
+    & > * {
+      flex-grow: 1;
+    }
+  }
 
   &[align="center"] {
     justify-content: center;
