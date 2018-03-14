@@ -93,7 +93,10 @@ export function RadioOptionRender<T extends Constructor<{}>>(Base: T) {
     }
 
     render() {
-      const id = this.id && `${this.id}__radio-option`;
+      const id = this.id
+        ? `${this.id}__radio-option`
+        : `gx-radio-auto-id-${autoRadioId++}`;
+
       const attris = {
         ref: input => (this.nativeInput = input as any),
         "aria-disabled": this.disabled ? "true" : undefined,
@@ -121,3 +124,5 @@ export function RadioOptionRender<T extends Constructor<{}>>(Base: T) {
     }
   };
 }
+
+let autoRadioId = 0;

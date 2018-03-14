@@ -76,7 +76,9 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
 
     render() {
       const valueChangingHandler = this.handleValueChanging.bind(this);
-      const id = this.id && `${this.id}__edit`;
+      const id = this.id
+        ? `${this.id}__edit`
+        : `gx-edit-auto-id-${autoEditId++}`;
 
       const attris = {
         ref: input => (this.nativeInput = input as any),
@@ -101,3 +103,5 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
     }
   };
 }
+
+let autoEditId = 0;

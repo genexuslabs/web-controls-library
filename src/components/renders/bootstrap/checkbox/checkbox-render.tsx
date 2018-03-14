@@ -60,7 +60,10 @@ export function CheckBoxRender<T extends Constructor<{}>>(Base: T) {
     }
 
     render() {
-      const id = this.id && `${this.id}__checkbox`;
+      const id = this.id
+        ? `${this.id}__checkbox`
+        : `gx-checkbox-auto-id-${autoCheckBoxId++}`;
+
       const attris = {
         ref: input => (this.nativeInput = input as any),
         "aria-disabled": this.disabled ? "true" : undefined,
@@ -85,3 +88,5 @@ export function CheckBoxRender<T extends Constructor<{}>>(Base: T) {
     }
   };
 }
+
+let autoCheckBoxId = 0;
