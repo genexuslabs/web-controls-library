@@ -14,6 +14,9 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
     multiline: boolean;
     placeholder: string;
     readonly: boolean;
+    showTrigger: boolean;
+    triggerClass: string;
+    triggerText: string;
     type: string = "text";
     value: string;
 
@@ -21,6 +24,7 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
 
     onChange: EventEmitter;
     onInput: EventEmitter;
+    gxTriggerClick: EventEmitter;
 
     getNativeInputId() {
       return this.nativeInput.id;
@@ -46,6 +50,16 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
       return classList.join(" ");
     }
 
+    private getTriggerCssClasses() {
+      const classList = [];
+      classList.push("btn");
+      classList.push("btn-outline-secondary");
+      if (this.triggerClass) {
+        classList.push(this.triggerClass);
+      }
+      return classList.join(" ");
+    }
+
     private getValueFromEvent(event: UIEvent): string {
       return event.target && (event.target as HTMLInputElement).value;
     }
@@ -58,6 +72,10 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
     handleValueChanging(event: UIEvent) {
       this.value = this.getValueFromEvent(event);
       this.onInput.emit(event);
+    }
+
+    handleTriggerClick(event: UIEvent) {
+      this.gxTriggerClick.emit(event);
     }
 
     /**
@@ -98,7 +116,28 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
       if (this.multiline) {
         return <textarea {...attris}>{this.value}</textarea>;
       } else {
-        return <input {...attris} type={this.type} value={this.value} />;
+        const input = <input {...attris} type={this.type} value={this.value} />;
+
+        if (this.showTrigger) {
+          return (
+            <div class="input-group">
+              {input}
+              <div class="input-group-append">
+                <button
+                  class={this.getTriggerCssClasses()}
+                  onClick={this.handleTriggerClick.bind(this)}
+                  type="button"
+                >
+                  {this.triggerText ? (
+                    this.triggerText
+                  ) : (
+                    <slot name="trigger-img" />
+                  )}
+                </button>
+              </div>
+            </div>
+          );
+        } else return input;
       }
     }
   };

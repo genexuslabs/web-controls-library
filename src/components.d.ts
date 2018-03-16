@@ -110,6 +110,9 @@ declare global {
       multiline?: boolean;
       placeholder?: string;
       readonly?: boolean;
+      showTrigger?: boolean;
+      triggerClass?: string;
+      triggerText?: string;
       type?:
         | "date"
         | "datetime-local"

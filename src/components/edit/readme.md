@@ -1,6 +1,18 @@
 # gx-edit
 
+An edit box with an optional trigger button.
+
 Take a look at the [common attributes, events and methods](../common/readme.md).
+
+## Children
+
+If an `<img>` child element with the attribute area="trigger-img" is found, this image will be used as the trigger button image.
+
+```html
+<gx-edit value="my value" show-trigger>
+  <img src="icon.png" slot="trigger-img"></img>
+</gx-edit>
+```
 
 ## Attributes
 
@@ -32,6 +44,18 @@ A hint to the user of what can be entered in the control. Same as [placeholder](
 
 This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
 
+### show-trigger
+
+If true, a trigger button is shown next to the edit field. The button can be customized using `trigger-text` and `trigger-class` attributes, or adding a child element `<img slot="trigger-img">` to specify an image inside the trigger button.
+
+### trigger-class
+
+A CSS class to set as the trigger button class.
+
+### trigger-text
+
+The text of the trigger button. If a text is specified and an image is specified (through an `img` element with `slot="trigger-img"`), the image is ignored
+
 ### type
 
 The type of control to render. A subset of the types supported by the `input` element is supported:
@@ -60,6 +84,10 @@ The `change` event is emitted when a change to the element's value is committed 
 ### input
 
 The `input` event is fired synchronously when the value is changed.
+
+### gxTriggerClick
+
+The `gxTriggerClick` event is fired when the trigger button is clicked.
 
 ## Methods
 

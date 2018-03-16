@@ -28,6 +28,9 @@ export class Edit extends EditRender(BaseComponent) {
   @Prop() multiline: boolean;
   @Prop() placeholder: string;
   @Prop() readonly: boolean;
+  @Prop() showTrigger: boolean;
+  @Prop() triggerText: string;
+  @Prop() triggerClass: string;
   @Prop()
   type:
     | "date"
@@ -45,6 +48,7 @@ export class Edit extends EditRender(BaseComponent) {
 
   @Event() onChange: EventEmitter;
   @Event() onInput: EventEmitter;
+  @Event() gxTriggerClick: EventEmitter;
 
   @Method()
   getNativeInputId() {
