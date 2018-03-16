@@ -6,11 +6,17 @@ Take a look at the [common attributes, events and methods](../common/readme.md).
 
 ## Children
 
-If an `<img>` child element with the attribute area="trigger-img" is found, this image will be used as the trigger button image.
+If a child element with the attribute area="trigger-content" is found, this content will be used as the trigger content.
 
 ```html
 <gx-edit value="my value" show-trigger>
-  <img src="icon.png" slot="trigger-img"></img>
+  <img src="icon.png" slot="trigger-content"></img>
+</gx-edit>
+```
+
+```html
+<gx-edit value="my value" show-trigger>
+  <i class="fa fa-search" slot="trigger-content"></i>
 </gx-edit>
 ```
 
@@ -46,7 +52,7 @@ This attribute indicates that the user cannot modify the value of the control. S
 
 ### show-trigger
 
-If true, a trigger button is shown next to the edit field. The button can be customized using `trigger-text` and `trigger-class` attributes, or adding a child element `<img slot="trigger-img">` to specify an image inside the trigger button.
+If true, a trigger button is shown next to the edit field. The button can be customized using `trigger-text` and `trigger-class` attributes, or adding a child element with `slot="trigger-content"` attribute to specify the content inside the trigger button.
 
 ### trigger-class
 
@@ -54,7 +60,7 @@ A CSS class to set as the trigger button class.
 
 ### trigger-text
 
-The text of the trigger button. If a text is specified and an image is specified (through an `img` element with `slot="trigger-img"`), the image is ignored
+The text of the trigger button. If a text is specified and an image is specified (through an element with `slot="trigger-content"`), the content is ignored and the text is used instead.
 
 ### type
 

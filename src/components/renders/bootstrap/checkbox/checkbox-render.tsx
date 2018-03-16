@@ -13,6 +13,7 @@ export function CheckBoxRender<T extends Constructor<{}>>(Base: T) {
     checked: boolean;
 
     protected nativeInput: HTMLInputElement;
+    private inputId: string;
 
     onChange: EventEmitter;
 
@@ -60,16 +61,18 @@ export function CheckBoxRender<T extends Constructor<{}>>(Base: T) {
     }
 
     render() {
-      const id = this.id
-        ? `${this.id}__checkbox`
-        : `gx-checkbox-auto-id-${autoCheckBoxId++}`;
+      if (!this.inputId) {
+        this.inputId = this.id
+          ? `${this.id}__checkbox`
+          : `gx-checkbox-auto-id-${autoCheckBoxId++}`;
+      }
 
       const attris = {
         ref: input => (this.nativeInput = input as any),
         "aria-disabled": this.disabled ? "true" : undefined,
         class: this.getCssClasses(),
         disabled: this.disabled,
-        id,
+        id: this.inputId,
         onChange: this.handleChange.bind(this)
       };
 
@@ -80,7 +83,11 @@ export function CheckBoxRender<T extends Constructor<{}>>(Base: T) {
       return (
         <div class="custom-control custom-checkbox">
           <input {...attris} type="checkbox" checked={this.checked} />
-          <label class="custom-control-label" {...forAttris}>
+          <label
+            class="custom-control-label"
+            {...forAttris}
+            aria-hidden={!this.caption}
+          >
             {this.caption}
           </label>
         </div>

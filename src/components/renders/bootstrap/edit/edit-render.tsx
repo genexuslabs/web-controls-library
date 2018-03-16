@@ -21,6 +21,7 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
     value: string;
 
     protected nativeInput: HTMLInputElement;
+    private inputId: string;
 
     onChange: EventEmitter;
     onInput: EventEmitter;
@@ -94,9 +95,11 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
 
     render() {
       const valueChangingHandler = this.handleValueChanging.bind(this);
-      const id = this.id
-        ? `${this.id}__edit`
-        : `gx-edit-auto-id-${autoEditId++}`;
+      if (!this.inputId) {
+        this.inputId = this.id
+          ? `${this.id}__edit`
+          : `gx-edit-auto-id-${autoEditId++}`;
+      }
 
       const attris = {
         ref: input => (this.nativeInput = input as any),
@@ -106,7 +109,7 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
         autocorrect: this.autocorrect,
         class: this.getCssClasses(),
         disabled: this.disabled,
-        id,
+        id: this.inputId,
         placeholder: this.placeholder,
         readonly: this.readonly,
         onChange: this.handleChange.bind(this),
@@ -127,12 +130,10 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
                   class={this.getTriggerCssClasses()}
                   onClick={this.handleTriggerClick.bind(this)}
                   type="button"
+                  disabled={this.disabled}
+                  aria-label={this.triggerText}
                 >
-                  {this.triggerText ? (
-                    this.triggerText
-                  ) : (
-                    <slot name="trigger-img" />
-                  )}
+                  <slot name="trigger-content" />
                 </button>
               </div>
             </div>

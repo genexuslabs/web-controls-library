@@ -1,0 +1,8 @@
+gx-edit {
+  &:not([show-trigger]),
+  &[show-trigger="false"] {
+    [slot="trigger-content"] {
+      display: none;
+    }
+  }
+}

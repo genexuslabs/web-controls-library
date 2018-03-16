@@ -186,6 +186,43 @@ declare global {
   }
 }
 
+import { PasswordEdit as GxPasswordEdit } from "./components/password-edit/password-edit";
+
+declare global {
+  interface HTMLGxPasswordEditElement
+    extends GxPasswordEdit,
+      HTMLStencilElement {}
+  var HTMLGxPasswordEditElement: {
+    prototype: HTMLGxPasswordEditElement;
+    new (): HTMLGxPasswordEditElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gx-password-edit": HTMLGxPasswordEditElement;
+  }
+  interface ElementTagNameMap {
+    "gx-password-edit": HTMLGxPasswordEditElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gx-password-edit": JSXElements.GxPasswordEditAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GxPasswordEditAttributes extends HTMLAttributes {
+      cssClass?: string;
+      disabled?: boolean;
+      id?: string;
+      invisibleMode?: "collapse" | "keep-space";
+      placeholder?: string;
+      readonly?: boolean;
+      revealButtonTextOff?: string;
+      revealButtonTextOn?: string;
+      showRevealButton?: boolean;
+      value?: string;
+    }
+  }
+}
+
 import { RadioGroup as GxRadioGroup } from "./components/radio-group/radio-group";
 
 declare global {
