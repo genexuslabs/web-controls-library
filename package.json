@@ -8,14 +8,16 @@
   "files": ["dist/"],
   "browser": "dist/gx-web-controls.js",
   "scripts": {
-    "build": "stencil build",
+    "build": "stencil build --docs",
     "dev":
-      "sd concurrent \"stencil build --dev --watch\" \"stencil-dev-server\" ",
+      "sd concurrent \"stencil build --dev --watch --docs\" \"stencil-dev-server\" ",
+    "lint": "npm run tslint",
+    "precommit": "pretty-quick --staged",
     "serve": "stencil-dev-server",
     "start": "npm run dev",
     "test": "jest --no-cache",
     "test.watch": "jest --watch --no-cache",
-    "precommit": "pretty-quick --staged"
+    "tslint": "tslint --project . -e \"**/*.spec.ts\""
   },
   "dependencies": {
     "@stencil/core": "^0.6.13"
@@ -28,7 +30,11 @@
     "husky": "^0.14.3",
     "jest": "^21.2.1",
     "prettier": "^1.11.1",
-    "pretty-quick": "^1.4.1"
+    "pretty-quick": "^1.4.1",
+    "sass-lint": "^1.12.1",
+    "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.10.0",
+    "tslint-eslint-rules": "^5.1.0"
   },
   "repository": {
     "type": "git",

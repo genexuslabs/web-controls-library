@@ -1,4 +1,4 @@
-import { flush, render } from "@stencil/core/testing";
+import { render } from "@stencil/core/testing";
 import { Button } from "../../../button/button";
 
 describe("gx-button", () => {
@@ -16,8 +16,8 @@ describe("gx-button", () => {
       });
     });
 
-    // it("should work without parameters", () => {
-    //   expect(element.textContent.trim()).toEqual("Hello world!");
-    // });
+    it("should work without parameters", () => {
+      expect(element.textContent.trim()).toEqual("Hello world!");
+    });
   });
 });

@@ -1,20 +1,44 @@
-import { Component, Prop, Event, EventEmitter } from "@stencil/core";
+import { Component, Event, EventEmitter, Prop } from "@stencil/core";
 import { BaseComponent } from "../common/base-component";
 
 @Component({
-  tag: "gx-textblock",
+  shadow: false,
   styleUrl: "textblock.scss",
-  shadow: false
+  tag: "gx-textblock"
 })
 export class TextBlock extends BaseComponent {
-  @Prop() href: string = "";
-  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
-  @Prop() disabled: boolean = false;
+  /**
+   * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
+   */
 
+  @Prop() href = "";
+
+  /**
+   * This attribute lets you specify how this element will behave when hidden.
+   *
+   * | Value        | Details                                                                     |
+   * | ------------ | --------------------------------------------------------------------------- |
+   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
+   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+   */
+  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+
+  /**
+   * This attribute lets you specify if the element is disabled.
+   * If disabled, it will not fire any user interaction related event
+   * (for example, click event).
+   */
+  @Prop() disabled = false;
+
+  /**
+   * Emitted when the element is clicked.
+   */
   @Event() onClick: EventEmitter;
 
   handleClick(event: UIEvent) {
-    if (this.disabled) return;
+    if (this.disabled) {
+      return;
+    }
 
     this.onClick.emit(event);
     event.preventDefault();

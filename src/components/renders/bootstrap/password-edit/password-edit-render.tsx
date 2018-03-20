@@ -6,7 +6,7 @@ export function PasswordEditRender<T extends Constructor<{}>>(Base: T) {
     element: HTMLElement;
 
     cssClass: string;
-    disabled: boolean = false;
+    disabled = false;
     id: string;
     invisibleMode: string;
     placeholder: string;
@@ -20,7 +20,7 @@ export function PasswordEditRender<T extends Constructor<{}>>(Base: T) {
     onInput: EventEmitter;
 
     private innerEdit: any;
-    protected revealed: boolean = false;
+    protected revealed = false;
 
     getNativeInputId() {
       return this.innerEdit.getNativeInputId();

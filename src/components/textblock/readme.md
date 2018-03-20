@@ -2,14 +2,68 @@
 
 This is a simple element that allows showing text. Optionally, a URL can be specified in the `href` attribute, to behave as an anchor.
 
-Take a look at the [common attributes, events and methods](../common/readme.md).
-
 ## Children
 
 The text caption of the textblock will be its text content. Being a child instead of an attribute allows us to set text or HTML.
 
-## Attributes
+<!-- Auto Generated Below -->
 
-### href
+## Properties
+
+#### disabled
+
+boolean
+
+This attribute lets you specify if the element is disabled.
+If disabled, it will not fire any user interaction related event
+(for example, click event).
+
+#### href
+
+string
 
 This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
+
+#### invisibleMode
+
+This attribute lets you specify how this element will behave when hidden.
+
+| Value        | Details                                                                     |
+| ------------ | --------------------------------------------------------------------------- |
+| `keep-space` | The element remains in the document flow, and it does occupy space.         |
+| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+
+## Attributes
+
+#### disabled
+
+boolean
+
+This attribute lets you specify if the element is disabled.
+If disabled, it will not fire any user interaction related event
+(for example, click event).
+
+#### href
+
+string
+
+This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
+
+#### invisible-mode
+
+This attribute lets you specify how this element will behave when hidden.
+
+| Value        | Details                                                                     |
+| ------------ | --------------------------------------------------------------------------- |
+| `keep-space` | The element remains in the document flow, and it does occupy space.         |
+| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+
+## Events
+
+#### onClick
+
+Emitted when the element is clicked.
+
+---
+
+_Built with [StencilJS](https://stenciljs.com/)_

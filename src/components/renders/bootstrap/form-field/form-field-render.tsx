@@ -8,21 +8,21 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
     labelPosition: string;
 
     private LABEL_WIDTH_BY_POSITION = {
-      top: "col-sm-12",
-      right: "col-sm-2",
       bottom: "col-sm-12",
-      left: "col-sm-2",
       float: "",
-      none: "sr-only"
+      left: "col-sm-2",
+      none: "sr-only",
+      right: "col-sm-2",
+      top: "col-sm-12"
     };
 
     private INNER_CONTROL_WIDTH_BY_LABEL_POSITION = {
-      top: "col-sm-12",
-      right: "col-sm-10",
       bottom: "col-sm-12",
-      left: "col-sm-10",
       float: "",
-      none: "col-sm-12"
+      left: "col-sm-10",
+      none: "col-sm-12",
+      right: "col-sm-10",
+      top: "col-sm-12"
     };
 
     private getLabelCssClass() {
@@ -30,7 +30,7 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
 
       classList.push(this.LABEL_WIDTH_BY_POSITION[this.labelPosition]);
 
-      if (this.labelPosition != "float") {
+      if (this.labelPosition !== "float") {
         classList.push("col-form-label");
       }
 
@@ -48,9 +48,9 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
     private shouldRenderLabelBefore() {
       return (
         !this.labelPosition ||
-        this.labelPosition == "top" ||
-        this.labelPosition == "left" ||
-        this.labelPosition == "none"
+        this.labelPosition === "top" ||
+        this.labelPosition === "left" ||
+        this.labelPosition === "none"
       );
     }
 
@@ -94,7 +94,7 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
           <label class={this.getLabelCssClass()}>{this.labelCaption}</label>
         );
 
-        if (this.labelPosition == "float") {
+        if (this.labelPosition === "float") {
           return (
             <div>
               <slot />

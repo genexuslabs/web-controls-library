@@ -8,7 +8,7 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
     autocomplete: string;
     autocorrect: string;
     cssClass: string;
-    disabled: boolean = false;
+    disabled = false;
     id: string;
     invisibleMode: string;
     multiline: boolean;
@@ -17,7 +17,7 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
     showTrigger: boolean;
     triggerClass: string;
     triggerText: string;
-    type: string = "text";
+    type = "text";
     value: string;
 
     protected nativeInput: HTMLInputElement;
@@ -37,7 +37,7 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
       if (this.readonly) {
         classList.push("form-control-plaintext");
       } else {
-        if (this.type == "file") {
+        if (this.type === "file") {
           classList.push("form-control-file");
         } else {
           classList.push("form-control");
@@ -102,7 +102,6 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
       }
 
       const attris = {
-        ref: input => (this.nativeInput = input as any),
         "aria-disabled": this.disabled ? "true" : undefined,
         autocapitalize: this.autocapitalize,
         autocomplete: this.autocomplete,
@@ -110,10 +109,11 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
         class: this.getCssClasses(),
         disabled: this.disabled,
         id: this.inputId,
+        onChange: this.handleChange.bind(this),
+        onInput: valueChangingHandler,
         placeholder: this.placeholder,
         readonly: this.readonly,
-        onChange: this.handleChange.bind(this),
-        onInput: valueChangingHandler
+        ref: input => (this.nativeInput = input as any)
       };
 
       if (this.multiline) {
@@ -138,7 +138,9 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
               </div>
             </div>
           );
-        } else return input;
+        } else {
+          return input;
+        }
       }
     }
   };

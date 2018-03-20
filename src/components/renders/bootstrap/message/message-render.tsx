@@ -1,9 +1,9 @@
 type Constructor<T> = new (...args: any[]) => T;
 
 const TYPE_TO_CLASS_MAPPING = {
+  error: "alert-danger",
   info: "alert-info",
-  warning: "alert-warning",
-  error: "alert-danger"
+  warning: "alert-warning"
 };
 
 const DEFAULT_SHOW_WAIT = 100;
@@ -16,7 +16,7 @@ export function MessageRender<T extends Constructor<{}>>(Base: T) {
     type: string;
     duration: number;
 
-    private dismissing: boolean = false;
+    private dismissing = false;
 
     private wrapperClass() {
       const typeClass = TYPE_TO_CLASS_MAPPING[this.type] || "alert-info";

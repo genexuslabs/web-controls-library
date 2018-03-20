@@ -1,34 +1,73 @@
 import {
-  Listen,
-  Watch,
-  Element,
   Component,
-  Prop,
+  Element,
   Event,
-  EventEmitter
+  EventEmitter,
+  Listen,
+  Prop,
+  Watch
 } from "@stencil/core";
 import { BaseComponent } from "../common/base-component";
-import { HTMLRadioOptionElementEvent } from "../radio-option/radio-option";
+import { IHTMLRadioOptionElementEvent } from "../radio-option/radio-option";
 
 @Component({
-  tag: "gx-radio-group",
+  shadow: false,
   styleUrl: "radio-group.scss",
-  shadow: false
+  tag: "gx-radio-group"
 })
 export class RadioGroup extends BaseComponent {
   private radios: any[] = [];
   private didLoad: boolean;
 
-  @Element() element: HTMLElement;
+  @Element() protected element: HTMLElement;
 
+  /**
+   * Specifies how the child `gx-radio-option` will be layed out.
+   * It supports two values:
+   *
+   * * `horizontal`
+   * * `vertical` (default)
+   */
   @Prop() direction: "horizontal" | "vertical" = "horizontal";
-  @Prop() disabled: boolean = false;
-  @Prop() id: string;
+
+  /**
+   * This attribute lets you specify how this element will behave when hidden.
+   *
+   * | Value        | Details                                                                     |
+   * | ------------ | --------------------------------------------------------------------------- |
+   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
+   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+   */
   @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+
+  /**
+   * This attribute lets you specify if the element is disabled.
+   * If disabled, it will not fire any user interaction related event
+   * (for example, click event).
+   */
+  @Prop() disabled = false;
+
+  /**
+   * The identifier of the control. Must be unique.
+   */
+  @Prop() id: string;
+
+  /**
+   * The name that will be set to all the inner inputs of type radio
+   */
   @Prop() name: string;
+
+  /**
+   * The initial value of the control. Setting the value automatically selects
+   * the corresponding radio option.
+   */
   @Prop({ mutable: true })
   value: string;
 
+  /**
+   * The `change` event is emitted when a change to the element's value is
+   * committed by the user.
+   */
   @Event() onChange: EventEmitter;
 
   private getValueFromEvent(event: UIEvent): string {
@@ -89,7 +128,7 @@ export class RadioGroup extends BaseComponent {
   }
 
   @Listen("gxRadioDidLoad")
-  onRadioDidLoad(ev: HTMLRadioOptionElementEvent) {
+  onRadioDidLoad(ev: IHTMLRadioOptionElementEvent) {
     const radio = ev.target;
     this.radios.push(radio);
     radio.name = this.name;
@@ -112,7 +151,7 @@ export class RadioGroup extends BaseComponent {
   }
 
   @Listen("gxRadioDidUnload")
-  onRadioDidUnload(ev: HTMLRadioOptionElementEvent) {
+  onRadioDidUnload(ev: IHTMLRadioOptionElementEvent) {
     const index = this.radios.indexOf(ev.target);
     if (index > -1) {
       this.radios.splice(index, 1);
@@ -120,7 +159,7 @@ export class RadioGroup extends BaseComponent {
   }
 
   @Listen("gxSelect")
-  onRadioSelect(ev: HTMLRadioOptionElementEvent) {
+  onRadioSelect(ev: IHTMLRadioOptionElementEvent) {
     this.radios.forEach(radio => {
       if (radio === ev.target) {
         if (radio.value !== this.value) {

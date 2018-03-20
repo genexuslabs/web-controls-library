@@ -1,33 +1,69 @@
-import {
-  Method,
-  Watch,
-  Element,
-  Component,
-  Prop,
-  Event,
-  EventEmitter
-} from "@stencil/core";
 import { BaseComponent } from "../common/base-component";
 import { CheckBoxRender } from "../renders";
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Method,
+  Prop,
+  Watch
+} from "@stencil/core";
 
 @Component({
-  tag: "gx-checkbox",
+  shadow: false,
   styleUrl: "checkbox.scss",
-  shadow: false
+  tag: "gx-checkbox"
 })
 export class CheckBox extends CheckBoxRender(BaseComponent) {
   @Element() element: HTMLElement;
 
-  @Prop() caption: string;
-  @Prop({ mutable: true })
-  checked: boolean;
-  @Prop() cssClass: string;
-  @Prop() disabled: boolean = false;
-  @Prop() id: string;
+  /**
+   * This attribute lets you specify how this element will behave when hidden.
+   *
+   * | Value        | Details                                                                     |
+   * | ------------ | --------------------------------------------------------------------------- |
+   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
+   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+   */
   @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
 
+  /**
+   * This attribute lets you specify if the element is disabled.
+   * If disabled, it will not fire any user interaction related event
+   * (for example, click event).
+   */
+  @Prop() disabled = false;
+
+  /**
+   * Specifies the label of the checkbox.
+   */
+  @Prop() caption: string;
+
+  /**
+   * Indicates that the control is selected by default.
+   */
+  @Prop({ mutable: true })
+  checked: boolean;
+
+  /**
+   * A CSS class to set as the inner `input` element class.
+   */
+  @Prop() cssClass: string;
+
+  /**
+   * The identifier of the control. Must be unique.
+   */
+  @Prop() id: string;
+
+  /**
+   * The `change` event is emitted when a change to the element's value is committed by the user.
+   */
   @Event() onChange: EventEmitter;
 
+  /**
+   * Returns the id of the inner `input` element (if set).
+   */
   @Method()
   getNativeInputId() {
     return super.getNativeInputId();

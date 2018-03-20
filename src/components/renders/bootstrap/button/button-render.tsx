@@ -8,7 +8,9 @@ export function ButtonRender<T extends Constructor<{}>>(Base: T) {
     onClick: EventEmitter;
 
     handleClick(event: UIEvent) {
-      if (this.disabled) return;
+      if (this.disabled) {
+        return;
+      }
 
       this.onClick.emit(event);
     }
@@ -16,7 +18,7 @@ export function ButtonRender<T extends Constructor<{}>>(Base: T) {
     render() {
       // Main image and disabled image are set an empty alt as they are decorative images.
       const images = this.element.querySelectorAll(
-        '[slot="main-image"], [slot="disabled-image"]'
+        "[slot='main-image'], [slot='disabled-image']"
       );
       Array.from(images).forEach((img: HTMLImageElement) => {
         if (!img.alt) {

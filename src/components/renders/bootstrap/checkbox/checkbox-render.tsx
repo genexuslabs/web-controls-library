@@ -7,7 +7,7 @@ export function CheckBoxRender<T extends Constructor<{}>>(Base: T) {
 
     caption: string;
     cssClass: string;
-    disabled: boolean = false;
+    disabled = false;
     id: string;
     invisibleMode: string;
     checked: boolean;
@@ -68,12 +68,12 @@ export function CheckBoxRender<T extends Constructor<{}>>(Base: T) {
       }
 
       const attris = {
-        ref: input => (this.nativeInput = input as any),
         "aria-disabled": this.disabled ? "true" : undefined,
         class: this.getCssClasses(),
         disabled: this.disabled,
         id: this.inputId,
-        onChange: this.handleChange.bind(this)
+        onChange: this.handleChange.bind(this),
+        ref: input => (this.nativeInput = input as any)
       };
 
       const forAttris = {

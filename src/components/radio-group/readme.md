@@ -1,32 +1,114 @@
 # gx-radio-group
 
 A radio group is a group of radio buttons (`gx-radio-option`). It allows a user to select at most one radio button from a set. Checking one radio button that belongs to a radio group unchecks any previous checked radio button within the same group.
-Take a look at the [common attributes, events and methods](../common/readme.md).
 
 ## Children
 
 There must be at least a `gx-radio-option` custom element as a child. Each radio option must have a different value set.
+
 The one option whose value matches the value of the group will be automatically marked as selected.
 
-## Attributes
+<!-- Auto Generated Below -->
 
-### direction
+## Properties
 
-Specifies how the child `gx-radio-option` will be layed out. It supports two values:
+#### direction
+
+Specifies how the child `gx-radio-option` will be layed out.
+It supports two values:
 
 * `horizontal`
 * `vertical` (default)
 
-### name
+#### disabled
 
-The name of the control, which is submitted with the form data.
+boolean
 
-### value
+This attribute lets you specify if the element is disabled.
+If disabled, it will not fire any user interaction related event
+(for example, click event).
 
-The initial value of the control.
+#### id
+
+string
+
+The identifier of the control. Must be unique.
+
+#### invisibleMode
+
+This attribute lets you specify how this element will behave when hidden.
+
+| Value        | Details                                                                     |
+| ------------ | --------------------------------------------------------------------------- |
+| `keep-space` | The element remains in the document flow, and it does occupy space.         |
+| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+
+#### name
+
+string
+
+The name that will be set to all the inner inputs of type radio
+
+#### value
+
+string
+
+The initial value of the control. Setting the value automatically selects
+the corresponding radio option.
+
+## Attributes
+
+#### direction
+
+Specifies how the child `gx-radio-option` will be layed out.
+It supports two values:
+
+* `horizontal`
+* `vertical` (default)
+
+#### disabled
+
+boolean
+
+This attribute lets you specify if the element is disabled.
+If disabled, it will not fire any user interaction related event
+(for example, click event).
+
+#### id
+
+string
+
+The identifier of the control. Must be unique.
+
+#### invisible-mode
+
+This attribute lets you specify how this element will behave when hidden.
+
+| Value        | Details                                                                     |
+| ------------ | --------------------------------------------------------------------------- |
+| `keep-space` | The element remains in the document flow, and it does occupy space.         |
+| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+
+#### name
+
+string
+
+The name that will be set to all the inner inputs of type radio
+
+#### value
+
+string
+
+The initial value of the control. Setting the value automatically selects
+the corresponding radio option.
 
 ## Events
 
-### change
+#### onChange
 
-The `change` event is emitted when a change to the element's value is committed by the user.
+The `change` event is emitted when a change to the element's value is
+committed by the user.
+
+---
+
+_Built with [StencilJS](https://stenciljs.com/)_

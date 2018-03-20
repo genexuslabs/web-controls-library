@@ -2,8 +2,6 @@
 
 This control allows showing a label for a form custom control. The label's position can be controlled with the `label-position` attribute.
 
-It also supports all the [common attributes](../common/readme.md#attributes).
-
 ```html
 <gx-form-field label-caption="User" label-position="top">
   <gx-edit id="edit1" value="" area="field"></gx-edit>
@@ -21,17 +19,23 @@ An "edit" custom element can be on of these:
 
 The child element should have and id specified, so the inner `label` element rendered uses it in its `for` attribute.
 
-## Attributes
+<!-- Auto Generated Below -->
 
-### label-caption
+## Properties
+
+#### labelCaption
+
+string
 
 The text to set as the label of the field.
 
-### label-class
+#### labelClass
+
+string
 
 A CSS class to set as the inner `label` element class.
 
-### label-position
+#### labelPosition
 
 The position where the label will be located, relative to the edit control. The supported values are:
 
@@ -41,3 +45,32 @@ The position where the label will be located, relative to the edit control. The 
 * `"left"`: The label is located at the left side of the edit control.
 * `"float"`: The label is shown as a placeholder when the edit control's value is empty. When the value is not empty, the label floats and locates above the edit control.
 * `"none"`: The label is rendered, but hidden.
+
+## Attributes
+
+#### label-caption
+
+string
+
+The text to set as the label of the field.
+
+#### label-class
+
+string
+
+A CSS class to set as the inner `label` element class.
+
+#### label-position
+
+The position where the label will be located, relative to the edit control. The supported values are:
+
+* `"top"`: The label is located above the edit control.
+* `"right"`: The label is located at the right side of the edit control.
+* `"bottom"`: The label is located below the edit control.
+* `"left"`: The label is located at the left side of the edit control.
+* `"float"`: The label is shown as a placeholder when the edit control's value is empty. When the value is not empty, the label floats and locates above the edit control.
+* `"none"`: The label is rendered, but hidden.
+
+---
+
+_Built with [StencilJS](https://stenciljs.com/)_

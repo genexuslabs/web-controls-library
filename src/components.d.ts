@@ -180,6 +180,7 @@ declare global {
     export interface GxMessageAttributes extends HTMLAttributes {
       closeButtonText?: string;
       duration?: number;
+      invisibleMode?: "collapse" | "keep-space";
       showCloseButton?: boolean;
       type?: "info" | "warning" | "error";
     }
@@ -340,7 +341,6 @@ declare global {
   namespace JSXElements {
     export interface GxTableAttributes extends HTMLAttributes {
       areasTemplate?: string;
-      autoGrow?: boolean;
       columnsTemplate?: string;
       disabled?: boolean;
       invisibleMode?: "collapse" | "keep-space";

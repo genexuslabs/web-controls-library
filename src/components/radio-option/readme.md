@@ -4,44 +4,137 @@ Radios are generally used as a set of related options inside of a group, but the
 
 An `gx-radio-group` can be used to group a set of radios. When radios are inside of a [radio group](../radio-group/readme.md), only one radio in the group will be checked at any time. Pressing a radio will check it and uncheck the previously selected radio, if there is one. If a radio is not in a group with another radio, then both radios will have the ability to be checked at the same time.
 
-Take a look at the [common attributes, events and methods](../common/readme.md).
+<!-- Auto Generated Below -->
 
-## Attributes
+## Properties
 
-### caption
+#### caption
 
-Specifies the label of the checkbox.
+string
 
-### css-class
+Specifies the label of the radio.
 
-A CSS class to set as the inner `input` element class.
+#### checked
 
-### checked
+boolean
 
 Indicates that the control is selected by default.
 
-### name
+#### cssClass
 
-The name of the control, which is submitted with the form data.
+string
 
-### value
+A CSS class to set as the inner `input` element class.
+
+#### disabled
+
+boolean
+
+This attribute lets you specify if the element is disabled.
+If disabled, it will not fire any user interaction related event
+(for example, click event).
+
+#### id
+
+string
+
+The identifier of the control. Must be unique.
+
+#### invisibleMode
+
+This attribute lets you specify how this element will behave when hidden.
+
+| Value        | Details                                                                     |
+| ------------ | --------------------------------------------------------------------------- |
+| `keep-space` | The element remains in the document flow, and it does occupy space.         |
+| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+
+#### name
+
+string
+
+The name of the inner input of type radio
+
+#### value
+
+string
+
+The initial value of the control.
+
+## Attributes
+
+#### caption
+
+string
+
+Specifies the label of the radio.
+
+#### checked
+
+boolean
+
+Indicates that the control is selected by default.
+
+#### css-class
+
+string
+
+A CSS class to set as the inner `input` element class.
+
+#### disabled
+
+boolean
+
+This attribute lets you specify if the element is disabled.
+If disabled, it will not fire any user interaction related event
+(for example, click event).
+
+#### id
+
+string
+
+The identifier of the control. Must be unique.
+
+#### invisible-mode
+
+This attribute lets you specify how this element will behave when hidden.
+
+| Value        | Details                                                                     |
+| ------------ | --------------------------------------------------------------------------- |
+| `keep-space` | The element remains in the document flow, and it does occupy space.         |
+| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+
+#### name
+
+string
+
+The name of the inner input of type radio
+
+#### value
+
+string
 
 The initial value of the control.
 
 ## Events
 
-### change
-
-The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus.
-
-### gxRadioDidLoad
+#### gxRadioDidLoad
 
 Emitted when the radio loads.
 
-### gxRadioDidUnload
+#### gxRadioDidUnload
 
 Emitted when the radio unloads.
 
-### gxSelect
+#### gxSelect
 
 Emitted when the radio button is selected.
+
+#### onChange
+
+The `change` event is emitted when a change to the element's value is
+committed by the user.
+
+---
+
+_Built with [StencilJS](https://stenciljs.com/)_
