@@ -290,6 +290,68 @@ declare global {
   }
 }
 
+import { SelectOption as GxSelectOption } from "./components/select-option/select-option";
+
+declare global {
+  interface HTMLGxSelectOptionElement
+    extends GxSelectOption,
+      HTMLStencilElement {}
+  var HTMLGxSelectOptionElement: {
+    prototype: HTMLGxSelectOptionElement;
+    new (): HTMLGxSelectOptionElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gx-select-option": HTMLGxSelectOptionElement;
+  }
+  interface ElementTagNameMap {
+    "gx-select-option": HTMLGxSelectOptionElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gx-select-option": JSXElements.GxSelectOptionAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GxSelectOptionAttributes extends HTMLAttributes {
+      cssClass?: string;
+      disabled?: boolean;
+      selected?: boolean;
+      value?: string;
+    }
+  }
+}
+
+import { Select as GxSelect } from "./components/select/select";
+
+declare global {
+  interface HTMLGxSelectElement extends GxSelect, HTMLStencilElement {}
+  var HTMLGxSelectElement: {
+    prototype: HTMLGxSelectElement;
+    new (): HTMLGxSelectElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gx-select": HTMLGxSelectElement;
+  }
+  interface ElementTagNameMap {
+    "gx-select": HTMLGxSelectElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gx-select": JSXElements.GxSelectAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GxSelectAttributes extends HTMLAttributes {
+      cssClass?: string;
+      disabled?: boolean;
+      id?: string;
+      invisibleMode?: "collapse" | "keep-space";
+      readonly?: boolean;
+      value?: string;
+    }
+  }
+}
+
 import { TableCell as GxTableCell } from "./components/table-cell/table-cell";
 
 declare global {

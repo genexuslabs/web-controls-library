@@ -121,7 +121,7 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
       } else {
         const input = <input {...attris} type={this.type} value={this.value} />;
 
-        if (this.showTrigger) {
+        if (this.showTrigger && !this.readonly) {
           return (
             <div class="input-group">
               {input}
