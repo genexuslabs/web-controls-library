@@ -68,7 +68,7 @@ export function CardRender<T extends Constructor<{}>>(Base: T) {
         hasHeaderActions || !!this.element.querySelector("[slot='header']");
 
       const renderFooter =
-        hasFooterActions || !!this.element.querySelector("[slot='header']");
+        hasFooterActions || !!this.element.querySelector("[slot='footer']");
 
       return (
         <div class="card">
