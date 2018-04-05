@@ -6,3 +6,4 @@ export * from "./bootstrap/checkbox/checkbox-render";
 export * from "./bootstrap/radio-option/radio-option-render";
 export * from "./bootstrap/password-edit/password-edit-render";
 export * from "./bootstrap/select/select-render";
+export * from "./bootstrap/card/card-render";

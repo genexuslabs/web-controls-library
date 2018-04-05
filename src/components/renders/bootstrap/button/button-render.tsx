@@ -6,6 +6,7 @@ export function ButtonRender<T extends Constructor<{}>>(Base: T) {
     element: HTMLElement;
     disabled: boolean;
     onClick: EventEmitter;
+    size: string;
 
     handleClick(event: UIEvent) {
       if (this.disabled) {
@@ -28,7 +29,13 @@ export function ButtonRender<T extends Constructor<{}>>(Base: T) {
 
       return (
         <button
-          class="gx-button btn"
+          class={{
+            "gx-button": true,
+            btn: true,
+            "btn-default": true,
+            "btn-sm": this.size === "small",
+            "btn-lg": this.size === "large"
+          }}
           onClick={this.handleClick.bind(this)}
           tabindex="0"
         >

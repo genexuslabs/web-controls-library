@@ -43,6 +43,17 @@ export class Button extends ButtonRender(BaseComponent) {
   imagePosition: "above" | "before" | "after" | "below" | "behind" = "above";
 
   /**
+   * This attribute lets you specify the size of the button.
+   *
+   * | Value    | Details                                                 |
+   * | -------- | ------------------------------------------------------- |
+   * | `large`  | Large sized button.                                     |
+   * | `normal` | Standard sized button.                                  |
+   * | `small`  | Small sized button.                                     |
+   */
+  @Prop() size: "large" | "normal" | "small" = "normal";
+
+  /**
    * Emitted when the element is clicked.
    */
   @Event() onClick: EventEmitter;

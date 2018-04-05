@@ -1,0 +1,22 @@
+gx-card {
+  gx-button {
+    &[slot="high-priority-action"],
+    &[slot="normal-priority-action"] {
+      margin-right: 5px;
+    }
+  }
+
+  .gx-dropdown-toggle::after {
+    content: "\2807";
+    padding-left: 4px;
+  }
+
+  .dropdown-menu {
+    [slot="low-priority-action"] {
+      display: block;
+      width: 100%;
+      clear: both;
+      border: 0;
+    }
+  }
+}

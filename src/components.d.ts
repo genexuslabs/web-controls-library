@@ -44,6 +44,33 @@ declare global {
       disabled?: boolean;
       imagePosition?: "above" | "before" | "after" | "below" | "behind";
       invisibleMode?: "collapse" | "keep-space";
+      size?: "large" | "normal" | "small";
+    }
+  }
+}
+
+import { Card as GxCard } from "./components/card/card";
+
+declare global {
+  interface HTMLGxCardElement extends GxCard, HTMLStencilElement {}
+  var HTMLGxCardElement: {
+    prototype: HTMLGxCardElement;
+    new (): HTMLGxCardElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gx-card": HTMLGxCardElement;
+  }
+  interface ElementTagNameMap {
+    "gx-card": HTMLGxCardElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gx-card": JSXElements.GxCardAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GxCardAttributes extends HTMLAttributes {
+      invisibleMode?: "collapse" | "keep-space";
     }
   }
 }
@@ -432,6 +459,7 @@ declare global {
   }
   namespace JSXElements {
     export interface GxTextblockAttributes extends HTMLAttributes {
+      cssClass?: string;
       disabled?: boolean;
       href?: string;
       invisibleMode?: "collapse" | "keep-space";

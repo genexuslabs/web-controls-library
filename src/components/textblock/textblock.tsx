@@ -8,6 +8,11 @@ import { BaseComponent } from "../common/base-component";
 })
 export class TextBlock extends BaseComponent {
   /**
+   * A CSS class to set as the inner element class.
+   */
+  @Prop() cssClass: string;
+
+  /**
    * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
    */
 
@@ -46,13 +51,20 @@ export class TextBlock extends BaseComponent {
 
   render() {
     const body = (
-      <div onClick={this.handleClick.bind(this)}>
+      <div
+        class={this.href ? null : this.cssClass}
+        onClick={this.handleClick.bind(this)}
+      >
         <slot />
       </div>
     );
 
     if (this.href) {
-      return <a href={this.href}>{body}</a>;
+      return (
+        <a class={this.cssClass} href={this.href}>
+          {body}
+        </a>
+      );
     }
 
     return body;

@@ -54,6 +54,16 @@ This attribute lets you specify how this element will behave when hidden.
 | `keep-space` | The element remains in the document flow, and it does occupy space.         |
 | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
 
+#### size
+
+This attribute lets you specify the size of the button.
+
+| Value    | Details                |
+| -------- | ---------------------- |
+| `large`  | Large sized button.    |
+| `normal` | Standard sized button. |
+| `small`  | Small sized button.    |
+
 ## Attributes
 
 #### disabled
@@ -85,6 +95,16 @@ This attribute lets you specify how this element will behave when hidden.
 | ------------ | --------------------------------------------------------------------------- |
 | `keep-space` | The element remains in the document flow, and it does occupy space.         |
 | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+
+#### size
+
+This attribute lets you specify the size of the button.
+
+| Value    | Details                |
+| -------- | ---------------------- |
+| `large`  | Large sized button.    |
+| `normal` | Standard sized button. |
+| `small`  | Small sized button.    |
 
 ## Events
 
