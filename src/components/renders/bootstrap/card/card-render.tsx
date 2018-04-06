@@ -5,15 +5,7 @@ export function CardRender<T extends Constructor<{}>>(Base: T) {
   return class extends Base {
     element: HTMLElement;
 
-    private handleBodyClick(evt) {
-      const dropDownMenu = this.element.querySelector(".dropdown-menu");
-      const toggleButton = this.element.querySelector(".gx-dropdown-toggle");
-      const target: HTMLElement = evt.target as HTMLElement;
-
-      if (target == toggleButton) return;
-
-      dropDownMenu.classList.remove("show");
-    }
+    private bodyClickHandler;
 
     private handleDropDownToggleClick(evt) {
       const dropDownMenu = this.element.querySelector(".dropdown-menu");
@@ -24,15 +16,27 @@ export function CardRender<T extends Constructor<{}>>(Base: T) {
         placement: "bottom-start"
       });
 
+      this.bodyClickHandler = evt => {
+        const dropDownMenu = this.element.querySelector(".dropdown-menu");
+        const toggleButton = this.element.querySelector(".gx-dropdown-toggle");
+        const target: HTMLElement = evt.target as HTMLElement;
+
+        if (target == toggleButton) return;
+
+        dropDownMenu.classList.remove("show");
+      };
+
       setTimeout(() => {
-        document.body.addEventListener("click", this.handleBodyClick, {
+        document.body.addEventListener("click", this.bodyClickHandler, {
           once: true
         });
       }, 10);
     }
 
     componentDidUnload() {
-      document.body.removeEventListener("click", this.handleBodyClick);
+      if (this.bodyClickHandler) {
+        document.body.removeEventListener("click", this.bodyClickHandler);
+      }
     }
 
     render() {
