@@ -184,6 +184,39 @@ declare global {
   }
 }
 
+import { Image as GxImage } from "./components/image/image";
+
+declare global {
+  interface HTMLGxImageElement extends GxImage, HTMLStencilElement {}
+  var HTMLGxImageElement: {
+    prototype: HTMLGxImageElement;
+    new (): HTMLGxImageElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gx-image": HTMLGxImageElement;
+  }
+  interface ElementTagNameMap {
+    "gx-image": HTMLGxImageElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gx-image": JSXElements.GxImageAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GxImageAttributes extends HTMLAttributes {
+      alt?: string;
+      cssClass?: string;
+      disabled?: boolean;
+      height?: string;
+      lowResolutionSrc?: string;
+      src?: string;
+      title?: string;
+      width?: string;
+    }
+  }
+}
+
 import { Message as GxMessage } from "./components/message/message";
 
 declare global {
