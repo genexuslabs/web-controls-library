@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/genexuslabs/web-controls-library/tree/master.svg?style=svg&circle-token=a12a1b62035cdd748917122ca67ae9c32a1c408a)](https://circleci.com/gh/genexuslabs/web-controls-library/tree/master)
+[![CircleCI](https://circleci.com/gh/genexuslabs/web-controls-library/tree/master.svg?style=shield&circle-token=a12a1b62035cdd748917122ca67ae9c32a1c408a)](https://circleci.com/gh/genexuslabs/web-controls-library/tree/master)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 # GeneXus Web Controls Library
