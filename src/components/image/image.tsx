@@ -3,7 +3,7 @@ import { BaseComponent } from "../common/base-component";
 
 @Component({
   shadow: false,
-  styleUrl: "image.css",
+  styleUrl: "image.scss",
   tag: "gx-image"
 })
 export class Image extends BaseComponent {
