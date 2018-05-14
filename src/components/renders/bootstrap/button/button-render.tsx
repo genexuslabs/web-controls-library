@@ -30,11 +30,11 @@ export function ButtonRender<T extends Constructor<{}>>(Base: T) {
       return (
         <button
           class={{
-            "gx-button": true,
             btn: true,
             "btn-default": true,
+            "btn-lg": this.size === "large",
             "btn-sm": this.size === "small",
-            "btn-lg": this.size === "large"
+            "gx-button": true
           }}
           onClick={this.handleClick.bind(this)}
           tabindex="0"

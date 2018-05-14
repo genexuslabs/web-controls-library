@@ -7,21 +7,26 @@ export function CardRender<T extends Constructor<{}>>(Base: T) {
 
     private bodyClickHandler;
 
+    private popper;
+
     private handleDropDownToggleClick(evt) {
       const dropDownMenu = this.element.querySelector(".dropdown-menu");
       dropDownMenu.classList.toggle("show");
       const toggleButton = evt.target;
 
-      new Popper(toggleButton, dropDownMenu, {
+      if (this.popper) {
+        this.popper.destroy();
+      }
+      this.popper = new Popper(toggleButton, dropDownMenu, {
         placement: "bottom-start"
       });
 
-      this.bodyClickHandler = evt => {
-        const dropDownMenu = this.element.querySelector(".dropdown-menu");
-        const toggleButton = this.element.querySelector(".gx-dropdown-toggle");
-        const target: HTMLElement = evt.target as HTMLElement;
+      this.bodyClickHandler = bodyClickEvt => {
+        const target: HTMLElement = bodyClickEvt.target as HTMLElement;
 
-        if (target == toggleButton) return;
+        if (target === toggleButton) {
+          return;
+        }
 
         dropDownMenu.classList.remove("show");
       };
@@ -36,6 +41,9 @@ export function CardRender<T extends Constructor<{}>>(Base: T) {
     componentDidUnload() {
       if (this.bodyClickHandler) {
         document.body.removeEventListener("click", this.bodyClickHandler);
+      }
+      if (this.popper) {
+        this.popper.destroy();
       }
     }
 
@@ -52,8 +60,9 @@ export function CardRender<T extends Constructor<{}>>(Base: T) {
         this.element.querySelectorAll("[slot='low-priority-action']")
       );
       lowPriorityActions.forEach((action: any) => {
-        if (action.cssClass && action.cssClass.indexOf("dropdown-item") >= 0)
+        if (action.cssClass && action.cssClass.indexOf("dropdown-item") >= 0) {
           return;
+        }
 
         action.cssClass = (action.cssClass || "") + " dropdown-item";
       });

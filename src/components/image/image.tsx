@@ -15,17 +15,17 @@ export class Image extends BaseComponent {
   /**
    * This attribute lets you specify the SRC.
    */
-  @Prop() src: string = "";
+  @Prop() src = "";
 
   /**
    * This attribute lets you specify the low resolution image SRC.
    */
-  @Prop() lowResolutionSrc: string = "";
+  @Prop() lowResolutionSrc = "";
 
   /**
    * This attribute lets you specify the alternative text.
    */
-  @Prop() alt: string = "";
+  @Prop() alt = "";
 
   /**
    * This attribute lets you specify the title.
