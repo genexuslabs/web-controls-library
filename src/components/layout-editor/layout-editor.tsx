@@ -1,6 +1,6 @@
 import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
 import Dragula from "dragula";
-import { controlResolver } from "./layout-editor-control-resolver";
+import controlResolver from "./layout-editor-control-resolver";
 
 @Component({
   shadow: false,
@@ -10,14 +10,61 @@ import { controlResolver } from "./layout-editor-control-resolver";
 export class LayoutEditor {
   @Element() element: HTMLElement;
 
+  /**
+   * The abstract form model object
+   */
   @Prop() model: any;
 
-  @Event() moveCompleted: EventEmitter;
-
-  @Event() controlSelected: EventEmitter;
-
+  /**
+   * Identifier of the selected control. If empty the whole layout-editor is marked as selected.
+   */
   @Prop({ mutable: true })
   selectedControlId: string;
+
+  /**
+   * Fired when a control is moved inside the layout editor to a new location
+   *
+   * An object containing information of the move operation is sent in the `detail` property of the event object
+   *
+   * * When the dragged item was dropped on a new row:
+   *
+   * | Property      | Details                                                                                                          |
+   * | ------------- | ---------------------------------------------------------------------------------------------------------------- |
+   * | `beforeRowId` | Identifier of the row next to the row where the control was dropped. An empty string if dropped in the last row. |
+   * | `controlId`   | Identifier of the source cell                                                                                    |
+   * | `sourceRowId` | Identifier of the source row                                                                                     |
+   *
+   * * When the dragged item was dropped on an existing empty cell:
+   *
+   * | Property      | Details                                                                                                          |
+   * | ------------- | ---------------------------------------------------------------------------------------------------------------- |
+   * | `targetCellId`| Identifier of the cell where the control was dropped |
+   * | `controlId`   | Identifier of the source cell                                                                                    |
+   * | `sourceRowId` | Identifier of the source row                                                                                     |
+   *
+   * * When the dragged item was dropped on an existing non-empty cell:
+   *
+   * | Property          | Details                                                                                                                                     |
+   * | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+   * | `beforeControlId` | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. |
+   * | `targetRowId`     | Identifier of the row where the control was dropped                                                                                         |
+   * | `controlId`       | Identifier of the source cell                                                                                                               |
+   * | `sourceRowId`     | Identifier of the source row                                                                                                                |
+   *
+   */
+  @Event() moveCompleted: EventEmitter;
+
+  /**
+   * Fired when the selection has been changed
+   *
+   * An object containing information of the select operation is sent in the `detail` property of the event object
+   *
+   * | Property      | Details                           |
+   * | ------------- | --------------------------------- |
+   * | `controlId`   | Identifier of the selected cell   |
+   *
+   */
+  @Event() controlSelected: EventEmitter;
 
   private drake: Dragula.Drake;
 
@@ -33,40 +80,33 @@ export class LayoutEditor {
   }
 
   private initDragAndDrop() {
-    this.drake = Dragula(
-      Array.from(
-        this.element.querySelectorAll(
-          "gx-table-cell, gx-layout-editor-placeholder"
-        )
-      ),
-      {
-        accepts: (el, target) => {
-          return !el.contains(target) && el.parentNode !== target;
-        },
-        copy: true,
-        direction: "horizontal"
-      }
-    );
+    this.drake = Dragula(this.getDropAreas(), {
+      accepts: (el, target) => {
+        return !el.contains(target) && el.parentNode !== target;
+      },
+      copy: true,
+      direction: "horizontal"
+    });
 
     this.drake.on("shadow", (el, container) => {
       const position =
         container.children.length === 1
           ? "empty"
           : el.nextSibling ? "left" : "right";
-      container.setAttribute("data-active-target", position);
+      container.setAttribute("data-gx-le-active-target", position);
     });
 
     this.drake.on("out", (...parms) => {
       const [, container] = parms;
-      container.removeAttribute("data-active-target");
+      container.removeAttribute("data-gx-le-active-target");
     });
 
     this.drake.on("drag", () => {
-      this.element.setAttribute("data-dragging", "");
+      this.element.setAttribute("data-gx-le-dragging", "");
     });
 
     this.drake.on("dragend", () => {
-      this.element.removeAttribute("data-dragging");
+      this.element.removeAttribute("data-gx-le-dragging");
     });
 
     this.drake.on("drop", (el, target, source) => {
@@ -75,14 +115,14 @@ export class LayoutEditor {
         return;
       }
 
-      const controlId = source.getAttribute("data-cell-id");
-      const targetRowId = target.getAttribute("data-row-id");
-      const sourceRowId = source.getAttribute("data-row-id");
+      const controlId = source.getAttribute("data-gx-le-cell-id");
+      const targetRowId = target.getAttribute("data-gx-le-row-id");
+      const sourceRowId = source.getAttribute("data-gx-le-row-id");
 
-      if (target.getAttribute("data-placeholder") === "row") {
+      if (target.getAttribute("data-gx-le-placeholder") === "row") {
         // Dropped on a new row
         this.moveCompleted.emit({
-          beforeRowId: target.getAttribute("data-next-row-id"),
+          beforeRowId: target.getAttribute("data-gx-le-next-row-id"),
           controlId,
           sourceRowId
         });
@@ -93,15 +133,15 @@ export class LayoutEditor {
           this.moveCompleted.emit({
             controlId,
             sourceRowId,
-            targetCellId: target.getAttribute("data-cell-id")
+            targetCellId: target.getAttribute("data-gx-le-cell-id")
           });
         } else {
           // Dropped on a non-empty cell
           this.moveCompleted.emit({
             beforeControlId: el.nextSibling
-              ? target.getAttribute("data-cell-id")
+              ? target.getAttribute("data-gx-le-cell-id")
               : target.nextSibling
-                ? target.nextSibling.getAttribute("data-cell-id")
+                ? target.nextSibling.getAttribute("data-gx-le-cell-id")
                 : null,
             controlId,
             sourceRowId,
@@ -112,6 +152,14 @@ export class LayoutEditor {
     });
   }
 
+  private getDropAreas() {
+    return Array.from(
+      this.element.querySelectorAll(
+        "[data-gx-le-drop-area], [data-gx-le-placeholder]"
+      )
+    );
+  }
+
   private restoreAfterDragDrop() {
     if (this.ddDroppedEl && this.ddDroppedEl.parentNode) {
       this.ddDroppedEl.parentNode.removeChild(this.ddDroppedEl);
@@ -119,20 +167,16 @@ export class LayoutEditor {
     this.ddDroppedEl = null;
 
     const activeTargets = Array.from(
-      this.element.querySelectorAll("[data-active-target]")
+      this.element.querySelectorAll("[data-gx-le-active-target]")
     );
     for (const target of activeTargets) {
-      target.removeAttribute("data-active-target");
+      target.removeAttribute("data-gx-le-active-target");
     }
   }
 
   componentDidUpdate() {
     if (this.drake) {
-      this.drake.containers = Array.from(
-        this.element.querySelectorAll(
-          "gx-table-cell, gx-layout-editor-placeholder"
-        )
-      );
+      this.drake.containers = this.getDropAreas();
     }
   }
 
@@ -143,131 +187,24 @@ export class LayoutEditor {
   render() {
     if (this.model && this.model.layout) {
       this.element.setAttribute(
-        "data-selected",
+        "data-gx-le-selected",
         (!this.selectedControlId).toString()
       );
-      return this.renderTable(this.model.layout.table);
-    }
-  }
-
-  private renderTable(table) {
-    const nonEmptyRows = table.row.filter(
-      r => (Array.isArray(r.cell) && r.cell.length) || r.cell
-    );
-    const maxCols = nonEmptyRows.reduce(
-      (acc, row) =>
-        Math.max(acc, Array.isArray(row.cell) ? row.cell.length : 1),
-      0
-    );
-    let rowsCount = 0;
-    const rows = nonEmptyRows.map((row, i) => {
-      rowsCount++;
-      const rowCells = Array.isArray(row.cell) ? row.cell : [row.cell];
-
-      let colStart = 0;
-      const renderedCells = rowCells.map(cell => {
-        colStart += parseInt(cell["@colSpan"], 10);
-        return this.renderCell(cell, row["@id"], i, colStart);
+      return controlResolver(this.model.layout, {
+        selectedControlId: this.selectedControlId
       });
-
-      return renderedCells;
-    });
-
-    return (
-      <gx-table {...this.getTableStyle(rowsCount, maxCols)}>
-        {[...rows, ...this.renderEmptyRows(nonEmptyRows, maxCols)]}
-      </gx-table>
-    );
-  }
-
-  private renderEmptyRows(nonEmptyRows, maxCols) {
-    const emptyRowFn = (i, nextRow) => {
-      const emptyCellStyle = {
-        gridColumn: `1 / span ${maxCols}`,
-        gridRow: `${i * 2 + 1} / span 1`
-      };
-      return (
-        <gx-layout-editor-placeholder
-          data-placeholder="row"
-          style={emptyCellStyle}
-          data-next-row-id={nextRow ? nextRow["@id"] : ""}
-        />
-      );
-    };
-
-    return [
-      emptyRowFn(0, nonEmptyRows[0]),
-      nonEmptyRows.map((...parms) => {
-        const [, i] = parms;
-        return emptyRowFn(
-          i + 1,
-          nonEmptyRows.length > i ? nonEmptyRows[i + 1] : null
-        );
-      })
-    ];
-  }
-
-  private renderCell(cell, rowId, rowIndex, colStart) {
-    const content = cell.table
-      ? this.renderTable(cell.table)
-      : controlResolver(cell);
-    const editorCellStyle = {
-      gridColumn: `${colStart} / span ${cell["@colSpan"]}`,
-      gridRow: ` ${(rowIndex + 1) * 2} / span ${(parseInt(
-        cell["@rowSpan"],
-        10
-      ) -
-        1) *
-        2 +
-        1}`
-    };
-
-    return (
-      <gx-table-cell
-        data-cell-id={cell["@id"]}
-        data-row-id={rowId}
-        style={editorCellStyle}
-        data-selected={this.selectedControlId === cell["@id"]}
-      >
-        {content}
-      </gx-table-cell>
-    );
-  }
-
-  private intercalateArray(arr, item) {
-    return arr.reduce(
-      (acc, o, i) =>
-        o
-          ? acc.concat(
-              o,
-              typeof item === "function" ? item.call(this, i) : item
-            )
-          : acc,
-      [item]
-    );
-  }
-
-  private getTableStyle(rowsCount, colsCount) {
-    const baseRowsTemplate = new Array(rowsCount).fill("1fr", 0, rowsCount);
-    const baseColsTemplate = new Array(colsCount).fill("1fr", 0, colsCount);
-
-    return {
-      "columns-template": baseColsTemplate.join(" "),
-      "rows-template": this.intercalateArray(
-        baseRowsTemplate,
-        "var(--gx-le-table-placeholder-height)"
-      ).join(" ")
-    };
+    }
   }
 
   private handleClick(event: UIEvent) {
     const target: Element = event.target as Element;
     const control: any = this.findTargetControl(target);
     if (control) {
-      this.selectedControlId = control.getAttribute("data-cell-id");
+      this.selectedControlId = control.getAttribute("data-gx-le-cell-id");
       this.controlSelected.emit({
         controlId:
-          control.getAttribute("data-cell-id") || this.model.layout.table["@id"]
+          control.getAttribute("data-gx-le-cell-id") ||
+          this.model.layout.table["@id"]
       });
     } else {
       this.selectedControlId = "";
@@ -275,14 +212,13 @@ export class LayoutEditor {
   }
 
   private findTargetControl(el: Element) {
-    const tagName = el.tagName.toLowerCase();
-    if (tagName === "gx-table-cell") {
+    if (el.hasAttribute("data-gx-le-drop-area")) {
       return el;
     }
 
     while (el) {
       const parent = el.parentElement;
-      if (parent && parent.matches("gx-table-cell")) {
+      if (parent && parent.hasAttribute("data-gx-le-drop-area")) {
         return parent;
       }
       el = parent;

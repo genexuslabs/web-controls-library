@@ -5,19 +5,19 @@ gx-layout-editor {
 
   @include autoGrow();
 
-  gx-layout-editor-placeholder[data-active-target] {
+  gx-layout-editor-placeholder[data-gx-le-active-target] {
     background-color: var(--gx-le-table-placeholder-color);
     & > * {
       display: none;
     }
   }
 
-  gx-table {
+  [data-gx-le-container] {
     min-height: var(--gx-le-table-min-height);
     grid-column-gap: var(--gx-le-table-placeholder-width);
 
     &:hover {
-      gx-table-cell {
+      [data-gx-le-drop-area] {
         position: relative;
       }
 
@@ -42,26 +42,26 @@ gx-layout-editor {
     display: none;
   }
 
-  gx-table-cell {
+  [data-gx-le-drop-area] {
     border: var(--gx-le-table-cell-border);
 
-    &[data-active-target="empty"] {
+    &[data-gx-le-active-target="empty"] {
       background-color: var(--gx-le-table-placeholder-color);
     }
 
-    &[data-active-target="left"] {
+    &[data-gx-le-active-target="left"] {
       .gu-transit {
         left: 0;
       }
     }
 
-    &[data-active-target="right"] {
+    &[data-gx-le-active-target="right"] {
       .gu-transit {
         right: 0;
       }
     }
 
-    &[data-active-target]:not([data-active-target="empty"]) {
+    &[data-gx-le-active-target]:not([data-gx-le-active-target="empty"]) {
       position: relative;
 
       .gu-transit {
@@ -86,13 +86,15 @@ gx-layout-editor {
       }
     }
 
-    & > * {
-      cursor: move;
+    & > :not([data-gx-le-container]),
+    & > :not([data-gx-le-container]) > *,
+    & > [data-gx-le-container]:after {
+      cursor: move !important;
     }
   }
 
-  &[data-selected="true"],
-  gx-table-cell[data-selected="true"] {
+  &[data-gx-le-selected="true"],
+  [data-gx-le-drop-area][data-gx-le-selected="true"] {
     box-shadow: 0px 0px 0px var(--gx-le-table-selected-cell-border-width)
       var(--gx-le-table-selected-cell-border-color) !important;
   }

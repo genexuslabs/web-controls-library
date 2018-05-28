@@ -592,7 +592,13 @@ declare global {
 declare global {
   namespace StencilComponents {
     interface GxLayoutEditor {
+      /**
+       * The abstract form model object
+       */
       model: any;
+      /**
+       * Identifier of the selected control. If empty the whole layout-editor is marked as selected.
+       */
       selectedControlId: string;
     }
   }
@@ -618,9 +624,21 @@ declare global {
   }
   namespace JSXElements {
     export interface GxLayoutEditorAttributes extends HTMLAttributes {
+      /**
+       * The abstract form model object
+       */
       model?: any;
+      /**
+       * Fired when the selection has been changed  An object containing information of the select operation is sent in the `detail` property of the event object  | Property      | Details                           | | ------------- | --------------------------------- | | `controlId`   | Identifier of the selected cell   |
+       */
       onControlSelected?: (event: CustomEvent) => void;
+      /**
+       * Fired when a control is moved inside the layout editor to a new location  An object containing information of the move operation is sent in the `detail` property of the event object  * When the dragged item was dropped on a new row:  | Property      | Details                                                                                                          | | ------------- | ---------------------------------------------------------------------------------------------------------------- | | `beforeRowId` | Identifier of the row next to the row where the control was dropped. An empty string if dropped in the last row. | | `controlId`   | Identifier of the source cell                                                                                    | | `sourceRowId` | Identifier of the source row                                                                                     |  * When the dragged item was dropped on an existing empty cell:  | Property      | Details                                                                                                          | | ------------- | ---------------------------------------------------------------------------------------------------------------- | | `targetCellId`| Identifier of the cell where the control was dropped | | `controlId`   | Identifier of the source cell                                                                                    | | `sourceRowId` | Identifier of the source row                                                                                     |  * When the dragged item was dropped on an existing non-empty cell:  | Property          | Details                                                                                                                                     | | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | | `beforeControlId` | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. | | `targetRowId`     | Identifier of the row where the control was dropped                                                                                         | | `controlId`       | Identifier of the source cell                                                                                                               | | `sourceRowId`     | Identifier of the source row                                                                                                                |
+       */
       onMoveCompleted?: (event: CustomEvent) => void;
+      /**
+       * Identifier of the selected control. If empty the whole layout-editor is marked as selected.
+       */
       selectedControlId?: string;
     }
   }
