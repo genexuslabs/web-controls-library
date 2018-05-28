@@ -54,16 +54,6 @@ export function SelectRender<T extends Constructor<{}>>(Base: T) {
       this.onChange.emit(event);
     }
 
-    /**
-     * Update the native select element when the value changes
-     */
-    protected valueChanged() {
-      const selectEl = this.nativeSelect;
-      if (selectEl && selectEl.value !== this.value) {
-        selectEl.value = this.value;
-      }
-    }
-
     componentDidUnload() {
       this.nativeSelect = null;
     }

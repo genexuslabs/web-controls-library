@@ -32,6 +32,8 @@ This attribute lets you specify an URL. If a URL is specified, the textblock act
 
 #### invisibleMode
 
+string
+
 This attribute lets you specify how this element will behave when hidden.
 
 | Value        | Details                                                                     |
@@ -62,6 +64,8 @@ string
 This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
 
 #### invisible-mode
+
+string
 
 This attribute lets you specify how this element will behave when hidden.
 

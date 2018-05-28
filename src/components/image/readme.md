@@ -30,6 +30,17 @@ string
 
 This attribute lets you specify the height.
 
+#### invisibleMode
+
+string
+
+This attribute lets you specify how this element will behave when hidden.
+
+| Value        | Details                                                                     |
+| ------------ | --------------------------------------------------------------------------- |
+| `keep-space` | The element remains in the document flow, and it does occupy space.         |
+| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+
 #### lowResolutionSrc
 
 string
@@ -41,12 +52,6 @@ This attribute lets you specify the low resolution image SRC.
 string
 
 This attribute lets you specify the SRC.
-
-#### title
-
-string
-
-This attribute lets you specify the title.
 
 #### width
 
@@ -82,6 +87,17 @@ string
 
 This attribute lets you specify the height.
 
+#### invisible-mode
+
+string
+
+This attribute lets you specify how this element will behave when hidden.
+
+| Value        | Details                                                                     |
+| ------------ | --------------------------------------------------------------------------- |
+| `keep-space` | The element remains in the document flow, and it does occupy space.         |
+| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+
 #### low-resolution-src
 
 string
@@ -93,12 +109,6 @@ This attribute lets you specify the low resolution image SRC.
 string
 
 This attribute lets you specify the SRC.
-
-#### title
-
-string
-
-This attribute lets you specify the title.
 
 #### width
 

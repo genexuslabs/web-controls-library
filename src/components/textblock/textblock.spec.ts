@@ -1,4 +1,4 @@
-import { flush, render } from "@stencil/core/testing";
+import { TestWindow } from "@stencil/core/testing";
 import { TextBlock } from "./textblock";
 
 describe("gx-textblock", () => {
@@ -8,16 +8,17 @@ describe("gx-textblock", () => {
 
   describe("rendering", () => {
     let element;
+    let testWindow;
     beforeEach(async () => {
-      TextBlock["is"] = "gx-textblock";
-      element = await render({
+      testWindow = new TestWindow();
+      element = await testWindow.load({
         components: [TextBlock],
         html: "<gx-textblock>Hello world!</gx-textblock>"
       });
     });
 
-    // it('should work without parameters', () => {
-    //   expect(element.textContent.trim()).toEqual('Hello world!');
-    // });
+    it("should work without parameters", () => {
+      expect(element.textContent.trim()).toEqual("Hello world!");
+    });
   });
 });

@@ -36,8 +36,10 @@ export class TableCell extends BaseComponent {
 
   render() {
     if (this.element) {
-      // tslint:disable-next-line
-      this.element.style["gridArea"] = this.area;
+      if (this.area) {
+        // tslint:disable-next-line
+        this.element.style["gridArea"] = this.area;
+      }
     }
 
     return <slot />;

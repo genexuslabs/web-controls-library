@@ -39,6 +39,8 @@ If disabled, it will not fire any user interaction related event
 
 #### invisibleMode
 
+string
+
 This attribute lets you specify how this element will behave when hidden.
 
 | Value        | Details                                                                     |
@@ -84,6 +86,8 @@ If disabled, it will not fire any user interaction related event
 (for example, click event).
 
 #### invisible-mode
+
+string
 
 This attribute lets you specify how this element will behave when hidden.
 

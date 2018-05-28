@@ -8,39 +8,14 @@ import { BaseComponent } from "../common/base-component";
 })
 export class Image extends BaseComponent {
   /**
-   * A CSS class to set as the inner element class.
-   */
-  @Prop() cssClass: string;
-
-  /**
-   * This attribute lets you specify the SRC.
-   */
-  @Prop() src = "";
-
-  /**
-   * This attribute lets you specify the low resolution image SRC.
-   */
-  @Prop() lowResolutionSrc = "";
-
-  /**
    * This attribute lets you specify the alternative text.
    */
   @Prop() alt = "";
 
   /**
-   * This attribute lets you specify the title.
+   * A CSS class to set as the inner element class.
    */
-  @Prop() title: string;
-
-  /**
-   * This attribute lets you specify the width.
-   */
-  @Prop() width: string;
-
-  /**
-   * This attribute lets you specify the height.
-   */
-  @Prop() height: string;
+  @Prop() cssClass: string;
 
   /**
    * This attribute lets you specify if the element is disabled.
@@ -48,6 +23,36 @@ export class Image extends BaseComponent {
    * (for example, click event).
    */
   @Prop() disabled = false;
+
+  /**
+   * This attribute lets you specify the height.
+   */
+  @Prop() height: string;
+
+  /**
+   * This attribute lets you specify how this element will behave when hidden.
+   *
+   * | Value        | Details                                                                     |
+   * | ------------ | --------------------------------------------------------------------------- |
+   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
+   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+   */
+  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+
+  /**
+   * This attribute lets you specify the low resolution image SRC.
+   */
+  @Prop() lowResolutionSrc = "";
+
+  /**
+   * This attribute lets you specify the SRC.
+   */
+  @Prop() src = "";
+
+  /**
+   * This attribute lets you specify the width.
+   */
+  @Prop() width: string;
 
   /**
    * Emitted when the element is clicked.
@@ -69,7 +74,7 @@ export class Image extends BaseComponent {
         onClick={this.handleClick.bind(this)}
         src={this.src}
         alt={this.alt ? this.alt : ""}
-        title={this.title}
+        // title={this.title}
         width={this.width}
         height={this.height}
       />

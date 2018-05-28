@@ -35,6 +35,8 @@ it will be shown, hiding the base image (if specified).
 
 #### imagePosition
 
+string
+
 This attribute lets you specify the relative location of the image to the text.
 
 | Value    | Details                                                 |
@@ -47,6 +49,8 @@ This attribute lets you specify the relative location of the image to the text.
 
 #### invisibleMode
 
+string
+
 This attribute lets you specify how this element will behave when hidden.
 
 | Value        | Details                                                                     |
@@ -55,6 +59,8 @@ This attribute lets you specify how this element will behave when hidden.
 | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
 
 #### size
+
+string
 
 This attribute lets you specify the size of the button.
 
@@ -77,6 +83,8 @@ it will be shown, hiding the base image (if specified).
 
 #### image-position
 
+string
+
 This attribute lets you specify the relative location of the image to the text.
 
 | Value    | Details                                                 |
@@ -89,6 +97,8 @@ This attribute lets you specify the relative location of the image to the text.
 
 #### invisible-mode
 
+string
+
 This attribute lets you specify how this element will behave when hidden.
 
 | Value        | Details                                                                     |
@@ -97,6 +107,8 @@ This attribute lets you specify how this element will behave when hidden.
 | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
 
 #### size
+
+string
 
 This attribute lets you specify the size of the button.
 

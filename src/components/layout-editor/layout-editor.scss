@@ -1,0 +1,119 @@
+@import "../common/_base";
+
+gx-layout-editor {
+  @include visibility(block);
+
+  @include autoGrow();
+
+  gx-layout-editor-placeholder[data-active-target] {
+    background-color: var(--gx-le-table-placeholder-color);
+    & > * {
+      display: none;
+    }
+  }
+
+  gx-table {
+    min-height: var(--gx-le-table-min-height);
+    grid-column-gap: var(--gx-le-table-placeholder-width);
+
+    &:hover {
+      gx-table-cell {
+        position: relative;
+      }
+
+      &:after {
+        content: " ";
+        display: block;
+        position: absolute;
+        top: 3px;
+        left: 1px;
+        z-index: 1;
+        background-color: white;
+        background-image: url(assets/icon-move.svg);
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  & > gx-table:hover:after {
+    display: none;
+  }
+
+  gx-table-cell {
+    border: var(--gx-le-table-cell-border);
+
+    &[data-active-target="empty"] {
+      background-color: var(--gx-le-table-placeholder-color);
+    }
+
+    &[data-active-target="left"] {
+      .gu-transit {
+        left: 0;
+      }
+    }
+
+    &[data-active-target="right"] {
+      .gu-transit {
+        right: 0;
+      }
+    }
+
+    &[data-active-target]:not([data-active-target="empty"]) {
+      position: relative;
+
+      .gu-transit {
+        width: 0px;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        height: 100%;
+        z-index: 1;
+        padding-left: var(--gx-le-table-placeholder-width);
+
+        &:before {
+          background-color: #234783;
+          width: var(--gx-le-table-placeholder-width);
+          height: 100%;
+          content: " ";
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 1;
+        }
+      }
+    }
+
+    & > * {
+      cursor: move;
+    }
+  }
+
+  &[data-selected="true"],
+  gx-table-cell[data-selected="true"] {
+    box-shadow: 0px 0px 0px var(--gx-le-table-selected-cell-border-width)
+      var(--gx-le-table-selected-cell-border-color) !important;
+  }
+}
+
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
+}
+
+.gu-hide {
+  display: none !important;
+}
+
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}

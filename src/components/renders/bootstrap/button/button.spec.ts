@@ -1,4 +1,4 @@
-import { render } from "@stencil/core/testing";
+import { TestWindow } from "@stencil/core/testing";
 import { Button } from "../../../button/button";
 
 describe("gx-button", () => {
@@ -8,16 +8,17 @@ describe("gx-button", () => {
 
   describe("rendering", () => {
     let element;
+    let testWindow;
     beforeEach(async () => {
-      Button["is"] = "gx-button";
-      element = await render({
+      testWindow = new TestWindow();
+      element = await testWindow.load({
         components: [Button],
         html: "<gx-button>Hello world!</gx-button>"
       });
     });
 
-    // it("should work without parameters", () => {
-    //   expect(element.textContent.trim()).toEqual("Hello world!");
-    // });
+    it("should work without parameters", () => {
+      expect(element.textContent.trim()).toEqual("Hello world!");
+    });
   });
 });

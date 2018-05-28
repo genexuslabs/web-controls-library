@@ -2,11 +2,11 @@
   "name": "gx-web-controls",
   "version": "0.0.1",
   "description": "GeneXus Web Controls Library",
-  "main": "dist/gx-web-controls.js",
+  "module": "dist/esm/index.js",
+  "main": "dist/index.js",
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "files": ["dist/"],
-  "browser": "dist/gx-web-controls.js",
   "scripts": {
     "build": "stencil build --docs",
     "dev":
@@ -21,13 +21,15 @@
     "validate": "npm i && npm run lint && npm run test && npm run build"
   },
   "dependencies": {
-    "@stencil/core": "^0.6.13",
+    "dragula": "^3.7.2",
     "popper.js": "^1.14.3"
   },
   "devDependencies": {
+    "@stencil/core": "^0.9.4",
     "@stencil/dev-server": "latest",
-    "@stencil/sass": "0.0.3",
+    "@stencil/sass": "0.0.5",
     "@stencil/utils": "latest",
+    "@types/dragula": "^2.1.33",
     "@types/jest": "^21.1.1",
     "husky": "^0.14.3",
     "jest": "^21.2.1",
@@ -35,8 +37,9 @@
     "pretty-quick": "^1.4.1",
     "sass-lint": "^1.12.1",
     "tslint": "^5.9.1",
-    "tslint-config-prettier": "^1.10.0",
-    "tslint-eslint-rules": "^5.1.0"
+    "tslint-config-prettier": "^1.13.0",
+    "tslint-eslint-rules": "^5.3.1",
+    "typescript": "^2.8.3"
   },
   "repository": {
     "type": "git",

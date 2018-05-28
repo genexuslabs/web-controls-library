@@ -3,6 +3,9 @@
  * It contains typing information for all components that exist in this project
  * and imports for stencil collections that might be configured in your stencil.config.js file
  */
+
+import "@stencil/core";
+
 declare global {
   namespace JSX {
     interface Element {}
@@ -15,15 +18,39 @@ declare global {
   interface HTMLStencilElement extends HTMLElement {
     componentOnReady(): Promise<this>;
     componentOnReady(done: (ele?: this) => void): void;
+
+    forceUpdate(): void;
   }
 
   interface HTMLAttributes {}
 }
 
-import { Button as GxButton } from "./components/button/button";
-
 declare global {
-  interface HTMLGxButtonElement extends GxButton, HTMLStencilElement {}
+  namespace StencilComponents {
+    interface GxButton {
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event). If a disabled image has been specified, it will be shown, hiding the base image (if specified).
+       */
+      disabled: boolean;
+      /**
+       * This attribute lets you specify the relative location of the image to the text.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `above`  | The image is located above the text.                    | | `before` | The image is located before the text, in the same line. | | `after`  | The image is located after the text, in the same line.  | | `below`  | The image is located below the text.                    | | `behind` | The image is located behind the text.                   |
+       */
+      imagePosition: "above" | "before" | "after" | "below" | "behind";
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode: "collapse" | "keep-space";
+      /**
+       * This attribute lets you specify the size of the button.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `large`  | Large sized button.                                     | | `normal` | Standard sized button.                                  | | `small`  | Small sized button.                                     |
+       */
+      size: "large" | "normal" | "small";
+    }
+  }
+
+  interface HTMLGxButtonElement
+    extends StencilComponents.GxButton,
+      HTMLStencilElement {}
+
   var HTMLGxButtonElement: {
     prototype: HTMLGxButtonElement;
     new (): HTMLGxButtonElement;
@@ -41,18 +68,44 @@ declare global {
   }
   namespace JSXElements {
     export interface GxButtonAttributes extends HTMLAttributes {
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event). If a disabled image has been specified, it will be shown, hiding the base image (if specified).
+       */
       disabled?: boolean;
+      /**
+       * This attribute lets you specify the relative location of the image to the text.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `above`  | The image is located above the text.                    | | `before` | The image is located before the text, in the same line. | | `after`  | The image is located after the text, in the same line.  | | `below`  | The image is located below the text.                    | | `behind` | The image is located behind the text.                   |
+       */
       imagePosition?: "above" | "before" | "after" | "below" | "behind";
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
       invisibleMode?: "collapse" | "keep-space";
+      /**
+       * Emitted when the element is clicked.
+       */
+      onOnClick?: (event: CustomEvent) => void;
+      /**
+       * This attribute lets you specify the size of the button.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `large`  | Large sized button.                                     | | `normal` | Standard sized button.                                  | | `small`  | Small sized button.                                     |
+       */
       size?: "large" | "normal" | "small";
     }
   }
 }
 
-import { Card as GxCard } from "./components/card/card";
-
 declare global {
-  interface HTMLGxCardElement extends GxCard, HTMLStencilElement {}
+  namespace StencilComponents {
+    interface GxCard {
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode: "collapse" | "keep-space";
+    }
+  }
+
+  interface HTMLGxCardElement
+    extends StencilComponents.GxCard,
+      HTMLStencilElement {}
+
   var HTMLGxCardElement: {
     prototype: HTMLGxCardElement;
     new (): HTMLGxCardElement;
@@ -70,15 +123,52 @@ declare global {
   }
   namespace JSXElements {
     export interface GxCardAttributes extends HTMLAttributes {
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
       invisibleMode?: "collapse" | "keep-space";
     }
   }
 }
 
-import { CheckBox as GxCheckbox } from "./components/checkbox/checkbox";
-
 declare global {
-  interface HTMLGxCheckboxElement extends GxCheckbox, HTMLStencilElement {}
+  namespace StencilComponents {
+    interface GxCheckbox {
+      /**
+       * Specifies the label of the checkbox.
+       */
+      caption: string;
+      /**
+       * Indicates that the control is selected by default.
+       */
+      checked: boolean;
+      /**
+       * A CSS class to set as the inner `input` element class.
+       */
+      cssClass: string;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
+      disabled: boolean;
+      /**
+       * Returns the id of the inner `input` element (if set).
+       */
+      getNativeInputId: () => string;
+      /**
+       * The identifier of the control. Must be unique.
+       */
+      id: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode: "collapse" | "keep-space";
+    }
+  }
+
+  interface HTMLGxCheckboxElement
+    extends StencilComponents.GxCheckbox,
+      HTMLStencilElement {}
+
   var HTMLGxCheckboxElement: {
     prototype: HTMLGxCheckboxElement;
     new (): HTMLGxCheckboxElement;
@@ -96,20 +186,122 @@ declare global {
   }
   namespace JSXElements {
     export interface GxCheckboxAttributes extends HTMLAttributes {
+      /**
+       * Specifies the label of the checkbox.
+       */
       caption?: string;
+      /**
+       * Indicates that the control is selected by default.
+       */
       checked?: boolean;
+      /**
+       * A CSS class to set as the inner `input` element class.
+       */
       cssClass?: string;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
       disabled?: boolean;
+      /**
+       * The identifier of the control. Must be unique.
+       */
       id?: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
       invisibleMode?: "collapse" | "keep-space";
+      /**
+       * The `change` event is emitted when a change to the element's value is committed by the user.
+       */
+      onOnChange?: (event: CustomEvent) => void;
     }
   }
 }
 
-import { Edit as GxEdit } from "./components/edit/edit";
-
 declare global {
-  interface HTMLGxEditElement extends GxEdit, HTMLStencilElement {}
+  namespace StencilComponents {
+    interface GxEdit {
+      /**
+       * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize) attribute for `input` elements. Only supported by Safari and Chrome.
+       */
+      autocapitalize: "none" | "sentences" | "words" | "characters";
+      /**
+       * This attribute indicates whether the value of the control can be automatically completed by the browser. Same as [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocomplete) attribute for `input` elements.
+       */
+      autocomplete: "on" | "off";
+      /**
+       * Used to control whether autocorrection should be enabled when the user is entering/editing the text value. Sames as [autocorrect](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocorrect) attribute for `input` elements.
+       */
+      autocorrect: string;
+      /**
+       * A CSS class to set as the inner `input` element class.
+       */
+      cssClass: string;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
+      disabled: boolean;
+      /**
+       * Returns the id of the inner `input` element (if set).
+       */
+      getNativeInputId: () => string;
+      /**
+       * The identifier of the control. Must be unique.
+       */
+      id: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode: "collapse" | "keep-space";
+      /**
+       * Controls if the element accepts multiline text.
+       */
+      multiline: boolean;
+      /**
+       * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
+       */
+      placeholder: string;
+      /**
+       * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
+       */
+      readonly: boolean;
+      /**
+       * If true, a trigger button is shown next to the edit field. The button can be customized using `trigger-text` and `trigger-class` attributes, or adding a child element with `slot="trigger-content"` attribute to specify the content inside the trigger button.
+       */
+      showTrigger: boolean;
+      /**
+       * A CSS class to set as the trigger button class.
+       */
+      triggerClass: string;
+      /**
+       * The text of the trigger button. If a text is specified and an image is specified (through an element with `slot="trigger-content"`), the content is ignored and the text is used instead.
+       */
+      triggerText: string;
+      /**
+       * The type of control to render. A subset of the types supported by the `input` element is supported:  * `"date"` * `"datetime-local"` * `"email"` * `"file"` * `"number"` * `"password"` * `"search"` * `"tel"` * `"text"` * `"url"`
+       */
+      type:
+        | "date"
+        | "datetime-local"
+        | "email"
+        | "file"
+        | "number"
+        | "password"
+        | "search"
+        | "tel"
+        | "text"
+        | "url";
+      /**
+       * The initial value of the control.
+       */
+      value: string;
+    }
+  }
+
+  interface HTMLGxEditElement
+    extends StencilComponents.GxEdit,
+      HTMLStencilElement {}
+
   var HTMLGxEditElement: {
     prototype: HTMLGxEditElement;
     new (): HTMLGxEditElement;
@@ -127,19 +319,73 @@ declare global {
   }
   namespace JSXElements {
     export interface GxEditAttributes extends HTMLAttributes {
+      /**
+       * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize) attribute for `input` elements. Only supported by Safari and Chrome.
+       */
       autocapitalize?: "none" | "sentences" | "words" | "characters";
+      /**
+       * This attribute indicates whether the value of the control can be automatically completed by the browser. Same as [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocomplete) attribute for `input` elements.
+       */
       autocomplete?: "on" | "off";
+      /**
+       * Used to control whether autocorrection should be enabled when the user is entering/editing the text value. Sames as [autocorrect](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocorrect) attribute for `input` elements.
+       */
       autocorrect?: string;
+      /**
+       * A CSS class to set as the inner `input` element class.
+       */
       cssClass?: string;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
       disabled?: boolean;
+      /**
+       * The identifier of the control. Must be unique.
+       */
       id?: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
       invisibleMode?: "collapse" | "keep-space";
+      /**
+       * Controls if the element accepts multiline text.
+       */
       multiline?: boolean;
+      /**
+       * The `gxTriggerClick` event is fired when the trigger button is clicked.
+       */
+      onGxTriggerClick?: (event: CustomEvent) => void;
+      /**
+       * The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus.
+       */
+      onOnChange?: (event: CustomEvent) => void;
+      /**
+       * The `input` event is fired synchronously when the value is changed.
+       */
+      onOnInput?: (event: CustomEvent) => void;
+      /**
+       * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
+       */
       placeholder?: string;
+      /**
+       * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
+       */
       readonly?: boolean;
+      /**
+       * If true, a trigger button is shown next to the edit field. The button can be customized using `trigger-text` and `trigger-class` attributes, or adding a child element with `slot="trigger-content"` attribute to specify the content inside the trigger button.
+       */
       showTrigger?: boolean;
+      /**
+       * A CSS class to set as the trigger button class.
+       */
       triggerClass?: string;
+      /**
+       * The text of the trigger button. If a text is specified and an image is specified (through an element with `slot="trigger-content"`), the content is ignored and the text is used instead.
+       */
       triggerText?: string;
+      /**
+       * The type of control to render. A subset of the types supported by the `input` element is supported:  * `"date"` * `"datetime-local"` * `"email"` * `"file"` * `"number"` * `"password"` * `"search"` * `"tel"` * `"text"` * `"url"`
+       */
       type?:
         | "date"
         | "datetime-local"
@@ -151,15 +397,36 @@ declare global {
         | "tel"
         | "text"
         | "url";
+      /**
+       * The initial value of the control.
+       */
       value?: string;
     }
   }
 }
 
-import { FormField as GxFormField } from "./components/form-field/form-field";
-
 declare global {
-  interface HTMLGxFormFieldElement extends GxFormField, HTMLStencilElement {}
+  namespace StencilComponents {
+    interface GxFormField {
+      /**
+       * The text to set as the label of the field.
+       */
+      labelCaption: string;
+      /**
+       * A CSS class to set as the inner `label` element class.
+       */
+      labelClass: string;
+      /**
+       * The position where the label will be located, relative to the edit control. The supported values are:  * `"top"`: The label is located above the edit control. * `"right"`: The label is located at the right side of the edit control. * `"bottom"`: The label is located below the edit control. * `"left"`: The label is located at the left side of the edit control. * `"float"`: The label is shown as a placeholder when the edit control's value is empty. When the value is not empty, the label floats and locates above the edit control. * `"none"`: The label is rendered, but hidden.
+       */
+      labelPosition: "none" | "top" | "right" | "bottom" | "left" | "float";
+    }
+  }
+
+  interface HTMLGxFormFieldElement
+    extends StencilComponents.GxFormField,
+      HTMLStencilElement {}
+
   var HTMLGxFormFieldElement: {
     prototype: HTMLGxFormFieldElement;
     new (): HTMLGxFormFieldElement;
@@ -177,17 +444,64 @@ declare global {
   }
   namespace JSXElements {
     export interface GxFormFieldAttributes extends HTMLAttributes {
+      /**
+       * The text to set as the label of the field.
+       */
       labelCaption?: string;
+      /**
+       * A CSS class to set as the inner `label` element class.
+       */
       labelClass?: string;
+      /**
+       * The position where the label will be located, relative to the edit control. The supported values are:  * `"top"`: The label is located above the edit control. * `"right"`: The label is located at the right side of the edit control. * `"bottom"`: The label is located below the edit control. * `"left"`: The label is located at the left side of the edit control. * `"float"`: The label is shown as a placeholder when the edit control's value is empty. When the value is not empty, the label floats and locates above the edit control. * `"none"`: The label is rendered, but hidden.
+       */
       labelPosition?: "none" | "top" | "right" | "bottom" | "left" | "float";
     }
   }
 }
 
-import { Image as GxImage } from "./components/image/image";
-
 declare global {
-  interface HTMLGxImageElement extends GxImage, HTMLStencilElement {}
+  namespace StencilComponents {
+    interface GxImage {
+      /**
+       * This attribute lets you specify the alternative text.
+       */
+      alt: string;
+      /**
+       * A CSS class to set as the inner element class.
+       */
+      cssClass: string;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
+      disabled: boolean;
+      /**
+       * This attribute lets you specify the height.
+       */
+      height: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode: "collapse" | "keep-space";
+      /**
+       * This attribute lets you specify the low resolution image SRC.
+       */
+      lowResolutionSrc: string;
+      /**
+       * This attribute lets you specify the SRC.
+       */
+      src: string;
+      /**
+       * This attribute lets you specify the width.
+       */
+      width: string;
+    }
+  }
+
+  interface HTMLGxImageElement
+    extends StencilComponents.GxImage,
+      HTMLStencilElement {}
+
   var HTMLGxImageElement: {
     prototype: HTMLGxImageElement;
     new (): HTMLGxImageElement;
@@ -205,22 +519,143 @@ declare global {
   }
   namespace JSXElements {
     export interface GxImageAttributes extends HTMLAttributes {
+      /**
+       * This attribute lets you specify the alternative text.
+       */
       alt?: string;
+      /**
+       * A CSS class to set as the inner element class.
+       */
       cssClass?: string;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
       disabled?: boolean;
+      /**
+       * This attribute lets you specify the height.
+       */
       height?: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode?: "collapse" | "keep-space";
+      /**
+       * This attribute lets you specify the low resolution image SRC.
+       */
       lowResolutionSrc?: string;
+      /**
+       * Emitted when the element is clicked.
+       */
+      onOnClick?: (event: CustomEvent) => void;
+      /**
+       * This attribute lets you specify the SRC.
+       */
       src?: string;
-      title?: string;
+      /**
+       * This attribute lets you specify the width.
+       */
       width?: string;
     }
   }
 }
 
-import { Message as GxMessage } from "./components/message/message";
+declare global {
+  namespace StencilComponents {
+    interface GxLayoutEditorPlaceholder {}
+  }
+
+  interface HTMLGxLayoutEditorPlaceholderElement
+    extends StencilComponents.GxLayoutEditorPlaceholder,
+      HTMLStencilElement {}
+
+  var HTMLGxLayoutEditorPlaceholderElement: {
+    prototype: HTMLGxLayoutEditorPlaceholderElement;
+    new (): HTMLGxLayoutEditorPlaceholderElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gx-layout-editor-placeholder": HTMLGxLayoutEditorPlaceholderElement;
+  }
+  interface ElementTagNameMap {
+    "gx-layout-editor-placeholder": HTMLGxLayoutEditorPlaceholderElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gx-layout-editor-placeholder": JSXElements.GxLayoutEditorPlaceholderAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GxLayoutEditorPlaceholderAttributes
+      extends HTMLAttributes {}
+  }
+}
 
 declare global {
-  interface HTMLGxMessageElement extends GxMessage, HTMLStencilElement {}
+  namespace StencilComponents {
+    interface GxLayoutEditor {
+      model: any;
+      selectedControlId: string;
+    }
+  }
+
+  interface HTMLGxLayoutEditorElement
+    extends StencilComponents.GxLayoutEditor,
+      HTMLStencilElement {}
+
+  var HTMLGxLayoutEditorElement: {
+    prototype: HTMLGxLayoutEditorElement;
+    new (): HTMLGxLayoutEditorElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gx-layout-editor": HTMLGxLayoutEditorElement;
+  }
+  interface ElementTagNameMap {
+    "gx-layout-editor": HTMLGxLayoutEditorElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gx-layout-editor": JSXElements.GxLayoutEditorAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GxLayoutEditorAttributes extends HTMLAttributes {
+      model?: any;
+      onControlSelected?: (event: CustomEvent) => void;
+      onMoveCompleted?: (event: CustomEvent) => void;
+      selectedControlId?: string;
+    }
+  }
+}
+
+declare global {
+  namespace StencilComponents {
+    interface GxMessage {
+      /**
+       * Text for the close button.
+       */
+      closeButtonText: string;
+      /**
+       * The time in miliseconds before the message is automatically dismissed. If no duration is specified, the message will not be automatically dismissed.
+       */
+      duration: number;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode: "collapse" | "keep-space";
+      /**
+       * Show a button for closing the meesage box
+       */
+      showCloseButton: boolean;
+      /**
+       * Type of the button: * `info`: Information message * `warning`: Warning Message * `error`: Error message
+       */
+      type: "info" | "warning" | "error";
+    }
+  }
+
+  interface HTMLGxMessageElement
+    extends StencilComponents.GxMessage,
+      HTMLStencilElement {}
+
   var HTMLGxMessageElement: {
     prototype: HTMLGxMessageElement;
     new (): HTMLGxMessageElement;
@@ -238,21 +673,84 @@ declare global {
   }
   namespace JSXElements {
     export interface GxMessageAttributes extends HTMLAttributes {
+      /**
+       * Text for the close button.
+       */
       closeButtonText?: string;
+      /**
+       * The time in miliseconds before the message is automatically dismissed. If no duration is specified, the message will not be automatically dismissed.
+       */
       duration?: number;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
       invisibleMode?: "collapse" | "keep-space";
+      /**
+       * Show a button for closing the meesage box
+       */
       showCloseButton?: boolean;
+      /**
+       * Type of the button: * `info`: Information message * `warning`: Warning Message * `error`: Error message
+       */
       type?: "info" | "warning" | "error";
     }
   }
 }
 
-import { PasswordEdit as GxPasswordEdit } from "./components/password-edit/password-edit";
-
 declare global {
+  namespace StencilComponents {
+    interface GxPasswordEdit {
+      /**
+       * A CSS class to set as the inner `input` element class.
+       */
+      cssClass: string;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
+      disabled: boolean;
+      /**
+       * Returns the id of the inner `input` element (if set).
+       */
+      getNativeInputId: () => any;
+      /**
+       * The identifier of the control. Must be unique.
+       */
+      id: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode: "collapse" | "keep-space";
+      /**
+       * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
+       */
+      placeholder: string;
+      /**
+       * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
+       */
+      readonly: boolean;
+      /**
+       * Text of the reveal button to offer hiding the password.
+       */
+      revealButtonTextOff: string;
+      /**
+       * Text of the reveal button to offer revealing the password.
+       */
+      revealButtonTextOn: string;
+      /**
+       * If true, a reveal password button is shown next to the password input. Pressing the reveal button toggles the password mask, allowing the user to view the password text.
+       */
+      showRevealButton: boolean;
+      /**
+       * The initial value of the control.
+       */
+      value: string;
+    }
+  }
+
   interface HTMLGxPasswordEditElement
-    extends GxPasswordEdit,
+    extends StencilComponents.GxPasswordEdit,
       HTMLStencilElement {}
+
   var HTMLGxPasswordEditElement: {
     prototype: HTMLGxPasswordEditElement;
     new (): HTMLGxPasswordEditElement;
@@ -270,24 +768,92 @@ declare global {
   }
   namespace JSXElements {
     export interface GxPasswordEditAttributes extends HTMLAttributes {
+      /**
+       * A CSS class to set as the inner `input` element class.
+       */
       cssClass?: string;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
       disabled?: boolean;
+      /**
+       * The identifier of the control. Must be unique.
+       */
       id?: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
       invisibleMode?: "collapse" | "keep-space";
+      /**
+       * The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus.
+       */
+      onOnChange?: (event: CustomEvent) => void;
+      /**
+       * The `input` event is fired synchronously when the value is changed.
+       */
+      onOnInput?: (event: CustomEvent) => void;
+      /**
+       * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
+       */
       placeholder?: string;
+      /**
+       * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
+       */
       readonly?: boolean;
+      /**
+       * Text of the reveal button to offer hiding the password.
+       */
       revealButtonTextOff?: string;
+      /**
+       * Text of the reveal button to offer revealing the password.
+       */
       revealButtonTextOn?: string;
+      /**
+       * If true, a reveal password button is shown next to the password input. Pressing the reveal button toggles the password mask, allowing the user to view the password text.
+       */
       showRevealButton?: boolean;
+      /**
+       * The initial value of the control.
+       */
       value?: string;
     }
   }
 }
 
-import { RadioGroup as GxRadioGroup } from "./components/radio-group/radio-group";
-
 declare global {
-  interface HTMLGxRadioGroupElement extends GxRadioGroup, HTMLStencilElement {}
+  namespace StencilComponents {
+    interface GxRadioGroup {
+      /**
+       * Specifies how the child `gx-radio-option` will be layed out. It supports two values:  * `horizontal` * `vertical` (default)
+       */
+      direction: "horizontal" | "vertical";
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
+      disabled: boolean;
+      /**
+       * The identifier of the control. Must be unique.
+       */
+      id: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode: "collapse" | "keep-space";
+      /**
+       * The name that will be set to all the inner inputs of type radio
+       */
+      name: string;
+      /**
+       * The initial value of the control. Setting the value automatically selects the corresponding radio option.
+       */
+      value: string;
+    }
+  }
+
+  interface HTMLGxRadioGroupElement
+    extends StencilComponents.GxRadioGroup,
+      HTMLStencilElement {}
+
   var HTMLGxRadioGroupElement: {
     prototype: HTMLGxRadioGroupElement;
     new (): HTMLGxRadioGroupElement;
@@ -305,22 +871,80 @@ declare global {
   }
   namespace JSXElements {
     export interface GxRadioGroupAttributes extends HTMLAttributes {
+      /**
+       * Specifies how the child `gx-radio-option` will be layed out. It supports two values:  * `horizontal` * `vertical` (default)
+       */
       direction?: "horizontal" | "vertical";
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
       disabled?: boolean;
+      /**
+       * The identifier of the control. Must be unique.
+       */
       id?: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
       invisibleMode?: "collapse" | "keep-space";
+      /**
+       * The name that will be set to all the inner inputs of type radio
+       */
       name?: string;
+      /**
+       * The `change` event is emitted when a change to the element's value is committed by the user.
+       */
+      onOnChange?: (event: CustomEvent) => void;
+      /**
+       * The initial value of the control. Setting the value automatically selects the corresponding radio option.
+       */
       value?: string;
     }
   }
 }
 
-import { RadioOption as GxRadioOption } from "./components/radio-option/radio-option";
-
 declare global {
+  namespace StencilComponents {
+    interface GxRadioOption {
+      /**
+       * Specifies the label of the radio.
+       */
+      caption: string;
+      /**
+       * Indicates that the control is selected by default.
+       */
+      checked: boolean;
+      /**
+       * A CSS class to set as the inner `input` element class.
+       */
+      cssClass: string;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
+      disabled: boolean;
+      /**
+       * The identifier of the control. Must be unique.
+       */
+      id: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode: "collapse" | "keep-space";
+      /**
+       * The name of the inner input of type radio
+       */
+      name: string;
+      /**
+       * The initial value of the control.
+       */
+      value: string;
+    }
+  }
+
   interface HTMLGxRadioOptionElement
-    extends GxRadioOption,
+    extends StencilComponents.GxRadioOption,
       HTMLStencilElement {}
+
   var HTMLGxRadioOptionElement: {
     prototype: HTMLGxRadioOptionElement;
     new (): HTMLGxRadioOptionElement;
@@ -338,24 +962,84 @@ declare global {
   }
   namespace JSXElements {
     export interface GxRadioOptionAttributes extends HTMLAttributes {
+      /**
+       * Specifies the label of the radio.
+       */
       caption?: string;
+      /**
+       * Indicates that the control is selected by default.
+       */
       checked?: boolean;
+      /**
+       * A CSS class to set as the inner `input` element class.
+       */
       cssClass?: string;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
       disabled?: boolean;
+      /**
+       * The identifier of the control. Must be unique.
+       */
       id?: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
       invisibleMode?: "collapse" | "keep-space";
+      /**
+       * The name of the inner input of type radio
+       */
       name?: string;
+      /**
+       * Emitted when the radio loads.
+       */
+      onGxRadioDidLoad?: (event: CustomEvent) => void;
+      /**
+       * Emitted when the radio unloads.
+       */
+      onGxRadioDidUnload?: (event: CustomEvent) => void;
+      /**
+       * Emitted when the radio button is selected.
+       */
+      onGxSelect?: (event: CustomEvent) => void;
+      /**
+       * The `change` event is emitted when a change to the element's value is committed by the user.
+       */
+      onOnChange?: (event: CustomEvent) => void;
+      /**
+       * The initial value of the control.
+       */
       value?: string;
     }
   }
 }
 
-import { SelectOption as GxSelectOption } from "./components/select-option/select-option";
-
 declare global {
+  namespace StencilComponents {
+    interface GxSelectOption {
+      /**
+       * A CSS class to set as the inner `input` element class.
+       */
+      cssClass: string;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
+      disabled: boolean;
+      /**
+       * Indicates that the control is selected by default.
+       */
+      selected: boolean;
+      /**
+       * The initial value of the control.
+       */
+      value: string;
+    }
+  }
+
   interface HTMLGxSelectOptionElement
-    extends GxSelectOption,
+    extends StencilComponents.GxSelectOption,
       HTMLStencilElement {}
+
   var HTMLGxSelectOptionElement: {
     prototype: HTMLGxSelectOptionElement;
     new (): HTMLGxSelectOptionElement;
@@ -373,18 +1057,84 @@ declare global {
   }
   namespace JSXElements {
     export interface GxSelectOptionAttributes extends HTMLAttributes {
+      /**
+       * A CSS class to set as the inner `input` element class.
+       */
       cssClass?: string;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
       disabled?: boolean;
+      /**
+       * Emitted when the option is disabled.
+       */
+      onGxDisable?: (event: CustomEvent) => void;
+      /**
+       * Emitted when the option is selected.
+       */
+      onGxSelect?: (event: CustomEvent) => void;
+      /**
+       * Emitted when the option loads.
+       */
+      onGxSelectDidLoad?: (event: CustomEvent) => void;
+      /**
+       * Emitted when the option unloads.
+       */
+      onGxSelectDidUnload?: (event: CustomEvent) => void;
+      /**
+       * The `change` event is emitted when a change to the element's value is committed by the user.
+       */
+      onOnChange?: (event: CustomEvent) => void;
+      /**
+       * Indicates that the control is selected by default.
+       */
       selected?: boolean;
+      /**
+       * The initial value of the control.
+       */
       value?: string;
     }
   }
 }
 
-import { Select as GxSelect } from "./components/select/select";
-
 declare global {
-  interface HTMLGxSelectElement extends GxSelect, HTMLStencilElement {}
+  namespace StencilComponents {
+    interface GxSelect {
+      /**
+       * A CSS class to set as the inner `input` element class.
+       */
+      cssClass: string;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
+      disabled: boolean;
+      /**
+       * Returns the id of the inner `input` element (if set).
+       */
+      getNativeInputId: () => string;
+      /**
+       * The identifier of the control. Must be unique.
+       */
+      id: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode: "collapse" | "keep-space";
+      /**
+       * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
+       */
+      readonly: boolean;
+      /**
+       * The initial value of the control. Setting the value automatically selects the corresponding option.
+       */
+      value: string;
+    }
+  }
+
+  interface HTMLGxSelectElement
+    extends StencilComponents.GxSelect,
+      HTMLStencilElement {}
+
   var HTMLGxSelectElement: {
     prototype: HTMLGxSelectElement;
     new (): HTMLGxSelectElement;
@@ -402,20 +1152,64 @@ declare global {
   }
   namespace JSXElements {
     export interface GxSelectAttributes extends HTMLAttributes {
+      /**
+       * A CSS class to set as the inner `input` element class.
+       */
       cssClass?: string;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
       disabled?: boolean;
+      /**
+       * The identifier of the control. Must be unique.
+       */
       id?: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
       invisibleMode?: "collapse" | "keep-space";
+      /**
+       * The `change` event is emitted when a change to the element's value is committed by the user.
+       */
+      onOnChange?: (event: CustomEvent) => void;
+      /**
+       * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
+       */
       readonly?: boolean;
+      /**
+       * The initial value of the control. Setting the value automatically selects the corresponding option.
+       */
       value?: string;
     }
   }
 }
 
-import { TableCell as GxTableCell } from "./components/table-cell/table-cell";
-
 declare global {
-  interface HTMLGxTableCellElement extends GxTableCell, HTMLStencilElement {}
+  namespace StencilComponents {
+    interface GxTableCell {
+      /**
+       * Defines the horizontal aligmnent of the content of the cell.
+       */
+      align: "left" | "right" | "center";
+      /**
+       * Like the `grid-area` CSS property, this attribute gives a name to the item, so it can be used from the [areas-template attributes](../table/readme.md#areas-template) of the gx-table element.
+       */
+      area: string;
+      /**
+       * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+       */
+      autoGrow: boolean;
+      /**
+       * Defines the vertical aligmnent of the content of the cell.
+       */
+      valign: "top" | "bottom" | "medium";
+    }
+  }
+
+  interface HTMLGxTableCellElement
+    extends StencilComponents.GxTableCell,
+      HTMLStencilElement {}
+
   var HTMLGxTableCellElement: {
     prototype: HTMLGxTableCellElement;
     new (): HTMLGxTableCellElement;
@@ -433,18 +1227,56 @@ declare global {
   }
   namespace JSXElements {
     export interface GxTableCellAttributes extends HTMLAttributes {
+      /**
+       * Defines the horizontal aligmnent of the content of the cell.
+       */
       align?: "left" | "right" | "center";
+      /**
+       * Like the `grid-area` CSS property, this attribute gives a name to the item, so it can be used from the [areas-template attributes](../table/readme.md#areas-template) of the gx-table element.
+       */
       area?: string;
+      /**
+       * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+       */
       autoGrow?: boolean;
+      /**
+       * Defines the vertical aligmnent of the content of the cell.
+       */
       valign?: "top" | "bottom" | "medium";
     }
   }
 }
 
-import { Table as GxTable } from "./components/table/table";
-
 declare global {
-  interface HTMLGxTableElement extends GxTable, HTMLStencilElement {}
+  namespace StencilComponents {
+    interface GxTable {
+      /**
+       * Like the `grid-templates-areas` CSS property, this attribute defines a grid template by referencing the names of the areas which are specified with the cells [area attribute](../table-cell/readme.md#area). Repeating the name of an area causes the content to span those cells. A period signifies an empty cell. The syntax itself provides a visualization of the structure of the grid.
+       */
+      areasTemplate: string;
+      /**
+       * Like the `grid-templates-columns` CSS property, this attribute defines the columns of the grid with a space-separated list of values. The values represent the width of column.
+       */
+      columnsTemplate: string;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
+      disabled: boolean;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode: "collapse" | "keep-space";
+      /**
+       * Like the `grid-templates-rows` CSS property, this attribute defines the rows of the grid with a space-separated list of values. The values represent the height of each row.
+       */
+      rowsTemplate: string;
+    }
+  }
+
+  interface HTMLGxTableElement
+    extends StencilComponents.GxTable,
+      HTMLStencilElement {}
+
   var HTMLGxTableElement: {
     prototype: HTMLGxTableElement;
     new (): HTMLGxTableElement;
@@ -462,19 +1294,60 @@ declare global {
   }
   namespace JSXElements {
     export interface GxTableAttributes extends HTMLAttributes {
+      /**
+       * Like the `grid-templates-areas` CSS property, this attribute defines a grid template by referencing the names of the areas which are specified with the cells [area attribute](../table-cell/readme.md#area). Repeating the name of an area causes the content to span those cells. A period signifies an empty cell. The syntax itself provides a visualization of the structure of the grid.
+       */
       areasTemplate?: string;
+      /**
+       * Like the `grid-templates-columns` CSS property, this attribute defines the columns of the grid with a space-separated list of values. The values represent the width of column.
+       */
       columnsTemplate?: string;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
       disabled?: boolean;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
       invisibleMode?: "collapse" | "keep-space";
+      /**
+       * Emitted when the element is clicked.
+       */
+      onOnClick?: (event: CustomEvent) => void;
+      /**
+       * Like the `grid-templates-rows` CSS property, this attribute defines the rows of the grid with a space-separated list of values. The values represent the height of each row.
+       */
       rowsTemplate?: string;
     }
   }
 }
 
-import { TextBlock as GxTextblock } from "./components/textblock/textblock";
-
 declare global {
-  interface HTMLGxTextblockElement extends GxTextblock, HTMLStencilElement {}
+  namespace StencilComponents {
+    interface GxTextblock {
+      /**
+       * A CSS class to set as the inner element class.
+       */
+      cssClass: string;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
+      disabled: boolean;
+      /**
+       * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
+       */
+      href: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode: "collapse" | "keep-space";
+    }
+  }
+
+  interface HTMLGxTextblockElement
+    extends StencilComponents.GxTextblock,
+      HTMLStencilElement {}
+
   var HTMLGxTextblockElement: {
     prototype: HTMLGxTextblockElement;
     new (): HTMLGxTextblockElement;
@@ -492,10 +1365,26 @@ declare global {
   }
   namespace JSXElements {
     export interface GxTextblockAttributes extends HTMLAttributes {
+      /**
+       * A CSS class to set as the inner element class.
+       */
       cssClass?: string;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
       disabled?: boolean;
+      /**
+       * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
+       */
       href?: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
       invisibleMode?: "collapse" | "keep-space";
+      /**
+       * Emitted when the element is clicked.
+       */
+      onOnClick?: (event: CustomEvent) => void;
     }
   }
 }
@@ -503,3 +1392,5 @@ declare global {
 declare global {
   namespace JSX { interface StencilJSX {} }
 }
+
+export declare function defineCustomElements(window: any): void;

@@ -1,0 +1,5 @@
+@import "../common/_base";
+
+gx-layout-editor-placeholder {
+  @include visibility(flex);
+}

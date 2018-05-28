@@ -30,8 +30,8 @@
     "no-duplicate-variable": true,
     "no-empty": true,
     "no-eval": true,
-    "no-extra-boolean-cast": true,
     "no-import-side-effect": true,
+    "no-implicit-dependencies": [true, "dev"],
     "no-inferrable-types": true,
     "no-internal-module": true,
     "no-misused-new": true,
@@ -84,5 +84,21 @@
         "check-type"
       ]
     }
-  }
+  },
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    "declaration": false,
+    "experimentalDecorators": true,
+    "lib": ["dom", "es2015"],
+    "moduleResolution": "node",
+    "module": "es2015",
+    "target": "es2015",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "jsx": "react",
+    "jsxFactory": "h"
+  },
+  "include": ["src", "types/jsx.d.ts"],
+  "exclude": ["node_modules"]
 }

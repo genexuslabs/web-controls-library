@@ -1,4 +1,4 @@
-import { flush, render } from "@stencil/core/testing";
+import { TestWindow } from "@stencil/core/testing";
 import { RadioOption } from "../../../radio-option/radio-option";
 
 describe("gx-radio-option", () => {
@@ -7,40 +7,45 @@ describe("gx-radio-option", () => {
   });
 
   describe("rendering", () => {
-    let element;
+    let element: HTMLGxRadioOptionElement;
+    let testWindow: TestWindow;
     beforeEach(async () => {
-      RadioOption["is"] = "gx-radio-option";
-      element = await render({
+      testWindow = new TestWindow();
+      element = await testWindow.load({
         components: [RadioOption],
-        html: "<gx-radio-option></gx-radio-option>"
+        html: '<gx-radio-option caption="Label"></gx-radio-option>'
       });
     });
 
-    // it("should be able to read value", async () => {
-    //   element.value = "foo";
-    //   await flush(element), expect(element.value).toEqual("foo");
-    // });
-    //
-    // it("should be able to change value", async () => {
-    //   element.value = "foo";
-    //   await flush(element);
-    //   element.value = "bar";
-    //   await flush(element);
-    //   expect(element.value).toEqual("bar");
-    // });
+    it("should work without parameters", () => {
+      expect(element.textContent.trim()).toEqual("Label");
+    });
 
-    // it("should keep input and custom element values in sync", async () => {
-    //   element.value = "foo";
-    //   await flush(element);
-    //   expect(element.querySelector("input").value).toEqual("foo");
-    // });
+    it("should be able to read value", async () => {
+      element.value = "foo";
+      await testWindow.flush(), expect(element.value).toEqual("foo");
+    });
 
-    // it("should be able to set class of inner input", async () => {
-    //   element.cssClass = "foo-class bar-class";
-    //   await flush(element);
-    //   expect(
-    //     element.querySelector("input").classList.contains("foo-class")
-    //   ).toEqual(true);
-    // });
+    it("should be able to change value", async () => {
+      element.value = "foo";
+      await testWindow.flush();
+      element.value = "bar";
+      await testWindow.flush();
+      expect(element.value).toEqual("bar");
+    });
+
+    it("should keep input and custom element values in sync", async () => {
+      element.value = "foo";
+      await testWindow.flush();
+      expect(element.querySelector("input").value).toEqual("foo");
+    });
+
+    it("should be able to set class of inner input", async () => {
+      element.cssClass = "foo-class bar-class";
+      await testWindow.flush();
+      expect(
+        element.querySelector("input").classList.contains("foo-class")
+      ).toEqual(true);
+    });
   });
 });

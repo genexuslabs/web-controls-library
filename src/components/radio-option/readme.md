@@ -42,6 +42,8 @@ The identifier of the control. Must be unique.
 
 #### invisibleMode
 
+string
+
 This attribute lets you specify how this element will behave when hidden.
 
 | Value        | Details                                                                     |
@@ -96,6 +98,8 @@ string
 The identifier of the control. Must be unique.
 
 #### invisible-mode
+
+string
 
 This attribute lets you specify how this element will behave when hidden.
 

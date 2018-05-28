@@ -1,4 +1,4 @@
-import { flush, render } from "@stencil/core/testing";
+import { TestWindow } from "@stencil/core/testing";
 import { TableCell } from "./table-cell";
 
 describe("gx-table-cell", () => {
@@ -7,17 +7,18 @@ describe("gx-table-cell", () => {
   });
 
   describe("rendering", () => {
-    let element;
+    let testWindow: TestWindow;
+    let element: HTMLGxTableCellElement;
     beforeEach(async () => {
-      TableCell["is"] = "gx-table-cell";
-      element = await render({
+      testWindow = new TestWindow();
+      element = await testWindow.load({
         components: [TableCell],
-        html: "<gx-table-cell></gx-table-cell>"
+        html: "<gx-table-cell>Cell</gx-table-cell>"
       });
     });
 
-    // it('should work without parameters', () => {
-    //   expect(element.textContent.trim()).toEqual('');
-    // });
+    it("should work without parameters", () => {
+      expect(element.textContent.trim()).toEqual("Cell");
+    });
   });
 });

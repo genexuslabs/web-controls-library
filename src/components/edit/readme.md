@@ -24,10 +24,14 @@ If a child element with the attribute area="trigger-content" is found, this cont
 
 #### autocapitalize
 
+string
+
 Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize)
 attribute for `input` elements. Only supported by Safari and Chrome.
 
 #### autocomplete
+
+string
 
 This attribute indicates whether the value of the control can be
 automatically completed by the browser. Same as [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocomplete)
@@ -62,6 +66,8 @@ string
 The identifier of the control. Must be unique.
 
 #### invisibleMode
+
+string
 
 This attribute lets you specify how this element will behave when hidden.
 
@@ -116,6 +122,8 @@ is ignored and the text is used instead.
 
 #### type
 
+string
+
 The type of control to render. A subset of the types supported by the `input` element is supported:
 
 * `"date"`
@@ -139,10 +147,14 @@ The initial value of the control.
 
 #### autocapitalize
 
+string
+
 Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize)
 attribute for `input` elements. Only supported by Safari and Chrome.
 
 #### autocomplete
+
+string
 
 This attribute indicates whether the value of the control can be
 automatically completed by the browser. Same as [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocomplete)
@@ -177,6 +189,8 @@ string
 The identifier of the control. Must be unique.
 
 #### invisible-mode
+
+string
 
 This attribute lets you specify how this element will behave when hidden.
 
@@ -230,6 +244,8 @@ specified (through an element with `slot="trigger-content"`), the content
 is ignored and the text is used instead.
 
 #### type
+
+string
 
 The type of control to render. A subset of the types supported by the `input` element is supported:
 

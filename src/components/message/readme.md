@@ -21,6 +21,8 @@ If no duration is specified, the message will not be automatically dismissed.
 
 #### invisibleMode
 
+string
+
 This attribute lets you specify how this element will behave when hidden.
 
 | Value        | Details                                                                     |
@@ -35,6 +37,8 @@ boolean
 Show a button for closing the meesage box
 
 #### type
+
+string
 
 Type of the button:
 
@@ -59,6 +63,8 @@ If no duration is specified, the message will not be automatically dismissed.
 
 #### invisible-mode
 
+string
+
 This attribute lets you specify how this element will behave when hidden.
 
 | Value        | Details                                                                     |
@@ -73,6 +79,8 @@ boolean
 Show a button for closing the meesage box
 
 #### type
+
+string
 
 Type of the button:
 

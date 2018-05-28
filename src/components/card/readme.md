@@ -43,6 +43,8 @@ predefined slots:
 
 #### invisibleMode
 
+string
+
 This attribute lets you specify how this element will behave when hidden.
 
 | Value        | Details                                                                     |
@@ -53,6 +55,8 @@ This attribute lets you specify how this element will behave when hidden.
 ## Attributes
 
 #### invisible-mode
+
+string
 
 This attribute lets you specify how this element will behave when hidden.
 

@@ -14,6 +14,8 @@ The one option whose value matches the value of the group will be automatically 
 
 #### direction
 
+string
+
 Specifies how the child `gx-radio-option` will be layed out.
 It supports two values:
 
@@ -35,6 +37,8 @@ string
 The identifier of the control. Must be unique.
 
 #### invisibleMode
+
+string
 
 This attribute lets you specify how this element will behave when hidden.
 
@@ -60,6 +64,8 @@ the corresponding radio option.
 
 #### direction
 
+string
+
 Specifies how the child `gx-radio-option` will be layed out.
 It supports two values:
 
@@ -81,6 +87,8 @@ string
 The identifier of the control. Must be unique.
 
 #### invisible-mode
+
+string
 
 This attribute lets you specify how this element will behave when hidden.
 

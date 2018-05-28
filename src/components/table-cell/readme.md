@@ -8,6 +8,8 @@ A cell of a [gx-table](../table/readme.md) control, for creating grid layouts.
 
 #### align
 
+string
+
 Defines the horizontal aligmnent of the content of the cell.
 
 #### area
@@ -29,11 +31,15 @@ if the content overflows.
 
 #### valign
 
+string
+
 Defines the vertical aligmnent of the content of the cell.
 
 ## Attributes
 
 #### align
+
+string
 
 Defines the horizontal aligmnent of the content of the cell.
 
@@ -55,6 +61,8 @@ If set to `false`, it won't grow automatically and it will show scrollbars
 if the content overflows.
 
 #### valign
+
+string
 
 Defines the vertical aligmnent of the content of the cell.
 

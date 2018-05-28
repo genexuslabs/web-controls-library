@@ -1,15 +1,20 @@
-const sass = require('@stencil/sass');
+const sass = require("@stencil/sass");
 
 exports.config = {
-  namespace: 'gx-web-controls',
-  generateDistribution: true,
-  serviceWorker: false,
-  plugins: [
-    sass()
-  ]
+  namespace: "gx-web-controls",
+  outputTargets: [
+    {
+      type: "dist"
+    },
+    {
+      type: "www",
+      serviceWorker: false
+    }
+  ],
+  plugins: [sass()]
 };
 
 exports.devServer = {
-  root: 'www',
-  watchGlob: '**/**'
-}
+  root: "www",
+  watchGlob: "**/**"
+};

@@ -37,6 +37,8 @@ A CSS class to set as the inner `label` element class.
 
 #### labelPosition
 
+string
+
 The position where the label will be located, relative to the edit control. The supported values are:
 
 * `"top"`: The label is located above the edit control.
@@ -61,6 +63,8 @@ string
 A CSS class to set as the inner `label` element class.
 
 #### label-position
+
+string
 
 The position where the label will be located, relative to the edit control. The supported values are:
 

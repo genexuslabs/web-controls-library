@@ -1,4 +1,4 @@
-import { flush, render } from "@stencil/core/testing";
+import { TestWindow } from "@stencil/core/testing";
 import { Card } from "../../../card/card";
 
 describe("gx-card", () => {
@@ -8,12 +8,21 @@ describe("gx-card", () => {
 
   describe("rendering", () => {
     let element;
+    let testWindow;
     beforeEach(async () => {
-      Card["is"] = "gx-card";
-      element = await render({
+      testWindow = new TestWindow();
+      element = await testWindow.load({
         components: [Card],
-        html: "<gx-card>Hello world!</gx-card>"
+        html: `<gx-card>
+                  <div slot="body">
+                    This is the card content
+                  </div>
+                </gx-card>`
       });
+    });
+
+    it("should work without parameters", () => {
+      expect(element.textContent.trim()).toEqual("This is the card content");
     });
   });
 });

@@ -1,4 +1,4 @@
-import { flush, render } from "@stencil/core/testing";
+import { TestWindow } from "@stencil/core/testing";
 import { Edit } from "../../../edit/edit";
 
 describe("gx-edit", () => {
@@ -8,39 +8,41 @@ describe("gx-edit", () => {
 
   describe("rendering", () => {
     let element;
+    let testWindow: TestWindow;
     beforeEach(async () => {
-      Edit["is"] = "gx-edit";
-      element = await render({
+      testWindow = new TestWindow();
+      element = await testWindow.load({
         components: [Edit],
         html: "<gx-edit></gx-edit>"
       });
     });
 
-    // it("should be able to read value", async () => {
-    //   element.value = "foo";
-    //   await flush(element), expect(element.value).toEqual("foo");
-    // });
-    //
-    // it("should be able to change value", async () => {
-    //   element.value = "foo";
-    //   await flush(element);
-    //   element.value = "bar";
-    //   await flush(element);
-    //   expect(element.value).toEqual("bar");
-    // });
+    it("should be able to read value", async () => {
+      element.value = "foo";
+      await testWindow.flush();
+      expect(element.value).toEqual("foo");
+    });
 
-    // it("should keep input and custom element values in sync", async () => {
-    //   element.value = "foo";
-    //   await flush(element);
-    //   expect(element.querySelector("input").value).toEqual("foo");
-    // });
+    it("should be able to change value", async () => {
+      element.value = "foo";
+      await testWindow.flush();
+      element.value = "bar";
+      await testWindow.flush();
+      expect(element.value).toEqual("bar");
+    });
 
-    // it("should be able to set class of inner input", async () => {
-    //   element.cssClass = "foo-class bar-class";
-    //   await flush(element);
-    //   expect(
-    //     element.querySelector("input").classList.contains("foo-class")
-    //   ).toEqual(true);
-    // });
+    it("should keep input and custom element values in sync", async () => {
+      element.value = "foo";
+      await testWindow.flush();
+      expect(element.querySelector("input").value).toEqual("foo");
+    });
+
+    it("should be able to set class of inner input", async () => {
+      element.cssClass = "foo-class bar-class";
+      await testWindow.flush();
+      expect(
+        element.querySelector("input").classList.contains("foo-class")
+      ).toEqual(true);
+    });
   });
 });
