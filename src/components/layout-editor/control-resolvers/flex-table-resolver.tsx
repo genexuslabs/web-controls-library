@@ -48,7 +48,7 @@ function renderCell(cell, rowId, context, direction) {
   return (
     <div
       data-gx-flex-cell
-      data-gx-le-drop-area={direction == "Column" ? "vertical" : "horizontal"}
+      data-gx-le-drop-area={direction === "Column" ? "vertical" : "horizontal"}
       data-gx-le-cell-id={cell["@id"]}
       data-gx-le-row-id={rowId}
       style={editorCellStyle}
