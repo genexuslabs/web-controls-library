@@ -67,6 +67,13 @@ export class LayoutEditor {
   @Event() controlSelected: EventEmitter;
 
   private drake: Dragula.Drake;
+  private dragulaOptions = {
+    accepts: (el, target) => {
+      return !el.contains(target) && el.parentNode !== target;
+    },
+    copy: true,
+    direction: "horizontal"
+  };
 
   private ddDroppedEl: any;
 
@@ -80,19 +87,20 @@ export class LayoutEditor {
   }
 
   private initDragAndDrop() {
-    this.drake = Dragula(this.getDropAreas(), {
-      accepts: (el, target) => {
-        return !el.contains(target) && el.parentNode !== target;
-      },
-      copy: true,
-      direction: "horizontal"
-    });
+    this.drake = Dragula(this.getDropAreas(), this.dragulaOptions);
 
     this.drake.on("shadow", (el, container) => {
+      const direction = container.getAttribute("data-gx-le-drop-area");
+      // Update dragula's direction dynamically according to the direction
+      // stated at the `data-gx-le-drop-area` attribute
+      this.dragulaOptions.direction = direction;
+
       const position =
         container.children.length === 1
           ? "empty"
-          : el.nextSibling ? "left" : "right";
+          : el.nextSibling
+            ? direction === "vertical" ? "top" : "left"
+            : direction === "vertical" ? "bottom" : "right";
       container.setAttribute("data-gx-le-active-target", position);
     });
 
@@ -121,8 +129,9 @@ export class LayoutEditor {
 
       if (target.getAttribute("data-gx-le-placeholder") === "row") {
         // Dropped on a new row
+        const beforeRowId = target.getAttribute("data-gx-le-next-row-id");
         this.moveCompleted.emit({
-          beforeRowId: target.getAttribute("data-gx-le-next-row-id"),
+          beforeRowId,
           controlId,
           sourceRowId
         });
@@ -130,19 +139,21 @@ export class LayoutEditor {
         // Dropped on an existing row
         if (target.children.length === 1) {
           // Dropped on an empty cell
+          const targetCellId = target.getAttribute("data-gx-le-cell-id");
           this.moveCompleted.emit({
             controlId,
             sourceRowId,
-            targetCellId: target.getAttribute("data-gx-le-cell-id")
+            targetCellId
           });
         } else {
           // Dropped on a non-empty cell
+          const beforeControlId = el.nextSibling
+            ? target.getAttribute("data-gx-le-cell-id")
+            : target.nextSibling
+              ? target.nextSibling.getAttribute("data-gx-le-cell-id")
+              : null;
           this.moveCompleted.emit({
-            beforeControlId: el.nextSibling
-              ? target.getAttribute("data-gx-le-cell-id")
-              : target.nextSibling
-                ? target.nextSibling.getAttribute("data-gx-le-cell-id")
-                : null,
+            beforeControlId,
             controlId,
             sourceRowId,
             targetRowId

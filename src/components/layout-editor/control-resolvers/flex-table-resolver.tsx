@@ -9,7 +9,7 @@ export default function flexTableResolver({ table }, context) {
     const rowCells = Array.isArray(row.cell) ? row.cell : [row.cell];
 
     const renderedCells = rowCells.map(cell => {
-      return renderCell(cell, row["@id"], context);
+      return renderCell(cell, row["@id"], context, table["@flexDirection"]);
     });
 
     return renderedCells;
@@ -32,7 +32,7 @@ function getTableStyle(table): any {
   };
 }
 
-function renderCell(cell, rowId, context) {
+function renderCell(cell, rowId, context, direction) {
   const editorCellStyle = {
     alignSelf: cell["@alignSelf"],
     flexGrow: cell["@flexGrow"],
@@ -48,7 +48,7 @@ function renderCell(cell, rowId, context) {
   return (
     <div
       data-gx-flex-cell
-      data-gx-le-drop-area
+      data-gx-le-drop-area={direction == "Column" ? "vertical" : "horizontal"}
       data-gx-le-cell-id={cell["@id"]}
       data-gx-le-row-id={rowId}
       style={editorCellStyle}

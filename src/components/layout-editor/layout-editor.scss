@@ -61,14 +61,51 @@ gx-layout-editor {
       }
     }
 
-    &[data-gx-le-active-target]:not([data-gx-le-active-target="empty"]) {
+    &[data-gx-le-active-target="top"] {
+      .gu-transit {
+        top: 0;
+      }
+    }
+
+    &[data-gx-le-active-target="bottom"] {
+      .gu-transit {
+        bottom: 0;
+      }
+    }
+
+    // &[data-gx-le-active-target]:not([data-gx-le-active-target="empty"]) {
+    //   position: relative;
+    //
+    //   .gu-transit {
+    //     width: 0px;
+    //     overflow: hidden;
+    //     position: absolute;
+    //     top: 0;
+    //     height: 100%;
+    //     z-index: 1;
+    //     padding-left: var(--gx-le-table-placeholder-width);
+    //
+    //     &:before {
+    //       background-color: #234783;
+    //       width: var(--gx-le-table-placeholder-width);
+    //       height: 100%;
+    //       content: " ";
+    //       position: absolute;
+    //       top: 0;
+    //       left: 0;
+    //       z-index: 1;
+    //     }
+    //   }
+    // }
+    //
+    &[data-gx-le-active-target][data-gx-le-active-target="left"],
+    &[data-gx-le-active-target][data-gx-le-active-target="right"] {
       position: relative;
 
       .gu-transit {
         width: 0px;
         overflow: hidden;
         position: absolute;
-        top: 0;
         height: 100%;
         z-index: 1;
         padding-left: var(--gx-le-table-placeholder-width);
@@ -80,6 +117,32 @@ gx-layout-editor {
           content: " ";
           position: absolute;
           top: 0;
+          left: 0;
+          z-index: 1;
+        }
+      }
+    }
+
+    &[data-gx-le-active-target][data-gx-le-active-target="top"],
+    &[data-gx-le-active-target][data-gx-le-active-target="bottom"] {
+      position: relative;
+
+      .gu-transit {
+        width: 100%;
+        overflow: hidden;
+        position: absolute;
+        left: 0;
+        height: 0;
+        z-index: 1;
+        padding-top: var(--gx-le-table-placeholder-width);
+
+        &:before {
+          background-color: #234783;
+          width: 100%;
+          height: var(--gx-le-table-placeholder-width);
+          content: " ";
+          position: absolute;
+          bottom: 0;
           left: 0;
           z-index: 1;
         }

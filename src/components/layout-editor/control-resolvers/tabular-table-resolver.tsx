@@ -78,7 +78,7 @@ function renderCell(cell, rowId, rowIndex, colStart, context) {
   return (
     <gx-table-cell
       data-gx-le-cell-id={cell["@id"]}
-      data-gx-le-drop-area
+      data-gx-le-drop-area="horizontal"
       data-gx-le-row-id={rowId}
       style={{
         gridColumn: `${colStart} / span ${colSpan}`,
