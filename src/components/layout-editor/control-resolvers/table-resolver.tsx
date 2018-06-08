@@ -3,6 +3,7 @@ import tabularTableResolver from "./tabular-table-resolver";
 
 const tableResolversMap = {
   Flex: flexTableResolver,
+  Responsive: tabularTableResolver,
   Tabular: tabularTableResolver
 };
 

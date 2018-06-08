@@ -1,7 +1,11 @@
 import controlResolver from "../layout-editor-control-resolver";
 
 export default function tabularTableResolver({ table }, context) {
-  const modelRows = Array.isArray(table.row) ? table.row : [table.row];
+  const modelRows = table.row
+    ? Array.isArray(table.row) ? table.row : [table.row]
+    : [];
+
+  const isEmptyTable = modelRows.length === 0;
   const nonEmptyRows = modelRows.filter(
     r => (Array.isArray(r.cell) && r.cell.length) || r.cell
   );
@@ -24,7 +28,12 @@ export default function tabularTableResolver({ table }, context) {
   });
 
   return (
-    <gx-table {...getTableStyle(rowsCount, maxCols)} data-gx-le-container>
+    <gx-table
+      {...getTableStyle(rowsCount, maxCols)}
+      data-gx-le-container
+      data-gx-le-container-empty={isEmptyTable}
+      data-gx-le-control-id={table["@controlName"]}
+    >
       {[...rows, ...renderEmptyRows(nonEmptyRows, maxCols)]}
     </gx-table>
   );
@@ -38,7 +47,7 @@ function getTableStyle(rowsCount, colsCount) {
     "columns-template": baseColsTemplate.join(" "),
     "rows-template": intercalateArray(
       baseRowsTemplate,
-      "var(--gx-le-table-placeholder-height)"
+      "var(--gx-le-table-cell-gap)"
     ).join(" ")
   };
 }
@@ -77,6 +86,7 @@ function renderCell(cell, rowId, rowIndex, colStart, context) {
 
   return (
     <gx-table-cell
+      tabindex="0"
       data-gx-le-cell-id={cell["@id"]}
       data-gx-le-drop-area="horizontal"
       data-gx-le-row-id={rowId}
@@ -84,7 +94,7 @@ function renderCell(cell, rowId, rowIndex, colStart, context) {
         gridColumn: `${colStart} / span ${colSpan}`,
         gridRow: ` ${rowStart} / span ${rowSpan}`
       }}
-      data-gx-le-selected={context.selectedControlId === cell["@id"]}
+      data-gx-le-selected={context.selectedCells.includes(cell["@id"])}
     >
       {controlResolver(cell, context)}
     </gx-table-cell>

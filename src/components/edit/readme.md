@@ -22,6 +22,10 @@ If a child element with the attribute area="trigger-content" is found, this cont
 
 ## Properties
 
+#### area
+
+string
+
 #### autocapitalize
 
 string
@@ -144,6 +148,10 @@ string
 The initial value of the control.
 
 ## Attributes
+
+#### area
+
+string
 
 #### autocapitalize
 

@@ -56,7 +56,7 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
 
     componentDidLoad() {
       const innerControl: any = this.element.querySelector("[area='field']");
-      if (innerControl.getNativeInputId) {
+      if (innerControl && innerControl.getNativeInputId) {
         const forAttr = innerControl.getNativeInputId();
         if (forAttr) {
           this.element.querySelector("label").setAttribute("for", forAttr);

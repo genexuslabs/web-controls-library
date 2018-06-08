@@ -2,11 +2,16 @@ import actionResolver from "./control-resolvers/action-resolver";
 import textblockResolver from "./control-resolvers/textblock-resolver";
 import imageResolver from "./control-resolvers/image-resolver";
 import tableResolver from "./control-resolvers/table-resolver";
+import dataResolver from "./control-resolvers/data-resolver";
 
 const resolversMap: IResolverMapEntry[] = [
   {
     resolver: actionResolver,
     type: "action"
+  },
+  {
+    resolver: dataResolver,
+    type: "data"
   },
   {
     resolver: imageResolver,
@@ -36,5 +41,5 @@ interface IResolverMapEntry {
 }
 
 interface IResolverContext {
-  selectedControlId: string;
+  selectedCells: string[];
 }

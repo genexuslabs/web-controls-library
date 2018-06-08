@@ -221,6 +221,7 @@ declare global {
 declare global {
   namespace StencilComponents {
     interface GxEdit {
+      area: string;
       /**
        * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize) attribute for `input` elements. Only supported by Safari and Chrome.
        */
@@ -319,6 +320,7 @@ declare global {
   }
   namespace JSXElements {
     export interface GxEditAttributes extends HTMLAttributes {
+      area?: string;
       /**
        * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize) attribute for `input` elements. Only supported by Safari and Chrome.
        */
@@ -597,9 +599,9 @@ declare global {
        */
       model: any;
       /**
-       * Identifier of the selected control. If empty the whole layout-editor is marked as selected.
+       * Array with the identifiers of the selected controls. If empty the whole layout-editor is marked as selected.
        */
-      selectedControlId: string;
+      selectedCells: string[];
     }
   }
 
@@ -629,17 +631,29 @@ declare global {
        */
       model?: any;
       /**
+       * Fired when a control (that wasn't already inside the layout editor, for example, from a toolbox) has been dropped on a valid drop target  The dataTransfer property of the event must have the following format: `"GX_DASHBOARD_ADDELEMENT,[GeneXus type of control]"`  where: * `GX_DASHBOARD_ADDELEMENT` is the type of action * `[GeneXus type of control]` is the type of control that's been added. This value can have any value and will be passed as part of the information sent as part of the event.  An object containing information of the add operation is sent in the `detail` property of the event object  | Property          | Details                                                                                                                                     | | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | | `beforeControlId` | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. | | `targetRowId`     | Identifier of the row where the control was dropped                                                                                         | | `elementType`     | The type of the control that's been added and was received as the `[GeneXus type of control]` in the dataTransfer of the drop operation |
+       */
+      onControlAdded?: (event: CustomEvent) => void;
+      /**
+       * Fired when a control has been removed from the layout  An object containing information of the add operation is sent in the `detail` property of the event object  | Property          | Details                                                                                                                                     | | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | | `controlId` | Identifier of the cell that was removed |
+       */
+      onControlRemoved?: (event: CustomEvent) => void;
+      /**
        * Fired when the selection has been changed  An object containing information of the select operation is sent in the `detail` property of the event object  | Property      | Details                           | | ------------- | --------------------------------- | | `controlId`   | Identifier of the selected cell   |
        */
       onControlSelected?: (event: CustomEvent) => void;
+      /**
+       * Fired when a GeneXus Knowledgebase Object has been dropped on a valid drop target  An object containing information of the add operation is sent in the `detail` property of the event object  | Property          | Details                                                                                                                                     | | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | | `beforeControlId` | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. | | `targetRowId`     | Identifier of the row where the control was dropped                                                                                         | | `kbObjectName`    | Name of the GeneXus object                                                                                                               |
+       */
+      onKbObjectAdded?: (event: CustomEvent) => void;
       /**
        * Fired when a control is moved inside the layout editor to a new location  An object containing information of the move operation is sent in the `detail` property of the event object  * When the dragged item was dropped on a new row:  | Property      | Details                                                                                                          | | ------------- | ---------------------------------------------------------------------------------------------------------------- | | `beforeRowId` | Identifier of the row next to the row where the control was dropped. An empty string if dropped in the last row. | | `controlId`   | Identifier of the source cell                                                                                    | | `sourceRowId` | Identifier of the source row                                                                                     |  * When the dragged item was dropped on an existing empty cell:  | Property      | Details                                                                                                          | | ------------- | ---------------------------------------------------------------------------------------------------------------- | | `targetCellId`| Identifier of the cell where the control was dropped | | `controlId`   | Identifier of the source cell                                                                                    | | `sourceRowId` | Identifier of the source row                                                                                     |  * When the dragged item was dropped on an existing non-empty cell:  | Property          | Details                                                                                                                                     | | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | | `beforeControlId` | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. | | `targetRowId`     | Identifier of the row where the control was dropped                                                                                         | | `controlId`       | Identifier of the source cell                                                                                                               | | `sourceRowId`     | Identifier of the source row                                                                                                                |
        */
       onMoveCompleted?: (event: CustomEvent) => void;
       /**
-       * Identifier of the selected control. If empty the whole layout-editor is marked as selected.
+       * Array with the identifiers of the selected controls. If empty the whole layout-editor is marked as selected.
        */
-      selectedControlId?: string;
+      selectedCells?: string[];
     }
   }
 }

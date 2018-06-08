@@ -1,7 +1,10 @@
 import controlResolver from "../layout-editor-control-resolver";
 
 export default function flexTableResolver({ table }, context) {
-  const modelRows = Array.isArray(table.row) ? table.row : [table.row];
+  const modelRows = table.row
+    ? Array.isArray(table.row) ? table.row : [table.row]
+    : [];
+  const isEmptyTable = modelRows.length === 0;
   const nonEmptyRows = modelRows.filter(
     r => (Array.isArray(r.cell) && r.cell.length) || r.cell
   );
@@ -16,7 +19,14 @@ export default function flexTableResolver({ table }, context) {
   });
 
   return (
-    <div style={getTableStyle(table)} data-gx-le-container>
+    <div
+      data-gx-le-control-id={table["@controlName"]}
+      style={getTableStyle(table)}
+      data-gx-le-container
+      data-gx-le-container-empty={isEmptyTable}
+      data-gx-le-flex-table
+      data-gx-le-flex-table-direction={table["@flexDirection"].toLowerCase()}
+    >
       {[...rows]}
     </div>
   );
@@ -47,12 +57,13 @@ function renderCell(cell, rowId, context, direction) {
 
   return (
     <div
+      tabindex="0"
       data-gx-flex-cell
       data-gx-le-drop-area={direction === "Column" ? "vertical" : "horizontal"}
       data-gx-le-cell-id={cell["@id"]}
       data-gx-le-row-id={rowId}
       style={editorCellStyle}
-      data-gx-le-selected={context.selectedControlId === cell["@id"]}
+      data-gx-le-selected={context.selectedCells.includes(cell["@id"])}
     >
       {controlResolver(cell, context)}
     </div>

@@ -1,6 +1,14 @@
-import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Prop,
+  Watch
+} from "@stencil/core";
 import Dragula from "dragula";
 import controlResolver from "./layout-editor-control-resolver";
+import { findTargetControl, getCellData, getDropTargetData } from "./helpers";
 
 @Component({
   shadow: false,
@@ -16,10 +24,12 @@ export class LayoutEditor {
   @Prop() model: any;
 
   /**
-   * Identifier of the selected control. If empty the whole layout-editor is marked as selected.
+   * Array with the identifiers of the selected controls. If empty the whole layout-editor is marked as selected.
    */
   @Prop({ mutable: true })
-  selectedControlId: string;
+  selectedCells: string[] = [];
+
+  private selectedControls: string[] = [];
 
   /**
    * Fired when a control is moved inside the layout editor to a new location
@@ -55,6 +65,53 @@ export class LayoutEditor {
   @Event() moveCompleted: EventEmitter;
 
   /**
+   * Fired when a GeneXus Knowledgebase Object has been dropped on a valid drop target
+   *
+   * An object containing information of the add operation is sent in the `detail` property of the event object
+   *
+   * | Property          | Details                                                                                                                                     |
+   * | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+   * | `beforeControlId` | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. |
+   * | `targetRowId`     | Identifier of the row where the control was dropped                                                                                         |
+   * | `kbObjectName`    | Name of the GeneXus object                                                                                                               |
+   *
+   */
+  @Event() kbObjectAdded: EventEmitter;
+
+  /**
+   * Fired when a control (that wasn't already inside the layout editor, for example, from a toolbox) has been dropped on a valid drop target
+   *
+   * The dataTransfer property of the event must have the following format:
+   * `"GX_DASHBOARD_ADDELEMENT,[GeneXus type of control]"`
+   *
+   * where:
+   * * `GX_DASHBOARD_ADDELEMENT` is the type of action
+   * * `[GeneXus type of control]` is the type of control that's been added. This value can have any value and will be passed as part of the information sent as part of the event.
+   *
+   * An object containing information of the add operation is sent in the `detail` property of the event object
+   *
+   * | Property          | Details                                                                                                                                     |
+   * | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+   * | `beforeControlId` | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. |
+   * | `targetRowId`     | Identifier of the row where the control was dropped                                                                                         |
+   * | `elementType`     | The type of the control that's been added and was received as the `[GeneXus type of control]` in the dataTransfer of the drop operation |
+   *
+   */
+  @Event() controlAdded: EventEmitter;
+
+  /**
+   * Fired when a control has been removed from the layout
+   *
+   * An object containing information of the add operation is sent in the `detail` property of the event object
+   *
+   * | Property          | Details                                                                                                                                     |
+   * | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+   * | `controlId` | Identifier of the cell that was removed |
+   *
+   */
+  @Event() controlRemoved: EventEmitter;
+
+  /**
    * Fired when the selection has been changed
    *
    * An object containing information of the select operation is sent in the `detail` property of the event object
@@ -75,10 +132,21 @@ export class LayoutEditor {
     direction: "horizontal"
   };
 
-  private ddDroppedEl: any;
+  private ddDroppedEl: HTMLElement;
+
+  private ignoreFocus = false;
 
   componentDidLoad() {
     this.initDragAndDrop();
+
+    this.element.addEventListener("keydown", this.handleKeyDown.bind(this));
+    this.element.addEventListener("focusin", this.handleFocusIn.bind(this));
+    this.element.addEventListener("mouseup", () => {
+      this.ignoreFocus = false;
+    });
+    this.element.addEventListener("mousedown", event => {
+      this.ignoreFocus = event.ctrlKey;
+    });
     this.element.addEventListener("click", this.handleClick.bind(this));
   }
 
@@ -86,11 +154,44 @@ export class LayoutEditor {
     this.restoreAfterDragDrop();
   }
 
+  private handleFocusIn(event: FocusEvent) {
+    if (!this.ignoreFocus) {
+      const target = event.target as HTMLElement;
+
+      const { cellId } = getCellData(target);
+      const childControl = target.querySelector("[data-gx-le-control-id]");
+      const controlId = childControl
+        ? cellId + childControl.getAttribute("data-gx-le-control-id")
+        : cellId;
+
+      this.updateSelection(cellId, controlId, false);
+    }
+  }
+
+  private handleKeyDown(event: KeyboardEvent) {
+    const target = event.target as HTMLElement;
+    const { cellId } = getCellData(target);
+    if (cellId) {
+      switch (event.key) {
+        case "Delete":
+          this.handleDelete(target);
+          break;
+      }
+    }
+  }
+
+  private handleDelete(target) {
+    const { cellId: controlId } = getCellData(target);
+    this.controlRemoved.emit({
+      controlId
+    });
+  }
+
   private initDragAndDrop() {
     this.drake = Dragula(this.getDropAreas(), this.dragulaOptions);
 
     this.drake.on("shadow", (el, container) => {
-      const direction = container.getAttribute("data-gx-le-drop-area");
+      const { dropArea: direction } = getCellData(container);
       // Update dragula's direction dynamically according to the direction
       // stated at the `data-gx-le-drop-area` attribute
       this.dragulaOptions.direction = direction;
@@ -98,7 +199,7 @@ export class LayoutEditor {
       const position =
         container.children.length === 1
           ? "empty"
-          : el.nextSibling
+          : el.nextElementSibling
             ? direction === "vertical" ? "top" : "left"
             : direction === "vertical" ? "bottom" : "right";
       container.setAttribute("data-gx-le-active-target", position);
@@ -117,50 +218,173 @@ export class LayoutEditor {
       this.element.removeAttribute("data-gx-le-dragging");
     });
 
-    this.drake.on("drop", (el, target, source) => {
-      this.ddDroppedEl = el;
-      if (!target) {
-        return;
-      }
+    // Drop of controls that were already part of the layout
+    this.drake.on("drop", this.handleMoveElementDrop.bind(this));
 
-      const controlId = source.getAttribute("data-gx-le-cell-id");
-      const targetRowId = target.getAttribute("data-gx-le-row-id");
-      const sourceRowId = source.getAttribute("data-gx-le-row-id");
+    // Drop of controls from outside of the editor (e.g. GeneXus' toolbox)
+    this.element.addEventListener(
+      "drop",
+      this.handleExternalElementDrop.bind(this)
+    );
 
-      if (target.getAttribute("data-gx-le-placeholder") === "row") {
-        // Dropped on a new row
-        const beforeRowId = target.getAttribute("data-gx-le-next-row-id");
+    this.element.addEventListener(
+      "dragover",
+      this.handleExternalElementOver.bind(this)
+    );
+
+    this.element.addEventListener("dragend", () => {
+      // End Dragula's drag operation
+      this.drake.end();
+    });
+  }
+
+  private handleMoveElementDrop(el, target, source) {
+    if (source.getAttribute("data-gx-le-external")) {
+      return;
+    }
+
+    this.ddDroppedEl = el;
+
+    if (!target) {
+      return;
+    }
+
+    const { cellId: controlId, rowId: targetRowId } = getCellData(target);
+    const { rowId: sourceRowId } = getCellData(source);
+    const { placeholderType, nextRowId } = getDropTargetData(target);
+    if (placeholderType === "row") {
+      // Dropped on a new row
+      const beforeRowId = nextRowId;
+      this.moveCompleted.emit({
+        beforeRowId,
+        controlId,
+        sourceRowId
+      });
+    } else {
+      // Dropped on an existing row
+      if (target.children.length === 1) {
+        // Dropped on an empty cell
+        const { cellId: targetCellId } = getCellData(target);
         this.moveCompleted.emit({
-          beforeRowId,
           controlId,
-          sourceRowId
+          sourceRowId,
+          targetCellId
         });
       } else {
-        // Dropped on an existing row
-        if (target.children.length === 1) {
-          // Dropped on an empty cell
-          const targetCellId = target.getAttribute("data-gx-le-cell-id");
-          this.moveCompleted.emit({
-            controlId,
-            sourceRowId,
-            targetCellId
-          });
-        } else {
-          // Dropped on a non-empty cell
-          const beforeControlId = el.nextSibling
-            ? target.getAttribute("data-gx-le-cell-id")
-            : target.nextSibling
-              ? target.nextSibling.getAttribute("data-gx-le-cell-id")
-              : null;
-          this.moveCompleted.emit({
-            beforeControlId,
-            controlId,
-            sourceRowId,
-            targetRowId
-          });
-        }
+        // Dropped on a non-empty cell
+        const { cellId: beforeControlId } = el.nextElementSibling
+          ? getCellData(target)
+          : target.nextElementSibling
+            ? getCellData(target.nextElementSibling)
+            : null;
+        this.moveCompleted.emit({
+          beforeControlId,
+          controlId,
+          sourceRowId,
+          targetRowId
+        });
       }
-    });
+    }
+  }
+
+  private handleExternalElementOver(event: DragEvent) {
+    function triggerMouseEvent(node, eventType) {
+      const clickEvent = new MouseEvent(eventType, {
+        altKey: event.altKey,
+        bubbles: true,
+        button: event.button,
+        buttons: event.buttons,
+        cancelable: true,
+        clientX: event.clientX,
+        clientY: event.clientY,
+        ctrlKey: event.ctrlKey,
+        metaKey: event.metaKey,
+        relatedTarget: event.relatedTarget,
+        screenX: event.screenX,
+        screenY: event.screenY,
+        shiftKey: event.shiftKey,
+        view: window
+      });
+      node.dispatchEvent(clickEvent);
+    }
+
+    const item = this.element.querySelector(
+      "[data-gx-le-external-transit]"
+    ) as HTMLElement;
+
+    // Enter Dragula's drag mode programatically
+    this.drake.start(item);
+
+    event.preventDefault();
+
+    // Simulate a mousedown and a mousemove to trick Dragula into starting
+    // its drag operation with the item being dragged, even though it didn't
+    // originally come from a registered Dragula container.
+    setTimeout(() => {
+      triggerMouseEvent(item, "mousedown");
+      setTimeout(() => {
+        triggerMouseEvent(document.documentElement, "mousemove");
+      }, 100);
+    }, 100);
+    return false;
+  }
+
+  private handleExternalElementDrop(event: DragEvent) {
+    const target = findTargetControl(event.target as HTMLElement);
+    const el = target.querySelector("[data-gx-le-external-transit]");
+
+    this.drake.end();
+
+    this.ddDroppedEl = el as HTMLElement;
+
+    const { rowId: targetRowId } = getCellData(target);
+    const { placeholderType, nextRowId } = getDropTargetData(target);
+    let eventData = {};
+    if (placeholderType === "row") {
+      // Dropped on a new row
+      const beforeRowId = nextRowId;
+      eventData = {
+        beforeRowId
+      };
+    } else {
+      // Dropped on an existing row
+      if (target.children.length === 1) {
+        // Dropped on an empty cell
+        const { cellId: targetCellId } = getCellData(target);
+        eventData = {
+          targetCellId
+        };
+      } else {
+        // Dropped on a non-empty cell
+        const { cellId: beforeControlId } = el.nextElementSibling
+          ? getCellData(target)
+          : target.nextElementSibling
+            ? getCellData(target.nextElementSibling as HTMLElement)
+            : null;
+        eventData = {
+          beforeControlId,
+          targetRowId
+        };
+      }
+    }
+
+    const evtData = event.dataTransfer.getData("text");
+    const evtDataArr = evtData ? evtData.split(",") : [];
+
+    if (evtDataArr.length === 1) {
+      this.kbObjectAdded.emit({
+        ...eventData,
+        kbObjectName: evtDataArr[0]
+      });
+    } else if (
+      evtDataArr.length === 2 &&
+      evtDataArr[0] === "GX_DASHBOARD_ADDELEMENT"
+    ) {
+      this.controlAdded.emit({
+        ...eventData,
+        elementType: evtDataArr[1]
+      });
+    }
   }
 
   private getDropAreas() {
@@ -197,42 +421,58 @@ export class LayoutEditor {
 
   render() {
     if (this.model && this.model.layout) {
-      this.element.setAttribute(
-        "data-gx-le-selected",
-        (!this.selectedControlId).toString()
+      const isSelected = this.selectedCells.find(id => id === "") === "";
+      this.element.setAttribute("data-gx-le-selected", isSelected.toString());
+      return (
+        <div>
+          {controlResolver(this.model.layout, {
+            selectedCells: this.selectedCells
+          })}
+          <gx-layout-editor-placeholder
+            data-gx-le-external
+            data-gx-le-placeholder="row"
+            style={{
+              display: "none"
+            }}
+          >
+            <div data-gx-le-external-transit />
+          </gx-layout-editor-placeholder>
+        </div>
       );
-      return controlResolver(this.model.layout, {
-        selectedControlId: this.selectedControlId
-      });
     }
   }
 
-  private handleClick(event: UIEvent) {
-    const target: Element = event.target as Element;
-    const control: any = this.findTargetControl(target);
+  @Watch("selectedCells")
+  watchSelectedCells() {
+    this.controlSelected.emit({
+      controlIds: this.selectedControls.join(",")
+    });
+  }
+
+  private handleClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const control = findTargetControl(target);
     if (control) {
-      this.selectedControlId = control.getAttribute("data-gx-le-cell-id");
-      this.controlSelected.emit({
-        controlId:
-          control.getAttribute("data-gx-le-cell-id") ||
-          this.model.layout.table["@id"]
-      });
+      control.focus();
+      const { cellId: selectedCellId } = getCellData(control);
+      const childControl = control.querySelector("[data-gx-le-control-id]");
+      const controlId = childControl
+        ? selectedCellId + childControl.getAttribute("data-gx-le-control-id")
+        : selectedCellId;
+
+      this.updateSelection(selectedCellId, controlId, event.ctrlKey);
     } else {
-      this.selectedControlId = "";
+      this.updateSelection("", "1", event.ctrlKey);
     }
   }
 
-  private findTargetControl(el: Element) {
-    if (el.hasAttribute("data-gx-le-drop-area")) {
-      return el;
-    }
-
-    while (el) {
-      const parent = el.parentElement;
-      if (parent && parent.hasAttribute("data-gx-le-drop-area")) {
-        return parent;
-      }
-      el = parent;
+  private updateSelection(selectedCellId, controlId, add) {
+    if (add) {
+      this.selectedControls = [...this.selectedControls, controlId];
+      this.selectedCells = [...this.selectedCells, selectedCellId];
+    } else {
+      this.selectedControls = [controlId];
+      this.selectedCells = [selectedCellId];
     }
   }
 }

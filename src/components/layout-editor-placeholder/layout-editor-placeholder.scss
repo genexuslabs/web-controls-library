@@ -2,4 +2,9 @@
 
 gx-layout-editor-placeholder {
   @include visibility(flex);
+
+  padding-top: calc(var(--gx-le-table-placeholder-height) / 2);
+  padding-bottom: calc(
+    (var(--gx-le-table-placeholder-height) / 2) - var(--gx-le-table-cell-gap)
+  );
 }

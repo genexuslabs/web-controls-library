@@ -10,7 +10,7 @@ export default function actionResolver({ action }) {
   return (
     <gx-button
       css-class={action["@class"]}
-      data-internal-id={action["@id"]}
+      data-gx-le-control-id={action["@controlName"]}
       disabled={action["@enabled"] === "False"}
       image-position={imagePositionMap[action["@imagePosition"]]}
     >
