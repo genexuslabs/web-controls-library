@@ -3,6 +3,7 @@ import textblockResolver from "./control-resolvers/textblock-resolver";
 import imageResolver from "./control-resolvers/image-resolver";
 import tableResolver from "./control-resolvers/table-resolver";
 import dataResolver from "./control-resolvers/data-resolver";
+import defaultResolver from "./control-resolvers/default-resolver";
 
 const resolversMap: IResolverMapEntry[] = [
   {
@@ -32,7 +33,7 @@ export default function controlResolver(control, context) {
   if (resolverObj) {
     return resolverObj.resolver(control, context);
   }
-  return null;
+  return defaultResolver(control);
 }
 
 interface IResolverMapEntry {

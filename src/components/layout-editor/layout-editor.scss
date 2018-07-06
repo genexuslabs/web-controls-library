@@ -38,6 +38,11 @@ gx-layout-editor {
     }
   }
 
+  & > div > [data-gx-le-container-empty="true"] {
+    min-height: 100vh;
+    border: var(--gx-le-table-cell-border);
+  }
+
   [data-gx-le-container] {
     min-height: var(--gx-le-table-min-height);
 

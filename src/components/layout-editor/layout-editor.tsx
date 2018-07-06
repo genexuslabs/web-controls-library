@@ -8,7 +8,13 @@ import {
 } from "@stencil/core";
 import Dragula from "dragula";
 import controlResolver from "./layout-editor-control-resolver";
-import { findTargetControl, getCellData, getDropTargetData } from "./helpers";
+import {
+  findTargetControl,
+  getCellData,
+  getControlId,
+  getDropTargetData,
+  isEmptyTableDrop
+} from "./layout-editor-helpers";
 
 @Component({
   shadow: false,
@@ -36,65 +42,117 @@ export class LayoutEditor {
    *
    * An object containing information of the move operation is sent in the `detail` property of the event object
    *
-   * * When the dragged item was dropped on a new row:
+   * Regardless where the control was dropped, the detail object will contain information about the source row and the id of the dropped control:
    *
    * | Property      | Details                                                                                                          |
    * | ------------- | ---------------------------------------------------------------------------------------------------------------- |
-   * | `beforeRowId` | Identifier of the row next to the row where the control was dropped. An empty string if dropped in the last row. |
    * | `controlId`   | Identifier of the source cell                                                                                    |
    * | `sourceRowId` | Identifier of the source row                                                                                     |
    *
-   * * When the dragged item was dropped on an existing empty cell:
+   * Depending on where the control was dropped, additional information will be provided and different properties will be set. There are four possible cases:
+   *
+   * 1. Dropped on an empty container or on a new row that will be the last row of a container
+   * 2. Dropped on a new row of a non empty container
+   * 3. Dropped on an existing empty cell
+   * 4. Dropped on an existing row
+   *
+   *
+   * ###### 1. Dropped on an empty container or on a new row that will be the last row of a container
+   *
+   * | Property          | Details                                                                                                                                     |
+   * | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+   * | `containerId`     | Identifier of the container where the control was dropped                                                                                   |
+   *
+   * ###### 2. Dropped on a new row of a non empty container
+   *
+   * | Property          | Details                                                                                                                                     |
+   * | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+   * | `beforeRowId`     | Identifier of the row next to the row where the control was dropped. An empty string if dropped in the last row or on an empty container.   |
+   *
+   * ###### 3. Dropped on an existing empty cell
    *
    * | Property      | Details                                                                                                          |
    * | ------------- | ---------------------------------------------------------------------------------------------------------------- |
    * | `targetCellId`| Identifier of the cell where the control was dropped |
-   * | `controlId`   | Identifier of the source cell                                                                                    |
-   * | `sourceRowId` | Identifier of the source row                                                                                     |
    *
-   * * When the dragged item was dropped on an existing non-empty cell:
+   *  ###### 4. Dropped on an existing row
    *
    * | Property          | Details                                                                                                                                     |
    * | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
    * | `beforeControlId` | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. |
    * | `targetRowId`     | Identifier of the row where the control was dropped                                                                                         |
-   * | `controlId`       | Identifier of the source cell                                                                                                               |
-   * | `sourceRowId`     | Identifier of the source row                                                                                                                |
    *
    */
   @Event() moveCompleted: EventEmitter;
 
   /**
-   * Fired when a GeneXus Knowledgebase Object has been dropped on a valid drop target
+   * Fired when a control (that wasn't already inside the layout editor) has been dropped on
+   * a valid drop target (for example, a control from a toolbox or an object from the knowledge base navigator)
    *
-   * An object containing information of the add operation is sent in the `detail` property of the event object
+   * ##### Dragging a control
    *
-   * | Property          | Details                                                                                                                                     |
-   * | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-   * | `beforeControlId` | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. |
-   * | `targetRowId`     | Identifier of the row where the control was dropped                                                                                         |
-   * | `kbObjectName`    | Name of the GeneXus object                                                                                                               |
+   * If a control is being dragged, the dataTransfer property of the event must have the following format:
    *
-   */
-  @Event() kbObjectAdded: EventEmitter;
-
-  /**
-   * Fired when a control (that wasn't already inside the layout editor, for example, from a toolbox) has been dropped on a valid drop target
-   *
-   * The dataTransfer property of the event must have the following format:
    * `"GX_DASHBOARD_ADDELEMENT,[GeneXus type of control]"`
    *
    * where:
+   *
    * * `GX_DASHBOARD_ADDELEMENT` is the type of action
    * * `[GeneXus type of control]` is the type of control that's been added. This value can have any value and will be passed as part of the information sent as part of the event.
    *
-   * An object containing information of the add operation is sent in the `detail` property of the event object
+   * ##### Dragging a KB object
+   *
+   * If a KB object is being dragged, the dataTransfer property of the event must contain the name of the KB object.
+   *
+   * ##### Dropped control information
+   *
+   * An object containing information of the add operation is sent in the `detail` property of the event object.
+   *
+   * If a KB object was dropped, the following properties are set:
+   *
+   * | Property          | Details                                                                                                                                     |
+   * | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+   * | `kbObjectName`    | Name of the GeneXus object                                                                                                               |
+   *
+   * If control was dropped, the following properties are set.
+   *
+   * | Property          | Details                                                                                                                                     |
+   * | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+   * | `elementType`     | The type of the control that's been added and was received as the `[GeneXus type of control]` in the dataTransfer of the drop operation     |
+   *
+   * Depending on where the control was dropped, additional information will be provided and different properties will be set. There are four possible cases:
+   *
+   * 1. Dropped on an empty container or in the last row of a container
+   * 2. Dropped on a new row of a non empty container
+   * 3. Dropped on an existing empty cell
+   * 4. Dropped on an existing row
+   *
+   *
+   * ###### 1. Dropped on an empty container or on a new row that will be the last row of a container
+   *
+   * | Property          | Details                                                                                                                                     |
+   * | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+   * | `containerId`     | Identifier of the container where the control was dropped                                                                                   |
+   *
+   * ###### 2. Dropped on a new row of a non empty container
+   *
+   * | Property          | Details                                                                                                                                     |
+   * | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+   * | `beforeRowId`     | Identifier of the row next to the row where the control was dropped. An empty string if dropped in the last row or on an empty container.   |
+   *
+   * ###### 3. Dropped on an existing empty cell
+   *
+   * | Property      | Details                                                                                                          |
+   * | ------------- | ---------------------------------------------------------------------------------------------------------------- |
+   * | `targetCellId`| Identifier of the cell where the control was dropped |
+   *
+   *  ###### 4. Dropped on an existing row
    *
    * | Property          | Details                                                                                                                                     |
    * | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
    * | `beforeControlId` | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. |
    * | `targetRowId`     | Identifier of the row where the control was dropped                                                                                         |
-   * | `elementType`     | The type of the control that's been added and was received as the `[GeneXus type of control]` in the dataTransfer of the drop operation |
+   *
    *
    */
   @Event() controlAdded: EventEmitter;
@@ -106,7 +164,7 @@ export class LayoutEditor {
    *
    * | Property          | Details                                                                                                                                     |
    * | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-   * | `controlId` | Identifier of the cell that was removed |
+   * | `controlId`       | Identifier of the cell that was removed |
    *
    */
   @Event() controlRemoved: EventEmitter;
@@ -161,7 +219,7 @@ export class LayoutEditor {
       const { cellId } = getCellData(target);
       const childControl = target.querySelector("[data-gx-le-control-id]");
       const controlId = childControl
-        ? cellId + childControl.getAttribute("data-gx-le-control-id")
+        ? cellId + getControlId(childControl as HTMLElement)
         : cellId;
 
       this.updateSelection(cellId, controlId, false);
@@ -243,24 +301,43 @@ export class LayoutEditor {
       return;
     }
 
-    this.ddDroppedEl = el;
-
     if (!target) {
       return;
     }
 
-    const { cellId: controlId, rowId: targetRowId } = getCellData(target);
-    const { rowId: sourceRowId } = getCellData(source);
+    this.ddDroppedEl = el;
+
     const { placeholderType, nextRowId } = getDropTargetData(target);
     if (placeholderType === "row") {
-      // Dropped on a new row
-      const beforeRowId = nextRowId;
-      this.moveCompleted.emit({
-        beforeRowId,
-        controlId,
-        sourceRowId
-      });
+      const { rowId: sourceRowId, cellId: controlId } = getCellData(source);
+      if (isEmptyTableDrop(target as HTMLElement)) {
+        // Dropped on an empty container
+        const placeholderElement = target as HTMLElement;
+        this.moveCompleted.emit({
+          containerId: getControlId(placeholderElement.parentElement),
+          controlId,
+          sourceRowId
+        });
+      } else {
+        // Dropped on a new row
+        const beforeRowId = nextRowId;
+        if (beforeRowId) {
+          this.moveCompleted.emit({
+            beforeRowId,
+            controlId,
+            sourceRowId
+          });
+        } else {
+          this.moveCompleted.emit({
+            containerId: getControlId(target.parentElement),
+            controlId,
+            sourceRowId
+          });
+        }
+      }
     } else {
+      const { rowId: targetRowId } = getCellData(target);
+      const { cellId: controlId, rowId: sourceRowId } = getCellData(source);
       // Dropped on an existing row
       if (target.children.length === 1) {
         // Dropped on an empty cell
@@ -330,41 +407,66 @@ export class LayoutEditor {
   }
 
   private handleExternalElementDrop(event: DragEvent) {
-    const target = findTargetControl(event.target as HTMLElement);
-    const el = target.querySelector("[data-gx-le-external-transit]");
-
-    this.drake.end();
-
-    this.ddDroppedEl = el as HTMLElement;
-
-    const { rowId: targetRowId } = getCellData(target);
-    const { placeholderType, nextRowId } = getDropTargetData(target);
     let eventData = {};
-    if (placeholderType === "row") {
-      // Dropped on a new row
-      const beforeRowId = nextRowId;
-      eventData = {
-        beforeRowId
-      };
-    } else {
-      // Dropped on an existing row
-      if (target.children.length === 1) {
-        // Dropped on an empty cell
-        const { cellId: targetCellId } = getCellData(target);
+
+    if (isEmptyTableDrop(event.target as HTMLElement)) {
+      if (this.isEditorEmpty()) {
+        // Dropped on the outermost table, when it's empty (the editor is empty)
         eventData = {
-          targetCellId
+          containerId: MAIN_TABLE_IDENTIFIER
         };
       } else {
-        // Dropped on a non-empty cell
-        const { cellId: beforeControlId } = el.nextElementSibling
-          ? getCellData(target)
-          : target.nextElementSibling
-            ? getCellData(target.nextElementSibling as HTMLElement)
-            : null;
+        // Dropped on an empty table
+        const placeholderElement = event.target as HTMLElement;
         eventData = {
-          beforeControlId,
-          targetRowId
+          containerId: getControlId(placeholderElement.parentElement)
         };
+      }
+    } else {
+      const evtTarget = event.target as HTMLElement;
+      const target = findTargetControl(evtTarget) || evtTarget;
+      const el = target.querySelector("[data-gx-le-external-transit]");
+
+      this.drake.end();
+
+      this.ddDroppedEl = el as HTMLElement;
+
+      const { rowId: targetRowId } = getCellData(target);
+      const { placeholderType, nextRowId } = getDropTargetData(target);
+      if (placeholderType === "row") {
+        // Dropped on a new row
+        const beforeRowId = nextRowId;
+        if (beforeRowId) {
+          // The new row was dropped before an existing row (beforeRowId)
+          eventData = {
+            beforeRowId
+          };
+        } else {
+          // The new row is the last row
+          eventData = {
+            containerId: getControlId(target.parentElement)
+          };
+        }
+      } else {
+        // Dropped on an existing row
+        if (target.children.length === 1) {
+          // Dropped on an empty cell
+          const { cellId: targetCellId } = getCellData(target);
+          eventData = {
+            targetCellId
+          };
+        } else {
+          // Dropped on a non-empty cell
+          const { cellId: beforeControlId } = el.nextElementSibling
+            ? getCellData(target)
+            : target.nextElementSibling
+              ? getCellData(target.nextElementSibling as HTMLElement)
+              : null;
+          eventData = {
+            beforeControlId,
+            targetRowId
+          };
+        }
       }
     }
 
@@ -372,7 +474,7 @@ export class LayoutEditor {
     const evtDataArr = evtData ? evtData.split(",") : [];
 
     if (evtDataArr.length === 1) {
-      this.kbObjectAdded.emit({
+      this.controlAdded.emit({
         ...eventData,
         kbObjectName: evtDataArr[0]
       });
@@ -385,6 +487,15 @@ export class LayoutEditor {
         elementType: evtDataArr[1]
       });
     }
+  }
+
+  private isEditorEmpty() {
+    const outmostContainer = this.element.querySelector(
+      "[data-gx-le-container]"
+    );
+    return (
+      outmostContainer.getAttribute("data-gx-le-container-empty") === "true"
+    );
   }
 
   private getDropAreas() {
@@ -457,12 +568,12 @@ export class LayoutEditor {
       const { cellId: selectedCellId } = getCellData(control);
       const childControl = control.querySelector("[data-gx-le-control-id]");
       const controlId = childControl
-        ? selectedCellId + childControl.getAttribute("data-gx-le-control-id")
+        ? selectedCellId + getControlId(childControl as HTMLElement)
         : selectedCellId;
 
       this.updateSelection(selectedCellId, controlId, event.ctrlKey);
     } else {
-      this.updateSelection("", "1", event.ctrlKey);
+      this.updateSelection("", MAIN_TABLE_IDENTIFIER, event.ctrlKey);
     }
   }
 
@@ -476,3 +587,5 @@ export class LayoutEditor {
     }
   }
 }
+
+const MAIN_TABLE_IDENTIFIER = "1";

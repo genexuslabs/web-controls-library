@@ -27,6 +27,18 @@ export function getDropTargetData(el: HTMLElement): IDropTargetData {
   };
 }
 
+export function isEmptyTableDrop(el: HTMLElement): boolean {
+  return (
+    el.matches("gx-layout-editor-placeholder") &&
+    el.parentElement &&
+    el.parentElement.getAttribute("data-gx-le-container-empty") === "true"
+  );
+}
+
+export function getControlId(el: HTMLElement): string {
+  return el.getAttribute("data-gx-le-control-id") || "";
+}
+
 interface ICellData {
   cellId: string;
   dropArea: string;

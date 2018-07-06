@@ -20,7 +20,7 @@ export default function tabularTableResolver({ table }, context) {
 
     let colStart = 0;
     const renderedCells = rowCells.map(cell => {
-      colStart += parseInt(cell["@colSpan"], 10);
+      colStart += parseInt(getCellColSpan(cell), 10);
       return renderCell(cell, row["@id"], i, colStart, context);
     });
 
@@ -80,8 +80,8 @@ function renderEmptyRows(nonEmptyRows, maxCols) {
 }
 
 function renderCell(cell, rowId, rowIndex, colStart, context) {
-  const rowSpan = (parseInt(cell["@rowSpan"], 10) - 1) * 2 + 1;
-  const colSpan = cell["@colSpan"];
+  const rowSpan = (parseInt(getCellRowSpan(cell), 10) - 1) * 2 + 1;
+  const colSpan = getCellColSpan(cell);
   const rowStart = (rowIndex + 1) * 2;
 
   return (
@@ -103,4 +103,12 @@ function renderCell(cell, rowId, rowIndex, colStart, context) {
 
 function intercalateArray(arr, item) {
   return arr.reduce((acc, o) => (o ? acc.concat(o, item) : acc), [item]);
+}
+
+function getCellRowSpan(cell) {
+  return cell["@rowSpan"] || "1";
+}
+
+function getCellColSpan(cell) {
+  return cell["@colSpan"] || "1";
 }
