@@ -24,6 +24,12 @@ The element will show one or the other, depending on the value of the [disabled]
 
 ## Properties
 
+#### cssClass
+
+string
+
+A CSS class to set as the inner `input` element class.
+
 #### disabled
 
 boolean
@@ -71,6 +77,12 @@ This attribute lets you specify the size of the button.
 | `small`  | Small sized button.    |
 
 ## Attributes
+
+#### css-class
+
+string
+
+A CSS class to set as the inner `input` element class.
 
 #### disabled
 

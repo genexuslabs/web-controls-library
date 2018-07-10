@@ -7,6 +7,7 @@ export function ButtonRender<T extends Constructor<{}>>(Base: T) {
     disabled: boolean;
     onClick: EventEmitter;
     size: string;
+    cssClass: string;
 
     handleClick(event: UIEvent) {
       if (this.disabled) {
@@ -34,7 +35,8 @@ export function ButtonRender<T extends Constructor<{}>>(Base: T) {
             "btn-default": true,
             "btn-lg": this.size === "large",
             "btn-sm": this.size === "small",
-            "gx-button": true
+            "gx-button": true,
+            [this.cssClass]: true
           }}
           onClick={this.handleClick.bind(this)}
           tabindex="0"

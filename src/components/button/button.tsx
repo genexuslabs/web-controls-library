@@ -11,6 +11,11 @@ export class Button extends ButtonRender(BaseComponent) {
   @Element() element: HTMLElement;
 
   /**
+   * A CSS class to set as the inner `input` element class.
+   */
+  @Prop() cssClass: string;
+
+  /**
    * This attribute lets you specify how this element will behave when hidden.
    *
    * | Value        | Details                                                                     |
