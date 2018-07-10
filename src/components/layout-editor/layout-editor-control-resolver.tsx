@@ -4,11 +4,16 @@ import imageResolver from "./control-resolvers/image-resolver";
 import tableResolver from "./control-resolvers/table-resolver";
 import dataResolver from "./control-resolvers/data-resolver";
 import defaultResolver from "./control-resolvers/default-resolver";
+import componentResolver from "./control-resolvers/component-resolver";
 
 const resolversMap: IResolverMapEntry[] = [
   {
     resolver: actionResolver,
     type: "action"
+  },
+  {
+    resolver: componentResolver,
+    type: "component"
   },
   {
     resolver: dataResolver,

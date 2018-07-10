@@ -29,6 +29,10 @@ declare global {
   namespace StencilComponents {
     interface GxButton {
       /**
+       * A CSS class to set as the inner `input` element class.
+       */
+      cssClass: string;
+      /**
        * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event). If a disabled image has been specified, it will be shown, hiding the base image (if specified).
        */
       disabled: boolean;
@@ -68,6 +72,10 @@ declare global {
   }
   namespace JSXElements {
     export interface GxButtonAttributes extends HTMLAttributes {
+      /**
+       * A CSS class to set as the inner `input` element class.
+       */
+      cssClass?: string;
       /**
        * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event). If a disabled image has been specified, it will be shown, hiding the base image (if specified).
        */

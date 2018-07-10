@@ -63,16 +63,16 @@ gx-layout-editor {
         left: 1px;
         z-index: 1;
         background-color: white;
-        background-image: url(assets/icon-move.svg);
+        background-image: var(--gx-le-table-anchor-icon);
         background-repeat: no-repeat;
         background-size: contain;
-        width: 18px;
-        height: 18px;
+        width: var(--gx-le-table-anchor-icon-size);
+        height: var(--gx-le-table-anchor-icon-size);
       }
     }
   }
 
-  & > gx-table:hover:after {
+  & > [data-gx-le-container]:hover:after {
     display: none;
   }
 
