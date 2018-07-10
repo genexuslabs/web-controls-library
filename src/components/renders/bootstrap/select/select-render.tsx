@@ -78,11 +78,14 @@ export function SelectRender<T extends Constructor<{}>>(Base: T) {
           disabled: this.disabled,
           id: this.selectId,
           onChange: this.handleChange.bind(this),
-          ref: select => (this.nativeSelect = select as any)
+          ref: (select: HTMLSelectElement) => {
+            select.value = this.value;
+            this.nativeSelect = select;
+          }
         };
 
         return (
-          <select {...attris} value={this.value}>
+          <select {...attris}>
             {this.options.map(({ disabled, innerText, selected, value }) => (
               <option disabled={disabled} selected={selected} value={value}>
                 {innerText}

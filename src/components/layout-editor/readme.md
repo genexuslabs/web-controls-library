@@ -50,6 +50,8 @@ The abstract form model object
 
 #### selectedCells
 
+string[]
+
 Array with the identifiers of the selected controls. If empty the whole layout-editor is marked as selected.
 
 ## Attributes

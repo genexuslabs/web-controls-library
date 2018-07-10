@@ -25,10 +25,8 @@
     "popper.js": "^1.14.3"
   },
   "devDependencies": {
-    "@stencil/core": "^0.9.4",
-    "@stencil/dev-server": "latest",
+    "@stencil/core": "^0.10.2",
     "@stencil/sass": "0.0.5",
-    "@stencil/utils": "latest",
     "@types/dragula": "^2.1.33",
     "@types/jest": "^21.1.1",
     "husky": "^0.14.3",

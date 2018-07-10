@@ -55,8 +55,8 @@ function getTableStyle(rowsCount, colsCount) {
 function renderEmptyRows(nonEmptyRows, maxCols) {
   const emptyRowFn = (i, nextRow) => {
     const emptyCellStyle = {
-      gridColumn: `1 / span ${maxCols}`,
-      gridRow: `${i * 2 + 1} / span 1`
+      "grid-column": `1 / span ${maxCols}`,
+      "grid-row": `${i * 2 + 1} / span 1`
     };
     return (
       <gx-layout-editor-placeholder
@@ -91,8 +91,8 @@ function renderCell(cell, rowId, rowIndex, colStart, context) {
       data-gx-le-drop-area="horizontal"
       data-gx-le-row-id={rowId}
       style={{
-        gridColumn: `${colStart} / span ${colSpan}`,
-        gridRow: ` ${rowStart} / span ${rowSpan}`
+        "grid-column": `${colStart} / span ${colSpan}`,
+        "grid-row": ` ${rowStart} / span ${rowSpan}`
       }}
       data-gx-le-selected={context.selectedCells.includes(cell["@id"])}
     >

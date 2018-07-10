@@ -34,24 +34,24 @@ export default function flexTableResolver({ table }, context) {
 
 function getTableStyle(table): any {
   return {
-    alignItems: table["@alignItems"],
+    "align-items": table["@alignItems"],
     display: "flex",
-    flexDirection: table["@flexDirection"],
-    flexWrap: table["@flexWrap"],
-    justifyContent: table["@justifyContent"]
+    "flex-direction": table["@flexDirection"],
+    "flex-wrap": table["@flexWrap"],
+    "justify-content": table["@justifyContent"]
   };
 }
 
 function renderCell(cell, rowId, context, direction) {
   const editorCellStyle = {
-    alignSelf: cell["@alignSelf"],
-    flexGrow: cell["@flexGrow"],
-    flexShrink: cell["@flexShrink"],
+    "align-self": cell["@alignSelf"],
+    "flex-grow": cell["@flexGrow"],
+    "flex-shrink": cell["@flexShrink"],
     height: cell["@flexHeight"],
-    maxHeight: cell["@maxHeight"],
-    maxWidth: cell["@maxWidth"],
-    minHeight: cell["@minHeight"],
-    minWidth: cell["@minWidth"],
+    "max-height": cell["@maxHeight"],
+    "max-width": cell["@maxWidth"],
+    "min-height": cell["@minHeight"],
+    "min-width": cell["@minWidth"],
     width: cell["@flexWidth"]
   };
 
