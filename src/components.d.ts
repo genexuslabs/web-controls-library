@@ -802,6 +802,10 @@ declare global {
        * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
        */
       invisibleMode?: "collapse" | "keep-space";
+      /**
+       * Emitted when the element is clicked.
+       */
+      onOnClick?: (event: CustomEvent) => void;
     }
   }
 }

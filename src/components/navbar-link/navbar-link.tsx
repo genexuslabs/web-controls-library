@@ -1,4 +1,4 @@
-import { Component, Element, Prop } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
 import { BaseComponent } from "../common/base-component";
 import { NavBarLinkRender } from "../renders";
 
@@ -39,4 +39,9 @@ export class NavBarLink extends NavBarLinkRender(BaseComponent) {
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
   @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+
+  /**
+   * Emitted when the element is clicked.
+   */
+  @Event() onClick: EventEmitter;
 }
