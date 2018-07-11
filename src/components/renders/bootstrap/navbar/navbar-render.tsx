@@ -87,14 +87,14 @@ export function NavBarRender<T extends Constructor<{}>>(Base: T) {
         <nav
           id={this.navBarId}
           class={{
-            "bg-light": true,
+            "bg-white": true,
             navbar: true,
             "navbar-expand-sm": true,
             "navbar-light": true,
             [this.cssClass]: !!this.cssClass
           }}
         >
-          <a class="navbar-brand">
+          <a class="navbar-brand" tabindex="-1">
             <slot name="header" />
             {this.caption}
           </a>
