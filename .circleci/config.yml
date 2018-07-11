@@ -21,3 +21,6 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run: npm run validate
+
+      - store_artifacts:
+          path: dist
