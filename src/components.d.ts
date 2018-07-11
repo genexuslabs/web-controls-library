@@ -737,6 +737,140 @@ declare global {
 
 declare global {
   namespace StencilComponents {
+    interface GxNavbarLink {
+      /**
+       * Indicates if the navbar item is the active one (for example, when the item represents the current page)
+       */
+      active: boolean;
+      /**
+       * A CSS class to set as the inner element class.
+       */
+      cssClass: string;
+      /**
+       * This attribute lets you specify if the navbar item is disabled.
+       */
+      disabled: boolean;
+      /**
+       * This attribute lets you specify the URL of the navbar item.
+       */
+      href: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode: "collapse" | "keep-space";
+    }
+  }
+
+  interface HTMLGxNavbarLinkElement
+    extends StencilComponents.GxNavbarLink,
+      HTMLStencilElement {}
+
+  var HTMLGxNavbarLinkElement: {
+    prototype: HTMLGxNavbarLinkElement;
+    new (): HTMLGxNavbarLinkElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gx-navbar-link": HTMLGxNavbarLinkElement;
+  }
+  interface ElementTagNameMap {
+    "gx-navbar-link": HTMLGxNavbarLinkElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gx-navbar-link": JSXElements.GxNavbarLinkAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GxNavbarLinkAttributes extends HTMLAttributes {
+      /**
+       * Indicates if the navbar item is the active one (for example, when the item represents the current page)
+       */
+      active?: boolean;
+      /**
+       * A CSS class to set as the inner element class.
+       */
+      cssClass?: string;
+      /**
+       * This attribute lets you specify if the navbar item is disabled.
+       */
+      disabled?: boolean;
+      /**
+       * This attribute lets you specify the URL of the navbar item.
+       */
+      href?: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode?: "collapse" | "keep-space";
+    }
+  }
+}
+
+declare global {
+  namespace StencilComponents {
+    interface GxNavbar {
+      /**
+       * This attribute lets you specify an optional title for the navigation bar  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      caption: string;
+      /**
+       * A CSS class to set as the inner element class.
+       */
+      cssClass: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode: "collapse" | "keep-space";
+      /**
+       * This attribute lets you specify the label for the toggle button. Important for accessibility.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      toggleButtonLabel: string;
+    }
+  }
+
+  interface HTMLGxNavbarElement
+    extends StencilComponents.GxNavbar,
+      HTMLStencilElement {}
+
+  var HTMLGxNavbarElement: {
+    prototype: HTMLGxNavbarElement;
+    new (): HTMLGxNavbarElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gx-navbar": HTMLGxNavbarElement;
+  }
+  interface ElementTagNameMap {
+    "gx-navbar": HTMLGxNavbarElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gx-navbar": JSXElements.GxNavbarAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GxNavbarAttributes extends HTMLAttributes {
+      /**
+       * This attribute lets you specify an optional title for the navigation bar  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      caption?: string;
+      /**
+       * A CSS class to set as the inner element class.
+       */
+      cssClass?: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode?: "collapse" | "keep-space";
+      /**
+       * This attribute lets you specify the label for the toggle button. Important for accessibility.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      toggleButtonLabel?: string;
+    }
+  }
+}
+
+declare global {
+  namespace StencilComponents {
     interface GxPasswordEdit {
       /**
        * A CSS class to set as the inner `input` element class.

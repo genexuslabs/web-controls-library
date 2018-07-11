@@ -9,12 +9,9 @@
   "files": ["dist/"],
   "scripts": {
     "build": "stencil build --docs",
-    "dev":
-      "sd concurrent \"stencil build --dev --watch --docs\" \"stencil-dev-server\" ",
     "lint": "npm run tslint",
     "precommit": "pretty-quick --staged",
-    "serve": "stencil-dev-server",
-    "start": "npm run dev",
+    "start": "stencil build --dev --watch --docs --serve",
     "test": "jest --no-cache",
     "test.watch": "jest --watch --no-cache",
     "tslint": "tslint --project . -e \"**/*.spec.ts\"",

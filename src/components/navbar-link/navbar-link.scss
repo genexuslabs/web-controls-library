@@ -1,0 +1,5 @@
+@import "../common/_base";
+
+gx-navbar-link {
+  @include visibility(inline);
+}
