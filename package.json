@@ -18,7 +18,9 @@
     "validate": "npm i && npm run lint && npm run test && npm run build"
   },
   "dependencies": {
+    "bootstrap": "^4.1.2",
     "dragula": "^3.7.2",
+    "font-awesome": "^4.7.0",
     "popper.js": "^1.14.3"
   },
   "devDependencies": {
