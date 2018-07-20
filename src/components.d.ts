@@ -425,10 +425,6 @@ declare global {
        */
       labelCaption: string;
       /**
-       * A CSS class to set as the inner `label` element class.
-       */
-      labelClass: string;
-      /**
        * The position where the label will be located, relative to the edit control. The supported values are:  * `"top"`: The label is located above the edit control. * `"right"`: The label is located at the right side of the edit control. * `"bottom"`: The label is located below the edit control. * `"left"`: The label is located at the left side of the edit control. * `"float"`: The label is shown as a placeholder when the edit control's value is empty. When the value is not empty, the label floats and locates above the edit control. * `"none"`: The label is rendered, but hidden.
        */
       labelPosition: "none" | "top" | "right" | "bottom" | "left" | "float";
@@ -460,10 +456,6 @@ declare global {
        * The text to set as the label of the field.
        */
       labelCaption?: string;
-      /**
-       * A CSS class to set as the inner `label` element class.
-       */
-      labelClass?: string;
       /**
        * The position where the label will be located, relative to the edit control. The supported values are:  * `"top"`: The label is located above the edit control. * `"right"`: The label is located at the right side of the edit control. * `"bottom"`: The label is located below the edit control. * `"left"`: The label is located at the left side of the edit control. * `"float"`: The label is shown as a placeholder when the edit control's value is empty. When the value is not empty, the label floats and locates above the edit control. * `"none"`: The label is rendered, but hidden.
        */
@@ -1502,10 +1494,6 @@ declare global {
   namespace StencilComponents {
     interface GxTextblock {
       /**
-       * A CSS class to set as the inner element class.
-       */
-      cssClass: string;
-      /**
        * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
        */
       disabled: boolean;
@@ -1541,10 +1529,6 @@ declare global {
   }
   namespace JSXElements {
     export interface GxTextblockAttributes extends HTMLAttributes {
-      /**
-       * A CSS class to set as the inner element class.
-       */
-      cssClass?: string;
       /**
        * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
        */

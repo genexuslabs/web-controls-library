@@ -169,6 +169,11 @@ gx-layout-editor {
     & > [data-gx-le-container]:after {
       cursor: move !important;
     }
+
+    &:hover {
+      box-shadow: 0px 0px 0px var(--gx-le-table-hovered-cell-border-width)
+        var(--gx-le-table-hovered-cell-border-color) !important;
+    }
   }
 
   &[data-gx-le-selected="true"],

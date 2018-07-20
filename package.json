@@ -12,6 +12,7 @@
     "lint": "npm run tslint",
     "precommit": "pretty-quick --staged",
     "start": "stencil build --dev --watch --docs --serve",
+    "start.es5": "stencil build --dev --watch --docs --serve --es5",
     "test": "jest --no-cache",
     "test.watch": "jest --watch --no-cache",
     "tslint": "tslint --project . -e \"**/*.spec.ts\"",

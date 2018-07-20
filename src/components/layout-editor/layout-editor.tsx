@@ -470,8 +470,8 @@ export class LayoutEditor {
       }
     }
 
-    const evtData = event.dataTransfer.getData("text");
-    const evtDataArr = evtData ? evtData.split(",") : [];
+    const evtDataTransfer = event.dataTransfer.getData("text");
+    const evtDataArr = evtDataTransfer ? evtDataTransfer.split(",") : [];
 
     if (evtDataArr.length === 1) {
       this.controlAdded.emit({
