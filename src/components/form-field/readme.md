@@ -4,19 +4,28 @@ This control allows showing a label for a form custom control. The label's posit
 
 ```html
 <gx-form-field label-caption="User" label-position="top">
+
+
   <gx-edit id="edit1" value="" area="field"></gx-edit>
+
+
 </gx-form-field>
 ```
 
 ## Children
 
 There must be a form custom element as a child with the `area` attribute set to `"field"`.
+
 An "edit" custom element can be on of these:
 
 * `gx-edit`
-* `gx-checkbox`
+
+- `gx-checkbox`
+
 * `gx-radio-group`
-* `gx-select`
+
+- `gx-select`
+
 * `gx-password-edit`
 
 The child element should have and id specified, so the inner `label` element rendered uses it in its `for` attribute.
@@ -30,12 +39,6 @@ The child element should have and id specified, so the inner `label` element ren
 string
 
 The text to set as the label of the field.
-
-#### labelClass
-
-string
-
-A CSS class to set as the inner `label` element class.
 
 #### labelPosition
 
@@ -57,12 +60,6 @@ The position where the label will be located, relative to the edit control. The 
 string
 
 The text to set as the label of the field.
-
-#### label-class
-
-string
-
-A CSS class to set as the inner `label` element class.
 
 #### label-position
 

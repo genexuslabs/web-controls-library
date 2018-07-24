@@ -1,4 +1,5 @@
 @import "../common/_base";
+@import "../renders/bootstrap/select/select-renders";
 
 gx-select {
   @include visibility(block);

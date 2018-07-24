@@ -1,0 +1,50 @@
+@mixin custom-background {
+  background-color: var(--background-color);
+  background-image: var(--background-image);
+}
+
+@mixin custom-border {
+  border-color: var(--border-color);
+  border-radius: var(--border-radius);
+  border-style: var(--border-style);
+  border-width: var(--border-width);
+}
+
+@mixin custom-font {
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  font-style: var(--font-style);
+  font-weight: var(--font-weight);
+}
+
+@mixin custom-text {
+  color: var(--color);
+  text-decoration: var(--text-decoration);
+  @include custom-font;
+}
+
+@mixin custom-margin {
+  margin-top: var(--margin-top);
+  margin-right: var(--margin-right);
+  margin-bottom: var(--margin-bottom);
+  margin-left: var(--margin-left);
+}
+
+@mixin custom-padding {
+  padding-top: var(--padding-top);
+  padding-right: var(--padding-right);
+  padding-bottom: var(--padding-bottom);
+  padding-left: var(--padding-left);
+}
+
+@mixin custom-dimensions {
+  height: var(--height);
+  width: var(--width);
+}
+
+@mixin custom-box {
+  @include custom-border;
+  @include custom-margin;
+  @include custom-padding;
+  @include custom-dimensions;
+}

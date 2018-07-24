@@ -2,10 +2,12 @@ type Constructor<T> = new (...args: any[]) => T;
 export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
   return class extends Base {
     element: HTMLElement;
+    id: string;
 
     labelCaption: string;
-    labelClass: string;
     labelPosition: string;
+
+    private formFieldId: string;
 
     private LABEL_WIDTH_BY_POSITION = {
       bottom: "col-sm-12",
@@ -34,10 +36,6 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
         classList.push("col-form-label");
       }
 
-      if (this.labelClass) {
-        classList.push(this.labelClass);
-      }
-
       return classList.join(" ");
     }
 
@@ -57,6 +55,7 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
     componentDidLoad() {
       const innerControl: any = this.element.querySelector("[area='field']");
       if (innerControl && innerControl.getNativeInputId) {
+        innerControl.setAttribute("data-part", "field");
         const forAttr = innerControl.getNativeInputId();
         if (forAttr) {
           this.element.querySelector("label").setAttribute("for", forAttr);
@@ -65,11 +64,14 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
     }
 
     renderForRadio(renderLabelBefore: boolean) {
+      const labelId = `${this.formFieldId}-label`;
       const legend = (
-        <legend class={this.getLabelCssClass()}>{this.labelCaption}</legend>
+        <div class={this.getLabelCssClass()} id={labelId}>
+          <span data-part="label">{this.labelCaption}</span>
+        </div>
       );
       return (
-        <fieldset class="form-group">
+        <div class="form-group" aria-labelledby={labelId} role="group">
           <div class="row">
             {renderLabelBefore ? legend : null}
             <div class={this.getInnerControlContainerClass()}>
@@ -77,7 +79,7 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
             </div>
             {!renderLabelBefore ? legend : null}
           </div>
-        </fieldset>
+        </div>
       );
     }
 
@@ -87,11 +89,18 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
       );
       const renderLabelBefore = this.shouldRenderLabelBefore();
 
+      if (!this.formFieldId) {
+        this.formFieldId =
+          this.id || `gx-form-field-auto-id-${autoFormFieldId++}`;
+      }
+
       if (isRadioGroup) {
         return this.renderForRadio(renderLabelBefore);
       } else {
         const label = (
-          <label class={this.getLabelCssClass()}>{this.labelCaption}</label>
+          <label class={this.getLabelCssClass()}>
+            <span data-part="label">{this.labelCaption}</span>
+          </label>
         );
 
         if (this.labelPosition === "float") {
@@ -116,3 +125,5 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
     }
   };
 }
+
+let autoFormFieldId = 0;

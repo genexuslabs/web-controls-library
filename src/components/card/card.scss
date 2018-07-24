@@ -1,4 +1,5 @@
 @import "../common/_base";
+@import "../renders/bootstrap/card/card-render";
 
 gx-card {
   @include visibility(block);

@@ -10,12 +10,6 @@ The text caption of the textblock will be its text content. Being a child instea
 
 ## Properties
 
-#### cssClass
-
-string
-
-A CSS class to set as the inner element class.
-
 #### disabled
 
 boolean
@@ -42,12 +36,6 @@ This attribute lets you specify how this element will behave when hidden.
 | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
 
 ## Attributes
-
-#### css-class
-
-string
-
-A CSS class to set as the inner element class.
 
 #### disabled
 

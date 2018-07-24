@@ -1,0 +1,7 @@
+@import "../common/_custom-properties";
+
+@mixin gx-edit {
+  @include custom-background;
+  @include custom-box;
+  @include custom-text;
+}

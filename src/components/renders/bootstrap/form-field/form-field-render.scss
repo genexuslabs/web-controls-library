@@ -1,3 +1,6 @@
+@import "../../../textblock/_textblock-custom-properties";
+@import "../../../edit/_edit-custom-properties";
+
 gx-form-field {
   &[label-position="float"] > div {
     position: relative;
@@ -60,6 +63,22 @@ gx-form-field {
     }
   }
 
+  .col-form-label {
+    display: flex;
+    align-items: var(--label-vertical-alignment);
+    justify-content: var(--label-horizontal-alignment);
+
+    [data-part="label"] {
+      @include gx-textblock;
+      max-width: var(--label-width);
+      flex-basis: var(--label-width);
+    }
+  }
+
+  gx-edit[data-part="field"] {
+    @include gx-edit;
+  }
+
   gx-checkbox {
     .custom-checkbox {
       padding-top: calc(0.375rem + 1px);
@@ -78,7 +97,7 @@ gx-form-field {
 
     .custom-control-label:before,
     .custom-control-label:after {
-      top: calc(0.25rem + 7px);
+      top: calc(-0.15rem + 7px);
     }
   }
 }

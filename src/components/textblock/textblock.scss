@@ -1,5 +1,31 @@
 @import "../common/_base";
+@import "_textblock-custom-properties";
 
-gx-textblock {
+:host {
   @include visibility(inline-block);
+
+  --default-color: var(--color, var(--primary));
+
+  a {
+    color: var(--default-color);
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: var(--default-color);
+    }
+
+    &:active {
+      color: var(--highlighted-color, var(--default-color));
+    }
+
+    &:active > .content {
+      background-color: var(--highlighted-background-color);
+      background-image: var(--highlighted-image);
+    }
+  }
+
+  .content {
+    @include gx-textblock;
+  }
 }
