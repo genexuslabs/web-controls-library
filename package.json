@@ -11,8 +11,9 @@
     "build": "stencil build --docs",
     "lint": "npm run tslint",
     "precommit": "pretty-quick --staged",
-    "start": "stencil build --dev --watch --docs --serve",
-    "start.es5": "stencil build --dev --watch --docs --serve --es5",
+    "pretty-quick": "pretty-quick",
+    "start": "stencil build --dev --watch --serve",
+    "start.es5": "stencil build --dev --watch --serve --es5",
     "test": "jest --no-cache",
     "test.watch": "jest --watch --no-cache",
     "tslint": "tslint --project . -e \"**/*.spec.ts\"",
@@ -25,7 +26,7 @@
     "popper.js": "^1.14.3"
   },
   "devDependencies": {
-    "@stencil/core": "^0.10.2",
+    "@stencil/core": "^0.10.7",
     "@stencil/sass": "0.0.5",
     "@types/dragula": "^2.1.33",
     "@types/jest": "^21.1.1",
