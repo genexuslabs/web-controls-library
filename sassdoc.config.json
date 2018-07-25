@@ -1,0 +1,7 @@
+{
+  "dest": "./sassdoc",
+  "groups": {
+    "theming-mixins": "Theming helper mixins"
+  },
+  "theme": "md"
+}

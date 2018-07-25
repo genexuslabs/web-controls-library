@@ -30,6 +30,10 @@ An "edit" custom element can be on of these:
 
 The child element should have and id specified, so the inner `label` element rendered uses it in its `for` attribute.
 
+## Styling with SASS
+
+A SASS mixin called `gx-form-field` is provided in `theming/theming-mixins.scss` to ease the styling of this element. See the theming [mixins documentation](/sassdoc/theming-mixins.html.md) for more information.
+
 <!-- Auto Generated Below -->
 
 ## Properties

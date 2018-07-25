@@ -1,7 +1,0 @@
-@import "../common/_base-theming-mixins";
-
-@mixin gx-edit {
-  @include custom-background;
-  @include custom-box;
-  @include custom-text;
-}

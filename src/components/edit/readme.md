@@ -18,6 +18,10 @@ If a child element with the attribute area="trigger-content" is found, this cont
 </gx-edit>
 ```
 
+## Styling with SASS
+
+A SASS mixin called `gx-edit` is provided in `theming/theming-mixins.scss` to ease the styling of this element. See the theming [mixins documentation](/sassdoc/theming-mixins.html.md) for more information.
+
 <!-- Auto Generated Below -->
 
 ## Properties

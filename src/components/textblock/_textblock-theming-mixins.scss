@@ -1,5 +1,15 @@
+////
+/// @group theming-mixins
+////
+
+/// Helper mixin to ease styling gx-textblock custom elements
+///
+/// Accepted properties:
+///
+/// - Properties accepted by `theming-background`, `theming-box` and `theming-text` mixins.
+/// @param {map} $textblock
 @mixin gx-textblock($textblock) {
-  @include custom-background($textblock);
-  @include custom-box($textblock);
-  @include custom-text($textblock);
+  @include theming-background($textblock);
+  @include theming-box($textblock);
+  @include theming-text($textblock);
 }

@@ -1,50 +1,119 @@
-@mixin custom-background($component) {
+////
+/// @group theming-mixins
+/// @access private
+////
+
+/// Helper mixin for styling the background of an element
+///
+/// Accepted properties:
+///
+/// - `background-color`
+/// - `background-image`
+/// @param {Map} $component - A map containing the accepted properties
+@mixin theming-background($component) {
   background-color: map-get(($component), "background-color");
   background-image: map-get(($component), "background-image");
 }
 
-@mixin custom-border($component) {
+/// Helper mixin for styling the border of an element
+///
+/// Accepted properties:
+///
+/// - `border-color`
+/// - `border-radius`
+/// - `border-style`
+/// - `border-width`
+/// @param {Map} $component
+@mixin theming-border($component) {
   border-color: map-get(($component), "border-color");
   border-radius: map-get(($component), "border-radius");
   border-style: map-get(($component), "border-style");
   border-width: map-get(($component), "border-width");
 }
 
-@mixin custom-font($component) {
+/// Helper mixin for styling the font of an element
+///
+/// Accepted properties:
+///
+/// - `font-family`
+/// - `font-size`
+/// - `font-style`
+/// - `font-weight`
+/// @param {Map} $component
+@mixin theming-font($component) {
   font-family: map-get(($component), "font-family");
   font-size: map-get(($component), "font-size");
   font-style: map-get(($component), "font-style");
   font-weight: map-get(($component), "font-weight");
 }
 
-@mixin custom-text($component) {
+/// Helper mixin for styling the text of an element
+///
+/// Accepted properties:
+///
+/// - `color`
+/// - `text-decoration`
+/// - Properties accepted by `theming-font` mixin.
+/// @param {Map} $component
+@mixin theming-text($component) {
   color: map-get(($component), "color");
   text-decoration: map-get(($component), "text-decoration");
-  @include custom-font($component);
+  @include theming-font($component);
 }
 
-@mixin custom-margin($component) {
+/// Helper mixin for styling the margin of an element
+///
+/// Accepted properties:
+///
+/// - `margin-top`
+/// - `margin-right`
+/// - `margin-bottom`
+/// - `margin-left`
+/// @param {Map} $component
+@mixin theming-margin($component) {
   margin-top: map-get(($component), "margin-top");
   margin-right: map-get(($component), "margin-right");
   margin-bottom: map-get(($component), "margin-bottom");
   margin-left: map-get(($component), "margin-left");
 }
 
-@mixin custom-padding($component) {
+/// Helper mixin for styling the padding of an element
+///
+/// Accepted properties:
+///
+/// - `padding-top`
+/// - `padding-right`
+/// - `padding-bottom`
+/// - `padding-left`
+/// @param {Map} $component
+@mixin theming-padding($component) {
   padding-top: map-get(($component), "padding-top");
   padding-right: map-get(($component), "padding-right");
   padding-bottom: map-get(($component), "padding-bottom");
   padding-left: map-get(($component), "padding-left");
 }
 
-@mixin custom-dimensions($component) {
+/// Helper mixin for styling the dimensions of an element
+///
+/// Accepted properties:
+///
+/// - `height`
+/// - `width`
+/// @param {Map} $component
+@mixin theming-dimensions($component) {
   height: map-get(($component), "height");
   width: map-get(($component), "width");
 }
 
-@mixin custom-box($component) {
-  @include custom-border($component);
-  @include custom-margin($component);
-  @include custom-padding($component);
-  @include custom-dimensions($component);
+/// Helper mixin for styling the box of an element
+///
+/// Accepted properties:
+///
+/// - Properties accepted by `theming-border`, `theming-margin`, `theming-padding` and `theming-dimensions` mixins.
+/// @param {Map} $component
+@mixin theming-box($component) {
+  @include theming-border($component);
+  @include theming-margin($component);
+  @include theming-padding($component);
+  @include theming-dimensions($component);
 }

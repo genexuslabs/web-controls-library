@@ -1,0 +1,18 @@
+////
+/// @group theming-mixins
+////
+
+/// Helper mixin to ease styling gx-edit custom elements
+///
+/// Accepted properties:
+///
+/// - `edit`
+///   - Properties accepted by `theming-background`, `theming-box` and `theming-text` mixins.
+/// @param {map} $edit - A map containing the properties to style the element
+@mixin gx-edit($edit) {
+  input {
+    @include theming-background($edit);
+    @include theming-box($edit);
+    @include theming-text($edit);
+  }
+}

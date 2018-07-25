@@ -6,6 +6,10 @@ This is a simple element that allows showing text. Optionally, a URL can be spec
 
 The text caption of the textblock will be its text content. Being a child instead of an attribute allows us to set text or HTML.
 
+## Styling with SASS
+
+A SASS mixin called `gx-textblock` is provided in `theming/theming-mixins.scss` to ease the styling of this element. See the theming [mixins documentation](/sassdoc/theming-mixins.html.md) for more information.
+
 <!-- Auto Generated Below -->
 
 ## Properties

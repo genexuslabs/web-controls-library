@@ -66,8 +66,8 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
     renderForRadio(renderLabelBefore: boolean) {
       const labelId = `${this.formFieldId}-label`;
       const legend = (
-        <div class={this.getLabelCssClass()} id={labelId}>
-          <span data-part="label">{this.labelCaption}</span>
+        <div class={this.getLabelCssClass()} id={labelId} data-part="label">
+          {this.labelCaption}
         </div>
       );
       return (
@@ -98,8 +98,8 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
         return this.renderForRadio(renderLabelBefore);
       } else {
         const label = (
-          <label class={this.getLabelCssClass()}>
-            <span data-part="label">{this.labelCaption}</span>
+          <label class={this.getLabelCssClass()} data-part="label">
+            {this.labelCaption}
           </label>
         );
 
