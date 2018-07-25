@@ -2,7 +2,7 @@ import { Component, Event, EventEmitter, Prop } from "@stencil/core";
 import { BaseComponent } from "../common/base-component";
 
 @Component({
-  shadow: true,
+  shadow: false,
   styleUrl: "textblock.scss",
   tag: "gx-textblock"
 })

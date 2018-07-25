@@ -1,0 +1,50 @@
+@mixin custom-background($component) {
+  background-color: map-get(($component), "background-color");
+  background-image: map-get(($component), "background-image");
+}
+
+@mixin custom-border($component) {
+  border-color: map-get(($component), "border-color");
+  border-radius: map-get(($component), "border-radius");
+  border-style: map-get(($component), "border-style");
+  border-width: map-get(($component), "border-width");
+}
+
+@mixin custom-font($component) {
+  font-family: map-get(($component), "font-family");
+  font-size: map-get(($component), "font-size");
+  font-style: map-get(($component), "font-style");
+  font-weight: map-get(($component), "font-weight");
+}
+
+@mixin custom-text($component) {
+  color: map-get(($component), "color");
+  text-decoration: map-get(($component), "text-decoration");
+  @include custom-font($component);
+}
+
+@mixin custom-margin($component) {
+  margin-top: map-get(($component), "margin-top");
+  margin-right: map-get(($component), "margin-right");
+  margin-bottom: map-get(($component), "margin-bottom");
+  margin-left: map-get(($component), "margin-left");
+}
+
+@mixin custom-padding($component) {
+  padding-top: map-get(($component), "padding-top");
+  padding-right: map-get(($component), "padding-right");
+  padding-bottom: map-get(($component), "padding-bottom");
+  padding-left: map-get(($component), "padding-left");
+}
+
+@mixin custom-dimensions($component) {
+  height: map-get(($component), "height");
+  width: map-get(($component), "width");
+}
+
+@mixin custom-box($component) {
+  @include custom-border($component);
+  @include custom-margin($component);
+  @include custom-padding($component);
+  @include custom-dimensions($component);
+}

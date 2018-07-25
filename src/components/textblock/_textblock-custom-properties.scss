@@ -1,7 +1,0 @@
-@import "../common/_custom-properties";
-
-@mixin gx-textblock {
-  @include custom-background;
-  @include custom-box;
-  @include custom-text;
-}

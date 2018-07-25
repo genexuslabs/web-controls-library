@@ -1,0 +1,5 @@
+@mixin gx-textblock($textblock) {
+  @include custom-background($textblock);
+  @include custom-box($textblock);
+  @include custom-text($textblock);
+}

@@ -8,10 +8,12 @@
   "collection": "dist/collection/collection-manifest.json",
   "files": ["dist/"],
   "scripts": {
-    "build": "stencil build --docs",
+    "build": "stencil build --docs && npm run scss-bundle",
     "lint": "npm run tslint",
     "precommit": "pretty-quick --staged",
     "pretty-quick": "pretty-quick",
+    "scss-bundle":
+      "scss-bundle -e ./src/components/_components-theming-mixins.scss -d dist/theming/theming-mixins.scss",
     "start": "stencil build --dev --watch --serve",
     "start.es5": "stencil build --dev --watch --serve --es5",
     "test": "jest --no-cache",
@@ -35,6 +37,7 @@
     "prettier": "^1.11.1",
     "pretty-quick": "^1.4.1",
     "sass-lint": "^1.12.1",
+    "scss-bundle": "^2.3.2",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.13.0",
     "tslint-eslint-rules": "^5.3.1",

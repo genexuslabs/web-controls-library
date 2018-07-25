@@ -1,0 +1,17 @@
+@mixin gx-form-field($attribute, $label) {
+  .col-form-label {
+    display: flex;
+    align-items: mag-get($attribute, "label-vertical-alignment");
+    justify-content: mag-get($attribute, "label-horizontal-alignment");
+
+    [data-part="label"] {
+      @include gx-textblock($label);
+      max-width: mag-get($attribute, "label-width");
+      flex-basis: mag-get($attribute, "label-width");
+    }
+  }
+
+  [data-part="field"] {
+    @include gx-edit($attribute);
+  }
+}
