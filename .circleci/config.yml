@@ -1,5 +1,13 @@
 version: 2
 jobs:
+  publish:
+    docker:
+      - image: circleci/node:8.5
+    steps:
+      - checkout
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run: npm publish
+
   build:
     docker:
       - image: circleci/node:8.5
@@ -24,3 +32,12 @@ jobs:
 
       - store_artifacts:
           path: dist
+
+workflows:
+  version: 2
+  tagged-build:
+    jobs:
+      - publish:
+          filters:
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*/
