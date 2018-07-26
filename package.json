@@ -8,7 +8,8 @@
   "collection": "dist/collection/collection-manifest.json",
   "files": ["dist/"],
   "scripts": {
-    "build": "stencil build --docs && npm run scss-bundle && npm run sassdoc",
+    "build": "stencil build --docs",
+    "postbuild": "npm run scss-bundle && npm run sassdoc",
     "lint": "npm run tslint",
     "precommit": "pretty-quick --staged",
     "pretty-quick": "pretty-quick",
