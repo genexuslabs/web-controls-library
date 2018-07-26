@@ -1,11 +1,15 @@
 version: 2
+
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:8.5
+
 jobs:
-  publish:
-    docker:
-      - image: circleci/node:8.5
+  validate:
+    <<: *defaults  
     steps:
       - checkout
-      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
 
       - restore_cache:
           keys:
@@ -13,20 +17,34 @@ jobs:
 
       - run: npm install
 
+      - run:
+          name: Run validate
+          command: npm run validate.ci
+
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      - run: npm run build --max-workers 1 --debug
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
 
-      - run: npm publish --access=public
+  publish:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
+      - run:
+          name: Publish package
+          command: npm publish --access=public
 
   build:
-    docker:
-      - image: circleci/node:8.5
-
-    working_directory: ~/repo
+    <<: *defaults
 
     steps:
       - checkout
@@ -49,9 +67,17 @@ jobs:
 
 workflows:
   version: 2
-  tagged-build:
+  test-deploy:
     jobs:
-      - publish:
+      - validate:
           filters:
             tags:
-              only: /v[0-9]+(\.[0-9]+)*/
+              only: /^v.*/
+      - deploy:
+          requires:
+            - validate
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
