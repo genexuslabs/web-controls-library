@@ -18,7 +18,7 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      - run: npm run build
+      - run: npm run build --max-workers 1 --debug
 
       - run: npm publish --access=public
 
@@ -42,7 +42,7 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      - run: npm run validate
+      - run: npm run validate.ci
 
       - store_artifacts:
           path: dist

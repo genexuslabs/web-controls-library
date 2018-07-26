@@ -3,8 +3,8 @@
   "version": "0.0.4",
   "description": "GeneXus Web Controls Library",
   "module": "dist/esm/index.js",
-  "main": "dist/gx-web-controls.js",
-  "types": "dist/types/components.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "files": ["dist/"],
   "scripts": {
@@ -21,7 +21,9 @@
     "test": "jest --no-cache",
     "test.watch": "jest --watch --no-cache",
     "tslint": "tslint --project . -e \"**/*.spec.ts\"",
-    "validate": "npm i && npm run lint && npm run test && npm run build"
+    "validate": "npm run lint && npm run test && npm run build",
+    "validate.ci":
+      "npm run lint && npm run test && npm run build --max-workers 1 --debug"
   },
   "dependencies": {
     "bootstrap": "^4.1.2",
