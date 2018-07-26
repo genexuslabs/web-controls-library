@@ -30,7 +30,7 @@
     "popper.js": "^1.14.3"
   },
   "devDependencies": {
-    "@stencil/core": "^0.10.7",
+    "@stencil/core": "^0.10.9",
     "@stencil/sass": "0.0.5",
     "@types/dragula": "^2.1.33",
     "@types/jest": "^21.1.1",
