@@ -4,7 +4,7 @@
   "description": "GeneXus Web Controls Library",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
-  "types": "dist/types/index.d.ts",
+  "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "files": ["dist/"],
   "scripts": {
@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "bootstrap": "^4.1.2",
+    "bootstrap.native": "^2.0.23",
     "dragula": "^3.7.2",
     "font-awesome": "^4.7.0",
     "popper.js": "^1.14.3"
@@ -36,6 +37,7 @@
     "@stencil/core": "^0.10.9",
     "@stencil/sass": "0.0.5",
     "@types/dragula": "^2.1.33",
+    "@types/googlemaps": "^3.30.11",
     "@types/jest": "^21.1.1",
     "husky": "^0.14.3",
     "jest": "^21.2.1",

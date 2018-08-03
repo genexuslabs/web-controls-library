@@ -729,6 +729,69 @@ declare global {
 
 declare global {
   namespace StencilComponents {
+    interface GxModal {
+      /**
+       * This attribute lets you specify if the modal dialog is automatically closed when an action is clicked.
+       */
+      autoClose: boolean;
+      /**
+       * This attribute lets you specify the label for the close button. Important for accessibility.
+       */
+      closeButtonLabel: string;
+      /**
+       * This attribute lets you specify if the modal dialog is opened or closed.
+       */
+      opened: boolean;
+    }
+  }
+
+  interface HTMLGxModalElement
+    extends StencilComponents.GxModal,
+      HTMLStencilElement {}
+
+  var HTMLGxModalElement: {
+    prototype: HTMLGxModalElement;
+    new (): HTMLGxModalElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gx-modal": HTMLGxModalElement;
+  }
+  interface ElementTagNameMap {
+    "gx-modal": HTMLGxModalElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gx-modal": JSXElements.GxModalAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GxModalAttributes extends HTMLAttributes {
+      /**
+       * This attribute lets you specify if the modal dialog is automatically closed when an action is clicked.
+       */
+      autoClose?: boolean;
+      /**
+       * This attribute lets you specify the label for the close button. Important for accessibility.
+       */
+      closeButtonLabel?: string;
+      /**
+       * Fired when the modal dialog is closed
+       */
+      onOnClose?: (event: CustomEvent) => void;
+      /**
+       * Fired when the modal dialog is opened
+       */
+      onOnOpen?: (event: CustomEvent) => void;
+      /**
+       * This attribute lets you specify if the modal dialog is opened or closed.
+       */
+      opened?: boolean;
+    }
+  }
+}
+
+declare global {
+  namespace StencilComponents {
     interface GxNavbarLink {
       /**
        * Indicates if the navbar item is the active one (for example, when the item represents the current page)
@@ -818,7 +881,7 @@ declare global {
        */
       invisibleMode: "collapse" | "keep-space";
       /**
-       * This attribute lets you specify the label for the toggle button. Important for accessibility.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       * This attribute lets you specify the label for the toggle button. Important for accessibility.
        */
       toggleButtonLabel: string;
     }
@@ -858,7 +921,7 @@ declare global {
        */
       invisibleMode?: "collapse" | "keep-space";
       /**
-       * This attribute lets you specify the label for the toggle button. Important for accessibility.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       * This attribute lets you specify the label for the toggle button. Important for accessibility.
        */
       toggleButtonLabel?: string;
     }

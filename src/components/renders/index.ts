@@ -9,3 +9,4 @@ export * from "./bootstrap/select/select-render";
 export * from "./bootstrap/card/card-render";
 export * from "./bootstrap/navbar/navbar-render";
 export * from "./bootstrap/navbar-link/navbar-link-render";
+export * from "./bootstrap/modal/modal-render";

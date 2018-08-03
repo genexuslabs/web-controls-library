@@ -1,0 +1,6 @@
+@import "../common/_base";
+@import "../renders/bootstrap/modal/modal-render";
+
+gx-modal {
+  @include visibility(block);
+}
