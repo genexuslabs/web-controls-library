@@ -60,11 +60,6 @@ string
 
 This attribute lets you specify the label for the toggle button. Important for accessibility.
 
-| Value        | Details                                                                     |
-| ------------ | --------------------------------------------------------------------------- |
-| `keep-space` | The element remains in the document flow, and it does occupy space.         |
-| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-
 ## Attributes
 
 #### caption
@@ -100,11 +95,6 @@ This attribute lets you specify how this element will behave when hidden.
 string
 
 This attribute lets you specify the label for the toggle button. Important for accessibility.
-
-| Value        | Details                                                                     |
-| ------------ | --------------------------------------------------------------------------- |
-| `keep-space` | The element remains in the document flow, and it does occupy space.         |
-| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
 
 ---
 
