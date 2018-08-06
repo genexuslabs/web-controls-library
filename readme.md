@@ -13,12 +13,6 @@ npm install
 npm start
 ```
 
-To watch for file changes during development, run:
-
-```bash
-npm run dev
-```
-
 ## Running the tests
 
 To run the unit tests for the custom elements, run:
@@ -34,6 +28,19 @@ To build the library for production, run:
 ```bash
 npm run build
 ```
+
+## Using this components library
+
+### Script tag
+
+* Put a script tag similar to this `<script src='https://unpkg.com/@genexus/web-controls-library/dist/index.js'></script>` in the head of your index.html
+* Then you can use the elements anywhere in your template, JSX, html etc
+
+### Node Modules
+
+* Run `npm install @genexus/web-controls-library --save`
+* Put a script tag similar to this `<script src='node_modules/@genexus/web-controls-library/dist/index.js'></script>` in the head of your index.html
+* Then you can use the element anywhere in your template, JSX, html etc
 
 ## Authors
 
