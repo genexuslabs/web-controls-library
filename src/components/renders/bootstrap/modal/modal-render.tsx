@@ -1,6 +1,6 @@
 // tslint:disable-next-line
 import Bootstrap from "bootstrap.native/dist/bootstrap-native-v4";
-import { EventEmitter } from "../../../../../node_modules/@stencil/core";
+import { EventEmitter } from "@stencil/core";
 
 const BODY_SLOT_NAME = "body";
 const PRIMARY_ACTION_SLOT_NAME = "primary-action";
