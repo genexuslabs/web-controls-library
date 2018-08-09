@@ -31,7 +31,7 @@ export default function tabularTableResolver({ table }, context) {
     <gx-table
       {...getTableStyle(rowsCount, maxCols)}
       data-gx-le-container
-      data-gx-le-container-empty={isEmptyTable}
+      data-gx-le-container-empty={isEmptyTable.toString()}
       data-gx-le-control-id={table["@controlName"]}
     >
       {[...rows, ...renderEmptyRows(nonEmptyRows, maxCols)]}

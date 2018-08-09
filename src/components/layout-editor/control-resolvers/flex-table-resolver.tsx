@@ -23,7 +23,7 @@ export default function flexTableResolver({ table }, context) {
       data-gx-le-control-id={table["@controlName"]}
       style={getTableStyle(table)}
       data-gx-le-container
-      data-gx-le-container-empty={isEmptyTable}
+      data-gx-le-container-empty={isEmptyTable.toString()}
       data-gx-le-flex-table
       data-gx-le-flex-table-direction={table["@flexDirection"].toLowerCase()}
     >
