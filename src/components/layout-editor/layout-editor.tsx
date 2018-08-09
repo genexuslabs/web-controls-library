@@ -348,12 +348,18 @@ export class LayoutEditor {
           targetCellId
         });
       } else {
-        // Dropped on a non-empty cell
-        const { cellId: beforeControlId } = el.nextElementSibling
-          ? getCellData(target)
-          : target.nextElementSibling
-            ? getCellData(target.nextElementSibling)
-            : null;
+        let beforeControlId = null;
+        if (el.nextElementSibling) {
+          beforeControlId = getCellData(target).cellId;
+        } else {
+          const nextElementData = getCellData(target.nextElementSibling);
+          if (
+            target.nextElementSibling &&
+            targetRowId === nextElementData.rowId
+          ) {
+            beforeControlId = nextElementData.cellId;
+          }
+        }
         this.moveCompleted.emit({
           beforeControlId,
           controlId,
