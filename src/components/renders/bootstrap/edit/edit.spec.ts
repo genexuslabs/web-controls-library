@@ -36,13 +36,5 @@ describe("gx-edit", () => {
       await testWindow.flush();
       expect(element.querySelector("input").value).toEqual("foo");
     });
-
-    it("should be able to set class of inner input", async () => {
-      element.cssClass = "foo-class bar-class";
-      await testWindow.flush();
-      expect(
-        element.querySelector("input").classList.contains("foo-class")
-      ).toEqual(true);
-    });
   });
 });
