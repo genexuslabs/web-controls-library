@@ -14,53 +14,32 @@ After creating the control resolver, add it to [layout-editor-control-resolver.t
 
 A set of special attributes are used to annotate container web components and its direct child items where it will be able to drag and drop controls.
 
-| Data attribute name | Details |
-
+| Data attribute name        | Details                                                                                                                                                                                                                                                                                                                                                                                |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-
-| `data-gx-le-container` | Used to mark an element as a container |
-
-| `data-gx-le-drop-area` | Used to mark an element as container item that accepts drag&drop of controls. Its value specifies the placeholder position when a dragged control is hovered on the container item. If the value is `'vertical'`, the placeholder will be shown above or bellow the container item. If the value is `'horizontal'`, the placeholder will be shown right or left of the container item. |
-
-| `data-gx-le-cell-id` | Used to store the identifier of a container item. Typically obtained from the abstract form model "@id" property of the row cell |
-
-| `data-gx-le-row-id` | Used to store the identifier of a container item's row. Typically obtained from the abstract form model "@id" property of the parent row of the cell |
-
-| `data-gx-le-selected` | Used to mark a container item as selected |
-
-| `data-gx-le-next-row-id` | Used to store the identifier of a container item's next row (if it isn't located in the last row). Typically obtained from the abstract form model "@id" property of the row that is next to the parent row of the cell |
-
-| `data-gx-le-active-target` | Used to mark a container item as an active drop target | |
-
-| `data-gx-le-dragging` | Used to mark the layout editor as in dragging state |
-
-| `data-gx-le-control-id` | Used to store the identifier of the control in the control element. |
+| `data-gx-le-container`     | Used to mark an element as a container                                                                                                                                                                                                                                                                                                                                                 |
+| `data-gx-le-drop-area`     | Used to mark an element as container item that accepts drag&drop of controls. Its value specifies the placeholder position when a dragged control is hovered on the container item. If the value is `'vertical'`, the placeholder will be shown above or bellow the container item. If the value is `'horizontal'`, the placeholder will be shown right or left of the container item. |
+| `data-gx-le-cell-id`       | Used to store the identifier of a container item. Typically obtained from the abstract form model "@id" property of the row cell                                                                                                                                                                                                                                                       |
+| `data-gx-le-row-id`        | Used to store the identifier of a container item's row. Typically obtained from the abstract form model "@id" property of the parent row of the cell                                                                                                                                                                                                                                   |
+| `data-gx-le-selected`      | Used to mark a container item as selected                                                                                                                                                                                                                                                                                                                                              |
+| `data-gx-le-next-row-id`   | Used to store the identifier of a container item's next row (if it isn't located in the last row). Typically obtained from the abstract form model "@id" property of the row that is next to the parent row of the cell                                                                                                                                                                |
+| `data-gx-le-active-target` | Used to mark a container item as an active drop target                                                                                                                                                                                                                                                                                                                                 |  |
+| `data-gx-le-dragging`      | Used to mark the layout editor as in dragging state                                                                                                                                                                                                                                                                                                                                    |
+| `data-gx-le-control-id`    | Used to store the identifier of the control in the control element.                                                                                                                                                                                                                                                                                                                    |
 
 ## CSS variables
 
-| CSS variable name | Details |
-
+| CSS variable name                          | Details                                                             |
 | ------------------------------------------ | ------------------------------------------------------------------- |
-
-| `--gx-le-table-cell-border` | Container item border |
-
-| `--gx-le-table-min-height` | Container minimum height |
-
-| `--gx-le-table-placeholder-width` | Width of drop placeholder (when a vertical placeholder is shown) |
-
-| `--gx-le-table-placeholder-height` | Height of drop placeholder (when a horizontal placeholder is shown) |
-
-| `--gx-le-table-placeholder-color` | Drop placeholder color |
-
-| `--gx-le-table-hovered-cell-border-color` | Hovered container item border color |
-
-| `--gx-le-table-hovered-cell-border-width` | Hovered container item border width |
-
-| `--gx-le-table-selected-cell-border-color` | Selected container item border color |
-
-| `--gx-le-table-selected-cell-border-width` | Selected container item border width |
-
-| `--gx-le-table-cell-gap` | Gap between a container cells |
+| `--gx-le-table-cell-border`                | Container item border                                               |
+| `--gx-le-table-min-height`                 | Container minimum height                                            |
+| `--gx-le-table-placeholder-width`          | Width of drop placeholder (when a vertical placeholder is shown)    |
+| `--gx-le-table-placeholder-height`         | Height of drop placeholder (when a horizontal placeholder is shown) |
+| `--gx-le-table-placeholder-color`          | Drop placeholder color                                              |
+| `--gx-le-table-hovered-cell-border-color`  | Hovered container item border color                                 |
+| `--gx-le-table-hovered-cell-border-width`  | Hovered container item border width                                 |
+| `--gx-le-table-selected-cell-border-color` | Selected container item border color                                |
+| `--gx-le-table-selected-cell-border-width` | Selected container item border width                                |
+| `--gx-le-table-cell-gap`                   | Gap between a container cells                                       |
 
 <!-- Auto Generated Below -->
 
