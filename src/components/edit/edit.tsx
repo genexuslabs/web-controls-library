@@ -41,11 +41,6 @@ export class Edit extends EditRender(BaseComponent) {
   @Prop() autocorrect: string;
 
   /**
-   * A CSS class to set as the inner `input` element class.
-   */
-  @Prop() cssClass: string;
-
-  /**
    * This attribute lets you specify how this element will behave when hidden.
    *
    * | Value        | Details                                                                     |
@@ -99,11 +94,6 @@ export class Edit extends EditRender(BaseComponent) {
    * is ignored and the text is used instead.
    */
   @Prop() triggerText: string;
-
-  /**
-   * A CSS class to set as the trigger button class.
-   */
-  @Prop() triggerClass: string;
 
   /**
    * The type of control to render. A subset of the types supported by the `input` element is supported:

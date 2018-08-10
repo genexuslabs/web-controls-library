@@ -7,7 +7,6 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
     autocapitalize: string;
     autocomplete: string;
     autocorrect: string;
-    cssClass: string;
     disabled = false;
     id: string;
     invisibleMode: string;
@@ -15,7 +14,6 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
     placeholder: string;
     readonly: boolean;
     showTrigger: boolean;
-    triggerClass: string;
     triggerText: string;
     type = "text";
     value: string;
@@ -44,10 +42,6 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
         }
       }
 
-      if (this.cssClass) {
-        classList.push(this.cssClass);
-      }
-
       return classList.join(" ");
     }
 
@@ -55,9 +49,6 @@ export function EditRender<T extends Constructor<{}>>(Base: T) {
       const classList = [];
       classList.push("btn");
       classList.push("btn-outline-secondary");
-      if (this.triggerClass) {
-        classList.push(this.triggerClass);
-      }
       return classList.join(" ");
     }
 

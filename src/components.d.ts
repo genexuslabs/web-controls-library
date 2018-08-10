@@ -96,10 +96,6 @@ declare global {
        */
       autocorrect: string;
       /**
-       * A CSS class to set as the inner `input` element class.
-       */
-      cssClass: string;
-      /**
        * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
        */
       disabled: boolean;
@@ -131,10 +127,6 @@ declare global {
        * If true, a trigger button is shown next to the edit field. The button can be customized using `trigger-text` and `trigger-class` attributes, or adding a child element with `slot="trigger-content"` attribute to specify the content inside the trigger button.
        */
       showTrigger: boolean;
-      /**
-       * A CSS class to set as the trigger button class.
-       */
-      triggerClass: string;
       /**
        * The text of the trigger button. If a text is specified and an image is specified (through an element with `slot="trigger-content"`), the content is ignored and the text is used instead.
        */
@@ -802,10 +794,6 @@ declare global {
        */
       autocorrect?: string;
       /**
-       * A CSS class to set as the inner `input` element class.
-       */
-      cssClass?: string;
-      /**
        * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
        */
       disabled?: boolean;
@@ -845,10 +833,6 @@ declare global {
        * If true, a trigger button is shown next to the edit field. The button can be customized using `trigger-text` and `trigger-class` attributes, or adding a child element with `slot="trigger-content"` attribute to specify the content inside the trigger button.
        */
       showTrigger?: boolean;
-      /**
-       * A CSS class to set as the trigger button class.
-       */
-      triggerClass?: string;
       /**
        * The text of the trigger button. If a text is specified and an image is specified (through an element with `slot="trigger-content"`), the content is ignored and the text is used instead.
        */

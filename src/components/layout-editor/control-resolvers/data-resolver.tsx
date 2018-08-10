@@ -14,7 +14,6 @@ export default function dataResolver({ data }) {
       <gx-edit
         value={data["@controlName"]}
         area="field"
-        cssClass={data["@class"]}
         disabled={data["@enabled"] === "False"}
         readonly
       />
