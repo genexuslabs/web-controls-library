@@ -5,6 +5,7 @@
 /// Helper mixin to ease styling gx-form-field custom elements
 /// @param {map} $class Base class of the field inside the component
 /// @param {map} $label Base class of the label of the component
+/// @param {map} $highlighted Class to be used when the component is in active state
 /// @param {map} $accept-drag-class Class to be used when the component shows that it accepts a drop operation
 /// @param {map} $no-accept-drag-class Class to be used when the component shows that it doesn't accept a drop operation
 /// @param {map} $start-dragging-class Class to be used when the component starts being dragged
@@ -12,6 +13,7 @@
 @mixin gx-form-field(
   $class,
   $label: null,
+  $highlighted: null,
   $accept-drag-class: null,
   $no-accept-drag-class: null,
   $start-dragging-class: null,
@@ -29,6 +31,11 @@
   @if ($label != null) {
     [data-part="label"] {
       @extend #{$label} !optional;
+    }
+  }
+  @if $highlighted != null {
+    &:active {
+      @extend #{$highlighted} !optional;
     }
   }
 }
