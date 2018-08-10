@@ -10,7 +10,7 @@ import {
   Watch
 } from "@stencil/core";
 import { BaseComponent } from "../common/base-component";
-import { SelectRender } from "../renders";
+import { SelectRender } from "../renders/bootstrap/select/select-render";
 import { IHTMLSelectOptionElementEvent } from "../select-option/select-option";
 
 @Component({

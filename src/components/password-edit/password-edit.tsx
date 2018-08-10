@@ -10,7 +10,7 @@ import {
   Watch
 } from "@stencil/core";
 import { BaseComponent } from "../common/base-component";
-import { PasswordEditRender } from "../renders";
+import { PasswordEditRender } from "../renders/bootstrap/password-edit/password-edit-render";
 
 @Component({
   shadow: false,

@@ -7,7 +7,7 @@ import {
   Watch
 } from "@stencil/core";
 import { BaseComponent } from "../common/base-component";
-import { RadioOptionRender } from "../renders";
+import { RadioOptionRender } from "../renders/bootstrap/radio-option/radio-option-render";
 
 @Component({
   shadow: false,

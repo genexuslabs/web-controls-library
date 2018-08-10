@@ -1,6 +1,6 @@
 import { Component, Element, Prop } from "@stencil/core";
 import { BaseComponent } from "../common/base-component";
-import { NavBarRender } from "../renders";
+import { NavBarRender } from "../renders/bootstrap/navbar/navbar-render";
 
 @Component({
   shadow: false,

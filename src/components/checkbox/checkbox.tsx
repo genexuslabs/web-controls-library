@@ -1,5 +1,5 @@
 import { BaseComponent } from "../common/base-component";
-import { CheckBoxRender } from "../renders";
+import { CheckBoxRender } from "../renders/bootstrap/checkbox/checkbox-render";
 import {
   Component,
   Element,

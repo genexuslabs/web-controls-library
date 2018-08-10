@@ -7,7 +7,7 @@ import {
   Watch
 } from "@stencil/core";
 import { BaseComponent } from "../common/base-component";
-import { ModalRender } from "../renders";
+import { ModalRender } from "../renders/bootstrap/modal/modal-render";
 
 @Component({
   shadow: false,

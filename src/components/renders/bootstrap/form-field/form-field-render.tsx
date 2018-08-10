@@ -55,29 +55,34 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
     componentDidLoad() {
       const innerControl: any = this.element.querySelector("[area='field']");
       if (innerControl && innerControl.getNativeInputId) {
-        innerControl.setAttribute("data-part", "field");
-        const forAttr = innerControl.getNativeInputId();
-        if (forAttr) {
-          this.element.querySelector("label").setAttribute("for", forAttr);
+        const nativeInputId = innerControl.getNativeInputId();
+        const nativeInput = this.element.querySelector(`#${nativeInputId}`);
+        if (nativeInput) {
+          nativeInput.setAttribute("data-part", "field");
+        }
+        if (nativeInputId) {
+          this.element
+            .querySelector("label")
+            .setAttribute("for", nativeInputId);
         }
       }
     }
 
     renderForRadio(renderLabelBefore: boolean) {
       const labelId = `${this.formFieldId}-label`;
-      const legend = (
+      const label = (
         <div class={this.getLabelCssClass()} id={labelId} data-part="label">
-          {this.labelCaption}
+          <div class="label-content">{this.labelCaption}</div>
         </div>
       );
       return (
         <div class="form-group" aria-labelledby={labelId} role="group">
           <div class="row">
-            {renderLabelBefore ? legend : null}
+            {renderLabelBefore ? label : null}
             <div class={this.getInnerControlContainerClass()}>
               <slot />
             </div>
-            {!renderLabelBefore ? legend : null}
+            {!renderLabelBefore ? label : null}
           </div>
         </div>
       );
@@ -99,7 +104,7 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
       } else {
         const label = (
           <label class={this.getLabelCssClass()} data-part="label">
-            {this.labelCaption}
+            <div class="label-content">{this.labelCaption}</div>
           </label>
         );
 

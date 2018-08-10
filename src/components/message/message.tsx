@@ -1,6 +1,6 @@
 import { Component, Element, Prop } from "@stencil/core";
 import { BaseComponent } from "../common/base-component";
-import { MessageRender } from "../renders";
+import { MessageRender } from "../renders/bootstrap/message/message-render";
 
 @Component({
   shadow: false,

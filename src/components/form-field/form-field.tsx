@@ -1,6 +1,6 @@
 import { Component, Element, Prop } from "@stencil/core";
 import { BaseComponent } from "../common/base-component";
-import { FormFieldRender } from "../renders";
+import { FormFieldRender } from "../renders/bootstrap/form-field/form-field-render";
 
 @Component({
   shadow: false,

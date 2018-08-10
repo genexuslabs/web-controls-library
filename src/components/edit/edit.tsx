@@ -8,7 +8,7 @@ import {
   Watch
 } from "@stencil/core";
 import { BaseComponent } from "../common/base-component";
-import { EditRender } from "../renders";
+import { EditRender } from "../renders/bootstrap/edit/edit-render";
 
 @Component({
   shadow: false,

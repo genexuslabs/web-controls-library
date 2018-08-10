@@ -1,6 +1,6 @@
 import { Component, Element, Prop } from "@stencil/core";
 import { BaseComponent } from "../common/base-component";
-import { CardRender } from "../renders";
+import { CardRender } from "../renders/bootstrap/card/card-render";
 
 @Component({
   shadow: false,

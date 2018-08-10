@@ -1,6 +1,6 @@
 import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
 import { BaseComponent } from "../common/base-component";
-import { NavBarLinkRender } from "../renders";
+import { NavBarLinkRender } from "../renders/bootstrap/navbar-link/navbar-link-render";
 
 @Component({
   shadow: false,

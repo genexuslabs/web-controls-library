@@ -1,5 +1,5 @@
 import { BaseComponent } from "../common/base-component";
-import { ButtonRender } from "../renders";
+import { ButtonRender } from "../renders/bootstrap/button/button-render";
 import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
 
 @Component({
