@@ -2,11 +2,10 @@
 /// @group theming-mixins
 ////
 
-/// Helper mixin to ease styling gx-edit custom elements
+/// Helper mixin to ease styling gx-button custom elements
 /// @param {map} $class Base class of the component
-@mixin gx-edit($class) {
-  input,
-  textarea {
+@mixin gx-button($class) {
+  button {
     @extend #{$class} !optional;
   }
 }

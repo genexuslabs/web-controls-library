@@ -67,7 +67,7 @@ gx-form-field {
 
     .custom-control-label:before,
     .custom-control-label:after {
-      top: calc(0.25rem + 7px);
+      top: calc(0.25rem - 15px);
     }
   }
 

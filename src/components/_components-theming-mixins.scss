@@ -1,4 +1,7 @@
 @import "./common/_base-theming-mixins";
+@import "./image/image-theming-mixins";
+@import "./table/table-theming-mixins";
 @import "./textblock/textblock-theming-mixins";
 @import "./renders/bootstrap/edit/edit-theming-mixins";
 @import "./renders/bootstrap/form-field/form-field-theming-mixins";
+@import "./renders/bootstrap/button/button-theming-mixins";
