@@ -297,11 +297,11 @@ export class LayoutEditor {
   }
 
   private handleMoveElementDrop(el, target, source) {
-    if (source.getAttribute("data-gx-le-external")) {
+    if (!target) {
       return;
     }
 
-    if (!target) {
+    if (source.getAttribute("data-gx-le-external") !== null) {
       return;
     }
 
