@@ -1,0 +1,7 @@
+@import "../common/_base";
+gx-progress-bar {
+  @include visibility(block);
+  .centered {
+    text-align: center;
+  }
+}
