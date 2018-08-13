@@ -2,12 +2,12 @@ import { BaseComponent } from "../common/base-component";
 import { ProgressBarRender } from "../renders/bootstrap/progress-bar/progress-bar-render";
 import { Component, Prop } from "@stencil/core";
 @Component({
-  tag: "gx-progress-bar",
-  styleUrl: "progress-bar.scss",
   host: {
     role: "progressbar"
   },
-  shadow: false
+  shadow: false,
+  styleUrl: "progress-bar.scss",
+  tag: "gx-progress-bar"
 })
 export class ProgressBar extends ProgressBarRender(BaseComponent) {
   /**
