@@ -87,6 +87,7 @@ function renderCell(cell, rowId, rowIndex, colStart, context) {
   return (
     <gx-table-cell
       tabindex="0"
+      key={cell["@id"]}
       data-gx-le-cell-id={cell["@id"]}
       data-gx-le-drop-area="horizontal"
       data-gx-le-row-id={rowId}

@@ -58,6 +58,7 @@ function renderCell(cell, rowId, context, direction) {
   return (
     <div
       tabindex="0"
+      key={cell["@id"]}
       data-gx-flex-cell
       data-gx-le-drop-area={direction === "Column" ? "vertical" : "horizontal"}
       data-gx-le-cell-id={cell["@id"]}
