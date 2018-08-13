@@ -18,3 +18,32 @@
     overflow: auto;
   }
 }
+
+@mixin containerCell() {
+  @include visibility(flex);
+
+  @include autoGrow();
+
+  &:not([align]),
+  &[align="left"] {
+    & > * {
+      flex-grow: 1;
+    }
+  }
+
+  &[align="center"] {
+    justify-content: center;
+  }
+
+  &[align="right"] {
+    justify-content: flex-end;
+  }
+
+  &[valign="middle"] {
+    align-items: center;
+  }
+
+  &[valign="bottom"] {
+    align-items: flex-end;
+  }
+}
