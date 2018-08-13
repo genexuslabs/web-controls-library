@@ -337,6 +337,13 @@ declare global {
       value: string;
     }
 
+    interface GxProgressBar {
+      /**
+       * Sets the progress value.
+       */
+      value: number;
+    }
+
     interface GxRadioGroup {
       /**
        * Specifies how the child `gx-radio-option` will be layed out. It supports two values:  * `horizontal` * `vertical` (default)
@@ -624,6 +631,15 @@ declare global {
     new (): HTMLGxPasswordEditElement;
   };
 
+  interface HTMLGxProgressBarElement
+    extends StencilComponents.GxProgressBar,
+      HTMLStencilElement {}
+
+  var HTMLGxProgressBarElement: {
+    prototype: HTMLGxProgressBarElement;
+    new (): HTMLGxProgressBarElement;
+  };
+
   interface HTMLGxRadioGroupElement
     extends StencilComponents.GxRadioGroup,
       HTMLStencilElement {}
@@ -703,6 +719,7 @@ declare global {
       "gx-navbar-link": JSXElements.GxNavbarLinkAttributes;
       "gx-navbar": JSXElements.GxNavbarAttributes;
       "gx-password-edit": JSXElements.GxPasswordEditAttributes;
+      "gx-progress-bar": JSXElements.GxProgressBarAttributes;
       "gx-radio-group": JSXElements.GxRadioGroupAttributes;
       "gx-radio-option": JSXElements.GxRadioOptionAttributes;
       "gx-select-option": JSXElements.GxSelectOptionAttributes;
@@ -1080,6 +1097,13 @@ declare global {
       value?: string;
     }
 
+    export interface GxProgressBarAttributes extends HTMLAttributes {
+      /**
+       * Sets the progress value.
+       */
+      value?: number;
+    }
+
     export interface GxRadioGroupAttributes extends HTMLAttributes {
       /**
        * Specifies how the child `gx-radio-option` will be layed out. It supports two values:  * `horizontal` * `vertical` (default)
@@ -1312,6 +1336,7 @@ declare global {
     "gx-navbar-link": HTMLGxNavbarLinkElement;
     "gx-navbar": HTMLGxNavbarElement;
     "gx-password-edit": HTMLGxPasswordEditElement;
+    "gx-progress-bar": HTMLGxProgressBarElement;
     "gx-radio-group": HTMLGxRadioGroupElement;
     "gx-radio-option": HTMLGxRadioOptionElement;
     "gx-select-option": HTMLGxSelectOptionElement;
@@ -1335,6 +1360,7 @@ declare global {
     "gx-navbar-link": HTMLGxNavbarLinkElement;
     "gx-navbar": HTMLGxNavbarElement;
     "gx-password-edit": HTMLGxPasswordEditElement;
+    "gx-progress-bar": HTMLGxProgressBarElement;
     "gx-radio-group": HTMLGxRadioGroupElement;
     "gx-radio-option": HTMLGxRadioOptionElement;
     "gx-select-option": HTMLGxSelectOptionElement;
