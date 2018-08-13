@@ -30,7 +30,7 @@ export class LayoutEditor {
   @Prop() model: any;
 
   /**
-   * Array with the identifiers of the selected controls. If empty the whole layout-editor is marked as selected.
+   * Array with the identifiers of the selected control's cells. If empty the whole layout-editor is marked as selected.
    */
   @Prop({ mutable: true })
   selectedCells: string[] = [];
@@ -174,9 +174,9 @@ export class LayoutEditor {
    *
    * An object containing information of the select operation is sent in the `detail` property of the event object
    *
-   * | Property      | Details                           |
-   * | ------------- | --------------------------------- |
-   * | `controlId`   | Identifier of the selected cell   |
+   * | Property       | Details                            |
+   * | -------------- | ---------------------------------- |
+   * | `controlIds`   | Identifier of the selected cells   |
    *
    */
   @Event() controlSelected: EventEmitter;
@@ -192,38 +192,17 @@ export class LayoutEditor {
 
   private ddDroppedEl: HTMLElement;
 
-  private ignoreFocus = false;
+  // private ignoreFocus = false;
 
   componentDidLoad() {
     this.initDragAndDrop();
 
     this.element.addEventListener("keydown", this.handleKeyDown.bind(this));
-    this.element.addEventListener("focusin", this.handleFocusIn.bind(this));
-    this.element.addEventListener("mouseup", () => {
-      this.ignoreFocus = false;
-    });
-    this.element.addEventListener("mousedown", event => {
-      this.ignoreFocus = event.ctrlKey;
-    });
     this.element.addEventListener("click", this.handleClick.bind(this));
   }
 
   componentWillUpdate() {
     this.restoreAfterDragDrop();
-  }
-
-  private handleFocusIn(event: FocusEvent) {
-    if (!this.ignoreFocus) {
-      const target = event.target as HTMLElement;
-
-      const { cellId } = getCellData(target);
-      const childControl = target.querySelector("[data-gx-le-control-id]");
-      const controlId = childControl
-        ? cellId + getControlId(childControl as HTMLElement)
-        : cellId;
-
-      this.updateSelection(cellId, controlId, false);
-    }
   }
 
   private handleKeyDown(event: KeyboardEvent) {
@@ -233,6 +212,10 @@ export class LayoutEditor {
       switch (event.key) {
         case "Delete":
           this.handleDelete(target);
+          break;
+        case " ":
+          this.handleSelection(event.target as HTMLElement, event.ctrlKey);
+          event.preventDefault();
           break;
       }
     }
@@ -577,19 +560,21 @@ export class LayoutEditor {
   }
 
   private handleClick(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-    const control = findTargetControl(target);
-    if (control) {
-      control.focus();
-      const { cellId: selectedCellId } = getCellData(control);
-      const childControl = control.querySelector("[data-gx-le-control-id]");
-      const controlId = childControl
-        ? selectedCellId + getControlId(childControl as HTMLElement)
-        : selectedCellId;
+    this.handleSelection(event.target as HTMLElement, event.ctrlKey);
+  }
 
-      this.updateSelection(selectedCellId, controlId, event.ctrlKey);
+  private handleSelection(target: HTMLElement, add) {
+    const control = findTargetControl(target);
+    const childControl = control.querySelector("[data-gx-le-control-id]");
+    const controlId = childControl
+      ? getControlId(childControl as HTMLElement)
+      : "";
+
+    if (control) {
+      const { cellId: selectedCellId } = getCellData(control);
+      this.updateSelection(selectedCellId, controlId, add);
     } else {
-      this.updateSelection("", MAIN_TABLE_IDENTIFIER, event.ctrlKey);
+      this.updateSelection("", controlId, add);
     }
   }
 

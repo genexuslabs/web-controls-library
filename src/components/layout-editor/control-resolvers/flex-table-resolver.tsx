@@ -20,7 +20,7 @@ export default function flexTableResolver({ table }, context) {
 
   return (
     <div
-      data-gx-le-control-id={table["@controlName"]}
+      data-gx-le-control-id={table["@id"]}
       style={getTableStyle(table)}
       data-gx-le-container
       data-gx-le-container-empty={isEmptyTable.toString()}
@@ -64,7 +64,9 @@ function renderCell(cell, rowId, context, direction) {
       data-gx-le-cell-id={cell["@id"]}
       data-gx-le-row-id={rowId}
       style={editorCellStyle}
-      data-gx-le-selected={context.selectedCells.includes(cell["@id"])}
+      data-gx-le-selected={context.selectedCells
+        .includes(cell["@id"])
+        .toString()}
     >
       {controlResolver(cell, context)}
     </div>

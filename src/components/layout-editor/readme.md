@@ -55,7 +55,7 @@ The abstract form model object
 
 string[]
 
-Array with the identifiers of the selected controls. If empty the whole layout-editor is marked as selected.
+Array with the identifiers of the selected control's cells. If empty the whole layout-editor is marked as selected.
 
 ## Attributes
 
@@ -67,7 +67,7 @@ The abstract form model object
 
 #### selected-cells
 
-Array with the identifiers of the selected controls. If empty the whole layout-editor is marked as selected.
+Array with the identifiers of the selected control's cells. If empty the whole layout-editor is marked as selected.
 
 ## Events
 
@@ -155,9 +155,9 @@ Fired when the selection has been changed
 
 An object containing information of the select operation is sent in the `detail` property of the event object
 
-| Property    | Details                         |
-| ----------- | ------------------------------- |
-| `controlId` | Identifier of the selected cell |
+| Property     | Details                          |
+| ------------ | -------------------------------- |
+| `controlIds` | Identifier of the selected cells |
 
 #### moveCompleted
 

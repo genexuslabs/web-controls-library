@@ -32,7 +32,7 @@ export default function tabularTableResolver({ table }, context) {
       {...getTableStyle(rowsCount, maxCols)}
       data-gx-le-container
       data-gx-le-container-empty={isEmptyTable.toString()}
-      data-gx-le-control-id={table["@controlName"]}
+      data-gx-le-control-id={table["@id"]}
     >
       {[...rows, ...renderEmptyRows(nonEmptyRows, maxCols)]}
     </gx-table>
@@ -95,7 +95,9 @@ function renderCell(cell, rowId, rowIndex, colStart, context) {
         "grid-column": `${colStart} / span ${colSpan}`,
         "grid-row": ` ${rowStart} / span ${rowSpan}`
       }}
-      data-gx-le-selected={context.selectedCells.includes(cell["@id"])}
+      data-gx-le-selected={context.selectedCells
+        .includes(cell["@id"])
+        .toString()}
     >
       {controlResolver(cell, context)}
     </gx-table-cell>

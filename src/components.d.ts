@@ -43,6 +43,32 @@ declare global {
       size: "large" | "normal" | "small";
     }
 
+    interface GxCanvasCell {
+      /**
+       * Defines the horizontal aligmnent of the content of the cell.
+       */
+      align: "left" | "right" | "center";
+      /**
+       * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+       */
+      autoGrow: boolean;
+      /**
+       * Defines the vertical aligmnent of the content of the cell.
+       */
+      valign: "top" | "bottom" | "medium";
+    }
+
+    interface GxCanvas {
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
+      disabled: boolean;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode: "collapse" | "keep-space";
+    }
+
     interface GxCard {
       /**
        * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
@@ -205,7 +231,7 @@ declare global {
        */
       model: any;
       /**
-       * Array with the identifiers of the selected controls. If empty the whole layout-editor is marked as selected.
+       * Array with the identifiers of the selected control's cells. If empty the whole layout-editor is marked as selected.
        */
       selectedCells: string[];
     }
@@ -523,6 +549,24 @@ declare global {
     new (): HTMLGxButtonElement;
   };
 
+  interface HTMLGxCanvasCellElement
+    extends StencilComponents.GxCanvasCell,
+      HTMLStencilElement {}
+
+  var HTMLGxCanvasCellElement: {
+    prototype: HTMLGxCanvasCellElement;
+    new (): HTMLGxCanvasCellElement;
+  };
+
+  interface HTMLGxCanvasElement
+    extends StencilComponents.GxCanvas,
+      HTMLStencilElement {}
+
+  var HTMLGxCanvasElement: {
+    prototype: HTMLGxCanvasElement;
+    new (): HTMLGxCanvasElement;
+  };
+
   interface HTMLGxCardElement
     extends StencilComponents.GxCard,
       HTMLStencilElement {}
@@ -707,6 +751,8 @@ declare global {
     interface Element {}
     export interface IntrinsicElements {
       "gx-button": JSXElements.GxButtonAttributes;
+      "gx-canvas-cell": JSXElements.GxCanvasCellAttributes;
+      "gx-canvas": JSXElements.GxCanvasAttributes;
       "gx-card": JSXElements.GxCardAttributes;
       "gx-checkbox": JSXElements.GxCheckboxAttributes;
       "gx-edit": JSXElements.GxEditAttributes;
@@ -756,6 +802,36 @@ declare global {
        * This attribute lets you specify the size of the button.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `large`  | Large sized button.                                     | | `normal` | Standard sized button.                                  | | `small`  | Small sized button.                                     |
        */
       size?: "large" | "normal" | "small";
+    }
+
+    export interface GxCanvasCellAttributes extends HTMLAttributes {
+      /**
+       * Defines the horizontal aligmnent of the content of the cell.
+       */
+      align?: "left" | "right" | "center";
+      /**
+       * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+       */
+      autoGrow?: boolean;
+      /**
+       * Defines the vertical aligmnent of the content of the cell.
+       */
+      valign?: "top" | "bottom" | "medium";
+    }
+
+    export interface GxCanvasAttributes extends HTMLAttributes {
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
+      disabled?: boolean;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode?: "collapse" | "keep-space";
+      /**
+       * Emitted when the element is clicked.
+       */
+      onOnClick?: (event: CustomEvent) => void;
     }
 
     export interface GxCardAttributes extends HTMLAttributes {
@@ -941,7 +1017,7 @@ declare global {
        */
       onControlRemoved?: (event: CustomEvent) => void;
       /**
-       * Fired when the selection has been changed  An object containing information of the select operation is sent in the `detail` property of the event object  | Property      | Details                           | | ------------- | --------------------------------- | | `controlId`   | Identifier of the selected cell   |
+       * Fired when the selection has been changed  An object containing information of the select operation is sent in the `detail` property of the event object  | Property       | Details                            | | -------------- | ---------------------------------- | | `controlIds`   | Identifier of the selected cells   |
        */
       onControlSelected?: (event: CustomEvent) => void;
       /**
@@ -949,7 +1025,7 @@ declare global {
        */
       onMoveCompleted?: (event: CustomEvent) => void;
       /**
-       * Array with the identifiers of the selected controls. If empty the whole layout-editor is marked as selected.
+       * Array with the identifiers of the selected control's cells. If empty the whole layout-editor is marked as selected.
        */
       selectedCells?: string[];
     }
@@ -1324,6 +1400,8 @@ declare global {
 
   interface HTMLElementTagNameMap {
     "gx-button": HTMLGxButtonElement;
+    "gx-canvas-cell": HTMLGxCanvasCellElement;
+    "gx-canvas": HTMLGxCanvasElement;
     "gx-card": HTMLGxCardElement;
     "gx-checkbox": HTMLGxCheckboxElement;
     "gx-edit": HTMLGxEditElement;
@@ -1348,6 +1426,8 @@ declare global {
 
   interface ElementTagNameMap {
     "gx-button": HTMLGxButtonElement;
+    "gx-canvas-cell": HTMLGxCanvasCellElement;
+    "gx-canvas": HTMLGxCanvasElement;
     "gx-card": HTMLGxCardElement;
     "gx-checkbox": HTMLGxCheckboxElement;
     "gx-edit": HTMLGxEditElement;

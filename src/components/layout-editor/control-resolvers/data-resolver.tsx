@@ -9,7 +9,7 @@ export default function dataResolver({ data }) {
     <gx-form-field
       label-caption={data["@labelCaption"]}
       label-position={labelPositionMap[data["@labelPosition"]]}
-      data-gx-le-control-id={data["@controlName"]}
+      data-gx-le-control-id={data["@id"]}
     >
       <gx-edit
         value={data["@controlName"]}
