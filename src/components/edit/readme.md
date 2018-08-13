@@ -53,12 +53,6 @@ Used to control whether autocorrection should be enabled when the user
 is entering/editing the text value. Sames as [autocorrect](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocorrect)
 attribute for `input` elements.
 
-#### cssClass
-
-string
-
-A CSS class to set as the inner `input` element class.
-
 #### disabled
 
 boolean
@@ -113,12 +107,6 @@ If true, a trigger button is shown next to the edit field. The button can
 be customized using `trigger-text` and `trigger-class` attributes,
 or adding a child element with `slot="trigger-content"` attribute to
 specify the content inside the trigger button.
-
-#### triggerClass
-
-string
-
-A CSS class to set as the trigger button class.
 
 #### triggerText
 
@@ -180,12 +168,6 @@ Used to control whether autocorrection should be enabled when the user
 is entering/editing the text value. Sames as [autocorrect](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocorrect)
 attribute for `input` elements.
 
-#### css-class
-
-string
-
-A CSS class to set as the inner `input` element class.
-
 #### disabled
 
 boolean
@@ -240,12 +222,6 @@ If true, a trigger button is shown next to the edit field. The button can
 be customized using `trigger-text` and `trigger-class` attributes,
 or adding a child element with `slot="trigger-content"` attribute to
 specify the content inside the trigger button.
-
-#### trigger-class
-
-string
-
-A CSS class to set as the trigger button class.
 
 #### trigger-text
 
