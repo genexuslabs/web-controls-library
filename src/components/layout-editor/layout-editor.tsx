@@ -13,7 +13,7 @@ import {
   getCellData,
   getControlId,
   getDropTargetData,
-  isEmptyTableDrop
+  isEmptyContainerDrop
 } from "./layout-editor-helpers";
 
 @Component({
@@ -278,8 +278,10 @@ export class LayoutEditor {
     });
   }
 
-  private handleMoveElementDrop(el, target, source) {
-    if (!target) {
+  private handleMoveElementDrop(droppedEl, target, source) {
+    const targetCell: HTMLElement = target as HTMLElement;
+
+    if (!targetCell) {
       return;
     }
 
@@ -287,69 +289,15 @@ export class LayoutEditor {
       return;
     }
 
-    this.ddDroppedEl = el;
+    this.ddDroppedEl = droppedEl;
 
-    const { placeholderType, nextRowId } = getDropTargetData(target);
-    if (placeholderType === "row") {
-      const { rowId: sourceRowId, cellId: sourceCellId } = getCellData(source);
-      if (isEmptyTableDrop(target as HTMLElement)) {
-        // Dropped on an empty container
-        const placeholderElement = target as HTMLElement;
-        this.moveCompleted.emit({
-          containerId: getControlId(placeholderElement.parentElement),
-          sourceCellId,
-          sourceRowId
-        });
-      } else {
-        // Dropped on a new row
-        const beforeRowId = nextRowId;
-        if (beforeRowId) {
-          this.moveCompleted.emit({
-            beforeRowId,
-            sourceCellId,
-            sourceRowId
-          });
-        } else {
-          this.moveCompleted.emit({
-            containerId: getControlId(target.parentElement),
-            sourceCellId,
-            sourceRowId
-          });
-        }
-      }
-    } else {
-      const { rowId: targetRowId } = getCellData(target);
-      const { cellId: sourceCellId, rowId: sourceRowId } = getCellData(source);
-      // Dropped on an existing row
-      if (target.children.length === 1) {
-        // Dropped on an empty cell
-        const { cellId: targetCellId } = getCellData(target);
-        this.moveCompleted.emit({
-          sourceCellId,
-          sourceRowId,
-          targetCellId
-        });
-      } else {
-        // Dropped on a non-empty cell
-        let beforeCellId = null;
-        if (el.nextElementSibling) {
-          beforeCellId = getCellData(target).cellId;
-        } else {
-          if (target.nextElementSibling) {
-            const nextElementData = getCellData(target.nextElementSibling);
-            if (targetRowId === nextElementData.rowId) {
-              beforeCellId = nextElementData.cellId;
-            }
-          }
-        }
-        this.moveCompleted.emit({
-          beforeCellId,
-          sourceCellId,
-          sourceRowId,
-          targetRowId
-        });
-      }
-    }
+    const { rowId: sourceRowId, cellId: sourceCellId } = getCellData(source);
+
+    this.moveCompleted.emit({
+      ...this.getEventDataForDropAction(targetCell, droppedEl as HTMLElement),
+      sourceCellId,
+      sourceRowId
+    });
   }
 
   private handleExternalElementOver(event: DragEvent) {
@@ -395,75 +343,30 @@ export class LayoutEditor {
   }
 
   private handleExternalElementDrop(event: DragEvent) {
-    let eventData = {};
+    let eventData;
 
-    if (isEmptyTableDrop(event.target as HTMLElement)) {
+    const evtTarget = event.target as HTMLElement;
+    const targetCell = findParentCell(evtTarget) || evtTarget;
+    const el = targetCell.querySelector("[data-gx-le-external-transit]");
+
+    this.drake.end();
+
+    this.ddDroppedEl = el as HTMLElement;
+
+    if (isEmptyContainerDrop(evtTarget)) {
       if (this.isEditorEmpty()) {
         // Dropped on the outermost table, when it's empty (the editor is empty)
         eventData = {
           containerId: MAIN_TABLE_IDENTIFIER
         };
       } else {
-        // Dropped on an empty table
-        const placeholderElement = event.target as HTMLElement;
+        // Dropped on an empty container
         eventData = {
-          containerId: getControlId(placeholderElement.parentElement)
+          containerId: getControlId(evtTarget.parentElement)
         };
       }
     } else {
-      const evtTarget = event.target as HTMLElement;
-      const targetCell = findParentCell(evtTarget) || evtTarget;
-      const el = targetCell.querySelector("[data-gx-le-external-transit]");
-
-      this.drake.end();
-
-      this.ddDroppedEl = el as HTMLElement;
-
-      const { rowId: targetRowId } = getCellData(targetCell);
-      const { placeholderType, nextRowId } = getDropTargetData(targetCell);
-      if (placeholderType === "row") {
-        // Dropped on a new row
-        const beforeRowId = nextRowId;
-        if (beforeRowId) {
-          // The new row was dropped before an existing row (beforeRowId)
-          eventData = {
-            beforeRowId
-          };
-        } else {
-          // The new row is the last row
-          eventData = {
-            containerId: getControlId(targetCell.parentElement)
-          };
-        }
-      } else {
-        // Dropped on an existing row
-        if (targetCell.children.length === 1) {
-          // Dropped on an empty cell
-          const { cellId: targetCellId } = getCellData(targetCell);
-          eventData = {
-            targetCellId
-          };
-        } else {
-          // Dropped on a non-empty cell
-          let beforeCellId = null;
-          if (el.nextElementSibling) {
-            beforeCellId = getCellData(targetCell).cellId;
-          } else {
-            if (targetCell.nextElementSibling) {
-              const nextElementData = getCellData(
-                targetCell.nextElementSibling as HTMLElement
-              );
-              if (targetRowId === nextElementData.rowId) {
-                beforeCellId = nextElementData.cellId;
-              }
-            }
-          }
-          eventData = {
-            beforeCellId,
-            targetRowId
-          };
-        }
-      }
+      eventData = this.getEventDataForDropAction(targetCell, el as HTMLElement);
     }
 
     const evtDataTransfer = event.dataTransfer.getData("text");
@@ -483,6 +386,65 @@ export class LayoutEditor {
         elementType: evtDataArr[1]
       });
     }
+  }
+
+  private getEventDataForDropAction(
+    targetCell: HTMLElement,
+    droppedEl: HTMLElement
+  ) {
+    let eventData;
+
+    const { placeholderType, nextRowId } = getDropTargetData(targetCell);
+    if (placeholderType === "row") {
+      if (isEmptyContainerDrop(targetCell)) {
+        // Dropped on an empty container
+        eventData = {
+          containerId: getControlId(targetCell.parentElement)
+        };
+      } else {
+        // Dropped on a new row
+        const beforeRowId = nextRowId;
+        if (beforeRowId) {
+          eventData = {
+            beforeRowId
+          };
+        } else {
+          eventData = {
+            containerId: getControlId(targetCell.parentElement)
+          };
+        }
+      }
+    } else {
+      const { rowId: targetRowId } = getCellData(targetCell);
+      // Dropped on an existing row
+      if (targetCell.children.length === 1) {
+        // Dropped on an empty cell
+        const { cellId: targetCellId } = getCellData(targetCell);
+        eventData = {
+          targetCellId
+        };
+      } else {
+        // Dropped on a non-empty cell
+        let beforeCellId = null;
+        if (droppedEl.nextElementSibling) {
+          beforeCellId = getCellData(targetCell).cellId;
+        } else {
+          if (targetCell.nextElementSibling) {
+            const nextElementData = getCellData(
+              targetCell.nextElementSibling as HTMLElement
+            );
+            if (targetRowId === nextElementData.rowId) {
+              beforeCellId = nextElementData.cellId;
+            }
+          }
+        }
+        eventData = {
+          beforeCellId,
+          targetRowId
+        };
+      }
+    }
+    return eventData;
   }
 
   private isEditorEmpty() {

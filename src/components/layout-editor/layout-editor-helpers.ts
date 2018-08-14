@@ -27,7 +27,7 @@ export function getDropTargetData(el: HTMLElement): IDropTargetData {
   };
 }
 
-export function isEmptyTableDrop(el: HTMLElement): boolean {
+export function isEmptyContainerDrop(el: HTMLElement): boolean {
   return (
     el.matches("gx-layout-editor-placeholder") &&
     el.parentElement &&
