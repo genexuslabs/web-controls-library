@@ -1,0 +1,31 @@
+import { BaseComponent } from "../common/base-component";
+import { Component, Prop } from "@stencil/core";
+@Component({
+  host: {
+    role: "group"
+  },
+  shadow: false,
+  styleUrl: "group.scss",
+  tag: "gx-group"
+})
+export class Group extends BaseComponent {
+  /**
+   * Attribute that provides the caption to the <leyend> tag
+   */
+  @Prop() caption: string;
+  /**
+   * This attribute defines if the control size will grow automatically,
+   * to adjust to its content size.
+   * If set to `false`, it won't grow automatically and it will show scrollbars
+   * if the content overflows.
+   */
+  @Prop() autoGrow: boolean;
+  render() {
+    return (
+      <fieldset class="form-group">
+        <legend>{this.caption}</legend>
+        <slot />
+      </fieldset>
+    );
+  }
+}
