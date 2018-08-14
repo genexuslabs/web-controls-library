@@ -9,7 +9,7 @@ import {
 import Dragula from "dragula";
 import controlResolver from "./layout-editor-control-resolver";
 import {
-  findTargetControl,
+  findParentCell,
   getCellData,
   getControlId,
   getDropTargetData,
@@ -44,10 +44,10 @@ export class LayoutEditor {
    *
    * Regardless where the control was dropped, the detail object will contain information about the source row and the id of the dropped control:
    *
-   * | Property      | Details                                                                                                          |
-   * | ------------- | ---------------------------------------------------------------------------------------------------------------- |
-   * | `controlId`   | Identifier of the source cell                                                                                    |
-   * | `sourceRowId` | Identifier of the source row                                                                                     |
+   * | Property         | Details                                                                                                          |
+   * | ---------------- | ---------------------------------------------------------------------------------------------------------------- |
+   * | `sourceCellId`   | Identifier of the source cell                                                                                    |
+   * | `sourceRowId`    | Identifier of the source row                                                                                     |
    *
    * Depending on where the control was dropped, additional information will be provided and different properties will be set. There are four possible cases:
    *
@@ -79,7 +79,7 @@ export class LayoutEditor {
    *
    * | Property          | Details                                                                                                                                     |
    * | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-   * | `beforeControlId` | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. |
+   * | `beforeCellId`    | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. |
    * | `targetRowId`     | Identifier of the row where the control was dropped                                                                                         |
    *
    */
@@ -150,7 +150,7 @@ export class LayoutEditor {
    *
    * | Property          | Details                                                                                                                                     |
    * | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-   * | `beforeControlId` | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. |
+   * | `beforeCelllId`   | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. |
    * | `targetRowId`     | Identifier of the row where the control was dropped                                                                                         |
    *
    *
@@ -162,9 +162,9 @@ export class LayoutEditor {
    *
    * An object containing information of the add operation is sent in the `detail` property of the event object
    *
-   * | Property          | Details                                                                                                                                     |
-   * | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-   * | `controlId`       | Identifier of the cell that was removed |
+   * | Property           | Details                                                                                                                                     |
+   * | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+   * | `controlIds`       | Identifier of the removed controls |
    *
    */
   @Event() controlRemoved: EventEmitter;
@@ -174,9 +174,9 @@ export class LayoutEditor {
    *
    * An object containing information of the select operation is sent in the `detail` property of the event object
    *
-   * | Property       | Details                            |
-   * | -------------- | ---------------------------------- |
-   * | `controlIds`   | Identifier of the selected cells   |
+   * | Property       | Details                               |
+   * | -------------- | ------------------------------------- |
+   * | `controlIds`   | Identifier of the selected controls   |
    *
    */
   @Event() controlSelected: EventEmitter;
@@ -211,7 +211,7 @@ export class LayoutEditor {
     if (cellId) {
       switch (event.key) {
         case "Delete":
-          this.handleDelete(target);
+          this.handleDelete();
           break;
         case " ":
           this.handleSelection(event.target as HTMLElement, event.ctrlKey);
@@ -221,10 +221,9 @@ export class LayoutEditor {
     }
   }
 
-  private handleDelete(target) {
-    const { cellId: controlId } = getCellData(target);
+  private handleDelete() {
     this.controlRemoved.emit({
-      controlId
+      controlIds: this.selectedControls.join(",")
     });
   }
 
@@ -292,13 +291,13 @@ export class LayoutEditor {
 
     const { placeholderType, nextRowId } = getDropTargetData(target);
     if (placeholderType === "row") {
-      const { rowId: sourceRowId, cellId: controlId } = getCellData(source);
+      const { rowId: sourceRowId, cellId: sourceCellId } = getCellData(source);
       if (isEmptyTableDrop(target as HTMLElement)) {
         // Dropped on an empty container
         const placeholderElement = target as HTMLElement;
         this.moveCompleted.emit({
           containerId: getControlId(placeholderElement.parentElement),
-          controlId,
+          sourceCellId,
           sourceRowId
         });
       } else {
@@ -307,46 +306,46 @@ export class LayoutEditor {
         if (beforeRowId) {
           this.moveCompleted.emit({
             beforeRowId,
-            controlId,
+            sourceCellId,
             sourceRowId
           });
         } else {
           this.moveCompleted.emit({
             containerId: getControlId(target.parentElement),
-            controlId,
+            sourceCellId,
             sourceRowId
           });
         }
       }
     } else {
       const { rowId: targetRowId } = getCellData(target);
-      const { cellId: controlId, rowId: sourceRowId } = getCellData(source);
+      const { cellId: sourceCellId, rowId: sourceRowId } = getCellData(source);
       // Dropped on an existing row
       if (target.children.length === 1) {
         // Dropped on an empty cell
         const { cellId: targetCellId } = getCellData(target);
         this.moveCompleted.emit({
-          controlId,
+          sourceCellId,
           sourceRowId,
           targetCellId
         });
       } else {
         // Dropped on a non-empty cell
-        let beforeControlId = null;
+        let beforeCellId = null;
         if (el.nextElementSibling) {
-          beforeControlId = getCellData(target).cellId;
+          beforeCellId = getCellData(target).cellId;
         } else {
           const nextElementData = getCellData(target.nextElementSibling);
           if (
             target.nextElementSibling &&
             targetRowId === nextElementData.rowId
           ) {
-            beforeControlId = nextElementData.cellId;
+            beforeCellId = nextElementData.cellId;
           }
         }
         this.moveCompleted.emit({
-          beforeControlId,
-          controlId,
+          beforeCellId,
+          sourceCellId,
           sourceRowId,
           targetRowId
         });
@@ -414,15 +413,15 @@ export class LayoutEditor {
       }
     } else {
       const evtTarget = event.target as HTMLElement;
-      const target = findTargetControl(evtTarget) || evtTarget;
-      const el = target.querySelector("[data-gx-le-external-transit]");
+      const targetCell = findParentCell(evtTarget) || evtTarget;
+      const el = targetCell.querySelector("[data-gx-le-external-transit]");
 
       this.drake.end();
 
       this.ddDroppedEl = el as HTMLElement;
 
-      const { rowId: targetRowId } = getCellData(target);
-      const { placeholderType, nextRowId } = getDropTargetData(target);
+      const { rowId: targetRowId } = getCellData(targetCell);
+      const { placeholderType, nextRowId } = getDropTargetData(targetCell);
       if (placeholderType === "row") {
         // Dropped on a new row
         const beforeRowId = nextRowId;
@@ -434,35 +433,35 @@ export class LayoutEditor {
         } else {
           // The new row is the last row
           eventData = {
-            containerId: getControlId(target.parentElement)
+            containerId: getControlId(targetCell.parentElement)
           };
         }
       } else {
         // Dropped on an existing row
-        if (target.children.length === 1) {
+        if (targetCell.children.length === 1) {
           // Dropped on an empty cell
-          const { cellId: targetCellId } = getCellData(target);
+          const { cellId: targetCellId } = getCellData(targetCell);
           eventData = {
             targetCellId
           };
         } else {
           // Dropped on a non-empty cell
-          let beforeControlId = null;
+          let beforeCellId = null;
           if (el.nextElementSibling) {
-            beforeControlId = getCellData(target).cellId;
+            beforeCellId = getCellData(targetCell).cellId;
           } else {
             const nextElementData = getCellData(
-              target.nextElementSibling as HTMLElement
+              targetCell.nextElementSibling as HTMLElement
             );
             if (
-              target.nextElementSibling &&
+              targetCell.nextElementSibling &&
               targetRowId === nextElementData.rowId
             ) {
-              beforeControlId = nextElementData.cellId;
+              beforeCellId = nextElementData.cellId;
             }
           }
           eventData = {
-            beforeControlId,
+            beforeCellId,
             targetRowId
           };
         }
@@ -564,17 +563,21 @@ export class LayoutEditor {
   }
 
   private handleSelection(target: HTMLElement, add) {
-    const control = findTargetControl(target);
-    const childControl = control.querySelector("[data-gx-le-control-id]");
-    const controlId = childControl
-      ? getControlId(childControl as HTMLElement)
+    const selCell = findParentCell(target);
+    const sellChildControl = selCell.querySelector("[data-gx-le-control-id]");
+    const selChildControlId = sellChildControl
+      ? getControlId(sellChildControl as HTMLElement)
       : "";
 
-    if (control) {
-      const { cellId: selectedCellId } = getCellData(control);
-      this.updateSelection(selectedCellId, controlId, add);
+    if (selCell) {
+      const { cellId: selectedCellId } = getCellData(selCell);
+      this.updateSelection(
+        selectedCellId,
+        selChildControlId || selectedCellId,
+        add
+      );
     } else {
-      this.updateSelection("", controlId, add);
+      this.updateSelection("", selChildControlId, add);
     }
   }
 

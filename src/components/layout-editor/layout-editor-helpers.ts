@@ -1,4 +1,4 @@
-export function findTargetControl(el: HTMLElement): HTMLElement {
+export function findParentCell(el: HTMLElement): HTMLElement {
   if (el.hasAttribute("data-gx-le-drop-area")) {
     return el;
   }
