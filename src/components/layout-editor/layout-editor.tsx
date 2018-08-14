@@ -335,12 +335,11 @@ export class LayoutEditor {
         if (el.nextElementSibling) {
           beforeCellId = getCellData(target).cellId;
         } else {
-          const nextElementData = getCellData(target.nextElementSibling);
-          if (
-            target.nextElementSibling &&
-            targetRowId === nextElementData.rowId
-          ) {
-            beforeCellId = nextElementData.cellId;
+          if (target.nextElementSibling) {
+            const nextElementData = getCellData(target.nextElementSibling);
+            if (targetRowId === nextElementData.rowId) {
+              beforeCellId = nextElementData.cellId;
+            }
           }
         }
         this.moveCompleted.emit({
@@ -450,14 +449,13 @@ export class LayoutEditor {
           if (el.nextElementSibling) {
             beforeCellId = getCellData(targetCell).cellId;
           } else {
-            const nextElementData = getCellData(
-              targetCell.nextElementSibling as HTMLElement
-            );
-            if (
-              targetCell.nextElementSibling &&
-              targetRowId === nextElementData.rowId
-            ) {
-              beforeCellId = nextElementData.cellId;
+            if (targetCell.nextElementSibling) {
+              const nextElementData = getCellData(
+                targetCell.nextElementSibling as HTMLElement
+              );
+              if (targetRowId === nextElementData.rowId) {
+                beforeCellId = nextElementData.cellId;
+              }
             }
           }
           eventData = {
