@@ -134,10 +134,10 @@ Depending on where the control was dropped, additional information will be provi
 
 ###### 4. Dropped on an existing row
 
-| Property          | Details                                                                                                                                     |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `beforeControlId` | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. |
-| `targetRowId`     | Identifier of the row where the control was dropped                                                                                         |
+| Property        | Details                                                                                                                                     |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `beforeCelllId` | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. |
+| `targetRowId`   | Identifier of the row where the control was dropped                                                                                         |
 
 #### controlRemoved
 
@@ -145,9 +145,9 @@ Fired when a control has been removed from the layout
 
 An object containing information of the add operation is sent in the `detail` property of the event object
 
-| Property    | Details                                 |
-| ----------- | --------------------------------------- |
-| `controlId` | Identifier of the cell that was removed |
+| Property  | Details                         |
+| --------- | ------------------------------- |
+| `cellIds` | Identifier of the removed cells |
 
 #### controlSelected
 
@@ -155,9 +155,9 @@ Fired when the selection has been changed
 
 An object containing information of the select operation is sent in the `detail` property of the event object
 
-| Property     | Details                          |
-| ------------ | -------------------------------- |
-| `controlIds` | Identifier of the selected cells |
+| Property  | Details                          |
+| --------- | -------------------------------- |
+| `cellIds` | Identifier of the selected cells |
 
 #### moveCompleted
 
@@ -167,10 +167,10 @@ An object containing information of the move operation is sent in the `detail` p
 
 Regardless where the control was dropped, the detail object will contain information about the source row and the id of the dropped control:
 
-| Property      | Details                       |
-| ------------- | ----------------------------- |
-| `controlId`   | Identifier of the source cell |
-| `sourceRowId` | Identifier of the source row  |
+| Property       | Details                       |
+| -------------- | ----------------------------- |
+| `sourceCellId` | Identifier of the source cell |
+| `sourceRowId`  | Identifier of the source row  |
 
 Depending on where the control was dropped, additional information will be provided and different properties will be set. There are four possible cases:
 
@@ -199,10 +199,10 @@ Depending on where the control was dropped, additional information will be provi
 
 ###### 4. Dropped on an existing row
 
-| Property          | Details                                                                                                                                     |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `beforeControlId` | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. |
-| `targetRowId`     | Identifier of the row where the control was dropped                                                                                         |
+| Property       | Details                                                                                                                                     |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `beforeCellId` | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. |
+| `targetRowId`  | Identifier of the row where the control was dropped                                                                                         |
 
 ---
 

@@ -35,8 +35,6 @@ export class LayoutEditor {
   @Prop({ mutable: true })
   selectedCells: string[] = [];
 
-  private selectedControls: string[] = [];
-
   /**
    * Fired when a control is moved inside the layout editor to a new location
    *
@@ -164,7 +162,7 @@ export class LayoutEditor {
    *
    * | Property           | Details                                                                                                                                     |
    * | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
-   * | `controlIds`       | Identifier of the removed controls |
+   * | `cellIds`          | Identifier of the removed cells |
    *
    */
   @Event() controlRemoved: EventEmitter;
@@ -174,9 +172,9 @@ export class LayoutEditor {
    *
    * An object containing information of the select operation is sent in the `detail` property of the event object
    *
-   * | Property       | Details                               |
-   * | -------------- | ------------------------------------- |
-   * | `controlIds`   | Identifier of the selected controls   |
+   * | Property       | Details                           |
+   * | -------------- | --------------------------------- |
+   * | `cellIds`      | Identifier of the selected cells  |
    *
    */
   @Event() controlSelected: EventEmitter;
@@ -224,7 +222,7 @@ export class LayoutEditor {
 
   private handleDelete() {
     this.controlRemoved.emit({
-      controlIds: this.selectedControls.join(",")
+      cellIds: this.selectedCells.join(",")
     });
   }
 
@@ -521,7 +519,7 @@ export class LayoutEditor {
   @Watch("selectedCells")
   watchSelectedCells() {
     this.controlSelected.emit({
-      controlIds: this.selectedControls.join(",")
+      cellIds: this.selectedCells.join(",")
     });
   }
 
@@ -531,31 +529,19 @@ export class LayoutEditor {
 
   private handleSelection(target: HTMLElement, add) {
     const selCell = findParentCell(target);
-    const sellChildControl = selCell.querySelector("[data-gx-le-control-id]");
-    const selChildControlId = sellChildControl
-      ? getControlId(sellChildControl as HTMLElement)
-      : "";
 
     if (selCell) {
       const { cellId: selectedCellId } = getCellData(selCell);
-      this.updateSelection(
-        selectedCellId,
-        selChildControlId || selectedCellId,
-        add
-      );
+      this.updateSelection(selectedCellId, add);
     } else {
-      this.updateSelection("", selChildControlId, add);
+      this.updateSelection("", add);
     }
   }
 
-  private updateSelection(selectedCellId, controlId, add) {
-    if (add) {
-      this.selectedControls = [...this.selectedControls, controlId];
-      this.selectedCells = [...this.selectedCells, selectedCellId];
-    } else {
-      this.selectedControls = [controlId];
-      this.selectedCells = [selectedCellId];
-    }
+  private updateSelection(selectedCellId, add) {
+    this.selectedCells = add
+      ? [...this.selectedCells, selectedCellId]
+      : [selectedCellId];
   }
 }
 
