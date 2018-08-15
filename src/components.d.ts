@@ -482,6 +482,26 @@ declare global {
       value: string;
     }
 
+    interface GxTabCaption {
+      /**
+       * This attribute lets you specify if the tab page is disabled
+       */
+      disabled: false;
+      /**
+       * This attribute lets you specify if the tab page corresponding to this caption is selected
+       */
+      selected: false;
+    }
+
+    interface GxTabPage {}
+
+    interface GxTab {
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode: "collapse" | "keep-space";
+    }
+
     interface GxTableCell {
       /**
        * Defines the horizontal aligmnent of the content of the cell.
@@ -720,6 +740,33 @@ declare global {
     new (): HTMLGxSelectElement;
   };
 
+  interface HTMLGxTabCaptionElement
+    extends StencilComponents.GxTabCaption,
+      HTMLStencilElement {}
+
+  var HTMLGxTabCaptionElement: {
+    prototype: HTMLGxTabCaptionElement;
+    new (): HTMLGxTabCaptionElement;
+  };
+
+  interface HTMLGxTabPageElement
+    extends StencilComponents.GxTabPage,
+      HTMLStencilElement {}
+
+  var HTMLGxTabPageElement: {
+    prototype: HTMLGxTabPageElement;
+    new (): HTMLGxTabPageElement;
+  };
+
+  interface HTMLGxTabElement
+    extends StencilComponents.GxTab,
+      HTMLStencilElement {}
+
+  var HTMLGxTabElement: {
+    prototype: HTMLGxTabElement;
+    new (): HTMLGxTabElement;
+  };
+
   interface HTMLGxTableCellElement
     extends StencilComponents.GxTableCell,
       HTMLStencilElement {}
@@ -770,6 +817,9 @@ declare global {
       "gx-radio-option": JSXElements.GxRadioOptionAttributes;
       "gx-select-option": JSXElements.GxSelectOptionAttributes;
       "gx-select": JSXElements.GxSelectAttributes;
+      "gx-tab-caption": JSXElements.GxTabCaptionAttributes;
+      "gx-tab-page": JSXElements.GxTabPageAttributes;
+      "gx-tab": JSXElements.GxTabAttributes;
       "gx-table-cell": JSXElements.GxTableCellAttributes;
       "gx-table": JSXElements.GxTableAttributes;
       "gx-textblock": JSXElements.GxTextblockAttributes;
@@ -1013,11 +1063,11 @@ declare global {
        */
       onControlAdded?: (event: CustomEvent) => void;
       /**
-       * Fired when a control has been removed from the layout  An object containing information of the add operation is sent in the `detail` property of the event object  | Property           | Details                                                                                                                                     | | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | | `controlIds`       | Identifier of the removed controls |
+       * Fired when a control has been removed from the layout  An object containing information of the add operation is sent in the `detail` property of the event object  | Property           | Details                                                                                                                                     | | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | | `cellIds`          | Identifier of the removed cells |
        */
       onControlRemoved?: (event: CustomEvent) => void;
       /**
-       * Fired when the selection has been changed  An object containing information of the select operation is sent in the `detail` property of the event object  | Property       | Details                               | | -------------- | ------------------------------------- | | `controlIds`   | Identifier of the selected controls   |
+       * Fired when the selection has been changed  An object containing information of the select operation is sent in the `detail` property of the event object  | Property       | Details                           | | -------------- | --------------------------------- | | `cellIds`      | Identifier of the selected cells  |
        */
       onControlSelected?: (event: CustomEvent) => void;
       /**
@@ -1332,6 +1382,34 @@ declare global {
       value?: string;
     }
 
+    export interface GxTabCaptionAttributes extends HTMLAttributes {
+      /**
+       * This attribute lets you specify if the tab page is disabled
+       */
+      disabled?: false;
+      /**
+       * Fired when the tab caption is selected
+       */
+      onOnTabSelect?: (event: CustomEvent) => void;
+      /**
+       * This attribute lets you specify if the tab page corresponding to this caption is selected
+       */
+      selected?: false;
+    }
+
+    export interface GxTabPageAttributes extends HTMLAttributes {}
+
+    export interface GxTabAttributes extends HTMLAttributes {
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode?: "collapse" | "keep-space";
+      /**
+       * Fired when the active tab is changed
+       */
+      onOnTabChange?: (event: CustomEvent) => void;
+    }
+
     export interface GxTableCellAttributes extends HTMLAttributes {
       /**
        * Defines the horizontal aligmnent of the content of the cell.
@@ -1419,6 +1497,9 @@ declare global {
     "gx-radio-option": HTMLGxRadioOptionElement;
     "gx-select-option": HTMLGxSelectOptionElement;
     "gx-select": HTMLGxSelectElement;
+    "gx-tab-caption": HTMLGxTabCaptionElement;
+    "gx-tab-page": HTMLGxTabPageElement;
+    "gx-tab": HTMLGxTabElement;
     "gx-table-cell": HTMLGxTableCellElement;
     "gx-table": HTMLGxTableElement;
     "gx-textblock": HTMLGxTextblockElement;
@@ -1445,6 +1526,9 @@ declare global {
     "gx-radio-option": HTMLGxRadioOptionElement;
     "gx-select-option": HTMLGxSelectOptionElement;
     "gx-select": HTMLGxSelectElement;
+    "gx-tab-caption": HTMLGxTabCaptionElement;
+    "gx-tab-page": HTMLGxTabPageElement;
+    "gx-tab": HTMLGxTabElement;
     "gx-table-cell": HTMLGxTableCellElement;
     "gx-table": HTMLGxTableElement;
     "gx-textblock": HTMLGxTextblockElement;

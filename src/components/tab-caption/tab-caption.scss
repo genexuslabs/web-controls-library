@@ -1,0 +1,5 @@
+@import "../common/_base";
+
+gx-tab-caption {
+  @include visibility(block);
+}
