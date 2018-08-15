@@ -12,7 +12,7 @@
     "postbuild": "npm run scss-bundle && npm run sassdoc",
     "docs": "stencil build --dev --docs && npm run sassdoc",
     "lint": "npm run tslint",
-    "precommit": "npm run docs && pretty-quick --staged && npm run lint",
+    "precommit": "pretty-quick --staged && npm run lint",
     "pretty-quick": "pretty-quick",
     "sassdoc":
       "sassdoc src/components/**/*-theming-mixins.scss -c sassdoc.config.json",
