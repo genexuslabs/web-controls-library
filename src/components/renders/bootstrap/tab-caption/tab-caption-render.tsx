@@ -28,10 +28,11 @@ export function TabCaptionRender<T extends Constructor<{}>>(Base: T) {
       );
     }
 
-    private clickHandler(event) {
+    private clickHandler(event: UIEvent) {
       if (this.disabled) {
         return;
       }
+      event.preventDefault();
       this.onTabSelect.emit(event);
     }
   };
