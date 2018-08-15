@@ -1,26 +1,5 @@
 # Theming helper mixins
 
-## gx-table
-
-### Description
-
-Helper mixin to ease styling gx-table custom elements
-
-### Parameters
-
-| Name            | Description                                                | Type | Default Value |
-| --------------- | ---------------------------------------------------------- | ---- | ------------- |
-| class           | Base class of the component                                | map  |               |
-| horizontal-line | Class of the horizontal line separator (to be implemented) | map  |               |
-
-### Source
-
-```scss
-@mixin gx-table($class, $horizontal-line) {
-  @extend #{$class} !optional;
-}
-```
-
 ## gx-image
 
 ### Description
