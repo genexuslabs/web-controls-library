@@ -189,6 +189,7 @@ export class LayoutEditor {
     copy: true,
     direction: "horizontal"
   };
+  private ignoreDragulaDrop = false;
 
   private ddDroppedEl: HTMLElement;
 
@@ -281,6 +282,10 @@ export class LayoutEditor {
   private handleMoveElementDrop(droppedEl, target, source) {
     const targetCell: HTMLElement = target as HTMLElement;
 
+    if (this.ignoreDragulaDrop) {
+      return;
+    }
+
     if (!targetCell) {
       return;
     }
@@ -349,7 +354,9 @@ export class LayoutEditor {
     const targetCell = findParentCell(evtTarget) || evtTarget;
     const el = targetCell.querySelector("[data-gx-le-external-transit]");
 
+    this.ignoreDragulaDrop = true;
     this.drake.end();
+    this.ignoreDragulaDrop = false;
 
     this.ddDroppedEl = el as HTMLElement;
 
