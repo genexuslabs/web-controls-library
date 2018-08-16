@@ -2,7 +2,6 @@
 
 gx-switch {
   @include visibility(block);
-  $carmineColor: rgb(198, 12, 70);
   .switch {
     font-size: 1rem;
     position: relative;
@@ -60,7 +59,7 @@ gx-switch {
       &:checked {
         & + label {
           &::before {
-            background-color: $carmineColor;
+            background-color: #08d;
           }
           &::after {
             margin-left: calc(2.375rem * 0.8);
@@ -71,7 +70,7 @@ gx-switch {
         & + label {
           &::before {
             outline: none;
-            box-shadow: 0 0 0 0.2rem rgba(198, 12, 70, 0.25);
+            box-shadow: 0 0 0 0.2rem rgba(0, 136, 221, 0.25);
           }
         }
       }
