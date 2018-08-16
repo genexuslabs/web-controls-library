@@ -280,6 +280,8 @@ export class LayoutEditor {
   private handleMoveElementDrop(droppedEl, target, source) {
     const targetCell: HTMLElement = target as HTMLElement;
 
+    this.drake.cancel(true);
+
     if (this.ignoreDragulaDrop) {
       return;
     }
