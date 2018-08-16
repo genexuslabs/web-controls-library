@@ -104,26 +104,4 @@ gx-switch {
   .switch.switch-sm input:checked + label::after {
     margin-left: calc(1.9375rem * 0.8);
   }
-  // .switch.switch-lg {
-  //   font-size: 1.25rem;
-  // }
-  // .switch.switch-lg input + label {
-  //   min-width: calc(calc(3rem * .8) * 2);
-  //   height: calc(3rem * .8);
-  //   line-height: calc(3rem * .8);
-  //   text-indent: calc(calc(calc(3rem * .8) * 2) + .5rem);
-  // }
-  // .switch.switch-lg input + label::before {
-  //   width: calc(calc(3rem * .8) * 2);
-  // }
-  // .switch.switch-lg input + label::after {
-  //   width: calc(calc(3rem * .8) - calc(2px * 2));
-  //   height: calc(calc(3rem * .8) - calc(2px * 2));
-  // }
-  // .switch.switch-lg input:checked + label::after {
-  //   margin-left: calc(3rem * .8);
-  // }
-  // .switch + .switch {
-  //   margin-left: 1rem;
-  // }
 }
