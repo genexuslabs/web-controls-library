@@ -280,8 +280,6 @@ export class LayoutEditor {
   private handleMoveElementDrop(droppedEl, target, source) {
     const targetCell: HTMLElement = target as HTMLElement;
 
-    this.drake.cancel(true);
-
     if (this.ignoreDragulaDrop) {
       return;
     }
@@ -298,8 +296,18 @@ export class LayoutEditor {
 
     const { rowId: sourceRowId, cellId: sourceCellId } = getCellData(source);
 
+    // Retrieve the drop event data before cancelling dragula's default drop behavior
+    const eventData = this.getEventDataForDropAction(
+      targetCell,
+      droppedEl as HTMLElement
+    );
+
+    // After retreiving the drop event data, the dragula drop action can be reverted, so we don't
+    // mess with the element's DOM and let the user update the DOM by changing the model property
+    this.drake.cancel(true);
+
     this.moveCompleted.emit({
-      ...this.getEventDataForDropAction(targetCell, droppedEl as HTMLElement),
+      ...eventData,
       sourceCellId,
       sourceRowId
     });
@@ -360,21 +368,7 @@ export class LayoutEditor {
 
     this.ddDroppedEl = el as HTMLElement;
 
-    if (isEmptyContainerDrop(evtTarget)) {
-      if (this.isEditorEmpty()) {
-        // Dropped on the outermost table, when it's empty (the editor is empty)
-        eventData = {
-          containerId: MAIN_TABLE_IDENTIFIER
-        };
-      } else {
-        // Dropped on an empty container
-        eventData = {
-          containerId: getControlId(evtTarget.parentElement)
-        };
-      }
-    } else {
-      eventData = this.getEventDataForDropAction(targetCell, el as HTMLElement);
-    }
+    eventData = this.getEventDataForDropAction(targetCell, el as HTMLElement);
 
     const evtDataTransfer = event.dataTransfer.getData("text");
     const evtDataArr = evtDataTransfer ? evtDataTransfer.split(",") : [];
@@ -452,15 +446,6 @@ export class LayoutEditor {
       }
     }
     return eventData;
-  }
-
-  private isEditorEmpty() {
-    const outmostContainer = this.element.querySelector(
-      "[data-gx-le-container]"
-    );
-    return (
-      outmostContainer.getAttribute("data-gx-le-container-empty") === "true"
-    );
   }
 
   private getDropAreas() {
@@ -553,4 +538,4 @@ export class LayoutEditor {
   }
 }
 
-const MAIN_TABLE_IDENTIFIER = "1";
+// const MAIN_TABLE_IDENTIFIER = "1";

@@ -5,6 +5,8 @@ gx-layout-editor {
 
   @include autoGrow();
 
+  position: relative;
+
   --gx-le-table-cell-gap: 1px;
 
   gx-layout-editor-placeholder[data-gx-le-active-target] {
