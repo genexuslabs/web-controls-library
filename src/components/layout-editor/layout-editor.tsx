@@ -524,7 +524,13 @@ export class LayoutEditor {
   }
 
   private handleClick(event: MouseEvent) {
-    this.handleSelection(event.target as HTMLElement, event.ctrlKey);
+    const target = event.target as HTMLElement;
+    this.handleSelection(target, event.ctrlKey);
+    const selCell = findParentCell(target);
+
+    if (selCell) {
+      selCell.focus();
+    }
   }
 
   private handleSelection(target: HTMLElement, add) {
