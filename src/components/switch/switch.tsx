@@ -3,7 +3,7 @@ import { Component, Event, EventEmitter, Prop } from "@stencil/core";
 import { SwitchRender } from "../renders/bootstrap/switch/switch-render";
 @Component({
   host: {
-    role: "checkbox"
+    role: "switch"
   },
   shadow: false,
   styleUrl: "switch.scss",
