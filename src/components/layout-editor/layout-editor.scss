@@ -3,8 +3,6 @@
 gx-layout-editor {
   @include visibility(block);
 
-  @include autoGrow();
-
   position: relative;
 
   --gx-le-table-cell-gap: 1px;

@@ -13,8 +13,11 @@
   }
 }
 
-@mixin autoGrow() {
-  &[auto-grow="false"] {
+@mixin overflowMode() {
+  &[overflow-mode="clip"] {
+    overflow: hidden;
+  }
+  &[overflow-mode="scroll"] {
     overflow: auto;
   }
 }
@@ -22,7 +25,7 @@
 @mixin containerCell() {
   @include visibility(flex);
 
-  @include autoGrow();
+  @include overflowMode();
 
   &:not([align]),
   &[align="left"] {

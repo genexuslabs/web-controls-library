@@ -12,7 +12,7 @@ string
 
 Defines the horizontal aligmnent of the content of the cell.
 
-#### autoGrow
+#### overflowMode
 
 boolean
 
@@ -35,7 +35,7 @@ string
 
 Defines the horizontal aligmnent of the content of the cell.
 
-#### auto-grow
+#### oveflow-mode
 
 boolean
 

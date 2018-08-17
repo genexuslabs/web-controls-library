@@ -31,7 +31,7 @@ describe("gx-table", () => {
       );
     });
 
-    // it('should overflow when auto-grow=false', async () => {
+    // it('should overflow when oveflow-mode=false', async () => {
     //   element.columnsTemplate = "1fr 1fr";
     //   element.rowsTemplate = "200px";
     //   element.areasTemplate = `'${cell0} ${cell1}'`;

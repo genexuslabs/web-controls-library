@@ -3,7 +3,5 @@
 gx-canvas {
   @include visibility(block);
 
-  @include autoGrow();
-
   position: relative;
 }

@@ -49,9 +49,9 @@ declare global {
        */
       align: "left" | "right" | "center";
       /**
-       * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+       * This attribute defines how the control behaves when the content overflows.  | Value    | Details                                                     | | -------- | ----------------------------------------------------------- | | `scroll` | The overflowin content is hidden, but scrollbars are shown  | | `clip`   | The overflowing content is hidden, without scrollbars       |
        */
-      autoGrow: boolean;
+      overflowMode: "scroll" | "clip";
       /**
        * Defines the vertical aligmnent of the content of the cell.
        */
@@ -512,9 +512,9 @@ declare global {
        */
       area: string;
       /**
-       * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+       * This attribute defines how the control behaves when the content overflows.  | Value    | Details                                                     | | -------- | ----------------------------------------------------------- | | `scroll` | The overflowin content is hidden, but scrollbars are shown  | | `clip`   | The overflowing content is hidden, without scrollbars       |
        */
-      autoGrow: boolean;
+      overflowMode: "scroll" | "clip";
       /**
        * Defines the vertical aligmnent of the content of the cell.
        */
@@ -860,9 +860,9 @@ declare global {
        */
       align?: "left" | "right" | "center";
       /**
-       * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+       * This attribute defines how the control behaves when the content overflows.  | Value    | Details                                                     | | -------- | ----------------------------------------------------------- | | `scroll` | The overflowin content is hidden, but scrollbars are shown  | | `clip`   | The overflowing content is hidden, without scrollbars       |
        */
-      autoGrow?: boolean;
+      overflowMode?: "scroll" | "clip";
       /**
        * Defines the vertical aligmnent of the content of the cell.
        */
@@ -1420,9 +1420,9 @@ declare global {
        */
       area?: string;
       /**
-       * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+       * This attribute defines how the control behaves when the content overflows.  | Value    | Details                                                     | | -------- | ----------------------------------------------------------- | | `scroll` | The overflowin content is hidden, but scrollbars are shown  | | `clip`   | The overflowing content is hidden, without scrollbars       |
        */
-      autoGrow?: boolean;
+      overflowMode?: "scroll" | "clip";
       /**
        * Defines the vertical aligmnent of the content of the cell.
        */

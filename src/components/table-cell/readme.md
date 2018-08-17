@@ -20,7 +20,7 @@ Like the `grid-area` CSS property, this attribute gives a name to the item,
 so it can be used from the [areas-template attributes](../table/readme.md#areas-template)
 of the gx-table element.
 
-#### autoGrow
+#### overflowMode
 
 boolean
 
@@ -51,7 +51,7 @@ Like the `grid-area` CSS property, this attribute gives a name to the item,
 so it can be used from the [areas-template attributes](../table/readme.md#areas-template)
 of the gx-table element.
 
-#### auto-grow
+#### oveflow-mode
 
 boolean
 
