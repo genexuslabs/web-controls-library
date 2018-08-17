@@ -63,17 +63,23 @@ export function CardRender<T extends Constructor<{}>>(Base: T) {
         ":scope > .card > .card-footer"
       ) as HTMLElement;
 
-      const lowPriorityActions = Array.from(
-        cardFooter.querySelectorAll("[slot='low-priority-action']")
-      );
+      const lowPriorityActions = cardFooter
+        ? Array.from(
+            cardFooter.querySelectorAll("[slot='low-priority-action']")
+          )
+        : [];
 
-      const highPriorityActions = Array.from(
-        cardHeader.querySelectorAll("[slot='high-priority-action']")
-      );
+      const highPriorityActions = cardHeader
+        ? Array.from(
+            cardHeader.querySelectorAll("[slot='high-priority-action']")
+          )
+        : [];
 
-      const normalPriorityActions = Array.from(
-        cardFooter.querySelectorAll("[slot='normal-priority-action']")
-      );
+      const normalPriorityActions = cardFooter
+        ? Array.from(
+            cardFooter.querySelectorAll("[slot='normal-priority-action']")
+          )
+        : [];
 
       const buttonActions = [...highPriorityActions, ...normalPriorityActions];
       buttonActions.forEach((btn: any) => (btn.size = "small"));
@@ -94,13 +100,19 @@ export function CardRender<T extends Constructor<{}>>(Base: T) {
       const hasHeaderActions = highPriorityActions.length > 0;
 
       const renderHeader =
-        hasHeaderActions || !!cardHeader.querySelector("[slot='header']");
+        hasHeaderActions ||
+        (cardHeader && !!cardHeader.querySelector("[slot='header']"));
 
       const renderFooter =
-        hasFooterActions || !!cardFooter.querySelector("[slot='footer']");
+        hasFooterActions ||
+        (cardFooter && !!cardFooter.querySelector("[slot='footer']"));
 
-      cardHeader.hidden = !renderHeader;
-      cardFooter.hidden = !renderFooter;
+      if (cardHeader) {
+        cardHeader.hidden = !renderHeader;
+      }
+      if (cardFooter) {
+        cardFooter.hidden = !renderFooter;
+      }
     }
 
     render() {
