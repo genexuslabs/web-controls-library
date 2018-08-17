@@ -47,18 +47,37 @@ export function CardRender<T extends Constructor<{}>>(Base: T) {
       }
     }
 
-    render() {
-      const buttonActions = Array.from(
-        this.element.querySelectorAll(
-          `gx-button[slot='high-priority-action'],
-           gx-button[slot='normal-priority-action']`
-        )
-      );
-      buttonActions.forEach((btn: any) => (btn.size = "small"));
+    componentDidLoad() {
+      this.toggleHeaderFooterVisibility();
+    }
+
+    componentDidUpdate() {
+      this.toggleHeaderFooterVisibility();
+    }
+
+    private toggleHeaderFooterVisibility() {
+      const cardHeader = this.element.querySelector(
+        ":scope > .card > .card-header"
+      ) as HTMLElement;
+      const cardFooter = this.element.querySelector(
+        ":scope > .card > .card-footer"
+      ) as HTMLElement;
 
       const lowPriorityActions = Array.from(
-        this.element.querySelectorAll("[slot='low-priority-action']")
+        cardFooter.querySelectorAll("[slot='low-priority-action']")
       );
+
+      const highPriorityActions = Array.from(
+        cardHeader.querySelectorAll("[slot='high-priority-action']")
+      );
+
+      const normalPriorityActions = Array.from(
+        cardFooter.querySelectorAll("[slot='normal-priority-action']")
+      );
+
+      const buttonActions = [...highPriorityActions, ...normalPriorityActions];
+      buttonActions.forEach((btn: any) => (btn.size = "small"));
+
       lowPriorityActions.forEach((action: any) => {
         if (action.cssClass && action.cssClass.indexOf("dropdown-item") >= 0) {
           return;
@@ -70,31 +89,59 @@ export function CardRender<T extends Constructor<{}>>(Base: T) {
       const hasLowPriorityActions = lowPriorityActions.length > 0;
 
       const hasFooterActions =
-        hasLowPriorityActions ||
-        !!this.element.querySelector("[slot='normal-priority-action']");
+        hasLowPriorityActions || normalPriorityActions.length > 0;
 
-      const hasHeaderActions = !!this.element.querySelector(
-        "[slot='high-priority-action']"
-      );
+      const hasHeaderActions = highPriorityActions.length > 0;
 
       const renderHeader =
-        hasHeaderActions || !!this.element.querySelector("[slot='header']");
+        hasHeaderActions || !!cardHeader.querySelector("[slot='header']");
+
+      const renderFooter =
+        hasFooterActions || !!cardFooter.querySelector("[slot='footer']");
+
+      cardHeader.hidden = !renderHeader;
+      cardFooter.hidden = !renderFooter;
+    }
+
+    render() {
+      const lowPriorityActions = Array.from(
+        this.element.querySelectorAll("[slot='low-priority-action']")
+      );
+
+      const highPriorityActions = Array.from(
+        this.element.querySelectorAll("[slot='high-priority-action']")
+      );
+
+      const normalPriorityActions = Array.from(
+        this.element.querySelectorAll("[slot='normal-priority-action']")
+      );
+
+      const buttonActions = [...highPriorityActions, ...normalPriorityActions];
+      buttonActions.forEach((btn: any) => (btn.size = "small"));
+
+      lowPriorityActions.forEach((action: any) => {
+        if (action.cssClass && action.cssClass.indexOf("dropdown-item") >= 0) {
+          return;
+        }
+
+        action.cssClass = (action.cssClass || "") + " dropdown-item";
+      });
+
+      const hasLowPriorityActions = lowPriorityActions.length > 0;
+
+      const hasFooterActions = hasLowPriorityActions || !!normalPriorityActions;
 
       const renderFooter =
         hasFooterActions || !!this.element.querySelector("[slot='footer']");
 
       return (
         <div class="card">
-          {renderHeader && (
-            <div class="card-header">
-              <slot name="header" />
-              {hasHeaderActions && (
-                <div class="float-right">
-                  <slot name="high-priority-action" />
-                </div>
-              )}
+          <div class="card-header">
+            <slot name="header" />
+            <div class="float-right">
+              <slot name="high-priority-action" />
             </div>
-          )}
+          </div>
           <slot name="body" />
           <slot />
           {renderFooter && (

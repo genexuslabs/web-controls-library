@@ -19,4 +19,16 @@ export class Card extends CardRender(BaseComponent) {
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
   @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+
+  componentDidLoad() {
+    super.componentDidLoad();
+  }
+
+  componentDidUpdate() {
+    super.componentDidUpdate();
+  }
+
+  componentDidUnload() {
+    super.componentDidUnload();
+  }
 }
