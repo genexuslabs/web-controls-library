@@ -1,0 +1,20 @@
+////
+/// @group theming-mixins
+////
+
+/// Helper mixin to ease styling gx-card custom elements
+/// @param {map} $class Base class of the component
+/// @param {map} $bars Base class of bars of the component
+@mixin gx-card($class: null, $bars: null) {
+  & > .card {
+    @if ($class != null) {
+      @extend #{$class} !optional;
+    }
+    @if ($bars != null) {
+      & > .card-header,
+      & > .card-footer {
+        @extend #{$bars} !optional;
+      }
+    }
+  }
+}
