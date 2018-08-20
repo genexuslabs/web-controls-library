@@ -24,7 +24,7 @@ export function SwitchRender<T extends Constructor<{}>>(Base: T) {
           : `gx-checkbox-auto-id-${autoCheckBoxId++}`;
       }
       const inputAttrs = {
-        "aria-checked": this.checked.toString(),
+        "aria-checked": this.checked ? "true" : undefined,
         "aria-disabled": this.disabled ? "true" : undefined,
         checked: this.checked,
         class: "switch",
