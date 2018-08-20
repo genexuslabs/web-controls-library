@@ -3,7 +3,7 @@ type Constructor<T> = new (...args: any[]) => T;
 export function SwitchRender<T extends Constructor<{}>>(Base: T) {
   return class extends Base {
     caption: string;
-    checked: boolean;
+    checked = false;
     disabled = false;
     element: HTMLElement;
     id: string;
@@ -24,8 +24,8 @@ export function SwitchRender<T extends Constructor<{}>>(Base: T) {
           : `gx-checkbox-auto-id-${autoCheckBoxId++}`;
       }
       const inputAttrs = {
-        "aria-checked": this.checked ? "true" : undefined,
-        "aria-disabled": this.disabled ? "true" : undefined,
+        "aria-checked": this.checked ? "true" : "false",
+        "aria-disabled": this.disabled ? "true" : "false",
         checked: this.checked,
         class: "switch",
         disabled: this.disabled,
