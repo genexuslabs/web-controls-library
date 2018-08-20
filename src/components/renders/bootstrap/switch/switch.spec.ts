@@ -16,7 +16,6 @@ describe("gx-switch", () => {
         html: "<gx-switch id='id0'>TEST TEXT</gx-switch>"
       });
     });
-    //innerHTML Test(?)
     it("should work without parameters", () => {
       expect(element.textContent.trim()).toEqual("TEST TEXT");
     });
@@ -27,19 +26,19 @@ describe("gx-switch", () => {
       expect(element.querySelector("label").innerHTML).toEqual("TEST TEXT0");
     });
     //Checked Test
-    it("should detect if is checked", async () => {
+    it("should detect if it's checked", async () => {
       element.checked = true;
       await testWindow.flush();
       expect(element.querySelector("input").checked).toEqual(true);
     });
     //Disabled Test
-    it("should detect if is disabled", async () => {
+    it("should detect if it's disabled", async () => {
       element.disabled = true;
       await testWindow.flush();
       expect(element.querySelector("input").disabled).toEqual(true);
     });
     //ID Test
-    it("should asign value to 'id' and 'for' attrs", async () => {
+    it("should assign value to 'id' and 'for' attrs", async () => {
       expect(element.getAttribute("id")).toEqual("id0");
       expect(element.querySelector("input").id).toEqual("id0_checkbox");
       expect(element.querySelector("label").getAttribute("for")).toEqual(

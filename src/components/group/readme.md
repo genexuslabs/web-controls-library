@@ -2,12 +2,6 @@
 
 Web Component where you can group related elements of a form field
 
-## Children
-
-The caption attribute of WC (web component) shall be the caption of <legend> tag.
-
-Other elements inserted from main html document shall be inserted in <slot> tag position.
-
 <!-- Auto Generated Below -->
 
 ## Properties
@@ -25,7 +19,7 @@ if the content overflows.
 
 string
 
-Attribute that provides the caption to the <leyend> tag
+Attribute that provides the caption to the <legend> tag
 
 ## Attributes
 
@@ -42,7 +36,7 @@ if the content overflows.
 
 string
 
-Attribute that provides the caption to the <leyend> tag
+Attribute that provides the caption to the <legend> tag
 
 ---
 

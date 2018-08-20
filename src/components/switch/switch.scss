@@ -87,21 +87,21 @@ gx-switch {
   }
   .switch.switch-sm {
     font-size: 0.875rem;
-  }
-  .switch.switch-sm input + label {
-    min-width: calc(calc(1.9375rem * 0.8) * 2);
-    height: calc(1.9375rem * 0.8);
-    line-height: calc(1.9375rem * 0.8);
-    text-indent: calc(calc(calc(1.9375rem * 0.8) * 2) + 0.5rem);
-  }
-  .switch.switch-sm input + label::before {
-    width: calc(calc(1.9375rem * 0.8) * 2);
-  }
-  .switch.switch-sm input + label::after {
-    width: calc(calc(1.9375rem * 0.8) - calc(2px * 2));
-    height: calc(calc(1.9375rem * 0.8) - calc(2px * 2));
-  }
-  .switch.switch-sm input:checked + label::after {
-    margin-left: calc(1.9375rem * 0.8);
+    input + label {
+      min-width: calc(calc(1.9375rem * 0.8) * 2);
+      height: calc(1.9375rem * 0.8);
+      line-height: calc(1.9375rem * 0.8);
+      text-indent: calc(calc(calc(1.9375rem * 0.8) * 2) + 0.5rem);
+      &::before {
+        width: calc(calc(1.9375rem * 0.8) * 2);
+      }
+      &::after {
+        width: calc(calc(1.9375rem * 0.8) - calc(2px * 2));
+        height: calc(calc(1.9375rem * 0.8) - calc(2px * 2));
+      }
+    }
+    input:checked + label::after {
+      margin-left: calc(1.9375rem * 0.8);
+    }
   }
 }

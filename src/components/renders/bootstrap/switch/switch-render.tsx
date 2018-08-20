@@ -4,29 +4,27 @@ export function SwitchRender<T extends Constructor<{}>>(Base: T) {
   return class extends Base {
     caption: string;
     checked: boolean;
-    disabled = false; // This takes its value form HTML
+    disabled = false;
     element: HTMLElement;
     id: string;
     private inputId: string;
 
     onChange: EventEmitter;
     private getValueFromEvent(event: UIEvent): boolean {
-      return event.target && (event.target as HTMLInputElement).checked; // Return if HTMLInput is checked or not
+      return event.target && (event.target as HTMLInputElement).checked;
     }
     handleChange(event: UIEvent) {
-      this.checked = this.getValueFromEvent(event); // Check if input element is checked in each click
+      this.checked = this.getValueFromEvent(event);
       this.onChange.emit(event);
     }
     render() {
       if (!this.inputId) {
-        // Allways run because is undefined, and !undefined = true
         this.inputId = this.id
           ? `${this.id}_checkbox`
           : `gx-checkbox-auto-id-${autoCheckBoxId++}`;
       }
-      // Attributes for input. Values taked form HTML and asigned here
       const inputAttrs = {
-        "aria-checked": this.checked ? "true" : undefined,
+        "aria-checked": this.checked.toString(),
         "aria-disabled": this.disabled ? "true" : undefined,
         checked: this.checked,
         class: "switch",
@@ -36,12 +34,10 @@ export function SwitchRender<T extends Constructor<{}>>(Base: T) {
         type: "checkbox"
       };
       return (
-        <div class="form-group">
-          <span class="switch switch-sm">
-            <input {...inputAttrs} />
-            <label htmlFor={this.inputId}>{this.caption}</label>
-          </span>
-        </div>
+        <span class="switch switch-sm">
+          <input {...inputAttrs} />
+          <label htmlFor={this.inputId}>{this.caption}</label>
+        </span>
       );
     }
   };

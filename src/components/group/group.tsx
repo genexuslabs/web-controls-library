@@ -1,16 +1,13 @@
 import { BaseComponent } from "../common/base-component";
 import { Component, Prop } from "@stencil/core";
 @Component({
-  host: {
-    role: "group"
-  },
   shadow: false,
   styleUrl: "group.scss",
   tag: "gx-group"
 })
 export class Group extends BaseComponent {
   /**
-   * Attribute that provides the caption to the <leyend> tag
+   * Attribute that provides the caption to the <legend> tag
    */
   @Prop() caption: string;
   /**

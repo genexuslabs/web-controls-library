@@ -11,16 +11,18 @@ import { SwitchRender } from "../renders/bootstrap/switch/switch-render";
 })
 export class Switch extends SwitchRender(BaseComponent) {
   /**
-   * Attribute that provides the caption to the <label> tag.
+   * Attribute that provides the caption to the control.
    */
   @Prop() caption: string;
   /**
-   * Indicates that the checked is selected by default.
+   * Indicates if switch control is checked by default.
    */
   @Prop({ mutable: true })
   checked: boolean;
   /**
-   * This attribute lets specify if the element is disabled.
+   * This attribute allows you specify if the element is disabled.
+   * If disabled, it will not trigger any user interaction related event
+   * (for example, click event).
    */
   @Prop() disabled = false;
   /**
@@ -31,7 +33,7 @@ export class Switch extends SwitchRender(BaseComponent) {
   /**
    * The control id. Must be unique per control!
    *
-   * If u set this attr in the control, its value shall be spicified in input 'id' and label 'for', else it shall specify and auto-generated values.
+   * If u set this attr in the control, its value shall be spicified in input 'id' and label 'for', else it shall specify auto-generated values.
    */
   @Prop() id: string;
 }
