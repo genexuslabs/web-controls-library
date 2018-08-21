@@ -1,4 +1,5 @@
 @import "../common/_base";
+@import "../renders/bootstrap/message/message-render";
 
 gx-message {
   @include visibility(block);

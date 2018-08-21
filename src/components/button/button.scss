@@ -1,4 +1,5 @@
 @import "../common/_base";
+@import "../renders/bootstrap/button/button-render";
 
 gx-button {
   @include visibility(inline-block);

@@ -1,4 +1,6 @@
 @import "../common/_base";
+@import "../renders/bootstrap/progress-bar/progress-bar-render";
+
 gx-progress-bar {
   @include visibility(block);
   .centered {
