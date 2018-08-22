@@ -50,6 +50,37 @@ Helper mixin to ease styling gx-button custom elements
 }
 ```
 
+## gx-card
+
+### Description
+
+Helper mixin to ease styling gx-card custom elements
+
+### Parameters
+
+| Name  | Description                         | Type | Default Value |
+| ----- | ----------------------------------- | ---- | ------------- |
+| class | Base class of the component         | map  |               |
+| bars  | Base class of bars of the component | map  |               |
+
+### Source
+
+```scss
+@mixin gx-card($class, $bars) {
+  & > .card {
+    @if ($class != null) {
+      @extend #{$class} !optional;
+    }
+    @if ($bars != null) {
+      & > .card-header,
+      & > .card-footer {
+        @extend #{$bars} !optional;
+      }
+    }
+  }
+}
+```
+
 ## gx-edit
 
 ### Description
