@@ -236,6 +236,41 @@ declare global {
       selectedCells: string[];
     }
 
+    interface GxLottie {
+      /**
+       * This attribute lets you specify a Lottie animation object
+       */
+      animationData: any;
+      /**
+       * This attribute lets you specify if the animation will start playing as soon as it is ready
+       */
+      autoPlay: boolean;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
+      disabled: boolean;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode: "collapse" | "keep-space";
+      /**
+       * This attribute lets you specify if the animation will loop
+       */
+      loop: boolean;
+      /**
+       * This attribute lets you specify  the relative path to the animation object. (`animationData` and `path` are mutually exclusive)
+       */
+      path: string;
+      /**
+       * Start playing the animation
+       */
+      play: () => void;
+      /**
+       * Stop the animation
+       */
+      stop: () => void;
+    }
+
     interface GxMessage {
       /**
        * Text for the close button.
@@ -650,6 +685,15 @@ declare global {
     new (): HTMLGxLayoutEditorElement;
   };
 
+  interface HTMLGxLottieElement
+    extends StencilComponents.GxLottie,
+      HTMLStencilElement {}
+
+  var HTMLGxLottieElement: {
+    prototype: HTMLGxLottieElement;
+    new (): HTMLGxLottieElement;
+  };
+
   interface HTMLGxMessageElement
     extends StencilComponents.GxMessage,
       HTMLStencilElement {}
@@ -807,6 +851,7 @@ declare global {
       "gx-image": JSXElements.GxImageAttributes;
       "gx-layout-editor-placeholder": JSXElements.GxLayoutEditorPlaceholderAttributes;
       "gx-layout-editor": JSXElements.GxLayoutEditorAttributes;
+      "gx-lottie": JSXElements.GxLottieAttributes;
       "gx-message": JSXElements.GxMessageAttributes;
       "gx-modal": JSXElements.GxModalAttributes;
       "gx-navbar-link": JSXElements.GxNavbarLinkAttributes;
@@ -1078,6 +1123,41 @@ declare global {
        * Array with the identifiers of the selected control's cells. If empty the whole layout-editor is marked as selected.
        */
       selectedCells?: string[];
+    }
+
+    export interface GxLottieAttributes extends HTMLAttributes {
+      /**
+       * This attribute lets you specify a Lottie animation object
+       */
+      animationData?: any;
+      /**
+       * This attribute lets you specify if the animation will start playing as soon as it is ready
+       */
+      autoPlay?: boolean;
+      /**
+       * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+       */
+      disabled?: boolean;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode?: "collapse" | "keep-space";
+      /**
+       * This attribute lets you specify if the animation will loop
+       */
+      loop?: boolean;
+      /**
+       * Emitted when the animation is loaded in the DOM.
+       */
+      onAnimationLoad?: (event: CustomEvent) => void;
+      /**
+       * Emitted when the element is clicked.
+       */
+      onOnClick?: (event: CustomEvent) => void;
+      /**
+       * This attribute lets you specify  the relative path to the animation object. (`animationData` and `path` are mutually exclusive)
+       */
+      path?: string;
     }
 
     export interface GxMessageAttributes extends HTMLAttributes {
@@ -1487,6 +1567,7 @@ declare global {
     "gx-image": HTMLGxImageElement;
     "gx-layout-editor-placeholder": HTMLGxLayoutEditorPlaceholderElement;
     "gx-layout-editor": HTMLGxLayoutEditorElement;
+    "gx-lottie": HTMLGxLottieElement;
     "gx-message": HTMLGxMessageElement;
     "gx-modal": HTMLGxModalElement;
     "gx-navbar-link": HTMLGxNavbarLinkElement;
@@ -1516,6 +1597,7 @@ declare global {
     "gx-image": HTMLGxImageElement;
     "gx-layout-editor-placeholder": HTMLGxLayoutEditorPlaceholderElement;
     "gx-layout-editor": HTMLGxLayoutEditorElement;
+    "gx-lottie": HTMLGxLottieElement;
     "gx-message": HTMLGxMessageElement;
     "gx-modal": HTMLGxModalElement;
     "gx-navbar-link": HTMLGxNavbarLinkElement;
