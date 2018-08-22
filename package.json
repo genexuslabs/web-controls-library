@@ -1,6 +1,6 @@
 {
   "name": "@genexus/web-controls-library",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "GeneXus Web Controls Library",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
