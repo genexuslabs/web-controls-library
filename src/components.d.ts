@@ -268,7 +268,11 @@ declare global {
       /**
        * Start playing the animation
        */
-      play: () => void;
+      play: (from?: number, to?: number) => void;
+      /**
+       * Set the progress of the animation to any point
+       */
+      setProgress: (progress: number) => void;
       /**
        * Stop the animation
        */

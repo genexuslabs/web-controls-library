@@ -131,6 +131,10 @@ Pause the animation
 
 Start playing the animation
 
+#### setProgress()
+
+Set the progress of the animation to any point
+
 #### stop()
 
 Stop the animation

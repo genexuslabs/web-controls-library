@@ -18,6 +18,7 @@ import bodymovin from "lottie-web/build/player/lottie_light";
 })
 export class Lottie extends BaseComponent {
   private animation: any;
+  private animationTotalFrames: number;
 
   @Element() element: HTMLElement;
 
@@ -94,8 +95,28 @@ export class Lottie extends BaseComponent {
    * Start playing the animation
    */
   @Method()
-  play() {
-    this.animation.play();
+  play(from = 0, to = 0) {
+    if (from || to) {
+      if (!to) {
+        to = from;
+        from = 0;
+      }
+      const fromFrame = this.durationToFrames(from);
+      const toFrame = this.durationToFrames(to);
+      this.animation.playSegments([fromFrame, toFrame]);
+    } else {
+      this.animation.play();
+    }
+  }
+
+  /**
+   * Set the progress of the animation to any point
+   * @param progress: Value from 0 to 1 indicating the percentage of progress where the animation will start.
+   */
+  @Method()
+  setProgress(progress: number) {
+    const progressInFrames = this.durationToFrames(progress);
+    this.animation.goToAndPlay(progressInFrames, true);
   }
 
   /**
@@ -104,6 +125,10 @@ export class Lottie extends BaseComponent {
   @Method()
   stop() {
     this.animation.stop();
+  }
+
+  private durationToFrames(duration) {
+    return Math.trunc(this.animationTotalFrames * duration);
   }
 
   handleClick(event: UIEvent) {
@@ -128,6 +153,7 @@ export class Lottie extends BaseComponent {
 
   setAnimation() {
     if (this.animation) {
+      this.animation.loop = this.loop;
       return;
     }
 
@@ -139,6 +165,7 @@ export class Lottie extends BaseComponent {
       path: this.path,
       renderer: "svg"
     });
+    this.animationTotalFrames = this.animation.getDuration(true);
 
     this.animation.addEventListener(
       "DOMLoaded",
