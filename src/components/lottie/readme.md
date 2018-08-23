@@ -123,6 +123,10 @@ Emitted when the element is clicked.
 
 ## Methods
 
+#### pause()
+
+Pause the animation
+
 #### play()
 
 Start playing the animation

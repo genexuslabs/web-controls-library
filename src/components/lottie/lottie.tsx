@@ -83,6 +83,14 @@ export class Lottie extends BaseComponent {
   }
 
   /**
+   * Pause the animation
+   */
+  @Method()
+  pause() {
+    this.animation.pause();
+  }
+
+  /**
    * Start playing the animation
    */
   @Method()

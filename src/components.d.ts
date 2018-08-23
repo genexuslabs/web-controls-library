@@ -262,6 +262,10 @@ declare global {
        */
       path: string;
       /**
+       * Pause the animation
+       */
+      pause: () => void;
+      /**
        * Start playing the animation
        */
       play: () => void;
