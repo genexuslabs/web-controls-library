@@ -32,8 +32,6 @@ export class Switch extends SwitchRender(BaseComponent) {
 
   /**
    * The control id. Must be unique per control!
-   *
-   * If u set this attr in the control, its value shall be spicified in input 'id' and label 'for', else it shall specify auto-generated values.
    */
   @Prop() id: string;
 }

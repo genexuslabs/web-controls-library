@@ -32,8 +32,6 @@ string
 
 The control id. Must be unique per control!
 
-If u set this attr in the control, its value shall be spicified in input 'id' and label 'for', else it shall specify auto-generated values.
-
 ## Attributes
 
 #### caption
@@ -61,8 +59,6 @@ If disabled, it will not trigger any user interaction related event
 string
 
 The control id. Must be unique per control!
-
-If u set this attr in the control, its value shall be spicified in input 'id' and label 'for', else it shall specify auto-generated values.
 
 ## Events
 
