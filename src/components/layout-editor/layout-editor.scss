@@ -108,7 +108,7 @@
       .gu-transit {
         bottom: calc(
           var(--gx-le-table-placeholder-height) * -0.5 -
-            var(--gx-le-table-cell-gap)
+            var(--gx-le-table-cell-gap) - 1px
         );
       }
     }
@@ -192,6 +192,10 @@
         font: var(--gx-le-control-type-name-font);
         padding: 0.3rem;
       }
+    }
+
+    &:focus {
+      outline: 0;
     }
   }
 }
