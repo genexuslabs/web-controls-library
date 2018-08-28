@@ -1,19 +1,6 @@
 @import "../common/_base";
 
-gx-layout-editor {
-  @include visibility(block);
-
-  position: relative;
-
-  --gx-le-table-cell-gap: 1px;
-
-  gx-layout-editor-placeholder[data-gx-le-active-target] {
-    background-color: var(--gx-le-table-placeholder-color);
-    & > * {
-      display: none;
-    }
-  }
-
+@mixin containers-gap() {
   gx-table {
     grid-column-gap: var(--gx-le-table-cell-gap);
   }
@@ -37,17 +24,22 @@ gx-layout-editor {
       margin-left: 0;
     }
   }
+}
 
+@mixin empty-outermost-container {
   & > div > [data-gx-le-container-empty="true"] {
     min-height: 100vh;
     border: var(--gx-le-table-cell-border);
   }
+}
 
+@mixin containers-defaults {
   [data-gx-le-container] {
     min-height: var(--gx-le-table-min-height);
 
     &[data-gx-le-container-empty="true"] {
       grid-template-rows: 1fr !important;
+      border: var(--gx-le-table-cell-border);
     }
 
     &:hover {
@@ -75,7 +67,9 @@ gx-layout-editor {
   & > [data-gx-le-container]:hover:after {
     display: none;
   }
+}
 
+@mixin drop-area {
   [data-gx-le-drop-area] {
     border: var(--gx-le-table-cell-border);
 
@@ -85,25 +79,37 @@ gx-layout-editor {
 
     &[data-gx-le-active-target="left"] {
       .gu-transit {
-        left: 0;
+        left: calc(
+          var(--gx-le-table-placeholder-width) * -0.5 -
+            var(--gx-le-table-cell-gap) - 1px
+        );
       }
     }
 
     &[data-gx-le-active-target="right"] {
       .gu-transit {
-        right: 0;
+        right: calc(
+          var(--gx-le-table-placeholder-width) * -0.5 -
+            var(--gx-le-table-cell-gap)
+        );
       }
     }
 
     &[data-gx-le-active-target="top"] {
       .gu-transit {
-        top: 0;
+        top: calc(
+          var(--gx-le-table-placeholder-height) * -0.5 -
+            var(--gx-le-table-cell-gap)
+        );
       }
     }
 
     &[data-gx-le-active-target="bottom"] {
       .gu-transit {
-        bottom: 0;
+        bottom: calc(
+          var(--gx-le-table-placeholder-height) * -0.5 -
+            var(--gx-le-table-cell-gap)
+        );
       }
     }
 
@@ -173,9 +179,24 @@ gx-layout-editor {
     &:hover {
       box-shadow: 0px 0px 0px var(--gx-le-table-hovered-cell-border-width)
         var(--gx-le-table-hovered-cell-border-color) !important;
+      position: relative;
+
+      &:before {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        content: var(--gx-le-control-type-name);
+        z-index: 1;
+        color: var(--gx-le-control-type-name-color);
+        background-color: var(--gx-le-table-hovered-cell-border-color);
+        font: var(--gx-le-control-type-name-font);
+        padding: 0.3rem;
+      }
     }
   }
+}
 
+@mixin selection-highlighting {
   &[data-gx-le-selected="true"],
   [data-gx-le-drop-area][data-gx-le-selected="true"] {
     box-shadow: 0px 0px 0px var(--gx-le-table-selected-cell-border-width)
@@ -183,22 +204,70 @@ gx-layout-editor {
   }
 }
 
-.gu-mirror {
-  position: fixed !important;
-  margin: 0 !important;
-  z-index: 9999 !important;
-  opacity: 0.8;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
-  filter: alpha(opacity=80);
+@mixin dragula {
+  .gu-mirror {
+    position: fixed !important;
+    margin: 0 !important;
+    z-index: 9999 !important;
+    opacity: 0.8;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+    filter: alpha(opacity=80);
+  }
+
+  .gu-hide {
+    display: none !important;
+  }
+
+  .gu-unselectable {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+  }
 }
 
-.gu-hide {
-  display: none !important;
+%box-sizing-props {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-.gu-unselectable {
-  -webkit-user-select: none !important;
-  -moz-user-select: none !important;
-  -ms-user-select: none !important;
-  user-select: none !important;
+@mixin box-sizing {
+  @extend %box-sizing-props;
+
+  [data-gx-le-placeholder],
+  [data-gx-le-drop-area] {
+    @extend %box-sizing-props;
+
+    &::after,
+    &::before {
+      @extend %box-sizing-props;
+    }
+  }
 }
+
+gx-layout-editor {
+  @include visibility(block);
+
+  position: relative;
+
+  gx-layout-editor-placeholder[data-gx-le-active-target] {
+    background-color: var(--gx-le-table-placeholder-color);
+    & > * {
+      display: none;
+    }
+  }
+
+  @include box-sizing();
+
+  @include containers-gap();
+
+  @include empty-outermost-container();
+
+  @include containers-defaults();
+
+  @include drop-area();
+
+  @include selection-highlighting();
+}
+
+@include dragula();

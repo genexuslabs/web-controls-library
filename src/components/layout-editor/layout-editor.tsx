@@ -366,6 +366,8 @@ export class LayoutEditor {
     this.drake.end();
     this.ignoreDragulaDrop = false;
 
+    event.preventDefault();
+
     this.ddDroppedEl = el as HTMLElement;
 
     eventData = this.getEventDataForDropAction(targetCell, el as HTMLElement);

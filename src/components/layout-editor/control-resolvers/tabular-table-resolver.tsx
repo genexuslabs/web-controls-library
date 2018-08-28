@@ -92,6 +92,8 @@ function renderCell(cell, rowId, rowIndex, colStart, context) {
       data-gx-le-drop-area="horizontal"
       data-gx-le-row-id={rowId}
       style={{
+        "--gx-le-control-type-name":
+          cell.controlType && `"${cell.controlType}"`,
         "grid-column": `${colStart} / span ${colSpan}`,
         "grid-row": ` ${rowStart} / span ${rowSpan}`
       }}
