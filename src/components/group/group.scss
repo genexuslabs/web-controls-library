@@ -1,5 +1,6 @@
 @import "../common/_base";
+
 gx-group {
   @include visibility(block);
-  @include autoGrow();
+  @include overflowMode();
 }
