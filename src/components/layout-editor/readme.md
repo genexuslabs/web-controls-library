@@ -30,16 +30,21 @@ A set of special attributes are used to annotate container web components and it
 
 | CSS variable name                          | Details                                                             |
 | ------------------------------------------ | ------------------------------------------------------------------- |
+| `--gx-le-table-anchor-icon`                | Icon to be shown as an anchor for containers                        |
+| `--gx-le-table-anchor-icon-size`           | Size of the anchor icon                                             |
 | `--gx-le-table-cell-border`                | Container item border                                               |
+| `--gx-le-table-cell-gap`                   | Gap between a container cells                                       |
 | `--gx-le-table-min-height`                 | Container minimum height                                            |
-| `--gx-le-table-placeholder-width`          | Width of drop placeholder (when a vertical placeholder is shown)    |
-| `--gx-le-table-placeholder-height`         | Height of drop placeholder (when a horizontal placeholder is shown) |
+| `--gx-le-table-cell-min-height`            | Container cell minimum height                                       |
 | `--gx-le-table-placeholder-color`          | Drop placeholder color                                              |
+| `--gx-le-table-placeholder-height`         | Height of drop placeholder (when a horizontal placeholder is shown) |
+| `--gx-le-table-placeholder-width`          | Width of drop placeholder (when a vertical placeholder is shown)    |
 | `--gx-le-table-hovered-cell-border-color`  | Hovered container item border color                                 |
 | `--gx-le-table-hovered-cell-border-width`  | Hovered container item border width                                 |
 | `--gx-le-table-selected-cell-border-color` | Selected container item border color                                |
 | `--gx-le-table-selected-cell-border-width` | Selected container item border width                                |
-| `--gx-le-table-cell-gap`                   | Gap between a container cells                                       |
+| `--gx-le-control-type-name-color`          | Color of the text that shows the control type when hovered          |
+| `--gx-le-control-type-name-font`           | Font of the text that shows the control type when hovered           |
 
 <!-- Auto Generated Below -->
 

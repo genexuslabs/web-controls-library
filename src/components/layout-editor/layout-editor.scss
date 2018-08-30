@@ -54,7 +54,6 @@
         top: 3px;
         left: 1px;
         z-index: 1;
-        background-color: white;
         background-image: var(--gx-le-table-anchor-icon);
         background-repeat: no-repeat;
         background-size: contain;
@@ -72,13 +71,14 @@
 @mixin drop-area {
   [data-gx-le-drop-area] {
     border: var(--gx-le-table-cell-border);
+    min-height: var(--gx-le-table-cell-min-height);
 
     &[data-gx-le-active-target="empty"] {
       background-color: var(--gx-le-table-placeholder-color);
     }
 
     &[data-gx-le-active-target="left"] {
-      .gu-transit {
+      [data-gx-le-transit-element] {
         left: calc(
           var(--gx-le-table-placeholder-width) * -0.5 -
             var(--gx-le-table-cell-gap) - 1px
@@ -87,7 +87,7 @@
     }
 
     &[data-gx-le-active-target="right"] {
-      .gu-transit {
+      [data-gx-le-transit-element] {
         right: calc(
           var(--gx-le-table-placeholder-width) * -0.5 -
             var(--gx-le-table-cell-gap)
@@ -96,7 +96,7 @@
     }
 
     &[data-gx-le-active-target="top"] {
-      .gu-transit {
+      [data-gx-le-transit-element] {
         top: calc(
           var(--gx-le-table-placeholder-height) * -0.5 -
             var(--gx-le-table-cell-gap)
@@ -105,7 +105,7 @@
     }
 
     &[data-gx-le-active-target="bottom"] {
-      .gu-transit {
+      [data-gx-le-transit-element] {
         bottom: calc(
           var(--gx-le-table-placeholder-height) * -0.5 -
             var(--gx-le-table-cell-gap) - 1px
@@ -114,7 +114,7 @@
     }
 
     &[data-gx-le-active-target="empty"] {
-      .gu-transit {
+      [data-gx-le-transit-element] {
         visibility: hidden;
       }
     }
@@ -122,7 +122,7 @@
     &[data-gx-le-active-target]:not([data-gx-le-active-target="empty"]) {
       position: relative;
 
-      .gu-transit {
+      [data-gx-le-transit-element] {
         overflow: hidden;
         position: absolute;
         z-index: 1;
@@ -139,7 +139,7 @@
 
     &[data-gx-le-active-target][data-gx-le-active-target="left"],
     &[data-gx-le-active-target][data-gx-le-active-target="right"] {
-      .gu-transit {
+      [data-gx-le-transit-element] {
         width: 0px;
         height: 100%;
         padding-left: var(--gx-le-table-placeholder-width);
@@ -155,7 +155,7 @@
 
     &[data-gx-le-active-target][data-gx-le-active-target="top"],
     &[data-gx-le-active-target][data-gx-le-active-target="bottom"] {
-      .gu-transit {
+      [data-gx-le-transit-element] {
         width: 100%;
         left: 0;
         height: 0;
@@ -188,6 +188,7 @@
         content: var(--gx-le-control-type-name);
         z-index: 1;
         color: var(--gx-le-control-type-name-color);
+        text-shadow: initial;
         background-color: var(--gx-le-table-hovered-cell-border-color);
         font: var(--gx-le-control-type-name-font);
         padding: 0.3rem;
@@ -204,29 +205,7 @@
   &[data-gx-le-selected="true"],
   [data-gx-le-drop-area][data-gx-le-selected="true"] {
     box-shadow: 0px 0px 0px var(--gx-le-table-selected-cell-border-width)
-      var(--gx-le-table-selected-cell-border-color) !important;
-  }
-}
-
-@mixin dragula {
-  .gu-mirror {
-    position: fixed !important;
-    margin: 0 !important;
-    z-index: 9999 !important;
-    opacity: 0.8;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
-    filter: alpha(opacity=80);
-  }
-
-  .gu-hide {
-    display: none !important;
-  }
-
-  .gu-unselectable {
-    -webkit-user-select: none !important;
-    -moz-user-select: none !important;
-    -ms-user-select: none !important;
-    user-select: none !important;
+      var(--gx-le-table-selected-cell-border-color);
   }
 }
 
@@ -246,6 +225,12 @@
     &::before {
       @extend %box-sizing-props;
     }
+  }
+}
+
+@mixin ghost {
+  .ghost {
+    max-width: 100px;
   }
 }
 
@@ -272,6 +257,6 @@ gx-layout-editor {
   @include drop-area();
 
   @include selection-highlighting();
-}
 
-@include dragula();
+  @include ghost();
+}

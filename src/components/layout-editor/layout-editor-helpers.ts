@@ -12,6 +12,22 @@ export function findParentCell(el: HTMLElement): HTMLElement {
   }
 }
 
+export function findValidDropTarget(el: HTMLElement): HTMLElement {
+  if (el.matches("gx-layout-editor-placeholder")) {
+    return el;
+  }
+
+  if (el.tagName.toLowerCase() === "gx-layout-editor") {
+    const dropCandidates = el.querySelectorAll(
+      `:scope > div > [data-gx-le-container] > [data-gx-le-placeholder]:last-child,
+       :scope > div > [data-gx-le-container] > [data-gx-le-drop-area]:last-child`
+    );
+    return dropCandidates[dropCandidates.length - 1] as HTMLElement;
+  }
+
+  return findParentCell(el);
+}
+
 export function getCellData(el: HTMLElement): ICellData {
   return {
     cellId: el.getAttribute("data-gx-le-cell-id"),

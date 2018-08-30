@@ -30,7 +30,6 @@
   "dependencies": {
     "bootstrap": "^4.1.2",
     "bootstrap.native": "^2.0.23",
-    "dragula": "^3.7.2",
     "font-awesome": "^4.7.0",
     "lottie-web": "^5.2.1",
     "popper.js": "^1.14.3"

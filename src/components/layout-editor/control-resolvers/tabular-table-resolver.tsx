@@ -40,7 +40,7 @@ export default function tabularTableResolver({ table }, context) {
 }
 
 function getTableStyle(rowsCount, colsCount) {
-  const baseRowsTemplate = new Array(rowsCount).fill("1fr", 0, rowsCount);
+  const baseRowsTemplate = new Array(rowsCount).fill("auto", 0, rowsCount);
   const baseColsTemplate = new Array(colsCount).fill("1fr", 0, colsCount);
 
   return {
