@@ -93,6 +93,7 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
         "gx-radio-group[area='field']"
       );
       const renderLabelBefore = this.shouldRenderLabelBefore();
+      const renderLabel = this.labelPosition !== "none";
 
       if (!this.formFieldId) {
         this.formFieldId =
@@ -118,11 +119,11 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
         } else {
           return (
             <div class="form-group row">
-              {renderLabelBefore ? label : null}
+              {renderLabel && renderLabelBefore ? label : null}
               <div class={this.getInnerControlContainerClass()}>
                 <slot />
               </div>
-              {!renderLabelBefore ? label : null}
+              {renderLabel && !renderLabelBefore ? label : null}
             </div>
           );
         }

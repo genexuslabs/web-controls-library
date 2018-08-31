@@ -188,6 +188,17 @@ declare global {
       labelPosition: "none" | "top" | "right" | "bottom" | "left" | "float";
     }
 
+    interface GxGroup {
+      /**
+       * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+       */
+      autoGrow: boolean;
+      /**
+       * Attribute that provides the caption to the <legend> tag
+       */
+      caption: string;
+    }
+
     interface GxImage {
       /**
        * This attribute lets you specify the alternative text.
@@ -525,6 +536,25 @@ declare global {
       value: string;
     }
 
+    interface GxSwitch {
+      /**
+       * Attribute that provides the caption to the control.
+       */
+      caption: string;
+      /**
+       * Indicates if switch control is checked by default.
+       */
+      checked: boolean;
+      /**
+       * This attribute allows you specify if the element is disabled. If disabled, it will not trigger any user interaction related event (for example, click event).
+       */
+      disabled: boolean;
+      /**
+       * The control id. Must be unique per control!
+       */
+      id: string;
+    }
+
     interface GxTabCaption {
       /**
        * This attribute lets you specify if the tab page is disabled
@@ -666,6 +696,15 @@ declare global {
     new (): HTMLGxFormFieldElement;
   };
 
+  interface HTMLGxGroupElement
+    extends StencilComponents.GxGroup,
+      HTMLStencilElement {}
+
+  var HTMLGxGroupElement: {
+    prototype: HTMLGxGroupElement;
+    new (): HTMLGxGroupElement;
+  };
+
   interface HTMLGxImageElement
     extends StencilComponents.GxImage,
       HTMLStencilElement {}
@@ -792,6 +831,15 @@ declare global {
     new (): HTMLGxSelectElement;
   };
 
+  interface HTMLGxSwitchElement
+    extends StencilComponents.GxSwitch,
+      HTMLStencilElement {}
+
+  var HTMLGxSwitchElement: {
+    prototype: HTMLGxSwitchElement;
+    new (): HTMLGxSwitchElement;
+  };
+
   interface HTMLGxTabCaptionElement
     extends StencilComponents.GxTabCaption,
       HTMLStencilElement {}
@@ -856,6 +904,7 @@ declare global {
       "gx-checkbox": JSXElements.GxCheckboxAttributes;
       "gx-edit": JSXElements.GxEditAttributes;
       "gx-form-field": JSXElements.GxFormFieldAttributes;
+      "gx-group": JSXElements.GxGroupAttributes;
       "gx-image": JSXElements.GxImageAttributes;
       "gx-layout-editor-placeholder": JSXElements.GxLayoutEditorPlaceholderAttributes;
       "gx-layout-editor": JSXElements.GxLayoutEditorAttributes;
@@ -870,6 +919,7 @@ declare global {
       "gx-radio-option": JSXElements.GxRadioOptionAttributes;
       "gx-select-option": JSXElements.GxSelectOptionAttributes;
       "gx-select": JSXElements.GxSelectAttributes;
+      "gx-switch": JSXElements.GxSwitchAttributes;
       "gx-tab-caption": JSXElements.GxTabCaptionAttributes;
       "gx-tab-page": JSXElements.GxTabPageAttributes;
       "gx-tab": JSXElements.GxTabAttributes;
@@ -1062,6 +1112,17 @@ declare global {
        * The position where the label will be located, relative to the edit control. The supported values are:  * `"top"`: The label is located above the edit control. * `"right"`: The label is located at the right side of the edit control. * `"bottom"`: The label is located below the edit control. * `"left"`: The label is located at the left side of the edit control. * `"float"`: The label is shown as a placeholder when the edit control's value is empty. When the value is not empty, the label floats and locates above the edit control. * `"none"`: The label is rendered, but hidden.
        */
       labelPosition?: "none" | "top" | "right" | "bottom" | "left" | "float";
+    }
+
+    export interface GxGroupAttributes extends HTMLAttributes {
+      /**
+       * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+       */
+      autoGrow?: boolean;
+      /**
+       * Attribute that provides the caption to the <legend> tag
+       */
+      caption?: string;
     }
 
     export interface GxImageAttributes extends HTMLAttributes {
@@ -1470,6 +1531,29 @@ declare global {
       value?: string;
     }
 
+    export interface GxSwitchAttributes extends HTMLAttributes {
+      /**
+       * Attribute that provides the caption to the control.
+       */
+      caption?: string;
+      /**
+       * Indicates if switch control is checked by default.
+       */
+      checked?: boolean;
+      /**
+       * This attribute allows you specify if the element is disabled. If disabled, it will not trigger any user interaction related event (for example, click event).
+       */
+      disabled?: boolean;
+      /**
+       * The control id. Must be unique per control!
+       */
+      id?: string;
+      /**
+       * The 'change' event is emitted when a change to the element's value is committed by the user.
+       */
+      onOnChange?: (event: CustomEvent) => void;
+    }
+
     export interface GxTabCaptionAttributes extends HTMLAttributes {
       /**
        * This attribute lets you specify if the tab page is disabled
@@ -1572,6 +1656,7 @@ declare global {
     "gx-checkbox": HTMLGxCheckboxElement;
     "gx-edit": HTMLGxEditElement;
     "gx-form-field": HTMLGxFormFieldElement;
+    "gx-group": HTMLGxGroupElement;
     "gx-image": HTMLGxImageElement;
     "gx-layout-editor-placeholder": HTMLGxLayoutEditorPlaceholderElement;
     "gx-layout-editor": HTMLGxLayoutEditorElement;
@@ -1586,6 +1671,7 @@ declare global {
     "gx-radio-option": HTMLGxRadioOptionElement;
     "gx-select-option": HTMLGxSelectOptionElement;
     "gx-select": HTMLGxSelectElement;
+    "gx-switch": HTMLGxSwitchElement;
     "gx-tab-caption": HTMLGxTabCaptionElement;
     "gx-tab-page": HTMLGxTabPageElement;
     "gx-tab": HTMLGxTabElement;
@@ -1602,6 +1688,7 @@ declare global {
     "gx-checkbox": HTMLGxCheckboxElement;
     "gx-edit": HTMLGxEditElement;
     "gx-form-field": HTMLGxFormFieldElement;
+    "gx-group": HTMLGxGroupElement;
     "gx-image": HTMLGxImageElement;
     "gx-layout-editor-placeholder": HTMLGxLayoutEditorPlaceholderElement;
     "gx-layout-editor": HTMLGxLayoutEditorElement;
@@ -1616,6 +1703,7 @@ declare global {
     "gx-radio-option": HTMLGxRadioOptionElement;
     "gx-select-option": HTMLGxSelectOptionElement;
     "gx-select": HTMLGxSelectElement;
+    "gx-switch": HTMLGxSwitchElement;
     "gx-tab-caption": HTMLGxTabCaptionElement;
     "gx-tab-page": HTMLGxTabPageElement;
     "gx-tab": HTMLGxTabElement;
