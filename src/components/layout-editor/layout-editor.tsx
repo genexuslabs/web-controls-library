@@ -340,7 +340,7 @@ export class LayoutEditor {
 
       if (sourceCell) {
         const { rowId: sourceRowId } = getCellData(sourceCell);
-        this.moveCompleted.emit({
+        this.emitDropEvent(this.moveCompleted, {
           ...eventData,
           sourceCellId,
           sourceRowId
@@ -350,7 +350,7 @@ export class LayoutEditor {
       const evtDataArr = evtDataTransfer ? evtDataTransfer.split(",") : [];
 
       if (dataTransferSecond === undefined) {
-        this.controlAdded.emit({
+        this.emitDropEvent(this.controlAdded, {
           ...eventData,
           kbObjectName: evtDataArr[0]
         });
@@ -359,14 +359,12 @@ export class LayoutEditor {
         dataTransferFirst === "GX_DASHBOARD_ADDELEMENT"
       ) {
         const elementType = dataTransferSecond;
-        this.controlAdded.emit({
+        this.emitDropEvent(this.controlAdded, {
           ...eventData,
           elementType
         });
       }
     }
-
-    this.restoreAfterDragDrop();
   }
 
   private getEventDataForDropAction(
@@ -426,6 +424,11 @@ export class LayoutEditor {
       }
     }
     return eventData;
+  }
+
+  private emitDropEvent(emitter: EventEmitter, data: any) {
+    this.restoreAfterDragDrop();
+    emitter.emit.call(this, data);
   }
 
   private getDropAreas() {
@@ -505,6 +508,9 @@ export class LayoutEditor {
 
   componentWillUpdate() {
     this.restoreAfterDragDrop();
+  }
+
+  componentDidUpdate() {
     this.setControlsDraggable();
   }
 
