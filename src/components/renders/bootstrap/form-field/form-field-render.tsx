@@ -68,7 +68,7 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
       }
     }
 
-    renderForRadio(renderLabelBefore: boolean) {
+    renderForRadio(renderLabel: boolean, renderLabelBefore: boolean) {
       const labelId = `${this.formFieldId}-label`;
       const label = (
         <div class={this.getLabelCssClass()} id={labelId} data-part="label">
@@ -78,11 +78,11 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
       return (
         <div class="form-group" aria-labelledby={labelId} role="group">
           <div class="row">
-            {renderLabelBefore ? label : null}
+            {renderLabel && renderLabelBefore ? label : null}
             <div class={this.getInnerControlContainerClass()}>
               <slot />
             </div>
-            {!renderLabelBefore ? label : null}
+            {renderLabel && !renderLabelBefore ? label : null}
           </div>
         </div>
       );
@@ -93,6 +93,7 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
         "gx-radio-group[area='field']"
       );
       const renderLabelBefore = this.shouldRenderLabelBefore();
+      const renderLabel = this.labelPosition !== "none";
 
       if (!this.formFieldId) {
         this.formFieldId =
@@ -100,7 +101,7 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
       }
 
       if (isRadioGroup) {
-        return this.renderForRadio(renderLabelBefore);
+        return this.renderForRadio(renderLabel, renderLabelBefore);
       } else {
         const label = (
           <label class={this.getLabelCssClass()} data-part="label">
@@ -118,11 +119,11 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
         } else {
           return (
             <div class="form-group row">
-              {renderLabelBefore ? label : null}
+              {renderLabel && renderLabelBefore ? label : null}
               <div class={this.getInnerControlContainerClass()}>
                 <slot />
               </div>
-              {!renderLabelBefore ? label : null}
+              {renderLabel && !renderLabelBefore ? label : null}
             </div>
           );
         }
