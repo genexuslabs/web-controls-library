@@ -38,45 +38,10 @@ A SASS mixin called `gx-form-field` is provided in `theming/theming-mixins.scss`
 
 ## Properties
 
-#### labelCaption
-
-string
-
-The text to set as the label of the field.
-
-#### labelPosition
-
-string
-
-The position where the label will be located, relative to the edit control. The supported values are:
-
-* `"top"`: The label is located above the edit control.
-* `"right"`: The label is located at the right side of the edit control.
-* `"bottom"`: The label is located below the edit control.
-* `"left"`: The label is located at the left side of the edit control.
-* `"float"`: The label is shown as a placeholder when the edit control's value is empty. When the value is not empty, the label floats and locates above the edit control.
-* `"none"`: The label is rendered, but hidden.
-
-## Attributes
-
-#### label-caption
-
-string
-
-The text to set as the label of the field.
-
-#### label-position
-
-string
-
-The position where the label will be located, relative to the edit control. The supported values are:
-
-* `"top"`: The label is located above the edit control.
-* `"right"`: The label is located at the right side of the edit control.
-* `"bottom"`: The label is located below the edit control.
-* `"left"`: The label is located at the left side of the edit control.
-* `"float"`: The label is shown as a placeholder when the edit control's value is empty. When the value is not empty, the label floats and locates above the edit control.
-* `"none"`: The label is rendered, but hidden.
+| Property        | Attribute        | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Type                                                     |
+| --------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `labelCaption`  | `label-caption`  | The text to set as the label of the field.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `string`                                                 |
+| `labelPosition` | `label-position` | The position where the label will be located, relative to the edit control. The supported values are: _ `"top"`: The label is located above the edit control. _ `"right"`: The label is located at the right side of the edit control. _ `"bottom"`: The label is located below the edit control. _ `"left"`: The label is located at the left side of the edit control. _ `"float"`: The label is shown as a placeholder when the edit control's value is empty. When the value is not empty, the label floats and locates above the edit control. _ `"none"`: The label is rendered, but hidden. | `"none" | "top" | "right" | "bottom" | "left" | "float"` |
 
 ---
 

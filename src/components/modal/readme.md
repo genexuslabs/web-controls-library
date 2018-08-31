@@ -34,53 +34,18 @@ predefined slots:
 
 ## Properties
 
-#### autoClose
-
-boolean
-
-This attribute lets you specify if the modal dialog is automatically closed when an action is clicked.
-
-#### closeButtonLabel
-
-string
-
-This attribute lets you specify the label for the close button. Important for accessibility.
-
-#### opened
-
-boolean
-
-This attribute lets you specify if the modal dialog is opened or closed.
-
-## Attributes
-
-#### auto-close
-
-boolean
-
-This attribute lets you specify if the modal dialog is automatically closed when an action is clicked.
-
-#### close-button-label
-
-string
-
-This attribute lets you specify the label for the close button. Important for accessibility.
-
-#### opened
-
-boolean
-
-This attribute lets you specify if the modal dialog is opened or closed.
+| Property           | Attribute            | Description                                                                                            | Type      |
+| ------------------ | -------------------- | ------------------------------------------------------------------------------------------------------ | --------- |
+| `autoClose`        | `auto-close`         | This attribute lets you specify if the modal dialog is automatically closed when an action is clicked. | `boolean` |
+| `closeButtonLabel` | `close-button-label` | This attribute lets you specify the label for the close button. Important for accessibility.           | `string`  |
+| `opened`           | `opened`             | This attribute lets you specify if the modal dialog is opened or closed.                               | `boolean` |
 
 ## Events
 
-#### onClose
-
-Fired when the modal dialog is closed
-
-#### onOpen
-
-Fired when the modal dialog is opened
+| Event     | Description                           |
+| --------- | ------------------------------------- |
+| `onClose` | Fired when the modal dialog is closed |
+| `onOpen`  | Fired when the modal dialog is opened |
 
 ---
 

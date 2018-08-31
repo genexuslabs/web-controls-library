@@ -36,35 +36,15 @@ tab content, using the `gx-tab-page` element.
 
 ## Properties
 
-#### invisibleMode
-
-string
-
-This attribute lets you specify how this element will behave when hidden.
-
-| Value        | Details                                                                     |
-| ------------ | --------------------------------------------------------------------------- |
-| `keep-space` | The element remains in the document flow, and it does occupy space.         |
-| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-
-## Attributes
-
-#### invisible-mode
-
-string
-
-This attribute lets you specify how this element will behave when hidden.
-
-| Value        | Details                                                                     |
-| ------------ | --------------------------------------------------------------------------- |
-| `keep-space` | The element remains in the document flow, and it does occupy space.         |
-| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+| Property        | Attribute        | Description                                                               | Type  |
+| --------------- | ---------------- | ------------------------------------------------------------------------- | ----- |
+| `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden. | Value | Details |  | ------------ | --------------------------------------------------------------------------- |  | `keep-space` | The element remains in the document flow, and it does occupy space. |  | `collapse` | The element is removed form the document flow, and it doesn't occupy space. |  | `"collapse" | "keep-space"` |
 
 ## Events
 
-#### onTabChange
-
-Fired when the active tab is changed
+| Event         | Description                          |
+| ------------- | ------------------------------------ |
+| `onTabChange` | Fired when the active tab is changed |
 
 ---
 

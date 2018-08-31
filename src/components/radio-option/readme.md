@@ -8,136 +8,25 @@ An `gx-radio-group` can be used to group a set of radios. When radios are inside
 
 ## Properties
 
-#### caption
-
-string
-
-Specifies the label of the radio.
-
-#### checked
-
-boolean
-
-Indicates that the control is selected by default.
-
-#### cssClass
-
-string
-
-A CSS class to set as the inner `input` element class.
-
-#### disabled
-
-boolean
-
-This attribute lets you specify if the element is disabled.
-If disabled, it will not fire any user interaction related event
-(for example, click event).
-
-#### id
-
-string
-
-The identifier of the control. Must be unique.
-
-#### invisibleMode
-
-string
-
-This attribute lets you specify how this element will behave when hidden.
-
-| Value        | Details                                                                     |
-| ------------ | --------------------------------------------------------------------------- |
-| `keep-space` | The element remains in the document flow, and it does occupy space.         |
-| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-
-#### name
-
-string
-
-The name of the inner input of type radio
-
-#### value
-
-string
-
-The initial value of the control.
-
-## Attributes
-
-#### caption
-
-string
-
-Specifies the label of the radio.
-
-#### checked
-
-boolean
-
-Indicates that the control is selected by default.
-
-#### css-class
-
-string
-
-A CSS class to set as the inner `input` element class.
-
-#### disabled
-
-boolean
-
-This attribute lets you specify if the element is disabled.
-If disabled, it will not fire any user interaction related event
-(for example, click event).
-
-#### id
-
-string
-
-The identifier of the control. Must be unique.
-
-#### invisible-mode
-
-string
-
-This attribute lets you specify how this element will behave when hidden.
-
-| Value        | Details                                                                     |
-| ------------ | --------------------------------------------------------------------------- |
-| `keep-space` | The element remains in the document flow, and it does occupy space.         |
-| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-
-#### name
-
-string
-
-The name of the inner input of type radio
-
-#### value
-
-string
-
-The initial value of the control.
+| Property        | Attribute        | Description                                                                                                                                              | Type      |
+| --------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `caption`       | `caption`        | Specifies the label of the radio.                                                                                                                        | `string`  |
+| `checked`       | `checked`        | Indicates that the control is selected by default.                                                                                                       | `boolean` |
+| `cssClass`      | `css-class`      | A CSS class to set as the inner `input` element class.                                                                                                   | `string`  |
+| `disabled`      | `disabled`       | This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event). | `boolean` |
+| `id`            | `id`             | The identifier of the control. Must be unique.                                                                                                           | `string`  |
+| `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden.                                                                                | Value     | Details |  | ------------ | --------------------------------------------------------------------------- |  | `keep-space` | The element remains in the document flow, and it does occupy space. |  | `collapse` | The element is removed form the document flow, and it doesn't occupy space. |  | `"collapse" | "keep-space"` |
+| `name`          | `name`           | The name of the inner input of type radio                                                                                                                | `string`  |
+| `value`         | `value`          | The initial value of the control.                                                                                                                        | `string`  |
 
 ## Events
 
-#### gxRadioDidLoad
-
-Emitted when the radio loads.
-
-#### gxRadioDidUnload
-
-Emitted when the radio unloads.
-
-#### gxSelect
-
-Emitted when the radio button is selected.
-
-#### onChange
-
-The `change` event is emitted when a change to the element's value is
-committed by the user.
+| Event              | Description                                                                                  |
+| ------------------ | -------------------------------------------------------------------------------------------- |
+| `gxRadioDidLoad`   | Emitted when the radio loads.                                                                |
+| `gxRadioDidUnload` | Emitted when the radio unloads.                                                              |
+| `gxSelect`         | Emitted when the radio button is selected.                                                   |
+| `onChange`         | The `change` event is emitted when a change to the element's value is committed by the user. |
 
 ---
 

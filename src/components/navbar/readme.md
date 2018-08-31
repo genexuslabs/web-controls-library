@@ -26,75 +26,12 @@ Currently the navigatio bar support specifying a set of links using `<gx-navbar-
 
 ## Properties
 
-#### caption
-
-string
-
-This attribute lets you specify an optional title for the navigation bar
-
-| Value        | Details                                                                     |
-| ------------ | --------------------------------------------------------------------------- |
-| `keep-space` | The element remains in the document flow, and it does occupy space.         |
-| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-
-#### cssClass
-
-string
-
-A CSS class to set as the inner element class.
-
-#### invisibleMode
-
-string
-
-This attribute lets you specify how this element will behave when hidden.
-
-| Value        | Details                                                                     |
-| ------------ | --------------------------------------------------------------------------- |
-| `keep-space` | The element remains in the document flow, and it does occupy space.         |
-| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-
-#### toggleButtonLabel
-
-string
-
-This attribute lets you specify the label for the toggle button. Important for accessibility.
-
-## Attributes
-
-#### caption
-
-string
-
-This attribute lets you specify an optional title for the navigation bar
-
-| Value        | Details                                                                     |
-| ------------ | --------------------------------------------------------------------------- |
-| `keep-space` | The element remains in the document flow, and it does occupy space.         |
-| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-
-#### css-class
-
-string
-
-A CSS class to set as the inner element class.
-
-#### invisible-mode
-
-string
-
-This attribute lets you specify how this element will behave when hidden.
-
-| Value        | Details                                                                     |
-| ------------ | --------------------------------------------------------------------------- |
-| `keep-space` | The element remains in the document flow, and it does occupy space.         |
-| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-
-#### toggle-button-label
-
-string
-
-This attribute lets you specify the label for the toggle button. Important for accessibility.
+| Property            | Attribute             | Description                                                                                   | Type     |
+| ------------------- | --------------------- | --------------------------------------------------------------------------------------------- | -------- |
+| `caption`           | `caption`             | This attribute lets you specify an optional title for the navigation bar                      | Value    | Details |  | ------------ | --------------------------------------------------------------------------- |  | `keep-space` | The element remains in the document flow, and it does occupy space. |  | `collapse` | The element is removed form the document flow, and it doesn't occupy space. |  | `string` |
+| `cssClass`          | `css-class`           | A CSS class to set as the inner element class.                                                | `string` |
+| `invisibleMode`     | `invisible-mode`      | This attribute lets you specify how this element will behave when hidden.                     | Value    | Details |  | ------------ | --------------------------------------------------------------------------- |  | `keep-space` | The element remains in the document flow, and it does occupy space. |  | `collapse` | The element is removed form the document flow, and it doesn't occupy space. |  | `"collapse" | "keep-space"` |
+| `toggleButtonLabel` | `toggle-button-label` | This attribute lets you specify the label for the toggle button. Important for accessibility. | `string` |
 
 ---
 

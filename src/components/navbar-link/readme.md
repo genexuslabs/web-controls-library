@@ -18,83 +18,19 @@ Represents an item with a link inside a `<gx-navbar>`.
 
 ## Properties
 
-#### active
-
-boolean
-
-Indicates if the navbar item is the active one (for example, when the item represents the current page)
-
-#### cssClass
-
-string
-
-A CSS class to set as the inner element class.
-
-#### disabled
-
-boolean
-
-This attribute lets you specify if the navbar item is disabled.
-
-#### href
-
-string
-
-This attribute lets you specify the URL of the navbar item.
-
-#### invisibleMode
-
-string
-
-This attribute lets you specify how this element will behave when hidden.
-
-| Value        | Details                                                                     |
-| ------------ | --------------------------------------------------------------------------- |
-| `keep-space` | The element remains in the document flow, and it does occupy space.         |
-| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-
-## Attributes
-
-#### active
-
-boolean
-
-Indicates if the navbar item is the active one (for example, when the item represents the current page)
-
-#### css-class
-
-string
-
-A CSS class to set as the inner element class.
-
-#### disabled
-
-boolean
-
-This attribute lets you specify if the navbar item is disabled.
-
-#### href
-
-string
-
-This attribute lets you specify the URL of the navbar item.
-
-#### invisible-mode
-
-string
-
-This attribute lets you specify how this element will behave when hidden.
-
-| Value        | Details                                                                     |
-| ------------ | --------------------------------------------------------------------------- |
-| `keep-space` | The element remains in the document flow, and it does occupy space.         |
-| `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+| Property        | Attribute        | Description                                                                                             | Type      |
+| --------------- | ---------------- | ------------------------------------------------------------------------------------------------------- | --------- |
+| `active`        | `active`         | Indicates if the navbar item is the active one (for example, when the item represents the current page) | `boolean` |
+| `cssClass`      | `css-class`      | A CSS class to set as the inner element class.                                                          | `string`  |
+| `disabled`      | `disabled`       | This attribute lets you specify if the navbar item is disabled.                                         | `boolean` |
+| `href`          | `href`           | This attribute lets you specify the URL of the navbar item.                                             | `string`  |
+| `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden.                               | Value     | Details |  | ------------ | --------------------------------------------------------------------------- |  | `keep-space` | The element remains in the document flow, and it does occupy space. |  | `collapse` | The element is removed form the document flow, and it doesn't occupy space. |  | `"collapse" | "keep-space"` |
 
 ## Events
 
-#### onClick
-
-Emitted when the element is clicked.
+| Event     | Description                          |
+| --------- | ------------------------------------ |
+| `onClick` | Emitted when the element is clicked. |
 
 ---
 

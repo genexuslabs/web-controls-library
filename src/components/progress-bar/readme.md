@@ -10,19 +10,9 @@ The text caption of the progress bar will be its text content. Being a child ins
 
 ## Properties
 
-#### value
-
-number
-
-Sets the progress value.
-
-## Attributes
-
-#### value
-
-number
-
-Sets the progress value.
+| Property | Attribute | Description              | Type     |
+| -------- | --------- | ------------------------ | -------- |
+| `value`  | `value`   | Sets the progress value. | `number` |
 
 ---
 
