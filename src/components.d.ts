@@ -550,6 +550,10 @@ declare global {
        */
       disabled: boolean;
       /**
+       * Returns the id of the inner `input` element (if set).
+       */
+      getNativeInputId: () => any;
+      /**
        * The control id. Must be unique per control!
        */
       id: string;

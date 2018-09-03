@@ -1,5 +1,12 @@
 import { BaseComponent } from "../common/base-component";
-import { Component, Event, EventEmitter, Prop } from "@stencil/core";
+import {
+  Component,
+  Event,
+  EventEmitter,
+  Method,
+  Prop,
+  Watch
+} from "@stencil/core";
 import { SwitchRender } from "../renders/bootstrap/switch/switch-render";
 @Component({
   host: {
@@ -25,13 +32,27 @@ export class Switch extends SwitchRender(BaseComponent) {
    * (for example, click event).
    */
   @Prop() disabled = false;
+
+  /**
+   * The control id. Must be unique per control!
+   */
+  @Prop() id: string;
+
   /**
    * The 'change' event is emitted when a change to the element's value is committed by the user.
    */
   @Event() onChange: EventEmitter;
 
   /**
-   * The control id. Must be unique per control!
+   * Returns the id of the inner `input` element (if set).
    */
-  @Prop() id: string;
+  @Method()
+  getNativeInputId() {
+    return super.getNativeInputId();
+  }
+
+  @Watch("checked")
+  protected checkedChanged() {
+    super.checkedChanged();
+  }
 }
