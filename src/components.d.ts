@@ -552,7 +552,7 @@ declare global {
       /**
        * Returns the id of the inner `input` element (if set).
        */
-      getNativeInputId: () => any;
+      getNativeInputId: () => string;
       /**
        * The control id. Must be unique per control!
        */
