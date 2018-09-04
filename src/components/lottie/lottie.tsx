@@ -96,6 +96,10 @@ export class Lottie extends BaseComponent {
    */
   @Method()
   play(from = 0, to = 0) {
+    if (!this.animation) {
+      return;
+    }
+
     if (from || to) {
       if (!to) {
         to = from;
@@ -115,6 +119,10 @@ export class Lottie extends BaseComponent {
    */
   @Method()
   setProgress(progress: number) {
+    if (!this.animation) {
+      return;
+    }
+
     const progressInFrames = this.durationToFrames(progress);
     this.animation.goToAndPlay(progressInFrames, true);
   }
@@ -124,6 +132,10 @@ export class Lottie extends BaseComponent {
    */
   @Method()
   stop() {
+    if (!this.animation) {
+      return;
+    }
+
     this.animation.stop();
   }
 
