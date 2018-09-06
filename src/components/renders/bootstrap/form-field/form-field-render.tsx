@@ -77,7 +77,7 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
       );
       return (
         <div class="form-group" aria-labelledby={labelId} role="group">
-          <div class="row">
+          <div class="row ml-0 mr-0">
             {renderLabel && renderLabelBefore ? label : null}
             <div class={this.getInnerControlContainerClass()}>
               <slot />
@@ -118,7 +118,7 @@ export function FormFieldRender<T extends Constructor<{}>>(Base: T) {
           );
         } else {
           return (
-            <div class="form-group row">
+            <div class="form-group row ml-0 mr-0">
               {renderLabel && renderLabelBefore ? label : null}
               <div class={this.getInnerControlContainerClass()}>
                 <slot />
