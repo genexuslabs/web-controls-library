@@ -1,6 +1,13 @@
-import controlResolver from "../layout-editor-control-resolver";
+import {
+  IResolverContext,
+  controlResolver,
+  isCellSelected
+} from "../layout-editor-control-resolver";
 
-export default function tabularTableResolver({ table }, context) {
+export default function tabularTableResolver(
+  { table },
+  context: IResolverContext
+) {
   const modelRows = table.row
     ? Array.isArray(table.row) ? table.row : [table.row]
     : [];
@@ -97,9 +104,7 @@ function renderCell(cell, rowId, rowIndex, colStart, context) {
         "grid-column": `${colStart} / span ${colSpan}`,
         "grid-row": ` ${rowStart} / span ${rowSpan}`
       }}
-      data-gx-le-selected={context.selectedCells
-        .includes(cell["@id"])
-        .toString()}
+      data-gx-le-selected={isCellSelected(cell, context).toString()}
     >
       {controlResolver(cell, context)}
     </gx-table-cell>

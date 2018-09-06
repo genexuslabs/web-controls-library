@@ -6,7 +6,10 @@ import {
   Prop,
   Watch
 } from "@stencil/core";
-import controlResolver from "./layout-editor-control-resolver";
+import {
+  controlResolver,
+  isCellSelected
+} from "./layout-editor-control-resolver";
 import {
   findParentCell,
   findValidDropTarget,
@@ -30,10 +33,10 @@ export class LayoutEditor {
   @Prop() model: any;
 
   /**
-   * Array with the identifiers of the selected control's cells. If empty the whole layout-editor is marked as selected.
+   * Array with the identifiers of the selected controls. If empty the whole layout-editor is marked as selected.
    */
   @Prop({ mutable: true })
-  selectedCells: string[] = [];
+  selectedControls: string[] = [];
 
   /**
    * Fired when a control is moved inside the layout editor to a new location
@@ -160,9 +163,9 @@ export class LayoutEditor {
    *
    * An object containing information of the add operation is sent in the `detail` property of the event object
    *
-   * | Property           | Details                                                                                                                                     |
-   * | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
-   * | `cellIds`          | Identifier of the removed cells |
+   * | Property           | Details                         |
+   * | ------------------ | ------------------------------- |
+   * | `controls`         | Identifier of the removed cells |
    *
    */
   @Event() controlRemoved: EventEmitter;
@@ -174,7 +177,7 @@ export class LayoutEditor {
    *
    * | Property       | Details                           |
    * | -------------- | --------------------------------- |
-   * | `cellIds`      | Identifier of the selected cells  |
+   * | `controls`     | Identifier of the selected cells  |
    *
    */
   @Event() controlSelected: EventEmitter;
@@ -475,7 +478,7 @@ export class LayoutEditor {
 
   private handleDelete() {
     this.controlRemoved.emit({
-      cellIds: this.selectedCells.join(",")
+      controls: this.selectedControls.join(",")
     });
   }
 
@@ -489,21 +492,35 @@ export class LayoutEditor {
     }
   }
 
-  private handleSelection(target: HTMLElement, add) {
-    const selCell = findParentCell(target);
+  private handleSelection(target: HTMLElement, add: boolean) {
+    let selectedControlId = getControlId(target);
 
-    if (selCell) {
-      const { cellId: selectedCellId } = getCellData(selCell);
-      this.updateSelection(selectedCellId, add);
-    } else {
-      this.updateSelection("", add);
+    if (!selectedControlId) {
+      const selCell = findParentCell(target);
+      if (selCell) {
+        if (selCell.firstElementChild) {
+          selectedControlId = getControlId(
+            selCell.firstElementChild as HTMLElement
+          );
+        }
+
+        if (!selectedControlId) {
+          const { cellId: selectedCellId } = getCellData(selCell);
+          selectedControlId = selectedCellId;
+        }
+      }
     }
+    if (!selectedControlId) {
+      selectedControlId = "";
+    }
+
+    this.updateSelection(selectedControlId, add);
   }
 
-  private updateSelection(selectedCellId, add) {
-    this.selectedCells = add
-      ? [...this.selectedCells, selectedCellId]
-      : [selectedCellId];
+  private updateSelection(selectedControlId: string, add: boolean) {
+    this.selectedControls = add
+      ? [...this.selectedControls, selectedControlId]
+      : [selectedControlId];
   }
 
   componentWillUpdate() {
@@ -536,13 +553,16 @@ export class LayoutEditor {
 
   render() {
     if (this.model && this.model.layout) {
-      const isSelected = this.selectedCells.find(id => id === "") === "";
+      const context = {
+        selectedControls: this.selectedControls
+      };
+      const isSelected =
+        this.selectedControls.find(id => id === "") !== undefined ||
+        isCellSelected(this.model.layout, context);
       this.element.setAttribute("data-gx-le-selected", isSelected.toString());
       return (
         <div>
-          {controlResolver(this.model.layout, {
-            selectedCells: this.selectedCells
-          })}
+          {controlResolver(this.model.layout, context)}
           <gx-layout-editor-placeholder
             data-gx-le-external
             data-gx-le-placeholder="row"
@@ -557,10 +577,10 @@ export class LayoutEditor {
     }
   }
 
-  @Watch("selectedCells")
-  watchSelectedCells() {
+  @Watch("selectedControls")
+  watchSelectedControls() {
     this.controlSelected.emit({
-      cellIds: this.selectedCells.join(",")
+      controls: this.selectedControls.join(",")
     });
   }
 }

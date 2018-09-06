@@ -242,9 +242,9 @@ declare global {
        */
       model: any;
       /**
-       * Array with the identifiers of the selected control's cells. If empty the whole layout-editor is marked as selected.
+       * Array with the identifiers of the selected controls. If empty the whole layout-editor is marked as selected.
        */
-      selectedCells: string[];
+      selectedControls: string[];
     }
 
     interface GxLottie {
@@ -1181,11 +1181,11 @@ declare global {
        */
       onControlAdded?: (event: CustomEvent) => void;
       /**
-       * Fired when a control has been removed from the layout  An object containing information of the add operation is sent in the `detail` property of the event object  | Property           | Details                                                                                                                                     | | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | | `cellIds`          | Identifier of the removed cells |
+       * Fired when a control has been removed from the layout  An object containing information of the add operation is sent in the `detail` property of the event object  | Property           | Details                         | | ------------------ | ------------------------------- | | `controls`         | Identifier of the removed cells |
        */
       onControlRemoved?: (event: CustomEvent) => void;
       /**
-       * Fired when the selection has been changed  An object containing information of the select operation is sent in the `detail` property of the event object  | Property       | Details                           | | -------------- | --------------------------------- | | `cellIds`      | Identifier of the selected cells  |
+       * Fired when the selection has been changed  An object containing information of the select operation is sent in the `detail` property of the event object  | Property       | Details                           | | -------------- | --------------------------------- | | `controls`     | Identifier of the selected cells  |
        */
       onControlSelected?: (event: CustomEvent) => void;
       /**
@@ -1193,9 +1193,9 @@ declare global {
        */
       onMoveCompleted?: (event: CustomEvent) => void;
       /**
-       * Array with the identifiers of the selected control's cells. If empty the whole layout-editor is marked as selected.
+       * Array with the identifiers of the selected controls. If empty the whole layout-editor is marked as selected.
        */
-      selectedCells?: string[];
+      selectedControls?: string[];
     }
 
     export interface GxLottieAttributes extends HTMLAttributes {

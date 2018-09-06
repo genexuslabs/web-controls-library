@@ -43,9 +43,7 @@
     }
 
     &:hover {
-      [data-gx-le-drop-area] {
-        position: relative;
-      }
+      position: relative;
 
       &:after {
         content: " ";
@@ -202,8 +200,7 @@
 }
 
 @mixin selection-highlighting {
-  &[data-gx-le-selected="true"],
-  [data-gx-le-drop-area][data-gx-le-selected="true"] {
+  [data-gx-le-selected="true"] {
     box-shadow: 0px 0px 0px var(--gx-le-table-selected-cell-border-width)
       var(--gx-le-table-selected-cell-border-color);
   }
@@ -234,6 +231,17 @@
   }
 }
 
+@mixin control-header-bar {
+  [data-gx-le-control-header-bar]::before {
+    display: block;
+    content: var(--gx-le-control-header-bar-text);
+    background-color: var(--gx-le-control-header-bar-background-color);
+    color: var(--gx-le-control-header-bar-color);
+    padding: 1px 4px;
+    text-transform: uppercase;
+  }
+}
+
 gx-layout-editor {
   @include visibility(block);
 
@@ -259,4 +267,6 @@ gx-layout-editor {
   @include selection-highlighting();
 
   @include ghost();
+
+  @include control-header-bar();
 }

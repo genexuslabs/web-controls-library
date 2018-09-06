@@ -1,6 +1,13 @@
-import controlResolver from "../layout-editor-control-resolver";
+import {
+  IResolverContext,
+  controlResolver,
+  isCellSelected
+} from "../layout-editor-control-resolver";
 
-export default function flexTableResolver({ table }, context) {
+export default function flexTableResolver(
+  { table },
+  context: IResolverContext
+) {
   const modelRows = table.row
     ? Array.isArray(table.row) ? table.row : [table.row]
     : [];
@@ -44,6 +51,7 @@ function getTableStyle(table): any {
 
 function renderCell(cell, rowId, context, direction) {
   const editorCellStyle = {
+    "--gx-le-control-type-name": cell.controlType && `"${cell.controlType}"`,
     "align-self": cell["@alignSelf"],
     "flex-grow": cell["@flexGrow"],
     "flex-shrink": cell["@flexShrink"],
@@ -64,9 +72,7 @@ function renderCell(cell, rowId, context, direction) {
       data-gx-le-cell-id={cell["@id"]}
       data-gx-le-row-id={rowId}
       style={editorCellStyle}
-      data-gx-le-selected={context.selectedCells
-        .includes(cell["@id"])
-        .toString()}
+      data-gx-le-selected={isCellSelected(cell, context).toString()}
     >
       {controlResolver(cell, context)}
     </div>
