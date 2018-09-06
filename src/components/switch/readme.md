@@ -19,6 +19,12 @@ A switch/toggle control that enables you to select between options.
 | ---------- | -------------------------------------------------------------------------------------------- |
 | `onChange` | The 'change' event is emitted when a change to the element's value is committed by the user. |
 
+## Methods
+
+| Method             | Description                                           |
+| ------------------ | ----------------------------------------------------- |
+| `getNativeInputId` | Returns the id of the inner `input` element (if set). |
+
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_
