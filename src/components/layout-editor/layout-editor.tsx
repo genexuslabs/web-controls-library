@@ -220,7 +220,6 @@ export class LayoutEditor {
   }
 
   private handleControlDragStart(event: DragEvent) {
-    this.element.setAttribute("data-gx-le-dragging", "");
     const dt = event.dataTransfer;
     const evtTarget = event.target as HTMLElement;
     const cell = findParentCell(evtTarget);
@@ -265,6 +264,8 @@ export class LayoutEditor {
   }
 
   private handleControlOver(event: DragEvent) {
+    this.element.setAttribute("data-gx-le-dragging", "");
+
     const evtTarget = event.target as HTMLElement;
     const targetCell = findValidDropTarget(evtTarget);
     if (!targetCell) {
