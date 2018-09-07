@@ -223,6 +223,7 @@ export class LayoutEditor {
     const dt = event.dataTransfer;
     const evtTarget = event.target as HTMLElement;
     const cell = findParentCell(evtTarget);
+    cell.setAttribute("data-gx-le-dragged", "true");
     const { cellId } = getCellData(cell);
     dt.setData("text/plain", `gx-le-move-operation,${cellId}`);
 
@@ -269,6 +270,14 @@ export class LayoutEditor {
     const evtTarget = event.target as HTMLElement;
     const targetCell = findValidDropTarget(evtTarget);
     if (!targetCell) {
+      return;
+    }
+
+    if (targetCell.matches("[data-gx-le-dragged] [data-gx-le-drop-area]")) {
+      return;
+    }
+
+    if (targetCell.matches("[data-gx-le-dragged] [data-gx-le-placeholder]")) {
       return;
     }
 
@@ -328,16 +337,18 @@ export class LayoutEditor {
 
     event.preventDefault();
 
-    const evtDataTransfer = event.dataTransfer.getData("text/plain");
-    const [dataTransferFirst, dataTransferSecond] = evtDataTransfer.split(",");
-
     const eventData = this.getEventDataForDropAction(
       targetCell,
       this.transitElement
     );
 
-    if (dataTransferFirst === "gx-le-move-operation") {
-      const sourceCellId = dataTransferSecond;
+    const {
+      sourceCellId,
+      kbObjectName,
+      elementType
+    } = this.parseDropEventDataTransfer(event);
+
+    if (sourceCellId) {
       const sourceCell = this.element.querySelector(
         `[data-gx-le-cell-id="${sourceCellId}"]`
       ) as HTMLElement;
@@ -351,22 +362,40 @@ export class LayoutEditor {
         });
       }
     } else {
-      const evtDataArr = evtDataTransfer ? evtDataTransfer.split(",") : [];
-
-      if (dataTransferSecond === undefined) {
+      if (kbObjectName) {
         this.emitDropEvent(this.controlAdded, {
           ...eventData,
-          kbObjectName: evtDataArr[0]
+          kbObjectName
         });
-      } else if (
-        dataTransferSecond !== undefined &&
-        dataTransferFirst === "GX_DASHBOARD_ADDELEMENT"
-      ) {
-        const elementType = dataTransferSecond;
+      } else if (elementType) {
         this.emitDropEvent(this.controlAdded, {
           ...eventData,
           elementType
         });
+      }
+    }
+  }
+
+  parseDropEventDataTransfer(event: DragEvent): any {
+    const evtDataTransfer = event.dataTransfer.getData("text/plain");
+    const [dataTransferFirst, dataTransferSecond] = evtDataTransfer.split(",");
+
+    if (dataTransferFirst === "gx-le-move-operation") {
+      return {
+        sourceCellId: dataTransferSecond
+      };
+    } else {
+      if (dataTransferSecond === undefined) {
+        return {
+          kbObjectName: dataTransferFirst
+        };
+      } else if (
+        dataTransferSecond !== undefined &&
+        dataTransferFirst === "GX_DASHBOARD_ADDELEMENT"
+      ) {
+        return {
+          elementType: dataTransferSecond
+        };
       }
     }
   }
@@ -535,11 +564,16 @@ export class LayoutEditor {
   private restoreAfterDragDrop() {
     this.removeTransitElement();
     this.removeGhostElement();
+    this.removeAttributeFromElements("data-gx-le-active-target");
+    this.removeAttributeFromElements("data-gx-le-dragged");
+  }
+
+  private removeAttributeFromElements(attributeName: string) {
     const activeTargets = Array.from(
-      this.element.querySelectorAll("[data-gx-le-active-target]")
+      this.element.querySelectorAll(`[${attributeName}]`)
     );
     for (const target of activeTargets) {
-      target.removeAttribute("data-gx-le-active-target");
+      target.removeAttribute(attributeName);
     }
   }
 
