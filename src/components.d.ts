@@ -1181,11 +1181,11 @@ declare global {
        */
       onControlAdded?: (event: CustomEvent) => void;
       /**
-       * Fired when a control has been removed from the layout  An object containing information of the add operation is sent in the `detail` property of the event object  | Property           | Details                         | | ------------------ | ------------------------------- | | `controls`         | Identifier of the removed cells |
+       * Fired when a control has been removed from the layout  An object containing information of the add operation is sent in the `detail` property of the event object  | Property           | Details                                                     | | ------------------ | ----------------------------------------------------------- | | `controls`         | An array containing the identifiers of the removed controls |
        */
       onControlRemoved?: (event: CustomEvent) => void;
       /**
-       * Fired when the selection has been changed  An object containing information of the select operation is sent in the `detail` property of the event object  | Property       | Details                           | | -------------- | --------------------------------- | | `controls`     | Identifier of the selected cells  |
+       * Fired when the selection has been changed  An object containing information of the select operation is sent in the `detail` property of the event object  | Property       | Details                                                      | | -------------- | ------------------------------------------------------------ | | `controls`     | An array containing the identifiers of the selected controls |
        */
       onControlSelected?: (event: CustomEvent) => void;
       /**

@@ -34,7 +34,11 @@ export default function flexTableResolver(
       data-gx-le-flex-table
       data-gx-le-flex-table-direction={table["@flexDirection"].toLowerCase()}
     >
-      {[...rows]}
+      {rows.length ? (
+        rows
+      ) : (
+        <gx-layout-editor-placeholder data-gx-le-placeholder="row" />
+      )}
     </div>
   );
 }

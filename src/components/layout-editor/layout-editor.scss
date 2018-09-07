@@ -242,17 +242,25 @@
   }
 }
 
-gx-layout-editor {
-  @include visibility(block);
-
-  position: relative;
-
+@mixin active-placeholder {
   gx-layout-editor-placeholder[data-gx-le-active-target] {
     background-color: var(--gx-le-table-placeholder-color);
     & > * {
       display: none;
     }
   }
+
+  [data-gx-le-container-empty="true"] > gx-layout-editor-placeholder {
+    height: 100%;
+  }
+}
+
+gx-layout-editor {
+  @include visibility(block);
+
+  position: relative;
+
+  @include active-placeholder();
 
   @include box-sizing();
 

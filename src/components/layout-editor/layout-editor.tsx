@@ -163,9 +163,9 @@ export class LayoutEditor {
    *
    * An object containing information of the add operation is sent in the `detail` property of the event object
    *
-   * | Property           | Details                         |
-   * | ------------------ | ------------------------------- |
-   * | `controls`         | Identifier of the removed cells |
+   * | Property           | Details                                                     |
+   * | ------------------ | ----------------------------------------------------------- |
+   * | `controls`         | An array containing the identifiers of the removed controls |
    *
    */
   @Event() controlRemoved: EventEmitter;
@@ -175,9 +175,9 @@ export class LayoutEditor {
    *
    * An object containing information of the select operation is sent in the `detail` property of the event object
    *
-   * | Property       | Details                           |
-   * | -------------- | --------------------------------- |
-   * | `controls`     | Identifier of the selected cells  |
+   * | Property       | Details                                                      |
+   * | -------------- | ------------------------------------------------------------ |
+   * | `controls`     | An array containing the identifiers of the selected controls |
    *
    */
   @Event() controlSelected: EventEmitter;
@@ -508,7 +508,7 @@ export class LayoutEditor {
 
   private handleDelete() {
     this.controlRemoved.emit({
-      controls: this.selectedControls.join(",")
+      controls: this.selectedControls
     });
   }
 
@@ -615,7 +615,7 @@ export class LayoutEditor {
   @Watch("selectedControls")
   watchSelectedControls() {
     this.controlSelected.emit({
-      controls: this.selectedControls.join(",")
+      controls: this.selectedControls
     });
   }
 }
