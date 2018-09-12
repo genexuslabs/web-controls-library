@@ -1,0 +1,18 @@
+////
+/// @group theming-mixins
+////
+
+/// Helper mixin to ease styling gx-group custom elements
+/// @param {map} $class Base class of the component
+/// @param {map} $caption Class for styling the caption of the group
+@mixin gx-group($class, $caption: null) {
+  & > fieldset {
+    @extend #{$class} !optional;
+
+    @if ($caption != null) {
+      & > legend {
+        @extend #{$caption} !optional;
+      }
+    }
+  }
+}

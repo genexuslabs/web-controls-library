@@ -1,0 +1,25 @@
+////
+/// @group theming-mixins
+////
+
+/// Helper mixin to ease styling gx-tab custom elements
+/// @param {map} $class Base class of the component
+/// @param {map} $selected-tab-caption Class for styling the selected tab caption
+/// @param {map} $unselected-tab-caption Class for styling unselected tab caption
+@mixin gx-tab(
+  $class,
+  $selected-tab-caption: null,
+  $unselected-tab-caption: null
+) {
+  @extend #{$class} !optional;
+  @if ($unselected-tab-caption != null) {
+    gx-tab-caption[aria-selected="false"] {
+      @extend #{$unselected-tab-caption} !optional;
+    }
+  }
+  @if ($selected-tab-caption != null) {
+    gx-tab-caption[aria-selected="true"] {
+      @extend #{$selected-tab-caption} !optional;
+    }
+  }
+}

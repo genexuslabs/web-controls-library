@@ -1,0 +1,11 @@
+////
+/// @group theming-mixins
+////
+
+/// Helper mixin to ease styling gx-tab-caption custom elements
+/// @param {map} $class Base class of the component
+@mixin gx-tab-caption($class) {
+  a.nav-link {
+    @extend #{$class} !optional;
+  }
+}

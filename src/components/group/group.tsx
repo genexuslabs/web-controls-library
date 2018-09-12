@@ -20,7 +20,9 @@ export class Group extends BaseComponent {
   render() {
     return (
       <fieldset class="form-group">
-        <legend>{this.caption}</legend>
+        <legend>
+          <span class="content">{this.caption}</span>
+        </legend>
         <slot />
       </fieldset>
     );

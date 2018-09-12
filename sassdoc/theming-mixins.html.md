@@ -1,5 +1,32 @@
 # Theming helper mixins
 
+## gx-group
+
+### Description
+
+Helper mixin to ease styling gx-group custom elements
+
+### Parameters
+
+| Name    | Description                                | Type | Default Value |
+| ------- | ------------------------------------------ | ---- | ------------- |
+| class   | Base class of the component                | map  |               |
+| caption | Class for styling the caption of the group | map  |               |
+
+### Source
+
+```scss
+@mixin gx-group($class, $caption) {
+  & > fieldset {
+    @extend #{$class} !optional;
+
+    @if ($caption != null) {
+      @extend #{$caption} !optional;
+    }
+  }
+}
+```
+
 ## gx-image
 
 ### Description
@@ -195,6 +222,61 @@ Helper mixin to ease styling gx-form-field custom elements
   @if $highlighted != null {
     &:active {
       @extend #{$highlighted} !optional;
+    }
+  }
+}
+```
+
+## gx-tab-caption
+
+### Description
+
+Helper mixin to ease styling gx-tab-caption custom elements
+
+### Parameters
+
+| Name  | Description                 | Type | Default Value |
+| ----- | --------------------------- | ---- | ------------- |
+| class | Base class of the component | map  |               |
+
+### Source
+
+```scss
+@mixin gx-tab-caption($class) {
+  a.nav-link {
+    @extend #{$class} !optional;
+  }
+}
+```
+
+## gx-tab
+
+### Description
+
+Helper mixin to ease styling gx-tab custom elements
+
+### Parameters
+
+| Name                   | Description                                | Type | Default Value |
+| ---------------------- | ------------------------------------------ | ---- | ------------- |
+| class                  | Base class of the component                | map  |               |
+| selected-tab-caption   | Class for styling the selected tab caption | map  |               |
+| unselected-tab-caption | Class for styling unselected tab caption   | map  |               |
+
+### Source
+
+```scss
+@mixin gx-tab($class, $selected-tab-caption, $unselected-tab-caption) {
+  @extend #{$class} !optional;
+
+  @if ($unselected-tab-caption != null) {
+    gx-tab-caption[aria-selected="false"] {
+      @extend #{$unselected-tab-caption} !optional;
+    }
+  }
+  @if ($selected-tab-caption != null) {
+    gx-tab-caption[aria-selected="true"] {
+      @extend #{$selected-tab-caption} !optional;
     }
   }
 }
