@@ -24,7 +24,9 @@ describe("gx-group", () => {
     it("should set legend caption", async () => {
       element.caption = "TEST TEXT";
       await testWindow.flush();
-      expect(element.querySelector("legend").innerHTML).toEqual("TEST TEXT");
+      expect(element.querySelector("legend .content").innerHTML).toEqual(
+        "TEST TEXT"
+      );
     });
   });
 });
