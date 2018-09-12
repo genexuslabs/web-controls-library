@@ -177,7 +177,6 @@ export class Lottie extends BaseComponent {
       path: this.path,
       renderer: "svg"
     });
-    this.animationTotalFrames = this.animation.getDuration(true);
 
     this.animation.addEventListener(
       "DOMLoaded",
@@ -186,6 +185,7 @@ export class Lottie extends BaseComponent {
   }
 
   private animationDomLoadedHandler(event: UIEvent) {
+    this.animationTotalFrames = this.animation.getDuration(true);
     this.animationLoad.emit(event);
   }
 

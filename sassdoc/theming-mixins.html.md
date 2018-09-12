@@ -28,6 +28,50 @@ Helper mixin to ease styling gx-image custom elements
 }
 ```
 
+## gx-loading
+
+### Description
+
+Helper mixin to ease styling gx-loading custom elements
+
+### Parameters
+
+| Name        | Description                                                                            | Type | Default Value |
+| ----------- | -------------------------------------------------------------------------------------- | ---- | ------------- |
+| class       | Base class of the component                                                            | map  |               |
+| animation   | Class for the animation part of the component (applies when an animation is specified) | map  |               |
+| title       | Class for the title part of the component                                              | map  |               |
+| description | Class for the description part of the component                                        | map  |               |
+
+### Source
+
+```scss
+@mixin gx-loading($class, $animation, $title, $description) {
+  @if ($animation != null) {
+    gx-lottie,
+    .gx-lottie-test {
+      @extend #{$animation};
+    }
+  }
+
+  .box {
+    @extend #{$class} !optional;
+  }
+
+  @if ($title != null) {
+    .title {
+      @extend #{$title} !optional;
+    }
+  }
+
+  @if ($description != null) {
+    .title {
+      @extend #{$description} !optional;
+    }
+  }
+}
+```
+
 ## gx-button
 
 ### Description

@@ -247,6 +247,29 @@ declare global {
       selectedControls: string[];
     }
 
+    interface GxLoading {
+      /**
+       * Sets the caption text.
+       */
+      caption: string;
+      /**
+       * Sets the description text.
+       */
+      description: string;
+      /**
+       * Sets if the loading dialog is presented.
+       */
+      presented: boolean;
+      /**
+       * Sets the value.
+       */
+      type: "determinate" | "indeterminate";
+      /**
+       * Sets the value when type is determinate. Must be a value between 0 and 1.
+       */
+      value: number;
+    }
+
     interface GxLottie {
       /**
        * This attribute lets you specify a Lottie animation object
@@ -736,6 +759,15 @@ declare global {
     new (): HTMLGxLayoutEditorElement;
   };
 
+  interface HTMLGxLoadingElement
+    extends StencilComponents.GxLoading,
+      HTMLStencilElement {}
+
+  var HTMLGxLoadingElement: {
+    prototype: HTMLGxLoadingElement;
+    new (): HTMLGxLoadingElement;
+  };
+
   interface HTMLGxLottieElement
     extends StencilComponents.GxLottie,
       HTMLStencilElement {}
@@ -912,6 +944,7 @@ declare global {
       "gx-image": JSXElements.GxImageAttributes;
       "gx-layout-editor-placeholder": JSXElements.GxLayoutEditorPlaceholderAttributes;
       "gx-layout-editor": JSXElements.GxLayoutEditorAttributes;
+      "gx-loading": JSXElements.GxLoadingAttributes;
       "gx-lottie": JSXElements.GxLottieAttributes;
       "gx-message": JSXElements.GxMessageAttributes;
       "gx-modal": JSXElements.GxModalAttributes;
@@ -1196,6 +1229,29 @@ declare global {
        * Array with the identifiers of the selected controls. If empty the whole layout-editor is marked as selected.
        */
       selectedControls?: string[];
+    }
+
+    export interface GxLoadingAttributes extends HTMLAttributes {
+      /**
+       * Sets the caption text.
+       */
+      caption?: string;
+      /**
+       * Sets the description text.
+       */
+      description?: string;
+      /**
+       * Sets if the loading dialog is presented.
+       */
+      presented?: boolean;
+      /**
+       * Sets the value.
+       */
+      type?: "determinate" | "indeterminate";
+      /**
+       * Sets the value when type is determinate. Must be a value between 0 and 1.
+       */
+      value?: number;
     }
 
     export interface GxLottieAttributes extends HTMLAttributes {
@@ -1664,6 +1720,7 @@ declare global {
     "gx-image": HTMLGxImageElement;
     "gx-layout-editor-placeholder": HTMLGxLayoutEditorPlaceholderElement;
     "gx-layout-editor": HTMLGxLayoutEditorElement;
+    "gx-loading": HTMLGxLoadingElement;
     "gx-lottie": HTMLGxLottieElement;
     "gx-message": HTMLGxMessageElement;
     "gx-modal": HTMLGxModalElement;
@@ -1696,6 +1753,7 @@ declare global {
     "gx-image": HTMLGxImageElement;
     "gx-layout-editor-placeholder": HTMLGxLayoutEditorPlaceholderElement;
     "gx-layout-editor": HTMLGxLayoutEditorElement;
+    "gx-loading": HTMLGxLoadingElement;
     "gx-lottie": HTMLGxLottieElement;
     "gx-message": HTMLGxMessageElement;
     "gx-modal": HTMLGxModalElement;
