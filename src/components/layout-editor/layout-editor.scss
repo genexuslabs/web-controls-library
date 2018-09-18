@@ -255,6 +255,12 @@
   }
 }
 
+@mixin default-control-render {
+  [data-gx-le-default-render] {
+    white-space: nowrap;
+  }
+}
+
 gx-layout-editor {
   @include visibility(block);
 
@@ -277,4 +283,6 @@ gx-layout-editor {
   @include ghost();
 
   @include control-header-bar();
+
+  @include default-control-render();
 }

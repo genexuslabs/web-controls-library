@@ -1,6 +1,7 @@
 import actionResolver from "./control-resolvers/action-resolver";
 import componentResolver from "./control-resolvers/component-resolver";
 import dataResolver from "./control-resolvers/data-resolver";
+import defaultResolver from "./control-resolvers/default-resolver";
 import freestyleGridResolver from "./control-resolvers/freestyle-grid-resolver";
 import imageResolver from "./control-resolvers/image-resolver";
 import tableResolver from "./control-resolvers/table-resolver";
@@ -38,15 +39,20 @@ const resolversMap: IResolverMapEntry[] = [
 ];
 
 export function controlResolver(control, context: IResolverContext) {
-  const resolverObj = findResolver(control);
-  if (resolverObj) {
-    return resolverObj.resolver(control, context);
+  if (control.childControlType) {
+    const resolverObj = findResolverByType(control.childControlType);
+
+    if (resolverObj) {
+      return resolverObj.resolver(control, context);
+    } else {
+      return defaultResolver(control);
+    }
   }
   return null;
 }
 
-function findResolver(control): IResolverMapEntry {
-  return resolversMap.find(r => !!control[r.type]);
+function findResolverByType(type: string): IResolverMapEntry {
+  return resolversMap.find(r => r.type === type);
 }
 
 export function isCellSelected(cell, context: IResolverContext): boolean {
@@ -60,8 +66,8 @@ export function isCellSelected(cell, context: IResolverContext): boolean {
   return false;
 }
 
-function findChildControl(cell) {
-  const resolver = findResolver(cell);
+function findChildControl(cell): any {
+  const resolver = findResolverByType(cell.childControlType);
   if (!resolver) {
     return null;
   }
