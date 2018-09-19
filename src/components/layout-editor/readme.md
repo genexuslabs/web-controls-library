@@ -34,6 +34,9 @@ A set of special attributes are used to annotate container web components and it
 | `--gx-le-control-header-bar-background-color` | Control header bar background color                                 |
 | `--gx-le-control-header-bar-color`            | Control header bar text color                                       |
 | `--gx-le-control-header-bar-text`             | Control header bar text content                                     |
+| `--gx-le-control-type-name-color`             | Color of the text that shows the control type when hovered          |
+| `--gx-le-control-type-name-font`              | Font of the text that shows the control type when hovered           |
+| `--gx-le-form-field-color`                    | Color of the field of `gx-form-field` elements                      |
 | `--gx-le-table-anchor-icon`                   | Icon to be shown as an anchor for containers                        |
 | `--gx-le-table-anchor-icon-size`              | Size of the anchor icon                                             |
 | `--gx-le-table-cell-border`                   | Container item border                                               |
@@ -47,8 +50,6 @@ A set of special attributes are used to annotate container web components and it
 | `--gx-le-table-hovered-cell-border-width`     | Hovered container item border width                                 |
 | `--gx-le-table-selected-cell-border-color`    | Selected container item border color                                |
 | `--gx-le-table-selected-cell-border-width`    | Selected container item border width                                |
-| `--gx-le-control-type-name-color`             | Color of the text that shows the control type when hovered          |
-| `--gx-le-control-type-name-font`              | Font of the text that shows the control type when hovered           |
 
 <!-- Auto Generated Below -->
 

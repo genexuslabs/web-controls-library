@@ -12,10 +12,10 @@ export default function dataResolver({ data }) {
       data-gx-le-control-id={data["@id"]}
     >
       <gx-edit
-        value={data["@controlName"]}
         area="field"
         disabled={data["@enabled"] === "False"}
         readonly
+        value={data["@controlName"]}
       />
     </gx-form-field>
   );

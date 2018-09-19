@@ -18,7 +18,8 @@ import { EditRender } from "../renders/bootstrap/edit/edit-render";
 export class Edit extends EditRender(BaseComponent) {
   @Element() element: HTMLElement;
 
-  @Prop() area: string;
+  @Prop({ reflectToAttr: true })
+  area: string;
 
   /**
    * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize)

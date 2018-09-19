@@ -1,4 +1,5 @@
 @import "../common/_base";
+@import "../components-theming-mixins";
 
 @mixin containers-gap() {
   gx-table {
@@ -261,6 +262,20 @@
   }
 }
 
+@mixin controls-customization {
+  %default-field {
+    color: var(--gx-le-form-field-color);
+  }
+  %default-field-label {
+    overflow: hidden;
+  }
+
+  @include gx-form-field(
+    $class: "%default-field",
+    $label: "%default-field-label"
+  );
+}
+
 gx-layout-editor {
   @include visibility(block);
 
@@ -285,4 +300,6 @@ gx-layout-editor {
   @include control-header-bar();
 
   @include default-control-render();
+
+  @include controls-customization();
 }
