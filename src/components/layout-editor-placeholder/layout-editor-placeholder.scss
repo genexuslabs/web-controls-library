@@ -30,4 +30,15 @@ gx-layout-editor[data-gx-le-dragging] {
       );
     }
   }
+  [data-gx-le-responsive-table] {
+    & > gx-layout-editor-placeholder {
+      margin-top: -2px;
+    }
+  }
+}
+
+[data-gx-le-responsive-table] {
+  & > gx-layout-editor-placeholder {
+    height: var(--gx-le-table-cell-gap);
+  }
 }

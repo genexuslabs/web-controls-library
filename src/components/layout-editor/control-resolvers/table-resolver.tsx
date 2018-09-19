@@ -1,9 +1,10 @@
 import flexTableResolver from "./flex-table-resolver";
+import responsiveTableResolver from "./responsive-table-resolver";
 import tabularTableResolver from "./tabular-table-resolver";
 
 const tableResolversMap = {
   Flex: flexTableResolver,
-  Responsive: tabularTableResolver,
+  Responsive: responsiveTableResolver,
   Tabular: tabularTableResolver
 };
 
