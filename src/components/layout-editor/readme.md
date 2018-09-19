@@ -31,6 +31,7 @@ A set of special attributes are used to annotate container web components and it
 
 | CSS variable name                             | Details                                                             |
 | --------------------------------------------- | ------------------------------------------------------------------- |
+| `--gx-le-empty-min-height`                    | Layout editor minimum height when empty                             |
 | `--gx-le-control-header-bar-background-color` | Control header bar background color                                 |
 | `--gx-le-control-header-bar-color`            | Control header bar text color                                       |
 | `--gx-le-control-header-bar-text`             | Control header bar text content                                     |

@@ -29,7 +29,7 @@
 
 @mixin empty-outermost-container {
   & > div > [data-gx-le-container-empty="true"] {
-    min-height: 100vh;
+    min-height: var(--gx-le-empty-min-height, 100vh);
     border: var(--gx-le-table-cell-border);
   }
 }
