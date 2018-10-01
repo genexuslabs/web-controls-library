@@ -103,7 +103,3 @@ export class SelectOption implements IComponent, IDisableableComponent {
     return <slot />;
   }
 }
-
-export interface IHTMLSelectOptionElementEvent extends CustomEvent {
-  target: any;
-}

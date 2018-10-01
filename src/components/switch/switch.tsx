@@ -14,9 +14,6 @@ import {
   IVisibilityComponent
 } from "../common/interfaces";
 @Component({
-  host: {
-    role: "switch"
-  },
   shadow: false,
   styleUrl: "switch.scss",
   tag: "gx-switch"
@@ -71,13 +68,19 @@ export class Switch
    * Returns the id of the inner `input` element (if set).
    */
   @Method()
-  getNativeInputId() {
+  async getNativeInputId() {
     return this.renderer.getNativeInputId();
   }
 
   @Watch("checked")
   protected checkedChanged() {
     this.renderer.checkedChanged();
+  }
+
+  hostData() {
+    return {
+      role: "switch"
+    };
   }
 
   render() {

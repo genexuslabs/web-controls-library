@@ -157,7 +157,7 @@ export class Edit implements IFormComponent {
    * Returns the id of the inner `input` element (if set).
    */
   @Method()
-  getNativeInputId() {
+  async getNativeInputId() {
     return this.renderer.getNativeInputId();
   }
 

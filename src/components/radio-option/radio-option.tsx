@@ -122,7 +122,3 @@ export class RadioOption
     return this.renderer.render();
   }
 }
-
-export interface IHTMLRadioOptionElementEvent extends CustomEvent {
-  target: any;
-}

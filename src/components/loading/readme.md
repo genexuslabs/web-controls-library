@@ -43,13 +43,13 @@ loadingEl.value = 1;
 
 ## Properties
 
-| Property      | Attribute     | Description                                                               | Type                              |
-| ------------- | ------------- | ------------------------------------------------------------------------- | --------------------------------- |
-| `caption`     | `caption`     | Sets the caption text.                                                    | `string`                          |
-| `description` | `description` | Sets the description text.                                                | `string`                          |
-| `presented`   | `presented`   | Sets if the loading dialog is presented.                                  | `boolean`                         |
-| `type`        | `type`        | Sets the value.                                                           | `"determinate" | "indeterminate"` |
-| `value`       | `value`       | Sets the value when type is determinate. Must be a value between 0 and 1. | `number`                          |
+| Property      | Attribute     | Description                                                               | Type                               |
+| ------------- | ------------- | ------------------------------------------------------------------------- | ---------------------------------- |
+| `caption`     | `caption`     | Sets the caption text.                                                    | `string`                           |
+| `description` | `description` | Sets the description text.                                                | `string`                           |
+| `presented`   | `presented`   | Sets if the loading dialog is presented.                                  | `boolean`                          |
+| `type`        | `type`        | Sets the value.                                                           | `"determinate"`, `"indeterminate"` |
+| `value`       | `value`       | Sets the value when type is determinate. Must be a value between 0 and 1. | `number`                           |
 
 ---
 

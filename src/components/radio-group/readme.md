@@ -12,14 +12,14 @@ The one option whose value matches the value of the group will be automatically 
 
 ## Properties
 
-| Property        | Attribute        | Description                                                                                                                                              | Type                        |
-| --------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
-| `direction`     | `direction`      | Specifies how the child `gx-radio-option` will be layed out. It supports two values: _ `horizontal` _ `vertical` (default)                               | `"horizontal" | "vertical"` |
-| `disabled`      | `disabled`       | This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event). | `boolean`                   |
-| `id`            | `id`             | The identifier of the control. Must be unique.                                                                                                           | `string`                    |
-| `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden.                                                                                | Value                       | Details |  | ------------ | --------------------------------------------------------------------------- |  | `keep-space` | The element remains in the document flow, and it does occupy space. |  | `collapse` | The element is removed form the document flow, and it doesn't occupy space. |  | `"collapse" | "keep-space"` |
-| `name`          | `name`           | The name that will be set to all the inner inputs of type radio                                                                                          | `string`                    |
-| `value`         | `value`          | The initial value of the control. Setting the value automatically selects the corresponding radio option.                                                | `string`                    |
+| Property        | Attribute        | Description                                                                                                                                              | Type                         |
+| --------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| `direction`     | `direction`      | Specifies how the child `gx-radio-option` will be layed out. It supports two values: _ `horizontal` _ `vertical` (default)                               | `"horizontal"`, `"vertical"` |
+| `disabled`      | `disabled`       | This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event). | `boolean`                    |
+| `id`            | `id`             | The identifier of the control. Must be unique.                                                                                                           | `string`                     |
+| `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden.                                                                                | Value                        | Details |  | ------------ | --------------------------------------------------------------------------- |  | `keep-space` | The element remains in the document flow, and it does occupy space. |  | `collapse` | The element is removed form the document flow, and it doesn't occupy space. |  | `"collapse"`, `"keep-space"` |
+| `name`          | `name`           | The name that will be set to all the inner inputs of type radio                                                                                          | `string`                     |
+| `value`         | `value`          | The initial value of the control. Setting the value automatically selects the corresponding radio option.                                                | `string`                     |
 
 ## Events
 

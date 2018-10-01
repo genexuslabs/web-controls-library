@@ -97,7 +97,7 @@ export class Lottie
    * Pause the animation
    */
   @Method()
-  pause() {
+  async pause() {
     this.animation.pause();
   }
 
@@ -105,7 +105,7 @@ export class Lottie
    * Start playing the animation
    */
   @Method()
-  play(from = 0, to = 0) {
+  async play(from = 0, to = 0) {
     if (!this.animation) {
       return;
     }
@@ -128,7 +128,7 @@ export class Lottie
    * @param progress: Value from 0 to 1 indicating the percentage of progress where the animation will start.
    */
   @Method()
-  setProgress(progress: number) {
+  async setProgress(progress: number) {
     if (!this.animation) {
       return;
     }
@@ -141,7 +141,7 @@ export class Lottie
    * Stop the animation
    */
   @Method()
-  stop() {
+  async stop() {
     if (!this.animation) {
       return;
     }

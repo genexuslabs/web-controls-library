@@ -7,7 +7,6 @@ import {
   Prop,
   Watch
 } from "@stencil/core";
-import { IHTMLRadioOptionElementEvent } from "../radio-option/radio-option";
 import {
   IComponent,
   IDisableableComponent,
@@ -196,4 +195,8 @@ export class RadioGroup
   render() {
     return <slot />;
   }
+}
+
+interface IHTMLRadioOptionElementEvent extends CustomEvent {
+  target: any;
 }

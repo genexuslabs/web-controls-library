@@ -10,7 +10,6 @@ import {
   Watch
 } from "@stencil/core";
 import { SelectRender } from "../renders/bootstrap/select/select-render";
-import { IHTMLSelectOptionElementEvent } from "../select-option/select-option";
 import {
   IComponent,
   IDisableableComponent,
@@ -194,7 +193,7 @@ export class Select
    * Returns the id of the inner `input` element (if set).
    */
   @Method()
-  getNativeInputId() {
+  async getNativeInputId() {
     return this.renderer.getNativeInputId();
   }
 
@@ -222,4 +221,8 @@ export class Select
   render() {
     return this.renderer.render();
   }
+}
+
+interface IHTMLSelectOptionElementEvent extends CustomEvent {
+  target: any;
 }
