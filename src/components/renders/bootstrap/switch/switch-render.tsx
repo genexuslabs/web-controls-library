@@ -1,72 +1,65 @@
-import { EventEmitter } from "@stencil/core";
-type Constructor<T> = new (...args: any[]) => T;
-export function SwitchRender<T extends Constructor<{}>>(Base: T) {
-  return class extends Base {
-    caption: string;
-    checked = false;
-    disabled = false;
-    element: HTMLElement;
-    id: string;
+import { IRenderer } from "../../../common/interfaces";
+import { Switch } from "../../../switch/switch";
 
-    protected nativeInput: HTMLInputElement;
-    private inputId: string;
+export class SwitchRender implements IRenderer {
+  constructor(public component: Switch) {}
 
-    onChange: EventEmitter;
+  protected nativeInput: HTMLInputElement;
+  private inputId: string;
 
-    getNativeInputId() {
-      return this.nativeInput.id;
+  getNativeInputId() {
+    return this.nativeInput.id;
+  }
+
+  private getValueFromEvent(event: UIEvent): boolean {
+    return event.target && (event.target as HTMLInputElement).checked;
+  }
+
+  handleChange(event: UIEvent) {
+    this.component.checked = this.getValueFromEvent(event);
+    this.component.onChange.emit(event);
+  }
+
+  /**
+   * Update the native input element when the value changes
+   */
+  checkedChanged() {
+    const inputEl = this.nativeInput;
+    if (inputEl && inputEl.checked !== this.component.checked) {
+      inputEl.checked = this.component.checked;
+    }
+  }
+
+  componentDidUnload() {
+    this.nativeInput = null;
+  }
+
+  render() {
+    if (!this.inputId) {
+      this.inputId = this.component.id
+        ? `${this.component.id}_checkbox`
+        : `gx-checkbox-auto-id-${autoCheckBoxId++}`;
     }
 
-    private getValueFromEvent(event: UIEvent): boolean {
-      return event.target && (event.target as HTMLInputElement).checked;
-    }
+    const inputAttrs = {
+      "aria-checked": this.component.checked ? "true" : "false",
+      "aria-disabled": this.component.disabled ? "true" : "false",
+      checked: this.component.checked,
+      class: "switch",
+      disabled: this.component.disabled,
+      id: this.inputId,
+      onChange: this.handleChange.bind(this),
+      ref: input => (this.nativeInput = input as any),
+      type: "checkbox"
+    };
 
-    handleChange(event: UIEvent) {
-      this.checked = this.getValueFromEvent(event);
-      this.onChange.emit(event);
-    }
-
-    /**
-     * Update the native input element when the value changes
-     */
-    protected checkedChanged() {
-      const inputEl = this.nativeInput;
-      if (inputEl && inputEl.checked !== this.checked) {
-        inputEl.checked = this.checked;
-      }
-    }
-
-    componentDidUnload() {
-      this.nativeInput = null;
-    }
-
-    render() {
-      if (!this.inputId) {
-        this.inputId = this.id
-          ? `${this.id}_checkbox`
-          : `gx-checkbox-auto-id-${autoCheckBoxId++}`;
-      }
-
-      const inputAttrs = {
-        "aria-checked": this.checked ? "true" : "false",
-        "aria-disabled": this.disabled ? "true" : "false",
-        checked: this.checked,
-        class: "switch",
-        disabled: this.disabled,
-        id: this.inputId,
-        onChange: this.handleChange.bind(this),
-        ref: input => (this.nativeInput = input as any),
-        type: "checkbox"
-      };
-
-      return (
-        <span class="switch switch-sm">
-          <input {...inputAttrs} />
-          <label htmlFor={this.inputId}>{this.caption}</label>
-        </span>
-      );
-    }
-  };
+    return (
+      <span class="switch switch-sm">
+        <input {...inputAttrs} />
+        <label htmlFor={this.inputId}>{this.component.caption}</label>
+      </span>
+    );
+  }
 }
 
 let autoCheckBoxId = 0;

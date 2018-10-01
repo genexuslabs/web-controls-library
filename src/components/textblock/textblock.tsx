@@ -1,12 +1,24 @@
-import { Component, Event, EventEmitter, Prop } from "@stencil/core";
-import { BaseComponent } from "../common/base-component";
+import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
+import {
+  IClickableComponent,
+  IComponent,
+  IDisableableComponent,
+  IVisibilityComponent
+} from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "textblock.scss",
   tag: "gx-textblock"
 })
-export class TextBlock extends BaseComponent {
+export class TextBlock
+  implements
+    IClickableComponent,
+    IComponent,
+    IDisableableComponent,
+    IVisibilityComponent {
+  @Element() element;
+
   /**
    * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
    */

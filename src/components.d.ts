@@ -179,6 +179,10 @@ declare global {
 
     interface GxFormField {
       /**
+       * The identifier of the control. Must be unique.
+       */
+      id: string;
+      /**
        * The text to set as the label of the field.
        */
       labelCaption: string;
@@ -346,6 +350,10 @@ declare global {
        */
       closeButtonLabel: string;
       /**
+       * The identifier of the control. Must be unique.
+       */
+      id: string;
+      /**
        * This attribute lets you specify if the modal dialog is opened or closed.
        */
       opened: boolean;
@@ -383,6 +391,10 @@ declare global {
        * A CSS class to set as the inner element class.
        */
       cssClass: string;
+      /**
+       * The identifier of the control. Must be unique.
+       */
+      id: string;
       /**
        * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
        */
@@ -580,6 +592,10 @@ declare global {
        * The control id. Must be unique per control!
        */
       id: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode: "collapse" | "keep-space";
     }
 
     interface GxTabCaption {
@@ -1142,6 +1158,10 @@ declare global {
 
     export interface GxFormFieldAttributes extends HTMLAttributes {
       /**
+       * The identifier of the control. Must be unique.
+       */
+      id?: string;
+      /**
        * The text to set as the label of the field.
        */
       labelCaption?: string;
@@ -1322,6 +1342,10 @@ declare global {
        */
       closeButtonLabel?: string;
       /**
+       * The identifier of the control. Must be unique.
+       */
+      id?: string;
+      /**
        * Fired when the modal dialog is closed
        */
       onOnClose?: (event: CustomEvent) => void;
@@ -1371,6 +1395,10 @@ declare global {
        * A CSS class to set as the inner element class.
        */
       cssClass?: string;
+      /**
+       * The identifier of the control. Must be unique.
+       */
+      id?: string;
       /**
        * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
        */
@@ -1608,6 +1636,10 @@ declare global {
        * The control id. Must be unique per control!
        */
       id?: string;
+      /**
+       * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+       */
+      invisibleMode?: "collapse" | "keep-space";
       /**
        * The 'change' event is emitted when a change to the element's value is committed by the user.
        */

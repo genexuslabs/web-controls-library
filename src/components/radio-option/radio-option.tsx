@@ -6,15 +6,26 @@ import {
   Prop,
   Watch
 } from "@stencil/core";
-import { BaseComponent } from "../common/base-component";
 import { RadioOptionRender } from "../renders/bootstrap/radio-option/radio-option-render";
+import {
+  IComponent,
+  IDisableableComponent,
+  IVisibilityComponent
+} from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "radio-option.scss",
   tag: "gx-radio-option"
 })
-export class RadioOption extends RadioOptionRender(BaseComponent) {
+export class RadioOption
+  implements IComponent, IDisableableComponent, IVisibilityComponent {
+  constructor() {
+    this.renderer = new RadioOptionRender(this);
+  }
+
+  private renderer: RadioOptionRender;
+
   @Element() element: HTMLElement;
 
   /**
@@ -89,23 +100,26 @@ export class RadioOption extends RadioOptionRender(BaseComponent) {
 
   @Watch("checked")
   protected checkedChanged(isChecked: boolean) {
-    super.checkedChanged(isChecked);
+    this.renderer.checkedChanged(isChecked);
   }
 
   @Watch("disabled")
   disabledChanged(isDisabled: boolean) {
-    super.disabledChanged(isDisabled);
+    this.renderer.disabledChanged(isDisabled);
   }
 
   componentDidLoad() {
     this.gxRadioDidLoad.emit({ radio: this });
-    super.componentDidLoad();
-    this.nativeInput.checked = this.checked;
+    this.renderer.componentDidLoad();
   }
 
   componentDidUnload() {
     this.gxRadioDidUnload.emit({ radio: this });
-    super.componentDidUnload();
+    this.renderer.componentDidUnload();
+  }
+
+  render() {
+    return this.renderer.render();
   }
 }
 

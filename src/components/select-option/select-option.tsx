@@ -1,11 +1,20 @@
-import { Component, Event, EventEmitter, Prop, Watch } from "@stencil/core";
-import { BaseComponent } from "../common/base-component";
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Prop,
+  Watch
+} from "@stencil/core";
+import { IComponent, IDisableableComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
   tag: "gx-select-option"
 })
-export class SelectOption extends BaseComponent {
+export class SelectOption implements IComponent, IDisableableComponent {
+  @Element() element;
+
   /**
    * Indicates that the control is selected by default.
    */

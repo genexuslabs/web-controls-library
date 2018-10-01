@@ -1,101 +1,98 @@
-import { EventEmitter } from "@stencil/core";
+import { IRenderer } from "../../../common/interfaces";
+import { Select } from "../../../select/select";
 
-type Constructor<T> = new (...args: any[]) => T;
-export function SelectRender<T extends Constructor<{}>>(Base: T) {
-  return class extends Base {
-    protected options: any[] = [];
-    protected element: HTMLElement;
-    cssClass: string;
-    disabled = false;
-    id: string;
-    invisibleMode: string;
-    readonly: boolean;
-    value: string;
+export class SelectRender implements IRenderer {
+  constructor(public component: Select) {}
 
-    protected nativeSelect: HTMLSelectElement;
-    private selectId: string;
+  protected options: any[] = [];
+  protected element: HTMLElement;
+  protected nativeSelect: HTMLSelectElement;
+  private selectId: string;
 
-    onChange: EventEmitter;
+  updateOptions(options) {
+    this.options = options;
+  }
 
-    getNativeInputId() {
-      return this.nativeSelect.id;
+  getNativeInputId() {
+    return this.nativeSelect.id;
+  }
+
+  private getCssClasses() {
+    const classList = [];
+
+    if (this.component.readonly) {
+      classList.push("form-control-plaintext");
+    } else {
+      classList.push("custom-select");
     }
 
-    private getCssClasses() {
-      const classList = [];
-
-      if (this.readonly) {
-        classList.push("form-control-plaintext");
-      } else {
-        classList.push("custom-select");
-      }
-
-      if (this.cssClass) {
-        classList.push(this.cssClass);
-      }
-
-      return classList.join(" ");
+    if (this.component.cssClass) {
+      classList.push(this.component.cssClass);
     }
 
-    private getReadonlyTextContent() {
-      const matchingOpts = this.options.filter(o => o.value === this.value);
-      if (matchingOpts.length > 0) {
-        return matchingOpts[0].innerText;
-      }
-      return "";
+    return classList.join(" ");
+  }
+
+  private getReadonlyTextContent() {
+    const matchingOpts = this.options.filter(
+      o => o.value === this.component.value
+    );
+    if (matchingOpts.length > 0) {
+      return matchingOpts[0].innerText;
+    }
+    return "";
+  }
+
+  private getValueFromEvent(event: UIEvent): string {
+    return event.target && (event.target as HTMLSelectElement).value;
+  }
+
+  private handleChange(event: UIEvent) {
+    this.component.value = this.getValueFromEvent(event);
+    this.component.onChange.emit(event);
+  }
+
+  componentDidUnload() {
+    this.nativeSelect = null;
+  }
+
+  render() {
+    if (!this.selectId) {
+      this.selectId = this.component.id
+        ? `${this.component.id}__select`
+        : `gx-select-auto-id-${autoSelectId++}`;
     }
 
-    private getValueFromEvent(event: UIEvent): string {
-      return event.target && (event.target as HTMLSelectElement).value;
+    if (this.component.readonly) {
+      return (
+        <span class={this.getCssClasses()}>
+          {this.getReadonlyTextContent()}
+        </span>
+      );
+    } else {
+      const attris = {
+        "aria-disabled": this.component.disabled ? "true" : undefined,
+        class: this.getCssClasses(),
+        disabled: this.component.disabled,
+        id: this.selectId,
+        onChange: this.handleChange.bind(this),
+        ref: (select: HTMLSelectElement) => {
+          select.value = this.component.value;
+          this.nativeSelect = select;
+        }
+      };
+
+      return (
+        <select {...attris}>
+          {this.options.map(({ disabled, innerText, selected, value }) => (
+            <option disabled={disabled} selected={selected} value={value}>
+              {innerText}
+            </option>
+          ))}
+        </select>
+      );
     }
-
-    private handleChange(event: UIEvent) {
-      this.value = this.getValueFromEvent(event);
-      this.onChange.emit(event);
-    }
-
-    componentDidUnload() {
-      this.nativeSelect = null;
-    }
-
-    render() {
-      if (!this.selectId) {
-        this.selectId = this.id
-          ? `${this.id}__select`
-          : `gx-select-auto-id-${autoSelectId++}`;
-      }
-
-      if (this.readonly) {
-        return (
-          <span class={this.getCssClasses()}>
-            {this.getReadonlyTextContent()}
-          </span>
-        );
-      } else {
-        const attris = {
-          "aria-disabled": this.disabled ? "true" : undefined,
-          class: this.getCssClasses(),
-          disabled: this.disabled,
-          id: this.selectId,
-          onChange: this.handleChange.bind(this),
-          ref: (select: HTMLSelectElement) => {
-            select.value = this.value;
-            this.nativeSelect = select;
-          }
-        };
-
-        return (
-          <select {...attris}>
-            {this.options.map(({ disabled, innerText, selected, value }) => (
-              <option disabled={disabled} selected={selected} value={value}>
-                {innerText}
-              </option>
-            ))}
-          </select>
-        );
-      }
-    }
-  };
+  }
 }
 
 let autoSelectId = 0;

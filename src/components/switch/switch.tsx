@@ -1,6 +1,6 @@
-import { BaseComponent } from "../common/base-component";
 import {
   Component,
+  Element,
   Event,
   EventEmitter,
   Method,
@@ -8,6 +8,11 @@ import {
   Watch
 } from "@stencil/core";
 import { SwitchRender } from "../renders/bootstrap/switch/switch-render";
+import {
+  IComponent,
+  IDisableableComponent,
+  IVisibilityComponent
+} from "../common/interfaces";
 @Component({
   host: {
     role: "switch"
@@ -16,7 +21,16 @@ import { SwitchRender } from "../renders/bootstrap/switch/switch-render";
   styleUrl: "switch.scss",
   tag: "gx-switch"
 })
-export class Switch extends SwitchRender(BaseComponent) {
+export class Switch
+  implements IComponent, IDisableableComponent, IVisibilityComponent {
+  constructor() {
+    this.renderer = new SwitchRender(this);
+  }
+
+  private renderer: SwitchRender;
+
+  @Element() element;
+
   /**
    * Attribute that provides the caption to the control.
    */
@@ -39,6 +53,16 @@ export class Switch extends SwitchRender(BaseComponent) {
   @Prop() id: string;
 
   /**
+   * This attribute lets you specify how this element will behave when hidden.
+   *
+   * | Value        | Details                                                                     |
+   * | ------------ | --------------------------------------------------------------------------- |
+   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
+   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+   */
+  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+
+  /**
    * The 'change' event is emitted when a change to the element's value is committed by the user.
    */
   @Event() onChange: EventEmitter;
@@ -48,11 +72,15 @@ export class Switch extends SwitchRender(BaseComponent) {
    */
   @Method()
   getNativeInputId() {
-    return super.getNativeInputId();
+    return this.renderer.getNativeInputId();
   }
 
   @Watch("checked")
   protected checkedChanged() {
-    super.checkedChanged();
+    this.renderer.checkedChanged();
+  }
+
+  render() {
+    return this.renderer.render();
   }
 }

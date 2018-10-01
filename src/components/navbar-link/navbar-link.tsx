@@ -1,13 +1,24 @@
 import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
-import { BaseComponent } from "../common/base-component";
 import { NavBarLinkRender } from "../renders/bootstrap/navbar-link/navbar-link-render";
+import {
+  IComponent,
+  IDisableableComponent,
+  IVisibilityComponent
+} from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "navbar-link.scss",
   tag: "gx-navbar-link"
 })
-export class NavBarLink extends NavBarLinkRender(BaseComponent) {
+export class NavBarLink
+  implements IComponent, IDisableableComponent, IVisibilityComponent {
+  constructor() {
+    this.renderer = new NavBarLinkRender(this);
+  }
+
+  private renderer: NavBarLinkRender;
+
   @Element() element: HTMLElement;
 
   /**
@@ -44,4 +55,8 @@ export class NavBarLink extends NavBarLinkRender(BaseComponent) {
    * Emitted when the element is clicked.
    */
   @Event() onClick: EventEmitter;
+
+  render() {
+    return this.renderer.render();
+  }
 }

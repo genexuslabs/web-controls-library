@@ -6,15 +6,21 @@ import {
   Prop,
   Watch
 } from "@stencil/core";
-import { BaseComponent } from "../common/base-component";
 import { ModalRender } from "../renders/bootstrap/modal/modal-render";
+import { IComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "modal.scss",
   tag: "gx-modal"
 })
-export class Modal extends ModalRender(BaseComponent) {
+export class Modal implements IComponent {
+  constructor() {
+    this.renderer = new ModalRender(this);
+  }
+
+  private renderer: ModalRender;
+
   @Element() element: HTMLElement;
 
   /**
@@ -26,6 +32,11 @@ export class Modal extends ModalRender(BaseComponent) {
    * This attribute lets you specify the label for the close button. Important for accessibility.
    */
   @Prop() closeButtonLabel: string;
+
+  /**
+   * The identifier of the control. Must be unique.
+   */
+  @Prop() id: string;
 
   /**
    * This attribute lets you specify if the modal dialog is opened or closed.
@@ -50,9 +61,17 @@ export class Modal extends ModalRender(BaseComponent) {
     }
 
     if (newValue) {
-      this.open();
+      this.renderer.open();
     } else {
-      this.close();
+      this.renderer.close();
     }
+  }
+
+  componentDidLoad() {
+    this.renderer.componentDidLoad();
+  }
+
+  render() {
+    return this.renderer.render();
   }
 }

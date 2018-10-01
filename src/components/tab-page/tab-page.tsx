@@ -1,12 +1,12 @@
 import { Component, Element } from "@stencil/core";
-import { BaseComponent } from "../common/base-component";
+import { IComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "tab-page.scss",
   tag: "gx-tab-page"
 })
-export class TabPage extends BaseComponent {
+export class TabPage implements IComponent {
   @Element() element: HTMLElement;
 
   componentWillLoad() {

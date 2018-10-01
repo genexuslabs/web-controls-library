@@ -1,4 +1,3 @@
-import { BaseComponent } from "../common/base-component";
 import { CheckBoxRender } from "../renders/bootstrap/checkbox/checkbox-render";
 import {
   Component,
@@ -9,13 +8,20 @@ import {
   Prop,
   Watch
 } from "@stencil/core";
+import { IFormComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "checkbox.scss",
   tag: "gx-checkbox"
 })
-export class CheckBox extends CheckBoxRender(BaseComponent) {
+export class CheckBox implements IFormComponent {
+  constructor() {
+    this.renderer = new CheckBoxRender(this);
+  }
+
+  private renderer: CheckBoxRender;
+
   @Element() element: HTMLElement;
 
   /**
@@ -66,11 +72,20 @@ export class CheckBox extends CheckBoxRender(BaseComponent) {
    */
   @Method()
   getNativeInputId() {
-    return super.getNativeInputId();
+    return this.renderer.getNativeInputId();
   }
 
   @Watch("checked")
   protected checkedChanged() {
-    super.checkedChanged();
+    this.renderer.checkedChanged();
+  }
+
+  handleChange(event: UIEvent) {
+    this.checked = this.renderer.getValueFromEvent(event);
+    this.onChange.emit(event);
+  }
+
+  render() {
+    return this.renderer.render();
   }
 }

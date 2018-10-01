@@ -38,6 +38,7 @@ predefined slots:
 | ------------------ | -------------------- | ------------------------------------------------------------------------------------------------------ | --------- |
 | `autoClose`        | `auto-close`         | This attribute lets you specify if the modal dialog is automatically closed when an action is clicked. | `boolean` |
 | `closeButtonLabel` | `close-button-label` | This attribute lets you specify the label for the close button. Important for accessibility.           | `string`  |
+| `id`               | `id`                 | The identifier of the control. Must be unique.                                                         | `string`  |
 | `opened`           | `opened`             | This attribute lets you specify if the modal dialog is opened or closed.                               | `boolean` |
 
 ## Events

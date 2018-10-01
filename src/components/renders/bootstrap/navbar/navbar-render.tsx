@@ -1,138 +1,134 @@
-type Constructor<T> = new (...args: any[]) => T;
-export function NavBarRender<T extends Constructor<{}>>(Base: T) {
-  return class extends Base {
-    id: string;
-    caption: string;
-    cssClass: string;
-    element: HTMLElement;
-    toggleButtonLabel: string;
+import { IRenderer } from "../../../common/interfaces";
+import { NavBar } from "../../../navbar/navbar";
 
-    private navBarId: string;
+export class NavBarRender implements IRenderer {
+  constructor(public component: NavBar) {}
 
-    private expanded: boolean;
-    private transitioning: boolean;
+  private navBarId: string;
 
-    private toggleCollapseHandler(event: UIEvent) {
-      const button = event.currentTarget as HTMLButtonElement;
-      const targetSelector = button.getAttribute("data-target");
-      const targetElement = this.element.querySelector(
-        targetSelector
-      ) as HTMLElement;
-      if (this.expanded) {
-        this.collapse(targetElement);
-      } else {
-        this.expand(targetElement);
-      }
+  private expanded: boolean;
+  private transitioning: boolean;
+
+  private toggleCollapseHandler(event: UIEvent) {
+    const button = event.currentTarget as HTMLButtonElement;
+    const targetSelector = button.getAttribute("data-target");
+    const targetElement = this.component.element.querySelector(
+      targetSelector
+    ) as HTMLElement;
+    if (this.expanded) {
+      this.collapse(targetElement);
+    } else {
+      this.expand(targetElement);
+    }
+  }
+
+  private expand(target: HTMLElement) {
+    if (this.transitioning) {
+      return;
     }
 
-    private expand(target: HTMLElement) {
-      if (this.transitioning) {
-        return;
-      }
+    this.expanded = true;
+    target.classList.remove("collapse");
+    target.classList.add("collapsing");
+    setTimeout(() => {
+      this.transitioning = true;
+      target.style.height = `${target.scrollHeight}px`;
+    }, 10);
+  }
 
-      this.expanded = true;
-      target.classList.remove("collapse");
-      target.classList.add("collapsing");
-      setTimeout(() => {
-        this.transitioning = true;
-        target.style.height = `${target.scrollHeight}px`;
-      }, 10);
+  private collapse(target: HTMLElement) {
+    if (this.transitioning) {
+      return;
     }
 
-    private collapse(target: HTMLElement) {
-      if (this.transitioning) {
-        return;
-      }
+    this.expanded = false;
+    target.style.height = getComputedStyle(target).height;
+    target.classList.add("collapsing");
+    target.classList.remove("show");
+    target.classList.remove("collapse");
+    setTimeout(() => {
+      this.transitioning = true;
+      target.style.height = "";
+    }, 10);
+  }
 
-      this.expanded = false;
-      target.style.height = getComputedStyle(target).height;
-      target.classList.add("collapsing");
-      target.classList.remove("show");
-      target.classList.remove("collapse");
-      setTimeout(() => {
-        this.transitioning = true;
-        target.style.height = "";
-      }, 10);
+  private handleTransitionEnd(event: UIEvent) {
+    const target = event.currentTarget as HTMLElement;
+    target.classList.remove("collapsing");
+    target.classList.add("collapse");
+    if (this.expanded) {
+      target.style.height = "";
+      target.classList.add("show");
+    }
+    this.transitioning = false;
+  }
+
+  render() {
+    if (!this.navBarId) {
+      this.navBarId = this.component.id
+        ? `${this.component.id}__navbar`
+        : `gx-navbar-auto-id-${autoNavBarId++}`;
     }
 
-    private handleTransitionEnd(event: UIEvent) {
-      const target = event.currentTarget as HTMLElement;
-      target.classList.remove("collapsing");
-      target.classList.add("collapse");
-      if (this.expanded) {
-        target.style.height = "";
-        target.classList.add("show");
-      }
-      this.transitioning = false;
+    const navBarNavId = `${this.navBarId}_navbarNav`;
+
+    const header = this.component.element.querySelector(
+      "[slot='header']"
+    ) as HTMLImageElement;
+    if (header) {
+      header.classList.add("d-inline-block", "align-top");
+      header.alt = header.alt || "";
     }
 
-    render() {
-      if (!this.navBarId) {
-        this.navBarId = this.id
-          ? `${this.id}__navbar`
-          : `gx-navbar-auto-id-${autoNavBarId++}`;
-      }
-
-      const navBarNavId = `${this.navBarId}_navbarNav`;
-
-      const header = this.element.querySelector(
-        "[slot='header']"
-      ) as HTMLImageElement;
-      if (header) {
-        header.classList.add("d-inline-block", "align-top");
-        header.alt = header.alt || "";
-      }
-
-      return (
-        <nav
-          id={this.navBarId}
-          class={{
-            "bg-white": true,
-            navbar: true,
-            "navbar-expand-sm": true,
-            "navbar-light": true,
-            [this.cssClass]: !!this.cssClass
-          }}
+    return (
+      <nav
+        id={this.navBarId}
+        class={{
+          "bg-white": true,
+          navbar: true,
+          "navbar-expand-sm": true,
+          "navbar-light": true,
+          [this.component.cssClass]: !!this.component.cssClass
+        }}
+      >
+        <a class="navbar-brand" tabindex="-1">
+          <slot name="header" />
+          {this.component.caption}
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-target={`#${navBarNavId}`}
+          aria-controls={navBarNavId}
+          aria-expanded={this.expanded}
+          aria-label={this.component.toggleButtonLabel}
+          onClick={this.toggleCollapseHandler.bind(this)}
         >
-          <a class="navbar-brand" tabindex="-1">
-            <slot name="header" />
-            {this.caption}
-          </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-target={`#${navBarNavId}`}
-            aria-controls={navBarNavId}
-            aria-expanded={this.expanded}
-            aria-label={this.toggleButtonLabel}
-            onClick={this.toggleCollapseHandler.bind(this)}
-          >
-            <span class="navbar-toggler-icon" />
-          </button>
-          <div
-            class={{
-              collapse: true,
-              "navbar-collapse": true,
-              show: this.expanded
-            }}
-            id={navBarNavId}
-            ref={(el: HTMLElement) => {
-              // Had to subscribe to the transitionend this way because onTransitionEnd attribute is not working
-              el.addEventListener(
-                "transitionend",
-                this.handleTransitionEnd.bind(this)
-              );
-            }}
-            // onTransitionEnd={this.handleTransitionEnd.bind(this)}
-          >
-            <div class="navbar-nav">
-              <slot />
-            </div>
+          <span class="navbar-toggler-icon" />
+        </button>
+        <div
+          class={{
+            collapse: true,
+            "navbar-collapse": true,
+            show: this.expanded
+          }}
+          id={navBarNavId}
+          ref={(el: HTMLElement) => {
+            // Had to subscribe to the transitionend this way because onTransitionEnd attribute is not working
+            el.addEventListener(
+              "transitionend",
+              this.handleTransitionEnd.bind(this)
+            );
+          }}
+          // onTransitionEnd={this.handleTransitionEnd.bind(this)}
+        >
+          <div class="navbar-nav">
+            <slot />
           </div>
-        </nav>
-      );
-    }
-  };
+        </div>
+      </nav>
+    );
+  }
 }
 
 let autoNavBarId = 0;

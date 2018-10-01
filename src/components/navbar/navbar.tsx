@@ -1,13 +1,19 @@
 import { Component, Element, Prop } from "@stencil/core";
-import { BaseComponent } from "../common/base-component";
 import { NavBarRender } from "../renders/bootstrap/navbar/navbar-render";
+import { IComponent, IVisibilityComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "navbar.scss",
   tag: "gx-navbar"
 })
-export class NavBar extends NavBarRender(BaseComponent) {
+export class NavBar implements IComponent, IVisibilityComponent {
+  constructor() {
+    this.renderer = new NavBarRender(this);
+  }
+
+  private renderer: NavBarRender;
+
   @Element() element: HTMLElement;
 
   /**
@@ -19,6 +25,11 @@ export class NavBar extends NavBarRender(BaseComponent) {
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
   @Prop() caption: string;
+
+  /**
+   * The identifier of the control. Must be unique.
+   */
+  @Prop() id: string;
 
   /**
    * This attribute lets you specify the label for the toggle button. Important for accessibility.
@@ -39,4 +50,8 @@ export class NavBar extends NavBarRender(BaseComponent) {
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
   @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+
+  render() {
+    return this.renderer.render();
+  }
 }

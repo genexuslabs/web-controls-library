@@ -1,12 +1,12 @@
 import { Component, Element, Prop, State, Watch } from "@stencil/core";
-import { BaseComponent } from "../common/base-component";
+import { IComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "loading.scss",
   tag: "gx-loading"
 })
-export class Loading extends BaseComponent {
+export class Loading implements IComponent {
   @Element() element: HTMLElement;
 
   @State() private lottiePath = "";

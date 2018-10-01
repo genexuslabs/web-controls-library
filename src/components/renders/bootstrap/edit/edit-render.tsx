@@ -1,140 +1,110 @@
-import { EventEmitter } from "@stencil/core";
+import { IRenderer } from "../../../common/interfaces";
+import { Edit } from "../../../edit/edit";
 
-type Constructor<T> = new (...args: any[]) => T;
-export function EditRender<T extends Constructor<{}>>(Base: T) {
-  return class extends Base {
-    element: HTMLElement;
-    autocapitalize: string;
-    autocomplete: string;
-    autocorrect: string;
-    disabled = false;
-    id: string;
-    invisibleMode: string;
-    multiline: boolean;
-    placeholder: string;
-    readonly: boolean;
-    showTrigger: boolean;
-    triggerText: string;
-    type = "text";
-    value: string;
+export class EditRender implements IRenderer {
+  constructor(public component: Edit) {}
+  protected nativeInput: HTMLInputElement;
+  private inputId: string;
 
-    protected nativeInput: HTMLInputElement;
-    private inputId: string;
+  getNativeInputId() {
+    return this.nativeInput.id;
+  }
 
-    onChange: EventEmitter;
-    onInput: EventEmitter;
-    gxTriggerClick: EventEmitter;
+  private getCssClasses() {
+    const edit = this.component;
 
-    getNativeInputId() {
-      return this.nativeInput.id;
-    }
+    const classList = [];
 
-    private getCssClasses() {
-      const classList = [];
-
-      if (this.readonly) {
-        classList.push("form-control-plaintext");
+    if (edit.readonly) {
+      classList.push("form-control-plaintext");
+    } else {
+      if (edit.type === "file") {
+        classList.push("form-control-file");
       } else {
-        if (this.type === "file") {
-          classList.push("form-control-file");
-        } else {
-          classList.push("form-control");
-        }
-      }
-
-      return classList.join(" ");
-    }
-
-    private getTriggerCssClasses() {
-      const classList = [];
-      classList.push("btn");
-      classList.push("btn-outline-secondary");
-      return classList.join(" ");
-    }
-
-    private getValueFromEvent(event: UIEvent): string {
-      return event.target && (event.target as HTMLInputElement).value;
-    }
-
-    handleChange(event: UIEvent) {
-      this.value = this.getValueFromEvent(event);
-      this.onChange.emit(event);
-    }
-
-    handleValueChanging(event: UIEvent) {
-      this.value = this.getValueFromEvent(event);
-      this.onInput.emit(event);
-    }
-
-    handleTriggerClick(event: UIEvent) {
-      this.gxTriggerClick.emit(event);
-    }
-
-    /**
-     * Update the native input element when the value changes
-     */
-    protected valueChanged() {
-      const inputEl = this.nativeInput;
-      if (inputEl && inputEl.value !== this.value) {
-        inputEl.value = this.value;
+        classList.push("form-control");
       }
     }
 
-    componentDidUnload() {
-      this.nativeInput = null;
+    return classList.join(" ");
+  }
+
+  private getTriggerCssClasses() {
+    const classList = [];
+    classList.push("btn");
+    classList.push("btn-outline-secondary");
+    return classList.join(" ");
+  }
+
+  getValueFromEvent(event: UIEvent): string {
+    return event.target && (event.target as HTMLInputElement).value;
+  }
+
+  /**
+   * Update the native input element when the value changes
+   */
+  valueChanged() {
+    const inputEl = this.nativeInput;
+    if (inputEl && inputEl.value !== this.component.value) {
+      inputEl.value = this.component.value;
+    }
+  }
+
+  componentDidUnload() {
+    this.nativeInput = null;
+  }
+
+  render() {
+    const edit = this.component;
+
+    const valueChangingHandler = edit.handleValueChanging.bind(edit);
+    if (!this.inputId) {
+      this.inputId = edit.id
+        ? `${edit.id}__edit`
+        : `gx-edit-auto-id-${autoEditId++}`;
     }
 
-    render() {
-      const valueChangingHandler = this.handleValueChanging.bind(this);
-      if (!this.inputId) {
-        this.inputId = this.id
-          ? `${this.id}__edit`
-          : `gx-edit-auto-id-${autoEditId++}`;
-      }
+    const attris = {
+      "aria-disabled": edit.disabled ? "true" : undefined,
+      autocapitalize: edit.autocapitalize,
+      autocomplete: edit.autocomplete,
+      autocorrect: edit.autocorrect,
+      class: this.getCssClasses(),
+      disabled: edit.disabled,
+      id: this.inputId,
+      onChange: edit.handleChange.bind(edit),
+      onInput: valueChangingHandler,
+      placeholder: edit.placeholder,
+      readonly: edit.readonly,
+      ref: input => (this.nativeInput = input as any)
+    };
 
-      const attris = {
-        "aria-disabled": this.disabled ? "true" : undefined,
-        autocapitalize: this.autocapitalize,
-        autocomplete: this.autocomplete,
-        autocorrect: this.autocorrect,
-        class: this.getCssClasses(),
-        disabled: this.disabled,
-        id: this.inputId,
-        onChange: this.handleChange.bind(this),
-        onInput: valueChangingHandler,
-        placeholder: this.placeholder,
-        readonly: this.readonly,
-        ref: input => (this.nativeInput = input as any)
-      };
+    if (edit.multiline) {
+      return <textarea {...attris}>{edit.value}</textarea>;
+    } else {
+      const input = <input {...attris} type={edit.type} value={edit.value} />;
 
-      if (this.multiline) {
-        return <textarea {...attris}>{this.value}</textarea>;
-      } else {
-        const input = <input {...attris} type={this.type} value={this.value} />;
-
-        if (this.showTrigger && !this.readonly) {
-          return (
-            <div class="input-group">
-              {input}
-              <div class="input-group-append">
-                <button
-                  class={this.getTriggerCssClasses()}
-                  onClick={this.handleTriggerClick.bind(this)}
-                  type="button"
-                  disabled={this.disabled}
-                  aria-label={this.triggerText}
-                >
-                  <slot name="trigger-content" />
-                </button>
-              </div>
+      if (edit.showTrigger && !edit.readonly) {
+        return (
+          <div class="input-group">
+            {input}
+            <div class="input-group-append">
+              <button
+                class={this.getTriggerCssClasses()}
+                onClick={edit.handleTriggerClick.bind(edit)}
+                type="button"
+                disabled={edit.disabled}
+                aria-label={edit.triggerText}
+              >
+                <slot name="trigger-content" />
+              </button>
             </div>
-          );
-        } else {
-          return input;
-        }
+          </div>
+        );
+      } else {
+        return input;
       }
     }
-  };
+  }
 }
 
 let autoEditId = 0;

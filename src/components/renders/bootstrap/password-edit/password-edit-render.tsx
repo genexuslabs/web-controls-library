@@ -1,87 +1,75 @@
-import { EventEmitter } from "@stencil/core";
+import { IRenderer } from "../../../common/interfaces";
+import { PasswordEdit } from "../../../password-edit/password-edit";
 
-type Constructor<T> = new (...args: any[]) => T;
-export function PasswordEditRender<T extends Constructor<{}>>(Base: T) {
-  return class extends Base {
-    element: HTMLElement;
+export class PasswordEditRender implements IRenderer {
+  constructor(public component: PasswordEdit) {}
 
-    cssClass: string;
-    disabled = false;
-    id: string;
-    invisibleMode: string;
-    placeholder: string;
-    readonly: boolean;
-    revealButtonTextOn: string;
-    revealButtonTextOff: string;
-    showRevealButton: boolean;
-    value: string;
+  private innerEdit: any;
+  protected revealed = false;
 
-    onChange: EventEmitter;
-    onInput: EventEmitter;
+  getNativeInputId() {
+    return this.innerEdit.getNativeInputId();
+  }
 
-    private innerEdit: any;
-    protected revealed = false;
+  private getValueFromEvent(event: UIEvent): string {
+    return event.target && (event.target as HTMLInputElement).value;
+  }
 
-    getNativeInputId() {
-      return this.innerEdit.getNativeInputId();
+  handleChange(event: UIEvent) {
+    this.component.value = this.getValueFromEvent(event);
+    this.component.onChange.emit(event);
+  }
+
+  handleInput(event: UIEvent) {
+    this.component.value = this.getValueFromEvent(event);
+    this.component.onInput.emit(event);
+  }
+
+  handleTriggerClick() {
+    this.innerEdit.type = this.revealed ? "text" : "password";
+  }
+  /**
+   * Update the native input element when the value changes
+   */
+  valueChanged() {
+    const innerEdit = this.innerEdit;
+    if (innerEdit && innerEdit.value !== this.component.value) {
+      innerEdit.value = this.component.value;
     }
+  }
 
-    private getValueFromEvent(event: UIEvent): string {
-      return event.target && (event.target as HTMLInputElement).value;
-    }
+  componentDidUnload() {
+    this.innerEdit = null;
+  }
 
-    handleChange(event: UIEvent) {
-      this.value = this.getValueFromEvent(event);
-      this.onChange.emit(event);
-    }
-
-    handleInput(event: UIEvent) {
-      this.value = this.getValueFromEvent(event);
-      this.onInput.emit(event);
-    }
-
-    protected handleTriggerClick() {
-      this.innerEdit.type = this.revealed ? "text" : "password";
-    }
-    /**
-     * Update the native input element when the value changes
-     */
-    protected valueChanged() {
-      const innerEdit = this.innerEdit;
-      if (innerEdit && innerEdit.value !== this.value) {
-        innerEdit.value = this.value;
-      }
-    }
-
-    componentDidUnload() {
-      this.innerEdit = null;
-    }
-
-    render() {
-      return (
-        <gx-edit
-          ref={input => (this.innerEdit = input as any)}
-          css-class={this.cssClass}
-          disabled={this.disabled}
-          id={this.id}
-          placeholder={this.placeholder}
-          readonly={this.readonly}
-          show-trigger={!this.readonly && this.showRevealButton}
-          trigger-class={this.revealed ? "active" : ""}
-          trigger-text={
-            this.revealed ? this.revealButtonTextOff : this.revealButtonTextOn
-          }
-          type={this.revealed ? "text" : "password"}
-          value={this.value}
-          onChange={this.handleChange.bind(this)}
-          onInput={this.handleInput.bind(this)}
-        >
-          <i
-            class={"fa fa-eye" + (this.revealed ? "-slash" : "")}
-            slot="trigger-content"
-          />
-        </gx-edit>
-      );
-    }
-  };
+  render() {
+    return (
+      <gx-edit
+        ref={input => (this.innerEdit = input as any)}
+        css-class={this.component.cssClass}
+        disabled={this.component.disabled}
+        id={`gx-password-edit-${this.component.id}`}
+        placeholder={this.component.placeholder}
+        readonly={this.component.readonly}
+        show-trigger={
+          !this.component.readonly && this.component.showRevealButton
+        }
+        trigger-class={this.revealed ? "active" : ""}
+        trigger-text={
+          this.revealed
+            ? this.component.revealButtonTextOff
+            : this.component.revealButtonTextOn
+        }
+        type={this.revealed ? "text" : "password"}
+        value={this.component.value}
+        onChange={this.handleChange.bind(this)}
+        onInput={this.handleInput.bind(this)}
+      >
+        <i
+          class={"fa fa-eye" + (this.revealed ? "-slash" : "")}
+          slot="trigger-content"
+        />
+      </gx-edit>
+    );
+  }
 }

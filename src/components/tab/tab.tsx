@@ -6,15 +6,21 @@ import {
   Listen,
   Prop
 } from "@stencil/core";
-import { BaseComponent } from "../common/base-component";
 import { TabRender } from "../renders/bootstrap/tab/tab-render";
+import { IComponent, IVisibilityComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "tab.scss",
   tag: "gx-tab"
 })
-export class Tab extends TabRender(BaseComponent) {
+export class Tab implements IComponent, IVisibilityComponent {
+  constructor() {
+    this.renderer = new TabRender(this);
+  }
+
+  private renderer: TabRender;
+
   @Element() element: HTMLElement;
 
   private lastSelectedTab: HTMLElement;
@@ -46,7 +52,7 @@ export class Tab extends TabRender(BaseComponent) {
 
   setSelectedTab(captionElement: HTMLElement) {
     this.lastSelectedTab = captionElement;
-    super.setSelectedTab(captionElement);
+    this.renderer.setSelectedTab(captionElement);
   }
 
   componentDidLoad() {
@@ -62,8 +68,8 @@ export class Tab extends TabRender(BaseComponent) {
   }
 
   private linkTabs(resolveSelected = false) {
-    const captionSlots = super.getCaptionSlots();
-    const pageSlots = super.getPageSlots();
+    const captionSlots = this.renderer.getCaptionSlots();
+    const pageSlots = this.renderer.getPageSlots();
 
     if (captionSlots.length === pageSlots.length) {
       captionSlots.forEach((captionElement: any, i) => {
@@ -71,12 +77,16 @@ export class Tab extends TabRender(BaseComponent) {
         captionElement.setAttribute("aria-controls", pageElement.id);
         pageElement.setAttribute("aria-labelledby", captionElement.id);
         if (resolveSelected) {
-          super.mapPageToCaptionSelection(captionElement, pageElement);
+          this.renderer.mapPageToCaptionSelection(captionElement, pageElement);
           if (captionElement.selected) {
             this.lastSelectedTab = captionElement;
           }
         }
       });
     }
+  }
+
+  render() {
+    return this.renderer.render();
   }
 }

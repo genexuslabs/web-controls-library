@@ -9,19 +9,30 @@ import {
   State,
   Watch
 } from "@stencil/core";
-import { BaseComponent } from "../common/base-component";
 import { SelectRender } from "../renders/bootstrap/select/select-render";
 import { IHTMLSelectOptionElementEvent } from "../select-option/select-option";
+import {
+  IComponent,
+  IDisableableComponent,
+  IVisibilityComponent
+} from "../common/interfaces";
 
 @Component({
   shadow: false,
   tag: "gx-select"
 })
-export class Select extends SelectRender(BaseComponent) {
+export class Select
+  implements IComponent, IDisableableComponent, IVisibilityComponent {
+  constructor() {
+    this.renderer = new SelectRender(this);
+  }
+
+  private renderer: SelectRender;
+
   @State() protected options: any[] = [];
   private didLoad: boolean;
 
-  @Element() protected element: HTMLElement;
+  @Element() element: HTMLElement;
 
   /**
    * A CSS class to set as the inner `input` element class.
@@ -70,20 +81,6 @@ export class Select extends SelectRender(BaseComponent) {
    */
   @Event() onChange: EventEmitter;
 
-  // private getValueFromEvent(event: UIEvent): string {
-  //   return event.target && (event.target as HTMLInputElement).value;
-  // }
-  //
-  // handleChange(event: UIEvent) {
-  //   this.value = this.getValueFromEvent(event);
-  //   this.onChange.emit(event);
-  // }
-
-  // @Watch("disabled")
-  // disabledChanged() {
-  //   this.setDisabled();
-  // }
-
   private getChildOptions() {
     return Array.from(this.element.querySelectorAll("gx-select-option")).map(
       (option: any) => ({
@@ -93,6 +90,11 @@ export class Select extends SelectRender(BaseComponent) {
         value: option.value
       })
     );
+  }
+
+  private updateOptions(options) {
+    this.options = options;
+    this.renderer.updateOptions(options);
   }
 
   @Watch("value")
@@ -141,7 +143,7 @@ export class Select extends SelectRender(BaseComponent) {
   @Listen("gxSelectDidLoad")
   onSelectOptionDidLoad(ev: IHTMLSelectOptionElementEvent) {
     const option = ev.target;
-    this.options = this.getChildOptions();
+    this.updateOptions(this.getChildOptions());
 
     if (this.value !== undefined && option.value === this.value) {
       // this select has a value and this
@@ -162,17 +164,17 @@ export class Select extends SelectRender(BaseComponent) {
 
   @Listen("gxSelectDidUnload")
   onSelectOptionDidUnload() {
-    this.options = this.getChildOptions();
+    this.updateOptions(this.getChildOptions());
   }
 
   @Listen("gxDisable")
   onSelectOptionDisable() {
-    this.options = this.getChildOptions();
+    this.updateOptions(this.getChildOptions());
   }
 
   @Listen("onChange")
   onSelectOptionChange() {
-    this.options = this.getChildOptions();
+    this.updateOptions(this.getChildOptions());
   }
 
   @Listen("gxSelect")
@@ -193,7 +195,7 @@ export class Select extends SelectRender(BaseComponent) {
    */
   @Method()
   getNativeInputId() {
-    return super.getNativeInputId();
+    return this.renderer.getNativeInputId();
   }
 
   setDisabled() {
@@ -207,9 +209,17 @@ export class Select extends SelectRender(BaseComponent) {
     this.didLoad = true;
   }
 
+  componentDidUnload() {
+    this.renderer.componentDidUnload();
+  }
+
   hostData() {
     return {
       role: "combobox"
     };
+  }
+
+  render() {
+    return this.renderer.render();
   }
 }

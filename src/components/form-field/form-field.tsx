@@ -1,14 +1,25 @@
 import { Component, Element, Prop } from "@stencil/core";
-import { BaseComponent } from "../common/base-component";
 import { FormFieldRender } from "../renders/bootstrap/form-field/form-field-render";
+import { IComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "form-field.scss",
   tag: "gx-form-field"
 })
-export class FormField extends FormFieldRender(BaseComponent) {
+export class FormField implements IComponent {
+  constructor() {
+    this.renderer = new FormFieldRender(this);
+  }
+
+  private renderer: FormFieldRender;
+
   @Element() element: HTMLElement;
+
+  /**
+   * The identifier of the control. Must be unique.
+   */
+  @Prop() id: string;
 
   /**
    * The text to set as the label of the field.
@@ -26,4 +37,12 @@ export class FormField extends FormFieldRender(BaseComponent) {
    * * `"none"`: The label is rendered, but hidden.
    */
   @Prop() labelPosition: "none" | "top" | "right" | "bottom" | "left" | "float";
+
+  componentDidLoad() {
+    this.renderer.componentDidLoad();
+  }
+
+  render() {
+    return this.renderer.render();
+  }
 }

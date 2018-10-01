@@ -1,99 +1,86 @@
-import { EventEmitter } from "@stencil/core";
+import { IRenderer } from "../../../common/interfaces";
+import { CheckBox } from "../../../checkbox/checkbox";
 
-type Constructor<T> = new (...args: any[]) => T;
-export function CheckBoxRender<T extends Constructor<{}>>(Base: T) {
-  return class extends Base {
-    element: HTMLElement;
+export class CheckBoxRender implements IRenderer {
+  constructor(public component: CheckBox) {}
+  protected nativeInput: HTMLInputElement;
+  private inputId: string;
 
-    caption: string;
-    cssClass: string;
-    disabled = false;
-    id: string;
-    invisibleMode: string;
-    checked: boolean;
+  getNativeInputId() {
+    return this.nativeInput.id;
+  }
 
-    protected nativeInput: HTMLInputElement;
-    private inputId: string;
+  private getCssClasses() {
+    const checkbox = this.component;
 
-    onChange: EventEmitter;
+    const classList = [];
 
-    getNativeInputId() {
-      return this.nativeInput.id;
+    classList.push("custom-control-input");
+
+    if (checkbox.cssClass) {
+      classList.push(checkbox.cssClass);
     }
 
-    private getCssClasses() {
-      const classList = [];
-
-      classList.push("custom-control-input");
-
-      if (this.cssClass) {
-        classList.push(this.cssClass);
-      }
-
-      if (!this.caption) {
-        classList.push("position-static");
-      }
-
-      return classList.join(" ");
+    if (!checkbox.caption) {
+      classList.push("position-static");
     }
 
-    private getValueFromEvent(event: UIEvent): boolean {
-      return event.target && (event.target as HTMLInputElement).checked;
+    return classList.join(" ");
+  }
+
+  getValueFromEvent(event: UIEvent): boolean {
+    return event.target && (event.target as HTMLInputElement).checked;
+  }
+
+  /**
+   * Update the native input element when the value changes
+   */
+  checkedChanged() {
+    const inputEl = this.nativeInput;
+    if (inputEl && inputEl.checked !== this.component.checked) {
+      inputEl.checked = this.component.checked;
+    }
+  }
+
+  componentDidUnload() {
+    this.nativeInput = null;
+  }
+
+  render() {
+    const checkbox = this.component;
+
+    if (!this.inputId) {
+      this.inputId = checkbox.id
+        ? `${checkbox.id}__checkbox`
+        : `gx-checkbox-auto-id-${autoCheckBoxId++}`;
     }
 
-    handleChange(event: UIEvent) {
-      this.checked = this.getValueFromEvent(event);
-      this.onChange.emit(event);
-    }
+    const attris = {
+      "aria-disabled": checkbox.disabled ? "true" : undefined,
+      class: this.getCssClasses(),
+      disabled: checkbox.disabled,
+      id: this.inputId,
+      onChange: checkbox.handleChange.bind(checkbox),
+      ref: input => (this.nativeInput = input as any)
+    };
 
-    /**
-     * Update the native input element when the value changes
-     */
-    protected checkedChanged() {
-      const inputEl = this.nativeInput;
-      if (inputEl && inputEl.checked !== this.checked) {
-        inputEl.checked = this.checked;
-      }
-    }
+    const forAttris = {
+      for: attris.id
+    };
 
-    componentDidUnload() {
-      this.nativeInput = null;
-    }
-
-    render() {
-      if (!this.inputId) {
-        this.inputId = this.id
-          ? `${this.id}__checkbox`
-          : `gx-checkbox-auto-id-${autoCheckBoxId++}`;
-      }
-
-      const attris = {
-        "aria-disabled": this.disabled ? "true" : undefined,
-        class: this.getCssClasses(),
-        disabled: this.disabled,
-        id: this.inputId,
-        onChange: this.handleChange.bind(this),
-        ref: input => (this.nativeInput = input as any)
-      };
-
-      const forAttris = {
-        for: attris.id
-      };
-
-      return (
-        <div class="custom-control custom-checkbox">
-          <input {...attris} type="checkbox" checked={this.checked} />
-          <label
-            class="custom-control-label"
-            {...forAttris}
-            aria-hidden={!this.caption}
-          >
-            {this.caption}
-          </label>
-        </div>
-      );
-    }
-  };
+    return (
+      <div class="custom-control custom-checkbox">
+        <input {...attris} type="checkbox" checked={checkbox.checked} />
+        <label
+          class="custom-control-label"
+          {...forAttris}
+          aria-hidden={!checkbox.caption}
+        >
+          {checkbox.caption}
+        </label>
+      </div>
+    );
+  }
 }
 
 let autoCheckBoxId = 0;

@@ -1,11 +1,13 @@
-import { BaseComponent } from "../common/base-component";
-import { Component, Prop } from "@stencil/core";
+import { Component, Element, Prop } from "@stencil/core";
+import { IComponent } from "../common/interfaces";
 @Component({
   shadow: false,
   styleUrl: "group.scss",
   tag: "gx-group"
 })
-export class Group extends BaseComponent {
+export class Group implements IComponent {
+  @Element() element;
+
   /**
    * Attribute that provides the caption to the <legend> tag
    */
@@ -17,6 +19,7 @@ export class Group extends BaseComponent {
    * if the content overflows.
    */
   @Prop() autoGrow: boolean;
+
   render() {
     return (
       <fieldset class="form-group">

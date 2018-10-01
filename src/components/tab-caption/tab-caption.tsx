@@ -1,13 +1,19 @@
 import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
-import { BaseComponent } from "../common/base-component";
 import { TabCaptionRender } from "../renders/bootstrap/tab-caption/tab-caption-render";
+import { IComponent, IDisableableComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "tab-caption.scss",
   tag: "gx-tab-caption"
 })
-export class TabCaption extends TabCaptionRender(BaseComponent) {
+export class TabCaption implements IComponent, IDisableableComponent {
+  constructor() {
+    this.renderer = new TabCaptionRender(this);
+  }
+
+  private renderer: TabCaptionRender;
+
   @Element() element: HTMLElement;
 
   /**
@@ -38,6 +44,10 @@ export class TabCaption extends TabCaptionRender(BaseComponent) {
     return {
       role: "tab"
     };
+  }
+
+  render() {
+    return this.renderer.render();
   }
 }
 

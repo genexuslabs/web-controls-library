@@ -1,13 +1,19 @@
 import { Component, Element, Prop } from "@stencil/core";
-import { BaseComponent } from "../common/base-component";
 import { MessageRender } from "../renders/bootstrap/message/message-render";
+import { IComponent, IVisibilityComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "message.scss",
   tag: "gx-message"
 })
-export class Message extends MessageRender(BaseComponent) {
+export class Message implements IComponent, IVisibilityComponent {
+  constructor() {
+    this.renderer = new MessageRender(this);
+  }
+
+  private renderer: MessageRender;
+
   @Element() element: HTMLElement;
 
   /**
@@ -45,6 +51,10 @@ export class Message extends MessageRender(BaseComponent) {
   @Prop() duration: number;
 
   componentDidLoad() {
-    super.componentDidLoad();
+    this.renderer.componentDidLoad();
+  }
+
+  render() {
+    return this.renderer.render();
   }
 }

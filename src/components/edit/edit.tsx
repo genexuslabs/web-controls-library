@@ -7,15 +7,21 @@ import {
   Prop,
   Watch
 } from "@stencil/core";
-import { BaseComponent } from "../common/base-component";
 import { EditRender } from "../renders/bootstrap/edit/edit-render";
+import { IFormComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "edit.scss",
   tag: "gx-edit"
 })
-export class Edit extends EditRender(BaseComponent) {
+export class Edit implements IFormComponent {
+  constructor() {
+    this.renderer = new EditRender(this);
+  }
+
+  private renderer: EditRender;
+
   @Element() element: HTMLElement;
 
   @Prop({ reflectToAttr: true })
@@ -152,7 +158,7 @@ export class Edit extends EditRender(BaseComponent) {
    */
   @Method()
   getNativeInputId() {
-    return super.getNativeInputId();
+    return this.renderer.getNativeInputId();
   }
 
   componentDidLoad() {
@@ -161,7 +167,7 @@ export class Edit extends EditRender(BaseComponent) {
 
   @Watch("value")
   protected valueChanged() {
-    super.valueChanged();
+    this.renderer.valueChanged();
     this.toggleValueSetClass();
   }
 
@@ -171,5 +177,23 @@ export class Edit extends EditRender(BaseComponent) {
     } else {
       this.element.classList.add("value-set");
     }
+  }
+
+  handleChange(event: UIEvent) {
+    this.value = this.renderer.getValueFromEvent(event);
+    this.onChange.emit(event);
+  }
+
+  handleValueChanging(event: UIEvent) {
+    this.value = this.renderer.getValueFromEvent(event);
+    this.onInput.emit(event);
+  }
+
+  handleTriggerClick(event: UIEvent) {
+    this.gxTriggerClick.emit(event);
+  }
+
+  render() {
+    return this.renderer.render();
   }
 }

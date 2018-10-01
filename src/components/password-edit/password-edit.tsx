@@ -9,15 +9,26 @@ import {
   State,
   Watch
 } from "@stencil/core";
-import { BaseComponent } from "../common/base-component";
 import { PasswordEditRender } from "../renders/bootstrap/password-edit/password-edit-render";
+import {
+  IComponent,
+  IDisableableComponent,
+  IVisibilityComponent
+} from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "password-edit.scss",
   tag: "gx-password-edit"
 })
-export class PasswordEdit extends PasswordEditRender(BaseComponent) {
+export class PasswordEdit
+  implements IComponent, IDisableableComponent, IVisibilityComponent {
+  constructor() {
+    this.renderer = new PasswordEditRender(this);
+  }
+
+  private renderer: PasswordEditRender;
+
   @Element() element: HTMLElement;
 
   /**
@@ -103,17 +114,25 @@ export class PasswordEdit extends PasswordEditRender(BaseComponent) {
    */
   @Method()
   getNativeInputId() {
-    return super.getNativeInputId();
+    return this.renderer.getNativeInputId();
   }
 
   @Watch("value")
   protected valueChanged() {
-    super.valueChanged();
+    this.renderer.valueChanged();
   }
 
   @Listen("gxTriggerClick")
   protected handleTriggerClick() {
     this.revealed = !this.revealed;
-    super.handleTriggerClick();
+    this.renderer.handleTriggerClick();
+  }
+
+  render() {
+    return this.renderer.render();
+  }
+
+  componentDidUnload() {
+    this.renderer.componentDidUnload();
   }
 }

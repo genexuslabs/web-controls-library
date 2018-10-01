@@ -7,19 +7,24 @@ import {
   Prop,
   Watch
 } from "@stencil/core";
-import { BaseComponent } from "../common/base-component";
 import { IHTMLRadioOptionElementEvent } from "../radio-option/radio-option";
+import {
+  IComponent,
+  IDisableableComponent,
+  IVisibilityComponent
+} from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "radio-group.scss",
   tag: "gx-radio-group"
 })
-export class RadioGroup extends BaseComponent {
+export class RadioGroup
+  implements IComponent, IDisableableComponent, IVisibilityComponent {
   private radios: any[] = [];
   private didLoad: boolean;
 
-  @Element() protected element: HTMLElement;
+  @Element() element: HTMLElement;
 
   /**
    * Specifies how the child `gx-radio-option` will be layed out.

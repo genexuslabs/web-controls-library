@@ -7,16 +7,26 @@ import {
   Prop,
   Watch
 } from "@stencil/core";
-import { BaseComponent } from "../common/base-component";
 // tslint:disable-next-line
 import bodymovin from "lottie-web/build/player/lottie_light";
+import {
+  IClickableComponent,
+  IComponent,
+  IDisableableComponent,
+  IVisibilityComponent
+} from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "lottie.scss",
   tag: "gx-lottie"
 })
-export class Lottie extends BaseComponent {
+export class Lottie
+  implements
+    IComponent,
+    IClickableComponent,
+    IVisibilityComponent,
+    IDisableableComponent {
   private animation: any;
   private animationTotalFrames: number;
 

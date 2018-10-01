@@ -18,13 +18,14 @@ import {
   getDropTargetData,
   isEmptyContainerDrop
 } from "./layout-editor-helpers";
+import { IComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "layout-editor.scss",
   tag: "gx-layout-editor"
 })
-export class LayoutEditor {
+export class LayoutEditor implements IComponent {
   @Element() element: HTMLElement;
 
   /**

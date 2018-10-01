@@ -1,13 +1,19 @@
 import { Component, Element, Prop } from "@stencil/core";
-import { BaseComponent } from "../common/base-component";
 import { CardRender } from "../renders/bootstrap/card/card-render";
+import { IComponent, IVisibilityComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "card.scss",
   tag: "gx-card"
 })
-export class Card extends CardRender(BaseComponent) {
+export class Card implements IComponent, IVisibilityComponent {
+  constructor() {
+    this.renderer = new CardRender(this);
+  }
+
+  private renderer: CardRender;
+
   @Element() element: HTMLElement;
 
   /**
@@ -21,14 +27,18 @@ export class Card extends CardRender(BaseComponent) {
   @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
 
   componentDidLoad() {
-    super.componentDidLoad();
+    this.renderer.componentDidLoad();
   }
 
   componentDidUpdate() {
-    super.componentDidUpdate();
+    this.renderer.componentDidUpdate();
   }
 
   componentDidUnload() {
-    super.componentDidUnload();
+    this.renderer.componentDidUnload();
+  }
+
+  render() {
+    return this.renderer.render();
   }
 }

@@ -1,13 +1,29 @@
-import { BaseComponent } from "../common/base-component";
 import { ButtonRender } from "../renders/bootstrap/button/button-render";
 import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
+import {
+  IClickableComponent,
+  IComponent,
+  IDisableableComponent,
+  IVisibilityComponent
+} from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "button.scss",
   tag: "gx-button"
 })
-export class Button extends ButtonRender(BaseComponent) {
+export class Button
+  implements
+    IComponent,
+    IClickableComponent,
+    IDisableableComponent,
+    IVisibilityComponent {
+  constructor() {
+    this.renderer = new ButtonRender(this);
+  }
+
+  private renderer: ButtonRender;
+
   @Element() element: HTMLElement;
 
   /**
@@ -67,5 +83,17 @@ export class Button extends ButtonRender(BaseComponent) {
     return {
       role: "button"
     };
+  }
+
+  handleClick(event: UIEvent) {
+    if (this.disabled) {
+      return;
+    }
+
+    this.onClick.emit(event);
+  }
+
+  render() {
+    return this.renderer.render();
   }
 }

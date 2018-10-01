@@ -1,42 +1,34 @@
-import { EventEmitter } from "@stencil/core";
+import { IRenderer } from "../../../common/interfaces";
+import { NavBarLink } from "../../../navbar-link/navbar-link";
 
-type Constructor<T> = new (...args: any[]) => T;
-export function NavBarLinkRender<T extends Constructor<{}>>(Base: T) {
-  return class extends Base {
-    active: boolean;
-    cssClass: string;
-    disabled: boolean;
-    element: HTMLElement;
-    href: string;
+export class NavBarLinkRender implements IRenderer {
+  constructor(public component: NavBarLink) {}
 
-    onClick: EventEmitter;
-
-    private handleClick(event: UIEvent) {
-      if (this.disabled) {
-        return;
-      }
-
-      this.onClick.emit(event);
-      event.preventDefault();
+  private handleClick(event: UIEvent) {
+    if (this.component.disabled) {
+      return;
     }
 
-    render() {
-      this.element.classList.add("nav-item");
+    this.component.onClick.emit(event);
+    event.preventDefault();
+  }
 
-      return (
-        <a
-          class={{
-            active: this.active,
-            disabled: this.disabled,
-            "nav-link": true,
-            [this.cssClass]: !!this.cssClass
-          }}
-          href={this.href}
-          onClick={this.handleClick.bind(this)}
-        >
-          <slot />
-        </a>
-      );
-    }
-  };
+  render() {
+    this.component.element.classList.add("nav-item");
+
+    return (
+      <a
+        class={{
+          active: this.component.active,
+          disabled: this.component.disabled,
+          "nav-link": true,
+          [this.component.cssClass]: !!this.component.cssClass
+        }}
+        href={this.component.href}
+        onClick={this.handleClick.bind(this)}
+      >
+        <slot />
+      </a>
+    );
+  }
 }

@@ -1,39 +1,35 @@
-import { EventEmitter } from "@stencil/core";
+import { IRenderer } from "../../../common/interfaces";
+import { TabCaption } from "../../../tab-caption/tab-caption";
 
-type Constructor<T> = new (...args: any[]) => T;
-export function TabCaptionRender<T extends Constructor<{}>>(Base: T) {
-  return class extends Base {
-    element: HTMLElement;
+export class TabCaptionRender implements IRenderer {
+  constructor(public component: TabCaption) {}
 
-    disabled = false;
-    selected = false;
+  render() {
+    this.component.element.setAttribute(
+      "aria-selected",
+      (!!this.component.selected).toString()
+    );
 
-    onTabSelect: EventEmitter;
+    return (
+      <a
+        class={{
+          active: this.component.selected,
+          disabled: this.component.disabled,
+          "nav-link": true
+        }}
+        href="#"
+        onClick={this.clickHandler.bind(this)}
+      >
+        <slot />
+      </a>
+    );
+  }
 
-    render() {
-      this.element.setAttribute("aria-selected", this.selected.toString());
-
-      return (
-        <a
-          class={{
-            active: this.selected,
-            disabled: this.disabled,
-            "nav-link": true
-          }}
-          href="#"
-          onClick={this.clickHandler.bind(this)}
-        >
-          <slot />
-        </a>
-      );
+  private clickHandler(event: UIEvent) {
+    if (this.component.disabled) {
+      return;
     }
-
-    private clickHandler(event: UIEvent) {
-      if (this.disabled) {
-        return;
-      }
-      event.preventDefault();
-      this.onTabSelect.emit(event);
-    }
-  };
+    event.preventDefault();
+    this.component.onTabSelect.emit(event);
+  }
 }

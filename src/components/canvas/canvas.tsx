@@ -1,12 +1,22 @@
 import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
-import { BaseComponent } from "../common/base-component";
+import {
+  IClickableComponent,
+  IComponent,
+  IDisableableComponent,
+  IVisibilityComponent
+} from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "canvas.scss",
   tag: "gx-canvas"
 })
-export class Canvas extends BaseComponent {
+export class Canvas
+  implements
+    IComponent,
+    IVisibilityComponent,
+    IDisableableComponent,
+    IClickableComponent {
   @Element() element: HTMLElement;
 
   /**
