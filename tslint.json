@@ -38,6 +38,7 @@
     "no-non-null-assertion": true,
     "no-sparse-arrays": true,
     "no-string-throw": true,
+    "no-submodule-imports": [true, "@stencil/core/testing"],
     "no-switch-case-fall-through": true,
     "no-trailing-whitespace": true,
     "no-unsafe-finally": true,
