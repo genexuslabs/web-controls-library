@@ -1,5 +1,8 @@
 # gx-map-marker
 
+This web component must be included inner _GX Map_ Component (inner `<gx-map>`).
+`coords` attribute must always be included in the the tag. If you do not set any attribute, the marker will initialize with default values and it will be draw in `0, 0` position of the map.
+
 <!-- Auto Generated Below -->
 
 ## Properties

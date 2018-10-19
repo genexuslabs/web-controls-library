@@ -1,5 +1,9 @@
 # gx-map
 
+Web Component used to display a map.
+You can define the center, max zoom, and initial zoom of the map setting them as attribute of the component tag.
+If you do not set any attribute, the map will initialize with default values.
+
 <!-- Auto Generated Below -->
 
 ## Properties
