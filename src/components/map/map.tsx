@@ -24,28 +24,27 @@ export class Map implements IComponent {
   @Element() element;
 
   /**
-   * The initial center of the map.
+   * The coord of initial center of the map.
    *
    */
   @Prop({ mutable: true })
   center = "0, 0";
 
   /**
-   * The max zoom scale aviable in the map.
+   * The max zoom level available in the map.
    *
    */
-  @Prop({ mutable: true })
-  maxZoom = 20;
+  @Prop() maxZoom = 20;
 
   /**
-   * The initial zoom scale in the map.
+   * The initial zoom level in the map.
    *
    */
   @Prop({ mutable: true })
   zoom = 1;
 
   /**
-   * Emmits when map is loaded.
+   * Emmits when the map is loaded.
    *
    */
   @Event() gxMapDidLoad: EventEmitter;
@@ -55,7 +54,7 @@ export class Map implements IComponent {
     const markerElement = markerInstance.target;
     const markerV = markerInstance.detail;
 
-    if (!!this.map) {
+    if (this.map) {
       markerV.addTo(this.map);
     } else {
       this.element.addEventListener("gxMapDidLoad", () => {
@@ -67,12 +66,28 @@ export class Map implements IComponent {
       this.onMapMarkerDeleted.bind(this, markerV)
     );
   }
+
   onMapMarkerDeleted(markerV: Marker) {
     markerV.remove();
   }
+
   componentDidLoad() {
+    const regExp = /^(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)$/;
+
     const elementVar = this.element.querySelector(".gxMap");
-    this.map = LFMap(elementVar).setView(this.center.split(", "), this.zoom);
+    if (regExp.test(this.center)) {
+      this.map = LFMap(elementVar).setView(
+        [this.center.split(",")[0].trim(), this.center.split(",")[1].trim()],
+        this.zoom
+      );
+    } else {
+      // tslint:disable-next-line:no-console
+      console.warn(
+        "GX warning: Can not read 'center' attribute, default center set (gx-map)",
+        this.element
+      );
+      this.map = LFMap(elementVar).setView([0, 0], this.zoom);
+    }
     tileLayer("http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png", {
       maxZoom: this.maxZoom
     }).addTo(this.map);
