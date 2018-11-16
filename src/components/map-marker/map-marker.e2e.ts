@@ -16,9 +16,9 @@ describe("gx-map-marker", () => {
     element = await parentElement.find("gx-map-marker");
     ///////////////////////////////////////
     const innerContent = await parentElement.find(".leaflet-marker-icon");
-    expect(!!innerContent).toEqual(true);
+    expect(!!innerContent).toBeTruthy();
     expect(await element.getProperty("coords")).toEqual("0, 0");
-    expect(await element.getProperty("tooltipCaption")).toEqual(undefined);
+    expect(await element.getProperty("tooltipCaption")).toBeUndefined();
   });
 
   it("should set a given coords", async () => {
@@ -32,7 +32,7 @@ describe("gx-map-marker", () => {
     expect(await element.getProperty("coords")).toEqual(
       "-34.896589, -56.165579"
     );
-    expect(await element.getProperty("tooltipCaption")).toEqual(undefined);
+    expect(await element.getProperty("tooltipCaption")).toBeUndefined();
   });
 
   it("should set a given coords and iconSrc", async () => {
@@ -49,7 +49,7 @@ describe("gx-map-marker", () => {
     expect(await element.getProperty("iconSrc")).toEqual(
       "https://markmed.github.io/map/Resources/location.svg"
     );
-    expect(await element.getProperty("tooltipCaption")).toEqual(undefined);
+    expect(await element.getProperty("tooltipCaption")).toBeUndefined();
   });
 
   it("should set a given iconSrc (but default coords)", async () => {
@@ -64,7 +64,7 @@ describe("gx-map-marker", () => {
     expect(await element.getProperty("iconSrc")).toEqual(
       "https://markmed.github.io/map/Resources/location.svg"
     );
-    expect(await element.getProperty("tooltipCaption")).toEqual(undefined);
+    expect(await element.getProperty("tooltipCaption")).toBeUndefined();
   });
 
   it("should set a given iconSrc, coords, and tooltip caption", async () => {

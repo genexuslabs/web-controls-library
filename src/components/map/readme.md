@@ -1,7 +1,7 @@
 # gx-map
 
-An element for showing an interactive map build with [LeafletJS](https://leafletjs.com/).
-You can define the center, max zoom, and initial zoom of the map setting them as attribute of the component tag.
+An element for showing an interactive map built using [LeafletJS](https://leafletjs.com/).
+You can define the center, max zoom, and initial zoom of the map setting them as attributes of the component tag.
 If you do not set any attribute, the map will initialize with default values.
 
 The coordinate system used is the [EPSG:3857](https://epsg.io/) also known as "Web Mercator" _Latitude and Longitude coords separated by a comma_ (the same coordinate system used by Google and OpenStreetMap).

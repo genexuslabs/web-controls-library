@@ -12,7 +12,7 @@ describe("gx-map", () => {
 
   it("should work without attributes", async () => {
     const innerContent = await element.find("div .leaflet-control-container");
-    expect(!!innerContent).toEqual(true);
+    expect(!!innerContent).toBeTruthy();
     expect(await element.getProperty("center")).toEqual("0, 0");
     expect(await element.getProperty("maxZoom")).toEqual(20);
     expect(await element.getProperty("zoom")).toEqual(1);

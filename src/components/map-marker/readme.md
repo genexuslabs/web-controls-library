@@ -1,7 +1,7 @@
 # gx-map-marker
 
 This element represents a marker inside a `<gx-map>` element.
-`coords` attribute must always have a value. If there is not any value set, the marker will be initialize with default values and it will be drawn at `0, 0` coordinates.
+`coords` attribute must always have a value. If value is not specified, the marker will be initialized with default values and it will be drawn at `0, 0` coordinates.
 
 <!-- Auto Generated Below -->
 

@@ -13,6 +13,7 @@ import {
   tileLayer
   // tslint:disable-next-line:no-submodule-imports
 } from "leaflet/dist/leaflet-src.esm";
+import { parseCoords } from "../common/coordsValidate";
 
 @Component({
   shadow: false,
@@ -72,13 +73,13 @@ export class Map implements IComponent {
   }
 
   componentDidLoad() {
-    const regExp = /^(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)$/;
-
     const elementVar = this.element.querySelector(".gxMap");
-    if (regExp.test(this.center)) {
+    const coords = parseCoords(this.center);
+    if (coords) {
       this.map = LFMap(elementVar).setView(
-        [this.center.split(",")[0].trim(), this.center.split(",")[1].trim()],
-        this.zoom
+        coords,
+        this.zoom ? this.zoom : 20,
+        this.maxZoom
       );
     } else {
       // tslint:disable-next-line:no-console
@@ -86,19 +87,32 @@ export class Map implements IComponent {
         "GX warning: Can not read 'center' attribute, default center set (gx-map)",
         this.element
       );
-      this.map = LFMap(elementVar).setView([0, 0], this.zoom);
+      this.map = LFMap(elementVar).setView([0, 0], this.zoom ? this.zoom : 20);
     }
-    tileLayer("http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png", {
-      maxZoom: this.maxZoom
-    }).addTo(this.map);
-    this.map.addEventListener("move", () => {
-      this.center = this.map.getCenter().lat + ", " + this.map.getCenter().lng;
-    });
-    this.map.addEventListener("zoom", () => {
-      this.zoom = this.map.getZoom();
-    });
+    tileLayer(
+      "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png",
+      {}
+    ).addTo(this.map);
     this.gxMapDidLoad.emit(this);
   }
+
+  componentDidUpdate() {
+    const centerCoords = parseCoords(this.center);
+    const zoom = parseInt("" + this.zoom, 10) || 0;
+    const maxZoom = parseInt("" + this.maxZoom, 10) || 20;
+    if (centerCoords) {
+      this.map.setView(centerCoords, zoom);
+    } else {
+      // tslint:disable-next-line:no-console
+      console.warn(
+        "GX warning: Can not read 'center' attribute, default center set (gx-map)",
+        this.element
+      );
+      this.map.setView([0, 0], zoom);
+    }
+    this.map.setMaxZoom(maxZoom);
+  }
+
   render() {
     return (
       <div>
