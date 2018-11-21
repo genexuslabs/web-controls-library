@@ -1,0 +1,10 @@
+@import "../common/_base";
+@import "../../../node_modules/leaflet/dist/leaflet.css";
+
+gx-map {
+  @include visibility(block);
+  .gxMap {
+    width: 100%;
+    height: 360px;
+  }
+}
