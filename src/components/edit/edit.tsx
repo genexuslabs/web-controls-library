@@ -31,7 +31,7 @@ export class Edit implements IFormComponent {
    * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize)
    * attribute for `input` elements. Only supported by Safari and Chrome.
    */
-  @Prop() autocapitalize: "none" | "sentences" | "words" | "characters";
+  @Prop() autocapitalize: string;
 
   /**
    * This attribute indicates whether the value of the control can be
