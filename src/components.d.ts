@@ -189,7 +189,7 @@ export namespace Components {
     /**
      * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize) attribute for `input` elements. Only supported by Safari and Chrome.
      */
-    autocapitalize: "none" | "sentences" | "words" | "characters";
+    autocapitalize: string;
     /**
      * This attribute indicates whether the value of the control can be automatically completed by the browser. Same as [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocomplete) attribute for `input` elements.
      */
@@ -258,7 +258,7 @@ export namespace Components {
     /**
      * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize) attribute for `input` elements. Only supported by Safari and Chrome.
      */
-    autocapitalize?: "none" | "sentences" | "words" | "characters";
+    autocapitalize?: string;
     /**
      * This attribute indicates whether the value of the control can be automatically completed by the browser. Same as [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocomplete) attribute for `input` elements.
      */
@@ -574,6 +574,80 @@ export namespace Components {
      * This attribute lets you specify  the relative path to the animation object. (`animationData` and `path` are mutually exclusive)
      */
     path?: string;
+  }
+
+  interface GxMapMarker {
+    /**
+     * The coordinates where the marker will appear in the map.
+     */
+    coords: string;
+    /**
+     * The URL of the marker image.  *Note: The image size must be 25 x 41*
+     */
+    iconSrc: string;
+    /**
+     * The tooltip caption of the marker.
+     */
+    tooltipCaption: string;
+  }
+  interface GxMapMarkerAttributes extends StencilHTMLAttributes {
+    /**
+     * The coordinates where the marker will appear in the map.
+     */
+    coords?: string;
+    /**
+     * The URL of the marker image.  *Note: The image size must be 25 x 41*
+     */
+    iconSrc?: string;
+    /**
+     * Emmits when the element is deleted from a `<gx-map>`.
+     */
+    onGxMapMarkerDeleted?: (event: CustomEvent) => void;
+    /**
+     * Emmits when the element is added to a `<gx-map>`.
+     */
+    onGxMapMarkerDidLoad?: (event: CustomEvent) => void;
+    /**
+     * Emmits when the element update its data.
+     */
+    onGxMapMarkerUpdate?: (event: CustomEvent) => void;
+    /**
+     * The tooltip caption of the marker.
+     */
+    tooltipCaption?: string;
+  }
+
+  interface GxMap {
+    /**
+     * The coord of initial center of the map.
+     */
+    center: string;
+    /**
+     * The max zoom level available in the map.
+     */
+    maxZoom: number;
+    /**
+     * The initial zoom level in the map.
+     */
+    zoom: number;
+  }
+  interface GxMapAttributes extends StencilHTMLAttributes {
+    /**
+     * The coord of initial center of the map.
+     */
+    center?: string;
+    /**
+     * The max zoom level available in the map.
+     */
+    maxZoom?: number;
+    /**
+     * Emmits when the map is loaded.
+     */
+    onGxMapDidLoad?: (event: CustomEvent) => void;
+    /**
+     * The initial zoom level in the map.
+     */
+    zoom?: number;
   }
 
   interface GxMessage {
@@ -1361,6 +1435,8 @@ declare global {
     GxImage: Components.GxImage;
     GxLoading: Components.GxLoading;
     GxLottie: Components.GxLottie;
+    GxMapMarker: Components.GxMapMarker;
+    GxMap: Components.GxMap;
     GxMessage: Components.GxMessage;
     GxModal: Components.GxModal;
     GxNavbarLink: Components.GxNavbarLink;
@@ -1392,6 +1468,8 @@ declare global {
     "gx-image": Components.GxImageAttributes;
     "gx-loading": Components.GxLoadingAttributes;
     "gx-lottie": Components.GxLottieAttributes;
+    "gx-map-marker": Components.GxMapMarkerAttributes;
+    "gx-map": Components.GxMapAttributes;
     "gx-message": Components.GxMessageAttributes;
     "gx-modal": Components.GxModalAttributes;
     "gx-navbar-link": Components.GxNavbarLinkAttributes;
@@ -1489,6 +1567,20 @@ declare global {
   var HTMLGxLottieElement: {
     prototype: HTMLGxLottieElement;
     new (): HTMLGxLottieElement;
+  };
+
+  interface HTMLGxMapMarkerElement
+    extends Components.GxMapMarker,
+      HTMLStencilElement {}
+  var HTMLGxMapMarkerElement: {
+    prototype: HTMLGxMapMarkerElement;
+    new (): HTMLGxMapMarkerElement;
+  };
+
+  interface HTMLGxMapElement extends Components.GxMap, HTMLStencilElement {}
+  var HTMLGxMapElement: {
+    prototype: HTMLGxMapElement;
+    new (): HTMLGxMapElement;
   };
 
   interface HTMLGxMessageElement
@@ -1633,6 +1725,8 @@ declare global {
     "gx-image": HTMLGxImageElement;
     "gx-loading": HTMLGxLoadingElement;
     "gx-lottie": HTMLGxLottieElement;
+    "gx-map-marker": HTMLGxMapMarkerElement;
+    "gx-map": HTMLGxMapElement;
     "gx-message": HTMLGxMessageElement;
     "gx-modal": HTMLGxModalElement;
     "gx-navbar-link": HTMLGxNavbarLinkElement;
@@ -1664,6 +1758,8 @@ declare global {
     "gx-image": HTMLGxImageElement;
     "gx-loading": HTMLGxLoadingElement;
     "gx-lottie": HTMLGxLottieElement;
+    "gx-map-marker": HTMLGxMapMarkerElement;
+    "gx-map": HTMLGxMapElement;
     "gx-message": HTMLGxMessageElement;
     "gx-modal": HTMLGxModalElement;
     "gx-navbar-link": HTMLGxNavbarLinkElement;
