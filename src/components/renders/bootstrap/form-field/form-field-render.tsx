@@ -53,12 +53,12 @@ export class FormFieldRender implements IRenderer {
     );
   }
 
-  componentDidLoad() {
+  async componentDidLoad() {
     const formField = this.component;
 
     const innerControl: any = formField.element.querySelector("[area='field']");
     if (innerControl && innerControl.getNativeInputId) {
-      const nativeInputId = innerControl.getNativeInputId();
+      const nativeInputId = await innerControl.getNativeInputId();
       const nativeInput = formField.element.querySelector(`#${nativeInputId}`);
       if (nativeInput) {
         nativeInput.setAttribute("data-part", "field");
