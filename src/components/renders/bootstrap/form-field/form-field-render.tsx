@@ -63,9 +63,9 @@ export class FormFieldRender implements IRenderer {
       if (nativeInput) {
         nativeInput.setAttribute("data-part", "field");
       }
-      if (nativeInputId) {
-        formField.element
-          .querySelector("label")
+      const innerLabel: any = formField.element.querySelector("label");
+      if (nativeInputId && innerLabel) {
+         innerLabel
           .setAttribute("for", nativeInputId);
       }
     }
