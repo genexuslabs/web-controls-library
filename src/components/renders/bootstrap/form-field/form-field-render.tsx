@@ -66,7 +66,6 @@ export class FormFieldRender implements IRenderer {
       const innerLabel: any = formField.element.querySelector("label");
       if (nativeInputId && innerLabel) {
          innerLabel
-          .querySelector("label")
           .setAttribute("for", nativeInputId);
       }
     }
