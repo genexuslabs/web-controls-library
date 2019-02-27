@@ -3,10 +3,14 @@
 ////
 
 /// Helper mixin to ease styling gx-edit custom elements
-/// @param {map} $class Base class of the component
-@mixin gx-edit($class) {
+/// @param {string} $class Base class of the component
+/// @param {string} $readonly-class Base class of the component when readonly
+@mixin gx-edit($class, $readonly-class: null) {
   input,
   textarea {
     @extend #{$class} !optional;
+  }
+  & > span {
+    @extend #{$readonly-class} !optional;
   }
 }

@@ -15,14 +15,10 @@ export class EditRender implements IRenderer {
 
     const classList = [];
 
-    if (edit.readonly) {
-      classList.push("form-control-plaintext");
+    if (edit.type === "file") {
+      classList.push("form-control-file");
     } else {
-      if (edit.type === "file") {
-        classList.push("form-control-file");
-      } else {
-        classList.push("form-control");
-      }
+      classList.push("form-control");
     }
 
     return classList.join(" ");
@@ -70,22 +66,23 @@ export class EditRender implements IRenderer {
       autocorrect: edit.autocorrect,
       class: this.getCssClasses(),
       disabled: edit.disabled,
+      hidden: edit.readonly,
       id: this.inputId,
       onChange: edit.handleChange.bind(edit),
       onInput: valueChangingHandler,
       placeholder: edit.placeholder,
-      readonly: edit.readonly,
       ref: input => (this.nativeInput = input as any)
     };
 
+    let editableElement;
     if (edit.multiline) {
-      return <textarea {...attris}>{edit.value}</textarea>;
+      editableElement = <textarea {...attris}>{edit.value}</textarea>;
     } else {
       const input = <input {...attris} type={edit.type} value={edit.value} />;
 
-      if (edit.showTrigger && !edit.readonly) {
-        return (
-          <div class="input-group">
+      if (edit.showTrigger) {
+        editableElement = (
+          <div class="input-group" hidden={edit.readonly}>
             {input}
             <div class="input-group-append">
               <button
@@ -101,9 +98,21 @@ export class EditRender implements IRenderer {
           </div>
         );
       } else {
-        return input;
+        editableElement = input;
       }
     }
+
+    return [
+      <span
+        hidden={!edit.readonly}
+        class={{
+          "form-control-plaintext": true
+        }}
+      >
+        {edit.value}
+      </span>,
+      editableElement
+    ];
   }
 }
 
