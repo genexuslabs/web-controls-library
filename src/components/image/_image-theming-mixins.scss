@@ -3,7 +3,7 @@
 ////
 
 /// Helper mixin to ease styling gx-image custom elements
-/// @param {map} $class Base class of the component
+/// @param {string} $class Base class of the component
 @mixin gx-image(
   $class,
   $accept-drag-class: null,

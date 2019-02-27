@@ -3,9 +3,9 @@
 ////
 
 /// Helper mixin to ease styling gx-tab custom elements
-/// @param {map} $class Base class of the component
-/// @param {map} $selected-tab-caption Class for styling the selected tab caption
-/// @param {map} $unselected-tab-caption Class for styling unselected tab caption
+/// @param {string} $class Base class of the component
+/// @param {string} $selected-tab-caption Class for styling the selected tab caption
+/// @param {string} $unselected-tab-caption Class for styling unselected tab caption
 @mixin gx-tab(
   $class,
   $selected-tab-caption: null,
