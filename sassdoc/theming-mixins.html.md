@@ -8,10 +8,10 @@ Helper mixin to ease styling gx-group custom elements
 
 ### Parameters
 
-| Name    | Description                                | Type | Default Value |
-| ------- | ------------------------------------------ | ---- | ------------- |
-| class   | Base class of the component                | map  |               |
-| caption | Class for styling the caption of the group | map  |               |
+| Name    | Description                                | Type   | Default Value |
+| ------- | ------------------------------------------ | ------ | ------------- |
+| class   | Base class of the component                | string |               |
+| caption | Class for styling the caption of the group | string |               |
 
 ### Source
 
@@ -21,7 +21,9 @@ Helper mixin to ease styling gx-group custom elements
     @extend #{$class} !optional;
 
     @if ($caption != null) {
-      @extend #{$caption} !optional;
+      & > legend {
+        @extend #{$caption} !optional;
+      }
     }
   }
 }
@@ -35,9 +37,9 @@ Helper mixin to ease styling gx-image custom elements
 
 ### Parameters
 
-| Name  | Description                 | Type | Default Value |
-| ----- | --------------------------- | ---- | ------------- |
-| class | Base class of the component | map  |               |
+| Name  | Description                 | Type   | Default Value |
+| ----- | --------------------------- | ------ | ------------- |
+| class | Base class of the component | string |               |
 
 ### Source
 
@@ -63,12 +65,12 @@ Helper mixin to ease styling gx-loading custom elements
 
 ### Parameters
 
-| Name        | Description                                                                            | Type | Default Value |
-| ----------- | -------------------------------------------------------------------------------------- | ---- | ------------- |
-| class       | Base class of the component                                                            | map  |               |
-| animation   | Class for the animation part of the component (applies when an animation is specified) | map  |               |
-| title       | Class for the title part of the component                                              | map  |               |
-| description | Class for the description part of the component                                        | map  |               |
+| Name        | Description                                                                            | Type   | Default Value |
+| ----------- | -------------------------------------------------------------------------------------- | ------ | ------------- |
+| class       | Base class of the component                                                            | string |               |
+| animation   | Class for the animation part of the component (applies when an animation is specified) | string |               |
+| title       | Class for the title part of the component                                              | string |               |
+| description | Class for the description part of the component                                        | string |               |
 
 ### Source
 
@@ -107,9 +109,9 @@ Helper mixin to ease styling gx-button custom elements
 
 ### Parameters
 
-| Name  | Description                 | Type | Default Value |
-| ----- | --------------------------- | ---- | ------------- |
-| class | Base class of the component | map  |               |
+| Name  | Description                 | Type   | Default Value |
+| ----- | --------------------------- | ------ | ------------- |
+| class | Base class of the component | string |               |
 
 ### Source
 
@@ -129,10 +131,10 @@ Helper mixin to ease styling gx-card custom elements
 
 ### Parameters
 
-| Name  | Description                         | Type | Default Value |
-| ----- | ----------------------------------- | ---- | ------------- |
-| class | Base class of the component         | map  |               |
-| bars  | Base class of bars of the component | map  |               |
+| Name  | Description                         | Type   | Default Value |
+| ----- | ----------------------------------- | ------ | ------------- |
+| class | Base class of the component         | string |               |
+| bars  | Base class of bars of the component | string |               |
 
 ### Source
 
@@ -160,17 +162,21 @@ Helper mixin to ease styling gx-edit custom elements
 
 ### Parameters
 
-| Name  | Description                 | Type | Default Value |
-| ----- | --------------------------- | ---- | ------------- |
-| class | Base class of the component | map  |               |
+| Name           | Description                               | Type   | Default Value |
+| -------------- | ----------------------------------------- | ------ | ------------- |
+| class          | Base class of the component               | string |               |
+| readonly-class | Base class of the component when readonly | string |               |
 
 ### Source
 
 ```scss
-@mixin gx-edit($class) {
+@mixin gx-edit($class, $readonly-class) {
   input,
   textarea {
     @extend #{$class} !optional;
+  }
+  & > span {
+    @extend #{$readonly-class} !optional;
   }
 }
 ```
@@ -183,15 +189,15 @@ Helper mixin to ease styling gx-form-field custom elements
 
 ### Parameters
 
-| Name                 | Description                                                                             | Type | Default Value |
-| -------------------- | --------------------------------------------------------------------------------------- | ---- | ------------- |
-| class                | Base class of the field inside the component                                            | map  |               |
-| label                | Base class of the label of the component                                                | map  |               |
-| highlighted          | Class to be used when the component is in active state                                  | map  |               |
-| accept-drag-class    | Class to be used when the component shows that it accepts a drop operation              | map  |               |
-| no-accept-drag-class | Class to be used when the component shows that it doesn&#39;t accept a drop operation   | map  |               |
-| start-dragging-class | Class to be used when the component starts being dragged                                | map  |               |
-| drag-over-class      | Class to be used when the component is hovered by other control during a drag operation | map  |               |
+| Name                 | Description                                                                             | Type   | Default Value |
+| -------------------- | --------------------------------------------------------------------------------------- | ------ | ------------- |
+| class                | Base class of the field inside the component                                            | string |               |
+| label                | Base class of the label of the component                                                | string |               |
+| highlighted          | Class to be used when the component is in active state                                  | string |               |
+| accept-drag-class    | Class to be used when the component shows that it accepts a drop operation              | string |               |
+| no-accept-drag-class | Class to be used when the component shows that it doesn&#39;t accept a drop operation   | string |               |
+| start-dragging-class | Class to be used when the component starts being dragged                                | string |               |
+| drag-over-class      | Class to be used when the component is hovered by other control during a drag operation | string |               |
 
 ### Source
 
@@ -235,9 +241,9 @@ Helper mixin to ease styling gx-tab-caption custom elements
 
 ### Parameters
 
-| Name  | Description                 | Type | Default Value |
-| ----- | --------------------------- | ---- | ------------- |
-| class | Base class of the component | map  |               |
+| Name  | Description                 | Type   | Default Value |
+| ----- | --------------------------- | ------ | ------------- |
+| class | Base class of the component | string |               |
 
 ### Source
 
@@ -257,18 +263,17 @@ Helper mixin to ease styling gx-tab custom elements
 
 ### Parameters
 
-| Name                   | Description                                | Type | Default Value |
-| ---------------------- | ------------------------------------------ | ---- | ------------- |
-| class                  | Base class of the component                | map  |               |
-| selected-tab-caption   | Class for styling the selected tab caption | map  |               |
-| unselected-tab-caption | Class for styling unselected tab caption   | map  |               |
+| Name                   | Description                                | Type   | Default Value |
+| ---------------------- | ------------------------------------------ | ------ | ------------- |
+| class                  | Base class of the component                | string |               |
+| selected-tab-caption   | Class for styling the selected tab caption | string |               |
+| unselected-tab-caption | Class for styling unselected tab caption   | string |               |
 
 ### Source
 
 ```scss
 @mixin gx-tab($class, $selected-tab-caption, $unselected-tab-caption) {
   @extend #{$class} !optional;
-
   @if ($unselected-tab-caption != null) {
     gx-tab-caption[aria-selected="false"] {
       @extend #{$unselected-tab-caption} !optional;
@@ -290,10 +295,10 @@ Helper mixin to ease styling gx-table custom elements
 
 ### Parameters
 
-| Name            | Description                                                | Type | Default Value |
-| --------------- | ---------------------------------------------------------- | ---- | ------------- |
-| class           | Base class of the component                                | map  |               |
-| horizontal-line | Class of the horizontal line separator (to be implemented) | map  |               |
+| Name            | Description                                                | Type   | Default Value |
+| --------------- | ---------------------------------------------------------- | ------ | ------------- |
+| class           | Base class of the component                                | string |               |
+| horizontal-line | Class of the horizontal line separator (to be implemented) | string |               |
 
 ### Source
 
@@ -311,13 +316,13 @@ Helper mixin to ease styling gx-textblock custom elements
 
 ### Parameters
 
-| Name                 | Description                                                                             | Type | Default Value |
-| -------------------- | --------------------------------------------------------------------------------------- | ---- | ------------- |
-| class                | Base class of the component                                                             | map  |               |
-| accept-drag-class    | Class to be used when the component shows that it accepts a drop operation              | map  |               |
-| no-accept-drag-class | Class to be used when the component shows that it doesn&#39;t accept a drop operation   | map  |               |
-| start-dragging-class | Class to be used when the component starts being dragged                                | map  |               |
-| drag-over-class      | Class to be used when the component is hovered by other control during a drag operation | map  |               |
+| Name                 | Description                                                                             | Type   | Default Value |
+| -------------------- | --------------------------------------------------------------------------------------- | ------ | ------------- |
+| class                | Base class of the component                                                             | string |               |
+| accept-drag-class    | Class to be used when the component shows that it accepts a drop operation              | string |               |
+| no-accept-drag-class | Class to be used when the component shows that it doesn&#39;t accept a drop operation   | string |               |
+| start-dragging-class | Class to be used when the component starts being dragged                                | string |               |
+| drag-over-class      | Class to be used when the component is hovered by other control during a drag operation | string |               |
 
 ### Source
 

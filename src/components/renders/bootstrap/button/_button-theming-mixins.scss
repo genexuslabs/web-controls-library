@@ -3,7 +3,7 @@
 ////
 
 /// Helper mixin to ease styling gx-button custom elements
-/// @param {map} $class Base class of the component
+/// @param {string} $class Base class of the component
 @mixin gx-button($class) {
   button {
     @extend #{$class} !optional;

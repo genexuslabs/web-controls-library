@@ -3,11 +3,11 @@
 ////
 
 /// Helper mixin to ease styling gx-textblock custom elements
-/// @param {map} $class Base class of the component
-/// @param {map} $accept-drag-class Class to be used when the component shows that it accepts a drop operation
-/// @param {map} $no-accept-drag-class Class to be used when the component shows that it doesn't accept a drop operation
-/// @param {map} $start-dragging-class Class to be used when the component starts being dragged
-/// @param {map} $drag-over-class Class to be used when the component is hovered by other control during a drag operation
+/// @param {string} $class Base class of the component
+/// @param {string} $accept-drag-class Class to be used when the component shows that it accepts a drop operation
+/// @param {string} $no-accept-drag-class Class to be used when the component shows that it doesn't accept a drop operation
+/// @param {string} $start-dragging-class Class to be used when the component starts being dragged
+/// @param {string} $drag-over-class Class to be used when the component is hovered by other control during a drag operation
 @mixin gx-textblock(
   $class,
   $accept-drag-class: null,

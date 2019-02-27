@@ -3,8 +3,8 @@
 ////
 
 /// Helper mixin to ease styling gx-table custom elements
-/// @param {map} $class Base class of the component
-/// @param {map} $horizontal-line Class of the horizontal line separator (to be implemented)
+/// @param {string} $class Base class of the component
+/// @param {string} $horizontal-line Class of the horizontal line separator (to be implemented)
 @mixin gx-table($class, $horizontal-line: null) {
   @extend #{$class} !optional;
 }

@@ -3,8 +3,8 @@
 ////
 
 /// Helper mixin to ease styling gx-card custom elements
-/// @param {map} $class Base class of the component
-/// @param {map} $bars Base class of bars of the component
+/// @param {string} $class Base class of the component
+/// @param {string} $bars Base class of bars of the component
 @mixin gx-card($class: null, $bars: null) {
   & > .card {
     @if ($class != null) {
