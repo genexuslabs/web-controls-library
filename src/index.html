@@ -8,5 +8,21 @@
 </head>
 <body>
   <h1>Test page</h1>
+
+  <div>
+    <gx-chronometer class="MyClase1" tick-interval="3000" max-value-text="FINAL" max-value="8000" initial-milliseconds="2000"></gx-chronometer>
+    <button onclick="start()">START CHRONOMETER</button>
+  </div>
+  <script>
+    function start() {
+      var timer = document.querySelector('gx-chronometer');
+      timer.addEventListener('tick', event => {
+        console.log("ocurrio un tick...");
+       // timer.getValue();
+      });
+      timer.start();
+    }
+  </script>
+
 </body>
 </html>
