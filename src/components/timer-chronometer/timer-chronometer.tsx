@@ -41,6 +41,9 @@ export class TimerChronometer implements IComponent {
   @Prop() maxValue = 0;
   @Prop() maxValueText: string;
 
+  /**
+   * After elapsed time (tickInterval), the following function will be called.
+   */
   @Event() tick: EventEmitter;
 
   tickHandler() {
@@ -53,6 +56,9 @@ export class TimerChronometer implements IComponent {
     this.stop();
   }
 
+  /**
+   * Starts the Chronometer
+   */
   @Method()
   start() {
     this.stop();
@@ -68,13 +74,19 @@ export class TimerChronometer implements IComponent {
       this.tickHandler();
     }, this.tickInterval);
   }
-
+  /**
+   * Stops the Chronometer
+   */
   @Method()
   stop() {
     window.clearInterval(this.eventTimer);
     window.clearInterval(this.timer);
     this.started = false;
   }
+
+  /**
+   * Stops and restarts the Chronometer.
+   */
   @Method()
   reset() {
     this.start();
