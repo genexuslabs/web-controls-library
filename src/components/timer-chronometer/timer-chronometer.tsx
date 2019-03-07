@@ -11,7 +11,7 @@ import { IComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
-  styleUrl: "chronometer.scss",
+  styleUrl: "timer-chronometer.scss",
   tag: "gx-chronometer"
 })
 export class TimerChronometer implements IComponent {
