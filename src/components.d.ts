@@ -184,6 +184,59 @@ export namespace Components {
     onOnChange?: (event: CustomEvent) => void;
   }
 
+  interface GxChronometer {
+    /**
+     * When the chronometer reaches maxValue (in milliseconds), MaxValueText will be shown instead of the Chronometer.
+     */
+    maxValue: number;
+    /**
+     * Text to be displayed when chronometer value reaches maxValue.
+     */
+    maxValueText: string;
+    /**
+     * Stops and set to 0 the Chronometer.
+     */
+    reset: () => void;
+    /**
+     * Starts the Chronometer
+     */
+    start: () => void;
+    /**
+     * Stops the Chronometer
+     */
+    stop: () => void;
+    /**
+     * Defines the interval (in milliseconds) that the function onTick will be called.
+     */
+    tickInterval: number;
+    /**
+     * Defines the initial Chronometer value (in milliseconds)
+     */
+    value: number;
+  }
+  interface GxChronometerAttributes extends StencilHTMLAttributes {
+    /**
+     * When the chronometer reaches maxValue (in milliseconds), MaxValueText will be shown instead of the Chronometer.
+     */
+    maxValue?: number;
+    /**
+     * Text to be displayed when chronometer value reaches maxValue.
+     */
+    maxValueText?: string;
+    /**
+     * Event to emit After elapsed time (tickInterval).
+     */
+    onTick?: (event: CustomEvent) => void;
+    /**
+     * Defines the interval (in milliseconds) that the function onTick will be called.
+     */
+    tickInterval?: number;
+    /**
+     * Defines the initial Chronometer value (in milliseconds)
+     */
+    value?: number;
+  }
+
   interface GxEdit {
     area: string;
     /**
@@ -1420,41 +1473,6 @@ export namespace Components {
      */
     onOnClick?: (event: CustomEvent) => void;
   }
-
-  interface GxChronometer {
-    /**
-     * Defines the initial Chronometer value in milliseconds
-     */
-    initialMilliseconds: number;
-    /**
-     * When the chronnometer reach the maxValue (in milliseconds), MaxValueText will be shown instead of the Chronometer.
-     */
-    maxValue: number;
-    maxValueText: string;
-    reset: () => void;
-    start: () => void;
-    stop: () => void;
-    /**
-     * Defines the interval in milliseconds that the function onTick will be called.
-     */
-    tickInterval: number;
-  }
-  interface GxChronometerAttributes extends StencilHTMLAttributes {
-    /**
-     * Defines the initial Chronometer value in milliseconds
-     */
-    initialMilliseconds?: number;
-    /**
-     * When the chronnometer reach the maxValue (in milliseconds), MaxValueText will be shown instead of the Chronometer.
-     */
-    maxValue?: number;
-    maxValueText?: string;
-    onTick?: (event: CustomEvent) => void;
-    /**
-     * Defines the interval in milliseconds that the function onTick will be called.
-     */
-    tickInterval?: number;
-  }
 }
 
 declare global {
@@ -1464,6 +1482,7 @@ declare global {
     GxCanvas: Components.GxCanvas;
     GxCard: Components.GxCard;
     GxCheckbox: Components.GxCheckbox;
+    GxChronometer: Components.GxChronometer;
     GxEdit: Components.GxEdit;
     GxFormField: Components.GxFormField;
     GxGroup: Components.GxGroup;
@@ -1489,7 +1508,6 @@ declare global {
     GxTableCell: Components.GxTableCell;
     GxTable: Components.GxTable;
     GxTextblock: Components.GxTextblock;
-    GxChronometer: Components.GxChronometer;
   }
 
   interface StencilIntrinsicElements {
@@ -1498,6 +1516,7 @@ declare global {
     "gx-canvas": Components.GxCanvasAttributes;
     "gx-card": Components.GxCardAttributes;
     "gx-checkbox": Components.GxCheckboxAttributes;
+    "gx-chronometer": Components.GxChronometerAttributes;
     "gx-edit": Components.GxEditAttributes;
     "gx-form-field": Components.GxFormFieldAttributes;
     "gx-group": Components.GxGroupAttributes;
@@ -1523,7 +1542,6 @@ declare global {
     "gx-table-cell": Components.GxTableCellAttributes;
     "gx-table": Components.GxTableAttributes;
     "gx-textblock": Components.GxTextblockAttributes;
-    "gx-chronometer": Components.GxChronometerAttributes;
   }
 
   interface HTMLGxButtonElement
@@ -1562,6 +1580,14 @@ declare global {
   var HTMLGxCheckboxElement: {
     prototype: HTMLGxCheckboxElement;
     new (): HTMLGxCheckboxElement;
+  };
+
+  interface HTMLGxChronometerElement
+    extends Components.GxChronometer,
+      HTMLStencilElement {}
+  var HTMLGxChronometerElement: {
+    prototype: HTMLGxChronometerElement;
+    new (): HTMLGxChronometerElement;
   };
 
   interface HTMLGxEditElement extends Components.GxEdit, HTMLStencilElement {}
@@ -1750,20 +1776,13 @@ declare global {
     new (): HTMLGxTextblockElement;
   };
 
-  interface HTMLGxChronometerElement
-    extends Components.GxChronometer,
-      HTMLStencilElement {}
-  var HTMLGxChronometerElement: {
-    prototype: HTMLGxChronometerElement;
-    new (): HTMLGxChronometerElement;
-  };
-
   interface HTMLElementTagNameMap {
     "gx-button": HTMLGxButtonElement;
     "gx-canvas-cell": HTMLGxCanvasCellElement;
     "gx-canvas": HTMLGxCanvasElement;
     "gx-card": HTMLGxCardElement;
     "gx-checkbox": HTMLGxCheckboxElement;
+    "gx-chronometer": HTMLGxChronometerElement;
     "gx-edit": HTMLGxEditElement;
     "gx-form-field": HTMLGxFormFieldElement;
     "gx-group": HTMLGxGroupElement;
@@ -1789,7 +1808,6 @@ declare global {
     "gx-table-cell": HTMLGxTableCellElement;
     "gx-table": HTMLGxTableElement;
     "gx-textblock": HTMLGxTextblockElement;
-    "gx-chronometer": HTMLGxChronometerElement;
   }
 
   interface ElementTagNameMap {
@@ -1798,6 +1816,7 @@ declare global {
     "gx-canvas": HTMLGxCanvasElement;
     "gx-card": HTMLGxCardElement;
     "gx-checkbox": HTMLGxCheckboxElement;
+    "gx-chronometer": HTMLGxChronometerElement;
     "gx-edit": HTMLGxEditElement;
     "gx-form-field": HTMLGxFormFieldElement;
     "gx-group": HTMLGxGroupElement;
@@ -1823,7 +1842,6 @@ declare global {
     "gx-table-cell": HTMLGxTableCellElement;
     "gx-table": HTMLGxTableElement;
     "gx-textblock": HTMLGxTextblockElement;
-    "gx-chronometer": HTMLGxChronometerElement;
   }
 
   export namespace JSX {
