@@ -186,7 +186,23 @@ export namespace Components {
 
   interface GxChronometer {
     /**
-     * When the chronometer reaches maxValue (in milliseconds), MaxValueText will be shown instead of the Chronometer.
+     * Returns the id of the inner `input` element (if set).
+     */
+    getNativeInputId: () => Promise<any>;
+    /**
+     * The identifier of the control. Must be unique.
+     */
+    id: string;
+    /**
+     * Defines the interval that the function onTick will be called.
+     */
+    interval: number;
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode: "collapse" | "keep-space";
+    /**
+     * When the chronometer reaches this value, MaxValueText will be shown instead of the Chronometer value.
      */
     maxValue: number;
     /**
@@ -202,37 +218,66 @@ export namespace Components {
      */
     start: () => void;
     /**
+     * State of the Chronometer.
+     */
+    state: any;
+    /**
      * Stops the Chronometer
      */
     stop: () => void;
     /**
-     * Defines the interval (in milliseconds) that the function onTick will be called.
+     * Time unit: 1000 as seconds, 1 as miliseconds for every control Prop.
      */
-    tickInterval: number;
+    unit: number;
     /**
-     * Defines the initial Chronometer value (in milliseconds)
+     * The value of the control.
      */
     value: number;
   }
   interface GxChronometerAttributes extends StencilHTMLAttributes {
     /**
-     * When the chronometer reaches maxValue (in milliseconds), MaxValueText will be shown instead of the Chronometer.
+     * The identifier of the control. Must be unique.
+     */
+    id?: string;
+    /**
+     * Defines the interval that the function onTick will be called.
+     */
+    interval?: number;
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode?: "collapse" | "keep-space";
+    /**
+     * When the chronometer reaches this value, MaxValueText will be shown instead of the Chronometer value.
      */
     maxValue?: number;
     /**
      * Text to be displayed when chronometer value reaches maxValue.
      */
     maxValueText?: string;
+    onChange?: (event: CustomEvent) => void;
+    /**
+     * The `input` event is emitted every time the chronometer changes (every 1 second)
+     */
+    onInput?: (event: CustomEvent) => void;
+    /**
+     * Event to emit after max time is consumed.
+     */
+    onOnEnd?: (event: CustomEvent) => void;
     /**
      * Event to emit After elapsed time (tickInterval).
      */
     onTick?: (event: CustomEvent) => void;
     /**
-     * Defines the interval (in milliseconds) that the function onTick will be called.
+     * State of the Chronometer.
      */
-    tickInterval?: number;
+    state?: any;
     /**
-     * Defines the initial Chronometer value (in milliseconds)
+     * Time unit: 1000 as seconds, 1 as miliseconds for every control Prop.
+     */
+    unit?: number;
+    /**
+     * The value of the control.
      */
     value?: number;
   }

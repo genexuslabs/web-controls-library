@@ -7,7 +7,7 @@ describe("gx-chronometer", () => {
   beforeEach(async () => {
     page = await newE2EPage();
     await page.setContent(
-      "<gx-chronometer value='3000' tick-interval='1500' max-value-text='Final' max-value='9000'></gx-chronometer>"
+      "<gx-chronometer unit='1' value='3000' interval='1500' max-value-text='Final' max-value='9000'></gx-chronometer>"
     );
     element = await page.find("gx-chronometer");
   });
