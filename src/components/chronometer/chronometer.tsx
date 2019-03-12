@@ -15,7 +15,7 @@ import { IComponent /*, IFormComponent */ } from "../common/interfaces";
   styleUrl: "chronometer.scss",
   tag: "gx-chronometer"
 })
-export class Chronometer implements IComponent, IFormComponent {
+export class Chronometer implements IComponent /*, IFormComponent*/ {
   disabled: boolean;
   eventTimer: number;
   startedTime = 0;
