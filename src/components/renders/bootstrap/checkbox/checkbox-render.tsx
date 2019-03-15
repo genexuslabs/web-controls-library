@@ -74,7 +74,7 @@ export class CheckBoxRender implements IRenderer {
         <label
           class="custom-control-label"
           {...forAttris}
-          aria-hidden={!checkbox.caption}
+          aria-hidden={(!checkbox.caption).toString()}
         >
           {checkbox.caption}
         </label>

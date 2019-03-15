@@ -213,12 +213,6 @@ export class Select implements IFormComponent {
     this.renderer.componentDidUnload();
   }
 
-  hostData() {
-    return {
-      role: "combobox"
-    };
-  }
-
   render() {
     return this.renderer.render();
   }
