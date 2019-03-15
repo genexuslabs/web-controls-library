@@ -21,8 +21,8 @@ export class ButtonRender implements IRenderer {
       <button
         class={{
           btn: true,
+          "btn-default": true,
           "btn-lg": button.size === "large",
-          "btn-outline-secondary": true,
           "btn-sm": button.size === "small",
           "gx-button": true,
           [button.cssClass]: true

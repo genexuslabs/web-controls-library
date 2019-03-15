@@ -53,6 +53,22 @@ export class CheckBox implements IFormComponent {
   checked: boolean;
 
   /**
+   * The value of the control.
+   */
+  @Prop({ mutable: true })
+  value: string;
+
+  /**
+   * The value when the checkbox is 'on'
+   */
+  @Prop() checkedValue: string;
+
+  /**
+   * The value when the checkbox is 'off'
+   */
+  @Prop() unCheckedValue: string;
+
+  /**
    * A CSS class to set as the inner `input` element class.
    */
   @Prop() cssClass: string;
@@ -63,9 +79,9 @@ export class CheckBox implements IFormComponent {
   @Prop() id: string;
 
   /**
-   * The `change` event is emitted when a change to the element's value is committed by the user.
+   * The `input` event is emitted when a change to the element's value is committed by the user.
    */
-  @Event() onChange: EventEmitter;
+  @Event() input: EventEmitter;
 
   /**
    * Returns the id of the inner `input` element (if set).
@@ -80,9 +96,23 @@ export class CheckBox implements IFormComponent {
     this.renderer.checkedChanged();
   }
 
+  componentWillLoad() {
+    this.checked = this.value === this.checkedValue ? true : false;
+  }
+
+  @Watch("value")
+  protected valueChanged() {
+    this.checked = this.value === this.checkedValue ? true : false;
+  }
+
   handleChange(event: UIEvent) {
     this.checked = this.renderer.getValueFromEvent(event);
-    this.onChange.emit(event);
+    this.updateValue();
+    this.input.emit(event);
+  }
+
+  updateValue() {
+    this.value = this.checked ? this.checkedValue : this.unCheckedValue;
   }
 
   render() {

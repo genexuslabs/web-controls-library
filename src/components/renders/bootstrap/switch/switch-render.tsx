@@ -17,7 +17,7 @@ export class SwitchRender implements IRenderer {
 
   handleChange(event: UIEvent) {
     this.component.checked = this.getValueFromEvent(event);
-    this.component.onChange.emit(event);
+    this.component.input.emit(event);
   }
 
   /**

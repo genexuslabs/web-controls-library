@@ -49,7 +49,7 @@ export class SelectRender implements IRenderer {
 
   private handleChange(event: UIEvent) {
     this.component.value = this.getValueFromEvent(event);
-    this.component.onChange.emit(event);
+    this.component.input.emit(event);
   }
 
   componentDidUnload() {

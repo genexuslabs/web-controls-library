@@ -3,10 +3,10 @@
 gx-form-field {
   &[label-position="float"] > div {
     position: relative;
-    margin-bottom: 1em;
+    margin-bottom: 1rem;
 
-    --input-padding-y: 0.4em;
-    --input-padding-x: 0.7rem;
+    --input-padding-y: 0.75rem;
+    --input-padding-x: 0.75rem;
 
     & input,
     & > label {
@@ -23,7 +23,7 @@ gx-form-field {
       line-height: 1.5;
       color: #495057;
       border: 1px solid transparent;
-      border-radius: 0.25em;
+      border-radius: 0.25rem;
       transition: all 0.1s ease-in-out;
     }
 
@@ -65,23 +65,23 @@ gx-form-field {
   gx-checkbox {
     .custom-checkbox {
       padding-top: calc(0.375rem + 1px);
-      padding-left: 0.75em;
+      padding-left: 0.75rem;
     }
 
     .custom-control-label:before,
     .custom-control-label:after {
-      top: calc(0.25em - 15px);
+      top: calc(0.25rem - 15px);
     }
   }
 
   gx-radio-option {
     .custom-radio {
-      padding-top: calc(0.375em + 1px);
+      padding-top: calc(0.375rem + 1px);
     }
 
     .custom-control-label:before,
     .custom-control-label:after {
-      top: calc(-0.15em + 7px);
+      top: calc(-0.15rem + 7px);
     }
   }
 }

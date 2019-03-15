@@ -8,18 +8,15 @@ import {
   Watch
 } from "@stencil/core";
 import { SwitchRender } from "../renders/bootstrap/switch/switch-render";
-import {
-  IComponent,
-  IDisableableComponent,
-  IVisibilityComponent
-} from "../common/interfaces";
+import { IFormComponent } from "../common/interfaces";
 @Component({
   shadow: false,
   styleUrl: "switch.scss",
   tag: "gx-switch"
 })
-export class Switch
-  implements IComponent, IDisableableComponent, IVisibilityComponent {
+export class Switch implements IFormComponent {
+  handleChange: (UIEvent: any) => void;
+
   constructor() {
     this.renderer = new SwitchRender(this);
   }
@@ -37,6 +34,9 @@ export class Switch
    */
   @Prop({ mutable: true })
   checked: boolean;
+
+  @Prop({ mutable: true })
+  value: string;
   /**
    * This attribute allows you specify if the element is disabled.
    * If disabled, it will not trigger any user interaction related event
@@ -60,9 +60,9 @@ export class Switch
   @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
-   * The 'change' event is emitted when a change to the element's value is committed by the user.
+   * The 'input' event is emitted when a change to the element's value is committed by the user.
    */
-  @Event() onChange: EventEmitter;
+  @Event() input: EventEmitter;
 
   /**
    * Returns the id of the inner `input` element (if set).

@@ -46,7 +46,7 @@ export class RadioOptionRender implements IRenderer {
   handleChange(event: UIEvent) {
     this.component.checked = true;
     this.nativeInput.focus();
-    this.component.onChange.emit(event);
+    this.component.change.emit(event);
   }
 
   checkedChanged(isChecked: boolean) {

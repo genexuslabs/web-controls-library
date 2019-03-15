@@ -102,12 +102,12 @@ export class PasswordEdit
    * necessarily fired for each change to an element's value but when the
    * control loses focus.
    */
-  @Event() onChange: EventEmitter;
+  @Event() change: EventEmitter;
 
   /**
    * The `input` event is fired synchronously when the value is changed.
    */
-  @Event() onInput: EventEmitter;
+  @Event() input: EventEmitter;
 
   /**
    * Returns the id of the inner `input` element (if set).
