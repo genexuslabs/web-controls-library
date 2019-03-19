@@ -1,0 +1,161 @@
+@import "../common/_base";
+
+gx-gauge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+
+  .gaugeContainerLine {
+    width: 98%;
+    height: auto;
+    display: flex;
+    position: absolute;
+    align-items: center;
+    border-radius: 20px;
+    .gauge {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0);
+      box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5) inset;
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      z-index: 1;
+      align-items: flex-end;
+      .marker {
+        border: 1px solid #616161;
+        background-color: #616161;
+        width: 1px;
+        height: 66%;
+        border-radius: 100% 100% 0 0;
+        transition: 0.6s;
+        z-index: 0;
+        box-shadow: 1px 3px 3px 0px rgba(0, 0, 0, 0.8);
+      }
+    }
+    .minMaxDisplay {
+      position: absolute;
+      display: flex;
+      justify-content: space-between;
+      align-content: center;
+      width: 100%;
+      height: auto;
+      .maxValue {
+        box-shadow: 2px 1px 3px 0px rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        background-color: rgba(44, 44, 44, 1);
+        color: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        padding: 5px 10px;
+        float: right;
+        & span {
+          box-shadow: 2px 1px 3px 0px rgba(0, 0, 0, 0.5);
+          width: 10px;
+          height: 10px;
+          transform: translate(110%, -90%) rotate(45deg);
+          z-index: -1;
+          background-color: rgba(44, 44, 44, 1);
+          position: absolute;
+          border-radius: 0% 200% 120% 100%;
+        }
+      }
+      .minValue {
+        box-shadow: -2px 1px 3px 0px rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        background-color: rgba(44, 44, 44, 1);
+        color: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        padding: 5px 10px;
+        & span {
+          width: 10px;
+          height: 10px;
+          border-radius: 0% 100% 120% 200%;
+          transform: translate(calc(-100%), calc(-100%)) rotate(45deg);
+          z-index: -1;
+          background-color: rgba(44, 44, 44, 1);
+          position: absolute;
+        }
+      }
+    }
+    .rangesContainer {
+      overflow: hidden;
+      border-radius: 20px;
+      position: absolute;
+      width: calc(100%);
+      height: 100%;
+      .range {
+        height: 100%;
+        position: absolute;
+        box-shadow: 2px 0px 10px 0px rgba(0, 0, 0, 0.33);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: -1;
+      }
+    }
+    .namesContainer {
+      position: absolute;
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
+      .rangeName {
+        height: 100%;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        transform: translateY(-100%);
+      }
+    }
+  }
+  .svgContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .gaugeContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 188px;
+      height: 188px;
+      border-radius: 50%;
+      box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.5) inset;
+      z-index: 0;
+      position: absolute;
+      //  display: none;
+    }
+    svg {
+      transform: rotate(-90deg);
+      z-index: -1;
+    }
+    .gauge {
+      border-radius: 50%;
+      font-size: 1.1rem;
+      z-index: 1;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.8); /* */
+      //  display: none;
+    }
+    span.marker {
+      transition: 0.4s ease;
+      position: absolute;
+      width: 2px;
+      .indicator {
+        content: "";
+        border: 1px solid #616161;
+        border-radius: 50%;
+        box-shadow: 1px 3px 3px 0px rgba(0, 0, 0, 0.8);
+        display: block;
+        background-color: #616161;
+      }
+    }
+  }
+}
