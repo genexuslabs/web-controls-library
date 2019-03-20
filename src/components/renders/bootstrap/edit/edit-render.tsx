@@ -3,11 +3,14 @@ import { Edit } from "../../../edit/edit";
 
 export class EditRender implements IRenderer {
   constructor(public component: Edit) {}
-  protected nativeInput: HTMLInputElement;
   private inputId: string;
 
   getNativeInputId() {
-    return this.nativeInput.id;
+    return this.getNativeInput().id;
+  }
+
+  private getNativeInput(): HTMLInputElement | HTMLTextAreaElement {
+    return this.component.element.querySelector("[data-native-element]");
   }
 
   private getCssClasses() {
@@ -39,14 +42,10 @@ export class EditRender implements IRenderer {
    * Update the native input element when the value changes
    */
   valueChanged() {
-    const inputEl = this.nativeInput;
+    const inputEl = this.getNativeInput();
     if (inputEl && inputEl.value !== this.component.value) {
       inputEl.value = this.component.value;
     }
-  }
-
-  componentDidUnload() {
-    this.nativeInput = null;
   }
 
   render() {
@@ -65,13 +64,13 @@ export class EditRender implements IRenderer {
       autocomplete: edit.autocomplete,
       autocorrect: edit.autocorrect,
       class: this.getCssClasses(),
+      "data-native-element": "",
       disabled: edit.disabled,
       hidden: edit.readonly,
       id: this.inputId,
       onChange: edit.handleChange.bind(edit),
       onInput: valueChangingHandler,
-      placeholder: edit.placeholder,
-      ref: input => (this.nativeInput = input as any)
+      placeholder: edit.placeholder
     };
 
     let editableElement;
