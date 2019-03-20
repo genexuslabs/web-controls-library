@@ -34,19 +34,19 @@ predefined slots:
 
 ## Properties
 
-| Property           | Attribute            | Description                                                                                            | Type      |
-| ------------------ | -------------------- | ------------------------------------------------------------------------------------------------------ | --------- |
-| `autoClose`        | `auto-close`         | This attribute lets you specify if the modal dialog is automatically closed when an action is clicked. | `boolean` |
-| `closeButtonLabel` | `close-button-label` | This attribute lets you specify the label for the close button. Important for accessibility.           | `string`  |
-| `id`               | `id`                 | The identifier of the control. Must be unique.                                                         | `string`  |
-| `opened`           | `opened`             | This attribute lets you specify if the modal dialog is opened or closed.                               | `boolean` |
+| Property           | Attribute            | Description                                                                                            | Type      | Default     |
+| ------------------ | -------------------- | ------------------------------------------------------------------------------------------------------ | --------- | ----------- |
+| `autoClose`        | `auto-close`         | This attribute lets you specify if the modal dialog is automatically closed when an action is clicked. | `boolean` | `undefined` |
+| `closeButtonLabel` | `close-button-label` | This attribute lets you specify the label for the close button. Important for accessibility.           | `string`  | `undefined` |
+| `id`               | `id`                 | The identifier of the control. Must be unique.                                                         | `string`  | `undefined` |
+| `opened`           | `opened`             | This attribute lets you specify if the modal dialog is opened or closed.                               | `boolean` | `false`     |
 
 ## Events
 
-| Event     | Description                           |
-| --------- | ------------------------------------- |
-| `onClose` | Fired when the modal dialog is closed |
-| `onOpen`  | Fired when the modal dialog is opened |
+| Event     | Description                           | Type                |
+| --------- | ------------------------------------- | ------------------- |
+| `onClose` | Fired when the modal dialog is closed | `CustomEvent<void>` |
+| `onOpen`  | Fired when the modal dialog is opened | `CustomEvent<void>` |
 
 ---
 
