@@ -146,7 +146,8 @@ export class CardRender implements IRenderer {
     const renderFooter =
       hasFooterActions || !!card.element.querySelector("[slot='footer']");
 
-    return (
+    return [
+      <gx-bootstrap />,
       <div class="card">
         <div class="card-header">
           <slot name="header" />
@@ -182,6 +183,6 @@ export class CardRender implements IRenderer {
           </div>
         )}
       </div>
-    );
+    ];
   }
 }
