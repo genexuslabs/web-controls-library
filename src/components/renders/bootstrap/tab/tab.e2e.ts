@@ -73,7 +73,7 @@ describe("gx-tab", () => {
   });
 
   it("should render role=tablist container div", async () => {
-    const first = await element.find(":first-child");
+    const first = await element.find(":scope > div");
     expect(await first.getAttribute("role")).toEqual("tablist");
   });
 

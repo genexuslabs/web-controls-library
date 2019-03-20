@@ -102,14 +102,15 @@ export class RadioOptionRender implements IRenderer {
       for: attris.id
     };
 
-    return (
+    return [
+      <gx-bootstrap />,
       <div class={this.getInnerControlContainerClass()}>
         <input {...attris} type="radio" checked={this.component.checked} />
         <label class="custom-control-label" {...forAttris}>
           {this.component.caption}
         </label>
       </div>
-    );
+    ];
   }
 }
 

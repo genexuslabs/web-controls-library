@@ -77,7 +77,8 @@ export class ModalRender implements IRenderer {
         : `gx-modal-auto-id-${autoId++}`;
     }
 
-    return (
+    return [
+      <gx-bootstrap />,
       <div
         class="modal fade"
         tabindex="-1"
@@ -112,7 +113,7 @@ export class ModalRender implements IRenderer {
           </div>
         </div>
       </div>
-    );
+    ];
   }
 
   open() {

@@ -17,7 +17,8 @@ export class ButtonRender implements IRenderer {
       }
     });
 
-    return (
+    return [
+      <gx-bootstrap />,
       <button
         class={{
           btn: true,
@@ -36,6 +37,6 @@ export class ButtonRender implements IRenderer {
           <slot />
         </span>
       </button>
-    );
+    ];
   }
 }

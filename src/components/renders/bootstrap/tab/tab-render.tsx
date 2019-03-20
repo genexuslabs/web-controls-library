@@ -22,7 +22,8 @@ export class TabRender implements IRenderer {
     this.setCaptionSlotsClass();
     this.setPageSlotsClass();
 
-    return (
+    return [
+      <gx-bootstrap />,
       <div role="tablist">
         <div class="nav nav-tabs">
           <slot name="caption" />
@@ -31,7 +32,7 @@ export class TabRender implements IRenderer {
           <slot name="page" />
         </div>
       </div>
-    );
+    ];
   }
 
   private setCaptionSlotsClass() {

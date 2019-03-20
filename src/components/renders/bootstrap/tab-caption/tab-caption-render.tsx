@@ -10,7 +10,8 @@ export class TabCaptionRender implements IRenderer {
       (!!this.component.selected).toString()
     );
 
-    return (
+    return [
+      <gx-bootstrap />,
       <a
         class={{
           active: this.component.selected,
@@ -22,7 +23,7 @@ export class TabCaptionRender implements IRenderer {
       >
         <slot />
       </a>
-    );
+    ];
   }
 
   private clickHandler(event: UIEvent) {

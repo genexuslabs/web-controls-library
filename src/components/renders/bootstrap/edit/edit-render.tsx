@@ -103,6 +103,7 @@ export class EditRender implements IRenderer {
     }
 
     return [
+      <gx-bootstrap />,
       <span
         hidden={!edit.readonly}
         class={{

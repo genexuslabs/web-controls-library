@@ -60,7 +60,8 @@ export class MessageRender implements IRenderer {
   render() {
     const message = this.component;
 
-    return (
+    return [
+      <gx-bootstrap />,
       <div
         class={this.wrapperClass()}
         role="alert"
@@ -78,6 +79,6 @@ export class MessageRender implements IRenderer {
           </button>
         ) : null}
       </div>
-    );
+    ];
   }
 }
