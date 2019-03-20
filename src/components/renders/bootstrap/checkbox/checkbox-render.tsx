@@ -68,7 +68,8 @@ export class CheckBoxRender implements IRenderer {
       for: attris.id
     };
 
-    return (
+    return [
+      <gx-bootstrap />,
       <div class="custom-control custom-checkbox">
         <input {...attris} type="checkbox" checked={checkbox.checked} />
         <label
@@ -79,7 +80,7 @@ export class CheckBoxRender implements IRenderer {
           {checkbox.caption}
         </label>
       </div>
-    );
+    ];
   }
 }
 

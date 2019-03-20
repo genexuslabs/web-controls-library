@@ -53,12 +53,13 @@ export class SwitchRender implements IRenderer {
       type: "checkbox"
     };
 
-    return (
+    return [
+      <gx-bootstrap />,
       <span class="switch switch-sm">
         <input {...inputAttrs} />
         <label htmlFor={this.inputId}>{this.component.caption}</label>
       </span>
-    );
+    ];
   }
 }
 

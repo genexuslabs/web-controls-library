@@ -5,7 +5,8 @@ export class ProgressBarRender implements IRenderer {
   constructor(public component: ProgressBar) {}
 
   render() {
-    return (
+    return [
+      <gx-bootstrap />,
       <div class="progress">
         <div
           class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
@@ -17,6 +18,6 @@ export class ProgressBarRender implements IRenderer {
           <slot />
         </div>
       </div>
-    );
+    ];
   }
 }
