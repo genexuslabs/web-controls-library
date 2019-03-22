@@ -1,5 +1,5 @@
 @import "../common/_base";
 
 gx-image {
-  @include visibility(inline-block);
+  @include visibility(inline-flex);
 }
