@@ -60,6 +60,16 @@ gx-form-field {
     }
   }
 
+  & > .row {
+    overflow: hidden;
+    & > div {
+      & > gx-image {
+        max-height: 100%;
+        max-width: 100%;
+      }
+    }
+  }
+
   gx-checkbox {
     .custom-checkbox {
       padding-top: calc(1.375rem + 1px);
