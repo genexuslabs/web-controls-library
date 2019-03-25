@@ -872,6 +872,10 @@ export namespace Components {
      */
     revealButtonTextOn: string;
     /**
+     * Indicates if the value is revealed or masked.
+     */
+    revealed: boolean;
+    /**
      * If true, a reveal password button is shown next to the password input. Pressing the reveal button toggles the password mask, allowing the user to view the password text.
      */
     showRevealButton: boolean;
@@ -921,6 +925,10 @@ export namespace Components {
      * Text of the reveal button to offer revealing the password.
      */
     revealButtonTextOn?: string;
+    /**
+     * Indicates if the value is revealed or masked.
+     */
+    revealed?: boolean;
     /**
      * If true, a reveal password button is shown next to the password input. Pressing the reveal button toggles the password mask, allowing the user to view the password text.
      */
