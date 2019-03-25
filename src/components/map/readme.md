@@ -14,17 +14,17 @@ Example: `38.89606811858382, -77.0365619659424`
 
 ## Properties
 
-| Property  | Attribute  | Description                              | Type     |
-| --------- | ---------- | ---------------------------------------- | -------- |
-| `center`  | `center`   | The coord of initial center of the map.  | `string` |
-| `maxZoom` | `max-zoom` | The max zoom level available in the map. | `number` |
-| `zoom`    | `zoom`     | The initial zoom level in the map.       | `number` |
+| Property  | Attribute  | Description                              | Type     | Default  |
+| --------- | ---------- | ---------------------------------------- | -------- | -------- |
+| `center`  | `center`   | The coord of initial center of the map.  | `string` | `"0, 0"` |
+| `maxZoom` | `max-zoom` | The max zoom level available in the map. | `number` | `20`     |
+| `zoom`    | `zoom`     | The initial zoom level in the map.       | `number` | `1`      |
 
 ## Events
 
-| Event          | Description                    |
-| -------------- | ------------------------------ |
-| `gxMapDidLoad` | Emmits when the map is loaded. |
+| Event          | Description                    | Type                |
+| -------------- | ------------------------------ | ------------------- |
+| `gxMapDidLoad` | Emmits when the map is loaded. | `CustomEvent<void>` |
 
 ---
 

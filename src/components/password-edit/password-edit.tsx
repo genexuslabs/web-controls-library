@@ -6,7 +6,6 @@ import {
   Listen,
   Method,
   Prop,
-  State,
   Watch
 } from "@stencil/core";
 import { PasswordEditRender } from "../renders/bootstrap/password-edit/password-edit-render";
@@ -72,6 +71,12 @@ export class PasswordEdit
   @Prop() readonly: boolean;
 
   /**
+   * Indicates if the value is revealed or masked.
+   */
+  @Prop({ mutable: true })
+  revealed = false;
+
+  /**
    * Text of the reveal button to offer revealing the password.
    */
   @Prop() revealButtonTextOn: string;
@@ -93,8 +98,6 @@ export class PasswordEdit
    */
   @Prop({ mutable: true })
   value: string;
-
-  @State() protected revealed = false;
 
   /**
    * The `change` event is emitted when a change to the element's value is
@@ -125,7 +128,6 @@ export class PasswordEdit
   @Listen("gxTriggerClick")
   protected handleTriggerClick() {
     this.revealed = !this.revealed;
-    this.renderer.handleTriggerClick();
   }
 
   render() {

@@ -212,12 +212,6 @@ export class Select
     this.renderer.componentDidUnload();
   }
 
-  hostData() {
-    return {
-      role: "combobox"
-    };
-  }
-
   render() {
     return this.renderer.render();
   }

@@ -1,23 +1,23 @@
 {
   "name": "@genexus/web-controls-library",
-  "version": "0.0.33",
+  "version": "0.1.0",
   "description": "GeneXus Web Controls Library",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
-  "files": [
-    "dist/"
-  ],
+  "files": ["dist/"],
   "scripts": {
-    "build": "stencil build --docs",
+    "build": "stencil build",
     "postbuild": "npm run scss-bundle",
     "docs": "stencil build --dev --docs && npm run sassdoc",
     "lint": "npm run tslint",
     "precommit": "pretty-quick --staged && npm run lint",
     "pretty-quick": "pretty-quick",
-    "sassdoc": "sassdoc src/components/**/*-theming-mixins.scss -c sassdoc.config.json",
-    "scss-bundle": "scss-bundle -e ./src/components/_components-theming-mixins.scss -d dist/theming/theming-mixins.scss",
+    "sassdoc":
+      "sassdoc src/components/**/*-theming-mixins.scss -c sassdoc.config.json",
+    "scss-bundle":
+      "scss-bundle -e ./src/components/_components-theming-mixins.scss -d dist/theming/theming-mixins.scss",
     "start": "stencil build --dev --watch --serve",
     "start.es5": "stencil build --dev --watch --serve --es5",
     "test": "stencil test --spec --e2e",
@@ -25,7 +25,8 @@
     "test.watch": "stencil test --spec --e2e --watchAll",
     "tslint": "tslint --project . -e \"**/*.spec.ts\"",
     "validate": "npm run lint && npm run test && npm run build",
-    "validate.ci": "npm run lint && npm run test.ci && npm run build --max-workers 1 --debug"
+    "validate.ci":
+      "npm run lint && npm run test.ci && npm run build --max-workers 1 --debug"
   },
   "dependencies": {
     "bootstrap": "^4.3.1",
@@ -41,9 +42,9 @@
     "@types/jest": "23.3.3",
     "@types/puppeteer": "1.11.1",
     "husky": "^0.14.3",
-    "jest": "^24.1.0",
-    "jest-cli": "^24.1.0",
-    "jest-environment-node": "^24.0.0",
+    "jest": "23.6.0",
+    "jest-cli": "23.6.0",
+    "jest-environment-node": "^24.3.1",
     "pixelmatch": "4.0.2",
     "prettier": "^1.11.1",
     "pretty-quick": "^1.4.1",
@@ -69,15 +70,10 @@
   "homepage": "https://github.com/genexuslabs/web-controls-library",
   "jest": {
     "transform": {
-      "^.+\\.(ts|tsx)$": "<rootDir>/node_modules/@stencil/core/testing/jest.preprocessor.js"
+      "^.+\\.(ts|tsx)$":
+        "<rootDir>/node_modules/@stencil/core/testing/jest.preprocessor.js"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(tsx?|jsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json",
-      "jsx"
-    ]
+    "moduleFileExtensions": ["ts", "tsx", "js", "json", "jsx"]
   }
 }

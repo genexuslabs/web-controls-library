@@ -6,11 +6,14 @@ export class RadioOptionRender implements IRenderer {
 
   private checkedTmr: any;
   private didLoad: boolean;
-  protected nativeInput: HTMLInputElement;
   private inputId: string;
 
   getNativeInputId() {
-    return this.nativeInput.id;
+    return this.getNativeInput().id;
+  }
+
+  private getNativeInput(): HTMLInputElement {
+    return this.component.element.querySelector("[data-native-element]");
   }
 
   private getCssClasses() {
@@ -45,12 +48,14 @@ export class RadioOptionRender implements IRenderer {
 
   handleChange(event: UIEvent) {
     this.component.checked = true;
-    this.nativeInput.focus();
+    const nativeInput = this.getNativeInput();
+    nativeInput.focus();
     this.component.onChange.emit(event);
   }
 
   checkedChanged(isChecked: boolean) {
-    const inputEl = this.nativeInput;
+    const nativeInput = this.getNativeInput();
+    const inputEl = nativeInput;
     if (inputEl && inputEl.checked !== isChecked) {
       inputEl.checked = isChecked;
     }
@@ -68,15 +73,12 @@ export class RadioOptionRender implements IRenderer {
   }
 
   disabledChanged(isDisabled: boolean) {
-    this.nativeInput.disabled = isDisabled;
+    const nativeInput = this.getNativeInput();
+    nativeInput.disabled = isDisabled;
   }
 
   componentDidLoad() {
     this.didLoad = true;
-  }
-
-  componentDidUnload() {
-    this.nativeInput = null;
   }
 
   render() {
@@ -89,12 +91,12 @@ export class RadioOptionRender implements IRenderer {
     const attris = {
       "aria-disabled": this.component.disabled ? "true" : undefined,
       class: this.getCssClasses(),
+      "data-native-element": "",
       disabled: this.component.disabled,
       id: this.inputId,
       name: this.component.name,
       onChange: this.handleChange.bind(this),
       onClick: this.handleClick.bind(this),
-      ref: input => (this.nativeInput = input as any),
       value: this.component.value
     };
 
@@ -102,14 +104,15 @@ export class RadioOptionRender implements IRenderer {
       for: attris.id
     };
 
-    return (
+    return [
+      <gx-bootstrap />,
       <div class={this.getInnerControlContainerClass()}>
         <input {...attris} type="radio" checked={this.component.checked} />
         <label class="custom-control-label" {...forAttris}>
           {this.component.caption}
         </label>
       </div>
-    );
+    ];
   }
 }
 
