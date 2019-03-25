@@ -19,9 +19,9 @@
 
 | Event    | Description                                                                      | Type                |
 | -------- | -------------------------------------------------------------------------------- | ------------------- |
-| `change` |                                                                                  | `CustomEvent<void>` |
+| `change` | The `change` event is emitted every time the chronometer changes                 | `CustomEvent<void>` |
+| `end`    | Event to emit after max time is consumed.                                        | `CustomEvent<void>` |
 | `input`  | The `input` event is emitted every time the chronometer changes (every 1 second) | `CustomEvent<void>` |
-| `onEnd`  | Event to emit after max time is consumed.                                        | `CustomEvent<void>` |
 | `tick`   | Event to emit After elapsed time (tickInterval).                                 | `CustomEvent<void>` |
 
 ## Methods

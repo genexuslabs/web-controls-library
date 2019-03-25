@@ -9,6 +9,7 @@ import {
   Watch
 } from "@stencil/core";
 import { IComponent /*, IFormComponent */ } from "../common/interfaces";
+import { TimerState } from "./chronometer-timer-state";
 
 @Component({
   shadow: false,
@@ -65,7 +66,7 @@ export class Chronometer implements IComponent /*, IFormComponent*/ {
   /**
    * State of the Chronometer.
    */
-  @Prop() state = TimerState.Stopped;
+  @Prop() state: TimerState = TimerState.Stopped;
 
   /**
    * The value of the control.
@@ -76,15 +77,17 @@ export class Chronometer implements IComponent /*, IFormComponent*/ {
   /**
    * The `input` event is emitted every time the chronometer changes (every 1 second)
    */
-
   @Event() input: EventEmitter;
 
+  /**
+   * The `change` event is emitted every time the chronometer changes
+   */
   @Event() change: EventEmitter;
 
   /**
    * Event to emit after max time is consumed.
    */
-  @Event() onEnd: EventEmitter;
+  @Event() end: EventEmitter;
 
   /**
    * Event to emit After elapsed time (tickInterval).
@@ -123,7 +126,7 @@ export class Chronometer implements IComponent /*, IFormComponent*/ {
       this.updateElapsedTime();
       this.handleChange();
       if (this.maxValue > 0 && this.elapsedTime >= this.maxValue * this.unit) {
-        this.onEnd.emit();
+        this.end.emit();
         this.stop();
       }
     }, 1000);
@@ -198,10 +201,4 @@ export class Chronometer implements IComponent /*, IFormComponent*/ {
 
     return <span>{maxValueReached ? this.maxValueText : time}</span>;
   }
-}
-
-export enum TimerState {
-  Running = "running",
-  Stopped = "stopped",
-  Reset = "reset"
 }
