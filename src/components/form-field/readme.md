@@ -14,15 +14,15 @@ There must be a form custom element as a child with the `area` attribute set to 
 
 An "edit" custom element can be on of these:
 
-- `gx-edit`
+* `gx-edit`
 
-* `gx-checkbox`
+- `gx-checkbox`
 
-- `gx-radio-group`
+* `gx-radio-group`
 
-* `gx-select`
+- `gx-select`
 
-- `gx-password-edit`
+* `gx-password-edit`
 
 The child element should have and id specified, so the inner `label` element rendered uses it in its `for` attribute.
 

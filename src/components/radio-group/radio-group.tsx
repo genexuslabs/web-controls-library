@@ -72,7 +72,7 @@ export class RadioGroup
    * The `change` event is emitted when a change to the element's value is
    * committed by the user.
    */
-  @Event() onChange: EventEmitter;
+  @Event() change: EventEmitter;
 
   private getValueFromEvent(event: UIEvent): string {
     return event.target && (event.target as HTMLInputElement).value;
@@ -80,7 +80,7 @@ export class RadioGroup
 
   handleChange(event: UIEvent) {
     this.value = this.getValueFromEvent(event);
-    this.onChange.emit(event);
+    this.change.emit(event);
   }
 
   @Watch("disabled")
@@ -95,9 +95,11 @@ export class RadioGroup
     if (this.value === undefined) {
       // set to undefined
       // ensure all that are checked become unchecked
-      this.radios.filter(r => r.checked).forEach(radio => {
-        radio.checked = false;
-      });
+      this.radios
+        .filter(r => r.checked)
+        .forEach(radio => {
+          radio.checked = false;
+        });
     } else {
       let hasChecked = false;
 
@@ -127,7 +129,7 @@ export class RadioGroup
 
     if (this.didLoad) {
       // emit the new value
-      this.onChange.emit({ value: this.value });
+      this.change.emit({ value: this.value });
     }
   }
 

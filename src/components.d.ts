@@ -133,6 +133,10 @@ export namespace Components {
      */
     checked: boolean;
     /**
+     * The value when the checkbox is 'on'
+     */
+    checkedValue: string;
+    /**
      * A CSS class to set as the inner `input` element class.
      */
     cssClass: string;
@@ -152,6 +156,14 @@ export namespace Components {
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode: "collapse" | "keep-space";
+    /**
+     * The value when the checkbox is 'off'
+     */
+    unCheckedValue: string;
+    /**
+     * The value of the control.
+     */
+    value: string;
   }
   interface GxCheckboxAttributes extends StencilHTMLAttributes {
     /**
@@ -162,6 +174,10 @@ export namespace Components {
      * Indicates that the control is selected by default.
      */
     checked?: boolean;
+    /**
+     * The value when the checkbox is 'on'
+     */
+    checkedValue?: string;
     /**
      * A CSS class to set as the inner `input` element class.
      */
@@ -179,9 +195,17 @@ export namespace Components {
      */
     invisibleMode?: "collapse" | "keep-space";
     /**
-     * The `change` event is emitted when a change to the element's value is committed by the user.
+     * The `input` event is emitted when a change to the element's value is committed by the user.
      */
-    onOnChange?: (event: CustomEvent) => void;
+    onInput?: (event: CustomEvent) => void;
+    /**
+     * The value when the checkbox is 'off'
+     */
+    unCheckedValue?: string;
+    /**
+     * The value of the control.
+     */
+    value?: string;
   }
 
   interface GxEdit {
@@ -284,17 +308,17 @@ export namespace Components {
      */
     multiline?: boolean;
     /**
+     * The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus.
+     */
+    onChange?: (event: CustomEvent) => void;
+    /**
      * The `gxTriggerClick` event is fired when the trigger button is clicked.
      */
     onGxTriggerClick?: (event: CustomEvent) => void;
     /**
-     * The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus.
-     */
-    onOnChange?: (event: CustomEvent) => void;
-    /**
      * The `input` event is fired synchronously when the value is changed.
      */
-    onOnInput?: (event: CustomEvent) => void;
+    onInput?: (event: CustomEvent) => void;
     /**
      * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
      */
@@ -904,11 +928,11 @@ export namespace Components {
     /**
      * The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus.
      */
-    onOnChange?: (event: CustomEvent) => void;
+    onChange?: (event: CustomEvent) => void;
     /**
      * The `input` event is fired synchronously when the value is changed.
      */
-    onOnInput?: (event: CustomEvent) => void;
+    onInput?: (event: CustomEvent) => void;
     /**
      * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
      */
@@ -1002,7 +1026,7 @@ export namespace Components {
     /**
      * The `change` event is emitted when a change to the element's value is committed by the user.
      */
-    onOnChange?: (event: CustomEvent) => void;
+    onChange?: (event: CustomEvent) => void;
     /**
      * The initial value of the control. Setting the value automatically selects the corresponding radio option.
      */
@@ -1073,6 +1097,10 @@ export namespace Components {
      */
     name?: string;
     /**
+     * The `change` event is emitted when a change to the element's value is committed by the user.
+     */
+    onChange?: (event: CustomEvent) => void;
+    /**
      * Emitted when the radio loads.
      */
     onGxRadioDidLoad?: (event: CustomEvent) => void;
@@ -1084,10 +1112,6 @@ export namespace Components {
      * Emitted when the radio button is selected.
      */
     onGxSelect?: (event: CustomEvent) => void;
-    /**
-     * The `change` event is emitted when a change to the element's value is committed by the user.
-     */
-    onOnChange?: (event: CustomEvent) => void;
     /**
      * The initial value of the control.
      */
@@ -1125,6 +1149,10 @@ export namespace Components {
      */
     disabled?: boolean;
     /**
+     * The `change` event is emitted when a change to the element's value is committed by the user.
+     */
+    onChange?: (event: CustomEvent) => void;
+    /**
      * Emitted when the option is disabled.
      */
     onGxDisable?: (event: CustomEvent) => void;
@@ -1140,10 +1168,6 @@ export namespace Components {
      * Emitted when the option unloads.
      */
     onGxSelectDidUnload?: (event: CustomEvent) => void;
-    /**
-     * The `change` event is emitted when a change to the element's value is committed by the user.
-     */
-    onOnChange?: (event: CustomEvent) => void;
     /**
      * Indicates that the control is selected by default.
      */
@@ -1202,9 +1226,9 @@ export namespace Components {
      */
     invisibleMode?: "collapse" | "keep-space";
     /**
-     * The `change` event is emitted when a change to the element's value is committed by the user.
+     * The `input` event is emitted when a change to the element's value is committed by the user.
      */
-    onOnChange?: (event: CustomEvent) => void;
+    onInput?: (event: CustomEvent) => void;
     /**
      * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
      */
@@ -1240,6 +1264,7 @@ export namespace Components {
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode: "collapse" | "keep-space";
+    value: string;
   }
   interface GxSwitchAttributes extends StencilHTMLAttributes {
     /**
@@ -1263,9 +1288,10 @@ export namespace Components {
      */
     invisibleMode?: "collapse" | "keep-space";
     /**
-     * The 'change' event is emitted when a change to the element's value is committed by the user.
+     * The 'input' event is emitted when a change to the element's value is committed by the user.
      */
-    onOnChange?: (event: CustomEvent) => void;
+    onInput?: (event: CustomEvent) => void;
+    value?: string;
   }
 
   interface GxTabCaption {

@@ -23,9 +23,9 @@ The one option whose value matches the value of the select will be automatically
 
 ## Events
 
-| Event      | Description                                                                                  | Type                |
-| ---------- | -------------------------------------------------------------------------------------------- | ------------------- |
-| `onChange` | The `change` event is emitted when a change to the element's value is committed by the user. | `CustomEvent<void>` |
+| Event   | Description                                                                                 | Type                |
+| ------- | ------------------------------------------------------------------------------------------- | ------------------- |
+| `input` | The `input` event is emitted when a change to the element's value is committed by the user. | `CustomEvent<void>` |
 
 ## Methods
 

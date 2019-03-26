@@ -24,7 +24,7 @@ export interface IFormComponent
     IVisibilityComponent {
   handleChange: (UIEvent) => void;
   id: string;
-  onChange: EventEmitter;
+  input: EventEmitter;
   getNativeInputId: () => void;
 }
 

@@ -50,7 +50,7 @@ export class RadioOptionRender implements IRenderer {
     this.component.checked = true;
     const nativeInput = this.getNativeInput();
     nativeInput.focus();
-    this.component.onChange.emit(event);
+    this.component.change.emit(event);
   }
 
   checkedChanged(isChecked: boolean) {

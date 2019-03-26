@@ -141,12 +141,12 @@ export class Edit implements IFormComponent {
    * necessarily fired for each change to an element's value but when the
    * control loses focus.
    */
-  @Event() onChange: EventEmitter;
+  @Event() change: EventEmitter;
 
   /**
    * The `input` event is fired synchronously when the value is changed.
    */
-  @Event() onInput: EventEmitter;
+  @Event() input: EventEmitter;
 
   /**
    * The `gxTriggerClick` event is fired when the trigger button is clicked.
@@ -181,12 +181,12 @@ export class Edit implements IFormComponent {
 
   handleChange(event: UIEvent) {
     this.value = this.renderer.getValueFromEvent(event);
-    this.onChange.emit(event);
+    this.change.emit(event);
   }
 
   handleValueChanging(event: UIEvent) {
     this.value = this.renderer.getValueFromEvent(event);
-    this.onInput.emit(event);
+    this.input.emit(event);
   }
 
   handleTriggerClick(event: UIEvent) {

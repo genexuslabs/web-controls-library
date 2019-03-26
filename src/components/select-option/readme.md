@@ -17,11 +17,11 @@ Options for `gx-select` custom element, like the `option` native element.
 
 | Event               | Description                                                                                  | Type                |
 | ------------------- | -------------------------------------------------------------------------------------------- | ------------------- |
+| `change`            | The `change` event is emitted when a change to the element's value is committed by the user. | `CustomEvent<void>` |
 | `gxDisable`         | Emitted when the option is disabled.                                                         | `CustomEvent<void>` |
 | `gxSelect`          | Emitted when the option is selected.                                                         | `CustomEvent<void>` |
 | `gxSelectDidLoad`   | Emitted when the option loads.                                                               | `CustomEvent<void>` |
 | `gxSelectDidUnload` | Emitted when the option unloads.                                                             | `CustomEvent<void>` |
-| `onChange`          | The `change` event is emitted when a change to the element's value is committed by the user. | `CustomEvent<void>` |
 
 ---
 

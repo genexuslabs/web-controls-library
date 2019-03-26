@@ -73,7 +73,8 @@ export class PasswordEdit
   /**
    * Indicates if the value is revealed or masked.
    */
-  @Prop({ mutable: true }) revealed = false;
+  @Prop({ mutable: true })
+  revealed = false;
 
   /**
    * Text of the reveal button to offer revealing the password.
@@ -104,12 +105,12 @@ export class PasswordEdit
    * necessarily fired for each change to an element's value but when the
    * control loses focus.
    */
-  @Event() onChange: EventEmitter;
+  @Event() change: EventEmitter;
 
   /**
    * The `input` event is fired synchronously when the value is changed.
    */
-  @Event() onInput: EventEmitter;
+  @Event() input: EventEmitter;
 
   /**
    * Returns the id of the inner `input` element (if set).

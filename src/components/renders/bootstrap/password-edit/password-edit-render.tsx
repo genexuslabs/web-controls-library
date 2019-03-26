@@ -16,12 +16,12 @@ export class PasswordEditRender implements IRenderer {
 
   handleChange(event: UIEvent) {
     this.component.value = this.getValueFromEvent(event);
-    this.component.onChange.emit(event);
+    this.component.change.emit(event);
   }
 
   handleInput(event: UIEvent) {
     this.component.value = this.getValueFromEvent(event);
-    this.component.onInput.emit(event);
+    this.component.input.emit(event);
   }
 
   /**
