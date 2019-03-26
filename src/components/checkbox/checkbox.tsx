@@ -102,7 +102,7 @@ export class CheckBox implements IFormComponent {
 
   @Watch("value")
   protected valueChanged() {
-    this.checked = this.value === this.checkedValue ? true : false;
+    this.checked = this.value === this.checkedValue;
   }
 
   handleChange(event: UIEvent) {
