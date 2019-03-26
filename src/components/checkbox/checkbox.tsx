@@ -97,7 +97,7 @@ export class CheckBox implements IFormComponent {
   }
 
   componentWillLoad() {
-    this.checked = this.value === this.checkedValue ? true : false;
+    this.checked = this.value === this.checkedValue;
   }
 
   @Watch("value")
