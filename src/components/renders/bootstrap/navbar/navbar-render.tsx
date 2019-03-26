@@ -80,7 +80,8 @@ export class NavBarRender implements IRenderer {
       header.alt = header.alt || "";
     }
 
-    return (
+    return [
+      <gx-bootstrap />,
       <nav
         id={this.navBarId}
         class={{
@@ -127,7 +128,7 @@ export class NavBarRender implements IRenderer {
           </div>
         </div>
       </nav>
-    );
+    ];
   }
 }
 

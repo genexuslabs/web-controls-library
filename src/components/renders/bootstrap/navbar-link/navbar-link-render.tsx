@@ -16,7 +16,8 @@ export class NavBarLinkRender implements IRenderer {
   render() {
     this.component.element.classList.add("nav-item");
 
-    return (
+    return [
+      <gx-bootstrap />,
       <a
         class={{
           active: this.component.active,
@@ -29,6 +30,6 @@ export class NavBarLinkRender implements IRenderer {
       >
         <slot />
       </a>
-    );
+    ];
   }
 }

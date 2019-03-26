@@ -5,7 +5,6 @@ export class PasswordEditRender implements IRenderer {
   constructor(public component: PasswordEdit) {}
 
   private innerEdit: any;
-  protected revealed = false;
 
   getNativeInputId() {
     return this.innerEdit.getNativeInputId();
@@ -25,9 +24,6 @@ export class PasswordEditRender implements IRenderer {
     this.component.input.emit(event);
   }
 
-  handleTriggerClick() {
-    this.innerEdit.type = this.revealed ? "text" : "password";
-  }
   /**
    * Update the native input element when the value changes
    */
@@ -54,19 +50,19 @@ export class PasswordEditRender implements IRenderer {
         show-trigger={
           !this.component.readonly && this.component.showRevealButton
         }
-        trigger-class={this.revealed ? "active" : ""}
+        trigger-class={this.component.revealed ? "active" : ""}
         trigger-text={
-          this.revealed
+          this.component.revealed
             ? this.component.revealButtonTextOff
             : this.component.revealButtonTextOn
         }
-        type={this.revealed ? "text" : "password"}
+        type={this.component.revealed ? "text" : "password"}
         value={this.component.value}
         onChange={this.handleChange.bind(this)}
         onInput={this.handleInput.bind(this)}
       >
         <i
-          class={"fa fa-eye" + (this.revealed ? "-slash" : "")}
+          class={"fa fa-eye" + (this.component.revealed ? "-slash" : "")}
           slot="trigger-content"
         />
       </gx-edit>

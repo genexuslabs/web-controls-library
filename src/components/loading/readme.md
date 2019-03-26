@@ -9,10 +9,11 @@ infinitely, or determinate, which allows the user to set its progress using the 
 
 ```html
 <gx-loading
-    caption="Loading"
-    description="Please wait while we load some stuff"
-    type="indeterminate"
-    presented>
+  caption="Loading"
+  description="Please wait while we load some stuff"
+  type="indeterminate"
+  presented
+>
 </gx-loading>
 ```
 
@@ -20,11 +21,12 @@ infinitely, or determinate, which allows the user to set its progress using the 
 
 ```html
 <gx-loading
-    id="loading-1"
-    caption="Loading"
-    description="0%"
-    type="determinate"
-    presented>
+  id="loading-1"
+  caption="Loading"
+  description="0%"
+  type="determinate"
+  presented
+>
 </gx-loading>
 ```
 
@@ -43,13 +45,13 @@ loadingEl.value = 1;
 
 ## Properties
 
-| Property      | Attribute     | Description                                                               | Type                               |
-| ------------- | ------------- | ------------------------------------------------------------------------- | ---------------------------------- |
-| `caption`     | `caption`     | Sets the caption text.                                                    | `string`                           |
-| `description` | `description` | Sets the description text.                                                | `string`                           |
-| `presented`   | `presented`   | Sets if the loading dialog is presented.                                  | `boolean`                          |
-| `type`        | `type`        | Sets the value.                                                           | `"determinate"`, `"indeterminate"` |
-| `value`       | `value`       | Sets the value when type is determinate. Must be a value between 0 and 1. | `number`                           |
+| Property      | Attribute     | Description                                                               | Type                               | Default     |
+| ------------- | ------------- | ------------------------------------------------------------------------- | ---------------------------------- | ----------- |
+| `caption`     | `caption`     | Sets the caption text.                                                    | `string`                           | `undefined` |
+| `description` | `description` | Sets the description text.                                                | `string`                           | `undefined` |
+| `presented`   | `presented`   | Sets if the loading dialog is presented.                                  | `boolean`                          | `false`     |
+| `type`        | `type`        | Sets the value.                                                           | `"determinate" \| "indeterminate"` | `undefined` |
+| `value`       | `value`       | Sets the value when type is determinate. Must be a value between 0 and 1. | `number`                           | `0`         |
 
 ---
 

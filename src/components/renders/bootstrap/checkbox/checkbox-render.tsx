@@ -3,11 +3,14 @@ import { CheckBox } from "../../../checkbox/checkbox";
 
 export class CheckBoxRender implements IRenderer {
   constructor(public component: CheckBox) {}
-  protected nativeInput: HTMLInputElement;
   private inputId: string;
 
   getNativeInputId() {
-    return this.nativeInput.id;
+    return this.getNativeInput().id;
+  }
+
+  private getNativeInput(): HTMLInputElement {
+    return this.component.element.querySelector("[data-native-element]");
   }
 
   private getCssClasses() {
@@ -36,14 +39,10 @@ export class CheckBoxRender implements IRenderer {
    * Update the native input element when the value changes
    */
   checkedChanged() {
-    const inputEl = this.nativeInput;
+    const inputEl = this.getNativeInput();
     if (inputEl && inputEl.checked !== this.component.checked) {
       inputEl.checked = this.component.checked;
     }
-  }
-
-  componentDidUnload() {
-    this.nativeInput = null;
   }
 
   render() {
@@ -58,17 +57,18 @@ export class CheckBoxRender implements IRenderer {
     const attris = {
       "aria-disabled": checkbox.disabled ? "true" : undefined,
       class: this.getCssClasses(),
+      "data-native-element": "",
       disabled: checkbox.disabled,
       id: this.inputId,
-      onChange: checkbox.handleChange.bind(checkbox),
-      ref: input => (this.nativeInput = input as any)
+      onChange: checkbox.handleChange.bind(checkbox)
     };
 
     const forAttris = {
       for: attris.id
     };
 
-    return (
+    return [
+      <gx-bootstrap />,
       <div class="custom-control custom-checkbox">
         <input {...attris} type="checkbox" checked={checkbox.checked} />
         <label
@@ -79,7 +79,7 @@ export class CheckBoxRender implements IRenderer {
           {checkbox.caption}
         </label>
       </div>
-    );
+    ];
   }
 }
 

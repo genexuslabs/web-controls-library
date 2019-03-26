@@ -115,7 +115,6 @@ export class RadioOption
 
   componentDidUnload() {
     this.gxRadioDidUnload.emit({ radio: this });
-    this.renderer.componentDidUnload();
   }
 
   render() {

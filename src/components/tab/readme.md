@@ -36,15 +36,15 @@ tab content, using the `gx-tab-page` element.
 
 ## Properties
 
-| Property        | Attribute        | Description                                                               | Type  |
-| --------------- | ---------------- | ------------------------------------------------------------------------- | ----- |
-| `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden. | Value | Details |  | ------------ | --------------------------------------------------------------------------- |  | `keep-space` | The element remains in the document flow, and it does occupy space. |  | `collapse` | The element is removed form the document flow, and it doesn't occupy space. |  | `"collapse"`, `"keep-space"` |
+| Property        | Attribute        | Description                                                                                                                                                                                                                                                                                                                                                                                  | Type                         | Default      |
+| --------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------ |
+| `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \| | `"collapse" \| "keep-space"` | `"collapse"` |
 
 ## Events
 
-| Event         | Description                          |
-| ------------- | ------------------------------------ |
-| `onTabChange` | Fired when the active tab is changed |
+| Event         | Description                          | Type                |
+| ------------- | ------------------------------------ | ------------------- |
+| `onTabChange` | Fired when the active tab is changed | `CustomEvent<void>` |
 
 ---
 

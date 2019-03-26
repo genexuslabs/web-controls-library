@@ -25,4 +25,18 @@ describe("gx-password-edit", () => {
     const edit = await page.find("gx-edit");
     expect(await edit.getProperty("value")).toEqual("bar");
   });
+
+  it("should render a gx-edit element of type=text when revealed=true", async () => {
+    await element.setProperty("revealed", true);
+    await page.waitForChanges();
+    const edit = await page.find("gx-edit");
+    expect(await edit.getProperty("type")).toEqual("text");
+  });
+
+  it("should render a gx-edit element of type=password when revealed=false", async () => {
+    await element.setProperty("revealed", false);
+    await page.waitForChanges();
+    const edit = await page.find("gx-edit");
+    expect(await edit.getProperty("type")).toEqual("password");
+  });
 });

@@ -896,6 +896,10 @@ export namespace Components {
      */
     revealButtonTextOn: string;
     /**
+     * Indicates if the value is revealed or masked.
+     */
+    revealed: boolean;
+    /**
      * If true, a reveal password button is shown next to the password input. Pressing the reveal button toggles the password mask, allowing the user to view the password text.
      */
     showRevealButton: boolean;
@@ -945,6 +949,10 @@ export namespace Components {
      * Text of the reveal button to offer revealing the password.
      */
     revealButtonTextOn?: string;
+    /**
+     * Indicates if the value is revealed or masked.
+     */
+    revealed?: boolean;
     /**
      * If true, a reveal password button is shown next to the password input. Pressing the reveal button toggles the password mask, allowing the user to view the password text.
      */
@@ -1109,6 +1117,9 @@ export namespace Components {
      */
     value?: string;
   }
+
+  interface GxBootstrap {}
+  interface GxBootstrapAttributes extends StencilHTMLAttributes {}
 
   interface GxSelectOption {
     /**
@@ -1471,6 +1482,7 @@ declare global {
     GxProgressBar: Components.GxProgressBar;
     GxRadioGroup: Components.GxRadioGroup;
     GxRadioOption: Components.GxRadioOption;
+    GxBootstrap: Components.GxBootstrap;
     GxSelectOption: Components.GxSelectOption;
     GxSelect: Components.GxSelect;
     GxSwitch: Components.GxSwitch;
@@ -1504,6 +1516,7 @@ declare global {
     "gx-progress-bar": Components.GxProgressBarAttributes;
     "gx-radio-group": Components.GxRadioGroupAttributes;
     "gx-radio-option": Components.GxRadioOptionAttributes;
+    "gx-bootstrap": Components.GxBootstrapAttributes;
     "gx-select-option": Components.GxSelectOptionAttributes;
     "gx-select": Components.GxSelectAttributes;
     "gx-switch": Components.GxSwitchAttributes;
@@ -1671,6 +1684,14 @@ declare global {
     new (): HTMLGxRadioOptionElement;
   };
 
+  interface HTMLGxBootstrapElement
+    extends Components.GxBootstrap,
+      HTMLStencilElement {}
+  var HTMLGxBootstrapElement: {
+    prototype: HTMLGxBootstrapElement;
+    new (): HTMLGxBootstrapElement;
+  };
+
   interface HTMLGxSelectOptionElement
     extends Components.GxSelectOption,
       HTMLStencilElement {}
@@ -1761,6 +1782,7 @@ declare global {
     "gx-progress-bar": HTMLGxProgressBarElement;
     "gx-radio-group": HTMLGxRadioGroupElement;
     "gx-radio-option": HTMLGxRadioOptionElement;
+    "gx-bootstrap": HTMLGxBootstrapElement;
     "gx-select-option": HTMLGxSelectOptionElement;
     "gx-select": HTMLGxSelectElement;
     "gx-switch": HTMLGxSwitchElement;
@@ -1794,6 +1816,7 @@ declare global {
     "gx-progress-bar": HTMLGxProgressBarElement;
     "gx-radio-group": HTMLGxRadioGroupElement;
     "gx-radio-option": HTMLGxRadioOptionElement;
+    "gx-bootstrap": HTMLGxBootstrapElement;
     "gx-select-option": HTMLGxSelectOptionElement;
     "gx-select": HTMLGxSelectElement;
     "gx-switch": HTMLGxSwitchElement;
