@@ -73,8 +73,7 @@ export class PasswordEdit
   /**
    * Indicates if the value is revealed or masked.
    */
-  @Prop({ mutable: true })
-  revealed = false;
+  @Prop({ mutable: true }) revealed = false;
 
   /**
    * Text of the reveal button to offer revealing the password.

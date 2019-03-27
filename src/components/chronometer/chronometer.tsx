@@ -8,7 +8,7 @@ import {
   State,
   Watch
 } from "@stencil/core";
-import { IComponent /*, IFormComponent */ } from "../common/interfaces";
+import { IComponent } from "../common/interfaces";
 import { TimerState } from "./chronometer-timer-state";
 
 @Component({
@@ -16,8 +16,7 @@ import { TimerState } from "./chronometer-timer-state";
   styleUrl: "chronometer.scss",
   tag: "gx-chronometer"
 })
-export class Chronometer implements IComponent /*, IFormComponent*/ {
-  disabled: boolean;
+export class Chronometer implements IComponent {
   eventTimer: number;
   startedTime = 0;
   started = false;
