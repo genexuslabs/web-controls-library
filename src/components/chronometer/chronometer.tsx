@@ -16,7 +16,7 @@ import { TimerState } from "./chronometer-timer-state";
   styleUrl: "chronometer.scss",
   tag: "gx-chronometer"
 })
-export class Chronometer implements IComponent /*, IFormComponent*/ {
+export class Chronometer implements IComponent {
   disabled: boolean;
   eventTimer: number;
   startedTime = 0;
