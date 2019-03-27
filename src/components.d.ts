@@ -6,6 +6,8 @@
 
 import "@stencil/core";
 
+import { TimerState } from "./components/chronometer/chronometer-timer-state";
+
 export namespace Components {
   interface GxButton {
     /**
@@ -206,6 +208,107 @@ export namespace Components {
      * The value of the control.
      */
     value?: string;
+  }
+
+  interface GxChronometer {
+    /**
+     * Returns the id of the inner `input` element (if set).
+     */
+    getNativeInputId: () => Promise<any>;
+    /**
+     * The identifier of the control. Must be unique.
+     */
+    id: string;
+    /**
+     * Defines the interval that the function onTick will be called.
+     */
+    interval: number;
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode: "collapse" | "keep-space";
+    /**
+     * When the chronometer reaches this value, MaxValueText will be shown instead of the Chronometer value.
+     */
+    maxValue: number;
+    /**
+     * Text to be displayed when chronometer value reaches maxValue.
+     */
+    maxValueText: string;
+    /**
+     * Stops and set to 0 the Chronometer.
+     */
+    reset: () => void;
+    /**
+     * Starts the Chronometer
+     */
+    start: () => void;
+    /**
+     * State of the Chronometer.
+     */
+    state: TimerState;
+    /**
+     * Stops the Chronometer
+     */
+    stop: () => void;
+    /**
+     * Time unit: (s) seconds or (ms) milliseconds for every time control Property.
+     */
+    unit: "s" | "ms";
+    /**
+     * The value of the control.
+     */
+    value: number;
+  }
+  interface GxChronometerAttributes extends StencilHTMLAttributes {
+    /**
+     * The identifier of the control. Must be unique.
+     */
+    id?: string;
+    /**
+     * Defines the interval that the function onTick will be called.
+     */
+    interval?: number;
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode?: "collapse" | "keep-space";
+    /**
+     * When the chronometer reaches this value, MaxValueText will be shown instead of the Chronometer value.
+     */
+    maxValue?: number;
+    /**
+     * Text to be displayed when chronometer value reaches maxValue.
+     */
+    maxValueText?: string;
+    /**
+     * The `change` event is emitted every time the chronometer changes
+     */
+    onChange?: (event: CustomEvent) => void;
+    /**
+     * Event to emit after max time is consumed.
+     */
+    onEnd?: (event: CustomEvent) => void;
+    /**
+     * The `input` event is emitted every time the chronometer changes (every 1 second)
+     */
+    onInput?: (event: CustomEvent) => void;
+    /**
+     * Event to emit After elapsed time (tickInterval).
+     */
+    onTick?: (event: CustomEvent) => void;
+    /**
+     * State of the Chronometer.
+     */
+    state?: TimerState;
+    /**
+     * Time unit: (s) seconds or (ms) milliseconds for every time control Property.
+     */
+    unit?: "s" | "ms";
+    /**
+     * The value of the control.
+     */
+    value?: number;
   }
 
   interface GxEdit {
@@ -1466,6 +1569,7 @@ declare global {
     GxCanvas: Components.GxCanvas;
     GxCard: Components.GxCard;
     GxCheckbox: Components.GxCheckbox;
+    GxChronometer: Components.GxChronometer;
     GxEdit: Components.GxEdit;
     GxFormField: Components.GxFormField;
     GxGroup: Components.GxGroup;
@@ -1500,6 +1604,7 @@ declare global {
     "gx-canvas": Components.GxCanvasAttributes;
     "gx-card": Components.GxCardAttributes;
     "gx-checkbox": Components.GxCheckboxAttributes;
+    "gx-chronometer": Components.GxChronometerAttributes;
     "gx-edit": Components.GxEditAttributes;
     "gx-form-field": Components.GxFormFieldAttributes;
     "gx-group": Components.GxGroupAttributes;
@@ -1564,6 +1669,14 @@ declare global {
   var HTMLGxCheckboxElement: {
     prototype: HTMLGxCheckboxElement;
     new (): HTMLGxCheckboxElement;
+  };
+
+  interface HTMLGxChronometerElement
+    extends Components.GxChronometer,
+      HTMLStencilElement {}
+  var HTMLGxChronometerElement: {
+    prototype: HTMLGxChronometerElement;
+    new (): HTMLGxChronometerElement;
   };
 
   interface HTMLGxEditElement extends Components.GxEdit, HTMLStencilElement {}
@@ -1766,6 +1879,7 @@ declare global {
     "gx-canvas": HTMLGxCanvasElement;
     "gx-card": HTMLGxCardElement;
     "gx-checkbox": HTMLGxCheckboxElement;
+    "gx-chronometer": HTMLGxChronometerElement;
     "gx-edit": HTMLGxEditElement;
     "gx-form-field": HTMLGxFormFieldElement;
     "gx-group": HTMLGxGroupElement;
@@ -1800,6 +1914,7 @@ declare global {
     "gx-canvas": HTMLGxCanvasElement;
     "gx-card": HTMLGxCardElement;
     "gx-checkbox": HTMLGxCheckboxElement;
+    "gx-chronometer": HTMLGxChronometerElement;
     "gx-edit": HTMLGxEditElement;
     "gx-form-field": HTMLGxFormFieldElement;
     "gx-group": HTMLGxGroupElement;

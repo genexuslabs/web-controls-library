@@ -1,0 +1,11 @@
+////
+/// @group theming-mixins
+////
+
+/// Helper mixin to ease styling gx-chronometer custom elements
+/// @param {string} $class Base class of the component
+@mixin gx-chronometer($class) {
+  span {
+    @extend #{$class} !optional;
+  }
+}
