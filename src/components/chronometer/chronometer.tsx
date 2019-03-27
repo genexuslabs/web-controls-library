@@ -8,7 +8,7 @@ import {
   State,
   Watch
 } from "@stencil/core";
-import { IComponent /*, IFormComponent */ } from "../common/interfaces";
+import { IComponent } from "../common/interfaces";
 import { TimerState } from "./chronometer-timer-state";
 
 @Component({
