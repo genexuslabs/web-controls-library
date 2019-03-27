@@ -1,6 +1,6 @@
 # gx-chronometer
 
-<!-- Auto Generated Below -->
+This control allows to fire an event every time the interval time is consumed. If the value reaches max value, then the max value text is shown.
 
 ## Properties
 
@@ -12,7 +12,7 @@
 | `maxValue`      | `max-value`      | When the chronometer reaches this value, MaxValueText will be shown instead of the Chronometer value.                                                                                                                                                                                                                                                                                        | `number`                                                       | `0`                  |
 | `maxValueText`  | `max-value-text` | Text to be displayed when chronometer value reaches maxValue.                                                                                                                                                                                                                                                                                                                                | `string`                                                       | `undefined`          |
 | `state`         | `state`          | State of the Chronometer.                                                                                                                                                                                                                                                                                                                                                                    | `TimerState.Reset \| TimerState.Running \| TimerState.Stopped` | `TimerState.Stopped` |
-| `unit`          | `unit`           | Time unit: 1000 as seconds, 1 as miliseconds for every control Prop.                                                                                                                                                                                                                                                                                                                         | `number`                                                       | `1000`               |
+| `unit`          | `unit`           | Time unit: (s) seconds or (ms) milliseconds for every time control Property.                                                                                                                                                                                                                                                                                                                 | `"ms" \| "s"`                                                  | `"s"`                |
 | `value`         | `value`          | The value of the control.                                                                                                                                                                                                                                                                                                                                                                    | `number`                                                       | `0`                  |
 
 ## Events

@@ -228,9 +228,9 @@ export namespace Components {
      */
     stop: () => void;
     /**
-     * Time unit: 1000 as seconds, 1 as miliseconds for every control Prop.
+     * Time unit: (s) seconds or (ms) milliseconds for every time control Property.
      */
-    unit: number;
+    unit: "s" | "ms";
     /**
      * The value of the control.
      */
@@ -278,9 +278,9 @@ export namespace Components {
      */
     state?: TimerState;
     /**
-     * Time unit: 1000 as seconds, 1 as miliseconds for every control Prop.
+     * Time unit: (s) seconds or (ms) milliseconds for every time control Property.
      */
-    unit?: number;
+    unit?: "s" | "ms";
     /**
      * The value of the control.
      */

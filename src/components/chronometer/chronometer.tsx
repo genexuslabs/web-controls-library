@@ -53,9 +53,9 @@ export class Chronometer implements IComponent {
   @Prop() maxValueText: string;
 
   /**
-   * Time unit: 1000 as seconds, 1 as miliseconds for every control Prop.
+   * Time unit: (s) seconds or (ms) milliseconds for every time control Property.
    */
-  @Prop() unit = 1000;
+  @Prop() unit: "s" | "ms" = "s";
 
   /**
    * Defines the interval that the function onTick will be called.
@@ -102,7 +102,7 @@ export class Chronometer implements IComponent {
   }
 
   componentWillLoad() {
-    this.elapsedTime = this.value * this.unit;
+    this.elapsedTime = this.value * this.getUnit();
   }
 
   componentDidUnload() {
@@ -123,8 +123,10 @@ export class Chronometer implements IComponent {
 
     this.timer = window.setInterval(() => {
       this.updateElapsedTime();
-      this.handleChange();
-      if (this.maxValue > 0 && this.elapsedTime >= this.maxValue * this.unit) {
+      if (
+        this.maxValue > 0 &&
+        this.elapsedTime >= this.maxValue * this.getUnit()
+      ) {
         this.end.emit();
         this.stop();
       }
@@ -133,7 +135,7 @@ export class Chronometer implements IComponent {
     if (this.interval > 0) {
       this.eventTimer = window.setInterval(() => {
         this.tickHandler();
-      }, this.interval * this.unit);
+      }, this.interval * this.getUnit());
     }
   }
 
@@ -157,9 +159,9 @@ export class Chronometer implements IComponent {
     this.value = 0;
     this.startedTime = 0;
     this.elapsedTime = 0;
-    this.handleChange();
   }
 
+  @Watch("value")
   handleChange() {
     this.input.emit();
     this.change.emit();
@@ -188,14 +190,19 @@ export class Chronometer implements IComponent {
         break;
     }
   }
+
+  getUnit() {
+    return this.unit === "s" ? 1000 : 1;
+  }
+
   updateElapsedTime() {
     this.elapsedTime = Date.now() - this.startedTime;
-    this.value = Math.floor(this.elapsedTime / this.unit);
+    this.value = Math.floor(this.elapsedTime / this.getUnit());
   }
 
   render() {
     const time = Math.floor(this.elapsedTime / 1000);
-    const maxVal = this.maxValue * this.unit;
+    const maxVal = this.maxValue * this.getUnit();
     const maxValueReached = this.elapsedTime > maxVal && maxVal !== 0;
 
     return <span>{maxValueReached ? this.maxValueText : time}</span>;
