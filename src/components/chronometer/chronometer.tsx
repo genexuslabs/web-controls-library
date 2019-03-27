@@ -17,7 +17,6 @@ import { TimerState } from "./chronometer-timer-state";
   tag: "gx-chronometer"
 })
 export class Chronometer implements IComponent {
-  disabled: boolean;
   eventTimer: number;
   startedTime = 0;
   started = false;
