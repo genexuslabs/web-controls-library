@@ -64,7 +64,7 @@ export class Gauge implements IComponent {
    * This property allows you to select the gauge type. _(Circle or Line)_.
    * Default is linear type.
    */
-  @Prop() gaugeType: "Line" | "Circle";
+  @Prop() gaugeType: "Line" | "Circle" = "Line";
 
   /**
    *  Allows display current value. Default is disabled.
@@ -414,7 +414,8 @@ export class Gauge implements IComponent {
                   "box-shadow": !this.styleShadow ? "none" : ""
                 }}
               >
-                {this.minValue}%<span />
+                {this.minValue}
+                <span />
               </span>
               <span
                 class="maxValue"
@@ -422,7 +423,8 @@ export class Gauge implements IComponent {
                   "box-shadow": !this.styleShadow ? "none" : ""
                 }}
               >
-                {this.maxValue}%<span />
+                {this.maxValue}
+                <span />
               </span>
             </div>
           ) : (
