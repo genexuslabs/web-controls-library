@@ -1,6 +1,12 @@
 @import "../common/_base";
 
 gx-group {
+  --elevation: 0;
+
   @include visibility(block);
   @include overflowMode();
+
+  & > fieldset {
+    @include elevation();
+  }
 }

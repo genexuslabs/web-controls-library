@@ -1,5 +1,11 @@
 @import "../common/_base";
 
 gx-image {
+  --elevation: 0;
+
   @include visibility(inline-flex);
+
+  & > img {
+    @include elevation();
+  }
 }

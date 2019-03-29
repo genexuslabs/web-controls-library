@@ -1,4 +1,10 @@
 gx-form-field {
+  --elevation: 0;
+
+  [data-part="field"] {
+    @include elevation();
+  }
+
   &[label-position="float"] > div {
     position: relative;
     margin-bottom: 1em;
