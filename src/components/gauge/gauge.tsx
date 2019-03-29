@@ -107,6 +107,14 @@ export class Gauge implements IComponent {
       this.children.splice(inDex, 1);
       this.totValues -= childRange.amount;
     });
+    childRange.element.addEventListener("gxGaugeRangeDidUpdate", () => {
+      const inDex = this.children.findIndex(x => x === childRange);
+      this.children.splice(inDex, 1, childRange);
+      this.totValues = 0;
+      for (const childInstance of this.children) {
+        this.totValues += childInstance.amount;
+      }
+    });
   }
 
   componentWillLoad() {
@@ -175,12 +183,6 @@ export class Gauge implements IComponent {
       }
       svgRanges.reverse();
       ////////////////////////////////////////
-      // tslint:disable-next-line:no-console
-      console.log(
-        (this.minorSize * 0.795 -
-          this.calcThickness() * (this.minorSize / 100)) /
-          2
-      );
       return (
         <div
           class="svgContainer"

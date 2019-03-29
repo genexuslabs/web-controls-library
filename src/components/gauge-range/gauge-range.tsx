@@ -35,18 +35,19 @@ export class GaugeRange implements IComponent {
 
   @Event() gxGaugeRangeDidUnload: EventEmitter;
 
+  @Event() gxGaugeRangeDidUpdate: EventEmitter;
+
   componentDidLoad() {
     this.gxGaugeRangeDidLoad.emit(this);
-    // tslint:disable-next-line:no-console
-    console.log("Loaded");
-  }
-  /* To fix 0.
-    */ componentDidUnload() {
-    this.gxGaugeRangeDidUnload.emit(this);
-    // tslint:disable-next-line:no-console
-    console.log("Unloaded");
   }
 
+  componentDidUnload() {
+    this.gxGaugeRangeDidUnload.emit(this);
+  }
+
+  componentDidUpdate() {
+    this.gxGaugeRangeDidUpdate.emit(this);
+  }
   render() {
     return "";
   }
