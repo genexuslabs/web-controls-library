@@ -1,7 +1,9 @@
+@import "../common/_base";
+
 gx-lottie {
-  display: block;
+  @include visibility(flex);
 
   & > div {
-    height: 100%;
+    flex-grow: 1;
   }
 }
