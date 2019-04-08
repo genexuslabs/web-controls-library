@@ -330,6 +330,16 @@ export namespace Components {
      */
     disabled: boolean;
     /**
+     * Used to define the semantic of the element when readonly=true.  Font categories are mapped to semantic HTML elements when rendered:  * `"headline"`: `h1` * `"subheadline"`: `h2` * `"body"`: `p` * `"footnote"`: `footer` * `"caption1"`: `span` * `"caption2"`: `span`
+     */
+    fontCategory:
+      | "headline"
+      | "subheadline"
+      | "body"
+      | "footnote"
+      | "caption1"
+      | "caption2";
+    /**
      * Returns the id of the inner `input` element (if set).
      */
     getNativeInputId: () => Promise<string>;
@@ -398,6 +408,16 @@ export namespace Components {
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled?: boolean;
+    /**
+     * Used to define the semantic of the element when readonly=true.  Font categories are mapped to semantic HTML elements when rendered:  * `"headline"`: `h1` * `"subheadline"`: `h2` * `"body"`: `p` * `"footnote"`: `footer` * `"caption1"`: `span` * `"caption2"`: `span`
+     */
+    fontCategory?:
+      | "headline"
+      | "subheadline"
+      | "body"
+      | "footnote"
+      | "caption1"
+      | "caption2";
     /**
      * The identifier of the control. Must be unique.
      */
