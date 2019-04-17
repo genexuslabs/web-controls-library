@@ -1,7 +1,8 @@
 # gx-grid-infinite-scroll
 
 
-
+The Infinite Scroll component calls an action to be performed when the user scrolls a specified distance from the bottom or top of the page.
+The expression assigned to the gxInfinite event is called when the user reaches that defined distance. When this expression has finished any and all tasks, it should call the complete() method on the infinite scroll instance.
 <!-- Auto Generated Below -->
 
 
