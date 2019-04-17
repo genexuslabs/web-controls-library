@@ -101,7 +101,7 @@ export class EditRender implements IRenderer {
       }
     }
 
-    const RedonlyTag = this.getReadonlyTagByFontCtegory() as any;
+    const ReadonlyTag = this.getReadonlyTagByFontCategory() as any;
 
     return [
       <gx-bootstrap />,
