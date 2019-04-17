@@ -101,19 +101,50 @@ export class EditRender implements IRenderer {
       }
     }
 
+    const ReadonlyTag = this.getReadonlyTagByFontCategory() as any;
+
     return [
       <gx-bootstrap />,
-      <span
+      <ReadonlyTag
+        key="readonly"
         hidden={!edit.readonly}
-        class={{
-          "form-control-plaintext": true
-        }}
+        class={this.getReadonlyClass()}
+        data-readonly=""
       >
         {edit.value}
-      </span>,
+      </ReadonlyTag>,
       editableElement
     ];
+  }
+
+  private getReadonlyTagByFontCategory() {
+    const tag = fontCategoryTagMap[this.component.fontCategory];
+    if (!tag) {
+      return "span";
+    }
+    return tag;
+  }
+
+  private getReadonlyClass() {
+    if (
+      this.component.fontCategory === "body" ||
+      !this.component.fontCategory
+    ) {
+      return {
+        "form-control-plaintext": true
+      };
+    }
+    return null;
   }
 }
 
 let autoEditId = 0;
+
+const fontCategoryTagMap = {
+  body: "p",
+  caption1: "span",
+  caption2: "span",
+  footnote: "footer",
+  headline: "h1",
+  subheadline: "h2"
+};

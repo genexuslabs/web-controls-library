@@ -5,7 +5,7 @@
 /// Helper mixin to ease styling gx-form-field custom elements
 /// @param {string} $class Base class of the field inside the component
 /// @param {string} $label Base class of the label of the component
-/// @param {string} $highlighted Class to be used when the component is in active state
+/// @param {string} $highlighted Class to be used when the component's field is focused
 /// @param {string} $accept-drag-class Class to be used when the component shows that it accepts a drop operation
 /// @param {string} $no-accept-drag-class Class to be used when the component shows that it doesn't accept a drop operation
 /// @param {string} $start-dragging-class Class to be used when the component starts being dragged
@@ -34,7 +34,7 @@
     }
   }
   @if $highlighted != null {
-    &:active {
+    [data-part="field"]:focus {
       @extend #{$highlighted} !optional;
     }
   }

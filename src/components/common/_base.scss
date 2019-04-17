@@ -48,3 +48,9 @@
     align-items: flex-end;
   }
 }
+
+@mixin elevation() {
+  box-shadow: 0 calc(var(--elevation) * 0.125rem)
+    calc(var(--elevation) * 0.25rem)
+    rgba(0, 0, 0, calc(var(--elevation) * 0.075));
+}

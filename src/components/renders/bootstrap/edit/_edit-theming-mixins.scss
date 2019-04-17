@@ -10,7 +10,7 @@
   textarea {
     @extend #{$class} !optional;
   }
-  & > span {
+  & > [data-readonly] {
     @extend #{$readonly-class} !optional;
   }
 }
