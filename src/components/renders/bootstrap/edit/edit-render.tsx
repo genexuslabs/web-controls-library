@@ -112,7 +112,7 @@ export class EditRender implements IRenderer {
         data-readonly=""
       >
         {edit.value}
-      </RedonlyTag>,
+      </ReadonlyTag>,
       editableElement
     ];
   }
