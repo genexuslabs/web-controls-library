@@ -9,6 +9,7 @@
   "files": ["dist/"],
   "scripts": {
     "build": "stencil build --docs",
+    "build:debug": "stencil build --dev && npm run scss-bundle",
     "postbuild": "npm run scss-bundle",
     "docs": "stencil build --dev --docs && npm run sassdoc",
     "lint": "npm run tslint",
