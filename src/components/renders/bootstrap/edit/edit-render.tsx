@@ -117,7 +117,7 @@ export class EditRender implements IRenderer {
     ];
   }
 
-  private getReadonlyTagByFontCtegory() {
+  private getReadonlyTagByFontCategory() {
     const tag = fontCategoryTagMap[this.component.fontCategory];
     if (!tag) {
       return "span";
