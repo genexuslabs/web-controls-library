@@ -101,8 +101,7 @@ export class Map implements IComponent {
     ).addTo(this.map);
     this.gxMapDidLoad.emit(this);
     this.map.addEventListener("click", ev => {
-      const clickCoords = ev.latlng;
-      this.mapClick.emit(clickCoords);
+      this.mapClick.emit(ev.latlng);
     });
   }
 

@@ -2,7 +2,7 @@
 
 This component allows you to display information in the form of ranges, and decide whether you want to show it using linear or circular gauges.
 
-Using `gx-range` you set the amount of ranges and the max value that gauge will have.
+Use `gx-gauge-range` element to set the number of ranges and the max value the gauge will have.
 
 <!-- Auto Generated Below -->
 

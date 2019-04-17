@@ -48,6 +48,7 @@ export class GaugeRange implements IComponent {
   componentDidUpdate() {
     this.gxGaugeRangeDidUpdate.emit(this);
   }
+
   render() {
     return "";
   }

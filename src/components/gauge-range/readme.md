@@ -1,6 +1,6 @@
-# gx-range
+# gx-gauge-range
 
-Component using within `gx-gauge` to draw and show its information.
+Component used within `gx-gauge` to draw and show its range.
 
 <!-- Auto Generated Below -->
 
