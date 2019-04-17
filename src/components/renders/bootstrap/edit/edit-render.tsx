@@ -105,7 +105,7 @@ export class EditRender implements IRenderer {
 
     return [
       <gx-bootstrap />,
-      <RedonlyTag
+      <ReadonlyTag
         key="readonly"
         hidden={!edit.readonly}
         class={this.getReadonlyClass()}
