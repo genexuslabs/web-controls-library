@@ -258,8 +258,7 @@ export class Gauge implements IComponent {
                 color: `${this.styleCenterTextColor}`,
                 "font-size": `${(this.minorSize * 0.795 -
                   this.calcThickness() / 2 * (this.minorSize / 100)) /
-                  8}px`,
-                "mix-blend-mode": "difference"
+                  8}px`
               }}
             >
               {this.calcPercentage() > 100
@@ -280,15 +279,9 @@ export class Gauge implements IComponent {
     const divRanges = [];
     const divRangesName = [];
     let currentMargin = 0;
-    let currentMargin2 = 0;
     //////////////////////////////////////////
     function calcPositionRange(preValue) {
-      currentMargin += preValue;
-      return currentMargin;
-    }
-    function calcPositionName(preValue) {
-      currentMargin2 += preValue;
-      return currentMargin2;
+      return (currentMargin += preValue);
     }
     //////////////////////////////////////////
     for (let i = childRanges.length - 1; i >= 0; i--) {
@@ -316,13 +309,7 @@ export class Gauge implements IComponent {
         <span
           class="rangeName"
           style={{
-            "margin-left": `${calcPositionName(
-              !!childRanges[i + 1]
-                ? parseInt(childRanges[i + 1].getAttribute("amount"), 10) *
-                  100 /
-                  this.totValues
-                : 0
-            )}%`,
+            "margin-left": `${currentMargin}%`,
             width: `${parseInt(childRanges[i].getAttribute("amount"), 10) *
               100 /
               this.totValues}%`

@@ -127,7 +127,6 @@ gx-gauge {
       box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.5) inset;
       z-index: 0;
       position: absolute;
-      //  display: none;
     }
     svg {
       transform: rotate(-90deg);
@@ -141,8 +140,10 @@ gx-gauge {
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.8); /* */
-      //  display: none;
+      box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.8);
+      div {
+        mix-blend-mode: difference;
+      }
     }
     span.marker {
       transition: 0.4s ease;
