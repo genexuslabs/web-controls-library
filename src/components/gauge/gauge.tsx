@@ -246,33 +246,27 @@ export class Gauge implements IComponent {
               !this.styleShadow
                 ? "none"
                 : "",
-            height:
-              this.minorSize * 0.792 -
-              this.calcThickness() * (this.minorSize / 100) +
-              "px",
-            width:
-              this.minorSize * 0.792 -
-              this.calcThickness() * (this.minorSize / 100) +
-              "px"
+            height: `${this.minorSize * 0.792 -
+              this.calcThickness() * (this.minorSize / 100)}px`,
+            width: `${this.minorSize * 0.792 -
+              this.calcThickness() * (this.minorSize / 100)}px`
           }}
         >
           {this.showValue ? (
             <div
               style={{
-                color: "" + this.styleCenterTextColor,
-                "font-size":
-                  (this.minorSize * 0.795 -
-                    this.calcThickness() / 2 * (this.minorSize / 100)) /
-                    8 +
-                  "px",
+                color: `${this.styleCenterTextColor}`,
+                "font-size": `${(this.minorSize * 0.795 -
+                  this.calcThickness() / 2 * (this.minorSize / 100)) /
+                  8}px`,
                 "mix-blend-mode": "difference"
               }}
             >
-              {(this.calcPercentage() > 100
+              {this.calcPercentage() > 100
                 ? 100
                 : this.calcPercentage() < 0
                   ? 0
-                  : Math.round(this.calcPercentage())) + "%"}
+                  : `${Math.round(this.calcPercentage())}%`}
             </div>
           ) : (
             ""
@@ -345,9 +339,9 @@ export class Gauge implements IComponent {
         class="gaugeContainerLine"
         style={{
           border: this.styleBorder
-            ? this.styleBorderWidth + "px solid " + this.styleBorderColor
+            ? `${this.styleBorderWidth}px solid ${this.styleBorderColor}`
             : "",
-          height: 5 * this.calcThickness() + "px"
+          height: `${5 * this.calcThickness()}px`
         }}
       >
         <div class="rangesContainer">
@@ -371,7 +365,7 @@ export class Gauge implements IComponent {
                   this.calcPercentage() >= 100
                     ? "99.45%"
                     : this.calcPercentage() > 0
-                      ? this.calcPercentage() - 0.1 + "%"
+                      ? `${this.calcPercentage() - 0.1}%`
                       : "0.2%"
               }}
             />
@@ -383,7 +377,7 @@ export class Gauge implements IComponent {
           <div
             class="minMaxDisplay"
             style={{
-              transform: "translateY(" + (8 * this.calcThickness() + 100) + "%)"
+              transform: `translateY(${8 * this.calcThickness() + 100}%)`
             }}
           >
             <span
