@@ -25,7 +25,8 @@
     $start-dragging-class,
     $drag-over-class
   );
-  [data-part="field"] {
+  [data-part="field"],
+  [data-readonly] {
     @extend #{$class} !optional;
   }
   @if ($label != null) {
