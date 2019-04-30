@@ -1,6 +1,35 @@
 @import "../common/_base";
 
 gx-gauge {
+  /**
+  * @prop --border-color:
+   * Define the border color of the gauge.
+  */
+  --border-color: rgb(0, 92, 129);
+
+  /**
+  * @prop --border-width:
+   * Define the border width of the gauge.
+   * _(0px by Default)_
+  */
+  --border-width: 0px;
+
+  /**
+  * @prop --circle-center-color:
+   * Define the color of the center in `circle` gauge type.
+   * Value in *hex, rgb, rgba, hsl, cmyk* format or *color name*.
+   * _(Transparent by Default)_
+  */
+  --circle-center-color: rgba(0, 0, 0, 0);
+
+  /**
+  * @prop --circle-text-color:
+   * Define the color of the center text in `circle` gauge type.
+   * Value in *hex, rgb, rgba, hsl, cmyk* format or *color name*.
+   * _(Gray by Default)_
+  */
+  --circle-text-color: gray;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,6 +41,9 @@ gx-gauge {
     display: flex;
     position: absolute;
     align-items: center;
+    border-width: var(--border-width, "0px");
+    border-style: solid;
+    border-color: var(--border-color, "rgb(0, 92, 129)");
     border-radius: 20px;
     .gauge {
       width: 100%;
@@ -76,7 +108,7 @@ gx-gauge {
           width: 10px;
           height: 10px;
           border-radius: 0% 100% 120% 200%;
-          transform: translate(calc(-60%), calc(-100%)) rotate(45deg);
+          transform: translate(calc(-140%), calc(-100%)) rotate(45deg);
           z-index: -1;
           background-color: rgba(44, 44, 44, 1);
           position: absolute;
@@ -123,6 +155,9 @@ gx-gauge {
       align-items: center;
       width: 188px;
       height: 188px;
+      border-width: var(--border-width, "0px");
+      border-style: solid;
+      border-color: var(--border-color, "rgb(0, 92, 129)");
       border-radius: 50%;
       box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.5) inset;
       z-index: 0;
@@ -133,6 +168,7 @@ gx-gauge {
       z-index: -1;
     }
     .gauge {
+      background-color: var(--circle-center-color, "transparent");
       border-radius: 50%;
       font-size: 1.1rem;
       z-index: 1;
@@ -142,6 +178,7 @@ gx-gauge {
       justify-content: center;
       box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.8);
       div {
+        color: var(--circle-text-color, "gray");
         mix-blend-mode: difference;
       }
     }

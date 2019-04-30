@@ -21,44 +21,10 @@ export class Gauge implements IComponent {
   @Event() gxGaugeDidLoad: EventEmitter;
 
   /**
-   * Property of type Style
-   * Define the color of the center in _(Circle)_ gauge type.
-   * Value in *hex, rgb, rgba, hsl, cmyk* format or *color name*.
-   * _(Transparent by Default)_
-   */
-  @Prop() styleCenterColor = "transparent";
-
-  /**
-   * Property of type Style
-   * Define the color of the center text in _(Circle)_ gauge type.
-   * Value in *hex, rgb, rgba, hsl, cmyk* format or *color name*.
-   * _(Gray by Default)_
-   */
-  @Prop() styleCenterTextColor = "gray";
-
-  /**
    * Property of type Style.
    * Define if shadow will display or not. Default is disabled.
    */
   @Prop() styleShadow = false;
-
-  /**
-   * Property of type Style.
-   * Define if border will display or not. Default is disabled.
-   */
-  @Prop() styleBorder = false;
-
-  /**
-   * Property of type Style.
-   * Define the border width. Value in *px*.
-   */
-  @Prop() styleBorderWidth = 2;
-
-  /**
-   * Property of type Style.
-   * Define the border color. Value in *hex, rgb, rgba, hsl, cmyk* format or *color name*.
-   */
-  @Prop() styleBorderColor = "rgb(0, 92, 129)";
 
   /**
    * This property allows you to select the gauge type. _(Circle or Line)_.
@@ -103,13 +69,13 @@ export class Gauge implements IComponent {
     this.children = [...this.children, childRange];
     this.totValues += childRange.amount;
     childRange.element.addEventListener("gxGaugeRangeDidUnload", () => {
-      const inDex = this.children.findIndex(x => x === childRange);
-      this.children.splice(inDex, 1);
+      const index = this.children.findIndex(x => x === childRange);
+      this.children.splice(index, 1);
       this.totValues -= childRange.amount;
     });
     childRange.element.addEventListener("gxGaugeRangeDidUpdate", () => {
-      const inDex = this.children.findIndex(x => x === childRange);
-      this.children.splice(inDex, 1, childRange);
+      const index = this.children.findIndex(x => x === childRange);
+      this.children.splice(index, 1, childRange);
       this.totValues = 0;
       for (const childInstance of this.children) {
         this.totValues += childInstance.amount;
@@ -183,9 +149,6 @@ export class Gauge implements IComponent {
         <div
           class="gaugeContainer"
           style={{
-            border: this.styleBorder
-              ? `${this.styleBorderWidth}px solid ${this.styleBorderColor}`
-              : "",
             "box-shadow":
               (this.minorSize <= 300 && this.thickness <= 25) ||
               !this.styleShadow
@@ -240,7 +203,6 @@ export class Gauge implements IComponent {
         <div
           class="gauge"
           style={{
-            "background-color": this.styleCenterColor,
             "box-shadow":
               (this.minorSize <= 300 && this.thickness <= 25) ||
               !this.styleShadow
@@ -255,7 +217,6 @@ export class Gauge implements IComponent {
           {this.showValue ? (
             <div
               style={{
-                color: `${this.styleCenterTextColor}`,
                 "font-size": `${(this.minorSize * 0.795 -
                   this.calcThickness() / 2 * (this.minorSize / 100)) /
                   8}px`
@@ -283,41 +244,49 @@ export class Gauge implements IComponent {
     function calcPositionRange(preValue) {
       return (currentMargin += preValue);
     }
-    //////////////////////////////////////////
-    for (let i = childRanges.length - 1; i >= 0; i--) {
-      // create a function to return this structure (like addSVGCircle)
-      divRanges.push(
+
+    function addLineRanges(currentChild, nextChild, component) {
+      return (
         <div
           class="range"
           style={{
-            "background-color": childRanges[i].color,
-            "box-shadow": !this.styleShadow ? "none" : "",
+            "background-color": currentChild.color,
+            "box-shadow": !component.styleShadow ? "none" : "",
             "margin-left": `${calcPositionRange(
-              !!childRanges[i + 1]
-                ? parseInt(childRanges[i + 1].getAttribute("amount"), 10) *
+              !!nextChild
+                ? parseInt(nextChild.getAttribute("amount"), 10) *
                   100 /
-                  this.totValues
+                  component.totValues
                 : 0
             )}%`,
-            width: `${parseInt(childRanges[i].getAttribute("amount"), 10) *
+            width: `${parseInt(currentChild.getAttribute("amount"), 10) *
               100 /
-              this.totValues}%`
+              component.totValues}%`
           }}
         />
       );
-      divRangesName.push(
+    }
+
+    function addRangeCaption(currentChild, component) {
+      return (
         <span
           class="rangeName"
           style={{
             "margin-left": `${currentMargin}%`,
-            width: `${parseInt(childRanges[i].getAttribute("amount"), 10) *
+            width: `${parseInt(currentChild.getAttribute("amount"), 10) *
               100 /
-              this.totValues}%`
+              component.totValues}%`
           }}
         >
-          {childRanges[i].name}
+          {currentChild.name}
         </span>
       );
+    }
+    //////////////////////////////////////////
+    for (let i = childRanges.length - 1; i >= 0; i--) {
+      // create a function to return this structure (like addSVGCircle)
+      divRanges.push(addLineRanges(childRanges[i], childRanges[i + 1], this));
+      divRangesName.push(addRangeCaption(childRanges[i], this));
     }
     divRanges.reverse();
     divRangesName.reverse();
@@ -325,9 +294,6 @@ export class Gauge implements IComponent {
       <div
         class="gaugeContainerLine"
         style={{
-          border: this.styleBorder
-            ? `${this.styleBorderWidth}px solid ${this.styleBorderColor}`
-            : "",
           height: `${5 * this.calcThickness()}px`
         }}
       >
