@@ -1,0 +1,25 @@
+////
+/// @group theming-mixins
+////
+
+/// Helper mixin to ease styling gx-grid-base custom elements
+/// @param {string} $class Base class of the component
+/// @param {string} $odd-row Class for styling the Odd row
+/// @param {string} $even-row Class for styling the Odd even
+/// @param {string} loading-animation Class for styling the grid loading animation
+/// @param {string} loading-animation Class for styling the grid group-separator
+@mixin gx-grid-base($class, $odd-row:null, $even-row:null, $loading-animation:null, $horizontal-line:null, $group-separator:null) {
+  
+  @if ($odd-row != null) {
+    & .gx-grid-row:nth-child(odd) {
+      @extend #{$odd-row} !optional;
+    }    
+  }
+
+  @if ($even-row != null) {
+    & .gx-grid-row:nth-child(even) {
+      @extend #{$even-row} !optional;
+    }    
+  }
+
+}
