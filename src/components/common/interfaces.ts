@@ -1,4 +1,4 @@
-import { EventEmitter } from "@stencil/core";
+import { ComponentInterface, EventEmitter } from "@stencil/core";
 
 export interface IClickableComponent {
   handleClick: (UIEvent) => void;
@@ -13,7 +13,7 @@ export interface IDisableableComponent {
   disabled: boolean;
 }
 
-export interface IComponent {
+export interface IComponent extends ComponentInterface {
   element: HTMLElement;
   render: () => void;
 }

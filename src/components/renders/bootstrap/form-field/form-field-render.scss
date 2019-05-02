@@ -1,4 +1,10 @@
 gx-form-field {
+  --elevation: 0;
+
+  [data-part="field"] {
+    @include elevation();
+  }
+
   &[label-position="float"] > div {
     position: relative;
     margin-bottom: 1em;
@@ -60,8 +66,14 @@ gx-form-field {
     }
   }
 
+  & > .form-group {
+    overflow: hidden;
+    flex-grow: 1;
+  }
+
   & > .row {
     overflow: hidden;
+    flex-grow: 1;
     & > div {
       & > gx-image {
         max-height: 100%;

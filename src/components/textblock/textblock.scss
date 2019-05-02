@@ -1,5 +1,11 @@
 @import "../common/_base";
 
 gx-textblock {
+  --elevation: 0;
+
   @include visibility(inline-block);
+
+  & > .content {
+    @include elevation();
+  }
 }
