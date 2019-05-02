@@ -336,6 +336,15 @@ export namespace Components {
     */
     'disabled': boolean;
     /**
+    * Used to define the semantic of the element when readonly=true.  Font categories are mapped to semantic HTML elements when rendered:  * `"headline"`: `h1` * `"subheadline"`: `h2` * `"body"`: `p` * `"footnote"`: `footer` * `"caption1"`: `span` * `"caption2"`: `span`
+    */
+    'fontCategory': "headline"
+    | "subheadline"
+    | "body"
+    | "footnote"
+    | "caption1"
+    | "caption2";
+    /**
     * Returns the id of the inner `input` element (if set).
     */
     'getNativeInputId': () => Promise<string>;
@@ -403,6 +412,15 @@ export namespace Components {
     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
     */
     'disabled'?: boolean;
+    /**
+    * Used to define the semantic of the element when readonly=true.  Font categories are mapped to semantic HTML elements when rendered:  * `"headline"`: `h1` * `"subheadline"`: `h2` * `"body"`: `p` * `"footnote"`: `footer` * `"caption1"`: `span` * `"caption2"`: `span`
+    */
+    'fontCategory'?: "headline"
+    | "subheadline"
+    | "body"
+    | "footnote"
+    | "caption1"
+    | "caption2";
     /**
     * The identifier of the control. Must be unique.
     */
@@ -491,9 +509,6 @@ export namespace Components {
     'labelPosition'?: "none" | "top" | "right" | "bottom" | "left" | "float";
   }
 
-  interface GxGridEmpty {}
-  interface GxGridEmptyAttributes extends StencilHTMLAttributes {}
-
   interface GxGridFs {
     /**
     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
@@ -503,6 +518,14 @@ export namespace Components {
     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
     */
     'invisibleMode': "collapse" | "keep-space";
+    /**
+    * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
+    */
+    'loadingState': "loading" | "loaded";
+    /**
+    * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
+    */
+    'recordCount': Number;
   }
   interface GxGridFsAttributes extends StencilHTMLAttributes {
     /**
@@ -513,6 +536,14 @@ export namespace Components {
     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
     */
     'invisibleMode'?: "collapse" | "keep-space";
+    /**
+    * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
+    */
+    'loadingState'?: "loading" | "loaded";
+    /**
+    * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
+    */
+    'recordCount'?: Number;
   }
 
   interface GxGridInfiniteScrollContent {}
@@ -520,14 +551,21 @@ export namespace Components {
 
   interface GxGridInfiniteScroll {
     /**
-    * Call `complete()` within the `ionInfinite` output event handler when your async operation has completed. For example, the `loading` state is while the app is performing an asynchronous operation, such as receiving more data from an AJAX request to add more items to a data list. Once the data has been received and UI updated, you then call this method to signify that the loading has completed. This method will change the infinite scroll's state from `loading` to `enabled`.
+    * Call `complete()` within the `gxInfinite` output event handler when your async operation has completed. For example, the `loading` state is while the app is performing an asynchronous operation, such as receiving more data from an AJAX request to add more items to a data list. Once the data has been received and UI updated, you then call this method to signify that the loading has completed. This method will change the infinite scroll's state from `loading` to `enabled`.
     */
     'complete': () => void;
     /**
     * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
     */
     'disabled': boolean;
+    /**
+    * Query selector where the infinitie scroll would be listening to scroll events.
+    */
     'infiniteScrollContainer': string;
+    /**
+    * This property must be bounded to grid item count property. It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the intial batch does not overflow the main container
+    */
+    'itemCount': number;
     /**
     * The position of the infinite scroll element. The value can be either `top` or `bottom`.
     */
@@ -542,7 +580,14 @@ export namespace Components {
     * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
     */
     'disabled'?: boolean;
+    /**
+    * Query selector where the infinitie scroll would be listening to scroll events.
+    */
     'infiniteScrollContainer'?: string;
+    /**
+    * This property must be bounded to grid item count property. It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the intial batch does not overflow the main container
+    */
+    'itemCount'?: number;
     /**
     * Emitted when the scroll reaches the threshold distance. From within your infinite handler, you must call the infinite scroll's `complete()` method when your async operation has completed.
     */
@@ -1642,7 +1687,6 @@ declare global {
     'GxChronometer': Components.GxChronometer;
     'GxEdit': Components.GxEdit;
     'GxFormField': Components.GxFormField;
-    'GxGridEmpty': Components.GxGridEmpty;
     'GxGridFs': Components.GxGridFs;
     'GxGridInfiniteScrollContent': Components.GxGridInfiniteScrollContent;
     'GxGridInfiniteScroll': Components.GxGridInfiniteScroll;
@@ -1681,7 +1725,6 @@ declare global {
     'gx-chronometer': Components.GxChronometerAttributes;
     'gx-edit': Components.GxEditAttributes;
     'gx-form-field': Components.GxFormFieldAttributes;
-    'gx-grid-empty': Components.GxGridEmptyAttributes;
     'gx-grid-fs': Components.GxGridFsAttributes;
     'gx-grid-infinite-scroll-content': Components.GxGridInfiniteScrollContentAttributes;
     'gx-grid-infinite-scroll': Components.GxGridInfiniteScrollAttributes;
@@ -1758,12 +1801,6 @@ declare global {
   var HTMLGxFormFieldElement: {
     prototype: HTMLGxFormFieldElement;
     new (): HTMLGxFormFieldElement;
-  };
-
-  interface HTMLGxGridEmptyElement extends Components.GxGridEmpty, HTMLStencilElement {}
-  var HTMLGxGridEmptyElement: {
-    prototype: HTMLGxGridEmptyElement;
-    new (): HTMLGxGridEmptyElement;
   };
 
   interface HTMLGxGridFsElement extends Components.GxGridFs, HTMLStencilElement {}
@@ -1937,7 +1974,6 @@ declare global {
     'gx-chronometer': HTMLGxChronometerElement
     'gx-edit': HTMLGxEditElement
     'gx-form-field': HTMLGxFormFieldElement
-    'gx-grid-empty': HTMLGxGridEmptyElement
     'gx-grid-fs': HTMLGxGridFsElement
     'gx-grid-infinite-scroll-content': HTMLGxGridInfiniteScrollContentElement
     'gx-grid-infinite-scroll': HTMLGxGridInfiniteScrollElement
@@ -1976,7 +2012,6 @@ declare global {
     'gx-chronometer': HTMLGxChronometerElement;
     'gx-edit': HTMLGxEditElement;
     'gx-form-field': HTMLGxFormFieldElement;
-    'gx-grid-empty': HTMLGxGridEmptyElement;
     'gx-grid-fs': HTMLGxGridFsElement;
     'gx-grid-infinite-scroll-content': HTMLGxGridInfiniteScrollContentElement;
     'gx-grid-infinite-scroll': HTMLGxGridInfiniteScrollElement;
