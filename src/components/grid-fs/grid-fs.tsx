@@ -1,9 +1,6 @@
 import { Component, ComponentInterface, Element, Prop } from "@stencil/core";
 import { GridBaseHelper, IGridBase } from "../grid-base/grid-base";
-import {
-  IDisableableComponent,
-  IVisibilityComponent
-} from "../common/interfaces";
+import { IVisibilityComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
@@ -14,7 +11,6 @@ export class GridFreeStyle
   implements
     IGridBase,
     ComponentInterface,
-    IDisableableComponent,
     IVisibilityComponent {
   @Element() el!: HTMLElement;
 
