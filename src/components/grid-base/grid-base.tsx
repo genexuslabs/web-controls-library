@@ -1,22 +1,5 @@
-import { Component, Element, ComponentInterface, Prop } from "@stencil/core";
-import { IGridBase, GridBaseHelper } from "../grid-base/grid-base";
-import {
-  IDisableableComponent,
-  IVisibilityComponent
-} from "../common/interfaces";
-
-@Component({
-  shadow: false,
-  styleUrl: "../grid-base/grid-base.scss",
-  tag: "gx-grid-fs"
-})
-export class GridFreeStyle
-  implements
-    IGridBase,
-    ComponentInterface,
-    IDisableableComponent,
-    IVisibilityComponent {
-  @Element() el!: HTMLElement;
+export interface IGridBase {
+  el: HTMLElement;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -26,37 +9,52 @@ export class GridFreeStyle
    * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
-  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+  invisibleMode: "collapse" | "keep-space";
 
   /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() disabled = false;
+  disabled: boolean;
 
   /**
-   * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.
+   * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown. 
    *
    * | Value        | Details                                                                                        |
    * | ------------ | ---------------------------------------------------------------------------------------------- |
    * | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                |
    * | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
-   */
-
-  @Prop() loadingState: "loading" | "loaded";
+   */  
+  loadingState: "loading" | "loaded";
 
   /**
-   * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes.
+   * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. 
    * If not specified, then grid empty and loading placeholders will not work correctly.
    */
-  @Prop() recordCount: Number;
+  recordCount: Number;
+}
 
-  render() {
-    return GridBaseHelper.render(this);
+export class GridBaseHelper {
+  static render(_cmp: IGridBase) {
+    return (
+      <div>
+        <slot name="grid-content" />        
+        <div class="grid-empty-placeholder">
+          <slot name="grid-content-empty" />
+        </div>
+        <slot />
+      </div>
+    );
   }
 
-  hostData() {
-    return GridBaseHelper.hostData(this);
+  static hostData(cmp: IGridBase) {
+    let emptyGridData = cmp.recordCount === 0;
+    return {
+      class: {
+        "gx-grid-empty": emptyGridData,
+        "gx-grid-loading": cmp.loadingState === 'loading'
+      }
+    };
   }
 }
