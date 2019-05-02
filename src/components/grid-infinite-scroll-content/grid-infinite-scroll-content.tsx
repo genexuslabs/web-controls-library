@@ -23,5 +23,4 @@ export class InfiniteScrollContent implements ComponentInterface {
           }
       };
   }
-
 }
