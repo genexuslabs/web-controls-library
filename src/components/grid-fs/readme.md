@@ -1,10 +1,12 @@
 # gx-grid-fs
 
-It's just a container to include repetitive element list. 
-It also has a slot to include custom elements to display when the Container content is empty.
+Container to include repetitive element list. 
+It provides two slots:
+- 'grid-content' slot: Include the grid content here
+- 'grid-content-empty' slot: This slot will be shown, only if the grid is empty. 
+
 When grid is empty, a CSS Class name 'gx-grid-empty' is added to the host element. 
 When grid is loading, a CSS Class name 'gx-grid-loading' is added to the host element. 
-
 <!-- Auto Generated Below -->
 
 
