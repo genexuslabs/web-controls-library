@@ -31,13 +31,13 @@ export class GridInfiniteScroll implements ComponentInterface {
   /**
    * Query selector where the infinitie scroll would be listening to scroll events.
    */
-  @Prop() infiniteScrollContainer: string = "div";
+  @Prop() infiniteScrollContainer = "div";
 
   /**
    * This property must be bounded to grid item count property.
    * It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the intial batch does not overflow the main container
    */
-  @Prop() itemCount: number = 0;
+  @Prop() itemCount = 0;
 
   @Prop({ context: "queue" })
   queue!: QueueApi;
@@ -55,17 +55,6 @@ export class GridInfiniteScroll implements ComponentInterface {
    */
   @Prop() threshold = "15%";
 
-  @Watch("threshold")
-  protected thresholdChanged(val: string) {
-    if (val.lastIndexOf("%") > -1) {
-      this.thrPx = 0;
-      this.thrPc = parseFloat(val) / 100;
-    } else {
-      this.thrPx = parseFloat(val);
-      this.thrPc = 0;
-    }
-  }
-
   /**
    * If `true`, the infinite scroll will be hidden and scroll event listeners
    * will be removed.
@@ -76,31 +65,6 @@ export class GridInfiniteScroll implements ComponentInterface {
    * the infinite scroll is no longer needed.
    */
   @Prop() disabled = false;
-
-  @Watch("itemCount")
-  public itemCountChanged() {
-    setTimeout(() => {
-      const containerHeight = this.scrollEl.offsetHeight;
-      const contentHeight = this.scrollEl.querySelector("div").offsetHeight;
-
-      if (contentHeight < containerHeight) {
-        this.gxInfinite.emit();
-      }
-    }, 100);
-  }
-
-  componentWillLoad() {
-    this.itemCountChanged();
-  }
-
-  @Watch("disabled")
-  protected disabledChanged(val: boolean) {
-    if (this.disabled) {
-      this.isLoading = false;
-      this.isBusy = false;
-    }
-    this.enableScrollEvents(!val);
-  }
 
   /**
    * The position of the infinite scroll element.
@@ -116,6 +80,42 @@ export class GridInfiniteScroll implements ComponentInterface {
    */
   @Event() gxInfinite!: EventEmitter<void>;
 
+  componentWillLoad() {
+    this.itemCountChanged();
+  }
+
+  @Watch("itemCount")
+  public itemCountChanged() {
+    setTimeout(() => {
+      const containerHeight = this.scrollEl.offsetHeight;
+      const contentHeight = this.scrollEl.querySelector("div").offsetHeight;
+
+      if (contentHeight < containerHeight) {
+        this.gxInfinite.emit();
+      }
+    }, 100);
+  }
+
+  @Watch("disabled")
+  protected disabledChanged(val: boolean) {
+    if (this.disabled) {
+      this.isLoading = false;
+      this.isBusy = false;
+    }
+    this.enableScrollEvents(!val);
+  }
+
+  @Watch("threshold")
+  protected thresholdChanged(val: string) {
+    if (val.lastIndexOf("%") > -1) {
+      this.thrPx = 0;
+      this.thrPc = parseFloat(val) / 100;
+    } else {
+      this.thrPx = parseFloat(val);
+      this.thrPc = 0;
+    }
+  }
+
   async componentDidLoad() {
     const contentEl = this.el.closest(this.infiniteScrollContainer);
     if (contentEl) {
@@ -130,8 +130,6 @@ export class GridInfiniteScroll implements ComponentInterface {
           }
         });
       }
-    } else {
-      console.log("Scroll container not found. Not attaching Infinite scroll", this.infiniteScrollContainer);
     }
   }
 
@@ -146,7 +144,7 @@ export class GridInfiniteScroll implements ComponentInterface {
       return 1;
     }
 
-    const infiniteHeight = this.el.offsetHeight;    
+    const infiniteHeight = this.el.offsetHeight;
     const scrollTop = scrollEl.scrollTop;
     const scrollHeight = scrollEl.scrollHeight;
     const height = scrollEl.offsetHeight;
@@ -247,8 +245,8 @@ export class GridInfiniteScroll implements ComponentInterface {
   hostData() {
     return {
       class: {
-        "infinite-scroll-loading": this.isLoading,
-        "infinite-scroll-enabled": !this.disabled
+        "infinite-scroll-enabled": !this.disabled,
+        "infinite-scroll-loading": this.isLoading
       }
     };
   }

@@ -1,5 +1,5 @@
-import { Component, Element, ComponentInterface, Prop } from "@stencil/core";
-import { IGridBase, GridBaseHelper } from "../grid-base/grid-base";
+import { Component, ComponentInterface, Element, Prop } from "@stencil/core";
+import { GridBaseHelper, IGridBase } from "../grid-base/grid-base";
 import {
   IDisableableComponent,
   IVisibilityComponent
@@ -29,13 +29,6 @@ export class GridFreeStyle
   @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
-   * This attribute lets you specify if the element is disabled.
-   * If disabled, it will not fire any user interaction related event
-   * (for example, click event).
-   */
-  @Prop() disabled = false;
-
-  /**
    * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.
    *
    * | Value        | Details                                                                                        |
@@ -50,7 +43,7 @@ export class GridFreeStyle
    * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes.
    * If not specified, then grid empty and loading placeholders will not work correctly.
    */
-  @Prop() recordCount: Number;
+  @Prop() recordCount: number;
 
   render() {
     return GridBaseHelper.render(this);

@@ -12,34 +12,27 @@ export interface IGridBase {
   invisibleMode: "collapse" | "keep-space";
 
   /**
-   * This attribute lets you specify if the element is disabled.
-   * If disabled, it will not fire any user interaction related event
-   * (for example, click event).
-   */
-  disabled: boolean;
-
-  /**
-   * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown. 
+   * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.
    *
    * | Value        | Details                                                                                        |
    * | ------------ | ---------------------------------------------------------------------------------------------- |
    * | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                |
    * | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
-   */  
+   */
   loadingState: "loading" | "loaded";
 
   /**
-   * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. 
+   * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes.
    * If not specified, then grid empty and loading placeholders will not work correctly.
    */
-  recordCount: Number;
+  recordCount: number;
 }
 
 export class GridBaseHelper {
   static render(_cmp: IGridBase) {
     return (
       <div>
-        <slot name="grid-content" />        
+        <slot name="grid-content" />
         <div class="grid-empty-placeholder">
           <slot name="grid-content-empty" />
         </div>
@@ -49,11 +42,11 @@ export class GridBaseHelper {
   }
 
   static hostData(cmp: IGridBase) {
-    let emptyGridData = cmp.recordCount === 0;
+    const emptyGridData = cmp.recordCount === 0;
     return {
       class: {
         "gx-grid-empty": emptyGridData,
-        "gx-grid-loading": cmp.loadingState === 'loading'
+        "gx-grid-loading": cmp.loadingState === "loading"
       }
     };
   }

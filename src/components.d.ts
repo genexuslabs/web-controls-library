@@ -511,10 +511,6 @@ export namespace Components {
 
   interface GxGridFs {
     /**
-    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-    */
-    'disabled': boolean;
-    /**
     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
     */
     'invisibleMode': "collapse" | "keep-space";
@@ -525,13 +521,9 @@ export namespace Components {
     /**
     * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
     */
-    'recordCount': Number;
+    'recordCount': number;
   }
   interface GxGridFsAttributes extends StencilHTMLAttributes {
-    /**
-    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-    */
-    'disabled'?: boolean;
     /**
     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
     */
@@ -543,7 +535,7 @@ export namespace Components {
     /**
     * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
     */
-    'recordCount'?: Number;
+    'recordCount'?: number;
   }
 
   interface GxGridInfiniteScrollContent {}
