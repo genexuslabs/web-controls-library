@@ -9,18 +9,14 @@ export class InfiniteScrollContent implements ComponentInterface {
   @Element() el!: HTMLElement;
 
   render() {
-    return (
-      <div>
-        <slot/>
-      </div>
-    );
+    return <slot/>;
   }
 
   hostData() {
-      return {
-          class: {
-            "infinite-scroll-content": true
-          }
-      };
+    return {
+      class: {
+        "infinite-scroll-content": true
+      }
+    };
   }
 }

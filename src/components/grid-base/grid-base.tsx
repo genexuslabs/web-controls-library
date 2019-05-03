@@ -30,15 +30,13 @@ export interface IGridBase {
 
 export class GridBaseHelper {
   static render(_cmp: IGridBase) {
-    return (
-      <div>
-        <slot name="grid-content" />
-        <div class="grid-empty-placeholder">
-          <slot name="grid-content-empty" />
-        </div>
-        <slot />
-      </div>
-    );
+    return [
+      <slot name="grid-content" />,
+      <div class="grid-empty-placeholder">
+        <slot name="grid-content-empty" />
+      </div>,
+      <slot />
+    ];
   }
 
   static hostData(cmp: IGridBase) {
