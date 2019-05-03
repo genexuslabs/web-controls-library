@@ -8,13 +8,8 @@ gx-grid-fs {
   }
 }
 
-gx-grid-fs.gx-grid-empty .grid-empty-placeholder {
+gx-grid-fs.gx-grid-empty:not(.gx-grid-loading) .grid-empty-placeholder {
   display: block;
   margin:auto;
   text-align: center;
 }
-
-gx-grid-fs.gx-grid-loading .grid-empty-placeholder {
-  display: none;
-}
-
