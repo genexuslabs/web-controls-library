@@ -18,6 +18,7 @@ Component used within `gx-gauge` to draw and show its range.
 | ----------------------- | ----------- |
 | `gxGaugeRangeDidLoad`   |             |
 | `gxGaugeRangeDidUnload` |             |
+| `gxGaugeRangeDidUpdate` |             |
 
 ---
 

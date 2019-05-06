@@ -144,7 +144,7 @@ export class Gauge implements IComponent {
         }}
       >
         <svg width="100%" height="100%" viewBox="0 0 100 100">
-          {svgRanges.map(gaugeRange => gaugeRange)}
+          {svgRanges}
         </svg>
         <div
           class="gaugeContainer"
@@ -297,12 +297,8 @@ export class Gauge implements IComponent {
           height: `${5 * this.calcThickness()}px`
         }}
       >
-        <div class="rangesContainer">
-          {divRanges.map(gaugeRange => gaugeRange)}
-        </div>
-        <div class="namesContainer">
-          {divRangesName.map(gaugeRange => gaugeRange)}
-        </div>
+        <div class="rangesContainer">{divRanges}</div>
+        <div class="namesContainer">{divRangesName}</div>
         <div
           class="gauge"
           style={{
