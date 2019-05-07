@@ -1,0 +1,15 @@
+@import "../common/_base";
+
+gx-grid-fs {
+  @include visibility(block);  
+
+  .grid-empty-placeholder {
+    display: none;
+  }
+}
+
+gx-grid-fs.gx-grid-empty:not(.gx-grid-loading) .grid-empty-placeholder {
+  display: block;
+  margin:auto;
+  text-align: center;
+}
