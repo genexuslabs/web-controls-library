@@ -1,0 +1,198 @@
+@mixin widthHeightsize($valueX, $valueY) {
+  height: $valueY;
+  width: $valueX;
+}
+@mixin flex($direct, $justCont, $aligItem, $wrap) {
+  display: flex;
+  flex-direction: $direct;
+  justify-content: $justCont;
+  align-items: $aligItem;
+  flex-wrap: $wrap;
+}
+%ratingHover {
+  &:hover {
+    svg:nth-child(n) {
+      polygon {
+        fill: #e4ac13;
+      }
+      &:hover ~ svg {
+        polygon {
+          fill: rgba(80, 80, 80, 0.4);
+        }
+      }
+    }
+  }
+  svg {
+    @include widthHeightsize(2em, auto);
+    padding: 0px 2px;
+    cursor: pointer;
+    polygon {
+      fill: rgba(80, 80, 80, 0.6);
+      transition: 0.3s ease;
+    }
+  }
+}
+
+gx-rating {
+  input[type="range"] {
+    display: none;
+  }
+  div.svgContainer.rating {
+    @include widthHeightsize(max-content, max-content);
+    @include flex(row, space-between, center, wrap);
+    &[data-score="1"] {
+      svg {
+        filter: drop-shadow(0 0 2px #e4ac13);
+        polygon {
+          fill: #e4ac13;
+        }
+        &:nth-child(1) ~ svg {
+          filter: none;
+          polygon {
+            fill: rgba(80, 80, 80, 0.6);
+          }
+        }
+      }
+      &:hover {
+        svg ~ svg {
+          polygon {
+            fill: #e4ac13;
+          }
+        }
+        svg:hover {
+          & ~ svg {
+            polygon {
+              fill: rgba(80, 80, 80, 0.4);
+            }
+          }
+        }
+      }
+    }
+    &[data-score="2"] {
+      svg {
+        filter: drop-shadow(0 0 2px #e4ac13);
+        polygon {
+          fill: #e4ac13;
+        }
+        &:nth-child(2) ~ svg {
+          filter: none;
+          polygon {
+            fill: rgba(80, 80, 80, 0.6);
+          }
+        }
+      }
+      &:hover {
+        svg ~ svg {
+          polygon {
+            fill: #e4ac13;
+          }
+        }
+        svg:hover {
+          & ~ svg {
+            polygon {
+              fill: rgba(80, 80, 80, 0.4);
+            }
+          }
+        }
+      }
+    }
+    &[data-score="3"] {
+      svg {
+        filter: drop-shadow(0 0 2px #e4ac13);
+        polygon {
+          fill: #e4ac13;
+        }
+        &:nth-child(3) ~ svg {
+          filter: none;
+          polygon {
+            fill: rgba(80, 80, 80, 0.6);
+          }
+        }
+      }
+      &:hover {
+        svg ~ svg {
+          polygon {
+            fill: #e4ac13;
+          }
+        }
+        svg:hover {
+          & ~ svg {
+            polygon {
+              fill: rgba(80, 80, 80, 0.4);
+            }
+          }
+        }
+      }
+    }
+    &[data-score="4"] {
+      svg {
+        filter: drop-shadow(0 0 2px #e4ac13);
+        polygon {
+          fill: #e4ac13;
+        }
+        &:nth-child(4) ~ svg {
+          filter: none;
+          polygon {
+            fill: rgba(80, 80, 80, 0.6);
+          }
+        }
+      }
+      &:hover {
+        svg ~ svg {
+          polygon {
+            fill: #e4ac13;
+          }
+        }
+        svg:hover {
+          & ~ svg {
+            polygon {
+              fill: rgba(80, 80, 80, 0.4);
+            }
+          }
+        }
+      }
+    }
+    &[data-score="5"] {
+      svg {
+        filter: drop-shadow(0 0 2px #e4ac13);
+        polygon {
+          fill: #e4ac13;
+        }
+      }
+      &:hover {
+        svg ~ svg {
+          polygon {
+            fill: #e4ac13;
+          }
+        }
+        svg:hover {
+          & ~ svg {
+            polygon {
+              fill: rgba(80, 80, 80, 0.4);
+            }
+          }
+        }
+      }
+    }
+
+    @extend %ratingHover;
+  }
+  div.svgContainer.score {
+    @include widthHeightsize(max-content, max-content);
+    @include flex(row, space-between, center, wrap);
+    svg {
+      @include widthHeightsize(2em, auto);
+      padding: 0px 2px;
+      polygon {
+        fill: rgba(80, 80, 80, 0.6);
+        transition: 0.3s ease;
+      }
+      &.active {
+        filter: drop-shadow(0 0 2px #e4ac13);
+        polygon {
+          fill: #e4ac13;
+        }
+      }
+    }
+  }
+}
