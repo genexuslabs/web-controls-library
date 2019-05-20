@@ -12,9 +12,7 @@ import {
 
 import { GridBaseHelper, IGridBase } from "../grid-base/grid-base";
 import { IVisibilityComponent } from "../common/interfaces";
-// tslint:disable:no-duplicate-imports
-import Swiper from "swiper";
-import { SwiperOptions } from "swiper";
+import Swiper, { SwiperOptions } from "swiper";
 
 @Component({
   styleUrl: "grid-smart.scss",
@@ -26,12 +24,7 @@ export class GridSmart
 
   private scrollbarEl?: HTMLElement;
   private paginationEl?: HTMLElement;
-  private didInit = false;
-  private readySwiper!: (swiper: Swiper) => void;
-
-  private swiper: Promise<Swiper> = new Promise(resolve => {
-    this.readySwiper = resolve;
-  });
+  private swiper: Swiper = null;
 
   /**
    * Number of items per view (items visible at the same time on slider's container).
@@ -49,7 +42,7 @@ export class GridSmart
   @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
-   * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.
+   * Grid loading state. It's purpose is to know whether the grid loading animation or the grid empty placeholder should be shown.
    *
    * | Value        | Details                                                                                        |
    * | ------------ | ---------------------------------------------------------------------------------------------- |
@@ -65,7 +58,7 @@ export class GridSmart
   @Prop() itemsPerGroup: number;
 
   /**
-   * Could be 'horizontal' or 'vertical' (for vertical slider).
+   * Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).
    */
   @Prop() direction: "horizontal" | "vertical";
   /**
@@ -103,12 +96,12 @@ export class GridSmart
   /**
    * Emitted when the user taps/clicks on the slide's container.
    */
-  @Event() gxGridTap!: EventEmitter<void>;
+  @Event() gxGridClick!: EventEmitter<void>;
 
   /**
    * Emitted when the user double taps on the slide's container.
    */
-  @Event() gxGridDoubleTap!: EventEmitter<void>;
+  @Event() gxGridDoubleClick!: EventEmitter<void>;
 
   /**
    * Emitted before the active slide has changed.
@@ -178,11 +171,10 @@ export class GridSmart
   @Watch("options")
   @Watch("recordCount")
   @Watch("loadingState")
-  async optionsChanged() {
+  optionsChanged() {
     if (this.initSwiper()) {
-      const swiper = await this.getSwiper();
-      Object.assign(swiper.params, this.options);
-      await this.update();
+      Object.assign(this.swiper.params, this.options);
+      this.update();
     }
   }
 
@@ -190,9 +182,8 @@ export class GridSmart
     window.requestAnimationFrame(() => this.initSwiper());
   }
 
-  async componentDidUnload() {
-    const swiper = await this.getSwiper();
-    swiper.destroy(true, true);
+  componentDidUnload() {
+    this.swiper.destroy(true, true);
   }
 
   @Listen("gxGridChanged")
@@ -207,10 +198,9 @@ export class GridSmart
    * child slides.
    */
   @Method()
-  async update() {
+  update() {
     this.initSwiper();
-    const swiper = await this.getSwiper();
-    swiper.update();
+    this.swiper.update();
   }
 
   /**
@@ -220,9 +210,8 @@ export class GridSmart
    * @param speed The transition duration (in ms).
    */
   @Method()
-  async updateAutoHeight(speed?: number) {
-    const swiper = await this.getSwiper();
-    swiper.updateAutoHeight(speed);
+  updateAutoHeight(speed?: number) {
+    this.swiper.updateAutoHeight(speed);
   }
 
   /**
@@ -233,9 +222,8 @@ export class GridSmart
    * @param runCallbacks If true, the transition will produce [Transition/SlideChange][Start/End] transition events.
    */
   @Method()
-  async slideTo(index: number, speed?: number, runCallbacks?: boolean) {
-    const swiper = await this.getSwiper();
-    swiper.slideTo(index, speed, runCallbacks);
+  slideTo(index: number, speed?: number, runCallbacks?: boolean) {
+    this.swiper.slideTo(index, speed, runCallbacks);
   }
 
   /**
@@ -245,9 +233,8 @@ export class GridSmart
    * @param runCallbacks If true, the transition will produce [Transition/SlideChange][Start/End] transition events.
    */
   @Method()
-  async slideNext(speed?: number, runCallbacks?: boolean) {
-    const swiper = await this.getSwiper();
-    swiper.slideNext(speed, runCallbacks);
+  slideNext(speed?: number, runCallbacks?: boolean) {
+    this.swiper.slideNext(speed, runCallbacks);
   }
 
   /**
@@ -257,64 +244,57 @@ export class GridSmart
    * @param runCallbacks If true, the transition will produce the [Transition/SlideChange][Start/End] transition events.
    */
   @Method()
-  async slidePrev(speed?: number, runCallbacks?: boolean) {
-    const swiper = await this.getSwiper();
-    swiper.slidePrev(speed, runCallbacks);
+  slidePrev(speed?: number, runCallbacks?: boolean) {
+    this.swiper.slidePrev(speed, runCallbacks);
   }
 
   /**
    * Get the index of the active slide.
    */
   @Method()
-  async getActiveIndex(): Promise<number> {
-    const swiper = await this.getSwiper();
-    return swiper.activeIndex;
+  getActiveIndex(): number {
+    return this.swiper.activeIndex;
   }
 
   /**
    * Get the index of the previous slide.
    */
   @Method()
-  async getPreviousIndex(): Promise<number> {
-    const swiper = await this.getSwiper();
-    return swiper.previousIndex;
+  getPreviousIndex(): number {
+    return this.swiper.previousIndex;
   }
 
   /**
    * Get the total number of slides.
    */
   @Method()
-  async length(): Promise<number> {
-    const swiper = await this.getSwiper();
-    return swiper.slides.length;
+  length(): number {
+    return this.swiper.slides.length;
   }
 
   /**
    * Get whether or not the current slide is the last slide.
    */
   @Method()
-  async isEnd(): Promise<boolean> {
-    const swiper = await this.getSwiper();
-    return swiper.isEnd;
+  isLast(): boolean {
+    return this.swiper.isEnd;
   }
 
   /**
    * Get whether or not the current slide is the first slide.
    */
   @Method()
-  async isBeginning(): Promise<boolean> {
-    const swiper = await this.getSwiper();
-    return swiper.isBeginning;
+  isStart(): boolean {
+    return this.swiper.isBeginning;
   }
 
   /**
    * Start auto play.
    */
   @Method()
-  async startAutoplay() {
-    const swiper = await this.getSwiper();
-    if (swiper.autoplay) {
-      swiper.autoplay.start();
+  startAutoplay() {
+    if (this.swiper.autoplay) {
+      this.swiper.autoplay.start();
     }
   }
 
@@ -322,10 +302,9 @@ export class GridSmart
    * Stop auto play.
    */
   @Method()
-  async stopAutoplay() {
-    const swiper = await this.getSwiper();
-    if (swiper.autoplay) {
-      swiper.autoplay.stop();
+  stopAutoplay() {
+    if (this.swiper.autoplay) {
+      this.swiper.autoplay.stop();
     }
   }
 
@@ -335,9 +314,8 @@ export class GridSmart
    * @param lock If `true`, disable swiping to the next slide.
    */
   @Method()
-  async lockSwipeToNext(lock: boolean) {
-    const swiper = await this.getSwiper();
-    swiper.allowSlideNext = !lock;
+  toggleLockSwipeToNext(lock: boolean) {
+    this.swiper.allowSlideNext = !lock;
   }
 
   /**
@@ -346,9 +324,8 @@ export class GridSmart
    * @param lock If `true`, disable swiping to the previous slide.
    */
   @Method()
-  async lockSwipeToPrev(lock: boolean) {
-    const swiper = await this.getSwiper();
-    swiper.allowSlidePrev = !lock;
+  toggleLockSwipeToPrev(lock: boolean) {
+    this.swiper.allowSlidePrev = !lock;
   }
 
   /**
@@ -357,28 +334,21 @@ export class GridSmart
    * @param lock If `true`, disable swiping to the next and previous slide.
    */
   @Method()
-  async lockSwipes(lock: boolean) {
-    const swiper = await this.getSwiper();
-    swiper.allowSlideNext = !lock;
-    swiper.allowSlidePrev = !lock;
-    swiper.allowTouchMove = !lock;
+  toggleLockSwipes(lock: boolean) {
+    this.swiper.allowSlideNext = !lock;
+    this.swiper.allowSlidePrev = !lock;
+    this.swiper.allowTouchMove = !lock;
   }
 
-  private async initSwiper() {
-    if (!this.didInit && this.recordCount > 0) {
+  private initSwiper() {
+    if (this.swiper == null && this.recordCount > 0) {
       const container: HTMLElement = this.el;
       container
         .querySelector("[slot='grid-content']")
         .classList.add("swiper-wrapper");
-      const swiper = new Swiper(container, this.normalizeOptions());
-      this.readySwiper(swiper);
-      this.didInit = true;
+      this.swiper = new Swiper(container, this.normalizeOptions());
     }
-    return this.didInit;
-  }
-
-  private getSwiper() {
-    return this.swiper;
+    return this.swiper != null;
   }
 
   private optionValueDefault(value: any, defaultValue: any): any {
@@ -482,7 +452,7 @@ export class GridSmart
 
     const eventOptions: SwiperOptions = {
       on: {
-        doubleTap: this.gxGridDoubleTap.emit,
+        doubleTap: this.gxGridDoubleClick.emit,
         init: () => {
           setTimeout(() => {
             this.gxGridDidLoad.emit();
@@ -501,7 +471,7 @@ export class GridSmart
         transitionEnd: this.gxGridTransitionEnd.emit,
         touchStart: this.gxGridTouchStart.emit,
         touchEnd: this.gxGridTouchEnd.emit,
-        tap: this.gxGridTap.emit
+        tap: this.gxGridClick.emit
       }
     };
 

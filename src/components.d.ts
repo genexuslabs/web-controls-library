@@ -600,29 +600,29 @@ export namespace Components {
      */
     columns: number | "auto";
     /**
-     * Could be 'horizontal' or 'vertical' (for vertical slider).
+     * Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).
      */
     direction: "horizontal" | "vertical";
     /**
      * Get the index of the active slide.
      */
-    getActiveIndex: () => Promise<number>;
+    getActiveIndex: () => number;
     /**
      * Get the index of the previous slide.
      */
-    getPreviousIndex: () => Promise<number>;
+    getPreviousIndex: () => number;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode: "collapse" | "keep-space";
     /**
-     * Get whether or not the current slide is the first slide.
-     */
-    isBeginning: () => Promise<boolean>;
-    /**
      * Get whether or not the current slide is the last slide.
      */
-    isEnd: () => Promise<boolean>;
+    isLast: () => boolean;
+    /**
+     * Get whether or not the current slide is the first slide.
+     */
+    isStart: () => boolean;
     /**
      * Set numbers of items to define and enable group sliding. Useful to use with rowsPerPage > 1
      */
@@ -630,23 +630,11 @@ export namespace Components {
     /**
      * Get the total number of slides.
      */
-    length: () => Promise<number>;
+    length: () => number;
     /**
-     * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
+     * Grid loading state. It's purpose is to know whether the grid loading animation or the grid empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
      */
     loadingState: "loading" | "loaded";
-    /**
-     * Lock or unlock the ability to slide to the next slide.
-     */
-    lockSwipeToNext: (lock: boolean) => Promise<void>;
-    /**
-     * Lock or unlock the ability to slide to the previous slide.
-     */
-    lockSwipeToPrev: (lock: boolean) => Promise<void>;
-    /**
-     * Lock or unlock the ability to slide to the next or previous slide.
-     */
-    lockSwipes: (lock: boolean) => Promise<void>;
     /**
      * Advanced options to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options
      */
@@ -670,35 +658,43 @@ export namespace Components {
     /**
      * Transition to the next slide.
      */
-    slideNext: (speed?: number, runCallbacks?: boolean) => Promise<void>;
+    slideNext: (speed?: number, runCallbacks?: boolean) => void;
     /**
      * Transition to the previous slide.
      */
-    slidePrev: (speed?: number, runCallbacks?: boolean) => Promise<void>;
+    slidePrev: (speed?: number, runCallbacks?: boolean) => void;
     /**
      * Transition to the specified slide.
      */
-    slideTo: (
-      index: number,
-      speed?: number,
-      runCallbacks?: boolean
-    ) => Promise<void>;
+    slideTo: (index: number, speed?: number, runCallbacks?: boolean) => void;
     /**
      * Start auto play.
      */
-    startAutoplay: () => Promise<void>;
+    startAutoplay: () => void;
     /**
      * Stop auto play.
      */
-    stopAutoplay: () => Promise<void>;
+    stopAutoplay: () => void;
+    /**
+     * Lock or unlock the ability to slide to the next slide.
+     */
+    toggleLockSwipeToNext: (lock: boolean) => void;
+    /**
+     * Lock or unlock the ability to slide to the previous slide.
+     */
+    toggleLockSwipeToPrev: (lock: boolean) => void;
+    /**
+     * Lock or unlock the ability to slide to the next or previous slide.
+     */
+    toggleLockSwipes: (lock: boolean) => void;
     /**
      * Update the underlying slider implementation. Call this if you've added or removed child slides.
      */
-    update: () => Promise<void>;
+    update: () => void;
     /**
      * Force swiper to update its height (when autoHeight is enabled) for the duration equal to 'speed' parameter.
      */
-    updateAutoHeight: (speed?: number) => Promise<void>;
+    updateAutoHeight: (speed?: number) => void;
   }
   interface GxGridSmartAttributes extends StencilHTMLAttributes {
     /**
@@ -706,7 +702,7 @@ export namespace Components {
      */
     columns?: number | "auto";
     /**
-     * Could be 'horizontal' or 'vertical' (for vertical slider).
+     * Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).
      */
     direction?: "horizontal" | "vertical";
     /**
@@ -718,9 +714,13 @@ export namespace Components {
      */
     itemsPerGroup?: number;
     /**
-     * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
+     * Grid loading state. It's purpose is to know whether the grid loading animation or the grid empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
      */
     loadingState?: "loading" | "loaded";
+    /**
+     * Emitted when the user taps/clicks on the slide's container.
+     */
+    onGxGridClick?: (event: CustomEvent<void>) => void;
     /**
      * Emitted after the active slide has changed.
      */
@@ -732,7 +732,7 @@ export namespace Components {
     /**
      * Emitted when the user double taps on the slide's container.
      */
-    onGxGridDoubleTap?: (event: CustomEvent<void>) => void;
+    onGxGridDoubleClick?: (event: CustomEvent<void>) => void;
     /**
      * Emitted when the slider is actively being moved.
      */
@@ -761,10 +761,6 @@ export namespace Components {
      * Emitted when the slider is at its initial position.
      */
     onGxGridReachStart?: (event: CustomEvent<void>) => void;
-    /**
-     * Emitted when the user taps/clicks on the slide's container.
-     */
-    onGxGridTap?: (event: CustomEvent<void>) => void;
     /**
      * Emitted when the user releases the touch.
      */
