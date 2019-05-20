@@ -43,6 +43,7 @@ export class GridBaseHelper {
     const emptyGridData = cmp.recordCount === 0;
     return {
       class: {
+        "gx-grid-base": true,
         "gx-grid-empty": emptyGridData,
         "gx-grid-loading": cmp.loadingState === "loading"
       }

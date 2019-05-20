@@ -1,15 +1,22 @@
 @import "../common/_base";
 
-gx-grid-fs {
-  @include visibility(block);  
+.gx-grid-base {
+  @include visibility(block);
 
   .grid-empty-placeholder {
     display: none;
   }
 }
 
-gx-grid-fs.gx-grid-empty:not(.gx-grid-loading) .grid-empty-placeholder {
-  display: block;
-  margin:auto;
-  text-align: center;
+.gx-grid-base.gx-grid-empty:not(.gx-grid-loading) {
+  .grid-empty-placeholder {
+    display: block;
+    margin: auto;
+    text-align: center;
+  }
+
+  div[slot="grid-content"],
+  .gx-grid-paging {
+    display: none;
+  }
 }
