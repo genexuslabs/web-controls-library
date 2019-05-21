@@ -5,7 +5,6 @@ import {
   Element,
   Event,
   EventEmitter,
-  Listen,
   Method,
   Prop,
   State
@@ -70,27 +69,14 @@ export class Rating implements IFormComponent {
    */
   @Event() input: EventEmitter;
 
-  /**
-   * The 'rating' event is emitted when user clicks a star to qualify.
-   */
-  @Event() rating: EventEmitter;
-
-  @Listen("rating")
-  onrating({ detail: param }) {
+  onClick({ detail: param }) {
     const element = param.target;
     const score =
       element.nodeName === "polygon"
         ? parseInt(element.parentElement.getAttribute("star-number"), 10)
         : parseInt(element.getAttribute("star-number"), 10);
-    // tslint:disable-next-line:no-console
-    console.log("score", `${score} ۞`);
     this.ratingScore = score;
-  }
-
-  @Listen("input")
-  onInput(param) {
-    // tslint:disable-next-line:no-console
-    console.log("param", param);
+    this.input.emit(this);
   }
 
   /**
@@ -109,14 +95,12 @@ export class Rating implements IFormComponent {
           class="rating"
           viewBox="0 0 100 100"
           star-number={1 + i}
-          onClick={ev => this.rating.emit(ev)}
+          onClick={this.onClick.bind(this)}
         >
           <polygon points="50,0 15,95 100,35 0,35 85,95" />
         </svg>
       );
     }
-    // tslint:disable-next-line:no-console
-    console.log("addStarsRating ran");
     return stars;
   }
   private addStarsScore() {
@@ -152,8 +136,6 @@ export class Rating implements IFormComponent {
 
   render() {
     if (this.readonly) {
-      // tslint:disable-next-line:no-console
-      console.log(this.maxValue);
       return this.maxValue && this.value ? (
         <div>
           <input
