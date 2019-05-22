@@ -7,14 +7,16 @@
 /// @param {string} $odd-row Class for styling the Odd row
 /// @param {string} $even-row Class for styling the Odd even
 /// @param {string} loading-animation Class for styling the grid loading animation
-/// @param {string} loading-animation Class for styling the grid group-separator
+/// @param {string} group-separator Class for styling the grid group-separator
+/// @param {string} $horizontal-line Class of the horizontal line separator (to be implemented)
 @mixin gx-grid-base(
   $class,
   $odd-row: null,
   $even-row: null,
   $loading-animation: null,
   $horizontal-line: null,
-  $group-separator: null
+  $group-separator: null,
+  $horizontal-line: null
 ) {
   @if ($odd-row != null) {
     & .gx-grid-row:nth-child(odd) {

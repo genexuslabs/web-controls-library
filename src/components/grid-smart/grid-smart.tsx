@@ -76,7 +76,7 @@ export class GridSmart
    * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes.
    * If not specified, then grid empty and loading placeholders will not work correctly.
    */
-  @Prop() recordCount: number;
+  @Prop() recordCount: number = null;
 
   /**
    * Number of items per column, for multirow layout.
@@ -345,7 +345,7 @@ export class GridSmart
     if (
       this.swiper == null &&
       this.loadingState !== "loading" &&
-      this.recordCount > 0
+      this.recordCount !== 0
     ) {
       const container: HTMLElement = this.el;
       container
