@@ -604,7 +604,7 @@ export namespace Components {
      */
     direction: "horizontal" | "vertical";
     /**
-     * Get the index of the active slide.
+     * Get the index of the current active slide.
      */
     getActiveIndex: () => number;
     /**

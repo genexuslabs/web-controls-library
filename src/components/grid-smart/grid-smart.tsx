@@ -199,8 +199,9 @@ export class GridSmart
    */
   @Method()
   update() {
-    this.initSwiper();
-    this.swiper.update();
+    if (this.initSwiper() && this.loadingState !== "loading") {
+      this.swiper.update();
+    }
   }
 
   /**
@@ -249,7 +250,7 @@ export class GridSmart
   }
 
   /**
-   * Get the index of the active slide.
+   * Get the index of the current active slide.
    */
   @Method()
   getActiveIndex(): number {
@@ -341,7 +342,11 @@ export class GridSmart
   }
 
   private initSwiper() {
-    if (this.swiper == null && this.recordCount > 0) {
+    if (
+      this.swiper == null &&
+      this.loadingState !== "loading" &&
+      this.recordCount > 0
+    ) {
       const container: HTMLElement = this.el;
       container
         .querySelector("[slot='grid-content']")
