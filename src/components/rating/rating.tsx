@@ -69,7 +69,7 @@ export class Rating implements IFormComponent {
    */
   @Event() input: EventEmitter;
 
-  onClick({ detail: param }) {
+  onClick(param) {
     const element = param.target;
     const score =
       element.nodeName === "polygon"
@@ -95,7 +95,7 @@ export class Rating implements IFormComponent {
           class="rating"
           viewBox="0 0 100 100"
           star-number={1 + i}
-          onClick={this.onClick.bind(this)}
+          onClick={ev => this.onClick(ev)}
         >
           <polygon points="50,0 15,95 100,35 0,35 85,95" />
         </svg>

@@ -2,9 +2,9 @@
 
 The `gx-rating` allows displaying scores and rate something.
 
-Use `gx-rating` with `readonly = true` make available the scoring mode and set `max-value`and `value`.
+Use `gx-rating` with `readonly = true` make available the 'scoring mode' and set `max-value`and `value`.
 
-_`gx-rating` is in rating mode by default_
+_`gx-rating` is in 'rating mode' by default_
 
 <!-- Auto Generated Below -->
 
