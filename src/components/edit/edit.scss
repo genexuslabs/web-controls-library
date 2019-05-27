@@ -2,5 +2,6 @@
 @import "../renders/bootstrap/edit/edit-render";
 
 gx-edit {
-  @include visibility(block);
+  @include visibility(flex);
+  align-items: stretch;
 }

@@ -1,5 +1,8 @@
 @import "../common/_base";
 
 gx-table {
+  --elevation: 0;
+
   @include visibility(grid);
+  @include elevation();
 }

@@ -10,18 +10,13 @@ import {
   Watch
 } from "@stencil/core";
 import { SelectRender } from "../renders/bootstrap/select/select-render";
-import {
-  IComponent,
-  IDisableableComponent,
-  IVisibilityComponent
-} from "../common/interfaces";
+import { IFormComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
   tag: "gx-select"
 })
-export class Select
-  implements IComponent, IDisableableComponent, IVisibilityComponent {
+export class Select implements IFormComponent {
   constructor() {
     this.renderer = new SelectRender(this);
   }
@@ -75,10 +70,10 @@ export class Select
   value: string;
 
   /**
-   * The `change` event is emitted when a change to the element's value is
+   * The `input` event is emitted when a change to the element's value is
    * committed by the user.
    */
-  @Event() onChange: EventEmitter;
+  @Event() input: EventEmitter;
 
   private getChildOptions() {
     return Array.from(this.element.querySelectorAll("gx-select-option")).map(
@@ -89,6 +84,10 @@ export class Select
         value: option.value
       })
     );
+  }
+
+  handleChange(event: UIEvent) {
+    this.input.emit(event);
   }
 
   private updateOptions(options) {
@@ -103,9 +102,11 @@ export class Select
     if (this.value === undefined) {
       // set to undefined
       // ensure all that are checked become unchecked
-      this.options.filter(o => o.selected).forEach(option => {
-        option.selected = false;
-      });
+      this.options
+        .filter(o => o.selected)
+        .forEach(option => {
+          option.selected = false;
+        });
     } else {
       let hasSelected = false;
 
@@ -135,7 +136,7 @@ export class Select
 
     if (this.didLoad) {
       // emit the new value
-      this.onChange.emit({ value: this.value });
+      this.input.emit({ value: this.value });
     }
   }
 
@@ -210,12 +211,6 @@ export class Select
 
   componentDidUnload() {
     this.renderer.componentDidUnload();
-  }
-
-  hostData() {
-    return {
-      role: "combobox"
-    };
   }
 
   render() {

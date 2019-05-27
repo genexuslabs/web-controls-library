@@ -9,6 +9,7 @@ import {
 } from "@stencil/core";
 import { EditRender } from "../renders/bootstrap/edit/edit-render";
 import { IFormComponent } from "../common/interfaces";
+import { cssVariablesWatcher } from "../common/css-variables-watcher";
 
 @Component({
   shadow: false,
@@ -18,6 +19,13 @@ import { IFormComponent } from "../common/interfaces";
 export class Edit implements IFormComponent {
   constructor() {
     this.renderer = new EditRender(this);
+
+    cssVariablesWatcher(this, [
+      {
+        cssVariableName: "--font-category",
+        propertyName: "fontCategory"
+      }
+    ]);
   }
 
   private renderer: EditRender;
@@ -31,7 +39,7 @@ export class Edit implements IFormComponent {
    * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize)
    * attribute for `input` elements. Only supported by Safari and Chrome.
    */
-  @Prop() autocapitalize: "none" | "sentences" | "words" | "characters";
+  @Prop() autocapitalize: string;
 
   /**
    * This attribute indicates whether the value of the control can be
@@ -46,6 +54,27 @@ export class Edit implements IFormComponent {
    * attribute for `input` elements.
    */
   @Prop() autocorrect: string;
+
+  /**
+   * Used to define the semantic of the element when readonly=true.
+   *
+   * Font categories are mapped to semantic HTML elements when rendered:
+   *
+   * * `"headline"`: `h1`
+   * * `"subheadline"`: `h2`
+   * * `"body"`: `p`
+   * * `"footnote"`: `footer`
+   * * `"caption1"`: `span`
+   * * `"caption2"`: `span`
+   */
+  @Prop({ mutable: true })
+  fontCategory:
+    | "headline"
+    | "subheadline"
+    | "body"
+    | "footnote"
+    | "caption1"
+    | "caption2" = "body";
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -141,12 +170,12 @@ export class Edit implements IFormComponent {
    * necessarily fired for each change to an element's value but when the
    * control loses focus.
    */
-  @Event() onChange: EventEmitter;
+  @Event() change: EventEmitter;
 
   /**
    * The `input` event is fired synchronously when the value is changed.
    */
-  @Event() onInput: EventEmitter;
+  @Event() input: EventEmitter;
 
   /**
    * The `gxTriggerClick` event is fired when the trigger button is clicked.
@@ -181,12 +210,12 @@ export class Edit implements IFormComponent {
 
   handleChange(event: UIEvent) {
     this.value = this.renderer.getValueFromEvent(event);
-    this.onChange.emit(event);
+    this.change.emit(event);
   }
 
   handleValueChanging(event: UIEvent) {
     this.value = this.renderer.getValueFromEvent(event);
-    this.onInput.emit(event);
+    this.input.emit(event);
   }
 
   handleTriggerClick(event: UIEvent) {

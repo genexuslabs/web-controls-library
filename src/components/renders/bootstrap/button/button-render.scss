@@ -1,1 +1,7 @@
-@import "../_lib";
+gx-button {
+  --elevation: 0;
+
+  & > button {
+    @include elevation();
+  }
+}

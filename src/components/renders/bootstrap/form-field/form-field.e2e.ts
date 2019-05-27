@@ -13,8 +13,10 @@ describe("gx-form-field", () => {
     element = await page.find("gx-form-field");
   });
 
-  it("should render the label", () => {
-    expect(element.textContent.trim()).toEqual("Label");
+  it("should render the label", async () => {
+    const labelElement = await element.find("label");
+    expect(labelElement).toBeTruthy();
+    expect(labelElement.textContent.trim()).toEqual("Label");
   });
 
   // it("should link the label and the input field", async () => {

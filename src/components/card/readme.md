@@ -29,8 +29,12 @@ predefined slots:
   <gx-button slot="normal-priority-action">Save</gx-button>
   <gx-button slot="normal-priority-action">Cancel</gx-button>
   <gx-textblock slot="low-priority-action" href="#">Action</gx-textblock>
-  <gx-textblock slot="low-priority-action" href="#">Another action</gx-textblock>
-  <gx-textblock slot="low-priority-action" href="#">Something else here</gx-textblock>
+  <gx-textblock slot="low-priority-action" href="#"
+    >Another action</gx-textblock
+  >
+  <gx-textblock slot="low-priority-action" href="#"
+    >Something else here</gx-textblock
+  >
   <div slot="body">
     This is the card content
   </div>
@@ -41,9 +45,9 @@ predefined slots:
 
 ## Properties
 
-| Property        | Attribute        | Description                                                               | Type  |
-| --------------- | ---------------- | ------------------------------------------------------------------------- | ----- |
-| `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden. | Value | Details |  | ------------ | --------------------------------------------------------------------------- |  | `keep-space` | The element remains in the document flow, and it does occupy space. |  | `collapse` | The element is removed form the document flow, and it doesn't occupy space. |  | `"collapse"`, `"keep-space"` |
+| Property        | Attribute        | Description                                                                                                                                                                                                                                                                                                                                                                                  | Type                         | Default      |
+| --------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------ |
+| `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \| | `"collapse" \| "keep-space"` | `"collapse"` |
 
 ---
 

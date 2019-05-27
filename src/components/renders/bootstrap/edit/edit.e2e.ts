@@ -23,9 +23,34 @@ describe("gx-edit", () => {
     expect(element.value).toEqual("bar");
   });
 
-  // it("should keep input and custom element values in sync", async () => {
-  //   element.value = "foo";
-  //   await page.waitForChanges();
-  //   expect(element.querySelector("input").value).toEqual("foo");
-  // });
+  it("should render as read only", async () => {
+    element.readonly = true;
+    await page.waitForChanges();
+    const readonlyElement = await element.find("[data-readonly]");
+    expect(readonlyElement).toBeTruthy();
+  });
+
+  it("should render as read only using a h1 element - fontCategory property", async () => {
+    await element.setProperty("readonly", true);
+    await element.setProperty("fontCategory", "headline");
+    await page.waitForChanges();
+    const readonlyElement = await element.find("[data-readonly]");
+    expect(readonlyElement.tagName).toBe("H1");
+  });
+
+  it("should render as read only using a h1 element - --font-category CSS property", async () => {
+    await element.setProperty("readonly", true);
+    await element.setProperty("style", "--font-category: headline");
+    await page.waitForChanges();
+    const readonlyElement = await element.find("[data-readonly]");
+    expect(readonlyElement.tagName).toBe("H1");
+  });
+
+  it("should render as read only using a p element - --font-category CSS property", async () => {
+    await element.setProperty("readonly", true);
+    await element.setProperty("style", "--font-category: body");
+    await page.waitForChanges();
+    const readonlyElement = await element.find("[data-readonly]");
+    expect(readonlyElement.tagName).toBe("P");
+  });
 });

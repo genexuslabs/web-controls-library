@@ -4,11 +4,14 @@ import { Switch } from "../../../switch/switch";
 export class SwitchRender implements IRenderer {
   constructor(public component: Switch) {}
 
-  protected nativeInput: HTMLInputElement;
   private inputId: string;
 
   getNativeInputId() {
-    return this.nativeInput.id;
+    return this.getNativeInput().id;
+  }
+
+  private getNativeInput(): HTMLInputElement {
+    return this.component.element.querySelector("[data-native-element]");
   }
 
   private getValueFromEvent(event: UIEvent): boolean {
@@ -17,21 +20,17 @@ export class SwitchRender implements IRenderer {
 
   handleChange(event: UIEvent) {
     this.component.checked = this.getValueFromEvent(event);
-    this.component.onChange.emit(event);
+    this.component.input.emit(event);
   }
 
   /**
    * Update the native input element when the value changes
    */
   checkedChanged() {
-    const inputEl = this.nativeInput;
+    const inputEl = this.getNativeInput();
     if (inputEl && inputEl.checked !== this.component.checked) {
       inputEl.checked = this.component.checked;
     }
-  }
-
-  componentDidUnload() {
-    this.nativeInput = null;
   }
 
   render() {
@@ -46,19 +45,20 @@ export class SwitchRender implements IRenderer {
       "aria-disabled": this.component.disabled ? "true" : "false",
       checked: this.component.checked,
       class: "switch",
+      "data-native-element": "",
       disabled: this.component.disabled,
       id: this.inputId,
       onChange: this.handleChange.bind(this),
-      ref: input => (this.nativeInput = input as any),
       type: "checkbox"
     };
 
-    return (
+    return [
+      <gx-bootstrap />,
       <span class="switch switch-sm">
         <input {...inputAttrs} />
         <label htmlFor={this.inputId}>{this.component.caption}</label>
       </span>
-    );
+    ];
   }
 }
 

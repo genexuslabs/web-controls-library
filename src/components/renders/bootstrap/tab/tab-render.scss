@@ -1,1 +1,13 @@
-@import "../_lib";
+gx-tab {
+  --elevation: 0;
+  --tab-strip-elevation: 0;
+
+  & > div {
+    @include elevation();
+
+    & > .nav-tabs {
+      --elevation: var(--tab-strip-elevation);
+      @include elevation();
+    }
+  }
+}

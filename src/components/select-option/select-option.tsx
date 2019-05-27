@@ -43,7 +43,7 @@ export class SelectOption implements IComponent, IDisableableComponent {
    * The `change` event is emitted when a change to the element's value is
    * committed by the user.
    */
-  @Event() onChange: EventEmitter;
+  @Event() change: EventEmitter;
 
   /**
    * Emitted when the option is selected.
@@ -81,7 +81,7 @@ export class SelectOption implements IComponent, IDisableableComponent {
 
   @Watch("value")
   protected valueChanged() {
-    this.onChange.emit({ select: this });
+    this.change.emit({ select: this });
   }
 
   componentDidLoad() {

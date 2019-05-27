@@ -81,7 +81,7 @@ export class RadioOption
    * The `change` event is emitted when a change to the element's value is
    * committed by the user.
    */
-  @Event() onChange: EventEmitter;
+  @Event() change: EventEmitter;
 
   /**
    * Emitted when the radio button is selected.
@@ -115,7 +115,6 @@ export class RadioOption
 
   componentDidUnload() {
     this.gxRadioDidUnload.emit({ radio: this });
-    this.renderer.componentDidUnload();
   }
 
   render() {

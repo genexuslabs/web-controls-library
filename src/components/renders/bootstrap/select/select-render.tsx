@@ -49,7 +49,7 @@ export class SelectRender implements IRenderer {
 
   private handleChange(event: UIEvent) {
     this.component.value = this.getValueFromEvent(event);
-    this.component.onChange.emit(event);
+    this.component.input.emit(event);
   }
 
   componentDidUnload() {
@@ -82,7 +82,8 @@ export class SelectRender implements IRenderer {
         }
       };
 
-      return (
+      return [
+        <gx-bootstrap />,
         <select {...attris}>
           {this.options.map(({ disabled, innerText, selected, value }) => (
             <option disabled={disabled} selected={selected} value={value}>
@@ -90,7 +91,7 @@ export class SelectRender implements IRenderer {
             </option>
           ))}
         </select>
-      );
+      ];
     }
   }
 }

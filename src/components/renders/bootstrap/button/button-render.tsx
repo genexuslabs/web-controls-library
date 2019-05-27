@@ -17,12 +17,13 @@ export class ButtonRender implements IRenderer {
       }
     });
 
-    return (
+    return [
+      <gx-bootstrap />,
       <button
         class={{
           btn: true,
-          "btn-default": true,
           "btn-lg": button.size === "large",
+          "btn-outline-secondary": true,
           "btn-sm": button.size === "small",
           "gx-button": true,
           [button.cssClass]: true
@@ -36,6 +37,6 @@ export class ButtonRender implements IRenderer {
           <slot />
         </span>
       </button>
-    );
+    ];
   }
 }

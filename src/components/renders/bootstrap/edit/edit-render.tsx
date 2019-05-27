@@ -3,11 +3,14 @@ import { Edit } from "../../../edit/edit";
 
 export class EditRender implements IRenderer {
   constructor(public component: Edit) {}
-  protected nativeInput: HTMLInputElement;
   private inputId: string;
 
   getNativeInputId() {
-    return this.nativeInput.id;
+    return this.getNativeInput().id;
+  }
+
+  private getNativeInput(): HTMLInputElement | HTMLTextAreaElement {
+    return this.component.element.querySelector("[data-native-element]");
   }
 
   private getCssClasses() {
@@ -15,14 +18,10 @@ export class EditRender implements IRenderer {
 
     const classList = [];
 
-    if (edit.readonly) {
-      classList.push("form-control-plaintext");
+    if (edit.type === "file") {
+      classList.push("form-control-file");
     } else {
-      if (edit.type === "file") {
-        classList.push("form-control-file");
-      } else {
-        classList.push("form-control");
-      }
+      classList.push("form-control");
     }
 
     return classList.join(" ");
@@ -43,14 +42,10 @@ export class EditRender implements IRenderer {
    * Update the native input element when the value changes
    */
   valueChanged() {
-    const inputEl = this.nativeInput;
+    const inputEl = this.getNativeInput();
     if (inputEl && inputEl.value !== this.component.value) {
       inputEl.value = this.component.value;
     }
-  }
-
-  componentDidUnload() {
-    this.nativeInput = null;
   }
 
   render() {
@@ -69,23 +64,24 @@ export class EditRender implements IRenderer {
       autocomplete: edit.autocomplete,
       autocorrect: edit.autocorrect,
       class: this.getCssClasses(),
+      "data-native-element": "",
       disabled: edit.disabled,
+      hidden: edit.readonly,
       id: this.inputId,
       onChange: edit.handleChange.bind(edit),
       onInput: valueChangingHandler,
-      placeholder: edit.placeholder,
-      readonly: edit.readonly,
-      ref: input => (this.nativeInput = input as any)
+      placeholder: edit.placeholder
     };
 
+    let editableElement;
     if (edit.multiline) {
-      return <textarea {...attris}>{edit.value}</textarea>;
+      editableElement = <textarea {...attris}>{edit.value}</textarea>;
     } else {
       const input = <input {...attris} type={edit.type} value={edit.value} />;
 
-      if (edit.showTrigger && !edit.readonly) {
-        return (
-          <div class="input-group">
+      if (edit.showTrigger) {
+        editableElement = (
+          <div class="input-group" hidden={edit.readonly}>
             {input}
             <div class="input-group-append">
               <button
@@ -101,10 +97,54 @@ export class EditRender implements IRenderer {
           </div>
         );
       } else {
-        return input;
+        editableElement = input;
       }
     }
+
+    const ReadonlyTag = this.getReadonlyTagByFontCategory() as any;
+
+    return [
+      <gx-bootstrap />,
+      <ReadonlyTag
+        key="readonly"
+        hidden={!edit.readonly}
+        class={this.getReadonlyClass()}
+        data-readonly=""
+      >
+        {edit.value}
+      </ReadonlyTag>,
+      editableElement
+    ];
+  }
+
+  private getReadonlyTagByFontCategory() {
+    const tag = fontCategoryTagMap[this.component.fontCategory];
+    if (!tag) {
+      return "span";
+    }
+    return tag;
+  }
+
+  private getReadonlyClass() {
+    if (
+      this.component.fontCategory === "body" ||
+      !this.component.fontCategory
+    ) {
+      return {
+        "form-control-plaintext": true
+      };
+    }
+    return null;
   }
 }
 
 let autoEditId = 0;
+
+const fontCategoryTagMap = {
+  body: "p",
+  caption1: "span",
+  caption2: "span",
+  footnote: "footer",
+  headline: "h1",
+  subheadline: "h2"
+};

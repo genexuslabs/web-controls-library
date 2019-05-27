@@ -1,54 +1,59 @@
 {
   "name": "@genexus/web-controls-library",
-  "version": "0.0.29",
+  "version": "0.4.2",
   "description": "GeneXus Web Controls Library",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
-  "files": ["dist/"],
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "build": "stencil build --docs",
+    "build:dev": "stencil build --dev && npm run scss-bundle",
     "postbuild": "npm run scss-bundle",
     "docs": "stencil build --dev --docs && npm run sassdoc",
     "lint": "npm run tslint",
     "precommit": "pretty-quick --staged && npm run lint",
     "pretty-quick": "pretty-quick",
-    "sassdoc":
-      "sassdoc src/components/**/*-theming-mixins.scss -c sassdoc.config.json",
-    "scss-bundle":
-      "scss-bundle -e ./src/components/_components-theming-mixins.scss -d dist/theming/theming-mixins.scss",
+    "sassdoc": "sassdoc src/components/**/*-theming-mixins.scss -c sassdoc.config.json",
+    "scss-bundle": "scss-bundle -e ./src/components/_components-theming-mixins.scss -d dist/theming/theming-mixins.scss",
+    "scss-bundle.watch": "scss-bundle -w ./src/components -e ./src/components/_components-theming-mixins.scss -d dist/theming/theming-mixins.scss",
     "start": "stencil build --dev --watch --serve",
     "start.es5": "stencil build --dev --watch --serve --es5",
     "test": "stencil test --spec --e2e",
+    "test.ci": "stencil test --spec",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "tslint": "tslint --project . -e \"**/*.spec.ts\"",
     "validate": "npm run lint && npm run test && npm run build",
-    "validate.ci":
-      "npm run lint && npm run test && npm run build --max-workers 1 --debug"
+    "validate.ci": "npm run lint && npm run test.ci && npm run build --max-workers 1 --debug"
   },
   "dependencies": {
-    "bootstrap": "^4.1.2",
+    "bootstrap": "^4.3.1",
     "bootstrap.native": "^2.0.23",
     "font-awesome": "^4.7.0",
     "leaflet": "^1.3.4",
     "lottie-web": "^5.2.1",
-    "popper.js": "^1.14.3"
+    "popper.js": "^1.14.7",
+    "swiper": "^4.5.0"
   },
   "devDependencies": {
-    "@stencil/core": "^0.13.2",
-    "@stencil/sass": "0.0.5",
+    "@stencil/core": "^0.18.0",
+    "@stencil/sass": "^0.2.1",
     "@types/jest": "23.3.3",
-    "@types/puppeteer": "1.6.0",
+    "@types/puppeteer": "1.11.1",
+    "@types/swiper": "^4.4.2",
     "husky": "^0.14.3",
-    "jest": "23.5.0",
-    "jest-environment-node": "23.4.0",
+    "jest": "23.6.0",
+    "jest-cli": "23.6.0",
+    "jest-environment-node": "^24.3.1",
     "pixelmatch": "4.0.2",
     "prettier": "^1.11.1",
     "pretty-quick": "^1.4.1",
-    "puppeteer": "1.7.0",
-    "sass-lint": "^1.12.1",
-    "sassdoc": "^2.5.0",
+    "puppeteer": "1.11.0",
+    "sass-lint": "^1.13.1",
+    "sassdoc": "^2.7.0",
     "sassdoc-theme-md": "^1.0.2",
     "scss-bundle": "^2.3.2",
     "tslint": "^5.9.1",
@@ -68,10 +73,15 @@
   "homepage": "https://github.com/genexuslabs/web-controls-library",
   "jest": {
     "transform": {
-      "^.+\\.(ts|tsx)$":
-        "<rootDir>/node_modules/@stencil/core/testing/jest.preprocessor.js"
+      "^.+\\.(ts|tsx)$": "<rootDir>/node_modules/@stencil/core/testing/jest.preprocessor.js"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(tsx?|jsx?)$",
-    "moduleFileExtensions": ["ts", "tsx", "js", "json", "jsx"]
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json",
+      "jsx"
+    ]
   }
 }

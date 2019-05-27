@@ -6,6 +6,9 @@
 
 import "@stencil/core";
 
+import { TimerState } from "./components/chronometer/chronometer-timer-state";
+import { SwiperOptions } from "swiper";
+
 export namespace Components {
   interface GxButton {
     /**
@@ -133,6 +136,10 @@ export namespace Components {
      */
     checked: boolean;
     /**
+     * The value when the checkbox is 'on'
+     */
+    checkedValue: string;
+    /**
      * A CSS class to set as the inner `input` element class.
      */
     cssClass: string;
@@ -152,6 +159,14 @@ export namespace Components {
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode: "collapse" | "keep-space";
+    /**
+     * The value when the checkbox is 'off'
+     */
+    unCheckedValue: string;
+    /**
+     * The value of the control.
+     */
+    value: string;
   }
   interface GxCheckboxAttributes extends StencilHTMLAttributes {
     /**
@@ -162,6 +177,10 @@ export namespace Components {
      * Indicates that the control is selected by default.
      */
     checked?: boolean;
+    /**
+     * The value when the checkbox is 'on'
+     */
+    checkedValue?: string;
     /**
      * A CSS class to set as the inner `input` element class.
      */
@@ -179,9 +198,118 @@ export namespace Components {
      */
     invisibleMode?: "collapse" | "keep-space";
     /**
-     * The `change` event is emitted when a change to the element's value is committed by the user.
+     * The `input` event is emitted when a change to the element's value is committed by the user.
      */
-    onOnChange?: (event: CustomEvent) => void;
+    onInput?: (event: CustomEvent) => void;
+    /**
+     * The value when the checkbox is 'off'
+     */
+    unCheckedValue?: string;
+    /**
+     * The value of the control.
+     */
+    value?: string;
+  }
+
+  interface GxChronometer {
+    /**
+     * Returns the id of the inner `input` element (if set).
+     */
+    getNativeInputId: () => Promise<any>;
+    /**
+     * The identifier of the control. Must be unique.
+     */
+    id: string;
+    /**
+     * Defines the interval that the function onTick will be called.
+     */
+    interval: number;
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode: "collapse" | "keep-space";
+    /**
+     * When the chronometer reaches this value, MaxValueText will be shown instead of the Chronometer value.
+     */
+    maxValue: number;
+    /**
+     * Text to be displayed when chronometer value reaches maxValue.
+     */
+    maxValueText: string;
+    /**
+     * Stops and set to 0 the Chronometer.
+     */
+    reset: () => void;
+    /**
+     * Starts the Chronometer
+     */
+    start: () => void;
+    /**
+     * State of the Chronometer.
+     */
+    state: TimerState;
+    /**
+     * Stops the Chronometer
+     */
+    stop: () => void;
+    /**
+     * Time unit: (s) seconds or (ms) milliseconds for every time control Property.
+     */
+    unit: "s" | "ms";
+    /**
+     * The value of the control.
+     */
+    value: number;
+  }
+  interface GxChronometerAttributes extends StencilHTMLAttributes {
+    /**
+     * The identifier of the control. Must be unique.
+     */
+    id?: string;
+    /**
+     * Defines the interval that the function onTick will be called.
+     */
+    interval?: number;
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode?: "collapse" | "keep-space";
+    /**
+     * When the chronometer reaches this value, MaxValueText will be shown instead of the Chronometer value.
+     */
+    maxValue?: number;
+    /**
+     * Text to be displayed when chronometer value reaches maxValue.
+     */
+    maxValueText?: string;
+    /**
+     * The `change` event is emitted every time the chronometer changes
+     */
+    onChange?: (event: CustomEvent) => void;
+    /**
+     * Event to emit after max time is consumed.
+     */
+    onEnd?: (event: CustomEvent) => void;
+    /**
+     * The `input` event is emitted every time the chronometer changes (every 1 second)
+     */
+    onInput?: (event: CustomEvent) => void;
+    /**
+     * Event to emit After elapsed time (tickInterval).
+     */
+    onTick?: (event: CustomEvent) => void;
+    /**
+     * State of the Chronometer.
+     */
+    state?: TimerState;
+    /**
+     * Time unit: (s) seconds or (ms) milliseconds for every time control Property.
+     */
+    unit?: "s" | "ms";
+    /**
+     * The value of the control.
+     */
+    value?: number;
   }
 
   interface GxEdit {
@@ -189,7 +317,7 @@ export namespace Components {
     /**
      * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize) attribute for `input` elements. Only supported by Safari and Chrome.
      */
-    autocapitalize: "none" | "sentences" | "words" | "characters";
+    autocapitalize: string;
     /**
      * This attribute indicates whether the value of the control can be automatically completed by the browser. Same as [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocomplete) attribute for `input` elements.
      */
@@ -202,6 +330,16 @@ export namespace Components {
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled: boolean;
+    /**
+     * Used to define the semantic of the element when readonly=true.  Font categories are mapped to semantic HTML elements when rendered:  * `"headline"`: `h1` * `"subheadline"`: `h2` * `"body"`: `p` * `"footnote"`: `footer` * `"caption1"`: `span` * `"caption2"`: `span`
+     */
+    fontCategory:
+      | "headline"
+      | "subheadline"
+      | "body"
+      | "footnote"
+      | "caption1"
+      | "caption2";
     /**
      * Returns the id of the inner `input` element (if set).
      */
@@ -258,7 +396,7 @@ export namespace Components {
     /**
      * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize) attribute for `input` elements. Only supported by Safari and Chrome.
      */
-    autocapitalize?: "none" | "sentences" | "words" | "characters";
+    autocapitalize?: string;
     /**
      * This attribute indicates whether the value of the control can be automatically completed by the browser. Same as [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocomplete) attribute for `input` elements.
      */
@@ -272,6 +410,16 @@ export namespace Components {
      */
     disabled?: boolean;
     /**
+     * Used to define the semantic of the element when readonly=true.  Font categories are mapped to semantic HTML elements when rendered:  * `"headline"`: `h1` * `"subheadline"`: `h2` * `"body"`: `p` * `"footnote"`: `footer` * `"caption1"`: `span` * `"caption2"`: `span`
+     */
+    fontCategory?:
+      | "headline"
+      | "subheadline"
+      | "body"
+      | "footnote"
+      | "caption1"
+      | "caption2";
+    /**
      * The identifier of the control. Must be unique.
      */
     id?: string;
@@ -284,17 +432,17 @@ export namespace Components {
      */
     multiline?: boolean;
     /**
+     * The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus.
+     */
+    onChange?: (event: CustomEvent) => void;
+    /**
      * The `gxTriggerClick` event is fired when the trigger button is clicked.
      */
     onGxTriggerClick?: (event: CustomEvent) => void;
     /**
-     * The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus.
-     */
-    onOnChange?: (event: CustomEvent) => void;
-    /**
      * The `input` event is fired synchronously when the value is changed.
      */
-    onOnInput?: (event: CustomEvent) => void;
+    onInput?: (event: CustomEvent) => void;
     /**
      * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
      */
@@ -358,6 +506,301 @@ export namespace Components {
      * The position where the label will be located, relative to the edit control. The supported values are:  * `"top"`: The label is located above the edit control. * `"right"`: The label is located at the right side of the edit control. * `"bottom"`: The label is located below the edit control. * `"left"`: The label is located at the left side of the edit control. * `"float"`: The label is shown as a placeholder when the edit control's value is empty. When the value is not empty, the label floats and locates above the edit control. * `"none"`: The label is rendered, but hidden.
      */
     labelPosition?: "none" | "top" | "right" | "bottom" | "left" | "float";
+  }
+
+  interface GxGridFs {
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode: "collapse" | "keep-space";
+    /**
+     * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
+     */
+    loadingState: "loading" | "loaded";
+    /**
+     * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
+     */
+    recordCount: number;
+  }
+  interface GxGridFsAttributes extends StencilHTMLAttributes {
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode?: "collapse" | "keep-space";
+    /**
+     * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
+     */
+    loadingState?: "loading" | "loaded";
+    /**
+     * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
+     */
+    recordCount?: number;
+  }
+
+  interface GxGridInfiniteScrollContent {}
+  interface GxGridInfiniteScrollContentAttributes
+    extends StencilHTMLAttributes {}
+
+  interface GxGridInfiniteScroll {
+    /**
+     * Call `complete()` within the `gxInfinite` output event handler when your async operation has completed. For example, the `loading` state is while the app is performing an asynchronous operation, such as receiving more data from an AJAX request to add more items to a data list. Once the data has been received and UI updated, you then call this method to signify that the loading has completed. This method will change the infinite scroll's state from `loading` to `enabled`.
+     */
+    complete: () => void;
+    /**
+     * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
+     */
+    disabled: boolean;
+    /**
+     * Query selector where the infinitie scroll would be listening to scroll events.
+     */
+    infiniteScrollContainer: string;
+    /**
+     * This property must be bounded to grid item count property. It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the intial batch does not overflow the main container
+     */
+    itemCount: number;
+    /**
+     * The position of the infinite scroll element. The value can be either `top` or `bottom`.
+     */
+    position: "top" | "bottom";
+    /**
+     * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
+     */
+    threshold: string;
+  }
+  interface GxGridInfiniteScrollAttributes extends StencilHTMLAttributes {
+    /**
+     * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
+     */
+    disabled?: boolean;
+    /**
+     * Query selector where the infinitie scroll would be listening to scroll events.
+     */
+    infiniteScrollContainer?: string;
+    /**
+     * This property must be bounded to grid item count property. It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the intial batch does not overflow the main container
+     */
+    itemCount?: number;
+    /**
+     * Emitted when the scroll reaches the threshold distance. From within your infinite handler, you must call the infinite scroll's `complete()` method when your async operation has completed.
+     */
+    onGxInfinite?: (event: CustomEvent<void>) => void;
+    /**
+     * The position of the infinite scroll element. The value can be either `top` or `bottom`.
+     */
+    position?: "top" | "bottom";
+    /**
+     * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
+     */
+    threshold?: string;
+  }
+
+  interface GxGridSmart {
+    /**
+     * Number of items per view (items visible at the same time on slider's container).
+     */
+    columns: number | "auto";
+    /**
+     * Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).
+     */
+    direction: "horizontal" | "vertical";
+    /**
+     * Get the index of the active slide.
+     */
+    getActiveIndex: () => number;
+    /**
+     * Get the index of the previous slide.
+     */
+    getPreviousIndex: () => number;
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode: "collapse" | "keep-space";
+    /**
+     * Get whether or not the current slide is the last slide.
+     */
+    isLast: () => boolean;
+    /**
+     * Get whether or not the current slide is the first slide.
+     */
+    isStart: () => boolean;
+    /**
+     * Set numbers of items to define and enable group sliding. Useful to use with rowsPerPage > 1
+     */
+    itemsPerGroup: number;
+    /**
+     * Get the total number of slides.
+     */
+    length: () => number;
+    /**
+     * Grid loading state. It's purpose is to know whether the grid loading animation or the grid empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
+     */
+    loadingState: "loading" | "loaded";
+    /**
+     * Advanced options to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options
+     */
+    options: SwiperOptions;
+    /**
+     * If `true`, show the pagination buttons.
+     */
+    pager: boolean;
+    /**
+     * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
+     */
+    recordCount: number;
+    /**
+     * Number of items per column, for multirow layout.
+     */
+    rows: number;
+    /**
+     * If `true`, show the scrollbar.
+     */
+    scrollbar: boolean;
+    /**
+     * Transition to the next slide.
+     */
+    slideNext: (speed?: number, runCallbacks?: boolean) => void;
+    /**
+     * Transition to the previous slide.
+     */
+    slidePrev: (speed?: number, runCallbacks?: boolean) => void;
+    /**
+     * Transition to the specified slide.
+     */
+    slideTo: (index: number, speed?: number, runCallbacks?: boolean) => void;
+    /**
+     * Start auto play.
+     */
+    startAutoplay: () => void;
+    /**
+     * Stop auto play.
+     */
+    stopAutoplay: () => void;
+    /**
+     * Lock or unlock the ability to slide to the next slide.
+     */
+    toggleLockSwipeToNext: (lock: boolean) => void;
+    /**
+     * Lock or unlock the ability to slide to the previous slide.
+     */
+    toggleLockSwipeToPrev: (lock: boolean) => void;
+    /**
+     * Lock or unlock the ability to slide to the next or previous slide.
+     */
+    toggleLockSwipes: (lock: boolean) => void;
+    /**
+     * Update the underlying slider implementation. Call this if you've added or removed child slides.
+     */
+    update: () => void;
+    /**
+     * Force swiper to update its height (when autoHeight is enabled) for the duration equal to 'speed' parameter.
+     */
+    updateAutoHeight: (speed?: number) => void;
+  }
+  interface GxGridSmartAttributes extends StencilHTMLAttributes {
+    /**
+     * Number of items per view (items visible at the same time on slider's container).
+     */
+    columns?: number | "auto";
+    /**
+     * Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).
+     */
+    direction?: "horizontal" | "vertical";
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode?: "collapse" | "keep-space";
+    /**
+     * Set numbers of items to define and enable group sliding. Useful to use with rowsPerPage > 1
+     */
+    itemsPerGroup?: number;
+    /**
+     * Grid loading state. It's purpose is to know whether the grid loading animation or the grid empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
+     */
+    loadingState?: "loading" | "loaded";
+    /**
+     * Emitted when the user taps/clicks on the slide's container.
+     */
+    onGxGridClick?: (event: CustomEvent<void>) => void;
+    /**
+     * Emitted after the active slide has changed.
+     */
+    onGxGridDidChange?: (event: CustomEvent<void>) => void;
+    /**
+     * Emitted after Swiper initialization
+     */
+    onGxGridDidLoad?: (event: CustomEvent<void>) => void;
+    /**
+     * Emitted when the user double taps on the slide's container.
+     */
+    onGxGridDoubleClick?: (event: CustomEvent<void>) => void;
+    /**
+     * Emitted when the slider is actively being moved.
+     */
+    onGxGridDrag?: (event: CustomEvent<void>) => void;
+    /**
+     * Emitted when the next slide has ended.
+     */
+    onGxGridNextEnd?: (event: CustomEvent<void>) => void;
+    /**
+     * Emitted when the next slide has started.
+     */
+    onGxGridNextStart?: (event: CustomEvent<void>) => void;
+    /**
+     * Emitted when the previous slide has ended.
+     */
+    onGxGridPrevEnd?: (event: CustomEvent<void>) => void;
+    /**
+     * Emitted when the previous slide has started.
+     */
+    onGxGridPrevStart?: (event: CustomEvent<void>) => void;
+    /**
+     * Emitted when the slider is at the last slide.
+     */
+    onGxGridReachEnd?: (event: CustomEvent<void>) => void;
+    /**
+     * Emitted when the slider is at its initial position.
+     */
+    onGxGridReachStart?: (event: CustomEvent<void>) => void;
+    /**
+     * Emitted when the user releases the touch.
+     */
+    onGxGridTouchEnd?: (event: CustomEvent<void>) => void;
+    /**
+     * Emitted when the user first touches the slider.
+     */
+    onGxGridTouchStart?: (event: CustomEvent<void>) => void;
+    /**
+     * Emitted when the slide transition has ended.
+     */
+    onGxGridTransitionEnd?: (event: CustomEvent<void>) => void;
+    /**
+     * Emitted when the slide transition has started.
+     */
+    onGxGridTransitionStart?: (event: CustomEvent<void>) => void;
+    /**
+     * Emitted before the active slide has changed.
+     */
+    onGxGridWillChange?: (event: CustomEvent<void>) => void;
+    /**
+     * Advanced options to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options
+     */
+    options?: SwiperOptions;
+    /**
+     * If `true`, show the pagination buttons.
+     */
+    pager?: boolean;
+    /**
+     * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
+     */
+    recordCount?: number;
+    /**
+     * Number of items per column, for multirow layout.
+     */
+    rows?: number;
+    /**
+     * If `true`, show the scrollbar.
+     */
+    scrollbar?: boolean;
   }
 
   interface GxGroup {
@@ -452,46 +895,6 @@ export namespace Components {
      * This attribute lets you specify the width.
      */
     width?: string;
-  }
-
-  interface GxLayoutEditorPlaceholder {}
-  interface GxLayoutEditorPlaceholderAttributes extends StencilHTMLAttributes {}
-
-  interface GxLayoutEditor {
-    /**
-     * The abstract form model object
-     */
-    model: any;
-    /**
-     * Array with the identifiers of the selected controls. If empty the whole layout-editor is marked as selected.
-     */
-    selectedControls: string[];
-  }
-  interface GxLayoutEditorAttributes extends StencilHTMLAttributes {
-    /**
-     * The abstract form model object
-     */
-    model?: any;
-    /**
-     * Fired when a control (that wasn't already inside the layout editor) has been dropped on a valid drop target (for example, a control from a toolbox or an object from the knowledge base navigator)  ##### Dragging a control  If a control is being dragged, the dataTransfer property of the event must have the following format:  `"GX_DASHBOARD_ADDELEMENT,[GeneXus type of control]"`  where:  * `GX_DASHBOARD_ADDELEMENT` is the type of action * `[GeneXus type of control]` is the type of control that's been added. This value can have any value and will be passed as part of the information sent as part of the event.  ##### Dragging a KB object  If a KB object is being dragged, the dataTransfer property of the event must contain the name of the KB object.  ##### Dropped control information  An object containing information of the add operation is sent in the `detail` property of the event object.  If a KB object was dropped, the following properties are set:  | Property          | Details                                                                                                                                     | | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | | `kbObjectName`    | Name of the GeneXus object                                                                                                               |  If control was dropped, the following properties are set.  | Property          | Details                                                                                                                                     | | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | | `elementType`     | The type of the control that's been added and was received as the `[GeneXus type of control]` in the dataTransfer of the drop operation     |  Depending on where the control was dropped, additional information will be provided and different properties will be set. There are four possible cases:  1. Dropped on an empty container or in the last row of a container 2. Dropped on a new row of a non empty container 3. Dropped on an existing empty cell 4. Dropped on an existing row   ###### 1. Dropped on an empty container or on a new row that will be the last row of a container  | Property          | Details                                                                                                                                     | | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | | `containerId`     | Identifier of the container where the control was dropped                                                                                   |  ###### 2. Dropped on a new row of a non empty container  | Property          | Details                                                                                                                                     | | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | | `beforeRowId`     | Identifier of the row next to the row where the control was dropped. An empty string if dropped in the last row or on an empty container.   |  ###### 3. Dropped on an existing empty cell  | Property      | Details                                                                                                          | | ------------- | ---------------------------------------------------------------------------------------------------------------- | | `targetCellId`| Identifier of the cell where the control was dropped |    ###### 4. Dropped on an existing row  | Property          | Details                                                                                                                                     | | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | | `beforeCelllId`   | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. | | `targetRowId`     | Identifier of the row where the control was dropped                                                                                         |
-     */
-    onControlAdded?: (event: CustomEvent) => void;
-    /**
-     * Fired when a control has been removed from the layout  An object containing information of the add operation is sent in the `detail` property of the event object  | Property           | Details                                                     | | ------------------ | ----------------------------------------------------------- | | `controls`         | An array containing the identifiers of the removed controls |
-     */
-    onControlRemoved?: (event: CustomEvent) => void;
-    /**
-     * Fired when the selection has been changed  An object containing information of the select operation is sent in the `detail` property of the event object  | Property       | Details                                                      | | -------------- | ------------------------------------------------------------ | | `controls`     | An array containing the identifiers of the selected controls |
-     */
-    onControlSelected?: (event: CustomEvent) => void;
-    /**
-     * Fired when a control is moved inside the layout editor to a new location  An object containing information of the move operation is sent in the `detail` property of the event object  Regardless where the control was dropped, the detail object will contain information about the source row and the id of the dropped control:  | Property         | Details                                                                                                          | | ---------------- | ---------------------------------------------------------------------------------------------------------------- | | `sourceCellId`   | Identifier of the source cell                                                                                    | | `sourceRowId`    | Identifier of the source row                                                                                     |  Depending on where the control was dropped, additional information will be provided and different properties will be set. There are four possible cases:  1. Dropped on an empty container or on a new row that will be the last row of a container 2. Dropped on a new row of a non empty container 3. Dropped on an existing empty cell 4. Dropped on an existing row   ###### 1. Dropped on an empty container or on a new row that will be the last row of a container  | Property          | Details                                                                                                                                     | | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | | `containerId`     | Identifier of the container where the control was dropped                                                                                   |  ###### 2. Dropped on a new row of a non empty container  | Property          | Details                                                                                                                                     | | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | | `beforeRowId`     | Identifier of the row next to the row where the control was dropped. An empty string if dropped in the last row or on an empty container.   |  ###### 3. Dropped on an existing empty cell  | Property      | Details                                                                                                          | | ------------- | ---------------------------------------------------------------------------------------------------------------- | | `targetCellId`| Identifier of the cell where the control was dropped |    ###### 4. Dropped on an existing row  | Property          | Details                                                                                                                                     | | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | | `beforeCellId`    | Identifier of the cell that, after the drop operation, ends located after the dropped control. An empty string if dropped as the last cell. | | `targetRowId`     | Identifier of the row where the control was dropped                                                                                         |
-     */
-    onMoveCompleted?: (event: CustomEvent) => void;
-    /**
-     * Array with the identifiers of the selected controls. If empty the whole layout-editor is marked as selected.
-     */
-    selectedControls?: string[];
   }
 
   interface GxLoading {
@@ -614,6 +1017,80 @@ export namespace Components {
      * This attribute lets you specify  the relative path to the animation object. (`animationData` and `path` are mutually exclusive)
      */
     path?: string;
+  }
+
+  interface GxMapMarker {
+    /**
+     * The coordinates where the marker will appear in the map.
+     */
+    coords: string;
+    /**
+     * The URL of the marker image.  *Note: The image size must be 25 x 41*
+     */
+    iconSrc: string;
+    /**
+     * The tooltip caption of the marker.
+     */
+    tooltipCaption: string;
+  }
+  interface GxMapMarkerAttributes extends StencilHTMLAttributes {
+    /**
+     * The coordinates where the marker will appear in the map.
+     */
+    coords?: string;
+    /**
+     * The URL of the marker image.  *Note: The image size must be 25 x 41*
+     */
+    iconSrc?: string;
+    /**
+     * Emmits when the element is deleted from a `<gx-map>`.
+     */
+    onGxMapMarkerDeleted?: (event: CustomEvent) => void;
+    /**
+     * Emmits when the element is added to a `<gx-map>`.
+     */
+    onGxMapMarkerDidLoad?: (event: CustomEvent) => void;
+    /**
+     * Emmits when the element update its data.
+     */
+    onGxMapMarkerUpdate?: (event: CustomEvent) => void;
+    /**
+     * The tooltip caption of the marker.
+     */
+    tooltipCaption?: string;
+  }
+
+  interface GxMap {
+    /**
+     * The coord of initial center of the map.
+     */
+    center: string;
+    /**
+     * The max zoom level available in the map.
+     */
+    maxZoom: number;
+    /**
+     * The initial zoom level in the map.
+     */
+    zoom: number;
+  }
+  interface GxMapAttributes extends StencilHTMLAttributes {
+    /**
+     * The coord of initial center of the map.
+     */
+    center?: string;
+    /**
+     * The max zoom level available in the map.
+     */
+    maxZoom?: number;
+    /**
+     * Emmits when the map is loaded.
+     */
+    onGxMapDidLoad?: (event: CustomEvent) => void;
+    /**
+     * The initial zoom level in the map.
+     */
+    zoom?: number;
   }
 
   interface GxMessage {
@@ -838,6 +1315,10 @@ export namespace Components {
      */
     revealButtonTextOn: string;
     /**
+     * Indicates if the value is revealed or masked.
+     */
+    revealed: boolean;
+    /**
      * If true, a reveal password button is shown next to the password input. Pressing the reveal button toggles the password mask, allowing the user to view the password text.
      */
     showRevealButton: boolean;
@@ -866,11 +1347,11 @@ export namespace Components {
     /**
      * The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus.
      */
-    onOnChange?: (event: CustomEvent) => void;
+    onChange?: (event: CustomEvent) => void;
     /**
      * The `input` event is fired synchronously when the value is changed.
      */
-    onOnInput?: (event: CustomEvent) => void;
+    onInput?: (event: CustomEvent) => void;
     /**
      * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
      */
@@ -887,6 +1368,10 @@ export namespace Components {
      * Text of the reveal button to offer revealing the password.
      */
     revealButtonTextOn?: string;
+    /**
+     * Indicates if the value is revealed or masked.
+     */
+    revealed?: boolean;
     /**
      * If true, a reveal password button is shown next to the password input. Pressing the reveal button toggles the password mask, allowing the user to view the password text.
      */
@@ -960,7 +1445,7 @@ export namespace Components {
     /**
      * The `change` event is emitted when a change to the element's value is committed by the user.
      */
-    onOnChange?: (event: CustomEvent) => void;
+    onChange?: (event: CustomEvent) => void;
     /**
      * The initial value of the control. Setting the value automatically selects the corresponding radio option.
      */
@@ -1031,6 +1516,10 @@ export namespace Components {
      */
     name?: string;
     /**
+     * The `change` event is emitted when a change to the element's value is committed by the user.
+     */
+    onChange?: (event: CustomEvent) => void;
+    /**
      * Emitted when the radio loads.
      */
     onGxRadioDidLoad?: (event: CustomEvent) => void;
@@ -1043,14 +1532,13 @@ export namespace Components {
      */
     onGxSelect?: (event: CustomEvent) => void;
     /**
-     * The `change` event is emitted when a change to the element's value is committed by the user.
-     */
-    onOnChange?: (event: CustomEvent) => void;
-    /**
      * The initial value of the control.
      */
     value?: string;
   }
+
+  interface GxBootstrap {}
+  interface GxBootstrapAttributes extends StencilHTMLAttributes {}
 
   interface GxSelectOption {
     /**
@@ -1080,6 +1568,10 @@ export namespace Components {
      */
     disabled?: boolean;
     /**
+     * The `change` event is emitted when a change to the element's value is committed by the user.
+     */
+    onChange?: (event: CustomEvent) => void;
+    /**
      * Emitted when the option is disabled.
      */
     onGxDisable?: (event: CustomEvent) => void;
@@ -1095,10 +1587,6 @@ export namespace Components {
      * Emitted when the option unloads.
      */
     onGxSelectDidUnload?: (event: CustomEvent) => void;
-    /**
-     * The `change` event is emitted when a change to the element's value is committed by the user.
-     */
-    onOnChange?: (event: CustomEvent) => void;
     /**
      * Indicates that the control is selected by default.
      */
@@ -1157,9 +1645,9 @@ export namespace Components {
      */
     invisibleMode?: "collapse" | "keep-space";
     /**
-     * The `change` event is emitted when a change to the element's value is committed by the user.
+     * The `input` event is emitted when a change to the element's value is committed by the user.
      */
-    onOnChange?: (event: CustomEvent) => void;
+    onInput?: (event: CustomEvent) => void;
     /**
      * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
      */
@@ -1195,6 +1683,7 @@ export namespace Components {
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode: "collapse" | "keep-space";
+    value: string;
   }
   interface GxSwitchAttributes extends StencilHTMLAttributes {
     /**
@@ -1218,9 +1707,10 @@ export namespace Components {
      */
     invisibleMode?: "collapse" | "keep-space";
     /**
-     * The 'change' event is emitted when a change to the element's value is committed by the user.
+     * The 'input' event is emitted when a change to the element's value is committed by the user.
      */
-    onOnChange?: (event: CustomEvent) => void;
+    onInput?: (event: CustomEvent) => void;
+    value?: string;
   }
 
   interface GxTabCaption {
@@ -1395,14 +1885,19 @@ declare global {
     GxCanvas: Components.GxCanvas;
     GxCard: Components.GxCard;
     GxCheckbox: Components.GxCheckbox;
+    GxChronometer: Components.GxChronometer;
     GxEdit: Components.GxEdit;
     GxFormField: Components.GxFormField;
+    GxGridFs: Components.GxGridFs;
+    GxGridInfiniteScrollContent: Components.GxGridInfiniteScrollContent;
+    GxGridInfiniteScroll: Components.GxGridInfiniteScroll;
+    GxGridSmart: Components.GxGridSmart;
     GxGroup: Components.GxGroup;
     GxImage: Components.GxImage;
-    GxLayoutEditorPlaceholder: Components.GxLayoutEditorPlaceholder;
-    GxLayoutEditor: Components.GxLayoutEditor;
     GxLoading: Components.GxLoading;
     GxLottie: Components.GxLottie;
+    GxMapMarker: Components.GxMapMarker;
+    GxMap: Components.GxMap;
     GxMessage: Components.GxMessage;
     GxModal: Components.GxModal;
     GxNavbarLink: Components.GxNavbarLink;
@@ -1411,6 +1906,7 @@ declare global {
     GxProgressBar: Components.GxProgressBar;
     GxRadioGroup: Components.GxRadioGroup;
     GxRadioOption: Components.GxRadioOption;
+    GxBootstrap: Components.GxBootstrap;
     GxSelectOption: Components.GxSelectOption;
     GxSelect: Components.GxSelect;
     GxSwitch: Components.GxSwitch;
@@ -1428,14 +1924,19 @@ declare global {
     "gx-canvas": Components.GxCanvasAttributes;
     "gx-card": Components.GxCardAttributes;
     "gx-checkbox": Components.GxCheckboxAttributes;
+    "gx-chronometer": Components.GxChronometerAttributes;
     "gx-edit": Components.GxEditAttributes;
     "gx-form-field": Components.GxFormFieldAttributes;
+    "gx-grid-fs": Components.GxGridFsAttributes;
+    "gx-grid-infinite-scroll-content": Components.GxGridInfiniteScrollContentAttributes;
+    "gx-grid-infinite-scroll": Components.GxGridInfiniteScrollAttributes;
+    "gx-grid-smart": Components.GxGridSmartAttributes;
     "gx-group": Components.GxGroupAttributes;
     "gx-image": Components.GxImageAttributes;
-    "gx-layout-editor-placeholder": Components.GxLayoutEditorPlaceholderAttributes;
-    "gx-layout-editor": Components.GxLayoutEditorAttributes;
     "gx-loading": Components.GxLoadingAttributes;
     "gx-lottie": Components.GxLottieAttributes;
+    "gx-map-marker": Components.GxMapMarkerAttributes;
+    "gx-map": Components.GxMapAttributes;
     "gx-message": Components.GxMessageAttributes;
     "gx-modal": Components.GxModalAttributes;
     "gx-navbar-link": Components.GxNavbarLinkAttributes;
@@ -1444,6 +1945,7 @@ declare global {
     "gx-progress-bar": Components.GxProgressBarAttributes;
     "gx-radio-group": Components.GxRadioGroupAttributes;
     "gx-radio-option": Components.GxRadioOptionAttributes;
+    "gx-bootstrap": Components.GxBootstrapAttributes;
     "gx-select-option": Components.GxSelectOptionAttributes;
     "gx-select": Components.GxSelectAttributes;
     "gx-switch": Components.GxSwitchAttributes;
@@ -1493,6 +1995,14 @@ declare global {
     new (): HTMLGxCheckboxElement;
   };
 
+  interface HTMLGxChronometerElement
+    extends Components.GxChronometer,
+      HTMLStencilElement {}
+  var HTMLGxChronometerElement: {
+    prototype: HTMLGxChronometerElement;
+    new (): HTMLGxChronometerElement;
+  };
+
   interface HTMLGxEditElement extends Components.GxEdit, HTMLStencilElement {}
   var HTMLGxEditElement: {
     prototype: HTMLGxEditElement;
@@ -1507,6 +2017,38 @@ declare global {
     new (): HTMLGxFormFieldElement;
   };
 
+  interface HTMLGxGridFsElement
+    extends Components.GxGridFs,
+      HTMLStencilElement {}
+  var HTMLGxGridFsElement: {
+    prototype: HTMLGxGridFsElement;
+    new (): HTMLGxGridFsElement;
+  };
+
+  interface HTMLGxGridInfiniteScrollContentElement
+    extends Components.GxGridInfiniteScrollContent,
+      HTMLStencilElement {}
+  var HTMLGxGridInfiniteScrollContentElement: {
+    prototype: HTMLGxGridInfiniteScrollContentElement;
+    new (): HTMLGxGridInfiniteScrollContentElement;
+  };
+
+  interface HTMLGxGridInfiniteScrollElement
+    extends Components.GxGridInfiniteScroll,
+      HTMLStencilElement {}
+  var HTMLGxGridInfiniteScrollElement: {
+    prototype: HTMLGxGridInfiniteScrollElement;
+    new (): HTMLGxGridInfiniteScrollElement;
+  };
+
+  interface HTMLGxGridSmartElement
+    extends Components.GxGridSmart,
+      HTMLStencilElement {}
+  var HTMLGxGridSmartElement: {
+    prototype: HTMLGxGridSmartElement;
+    new (): HTMLGxGridSmartElement;
+  };
+
   interface HTMLGxGroupElement extends Components.GxGroup, HTMLStencilElement {}
   var HTMLGxGroupElement: {
     prototype: HTMLGxGroupElement;
@@ -1517,22 +2059,6 @@ declare global {
   var HTMLGxImageElement: {
     prototype: HTMLGxImageElement;
     new (): HTMLGxImageElement;
-  };
-
-  interface HTMLGxLayoutEditorPlaceholderElement
-    extends Components.GxLayoutEditorPlaceholder,
-      HTMLStencilElement {}
-  var HTMLGxLayoutEditorPlaceholderElement: {
-    prototype: HTMLGxLayoutEditorPlaceholderElement;
-    new (): HTMLGxLayoutEditorPlaceholderElement;
-  };
-
-  interface HTMLGxLayoutEditorElement
-    extends Components.GxLayoutEditor,
-      HTMLStencilElement {}
-  var HTMLGxLayoutEditorElement: {
-    prototype: HTMLGxLayoutEditorElement;
-    new (): HTMLGxLayoutEditorElement;
   };
 
   interface HTMLGxLoadingElement
@@ -1549,6 +2075,20 @@ declare global {
   var HTMLGxLottieElement: {
     prototype: HTMLGxLottieElement;
     new (): HTMLGxLottieElement;
+  };
+
+  interface HTMLGxMapMarkerElement
+    extends Components.GxMapMarker,
+      HTMLStencilElement {}
+  var HTMLGxMapMarkerElement: {
+    prototype: HTMLGxMapMarkerElement;
+    new (): HTMLGxMapMarkerElement;
+  };
+
+  interface HTMLGxMapElement extends Components.GxMap, HTMLStencilElement {}
+  var HTMLGxMapElement: {
+    prototype: HTMLGxMapElement;
+    new (): HTMLGxMapElement;
   };
 
   interface HTMLGxMessageElement
@@ -1611,6 +2151,14 @@ declare global {
   var HTMLGxRadioOptionElement: {
     prototype: HTMLGxRadioOptionElement;
     new (): HTMLGxRadioOptionElement;
+  };
+
+  interface HTMLGxBootstrapElement
+    extends Components.GxBootstrap,
+      HTMLStencilElement {}
+  var HTMLGxBootstrapElement: {
+    prototype: HTMLGxBootstrapElement;
+    new (): HTMLGxBootstrapElement;
   };
 
   interface HTMLGxSelectOptionElement
@@ -1687,14 +2235,19 @@ declare global {
     "gx-canvas": HTMLGxCanvasElement;
     "gx-card": HTMLGxCardElement;
     "gx-checkbox": HTMLGxCheckboxElement;
+    "gx-chronometer": HTMLGxChronometerElement;
     "gx-edit": HTMLGxEditElement;
     "gx-form-field": HTMLGxFormFieldElement;
+    "gx-grid-fs": HTMLGxGridFsElement;
+    "gx-grid-infinite-scroll-content": HTMLGxGridInfiniteScrollContentElement;
+    "gx-grid-infinite-scroll": HTMLGxGridInfiniteScrollElement;
+    "gx-grid-smart": HTMLGxGridSmartElement;
     "gx-group": HTMLGxGroupElement;
     "gx-image": HTMLGxImageElement;
-    "gx-layout-editor-placeholder": HTMLGxLayoutEditorPlaceholderElement;
-    "gx-layout-editor": HTMLGxLayoutEditorElement;
     "gx-loading": HTMLGxLoadingElement;
     "gx-lottie": HTMLGxLottieElement;
+    "gx-map-marker": HTMLGxMapMarkerElement;
+    "gx-map": HTMLGxMapElement;
     "gx-message": HTMLGxMessageElement;
     "gx-modal": HTMLGxModalElement;
     "gx-navbar-link": HTMLGxNavbarLinkElement;
@@ -1703,6 +2256,7 @@ declare global {
     "gx-progress-bar": HTMLGxProgressBarElement;
     "gx-radio-group": HTMLGxRadioGroupElement;
     "gx-radio-option": HTMLGxRadioOptionElement;
+    "gx-bootstrap": HTMLGxBootstrapElement;
     "gx-select-option": HTMLGxSelectOptionElement;
     "gx-select": HTMLGxSelectElement;
     "gx-switch": HTMLGxSwitchElement;
@@ -1720,14 +2274,19 @@ declare global {
     "gx-canvas": HTMLGxCanvasElement;
     "gx-card": HTMLGxCardElement;
     "gx-checkbox": HTMLGxCheckboxElement;
+    "gx-chronometer": HTMLGxChronometerElement;
     "gx-edit": HTMLGxEditElement;
     "gx-form-field": HTMLGxFormFieldElement;
+    "gx-grid-fs": HTMLGxGridFsElement;
+    "gx-grid-infinite-scroll-content": HTMLGxGridInfiniteScrollContentElement;
+    "gx-grid-infinite-scroll": HTMLGxGridInfiniteScrollElement;
+    "gx-grid-smart": HTMLGxGridSmartElement;
     "gx-group": HTMLGxGroupElement;
     "gx-image": HTMLGxImageElement;
-    "gx-layout-editor-placeholder": HTMLGxLayoutEditorPlaceholderElement;
-    "gx-layout-editor": HTMLGxLayoutEditorElement;
     "gx-loading": HTMLGxLoadingElement;
     "gx-lottie": HTMLGxLottieElement;
+    "gx-map-marker": HTMLGxMapMarkerElement;
+    "gx-map": HTMLGxMapElement;
     "gx-message": HTMLGxMessageElement;
     "gx-modal": HTMLGxModalElement;
     "gx-navbar-link": HTMLGxNavbarLinkElement;
@@ -1736,6 +2295,7 @@ declare global {
     "gx-progress-bar": HTMLGxProgressBarElement;
     "gx-radio-group": HTMLGxRadioGroupElement;
     "gx-radio-option": HTMLGxRadioOptionElement;
+    "gx-bootstrap": HTMLGxBootstrapElement;
     "gx-select-option": HTMLGxSelectOptionElement;
     "gx-select": HTMLGxSelectElement;
     "gx-switch": HTMLGxSwitchElement;

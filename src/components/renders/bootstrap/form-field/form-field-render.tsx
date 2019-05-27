@@ -53,20 +53,19 @@ export class FormFieldRender implements IRenderer {
     );
   }
 
-  componentDidLoad() {
+  async componentDidLoad() {
     const formField = this.component;
 
     const innerControl: any = formField.element.querySelector("[area='field']");
     if (innerControl && innerControl.getNativeInputId) {
-      const nativeInputId = innerControl.getNativeInputId();
+      const nativeInputId = await innerControl.getNativeInputId();
       const nativeInput = formField.element.querySelector(`#${nativeInputId}`);
       if (nativeInput) {
         nativeInput.setAttribute("data-part", "field");
       }
-      if (nativeInputId) {
-        formField.element
-          .querySelector("label")
-          .setAttribute("for", nativeInputId);
+      const innerLabel: any = formField.element.querySelector("label");
+      if (nativeInputId && innerLabel) {
+        innerLabel.setAttribute("for", nativeInputId);
       }
     }
   }
@@ -114,15 +113,13 @@ export class FormFieldRender implements IRenderer {
         </label>
       );
 
-      if (formField.labelPosition === "float") {
-        return (
+      const result =
+        formField.labelPosition === "float" ? (
           <div>
             <slot />
             {label}
           </div>
-        );
-      } else {
-        return (
+        ) : (
           <div class="form-group row ml-0 mr-0">
             {renderLabel && renderLabelBefore ? label : null}
             <div class={this.getInnerControlContainerClass()}>
@@ -131,7 +128,8 @@ export class FormFieldRender implements IRenderer {
             {renderLabel && !renderLabelBefore ? label : null}
           </div>
         );
-      }
+
+      return [<gx-bootstrap />, result];
     }
   }
 }
