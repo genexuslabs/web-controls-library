@@ -354,11 +354,7 @@ export class GridSmart
   }
 
   private initSwiper() {
-    if (
-      this.swiper == null &&
-      this.loadingState !== "loading" &&
-      this.recordCount !== 0
-    ) {
+    if (this.swiper == null && this.recordCount > 0) {
       const container: HTMLElement = this.el;
       container
         .querySelector("[slot='grid-content']")
