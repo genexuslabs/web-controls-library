@@ -27,9 +27,14 @@ export class GridSmart
   private swiper: Swiper = null;
 
   /**
-   * Number of items per view (items visible at the same time on slider's container).
+   * Number of items per column (items visible at the same time on slider's container).
    */
   @Prop() columns: number | "auto";
+
+  /**
+   * 0-Indexed number of currently active page
+   */
+  @Prop({ mutable: true }) currentPage = 0;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -55,7 +60,7 @@ export class GridSmart
   /**
    * Set numbers of items to define and enable group sliding. Useful to use with rowsPerPage > 1
    */
-  @Prop() itemsPerGroup: number;
+  @Prop() itemsPerGroup = 1;
 
   /**
    * Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).
@@ -70,13 +75,13 @@ export class GridSmart
   /**
    * If `true`, show the pagination buttons.
    */
-  @Prop() pager = false;
+  @Prop() pager = true;
 
   /**
    * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes.
    * If not specified, then grid empty and loading placeholders will not work correctly.
    */
-  @Prop() recordCount: number;
+  @Prop() recordCount: number = null;
 
   /**
    * Number of items per column, for multirow layout.
@@ -111,7 +116,7 @@ export class GridSmart
   /**
    * Emitted after the active slide has changed.
    */
-  @Event() gxGridDidChange!: EventEmitter<void>;
+  @Event() gxGridDidChange!: EventEmitter<number>;
 
   /**
    * Emitted when the next slide has started.
@@ -168,6 +173,13 @@ export class GridSmart
    */
   @Event() gxGridTouchEnd!: EventEmitter<void>;
 
+  @Watch("currentPage")
+  pageChanged() {
+    if (this.initSwiper()) {
+      this.swiper.slideTo(Math.floor(this.currentPage * this.itemsPerGroup));
+    }
+  }
+
   @Watch("options")
   @Watch("recordCount")
   @Watch("loadingState")
@@ -186,10 +198,10 @@ export class GridSmart
     this.swiper.destroy(true, true);
   }
 
-  @Listen("gxGridChanged")
-  onSlideChanged() {
+  @Listen("gxGridDidChange")
+  onSlideChanged(newCurrentPage: number) {
     if (this.initSwiper()) {
-      this.update();
+      this.currentPage = newCurrentPage;
     }
   }
 
@@ -198,9 +210,10 @@ export class GridSmart
    * child slides.
    */
   @Method()
-  update() {
-    this.initSwiper();
-    this.swiper.update();
+  async update() {
+    if (this.initSwiper() && this.loadingState !== "loading") {
+      this.swiper.update();
+    }
   }
 
   /**
@@ -210,7 +223,7 @@ export class GridSmart
    * @param speed The transition duration (in ms).
    */
   @Method()
-  updateAutoHeight(speed?: number) {
+  async updateAutoHeight(speed?: number) {
     this.swiper.updateAutoHeight(speed);
   }
 
@@ -222,7 +235,7 @@ export class GridSmart
    * @param runCallbacks If true, the transition will produce [Transition/SlideChange][Start/End] transition events.
    */
   @Method()
-  slideTo(index: number, speed?: number, runCallbacks?: boolean) {
+  async slideTo(index: number, speed?: number, runCallbacks?: boolean) {
     this.swiper.slideTo(index, speed, runCallbacks);
   }
 
@@ -233,7 +246,7 @@ export class GridSmart
    * @param runCallbacks If true, the transition will produce [Transition/SlideChange][Start/End] transition events.
    */
   @Method()
-  slideNext(speed?: number, runCallbacks?: boolean) {
+  async slideNext(speed?: number, runCallbacks?: boolean) {
     this.swiper.slideNext(speed, runCallbacks);
   }
 
@@ -244,15 +257,15 @@ export class GridSmart
    * @param runCallbacks If true, the transition will produce the [Transition/SlideChange][Start/End] transition events.
    */
   @Method()
-  slidePrev(speed?: number, runCallbacks?: boolean) {
+  async slidePrev(speed?: number, runCallbacks?: boolean) {
     this.swiper.slidePrev(speed, runCallbacks);
   }
 
   /**
-   * Get the index of the active slide.
+   * Get the index of the current active slide.
    */
   @Method()
-  getActiveIndex(): number {
+  async getActiveIndex(): Promise<number> {
     return this.swiper.activeIndex;
   }
 
@@ -260,7 +273,7 @@ export class GridSmart
    * Get the index of the previous slide.
    */
   @Method()
-  getPreviousIndex(): number {
+  async getPreviousIndex(): Promise<number> {
     return this.swiper.previousIndex;
   }
 
@@ -268,7 +281,7 @@ export class GridSmart
    * Get the total number of slides.
    */
   @Method()
-  length(): number {
+  async length(): Promise<number> {
     return this.swiper.slides.length;
   }
 
@@ -276,7 +289,7 @@ export class GridSmart
    * Get whether or not the current slide is the last slide.
    */
   @Method()
-  isLast(): boolean {
+  async isLast(): Promise<boolean> {
     return this.swiper.isEnd;
   }
 
@@ -284,7 +297,7 @@ export class GridSmart
    * Get whether or not the current slide is the first slide.
    */
   @Method()
-  isStart(): boolean {
+  async isStart(): Promise<boolean> {
     return this.swiper.isBeginning;
   }
 
@@ -292,7 +305,7 @@ export class GridSmart
    * Start auto play.
    */
   @Method()
-  startAutoplay() {
+  async startAutoplay() {
     if (this.swiper.autoplay) {
       this.swiper.autoplay.start();
     }
@@ -302,7 +315,7 @@ export class GridSmart
    * Stop auto play.
    */
   @Method()
-  stopAutoplay() {
+  async stopAutoplay() {
     if (this.swiper.autoplay) {
       this.swiper.autoplay.stop();
     }
@@ -314,7 +327,7 @@ export class GridSmart
    * @param lock If `true`, disable swiping to the next slide.
    */
   @Method()
-  toggleLockSwipeToNext(lock: boolean) {
+  async toggleLockSwipeToNext(lock: boolean) {
     this.swiper.allowSlideNext = !lock;
   }
 
@@ -324,7 +337,7 @@ export class GridSmart
    * @param lock If `true`, disable swiping to the previous slide.
    */
   @Method()
-  toggleLockSwipeToPrev(lock: boolean) {
+  async toggleLockSwipeToPrev(lock: boolean) {
     this.swiper.allowSlidePrev = !lock;
   }
 
@@ -334,7 +347,7 @@ export class GridSmart
    * @param lock If `true`, disable swiping to the next and previous slide.
    */
   @Method()
-  toggleLockSwipes(lock: boolean) {
+  async toggleLockSwipes(lock: boolean) {
     this.swiper.allowSlideNext = !lock;
     this.swiper.allowSlidePrev = !lock;
     this.swiper.allowTouchMove = !lock;
@@ -371,7 +384,7 @@ export class GridSmart
       freeModeMomentumVelocityRatio: 1,
       freeModeSticky: false,
       freeModeMinimumVelocity: 0.02,
-      initialSlide: 0,
+      initialSlide: this.currentPage * this.itemsPerGroup,
       loop: false,
       parallax: false,
       setWrapperSize: false,
@@ -402,6 +415,7 @@ export class GridSmart
       touchReleaseOnEdges: false,
       iOSEdgeSwipeDetection: false,
       iOSEdgeSwipeThreshold: 20,
+      mousewheel: true,
       resistance: true,
       resistanceRatio: 0.85,
       watchSlidesProgress: false,
@@ -460,7 +474,13 @@ export class GridSmart
         },
         reachBeginning: this.gxGridReachStart.emit,
         reachEnd: this.gxGridReachEnd.emit,
-        slideChangeTransitionEnd: this.gxGridDidChange.emit,
+        slideChangeTransitionEnd: () => {
+          if (this.swiper) {
+            this.gxGridDidChange.emit(
+              Math.ceil(this.swiper.activeIndex / this.itemsPerGroup)
+            );
+          }
+        },
         slideChangeTransitionStart: this.gxGridWillChange.emit,
         slideNextTransitionStart: this.gxGridNextStart.emit,
         slidePrevTransitionStart: this.gxGridPrevStart.emit,

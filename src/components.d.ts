@@ -596,21 +596,25 @@ export namespace Components {
 
   interface GxGridSmart {
     /**
-     * Number of items per view (items visible at the same time on slider's container).
+     * Number of items per column (items visible at the same time on slider's container).
      */
     columns: number | "auto";
+    /**
+     * 0-Indexed number of currently active page
+     */
+    currentPage: number;
     /**
      * Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).
      */
     direction: "horizontal" | "vertical";
     /**
-     * Get the index of the active slide.
+     * Get the index of the current active slide.
      */
-    getActiveIndex: () => number;
+    getActiveIndex: () => Promise<number>;
     /**
      * Get the index of the previous slide.
      */
-    getPreviousIndex: () => number;
+    getPreviousIndex: () => Promise<number>;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -618,11 +622,11 @@ export namespace Components {
     /**
      * Get whether or not the current slide is the last slide.
      */
-    isLast: () => boolean;
+    isLast: () => Promise<boolean>;
     /**
      * Get whether or not the current slide is the first slide.
      */
-    isStart: () => boolean;
+    isStart: () => Promise<boolean>;
     /**
      * Set numbers of items to define and enable group sliding. Useful to use with rowsPerPage > 1
      */
@@ -630,7 +634,7 @@ export namespace Components {
     /**
      * Get the total number of slides.
      */
-    length: () => number;
+    length: () => Promise<number>;
     /**
      * Grid loading state. It's purpose is to know whether the grid loading animation or the grid empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
      */
@@ -658,49 +662,57 @@ export namespace Components {
     /**
      * Transition to the next slide.
      */
-    slideNext: (speed?: number, runCallbacks?: boolean) => void;
+    slideNext: (speed?: number, runCallbacks?: boolean) => Promise<void>;
     /**
      * Transition to the previous slide.
      */
-    slidePrev: (speed?: number, runCallbacks?: boolean) => void;
+    slidePrev: (speed?: number, runCallbacks?: boolean) => Promise<void>;
     /**
      * Transition to the specified slide.
      */
-    slideTo: (index: number, speed?: number, runCallbacks?: boolean) => void;
+    slideTo: (
+      index: number,
+      speed?: number,
+      runCallbacks?: boolean
+    ) => Promise<void>;
     /**
      * Start auto play.
      */
-    startAutoplay: () => void;
+    startAutoplay: () => Promise<void>;
     /**
      * Stop auto play.
      */
-    stopAutoplay: () => void;
+    stopAutoplay: () => Promise<void>;
     /**
      * Lock or unlock the ability to slide to the next slide.
      */
-    toggleLockSwipeToNext: (lock: boolean) => void;
+    toggleLockSwipeToNext: (lock: boolean) => Promise<void>;
     /**
      * Lock or unlock the ability to slide to the previous slide.
      */
-    toggleLockSwipeToPrev: (lock: boolean) => void;
+    toggleLockSwipeToPrev: (lock: boolean) => Promise<void>;
     /**
      * Lock or unlock the ability to slide to the next or previous slide.
      */
-    toggleLockSwipes: (lock: boolean) => void;
+    toggleLockSwipes: (lock: boolean) => Promise<void>;
     /**
      * Update the underlying slider implementation. Call this if you've added or removed child slides.
      */
-    update: () => void;
+    update: () => Promise<void>;
     /**
      * Force swiper to update its height (when autoHeight is enabled) for the duration equal to 'speed' parameter.
      */
-    updateAutoHeight: (speed?: number) => void;
+    updateAutoHeight: (speed?: number) => Promise<void>;
   }
   interface GxGridSmartAttributes extends StencilHTMLAttributes {
     /**
-     * Number of items per view (items visible at the same time on slider's container).
+     * Number of items per column (items visible at the same time on slider's container).
      */
     columns?: number | "auto";
+    /**
+     * 0-Indexed number of currently active page
+     */
+    currentPage?: number;
     /**
      * Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).
      */
@@ -724,7 +736,7 @@ export namespace Components {
     /**
      * Emitted after the active slide has changed.
      */
-    onGxGridDidChange?: (event: CustomEvent<void>) => void;
+    onGxGridDidChange?: (event: CustomEvent<number>) => void;
     /**
      * Emitted after Swiper initialization
      */
