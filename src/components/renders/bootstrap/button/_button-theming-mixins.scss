@@ -9,7 +9,7 @@
   button {
     @extend #{$class} !optional;
 
-    &:focus {
+    &:active {
       @extend #{$highlighted} !optional;
     }
   }
