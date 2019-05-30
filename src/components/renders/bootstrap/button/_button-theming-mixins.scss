@@ -4,8 +4,13 @@
 
 /// Helper mixin to ease styling gx-button custom elements
 /// @param {string} $class Base class of the component
-@mixin gx-button($class) {
+/// @param {string} $highlighted Class to be used when the button is focused
+@mixin gx-button($class, $highlighted: null) {
   button {
     @extend #{$class} !optional;
+
+    &:focus {
+      @extend #{$highlighted} !optional;
+    }
   }
 }
