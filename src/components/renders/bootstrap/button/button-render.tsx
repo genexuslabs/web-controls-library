@@ -26,7 +26,7 @@ export class ButtonRender implements IRenderer {
           "btn-outline-secondary": true,
           "btn-sm": button.size === "small",
           "gx-button": true,
-          [button.cssClass]: true
+          [button.cssClass]: !!button.cssClass
         }}
         onClick={button.handleClick.bind(button)}
         tabindex="0"
