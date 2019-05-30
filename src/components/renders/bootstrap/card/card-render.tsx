@@ -1,3 +1,4 @@
+import { h } from "@stencil/core";
 import Popper from "popper.js";
 import { IRenderer } from "../../../common/interfaces";
 import { Card } from "../../../card/card";

@@ -1,3 +1,4 @@
+import { h } from "@stencil/core";
 // tslint:disable-next-line
 import Bootstrap from "bootstrap.native/dist/bootstrap-native-v4";
 import { IRenderer } from "../../../common/interfaces";

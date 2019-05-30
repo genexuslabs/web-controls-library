@@ -1,6 +1,12 @@
-import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Prop,
+  h
+} from "@stencil/core";
 import lazySizes from "lazysizes";
-
 import {
   IClickableComponent,
   IComponent,

@@ -7,7 +7,8 @@ import {
   Listen,
   Method,
   Prop,
-  Watch
+  Watch,
+  h
 } from "@stencil/core";
 
 import { GridBaseHelper, IGridBase } from "../grid-base/grid-base";

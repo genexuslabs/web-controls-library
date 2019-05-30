@@ -1,3 +1,4 @@
+import { h } from "@stencil/core";
 import { IRenderer } from "../../../common/interfaces";
 import { ProgressBar } from "../../../progress-bar/progress-bar";
 
