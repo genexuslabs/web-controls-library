@@ -1,5 +1,3 @@
-// https://www.cssscript.com/demo/radio-button-based-star-rating-system/
-// https://codepen.io/brianknapp/pen/JEotD/
 import {
   Component,
   Element,
@@ -18,16 +16,14 @@ import { IFormComponent } from "../common/interfaces";
 export class Rating implements IFormComponent {
   @State() ratingScore = 0;
 
+  @Element() element: HTMLElement;
+
   /**
    * This attribute allows you specify if the element is disabled.
    * If disabled, it will not trigger any user interaction related event
    * (for example, click event).
    */
   @Prop() disabled = false;
-
-  handleChange: (UIEvent: any) => void;
-
-  @Element() element: HTMLElement;
 
   /**
    * The control id. Must be unique per control!
@@ -51,7 +47,7 @@ export class Rating implements IFormComponent {
   @Prop() maxValue: number;
 
   /**
-   * This attribute i0ndicates that the user cannot modify the value of the control.
+   * This attribute indicates that the user cannot modify the value of the control.
    * Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly)
    * attribute for `input` elements.
    * _Disable by default_
@@ -64,17 +60,21 @@ export class Rating implements IFormComponent {
    */
   @Prop() value = 0;
 
+  handleChange: (UIEvent: any) => void;
+
   /**
    * The 'input' event is emitted when a change to the element's value is committed by the user.
    */
   @Event() input: EventEmitter;
 
-  onClick(param) {
-    const element = param.target;
+  onClick(event: UIEvent) {
+    const element = event.target as HTMLElement;
     const score =
       element.nodeName === "polygon"
-        ? parseInt(element.parentElement.getAttribute("star-number"), 10)
-        : parseInt(element.getAttribute("star-number"), 10);
+        ? Array.from(element.parentElement.parentElement.children).indexOf(
+            element.parentElement
+          ) + 1
+        : Array.from(element.parentElement.children).indexOf(element) + 1;
     this.ratingScore = score;
     this.input.emit(this);
   }
@@ -94,7 +94,6 @@ export class Rating implements IFormComponent {
         <svg
           class="rating"
           viewBox="0 0 100 100"
-          star-number={1 + i}
           onClick={ev => this.onClick(ev)}
         >
           <polygon points="50,0 15,95 100,35 0,35 85,95" />
@@ -112,66 +111,44 @@ export class Rating implements IFormComponent {
       starsScore = Math.round((percent * 5) / 100);
     } else {
       // tslint:disable-next-line:no-console
-      console.error(
-        "Incongruence in values of 'max-value' and 'value' attributes"
-      );
+      console.error("'value' cannot be greater than 'max-value'");
     }
     for (let i = 0; i < 5; i++) {
-      if (i < starsScore) {
-        stars.push(
-          <svg class="score active" viewBox="0 0 100 100" star-number={1 + i}>
-            <polygon points="50,0 15,95 100,35 0,35 85,95" />
-          </svg>
-        );
-      } else {
-        stars.push(
-          <svg class="score" viewBox="0 0 100 100" star-number={1 + i}>
-            <polygon points="50,0 15,95 100,35 0,35 85,95" />
-          </svg>
-        );
-      }
+      stars.push(
+        <svg
+          class={`score ${i < starsScore ? "active" : ""}`}
+          viewBox="0 0 100 100"
+        >
+          <polygon points="50,0 15,95 100,35 0,35 85,95" />
+        </svg>
+      );
     }
     return stars;
   }
 
   render() {
-    if (this.readonly) {
-      return this.maxValue && this.value ? (
-        <div>
-          <input
-            type="range"
-            min="0"
-            max={this.maxValue}
-            step="1"
-            value={this.value}
-          />
-          <div class="svgContainer score">{this.addStarsScore()}</div>
+    return (this.maxValue >= this.value && this.readonly) || !this.readonly ? (
+      <div>
+        <input
+          type="range"
+          min="0"
+          max={this.readonly ? this.maxValue : 5}
+          step="1"
+          value={this.readonly ? this.value : this.ratingScore}
+        />
+        <div
+          class={`svgContainer ${this.readonly ? "score" : "rating"}`}
+          data-score={this.ratingScore !== 0 ? this.ratingScore : undefined}
+        >
+          {this.readonly ? this.addStarsScore() : this.addStarsRating()}
         </div>
-      ) : (
-        // tslint:disable-next-line:no-console
-        console.error(
-          "'max-value' or 'value' attributes has not a value setted or has a incorrect value",
-          this
-        )
-      );
-    } else {
-      return (
-        <div>
-          <input
-            type="range"
-            min="0"
-            max="5"
-            step="1"
-            value={this.ratingScore}
-          />
-          <div
-            class="svgContainer rating"
-            data-score={this.ratingScore !== 0 ? this.ratingScore : undefined}
-          >
-            {this.addStarsRating()}
-          </div>
-        </div>
-      );
-    }
+      </div>
+    ) : (
+      // tslint:disable-next-line:no-console
+      console.error(
+        "'max-value' or 'value' attributes has not a value setted or has a incorrect value",
+        this
+      )
+    );
   }
 }

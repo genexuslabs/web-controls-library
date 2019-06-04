@@ -1,8 +1,18 @@
 # gx-rating
 
-The `gx-rating` allows displaying scores and rate something.
+The `gx-rating` allows displaying scores or rate items using stars.
 
-Use `gx-rating` with `readonly = true` make available the 'scoring mode' and set `max-value`and `value`.
+E.g.:
+
+<div>
+    <svg viewBox="0 0 100 100" width="40" heigth="40" style=" filter: drop-shadow(0 0 2px #e4ac13);"><polygon fill="#e4ac13" points="50,0 15,95 100,35 0,35 85,95"/></svg>
+    <svg viewBox="0 0 100 100" width="40" heigth="40" style=" filter: drop-shadow(0 0 2px #e4ac13);"><polygon fill="#e4ac13" points="50,0 15,95 100,35 0,35 85,95"/></svg>
+    <svg viewBox="0 0 100 100" width="40" heigth="40" style=" filter: drop-shadow(0 0 2px #e4ac13);"><polygon fill="#e4ac13" points="50,0 15,95 100,35 0,35 85,95"/></svg>
+    <svg viewBox="0 0 100 100" width="40" heigth="40" style=" filter: drop-shadow(0 0 2px #e4ac13);"><polygon fill="#e4ac13" points="50,0 15,95 100,35 0,35 85,95"/></svg>
+    <svg viewBox="0 0 100 100" width="40" heigth="40" style=" filter: drop-shadow(0 0 2px #e4ac13);"><polygon fill="#e4ac13" points="50,0 15,95 100,35 0,35 85,95"/></svg>
+</div>
+
+Use `gx-rating` with `readonly = true` to make available the 'score mode' and set values for `max-value` and `value` attributes.
 
 _`gx-rating` is in 'rating mode' by default_
 
@@ -16,7 +26,7 @@ _`gx-rating` is in 'rating mode' by default_
 | `id`            | `id`             | The control id. Must be unique per control!                                                                                                                                                                                                                                                                                                                                                  | `string`                     | `undefined`  |
 | `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \| | `"collapse" \| "keep-space"` | `"collapse"` |
 | `maxValue`      | `max-value`      | The current value displayed by the component.                                                                                                                                                                                                                                                                                                                                                | `number`                     | `undefined`  |
-| `readonly`      | `readonly`       | This attribute i0ndicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_                                                                                                                                                       | `boolean`                    | `false`      |
+| `readonly`      | `readonly`       | This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_                                                                                                                                                        | `boolean`                    | `false`      |
 | `value`         | `value`          | The current value displayed by the component.                                                                                                                                                                                                                                                                                                                                                | `number`                     | `0`          |
 
 ## Events
