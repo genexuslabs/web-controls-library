@@ -19,7 +19,7 @@ export class Image
     IDisableableComponent,
     IVisibilityComponent,
     IClickableComponent {
-  @Element() element;
+  @Element() element: HTMLGxImageElement;
 
   /**
    * This attribute lets you specify the alternative text.
@@ -88,15 +88,17 @@ export class Image
   }
 
   render() {
+    const shouldLazyLoad = this.shouldLazyLoad();
+
     const body = [
       <img
         class={{
-          [LAZY_LOAD_CLASS]: this.lazyLoad,
+          [LAZY_LOAD_CLASS]: shouldLazyLoad,
           [this.cssClass]: !!this.cssClass
         }}
         onClick={this.handleClick.bind(this)}
-        data-src={this.lazyLoad ? this.src : undefined}
-        src={!this.lazyLoad ? this.src : undefined}
+        data-src={shouldLazyLoad ? this.src : undefined}
+        src={!shouldLazyLoad ? this.src : undefined}
         alt={this.alt ? this.alt : ""}
         width={this.width}
         height={this.height}
@@ -104,6 +106,11 @@ export class Image
       <span />
     ];
     return body;
+  }
+
+  private shouldLazyLoad(): boolean {
+    const img: HTMLImageElement = this.element.querySelector("img");
+    return this.lazyLoad && (!img || img.classList.contains(LAZY_LOAD_CLASS));
   }
 }
 
