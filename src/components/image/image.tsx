@@ -1,4 +1,6 @@
 import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
+import lazySizes from "lazysizes";
+
 import {
   IClickableComponent,
   IComponent,
@@ -17,6 +19,12 @@ export class Image
     IDisableableComponent,
     IVisibilityComponent,
     IClickableComponent {
+  constructor() {
+    lazySizes.cfg.lazyClass = LAZY_LOAD_CLASS;
+    lazySizes.cfg.loadingClass = LAZY_LOADING_CLASS;
+    lazySizes.cfg.loadedClass = LAZY_LOADED_CLASS;
+  }
+
   @Element() element;
 
   /**
@@ -52,6 +60,11 @@ export class Image
   @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
+   * True to lazy load the image, when it enters the viewport.
+   */
+  @Prop() lazyLoad = true;
+
+  /**
    * This attribute lets you specify the low resolution image SRC.
    */
   @Prop() lowResolutionSrc = "";
@@ -73,6 +86,7 @@ export class Image
 
   handleClick(event: UIEvent) {
     if (this.disabled) {
+      event.stopPropagation();
       return;
     }
     this.onClick.emit(event);
@@ -80,17 +94,25 @@ export class Image
   }
 
   render() {
-    const body = (
+    const body = [
       <img
-        class={this.cssClass}
+        class={{
+          [LAZY_LOAD_CLASS]: this.lazyLoad,
+          [this.cssClass]: !!this.cssClass
+        }}
         onClick={this.handleClick.bind(this)}
-        src={this.src}
+        data-src={this.lazyLoad ? this.src : undefined}
+        src={!this.lazyLoad ? this.src : undefined}
         alt={this.alt ? this.alt : ""}
-        // title={this.title}
         width={this.width}
         height={this.height}
-      />
-    );
+      />,
+      <span />
+    ];
     return body;
   }
 }
+
+const LAZY_LOAD_CLASS = "gx-lazyload";
+const LAZY_LOADING_CLASS = "gx-lazyloading";
+const LAZY_LOADED_CLASS = "gx-lazyloaded";
