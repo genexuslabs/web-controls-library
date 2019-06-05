@@ -58,12 +58,12 @@ describe("gx-rating", () => {
     expect(await inputRange.getProperty("value")).toEqual("3");
     expect(spy).toHaveReceivedEvent();
     const componentObject = {
-      ratingScore: 3,
       disabled: false,
+      input: {},
       invisibleMode: "collapse",
+      ratingScore: 3,
       readonly: false,
-      value: 0,
-      input: {}
+      value: 0
     };
     expect(spy).toHaveReceivedEventDetail(componentObject);
   });
