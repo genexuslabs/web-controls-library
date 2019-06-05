@@ -7,6 +7,7 @@ import {
   IDisableableComponent,
   IVisibilityComponent
 } from "../common/interfaces";
+import { cssVariablesWatcher } from "../common/css-variables-watcher";
 
 @Component({
   shadow: false,
@@ -19,6 +20,15 @@ export class Image
     IDisableableComponent,
     IVisibilityComponent,
     IClickableComponent {
+  constructor() {
+    cssVariablesWatcher(this, [
+      {
+        cssVariableName: "--image-scale-type",
+        propertyName: "scaleType"
+      }
+    ]);
+  }
+
   @Element() element: HTMLGxImageElement;
 
   /**
@@ -64,6 +74,18 @@ export class Image
   @Prop() lowResolutionSrc = "";
 
   /**
+   * This attribute allows specifing how the image is sized according to its container.
+   * `contain`, `cover`, `fill` and `none` map directly to the values of the CSS `object-fit` property.
+   * The `tile` value repeats the image, both vertically and horizontally, creating a tile effect.
+   */
+  @Prop({ mutable: true }) scaleType:
+    | "contain"
+    | "cover"
+    | "fill"
+    | "none"
+    | "tile";
+
+  /**
    * This attribute lets you specify the SRC.
    */
   @Prop() src = "";
@@ -94,8 +116,14 @@ export class Image
       <img
         class={{
           [LAZY_LOAD_CLASS]: shouldLazyLoad,
-          [this.cssClass]: !!this.cssClass
+          [this.cssClass]: !!this.cssClass,
+          "gx-image-tile": this.scaleType === "tile"
         }}
+        style={
+          this.scaleType === "tile"
+            ? { backgroundImage: `url(${this.src})` }
+            : { objectFit: this.scaleType }
+        }
         onClick={this.handleClick.bind(this)}
         data-src={shouldLazyLoad ? this.src : undefined}
         src={!shouldLazyLoad ? this.src : undefined}
