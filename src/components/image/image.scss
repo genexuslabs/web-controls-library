@@ -5,8 +5,14 @@ gx-image {
 
   @include visibility(inline-flex);
 
+  justify-content: center;
+  align-items: center;
+
   & > img {
     @include elevation();
+    height: 100%;
+    width: 100%;
+    object-fit: var(--image-scale-type, contain);
   }
 
   .gx-lazyload:not([src]) {
