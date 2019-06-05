@@ -19,12 +19,6 @@ export class Image
     IDisableableComponent,
     IVisibilityComponent,
     IClickableComponent {
-  constructor() {
-    lazySizes.cfg.lazyClass = LAZY_LOAD_CLASS;
-    lazySizes.cfg.loadingClass = LAZY_LOADING_CLASS;
-    lazySizes.cfg.loadedClass = LAZY_LOADED_CLASS;
-  }
-
   @Element() element;
 
   /**
@@ -116,3 +110,7 @@ export class Image
 const LAZY_LOAD_CLASS = "gx-lazyload";
 const LAZY_LOADING_CLASS = "gx-lazyloading";
 const LAZY_LOADED_CLASS = "gx-lazyloaded";
+
+lazySizes.cfg.lazyClass = LAZY_LOAD_CLASS;
+lazySizes.cfg.loadingClass = LAZY_LOADING_CLASS;
+lazySizes.cfg.loadedClass = LAZY_LOADED_CLASS;
