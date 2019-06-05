@@ -846,6 +846,10 @@ export namespace Components {
      */
     invisibleMode: "collapse" | "keep-space";
     /**
+     * True to lazy load the image, when it enters the viewport.
+     */
+    lazyLoad: boolean;
+    /**
      * This attribute lets you specify the low resolution image SRC.
      */
     lowResolutionSrc: string;
@@ -879,6 +883,10 @@ export namespace Components {
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode?: "collapse" | "keep-space";
+    /**
+     * True to lazy load the image, when it enters the viewport.
+     */
+    lazyLoad?: boolean;
     /**
      * This attribute lets you specify the low resolution image SRC.
      */
