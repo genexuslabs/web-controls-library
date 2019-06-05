@@ -1,5 +1,9 @@
 # gx-image
 
+This component wraps an `<img>` element, adding support for lazy loading.
+A CSS animation with a spinning circle is used as a loading indicator while the image is being loaded.
+The loading indicator can be disabled by setting the `--image-loading-indicator` CSS variable to `none`.
+
 <!-- Auto Generated Below -->
 
 ## Properties
