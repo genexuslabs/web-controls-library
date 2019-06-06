@@ -109,8 +109,12 @@ export class Image
   }
 
   private shouldLazyLoad(): boolean {
+    if (!this.lazyLoad) {
+      return false;
+    }
+
     const img: HTMLImageElement = this.element.querySelector("img");
-    return this.lazyLoad && (!img || img.classList.contains(LAZY_LOAD_CLASS));
+    return !img || img.classList.contains(LAZY_LOAD_CLASS);
   }
 }
 
