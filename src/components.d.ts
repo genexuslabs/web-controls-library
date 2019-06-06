@@ -866,6 +866,10 @@ export namespace Components {
      */
     lowResolutionSrc: string;
     /**
+     * This attribute allows specifing how the image is sized according to its container. `contain`, `cover`, `fill` and `none` map directly to the values of the CSS `object-fit` property. The `tile` value repeats the image, both vertically and horizontally, creating a tile effect.
+     */
+    scaleType: "contain" | "cover" | "fill" | "none" | "tile";
+    /**
      * This attribute lets you specify the SRC.
      */
     src: string;
@@ -907,6 +911,10 @@ export namespace Components {
      * Emitted when the element is clicked.
      */
     onOnClick?: (event: CustomEvent) => void;
+    /**
+     * This attribute allows specifing how the image is sized according to its container. `contain`, `cover`, `fill` and `none` map directly to the values of the CSS `object-fit` property. The `tile` value repeats the image, both vertically and horizontally, creating a tile effect.
+     */
+    scaleType?: "contain" | "cover" | "fill" | "none" | "tile";
     /**
      * This attribute lets you specify the SRC.
      */

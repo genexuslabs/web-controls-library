@@ -5,8 +5,24 @@ gx-image {
 
   @include visibility(inline-flex);
 
+  justify-content: center;
+  align-items: center;
+
   & > img {
     @include elevation();
+    height: 100%;
+    width: 100%;
+    object-fit: var(--image-scale-type, contain);
+  }
+
+  .gx-image-tile {
+    width: 100% !important;
+    height: 100% !important;
+    padding-left: 100% !important;
+    box-sizing: border-box !important;
+    display: inline-block !important;
+    background-position: 0 !important;
+    background-repeat: repeat;
   }
 
   .gx-lazyload:not([src]) {
