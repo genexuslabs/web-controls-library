@@ -34,7 +34,7 @@
       @extend #{$label} !optional;
     }
   }
-  @if $highlighted != null {
+  @if ($highlighted != null) {
     [data-part="field"]:focus {
       @extend #{$highlighted} !optional;
     }
