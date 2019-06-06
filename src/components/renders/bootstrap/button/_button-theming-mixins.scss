@@ -9,8 +9,10 @@
   button {
     @extend #{$class} !optional;
 
-    &:active {
-      @extend #{$highlighted} !optional;
+    @if ($highlighted != null) {
+      &:active {
+        @extend #{$highlighted} !optional;
+      }
     }
   }
 }

@@ -4,10 +4,17 @@
 
 /// Helper mixin to ease styling gx-group custom elements
 /// @param {string} $class Base class of the component
+/// @param {string} $highlighted Class to be used when the group is active
 /// @param {string} $caption Class for styling the caption of the group
-@mixin gx-group($class, $caption: null) {
+@mixin gx-group($class, $highlighted: null, $caption: null) {
   & > fieldset {
     @extend #{$class} !optional;
+
+    @if ($highlighted != null) {
+      &:active {
+        @extend #{$highlighted} !optional;
+      }
+    }
 
     @if ($caption != null) {
       & > legend {

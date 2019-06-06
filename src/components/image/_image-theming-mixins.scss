@@ -4,7 +4,7 @@
 
 /// Helper mixin to ease styling gx-image custom elements
 /// @param {string} $class Base class of the component
-/// @param {string} $highlighted Class to be used when the button is focused
+/// @param {string} $highlighted Class to be used when the image is active
 @mixin gx-image(
   $class,
   $highlighted: null,
@@ -15,10 +15,14 @@
 ) {
   img {
     @extend #{$class} !optional;
-    &:active {
-      @extend #{$highlighted} !optional;
+
+    @if ($highlighted != null) {
+      &:active {
+        @extend #{$highlighted} !optional;
+      }
     }
   }
+
   @include dragging-behavior(
     $accept-drag-class,
     $no-accept-drag-class,
