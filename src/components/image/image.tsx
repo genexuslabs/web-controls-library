@@ -19,13 +19,7 @@ export class Image
     IDisableableComponent,
     IVisibilityComponent,
     IClickableComponent {
-  constructor() {
-    lazySizes.cfg.lazyClass = LAZY_LOAD_CLASS;
-    lazySizes.cfg.loadingClass = LAZY_LOADING_CLASS;
-    lazySizes.cfg.loadedClass = LAZY_LOADED_CLASS;
-  }
-
-  @Element() element;
+  @Element() element: HTMLGxImageElement;
 
   /**
    * This attribute lets you specify the alternative text.
@@ -94,15 +88,17 @@ export class Image
   }
 
   render() {
+    const shouldLazyLoad = this.shouldLazyLoad();
+
     const body = [
       <img
         class={{
-          [LAZY_LOAD_CLASS]: this.lazyLoad,
+          [LAZY_LOAD_CLASS]: shouldLazyLoad,
           [this.cssClass]: !!this.cssClass
         }}
         onClick={this.handleClick.bind(this)}
-        data-src={this.lazyLoad ? this.src : undefined}
-        src={!this.lazyLoad ? this.src : undefined}
+        data-src={shouldLazyLoad ? this.src : undefined}
+        src={!shouldLazyLoad ? this.src : undefined}
         alt={this.alt ? this.alt : ""}
         width={this.width}
         height={this.height}
@@ -111,8 +107,21 @@ export class Image
     ];
     return body;
   }
+
+  private shouldLazyLoad(): boolean {
+    if (!this.lazyLoad) {
+      return false;
+    }
+
+    const img: HTMLImageElement = this.element.querySelector("img");
+    return !img || img.classList.contains(LAZY_LOAD_CLASS);
+  }
 }
 
 const LAZY_LOAD_CLASS = "gx-lazyload";
 const LAZY_LOADING_CLASS = "gx-lazyloading";
 const LAZY_LOADED_CLASS = "gx-lazyloaded";
+
+lazySizes.cfg.lazyClass = LAZY_LOAD_CLASS;
+lazySizes.cfg.loadingClass = LAZY_LOADING_CLASS;
+lazySizes.cfg.loadedClass = LAZY_LOADED_CLASS;
