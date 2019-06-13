@@ -11,17 +11,17 @@ describe("gx-rating", () => {
     element = await page.find("gx-rating");
   });
 
-  it("should be drawn without attributes and should be in 'rating mode'", async () => {
+  it("should be drawn without attributes and should have the main div with 'rating' class", async () => {
     expect(element).toBeTruthy();
-    expect(await element.find(".svgContainer.rating")).toBeTruthy();
+    expect(await element.find(".rating")).toBeTruthy();
   });
 
-  it("should be in 'score mode' when readonly attribute is true", async () => {
+  it("should have the main div with 'score' class when readonly attribute is true", async () => {
     element.setAttribute("readonly", "true");
     element.setAttribute("max-value", "5");
     element.setAttribute("value", "5");
     await page.waitForChanges();
-    const svgContainer = await element.find(".svgContainer.score");
+    const svgContainer = await element.find(".score");
     expect(svgContainer).toBeTruthy();
   });
 
@@ -60,11 +60,35 @@ describe("gx-rating", () => {
     const componentObject = {
       disabled: false,
       input: {},
+      inputId: "gx-inputRange-auto-id-0",
       invisibleMode: "collapse",
-      ratingScore: 3,
       readonly: false,
-      value: 0
+      starShape: {
+        elm: { "s-hn": "gx-rating" },
+        ishost: false,
+        vattrs: { points: "50,0 15,95 100,35 0,35 85,95" },
+        vchildren: null,
+        vtag: "polygon"
+      },
+      svgViewport: { viewBox: "0 0 100 100" },
+      value: 3
     };
     expect(spy).toHaveReceivedEventDetail(componentObject);
+  });
+
+  it("should retun the correct input Id when it is not defined in the control", async () => {
+    element.setAttribute("Id", "idTest");
+    await page.waitForChanges();
+    const inputId = await element.callMethod("getNativeInputId");
+    expect(inputId).toEqual("gx-inputRange-auto-id-0");
+  });
+
+  it("should retun the correct input Id when it is defined in the control", async () => {
+    page = await newE2EPage();
+    await page.setContent("<gx-rating id='idTest'></gx-rating>");
+    await page.waitForChanges();
+    element = await page.find("gx-rating");
+    const inputId = await element.callMethod("getNativeInputId");
+    expect(inputId).toEqual("idTest_inputRange");
   });
 });

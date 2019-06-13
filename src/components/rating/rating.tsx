@@ -4,8 +4,7 @@ import {
   Event,
   EventEmitter,
   Method,
-  Prop,
-  State
+  Prop
 } from "@stencil/core";
 import { IFormComponent } from "../common/interfaces";
 @Component({
@@ -14,7 +13,13 @@ import { IFormComponent } from "../common/interfaces";
   tag: "gx-rating"
 })
 export class Rating implements IFormComponent {
-  @State() ratingScore = 0;
+  inputId: string;
+
+  starShape = <polygon points="50,0 15,95 100,35 0,35 85,95" />;
+
+  svgViewport = {
+    viewBox: "0 0 100 100"
+  };
 
   @Element() element: HTMLElement;
 
@@ -41,7 +46,8 @@ export class Rating implements IFormComponent {
   @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
-   * The current value displayed by the component.
+   * This porpoerty is required if you want to display a score.
+   * >E.g: In a score of 4/5 stars the `maxValue` is `5` and the `value` is `4`
    *
    */
   @Prop() maxValue: number;
@@ -58,7 +64,7 @@ export class Rating implements IFormComponent {
    * The current value displayed by the component.
    *
    */
-  @Prop() value = 0;
+  @Prop({ mutable: true }) value = 0;
 
   handleChange: (UIEvent: any) => void;
 
@@ -69,13 +75,14 @@ export class Rating implements IFormComponent {
 
   onClick(event: UIEvent) {
     const element = event.target as HTMLElement;
+    const targetParent = element.parentElement;
     const score =
       element.nodeName === "polygon"
-        ? Array.from(element.parentElement.parentElement.children).indexOf(
-            element.parentElement
+        ? Array.from(targetParent.parentElement.children).indexOf(
+            targetParent
           ) + 1
-        : Array.from(element.parentElement.children).indexOf(element) + 1;
-    this.ratingScore = score;
+        : Array.from(targetParent.children).indexOf(element) + 1;
+    this.value = score;
     this.input.emit(this);
   }
 
@@ -84,25 +91,25 @@ export class Rating implements IFormComponent {
    */
   @Method()
   async getNativeInputId() {
-    return this.render();
+    return this.element.querySelector("input").id;
   }
 
-  private addStarsRating() {
+  private renderStarsRating() {
     const stars = [];
     for (let i = 0; i < 5; i++) {
       stars.push(
         <svg
           class="rating"
-          viewBox="0 0 100 100"
+          {...this.svgViewport}
           onClick={ev => this.onClick(ev)}
         >
-          <polygon points="50,0 15,95 100,35 0,35 85,95" />
+          {this.starShape}
         </svg>
       );
     }
     return stars;
   }
-  private addStarsScore() {
+  private renderStarsScore() {
     const stars = [];
     let percent: number;
     let starsScore: number;
@@ -116,10 +123,13 @@ export class Rating implements IFormComponent {
     for (let i = 0; i < 5; i++) {
       stars.push(
         <svg
-          class={`score ${i < starsScore ? "active" : ""}`}
-          viewBox="0 0 100 100"
+          class={{
+            active: i < starsScore,
+            score: true
+          }}
+          {...this.svgViewport}
         >
-          <polygon points="50,0 15,95 100,35 0,35 85,95" />
+          {this.starShape}
         </svg>
       );
     }
@@ -127,28 +137,47 @@ export class Rating implements IFormComponent {
   }
 
   render() {
-    return (this.maxValue >= this.value && this.readonly) || !this.readonly ? (
-      <div>
-        <input
-          type="range"
-          min="0"
-          max={this.readonly ? this.maxValue : 5}
-          step="1"
-          value={this.readonly ? this.value : this.ratingScore}
-        />
-        <div
-          class={`svgContainer ${this.readonly ? "score" : "rating"}`}
-          data-score={this.ratingScore !== 0 ? this.ratingScore : undefined}
-        >
-          {this.readonly ? this.addStarsScore() : this.addStarsRating()}
+    const valuesDifference = this.maxValue - this.value;
+    if (!this.inputId) {
+      this.id
+        ? (this.inputId = `${this.id}_inputRange`)
+        : (this.inputId = `gx-inputRange-auto-id-${autoInputRangeId++}`);
+    }
+    if ((valuesDifference >= 0 && this.readonly) || !this.readonly) {
+      return (
+        <div>
+          <input
+            id={this.inputId}
+            type="range"
+            min="0"
+            max={this.readonly ? this.maxValue : 5}
+            step="1"
+            value={this.value}
+          />
+          <div
+            class={{
+              rating: !this.readonly,
+              score: this.readonly
+            }}
+            data-score={this.value !== 0 ? this.value : undefined}
+          >
+            {this.readonly ? this.renderStarsScore() : this.renderStarsRating()}
+          </div>
         </div>
-      </div>
-    ) : (
-      // tslint:disable-next-line:no-console
-      console.error(
-        "'max-value' or 'value' attributes has not a value setted or has a incorrect value",
-        this
-      )
-    );
+      );
+    } else {
+      if (!!this.maxValue) {
+        // tslint:disable-next-line:no-console
+        console.error(
+          "Incongruence between values. 'value' is higher than 'max-value'.",
+          this
+        );
+      } else {
+        // tslint:disable-next-line:no-console
+        console.error("'max-value' has not a value setted ", this);
+      }
+    }
   }
 }
+
+let autoInputRangeId = 0;

@@ -1,3 +1,5 @@
+@import "../common/_base";
+
 @mixin widthHeightsize($valueX, $valueY) {
   height: $valueY;
   width: $valueX;
@@ -9,60 +11,103 @@
   align-items: $aligItem;
   flex-wrap: $wrap;
 }
-%ratingHover {
-  &:hover {
-    svg:nth-child(n) {
-      polygon {
-        fill: #e4ac13;
-      }
-      &:hover ~ svg {
+
+gx-rating {
+  @include visibility(block);
+  /**
+  * @prop --active-stars-color:
+   * Set the color that will have the stars.
+  */
+  --active-stars-color: #e4ac13;
+
+  /**
+  * @prop --active-stars-shadow-color:
+   * Set the shadow color of actives stars.
+  */
+  --active-stars-shadow-color: var(--active-stars-color);
+
+  /**
+  * @prop --inactive-stars-color:
+   * Set the color that will have the stars when are not active _(No rated)_.
+  */
+  --inactive-stars-color: rgba(80, 80, 80, 0.6);
+
+  /**
+  * @prop --inactive-stars-hover-color:
+   * Set the color of inactive stars when the user is rating.
+  */
+  --inactive-stars-hover-color: rgba(80, 80, 80, 0.4);
+
+  /**
+  * @prop --star-width:
+   * Set the width of each star.
+  */
+  --star-width: 2em;
+
+  /**
+  * @prop --star-heigth:
+   * Set the heigth of each star.
+  */
+  --star-heigth: auto;
+
+  /**
+   * @prop --star-separation
+   * This is for set the space between each star
+  */
+  --star-separation: 2px;
+
+  %ratingHover {
+    &:hover {
+      svg:nth-child(n) {
         polygon {
-          fill: rgba(80, 80, 80, 0.4);
+          fill: var(--active-stars-color);
+        }
+        &:hover ~ svg {
+          polygon {
+            fill: var(--inactive-stars-hover-color);
+          }
         }
       }
     }
-  }
-  svg {
-    @include widthHeightsize(2em, auto);
-    padding: 0px 2px;
-    cursor: pointer;
-    polygon {
-      fill: rgba(80, 80, 80, 0.6);
-      transition: 0.4s ease;
+    svg {
+      @include widthHeightsize(var(--star-width), var(--star-heigth));
+      padding: 0px var(--star-separation);
+      cursor: pointer;
+      polygon {
+        fill: var(--inactive-stars-color);
+        transition: 0.4s ease;
+      }
     }
   }
-}
-
-gx-rating {
-  input[type="range"] {
+  input {
     display: none;
   }
-  div.svgContainer.rating {
+  div.rating {
     @include widthHeightsize(max-content, max-content);
     @include flex(row, space-between, center, wrap);
     &[data-score="1"] {
       svg {
-        filter: drop-shadow(0 0 2px #e4ac13);
+        filter: drop-shadow(0 0 2px var(--active-stars-shadow-color));
         polygon {
-          fill: #e4ac13;
+          fill: var(--active-stars-color);
         }
         &:nth-child(1) ~ svg {
           filter: none;
           polygon {
-            fill: rgba(80, 80, 80, 0.6);
+            fill: var(--inactive-stars-color);
           }
         }
       }
       &:hover {
         svg ~ svg {
           polygon {
-            fill: #e4ac13;
+            fill: var(--active-stars-color);
           }
         }
         svg:hover {
           & ~ svg {
             polygon {
-              fill: rgba(80, 80, 80, 0.4);
+              fill: var(--inactive-stars-hover-color);
             }
           }
         }
@@ -70,27 +115,27 @@ gx-rating {
     }
     &[data-score="2"] {
       svg {
-        filter: drop-shadow(0 0 2px #e4ac13);
+        filter: drop-shadow(0 0 2px var(--active-stars-shadow-color));
         polygon {
-          fill: #e4ac13;
+          fill: var(--active-stars-color);
         }
         &:nth-child(2) ~ svg {
           filter: none;
           polygon {
-            fill: rgba(80, 80, 80, 0.6);
+            fill: var(--inactive-stars-color);
           }
         }
       }
       &:hover {
         svg ~ svg {
           polygon {
-            fill: #e4ac13;
+            fill: var(--active-stars-color);
           }
         }
         svg:hover {
           & ~ svg {
             polygon {
-              fill: rgba(80, 80, 80, 0.4);
+              fill: var(--inactive-stars-hover-color);
             }
           }
         }
@@ -98,27 +143,27 @@ gx-rating {
     }
     &[data-score="3"] {
       svg {
-        filter: drop-shadow(0 0 2px #e4ac13);
+        filter: drop-shadow(0 0 2px var(--active-stars-shadow-color));
         polygon {
-          fill: #e4ac13;
+          fill: var(--active-stars-color);
         }
         &:nth-child(3) ~ svg {
           filter: none;
           polygon {
-            fill: rgba(80, 80, 80, 0.6);
+            fill: var(--inactive-stars-color);
           }
         }
       }
       &:hover {
         svg ~ svg {
           polygon {
-            fill: #e4ac13;
+            fill: var(--active-stars-color);
           }
         }
         svg:hover {
           & ~ svg {
             polygon {
-              fill: rgba(80, 80, 80, 0.4);
+              fill: var(--inactive-stars-hover-color);
             }
           }
         }
@@ -126,27 +171,27 @@ gx-rating {
     }
     &[data-score="4"] {
       svg {
-        filter: drop-shadow(0 0 2px #e4ac13);
+        filter: drop-shadow(0 0 2px var(--active-stars-shadow-color));
         polygon {
-          fill: #e4ac13;
+          fill: var(--active-stars-color);
         }
         &:nth-child(4) ~ svg {
           filter: none;
           polygon {
-            fill: rgba(80, 80, 80, 0.6);
+            fill: var(--inactive-stars-color);
           }
         }
       }
       &:hover {
         svg ~ svg {
           polygon {
-            fill: #e4ac13;
+            fill: var(--active-stars-color);
           }
         }
         svg:hover {
           & ~ svg {
             polygon {
-              fill: rgba(80, 80, 80, 0.4);
+              fill: var(--inactive-stars-hover-color);
             }
           }
         }
@@ -154,21 +199,21 @@ gx-rating {
     }
     &[data-score="5"] {
       svg {
-        filter: drop-shadow(0 0 2px #e4ac13);
+        filter: drop-shadow(0 0 2px var(--active-stars-shadow-color));
         polygon {
-          fill: #e4ac13;
+          fill: var(--active-stars-color);
         }
       }
       &:hover {
         svg ~ svg {
           polygon {
-            fill: #e4ac13;
+            fill: var(--active-stars-color);
           }
         }
         svg:hover {
           & ~ svg {
             polygon {
-              fill: rgba(80, 80, 80, 0.4);
+              fill: var(--inactive-stars-hover-color);
             }
           }
         }
@@ -177,20 +222,20 @@ gx-rating {
 
     @extend %ratingHover;
   }
-  div.svgContainer.score {
+  div.score {
     @include widthHeightsize(max-content, max-content);
     @include flex(row, space-between, center, wrap);
     svg {
       @include widthHeightsize(2em, auto);
-      padding: 0px 2px;
+      padding: 0px var(--star-separation);
       polygon {
-        fill: rgba(80, 80, 80, 0.6);
+        fill: var(--inactive-stars-color);
         transition: 0.3s ease;
       }
       &.active {
-        filter: drop-shadow(0 0 2px #e4ac13);
+        filter: drop-shadow(0 0 2px var(--active-stars-shadow-color));
         polygon {
-          fill: #e4ac13;
+          fill: var(--active-stars-color);
         }
       }
     }
