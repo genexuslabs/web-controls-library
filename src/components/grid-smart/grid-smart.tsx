@@ -94,6 +94,11 @@ export class GridSmart
   @Prop() scrollbar = false;
 
   /**
+   * Set to false to enable slides in free mode position.
+   */
+  @Prop() snapToGrid = true;
+
+  /**
    * Emitted after Swiper initialization
    */
   @Event() gxGridDidLoad!: EventEmitter<void>;
@@ -376,8 +381,8 @@ export class GridSmart
       centeredSlides: false,
       direction: this.optionValueDefault(this.direction, "horizontal"),
       effect: undefined,
-      freeMode: false,
-      freeModeMomentum: true,
+      freeMode: !this.snapToGrid,
+      freeModeMomentum: false,
       freeModeMomentumRatio: 1,
       freeModeMomentumBounce: true,
       freeModeMomentumBounceRatio: 1,
