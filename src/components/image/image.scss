@@ -2,6 +2,10 @@
 
 gx-image {
   --elevation: 0;
+  --margin-top: 0px;
+  --margin-right: 0px;
+  --margin-bottom: 0px;
+  --margin-left: 0px;
 
   @include visibility(inline-flex);
 
@@ -10,8 +14,12 @@ gx-image {
 
   & > img {
     @include elevation();
-    height: 100%;
-    width: 100%;
+    margin-top: var(--margin-top);
+    margin-right: var(--margin-right);
+    margin-bottom: var(--margin-bottom);
+    margin-left: var(--margin-left);
+    max-height: calc(100% - var(--margin-top) - var(--margin-bottom));
+    max-width: calc(100% - var(--margin-right) - var(--margin-left));
     object-fit: var(--image-scale-type, contain);
   }
 
