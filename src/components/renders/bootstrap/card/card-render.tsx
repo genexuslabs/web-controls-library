@@ -106,10 +106,10 @@ export class CardRender implements IRenderer {
       (cardFooter && !!cardFooter.querySelector("[slot='footer']"));
 
     if (cardHeader) {
-      cardHeader.hidden = !renderHeader;
+      cardHeader.hidden = !(renderHeader && this.component.showHeader);
     }
     if (cardFooter) {
-      cardFooter.hidden = !renderFooter;
+      cardFooter.hidden = !(renderFooter && this.component.showFooter);
     }
   }
 

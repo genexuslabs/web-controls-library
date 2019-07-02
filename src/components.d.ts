@@ -118,12 +118,28 @@ export namespace Components {
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode: "collapse" | "keep-space";
+    /**
+     * True to show the card footer. False to hide it.
+     */
+    showFooter: boolean;
+    /**
+     * True to show the card header. False to hide it.
+     */
+    showHeader: boolean;
   }
   interface GxCardAttributes extends StencilHTMLAttributes {
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode?: "collapse" | "keep-space";
+    /**
+     * True to show the card footer. False to hide it.
+     */
+    showFooter?: boolean;
+    /**
+     * True to show the card header. False to hide it.
+     */
+    showHeader?: boolean;
   }
 
   interface GxCheckbox {
