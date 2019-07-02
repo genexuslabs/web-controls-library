@@ -2,4 +2,6 @@
 
 gx-table-cell {
   @include containerCell();
+
+  flex-direction: column;
 }
