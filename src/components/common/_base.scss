@@ -33,19 +33,19 @@
   }
 
   &[align="center"] {
-    justify-content: center;
-  }
-
-  &[align="right"] {
-    justify-content: flex-end;
-  }
-
-  &[valign="middle"] {
     align-items: center;
   }
 
-  &[valign="bottom"] {
+  &[align="right"] {
     align-items: flex-end;
+  }
+
+  &[valign="middle"] {
+    justify-content: center;
+  }
+
+  &[valign="bottom"] {
+    justify-content: flex-end;
   }
 }
 
