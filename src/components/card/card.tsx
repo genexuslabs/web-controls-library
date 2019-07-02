@@ -27,6 +27,11 @@ export class Card implements IComponent, IVisibilityComponent {
   @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
+   * True to show the card border. False to hide it.
+   */
+  @Prop() showBorder = true;
+
+  /**
    * True to show the card footer. False to hide it.
    */
   @Prop() showFooter = true;

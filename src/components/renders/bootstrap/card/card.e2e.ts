@@ -58,4 +58,27 @@ describe("gx-card", () => {
     const footerElement = await element.find(".card-footer");
     expect(await footerElement.getProperty("hidden")).toBe(true);
   });
+
+  it("hides the border", async () => {
+    const page = await newE2EPage();
+
+    await page.setContent(
+      `<gx-card show-border="false">
+        <div slot="header">Header</div>
+        <div slot="body">
+          This is the card content
+        </div>
+        <div slot="footer">Footer</div>
+      </gx-card>`
+    );
+
+    const noBorderClass = "border-0";
+    const element = await page.find("gx-card");
+    const bodyElement = await element.find(".card");
+    const headerElement = await element.find(".card-header");
+    const footerElement = await element.find(".card-footer");
+    expect(await bodyElement.classList.contains(noBorderClass)).toBe(true);
+    expect(await headerElement.classList.contains(noBorderClass)).toBe(true);
+    expect(await footerElement.classList.contains(noBorderClass)).toBe(true);
+  });
 });
