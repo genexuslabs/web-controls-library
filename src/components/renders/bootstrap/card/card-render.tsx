@@ -106,10 +106,10 @@ export class CardRender implements IRenderer {
       (cardFooter && !!cardFooter.querySelector("[slot='footer']"));
 
     if (cardHeader) {
-      cardHeader.hidden = !renderHeader;
+      cardHeader.hidden = !(renderHeader && card.showHeader);
     }
     if (cardFooter) {
-      cardFooter.hidden = !renderFooter;
+      cardFooter.hidden = !(renderFooter && card.showFooter);
     }
   }
 
@@ -148,8 +148,18 @@ export class CardRender implements IRenderer {
 
     return [
       <gx-bootstrap />,
-      <div class="card">
-        <div class="card-header">
+      <div
+        class={{
+          "border-0": !card.showBorder,
+          card: true
+        }}
+      >
+        <div
+          class={{
+            "border-0": !card.showBorder,
+            "card-header": true
+          }}
+        >
           <slot name="header" />
           <div class="float-right">
             <slot name="high-priority-action" />
@@ -158,7 +168,12 @@ export class CardRender implements IRenderer {
         <slot name="body" />
         <slot />
         {renderFooter && (
-          <div class="card-footer">
+          <div
+            class={{
+              "border-0": !card.showBorder,
+              "card-footer": true
+            }}
+          >
             <slot name="footer" />
             {hasFooterActions && (
               <div class="float-right">
