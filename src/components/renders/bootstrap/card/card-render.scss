@@ -19,4 +19,10 @@ gx-card {
       border: 0;
     }
   }
+
+  & > .card {
+    & > [slot="body"] {
+      display: flex;
+    }
+  }
 }

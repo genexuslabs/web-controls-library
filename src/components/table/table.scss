@@ -5,4 +5,6 @@ gx-table {
 
   @include visibility(grid);
   @include elevation();
+
+  flex: 1;
 }
