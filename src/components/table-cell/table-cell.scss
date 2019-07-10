@@ -3,5 +3,5 @@
 gx-table-cell {
   @include containerCell();
 
-  flex-direction: column;
+  flex-direction: row;
 }

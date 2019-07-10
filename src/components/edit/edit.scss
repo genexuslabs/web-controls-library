@@ -4,4 +4,5 @@
 gx-edit {
   @include visibility(flex);
   align-items: stretch;
+  flex: 1;
 }

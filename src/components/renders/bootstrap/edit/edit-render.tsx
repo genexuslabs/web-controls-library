@@ -105,12 +105,7 @@ export class EditRender implements IRenderer {
 
     return [
       <gx-bootstrap />,
-      <ReadonlyTag
-        key="readonly"
-        hidden={!edit.readonly}
-        class={this.getReadonlyClass()}
-        data-readonly=""
-      >
+      <ReadonlyTag key="readonly" hidden={!edit.readonly} data-readonly="">
         {edit.value}
       </ReadonlyTag>,
       editableElement
@@ -123,18 +118,6 @@ export class EditRender implements IRenderer {
       return "span";
     }
     return tag;
-  }
-
-  private getReadonlyClass() {
-    if (
-      this.component.fontCategory === "body" ||
-      !this.component.fontCategory
-    ) {
-      return {
-        "form-control-plaintext": true
-      };
-    }
-    return null;
   }
 }
 

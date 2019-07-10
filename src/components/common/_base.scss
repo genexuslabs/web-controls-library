@@ -28,24 +28,24 @@
   &:not([align]),
   &[align="left"] {
     & > * {
-      flex-grow: 1;
+      flex: 1;
     }
   }
 
   &[align="center"] {
-    align-items: center;
-  }
-
-  &[align="right"] {
-    align-items: flex-end;
-  }
-
-  &[valign="middle"] {
     justify-content: center;
   }
 
-  &[valign="bottom"] {
+  &[align="right"] {
     justify-content: flex-end;
+  }
+
+  &[valign="middle"] {
+    align-items: center;
+  }
+
+  &[valign="bottom"] {
+    align-items: flex-end;
   }
 }
 
