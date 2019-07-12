@@ -11,7 +11,7 @@ export class GaugeRange implements IComponent {
   @Element() element: HTMLElement;
 
   /**
-   * The amount of range length.
+   * The range length.
    *
    */
   @Prop() amount: number;
@@ -24,17 +24,24 @@ export class GaugeRange implements IComponent {
 
   /**
    * Color property defines the color of range background.
-   * Color value can be in any color model *(hex, rgb, rgba, hsl, cmyk)*.
+   * Color value can be any valid CSS color.
    *
    */
   @Prop() color: string;
 
-  ////////////////////////////////////////
-
+  /**
+   * The gxGaugeRangeDidLoad is triggered when the component has been added and its render completely ran.
+   */
   @Event() gxGaugeRangeDidLoad: EventEmitter;
 
+  /**
+   * The gxGaugeRangeDidUnload is triggered when the component has been deleted
+   */
   @Event() gxGaugeRangeDidUnload: EventEmitter;
 
+  /**
+   * The gxGaugeRangeDidUpdate is triggered when a property of the component has been changed.
+   */
   @Event() gxGaugeRangeDidUpdate: EventEmitter;
 
   componentDidLoad() {
