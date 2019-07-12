@@ -18,6 +18,9 @@ import { IComponent } from "../common/interfaces";
 export class Gauge implements IComponent {
   @Element() element: HTMLElement;
 
+  /**
+   * The `gxGaugeDidLoad` event is triggered when component has been rendered completely.
+   */
   @Event() gxGaugeDidLoad: EventEmitter;
 
   /**
@@ -27,64 +30,63 @@ export class Gauge implements IComponent {
   @Prop() styleShadow = false;
 
   /**
-   * This property allows you to select the gauge type. _(Circle or Line)_.
-   * Default is linear type.
+   * This property allows selecting the gauge type. The allowed values are `circle` or `line` (defautl).
    */
   @Prop() gaugeType: "line" | "circle" = "line";
 
   /**
-   *  Allows display current value. Default is disabled.
+   *  Set `ture` to display the current value. Default is `false`.
    *
    */
   @Prop() showValue = false;
 
   /**
-   * The Minimum Value of the gauge
+   * The minimum value of the gauge
    *
    */
   @Prop() minValue: number;
 
   /**
-   * The Currecnt value indicanding in the gauge
+   * The current value of the gauge
    *
    */
-  @Prop() currentValue: number = this.minValue;
+  @Prop() value: number = this.minValue;
 
   /**
-   * This allows specifying the width of the circumference _(When gauge is Circle type)_ and the width of the bar _(When gauge is Line type)_ in % relative the component size.
+   * This allows specifying the width of the circumference _(When gauge is circle type)_ and the width of the bar _(When gauge is Line type)_ in % relative the component size.
    *
    */
   @Prop() thickness = 10;
 
   @State() maxValue: number;
 
-  @State() totValues = this.minValue;
+  @State() totalValues = this.minValue;
 
   @State() children = [];
 
-  @State() minorSize: number;
+  @State() minimumSize: number;
 
   @Listen("gxGaugeRangeDidLoad")
   onGaugeRangeDidLoad({ detail: childRange }) {
     this.children = [...this.children, childRange];
-    this.totValues += childRange.amount;
+    this.totalValues += childRange.amount;
     childRange.element.addEventListener("gxGaugeRangeDidUnload", () => {
       const index = this.children.findIndex(x => x === childRange);
       this.children.splice(index, 1);
-      this.totValues -= childRange.amount;
+      this.totalValues -= childRange.amount;
     });
     childRange.element.addEventListener("gxGaugeRangeDidUpdate", () => {
       const index = this.children.findIndex(x => x === childRange);
       this.children.splice(index, 1, childRange);
-      this.totValues = 0;
+      this.totalValues = 0;
       for (const childInstance of this.children) {
-        this.totValues += childInstance.amount;
+        this.totalValues += childInstance.amount;
       }
     });
   }
 
   componentWillLoad() {
-    this.totValues = 0;
+    this.totalValues = 0;
   }
 
   private calcThickness() {
@@ -96,19 +98,17 @@ export class Gauge implements IComponent {
 
   private calcPercentage() {
     return (
-      (this.currentValue - this.minValue) *
-      100 /
-      (this.maxValue - this.minValue)
+      ((this.value - this.minValue) * 100) / (this.maxValue - this.minValue)
     );
   }
 
   private renderCircle(childRanges) {
     const svgRanges = [];
     let acumulation = 0;
-    //////////////////////////////////////////
-    function calcPositionRange(preValue, value) {
+
+    function calcPositionRange(preValue, valueParam) {
       acumulation += preValue;
-      return value + acumulation;
+      return valueParam + acumulation;
     }
 
     function addSVGCircle(currentChild, nextChild, component) {
@@ -118,8 +118,7 @@ export class Gauge implements IComponent {
           cx="50%"
           cy="50%"
           stroke={currentChild.color}
-          stroke-dasharray={`${2.488 /
-            (component.totValues / 100) *
+          stroke-dasharray={`${(2.488 / (component.totalValues / 100)) *
             calcPositionRange(
               !!nextChild ? parseInt(nextChild.getAttribute("amount"), 10) : 0,
               parseInt(currentChild.getAttribute("amount"), 10)
@@ -130,17 +129,23 @@ export class Gauge implements IComponent {
         />
       );
     }
-    //////////////////////////////////////////
+
     for (let i = childRanges.length - 1; i >= 0; i--) {
       svgRanges.push(addSVGCircle(childRanges[i], childRanges[i + 1], this));
     }
     svgRanges.reverse();
+
+    const GAUGE_CONTAINER_SIZE_THICKNESS_RATIO = 0.75;
+    const GAUGE_EXPONENT_RATIO = 1.0096;
+    const RATIO_MARKER = 0.74;
+    const RATIO_GAUGE_CENTER = 0.7935;
+
     return (
       <div
         class="svgContainer"
         style={{
-          height: `${this.minorSize * 1}px`,
-          width: `${this.minorSize * 1}px`
+          height: `${this.minimumSize}px`,
+          width: `${this.minimumSize}px`
         }}
       >
         <svg width="100%" height="100%" viewBox="0 0 100 100">
@@ -150,16 +155,18 @@ export class Gauge implements IComponent {
           class="gaugeContainer"
           style={{
             "box-shadow":
-              (this.minorSize <= 300 && this.thickness <= 25) ||
+              (this.minimumSize <= 300 && this.thickness <= 25) ||
               !this.styleShadow
                 ? "none"
                 : "",
-            height: `${this.minorSize * 0.8 +
-              (this.calcThickness() * (this.minorSize / 100) -
-                this.minorSize / 100)}px`,
-            width: `${this.minorSize * 0.8 +
-              (this.calcThickness() * (this.minorSize / 100) -
-                this.minorSize / 100)}px`
+            height: `${Math.pow(this.minimumSize, GAUGE_EXPONENT_RATIO) *
+              GAUGE_CONTAINER_SIZE_THICKNESS_RATIO +
+              (this.calcThickness() * (this.minimumSize / 100) -
+                this.minimumSize / 100)}px`,
+            width: `${Math.pow(this.minimumSize, GAUGE_EXPONENT_RATIO) *
+              GAUGE_CONTAINER_SIZE_THICKNESS_RATIO +
+              (this.calcThickness() * (this.minimumSize / 100) -
+                this.minimumSize / 100)}px`
           }}
         />
         {this.showValue ? (
@@ -167,32 +174,33 @@ export class Gauge implements IComponent {
             class="marker"
             style={{
               display: this.showValue ? "" : "none",
-              height: `${this.minorSize * 0.795 -
-                this.calcThickness() * (this.minorSize / 100)}px`,
+              height: `${Math.pow(this.minimumSize, GAUGE_EXPONENT_RATIO) *
+                RATIO_MARKER -
+                this.calcThickness() * (this.minimumSize / 100)}px`,
               transform:
                 this.calcPercentage() >= 100
                   ? "rotate(359deg)"
                   : this.calcPercentage() > 0
-                    ? `rotate(${3.6 * this.calcPercentage()}deg)`
-                    : "rotate(0.5deg)"
+                  ? `rotate(${3.6 * this.calcPercentage()}deg)`
+                  : "rotate(0.5deg)"
             }}
           >
             <div
               class="indicator"
               style={{
                 "box-shadow":
-                  (this.minorSize <= 300 && this.thickness <= 25) ||
+                  (this.minimumSize <= 300 && this.thickness <= 25) ||
                   !this.styleShadow
                     ? "none"
                     : "",
                 height:
-                  this.minorSize / 100 +
-                  this.calcThickness() * (this.minorSize / 150) +
+                  this.minimumSize / 100 +
+                  this.calcThickness() * (this.minimumSize / 150) +
                   "px",
                 transform:
                   "translateY(-" +
-                  (this.minorSize / 100 +
-                    this.calcThickness() * (this.minorSize / 150)) +
+                  (this.minimumSize / 100 +
+                    this.calcThickness() * (this.minimumSize / 150)) +
                   "px)"
               }}
             />
@@ -204,29 +212,28 @@ export class Gauge implements IComponent {
           class="gauge"
           style={{
             "box-shadow":
-              (this.minorSize <= 300 && this.thickness <= 25) ||
+              (this.minimumSize <= 300 && this.thickness <= 25) ||
               !this.styleShadow
                 ? "none"
                 : "",
-            height: `${this.minorSize * 0.792 -
-              this.calcThickness() * (this.minorSize / 100)}px`,
-            width: `${this.minorSize * 0.792 -
-              this.calcThickness() * (this.minorSize / 100)}px`
+            height: `${this.minimumSize * RATIO_GAUGE_CENTER -
+              this.calcThickness() * (this.minimumSize / 100)}px`,
+            width: `${this.minimumSize * RATIO_GAUGE_CENTER -
+              this.calcThickness() * (this.minimumSize / 100)}px`
           }}
         >
           {this.showValue ? (
             <div
               style={{
-                "font-size": `${(this.minorSize * 0.795 -
-                  this.calcThickness() / 2 * (this.minorSize / 100)) /
+                "font-size": `${(this.minimumSize * 0.795 -
+                  (this.calcThickness() / 2) * (this.minimumSize / 100)) /
                   8}px`
               }}
             >
-              {this.calcPercentage() > 100
-                ? 100
-                : this.calcPercentage() < 0
-                  ? 0
-                  : `${Math.round(this.calcPercentage())}%`}
+              {`${Math.min(
+                Math.max(Math.round(this.calcPercentage()), 0),
+                100
+              )}%`}
             </div>
           ) : (
             ""
@@ -240,7 +247,7 @@ export class Gauge implements IComponent {
     const divRanges = [];
     const divRangesName = [];
     let currentMargin = 0;
-    //////////////////////////////////////////
+
     function calcPositionRange(preValue) {
       return (currentMargin += preValue);
     }
@@ -254,14 +261,13 @@ export class Gauge implements IComponent {
             "box-shadow": !component.styleShadow ? "none" : "",
             "margin-left": `${calcPositionRange(
               !!nextChild
-                ? parseInt(nextChild.getAttribute("amount"), 10) *
-                  100 /
-                  component.totValues
+                ? (parseInt(nextChild.getAttribute("amount"), 10) * 100) /
+                    component.totalValues
                 : 0
             )}%`,
-            width: `${parseInt(currentChild.getAttribute("amount"), 10) *
-              100 /
-              component.totValues}%`
+            width: `${(parseInt(currentChild.getAttribute("amount"), 10) *
+              100) /
+              component.totalValues}%`
           }}
         />
       );
@@ -273,18 +279,17 @@ export class Gauge implements IComponent {
           class="rangeName"
           style={{
             "margin-left": `${currentMargin}%`,
-            width: `${parseInt(currentChild.getAttribute("amount"), 10) *
-              100 /
-              component.totValues}%`
+            width: `${(parseInt(currentChild.getAttribute("amount"), 10) *
+              100) /
+              component.totalValues}%`
           }}
         >
           {currentChild.name}
         </span>
       );
     }
-    //////////////////////////////////////////
+
     for (let i = childRanges.length - 1; i >= 0; i--) {
-      // create a function to return this structure (like addSVGCircle)
       divRanges.push(addLineRanges(childRanges[i], childRanges[i + 1], this));
       divRangesName.push(addRangeCaption(childRanges[i], this));
     }
@@ -314,8 +319,8 @@ export class Gauge implements IComponent {
                   this.calcPercentage() >= 100
                     ? "99.45%"
                     : this.calcPercentage() > 0
-                      ? `${this.calcPercentage() - 0.1}%`
-                      : "0.2%"
+                    ? `${this.calcPercentage() - 0.1}%`
+                    : "0.2%"
               }}
             />
           ) : (
@@ -354,18 +359,17 @@ export class Gauge implements IComponent {
       </div>
     );
   }
-  ////////////////////////////////////////
 
   render() {
-    this.minorSize =
+    this.minimumSize =
       this.element.offsetHeight > this.element.offsetWidth
         ? this.element.offsetWidth
         : this.element.offsetHeight;
     const childRanges = Array.from(
       this.element.querySelectorAll("gx-gauge-range")
     );
-    this.maxValue = this.totValues + this.minValue;
-    this.totValues = this.maxValue - this.minValue;
+    this.maxValue = this.totalValues + this.minValue;
+    this.totalValues = this.maxValue - this.minValue;
     if (this.gaugeType === "circle") {
       return this.renderCircle(childRanges);
     } else if (this.gaugeType === "line") {
