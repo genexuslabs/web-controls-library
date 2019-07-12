@@ -79,17 +79,46 @@ gx-gauge {
 
   /**
   * @prop --box-shadow-marker:
-   * Set the box-shadow of marker .
+   * Set the box-shadow of marker.
    * (1px 3px 3px 0px rgba(0, 0, 0, 0.8) by default)
   */
   --box-shadow-marker: 1px 3px 3px 0px rgba(0, 0, 0, 0.8);
 
   /**
-  * @prop --box-shadow-gauge
-   * Set the box-shadow of gauge .
-   * (1px 3px 3px 0px rgba(0, 0, 0, 0.8) by default)
+  * @prop --box-shadow-gauge:
+   * Set the box-shadow of gauge.
+   * (0px 0px 5px 0px rgba(0, 0, 0, 0.5) inset by default)
   */
   --box-shadow-gauge: 0px 0px 5px 0px rgba(0, 0, 0, 0.5) inset;
+
+  /**
+  * @prop --box-shadow-gauge-ranges:
+   * Set shadows of each range.
+   * (2px 0px 10px 0px rgba(0, 0, 0, 0.4) by default)
+  */
+  --box-shadow-gauge-ranges: 2px 0px 10px 0px rgba(0, 0, 0, 0.4);
+
+  /**
+  * @prop --box-shadow-max-value-display:
+   * Set the box-shadow of maximum value display.
+   * (2px 1px 3px 0px rgba(0, 0, 0, 0.5) by default)
+  */
+  --box-shadow-max-value-display: 2px 1px 3px 0px rgba(0, 0, 0, 0.5);
+
+  /**
+  * @prop --box-shadow-min-value-display:
+   * Set the box-shadow of minimum value display.
+   * (0px 0px 5px 0px rgba(0, 0, 0, 0.5) by default)
+  */
+  --box-shadow-min-value-display: -2px 1px 3px 0px rgba(0, 0, 0, 0.5);
+
+  /**
+  * @prop --box-shadow-circular-gauge-container:
+   * Set the box-shadow of circular gauge container.
+   * (0px 0px 9px 0px rgba(0, 0, 0, 0.5) inset by default)
+  */
+  --box-shadow-circular-gauge-container: 0px 0px 9px 0px rgba(0, 0, 0, 0.5)
+    inset;
 
   display: flex;
   align-items: center;
@@ -137,7 +166,7 @@ gx-gauge {
       width: 100%;
       height: auto;
       .maxValue {
-        box-shadow: 2px 1px 3px 0px rgba(0, 0, 0, 0.5);
+        box-shadow: var(--box-shadow-max-value-display);
         display: flex;
         justify-content: center;
         align-content: center;
@@ -147,7 +176,7 @@ gx-gauge {
         padding: 5px 10px;
         float: right;
         & span {
-          box-shadow: 2px 1px 3px 0px rgba(0, 0, 0, 0.5);
+          box-shadow: var(--box-shadow-max-value-display);
           width: 10px;
           height: 10px;
           transform: translate(110%, -90%) rotate(45deg);
@@ -158,7 +187,7 @@ gx-gauge {
         }
       }
       .minValue {
-        box-shadow: -2px 1px 3px 0px rgba(0, 0, 0, 0.5);
+        box-shadow: var(--box-shadow-min-value-display);
         display: flex;
         justify-content: center;
         align-content: center;
@@ -167,6 +196,7 @@ gx-gauge {
         border-radius: 10px;
         padding: 5px 10px;
         & span {
+          box-shadow: var(--box-shadow-min-value-display);
           width: 10px;
           height: 10px;
           border-radius: 0% 100% 120% 200%;
@@ -186,7 +216,7 @@ gx-gauge {
       .range {
         height: 100%;
         position: absolute;
-        box-shadow: 2px 0px 10px 0px rgba(0, 0, 0, 0.33);
+        box-shadow: var(--box-shadow-gauge-ranges);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -221,7 +251,7 @@ gx-gauge {
       border-style: solid;
       border-color: var(--border-color);
       border-radius: 50%;
-      box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.5) inset;
+      box-shadow: var(--box-shadow-circular-gauge-container);
       z-index: 0;
       position: absolute;
     }
@@ -248,9 +278,10 @@ gx-gauge {
       position: absolute;
       width: 2px;
       .indicator {
+        transition: 0.4s ease;
         content: "";
         border-radius: 50%;
-        box-shadow: 1px 3px 3px 0px rgba(0, 0, 0, 0.8);
+        box-shadow: var(--box-shadow-marker);
         display: block;
         border: var(--marker-border);
         background-color: var(--marker-color);
