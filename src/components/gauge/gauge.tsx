@@ -325,12 +325,10 @@ export class Gauge implements IComponent {
               class="marker"
               style={{
                 "box-shadow": !this.styleShadow ? "none" : "",
-                "margin-left":
-                  this.calcPercentage() >= 100
-                    ? "99.45%"
-                    : this.calcPercentage() > 0
-                    ? `${this.calcPercentage() - 0.1}%`
-                    : "0.2%"
+                "margin-left": `${Math.min(
+                  Math.max(this.calcPercentage(), 0.2),
+                  99.5
+                )}%`
               }}
             />
           ) : (
