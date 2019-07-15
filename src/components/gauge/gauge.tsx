@@ -137,8 +137,10 @@ export class Gauge implements IComponent {
 
     const GAUGE_CONTAINER_SIZE_THICKNESS_RATIO = 0.75;
     const GAUGE_EXPONENT_RATIO = 1.0096;
-    const RATIO_MARKER = 0.74;
-    const RATIO_GAUGE_CENTER = 0.7935;
+    const MARKER_SIZE_THICKNESS_RATIO = 0.74;
+    const GAUGE_CENTER_SIZE_THICKNESS_RATIO = 0.7935;
+    const CIRCLE_GAUGE_TEXT_SIZE_THICKNESS_RATIO = 0.75;
+    const ONE_PERCENT_OF_CIRCLE_DREGREE = 3.6;
 
     return (
       <div
@@ -175,13 +177,14 @@ export class Gauge implements IComponent {
             style={{
               display: this.showValue ? "" : "none",
               height: `${Math.pow(this.minimumSize, GAUGE_EXPONENT_RATIO) *
-                RATIO_MARKER -
+                MARKER_SIZE_THICKNESS_RATIO -
                 this.calcThickness() * (this.minimumSize / 100)}px`,
               transform:
                 this.calcPercentage() >= 100
                   ? "rotate(359deg)"
                   : this.calcPercentage() > 0
-                  ? `rotate(${3.6 * this.calcPercentage()}deg)`
+                  ? `rotate(${ONE_PERCENT_OF_CIRCLE_DREGREE *
+                      this.calcPercentage()}deg)`
                   : "rotate(0.5deg)"
             }}
           >
@@ -216,16 +219,17 @@ export class Gauge implements IComponent {
               !this.styleShadow
                 ? "none"
                 : "",
-            height: `${this.minimumSize * RATIO_GAUGE_CENTER -
+            height: `${this.minimumSize * GAUGE_CENTER_SIZE_THICKNESS_RATIO -
               this.calcThickness() * (this.minimumSize / 100)}px`,
-            width: `${this.minimumSize * RATIO_GAUGE_CENTER -
+            width: `${this.minimumSize * GAUGE_CENTER_SIZE_THICKNESS_RATIO -
               this.calcThickness() * (this.minimumSize / 100)}px`
           }}
         >
           {this.showValue ? (
             <div
               style={{
-                "font-size": `${(this.minimumSize * 0.795 -
+                "font-size": `${(this.minimumSize *
+                  CIRCLE_GAUGE_TEXT_SIZE_THICKNESS_RATIO -
                   (this.calcThickness() / 2) * (this.minimumSize / 100)) /
                   8}px`
               }}
@@ -273,6 +277,7 @@ export class Gauge implements IComponent {
       );
     }
 
+    const DISPLAYERS_THICKNESS_RATIO = 8;
     function addRangeCaption(currentChild, component) {
       return (
         <span
@@ -331,7 +336,9 @@ export class Gauge implements IComponent {
           <div
             class="minMaxDisplay"
             style={{
-              transform: `translateY(${8 * this.calcThickness() + 100}%)`
+              transform: `translateY(${DISPLAYERS_THICKNESS_RATIO *
+                this.calcThickness() +
+                100}%)`
             }}
           >
             <span

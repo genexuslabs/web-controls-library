@@ -43,11 +43,11 @@ gx-gauge {
   --marker-border: 1px solid #616161;
 
   /**
-  * @prop --marker-border:
-   * Define the border width, type, and color of the marker.
+  * @prop --marker-backgorund:
+   * Define the background color of the marker.
    * (1px by default)
   */
-  --marker-color: #616161;
+  --marker-backgorund: #616161;
 
   /**
   * @prop --max-value-display-background:
@@ -71,7 +71,7 @@ gx-gauge {
   --min-value-display-background: rgba(44, 44, 44, 1);
 
   /**
-  * @prop --min-value-display-background:
+  * @prop --min-value-display-color:
    * Set the color of minimum value display text.
    * (rgba(255, 255, 255, 0.8) by default)
   */
@@ -148,7 +148,7 @@ gx-gauge {
       align-items: flex-end;
       .marker {
         border: var(--marker-border);
-        background-color: var(--marker-color);
+        background-color: var(--marker-backgorund);
         width: 1px;
         height: 66%;
         border-radius: 100% 100% 0 0;
@@ -284,7 +284,7 @@ gx-gauge {
         box-shadow: var(--box-shadow-marker);
         display: block;
         border: var(--marker-border);
-        background-color: var(--marker-color);
+        background-color: var(--marker-backgorund);
       }
     }
   }

@@ -38,10 +38,12 @@ Use `gx-gauge-range` element to set the number of ranges and the max value the g
 | `--circle-center-color`                 | Define the color of the center in `circle` gauge type. (transparent by default)                       |
 | `--circle-text-color`                   | Define the color of the center text in `circle` gauge type. (gray by default)                         |
 | `--height-component`                    | Set the height or the control. _Must be setted before render the control_ (400px by default)          |
+| `--marker-backgorund`                   | Define the background color of the marker. (1px by default)                                           |
 | `--marker-border`                       | Define the border width, type, and color of the marker. (1px by default)                              |
 | `--max-value-display-background`        | Set the color of maximum value display background. (rgba(44, 44, 44, 1) by default)                   |
 | `--max-value-display-color`             | Set the color of maximum value display text. (rgba(255, 255, 255, 0.8) by default)                    |
 | `--min-value-display-background`        | Set the color of minimum value display background. (rgba(44, 44, 44, 1) by default)                   |
+| `--min-value-display-color`             | Set the color of minimum value display text. (rgba(255, 255, 255, 0.8) by default)                    |
 
 ---
 
