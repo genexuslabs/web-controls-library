@@ -111,7 +111,7 @@ export class Gauge implements IComponent {
       return valueParam + acumulation;
     }
 
-    function addSVGCircle(currentChild, nextChild, component) {
+    function renderSvgCircle(currentChild, nextChild, component) {
       return (
         <circle
           r="39.59%"
@@ -131,7 +131,7 @@ export class Gauge implements IComponent {
     }
 
     for (let i = childRanges.length - 1; i >= 0; i--) {
-      svgRanges.push(addSVGCircle(childRanges[i], childRanges[i + 1], this));
+      svgRanges.push(renderSvgCircle(childRanges[i], childRanges[i + 1], this));
     }
     svgRanges.reverse();
 
