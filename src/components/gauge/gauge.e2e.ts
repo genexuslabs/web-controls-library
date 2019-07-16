@@ -80,6 +80,21 @@ describe("gx-gauge", () => {
     expect(gaugeText.innerHTML).toEqual("50%");
   });
 
+  it("should display the name of range", async () => {
+    await page.setContent(`
+      <gx-gauge gauge-type="line" min-value="0" value="10" show-value="true" style-shadow="true" thickness="40" >
+        <gx-gauge-range amount="10" name="Gold" color="gold" ></gx-gauge-range>
+      </gx-gauge>
+    `);
+    await page.waitForChanges();
+    element = await page.find("gx-gauge");
+    const namesContainer = await page.find("div.namesContainer");
+    const rangeName = await namesContainer.find("span.rangeName");
+    await page.waitForChanges();
+    expect(await element.find("div.gaugeContainerLine")).toBeTruthy();
+    expect(rangeName.innerHTML).toEqual("Gold");
+  });
+
   /*
   /// Commented test to be fixed later ///
   it("should show the current value", async () => {
