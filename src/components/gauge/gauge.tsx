@@ -35,7 +35,7 @@ export class Gauge implements IComponent {
   @Prop() gaugeType: "line" | "circle" = "line";
 
   /**
-   *  Set `ture` to display the current value. Default is `false`.
+   *  Set `true` to display the current value. Default is `false`.
    *
    */
   @Prop() showValue = false;
