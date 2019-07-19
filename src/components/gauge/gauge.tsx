@@ -135,8 +135,8 @@ export class Gauge implements IComponent {
     }
     svgRanges.reverse();
 
-    const GAUGE_CONTAINER_SIZE_THICKNESS_RATIO = 0.75;
-    const GAUGE_EXPONENT_RATIO = 1.0096;
+    const GAUGE_CONTAINER_SIZE_THICKNESS_RATIO = 0.806;
+    const GAUGE_EXPONENT_RATIO = 0.999;
     const MARKER_SIZE_THICKNESS_RATIO = 0.74;
     const GAUGE_CENTER_SIZE_THICKNESS_RATIO = 0.7935;
     const CIRCLE_GAUGE_TEXT_SIZE_THICKNESS_RATIO = 0.75;
