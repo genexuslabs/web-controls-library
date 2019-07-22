@@ -109,6 +109,7 @@ export class Rating implements IFormComponent {
     }
     return stars;
   }
+
   private renderStarsScore() {
     const stars = [];
     let percent: number;
@@ -168,13 +169,10 @@ export class Rating implements IFormComponent {
     } else {
       if (!!this.maxValue) {
         // tslint:disable-next-line:no-console
-        console.error(
-          "Incongruence between values. 'value' is higher than 'max-value'.",
-          this
-        );
+        console.error("'value' cannot be higher than 'max-value'.", this);
       } else {
         // tslint:disable-next-line:no-console
-        console.error("'max-value' has not a value setted ", this);
+        console.error("'max-value' has not a value set.", this);
       }
     }
   }
