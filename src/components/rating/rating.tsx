@@ -13,11 +13,11 @@ import { IFormComponent } from "../common/interfaces";
   tag: "gx-rating"
 })
 export class Rating implements IFormComponent {
-  inputId: string;
+  private inputId: string;
 
-  starShape = <polygon points="50,0 15,95 100,35 0,35 85,95" />;
+  private starShape = <polygon points="50,0 15,95 100,35 0,35 85,95" />;
 
-  svgViewport = {
+  private svgViewport = {
     viewBox: "0 0 100 100"
   };
 
