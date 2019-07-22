@@ -167,7 +167,7 @@ export class Rating implements IFormComponent {
         </div>
       );
     } else {
-      if (!!this.maxValue) {
+      if (this.maxValue) {
         // tslint:disable-next-line:no-console
         console.error("'value' cannot be higher than 'max-value'.", this);
       } else {
