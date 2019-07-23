@@ -169,10 +169,13 @@ export class Rating implements IFormComponent {
     } else {
       if (this.maxValue) {
         // tslint:disable-next-line:no-console
-        console.error("'value' cannot be higher than 'max-value'.", this);
+        console.error(
+          "'value' cannot be higher than 'max-value'.",
+          this.element
+        );
       } else {
         // tslint:disable-next-line:no-console
-        console.error("'max-value' has not a value set.", this);
+        console.error("'max-value' has not a value set.", this.element);
       }
     }
   }
