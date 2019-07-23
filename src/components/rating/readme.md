@@ -1,6 +1,8 @@
 # gx-rating
 
-The `gx-rating` allows displaying scores or rate items using stars.
+The `gx-rating` component allows displaying scores or rate items using stars.
+
+## Samples
 
 - `gx-rating` with `readonly` disabled or false:
 
