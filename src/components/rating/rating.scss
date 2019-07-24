@@ -11,7 +11,36 @@
   align-items: $aligItem;
   flex-wrap: $wrap;
 }
-
+@mixin starStyle($number) {
+  &[data-score="#{$number}"] {
+    svg {
+      filter: drop-shadow(0 0 2px var(--active-stars-shadow-color));
+      polygon {
+        fill: var(--active-stars-color);
+      }
+      &:nth-child(#{$number}) ~ svg {
+        filter: none;
+        polygon {
+          fill: var(--inactive-stars-color);
+        }
+      }
+    }
+    &:hover {
+      svg ~ svg {
+        polygon {
+          fill: var(--active-stars-color);
+        }
+      }
+      svg:hover {
+        & ~ svg {
+          polygon {
+            fill: var(--inactive-stars-hover-color);
+          }
+        }
+      }
+    }
+  }
+}
 gx-rating {
   @include visibility(block);
   /**
@@ -85,139 +114,9 @@ gx-rating {
   div.rating {
     @include widthHeightsize(max-content, max-content);
     @include flex(row, space-between, center, wrap);
-    &[data-score="1"] {
-      svg {
-        filter: drop-shadow(0 0 2px var(--active-stars-shadow-color));
-        polygon {
-          fill: var(--active-stars-color);
-        }
-        &:nth-child(1) ~ svg {
-          filter: none;
-          polygon {
-            fill: var(--inactive-stars-color);
-          }
-        }
-      }
-      &:hover {
-        svg ~ svg {
-          polygon {
-            fill: var(--active-stars-color);
-          }
-        }
-        svg:hover {
-          & ~ svg {
-            polygon {
-              fill: var(--inactive-stars-hover-color);
-            }
-          }
-        }
-      }
-    }
-    &[data-score="2"] {
-      svg {
-        filter: drop-shadow(0 0 2px var(--active-stars-shadow-color));
-        polygon {
-          fill: var(--active-stars-color);
-        }
-        &:nth-child(2) ~ svg {
-          filter: none;
-          polygon {
-            fill: var(--inactive-stars-color);
-          }
-        }
-      }
-      &:hover {
-        svg ~ svg {
-          polygon {
-            fill: var(--active-stars-color);
-          }
-        }
-        svg:hover {
-          & ~ svg {
-            polygon {
-              fill: var(--inactive-stars-hover-color);
-            }
-          }
-        }
-      }
-    }
-    &[data-score="3"] {
-      svg {
-        filter: drop-shadow(0 0 2px var(--active-stars-shadow-color));
-        polygon {
-          fill: var(--active-stars-color);
-        }
-        &:nth-child(3) ~ svg {
-          filter: none;
-          polygon {
-            fill: var(--inactive-stars-color);
-          }
-        }
-      }
-      &:hover {
-        svg ~ svg {
-          polygon {
-            fill: var(--active-stars-color);
-          }
-        }
-        svg:hover {
-          & ~ svg {
-            polygon {
-              fill: var(--inactive-stars-hover-color);
-            }
-          }
-        }
-      }
-    }
-    &[data-score="4"] {
-      svg {
-        filter: drop-shadow(0 0 2px var(--active-stars-shadow-color));
-        polygon {
-          fill: var(--active-stars-color);
-        }
-        &:nth-child(4) ~ svg {
-          filter: none;
-          polygon {
-            fill: var(--inactive-stars-color);
-          }
-        }
-      }
-      &:hover {
-        svg ~ svg {
-          polygon {
-            fill: var(--active-stars-color);
-          }
-        }
-        svg:hover {
-          & ~ svg {
-            polygon {
-              fill: var(--inactive-stars-hover-color);
-            }
-          }
-        }
-      }
-    }
-    &[data-score="5"] {
-      svg {
-        filter: drop-shadow(0 0 2px var(--active-stars-shadow-color));
-        polygon {
-          fill: var(--active-stars-color);
-        }
-      }
-      &:hover {
-        svg ~ svg {
-          polygon {
-            fill: var(--active-stars-color);
-          }
-        }
-        svg:hover {
-          & ~ svg {
-            polygon {
-              fill: var(--inactive-stars-hover-color);
-            }
-          }
-        }
-      }
+
+    @for $i from 1 through 5 {
+      @include starStyle($i);
     }
 
     @extend %ratingHover;
