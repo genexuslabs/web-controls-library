@@ -50,6 +50,12 @@ export class Map implements IComponent {
    */
   @Event() gxMapDidLoad: EventEmitter;
 
+  /**
+   * Emmits when the map is clicked and return click coords.
+   *
+   */
+  @Event() mapClick: EventEmitter;
+
   @Listen("gxMapMarkerDidLoad")
   onMapMarkerDidLoad(event: CustomEvent) {
     const markerElement = event.target;
@@ -94,6 +100,9 @@ export class Map implements IComponent {
       {}
     ).addTo(this.map);
     this.gxMapDidLoad.emit(this);
+    this.map.addEventListener("click", ev => {
+      this.mapClick.emit(ev.latlng);
+    });
   }
 
   componentDidUpdate() {
