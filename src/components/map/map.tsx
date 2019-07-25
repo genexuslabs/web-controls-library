@@ -51,9 +51,9 @@ export class Map implements IComponent {
   @Event() gxMapDidLoad: EventEmitter;
 
   @Listen("gxMapMarkerDidLoad")
-  onMapMarkerDidLoad(markerInstance) {
-    const markerElement = markerInstance.target;
-    const markerV = markerInstance.detail;
+  onMapMarkerDidLoad(event: CustomEvent) {
+    const markerElement = event.target;
+    const markerV = event.detail;
 
     if (this.map) {
       markerV.addTo(this.map);
