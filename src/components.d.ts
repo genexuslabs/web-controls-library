@@ -1589,6 +1589,67 @@ export namespace Components {
     value?: string;
   }
 
+  interface GxRating {
+    /**
+     * This attribute allows you specify if the element is disabled. If disabled, it will not trigger any user interaction related event (for example, click event).
+     */
+    disabled: boolean;
+    /**
+     * Returns the id of the inner `input` element (if set).
+     */
+    getNativeInputId: () => Promise<any>;
+    /**
+     * The control id. Must be unique per control!
+     */
+    id: string;
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode: "collapse" | "keep-space";
+    /**
+     * The current value displayed by the component.
+     */
+    maxValue: number;
+    /**
+     * This attribute i0ndicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_
+     */
+    readonly: boolean;
+    /**
+     * The current value displayed by the component.
+     */
+    value: number;
+  }
+  interface GxRatingAttributes extends StencilHTMLAttributes {
+    /**
+     * This attribute allows you specify if the element is disabled. If disabled, it will not trigger any user interaction related event (for example, click event).
+     */
+    disabled?: boolean;
+    /**
+     * The control id. Must be unique per control!
+     */
+    id?: string;
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode?: "collapse" | "keep-space";
+    /**
+     * The current value displayed by the component.
+     */
+    maxValue?: number;
+    /**
+     * The 'input' event is emitted when a change to the element's value is committed by the user.
+     */
+    onInput?: (event: CustomEvent) => void;
+    /**
+     * This attribute i0ndicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_
+     */
+    readonly?: boolean;
+    /**
+     * The current value displayed by the component.
+     */
+    value?: number;
+  }
+
   interface GxBootstrap {}
   interface GxBootstrapAttributes extends StencilHTMLAttributes {}
 
@@ -1958,6 +2019,7 @@ declare global {
     GxProgressBar: Components.GxProgressBar;
     GxRadioGroup: Components.GxRadioGroup;
     GxRadioOption: Components.GxRadioOption;
+    GxRating: Components.GxRating;
     GxBootstrap: Components.GxBootstrap;
     GxSelectOption: Components.GxSelectOption;
     GxSelect: Components.GxSelect;
@@ -1997,6 +2059,7 @@ declare global {
     "gx-progress-bar": Components.GxProgressBarAttributes;
     "gx-radio-group": Components.GxRadioGroupAttributes;
     "gx-radio-option": Components.GxRadioOptionAttributes;
+    "gx-rating": Components.GxRatingAttributes;
     "gx-bootstrap": Components.GxBootstrapAttributes;
     "gx-select-option": Components.GxSelectOptionAttributes;
     "gx-select": Components.GxSelectAttributes;
@@ -2205,6 +2268,14 @@ declare global {
     new (): HTMLGxRadioOptionElement;
   };
 
+  interface HTMLGxRatingElement
+    extends Components.GxRating,
+      HTMLStencilElement {}
+  var HTMLGxRatingElement: {
+    prototype: HTMLGxRatingElement;
+    new (): HTMLGxRatingElement;
+  };
+
   interface HTMLGxBootstrapElement
     extends Components.GxBootstrap,
       HTMLStencilElement {}
@@ -2308,6 +2379,7 @@ declare global {
     "gx-progress-bar": HTMLGxProgressBarElement;
     "gx-radio-group": HTMLGxRadioGroupElement;
     "gx-radio-option": HTMLGxRadioOptionElement;
+    "gx-rating": HTMLGxRatingElement;
     "gx-bootstrap": HTMLGxBootstrapElement;
     "gx-select-option": HTMLGxSelectOptionElement;
     "gx-select": HTMLGxSelectElement;
@@ -2347,6 +2419,7 @@ declare global {
     "gx-progress-bar": HTMLGxProgressBarElement;
     "gx-radio-group": HTMLGxRadioGroupElement;
     "gx-radio-option": HTMLGxRadioOptionElement;
+    "gx-rating": HTMLGxRatingElement;
     "gx-bootstrap": HTMLGxBootstrapElement;
     "gx-select-option": HTMLGxSelectOptionElement;
     "gx-select": HTMLGxSelectElement;
