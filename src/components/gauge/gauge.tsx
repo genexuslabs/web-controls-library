@@ -131,12 +131,15 @@ export class Gauge implements IComponent {
     }
 
     for (let i = childRanges.length - 1; i >= 0; i--) {
-      svgRanges.push(renderSvgCircle(childRanges[i], childRanges[i + 1], this));
+      svgRanges.splice(
+        0,
+        0,
+        renderSvgCircle(childRanges[i], childRanges[i + 1], this)
+      );
     }
-    svgRanges.reverse();
 
     const GAUGE_CONTAINER_SIZE_THICKNESS_RATIO = 0.806;
-    const GAUGE_EXPONENT_RATIO = 0.999;
+    const GAUGE_EXPONENT_RATIO = 0.9985;
     const MARKER_SIZE_THICKNESS_RATIO = 0.74;
     const GAUGE_CENTER_SIZE_THICKNESS_RATIO = 0.7935;
     const CIRCLE_GAUGE_TEXT_SIZE_THICKNESS_RATIO = 0.75;
@@ -298,11 +301,13 @@ export class Gauge implements IComponent {
     }
 
     for (let i = childRanges.length - 1; i >= 0; i--) {
-      divRanges.push(addLineRanges(childRanges[i], childRanges[i + 1], this));
-      divRangesName.push(addRangeCaption(childRanges[i], this));
+      divRanges.splice(
+        0,
+        0,
+        addLineRanges(childRanges[i], childRanges[i + 1], this)
+      );
+      divRangesName.splice(0, 0, addRangeCaption(childRanges[i], this));
     }
-    divRanges.reverse();
-    divRangesName.reverse();
 
     const DISPLAYERS_THICKNESS_RATIO = 8;
     return (
