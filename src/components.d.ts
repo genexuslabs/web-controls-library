@@ -1253,6 +1253,10 @@ export namespace Components {
      */
     href: string;
     /**
+     * This attribute lets you specify the URL of an icon for the navbar item.
+     */
+    iconSrc: string;
+    /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode: "collapse" | "keep-space";
@@ -1274,6 +1278,10 @@ export namespace Components {
      * This attribute lets you specify the URL of the navbar item.
      */
     href?: string;
+    /**
+     * This attribute lets you specify the URL of an icon for the navbar item.
+     */
+    iconSrc?: string;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */

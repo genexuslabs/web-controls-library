@@ -42,6 +42,11 @@ export class NavBarLink
   @Prop() href = "";
 
   /**
+   * This attribute lets you specify the URL of an icon for the navbar item.
+   */
+  @Prop() iconSrc = "";
+
+  /**
    * This attribute lets you specify how this element will behave when hidden.
    *
    * | Value        | Details                                                                     |
