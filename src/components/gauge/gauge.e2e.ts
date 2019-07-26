@@ -17,7 +17,7 @@ describe("gx-gauge", () => {
 
   /////////////////// Type test ///////////////////////
   it("should render with the line type", async () => {
-    await page.setContent("<gx-gauge gauge-type='line'></gx-gauge>");
+    await page.setContent("<gx-gauge type='line'></gx-gauge>");
     await page.waitForChanges();
     element = await page.find("gx-gauge");
     await page.waitForChanges();
@@ -26,7 +26,7 @@ describe("gx-gauge", () => {
 
   it("should render with the circle type", async () => {
     await page.setContent(`
-      <gx-gauge gauge-type="circle" min-value="0" value="1" show-value="true" style-shadow="true" thickness="60" >
+      <gx-gauge type="circle" min-value="0" value="1" show-value="true" style-shadow="true" thickness="60" >
         <gx-gauge-range amount="1" name="Blue" color="blue" ></gx-gauge-range>
         <gx-gauge-range amount="1" name="Gold" color="gold" ></gx-gauge-range>
       </gx-gauge>
@@ -47,7 +47,7 @@ describe("gx-gauge", () => {
   /////////////////// Values test ///////////////////////
   it("should set the minimum value", async () => {
     await page.setContent(`
-      <gx-gauge gauge-type="line" min-value="-10" value="10" show-value="true" style-shadow="true" thickness="40" >
+      <gx-gauge type="line" min-value="-10" value="10" show-value="true" style-shadow="true" thickness="40" >
         <gx-gauge-range amount="10" name="Gold" color="gold" ></gx-gauge-range>
         <gx-gauge-range amount="10" name="MyBlue" color="rgb(0, 92, 129)" ></gx-gauge-range>
       </gx-gauge>
@@ -65,7 +65,7 @@ describe("gx-gauge", () => {
 
   it("should set the current value", async () => {
     await page.setContent(`
-      <gx-gauge gauge-type="circle" min-value="0" value="10" show-value="true" style-shadow="true" thickness="40" >
+      <gx-gauge type="circle" min-value="0" value="10" show-value="true" style-shadow="true" thickness="40" >
         <gx-gauge-range amount="10" name="Gold" color="gold" ></gx-gauge-range>
         <gx-gauge-range amount="10" name="MyBlue" color="rgb(0, 92, 129)" ></gx-gauge-range>
       </gx-gauge>
@@ -82,7 +82,7 @@ describe("gx-gauge", () => {
 
   it("should display the name of range", async () => {
     await page.setContent(`
-      <gx-gauge gauge-type="line" min-value="0" value="10" show-value="true" style-shadow="true" thickness="40" >
+      <gx-gauge type="line" min-value="0" value="10" show-value="true" style-shadow="true" thickness="40" >
         <gx-gauge-range amount="10" name="Gold" color="gold" ></gx-gauge-range>
       </gx-gauge>
     `);
@@ -99,7 +99,7 @@ describe("gx-gauge", () => {
   /// Commented test to be fixed later ///
   it("should show the current value", async () => {
     await page.setContent(
-      `<gx-gauge gauge-type='circle' min-value='0' value='25' show-value='true' style-shadow='true' thickness='60'>
+      `<gx-gauge type='circle' min-value='0' value='25' show-value='true' style-shadow='true' thickness='60'>
         <gx-gauge-range amount='100' name='Violet' color="purple"></gx-gauge-range>
       </gx-gauge>`
     );
@@ -120,7 +120,7 @@ describe("gx-gauge", () => {
   /////////////////// Frontend test ///////////////////////
   it("should set thickness value", async () => {
     await page.setContent(
-      "<gx-gauge gauge-type='circle' min-value='0' value='25' thickness='20'></gx-gauge>"
+      "<gx-gauge type='circle' min-value='0' value='25' thickness='20'></gx-gauge>"
     );
     await page.waitForChanges();
     element = await page.find("gx-gauge");
@@ -131,7 +131,7 @@ describe("gx-gauge", () => {
 
   it("should set a marker in Line", async () => {
     await page.setContent(
-      "<gx-gauge gauge-type='line' min-value='0' value='25' show-value='true' style-shadow='false'><gx-gauge-range color='rgba(116, 16, 216, 1)' amount='100' name='Violet'></gx-gauge-range></gx-gauge>"
+      "<gx-gauge type='line' min-value='0' value='25' show-value='true' style-shadow='false'><gx-gauge-range color='rgba(116, 16, 216, 1)' amount='100' name='Violet'></gx-gauge-range></gx-gauge>"
     );
     await page.waitForChanges();
     element = await page.find("gx-gauge");
@@ -144,7 +144,7 @@ describe("gx-gauge", () => {
 
   it("should set a marker in Circle", async () => {
     await page.setContent(`
-      <gx-gauge gauge-type='circle' min-value='0' value='25' show-value='true' style-shadow='false'>
+      <gx-gauge type='circle' min-value='0' value='25' show-value='true' style-shadow='false'>
         <gx-gauge-range color='rgba(116, 16, 216, 1)' amount='100' name='Violet'></gx-gauge-range>
       </gx-gauge>
     `);
@@ -159,7 +159,7 @@ describe("gx-gauge", () => {
   /////////////////// gx-range tests ///////////////////////
   it("should correctly draw the range in Line", async () => {
     await page.setContent(
-      `<gx-gauge gauge-type='line' min-value='0' value='25' show-value='true' style-shadow='false' thickness='50'>
+      `<gx-gauge type='line' min-value='0' value='25' show-value='true' style-shadow='false' thickness='50'>
         <gx-gauge-range amount='100' name='Violet' color="purple"></gx-gauge-range>
       </gx-gauge>`
     );
@@ -176,7 +176,7 @@ describe("gx-gauge", () => {
 
   it("should correctly draw the range in Circle", async () => {
     await page.setContent(`
-      <gx-gauge gauge-type='circle' min-value='0' value='25' show-value='true' style-shadow='false' thickness='50'>
+      <gx-gauge type='circle' min-value='0' value='25' show-value='true' style-shadow='false' thickness='50'>
         <gx-gauge-range color='rgba(116, 16, 216, 1)' amount='100' name='Violet'></gx-gauge-range>
       </gx-gauge>"
     `);
