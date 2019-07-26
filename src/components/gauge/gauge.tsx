@@ -32,7 +32,7 @@ export class Gauge implements IComponent {
   /**
    * This property allows selecting the gauge type. The allowed values are `circle` or `line` (defautl).
    */
-  @Prop() gaugeType: "line" | "circle" = "line";
+  @Prop() type: "line" | "circle" = "line";
 
   /**
    *  Set `true` to display the current value. Default is `false`.
@@ -380,14 +380,14 @@ export class Gauge implements IComponent {
     );
     this.maxValue = this.totalValues + this.minValue;
     this.totalValues = this.maxValue - this.minValue;
-    if (this.gaugeType === "circle") {
+    if (this.type === "circle") {
       return this.renderCircle(childRanges);
-    } else if (this.gaugeType === "line") {
+    } else if (this.type === "line") {
       return this.renderLine(childRanges);
     } else {
       // tslint:disable-next-line:no-console
       console.warn(
-        "Error rendering component. Invalid gaugeType in ",
+        "Error rendering component. Invalid type of gauge in ",
         this.element
       );
     }

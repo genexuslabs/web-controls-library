@@ -10,11 +10,11 @@ Use `gx-gauge-range` element to set the number of ranges and the max value the g
 
 | Property      | Attribute      | Description                                                                                                                                                                | Type                 | Default         |
 | ------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | --------------- |
-| `gaugeType`   | `gauge-type`   | This property allows selecting the gauge type. The allowed values are `circle` or `line` (defautl).                                                                        | `"circle" \| "line"` | `"line"`        |
 | `minValue`    | `min-value`    | The minimum value of the gauge                                                                                                                                             | `number`             | `undefined`     |
 | `showValue`   | `show-value`   | Set `true` to display the current value. Default is `false`.                                                                                                               | `boolean`            | `false`         |
 | `styleShadow` | `style-shadow` | Property of type Style. Define if shadow will display or not. Default is disabled.                                                                                         | `boolean`            | `false`         |
 | `thickness`   | `thickness`    | This allows specifying the width of the circumference _(When gauge is circle type)_ and the width of the bar _(When gauge is Line type)_ in % relative the component size. | `number`             | `10`            |
+| `type`        | `type`         | This property allows selecting the gauge type. The allowed values are `circle` or `line` (defautl).                                                                        | `"circle" \| "line"` | `"line"`        |
 | `value`       | `value`        | The current value of the gauge                                                                                                                                             | `number`             | `this.minValue` |
 
 ## Events
