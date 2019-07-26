@@ -1,7 +1,7 @@
 gx-navbar-link {
   --gx-navbar-link-icon-size: 24px;
-  &[icon-src] {
-    a.nav-link::before {
+  a.nav-link[data-has-icon] {
+    &::before {
       content: "";
       display: inline-block;
       height: var(--gx-navbar-link-icon-size);
@@ -17,7 +17,7 @@ gx-navbar-link {
     }
 
     @media (min-width: 576px) {
-      a.nav-link::before {
+      &::before {
         content: "";
         display: block;
         margin-left: auto;
