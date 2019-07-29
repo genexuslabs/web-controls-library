@@ -1,6 +1,6 @@
 # gx-gauge
 
-This component allows you to display information in the form of ranges, and decide whether you want to show it using linear or circular gauges.
+This component allows displaying information in the form of ranges, and decide whether you want to show it using linear or circular gauges.
 
 Use `gx-gauge-range` element to set the number of ranges and the max value the gauge will have.
 
