@@ -2,7 +2,25 @@
 
 This component allows displaying information in the form of ranges, and decide whether you want to show it using linear or circular gauges.
 
-Use `gx-gauge-range` element to set the number of ranges and the max value the gauge will have.
+Use `gx-gauge-range` element to set the number of ranges.
+
+## Samples
+
+`gx-gauge`:
+
+  > `gx-gauge` must have [gx-gauge-range](../gauge-range/readme.md) inside with a value set in the `amount` attribute.
+  > You can add the necessary quantity of [gx-gauge-range](../gauge-range/readme.md) within `gx-gauge`.
+  > Be aware that the maximum value that the gauge will have, will consist of each value of the "amount" attribute of each range and the minimum value that you set in the gauge.
+
+  ```HTML
+  <gx-gauge type="circle" min-value="0" value="4" show-value="true" style-shadow="true" thickness="50" style="--component-height: 200px;--gauge-border-width: 3px;--center-circle-background-color: rgb(0, 92, 129);--marker-border: 2px solid rgba(70, 70, 70, 0.8);--marker-color: rgba(250, 210, 250, 0);--circle-text-color: rgba(250, 250, 250, 0.5);" >
+      <gx-gauge-range amount="1" color="red"></gx-gauge-range>
+      <gx-gauge-range amount="1" color="orange"></gx-gauge-range>
+      <gx-gauge-range amount="1" color="yellow"></gx-gauge-range>
+      <gx-gauge-range amount="1" color="green"></gx-gauge-range>
+      <gx-gauge-range amount="1" color="blue"></gx-gauge-range>
+    </gx-gauge>
+  ```
 
 <!-- Auto Generated Below -->
 
