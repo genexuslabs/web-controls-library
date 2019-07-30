@@ -129,20 +129,21 @@ describe("gx-gauge", () => {
     expect(await element.getProperty("thickness")).toEqual(20);
   });
 
-  it("should set a marker in Line", async () => {
-    await page.setContent(
-      "<gx-gauge type='line' min-value='0' value='25' show-value='true' style-shadow='false'><gx-gauge-range color='rgba(116, 16, 216, 1)' amount='100' name='Violet'></gx-gauge-range></gx-gauge>"
-    );
+  it("should set a marker in linear gauge", async () => {
+    await page.setContent(`
+      <gx-gauge type='line' min-value='0' value='25' show-value='true' style-shadow='false'>
+        <gx-gauge-range color='rgba(116, 16, 216, 1)' amount='100' name='Violet'></gx-gauge-range>
+      </gx-gauge>
+    `);
     await page.waitForChanges();
     element = await page.find("gx-gauge");
-    await page.waitForChanges();
     await page.waitForChanges();
     expect(await element.find(".gaugeContainerLine")).toBeTruthy();
     expect(await element.find("span.marker")).toBeTruthy();
     expect(await element.find(".minMaxDisplay")).toBeTruthy();
   });
 
-  it("should set a marker in Circle", async () => {
+  it("should set a marker in circular gauge", async () => {
     await page.setContent(`
       <gx-gauge type='circle' min-value='0' value='25' show-value='true' style-shadow='false'>
         <gx-gauge-range color='rgba(116, 16, 216, 1)' amount='100' name='Violet'></gx-gauge-range>
@@ -151,13 +152,27 @@ describe("gx-gauge", () => {
     await page.waitForChanges();
     element = await page.find("gx-gauge");
     await page.waitForChanges();
-    await page.waitForChanges();
     expect(await element.find("svg")).toBeTruthy();
     expect(await element.find("span.marker")).toBeTruthy();
   });
 
+  it("should set the range name in linear gauge", async () => {
+    await page.setContent(`
+      <gx-gauge type='line' min-value='0' value='25' show-value='true' style-shadow='false'>
+        <gx-gauge-range color='rgba(116, 16, 216, 1)' amount='100' name='Violet'></gx-gauge-range>
+      </gx-gauge>
+    `);
+    await page.waitForChanges();
+    element = await page.find("gx-gauge");
+    const rangeNameDiv = await element.find("span.rangeName");
+    await page.waitForChanges();
+    expect(await element.find(".gaugeContainerLine")).toBeTruthy();
+    expect(rangeNameDiv).toBeTruthy();
+    expect(rangeNameDiv.innerHTML).toEqual("Violet");
+    expect(await element.find(".minMaxDisplay")).toBeTruthy();
+  });
   /////////////////// gx-range tests ///////////////////////
-  it("should correctly draw the range in Line", async () => {
+  it("should correctly draw the range in linear gauge", async () => {
     await page.setContent(
       `<gx-gauge type='line' min-value='0' value='25' show-value='true' style-shadow='false' thickness='50'>
         <gx-gauge-range amount='100' name='Violet' color="purple"></gx-gauge-range>
@@ -174,7 +189,7 @@ describe("gx-gauge", () => {
     expect(ranges).toBeTruthy();
   });
 
-  it("should correctly draw the range in Circle", async () => {
+  it("should correctly draw the range in circular gauge", async () => {
     await page.setContent(`
       <gx-gauge type='circle' min-value='0' value='25' show-value='true' style-shadow='false' thickness='50'>
         <gx-gauge-range color='rgba(116, 16, 216, 1)' amount='100' name='Violet'></gx-gauge-range>
