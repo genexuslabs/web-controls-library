@@ -1605,7 +1605,7 @@ export namespace Components {
     /**
      * Returns the id of the inner `input` element (if set).
      */
-    getNativeInputId: () => Promise<any>;
+    getNativeInputId: () => Promise<string>;
     /**
      * The control id. Must be unique per control!
      */
@@ -1615,11 +1615,11 @@ export namespace Components {
      */
     invisibleMode: "collapse" | "keep-space";
     /**
-     * The current value displayed by the component.
+     * This porpoerty is required if you want to display a score. >E.g: In a score of 4/5 stars the `maxValue` is `5` and the `value` is `4`
      */
     maxValue: number;
     /**
-     * This attribute i0ndicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_
+     * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_
      */
     readonly: boolean;
     /**
@@ -1641,7 +1641,7 @@ export namespace Components {
      */
     invisibleMode?: "collapse" | "keep-space";
     /**
-     * The current value displayed by the component.
+     * This porpoerty is required if you want to display a score. >E.g: In a score of 4/5 stars the `maxValue` is `5` and the `value` is `4`
      */
     maxValue?: number;
     /**
@@ -1649,7 +1649,7 @@ export namespace Components {
      */
     onInput?: (event: CustomEvent) => void;
     /**
-     * This attribute i0ndicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_
+     * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_
      */
     readonly?: boolean;
     /**

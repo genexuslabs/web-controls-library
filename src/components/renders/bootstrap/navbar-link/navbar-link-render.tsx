@@ -28,8 +28,9 @@ export class NavBarLinkRender implements IRenderer {
         href={this.component.href}
         onClick={this.handleClick.bind(this)}
         style={{
-          "--gx-navbar-link-icon-src": `url(${this.component.iconSrc})`
+          "--gx-navbar-link-icon-src": `url("${this.component.iconSrc}")`
         }}
+        data-has-icon={!!this.component.iconSrc}
       >
         <slot />
       </a>

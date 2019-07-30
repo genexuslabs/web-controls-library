@@ -1,7 +1,8 @@
 gx-navbar-link {
   --gx-navbar-link-icon-size: 24px;
-  &[icon-src] {
-    a.nav-link::before {
+  a.nav-link[data-has-icon] {
+    display: inline-flex;
+    &::before {
       content: "";
       display: inline-block;
       height: var(--gx-navbar-link-icon-size);
@@ -9,22 +10,12 @@ gx-navbar-link {
       background-image: var(--gx-navbar-link-icon-src);
       background-position: center center;
       background-repeat: no-repeat;
-      background-size: cover;
+      background-size: contain;
       margin-right: 5px;
       position: relative;
       top: -3px;
-      vertical-align: middle;
-    }
-
-    @media (min-width: 576px) {
-      a.nav-link::before {
-        content: "";
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
-        top: 0;
-      }
+      align-self: center;
+      flex-shrink: 0;
     }
   }
 }
