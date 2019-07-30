@@ -120,7 +120,7 @@ export class Gauge implements IComponent {
           stroke={currentChild.color}
           stroke-dasharray={`${(2.488 / (component.totalValues / 100)) *
             calcPositionRange(
-              !!nextChild ? parseInt(nextChild.getAttribute("amount"), 10) : 0,
+              nextChild ? parseInt(nextChild.getAttribute("amount"), 10) : 0,
               parseInt(currentChild.getAttribute("amount"), 10)
             )}, 248.16`}
           fill="none"

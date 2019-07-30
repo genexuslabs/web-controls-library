@@ -8,19 +8,19 @@ Use `gx-gauge-range` element to set the number of ranges.
 
 `gx-gauge`:
 
-  > `gx-gauge` must have [gx-gauge-range](../gauge-range/readme.md) inside with a value set in the `amount` attribute.
-  > You can add the necessary quantity of [gx-gauge-range](../gauge-range/readme.md) within `gx-gauge`.
-  > Be aware that the maximum value that the gauge will have, will consist of each value of the "amount" attribute of each range and the minimum value that you set in the gauge.
+> `gx-gauge` must have [gx-gauge-range](../gauge-range/readme.md) inside with a value set in the `amount` attribute.
+> You can add the necessary quantity of [gx-gauge-range](../gauge-range/readme.md) within `gx-gauge`.
+> Be aware that the maximum value that the gauge will have, will consist of each value of the "amount" attribute of each range and the minimum value that you set in the gauge.
 
-  ```HTML
-  <gx-gauge type="circle" min-value="0" value="4" show-value="true" style-shadow="true" thickness="50" style="--component-height: 200px;--gauge-border-width: 3px;--center-circle-background-color: rgb(0, 92, 129);--marker-border: 2px solid rgba(70, 70, 70, 0.8);--marker-color: rgba(250, 210, 250, 0);--circle-text-color: rgba(250, 250, 250, 0.5);" >
-      <gx-gauge-range amount="1" color="red"></gx-gauge-range>
-      <gx-gauge-range amount="1" color="orange"></gx-gauge-range>
-      <gx-gauge-range amount="1" color="yellow"></gx-gauge-range>
-      <gx-gauge-range amount="1" color="green"></gx-gauge-range>
-      <gx-gauge-range amount="1" color="blue"></gx-gauge-range>
-    </gx-gauge>
-  ```
+```HTML
+<gx-gauge type="circle" min-value="0" value="4" show-value="true" style-shadow="true" thickness="50" style="--component-height: 200px;--gauge-border-width: 3px;--center-circle-background-color: rgb(0, 92, 129);--marker-border: 2px solid rgba(70, 70, 70, 0.8);--marker-color: rgba(250, 210, 250, 0);--circle-text-color: rgba(250, 250, 250, 0.5);" >
+    <gx-gauge-range amount="1" color="red"></gx-gauge-range>
+    <gx-gauge-range amount="1" color="orange"></gx-gauge-range>
+    <gx-gauge-range amount="1" color="yellow"></gx-gauge-range>
+    <gx-gauge-range amount="1" color="green"></gx-gauge-range>
+    <gx-gauge-range amount="1" color="blue"></gx-gauge-range>
+  </gx-gauge>
+```
 
 <!-- Auto Generated Below -->
 
@@ -48,7 +48,7 @@ Use `gx-gauge-range` element to set the number of ranges.
 | `--center-circle-background-color`      | Define the backgorund color of the center in `circle` gauge type. (transparent by default)            |
 | `--center-circle-text-color`            | Define the color of the center text in `circle` gauge type. (gray by default)                         |
 | `--circular-gauge-container-box-shadow` | Set the box-shadow of circular gauge container. (0px 0px 9px 0px rgba(0, 0, 0, 0.5) inset by default) |
-| `--component-height`                    | Set the height or the control. _Must be setted before render the control_ (400px by default)          |
+| `--component-height`                    | Set the height or the control. _Must be set before render the control_ (400px by default)             |
 | `--gauge-border-color`                  | Define the border color of the gauge.                                                                 |
 | `--gauge-border-width`                  | Define the border width of the gauge. (0 by default)                                                  |
 | `--gauge-box-shadow`                    | Set the box-shadow of gauge. (0px 0px 5px 0px rgba(0, 0, 0, 0.5) inset by default)                    |
