@@ -124,7 +124,7 @@ export class Map implements IComponent {
 
   render() {
     return (
-      <div>
+      <div class="gxMapContainer">
         <div class="gxMap" />
       </div>
     );
