@@ -1,7 +1,5 @@
 # gx-chronometer
 
-This control allows to fire an event every time the interval time is consumed. If the value reaches max value, then the max value text is shown.
-
 <!-- Auto Generated Below -->
 
 ## Properties
