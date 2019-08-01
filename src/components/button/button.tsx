@@ -101,10 +101,10 @@ export class Button
   }
 
   render() {
-    return this.renderer.render(
-      <slot />,
-      <slot name="main-image" />,
-      <slot name="disabled-image" />
-    );
+    return this.renderer.render({
+      default: <slot />,
+      disabledImage: <slot name="disabled-image" />,
+      mainImage: <slot name="main-image" />
+    });
   }
 }
