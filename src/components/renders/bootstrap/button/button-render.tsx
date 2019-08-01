@@ -5,7 +5,7 @@ import { Button } from "../../../button/button";
 export class ButtonRender implements IRenderer {
   constructor(public component: Button) {}
 
-  render() {
+  render(slot, mainImageSlot, disabledImageSlot) {
     const button = this.component;
 
     // Main image and disabled image are set an empty alt as they are decorative images.
@@ -32,11 +32,9 @@ export class ButtonRender implements IRenderer {
         onClick={button.handleClick.bind(button)}
         tabindex="0"
       >
-        <slot name="main-image" />
-        <slot name="disabled-image" />
-        <span>
-          <slot />
-        </span>
+        {mainImageSlot}
+        {disabledImageSlot}
+        <span>{slot}</span>
       </button>
     ];
   }

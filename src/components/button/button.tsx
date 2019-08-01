@@ -1,5 +1,12 @@
 import { ButtonRender } from "../renders/bootstrap/button/button-render";
-import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Prop,
+  h
+} from "@stencil/core";
 import {
   IClickableComponent,
   IComponent,
@@ -94,6 +101,10 @@ export class Button
   }
 
   render() {
-    return this.renderer.render();
+    return this.renderer.render(
+      <slot />,
+      <slot name="main-image" />,
+      <slot name="disabled-image" />
+    );
   }
 }
