@@ -4,7 +4,8 @@ import {
   Event,
   EventEmitter,
   Method,
-  Prop
+  Prop,
+  h
 } from "@stencil/core";
 import { IFormComponent } from "../common/interfaces";
 @Component({
