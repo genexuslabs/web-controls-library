@@ -13,9 +13,9 @@ A container for tab items caption. Must be followed by a `gx-tab-page` element c
 
 ## Events
 
-| Event         | Description                            | Type                |
-| ------------- | -------------------------------------- | ------------------- |
-| `onTabSelect` | Fired when the tab caption is selected | `CustomEvent<void>` |
+| Event         | Description                            | Type               |
+| ------------- | -------------------------------------- | ------------------ |
+| `onTabSelect` | Fired when the tab caption is selected | `CustomEvent<any>` |
 
 ---
 

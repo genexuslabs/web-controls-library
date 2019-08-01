@@ -23,9 +23,9 @@ The one option whose value matches the value of the group will be automatically 
 
 ## Events
 
-| Event    | Description                                                                                  | Type                |
-| -------- | -------------------------------------------------------------------------------------------- | ------------------- |
-| `change` | The `change` event is emitted when a change to the element's value is committed by the user. | `CustomEvent<void>` |
+| Event    | Description                                                                                  | Type               |
+| -------- | -------------------------------------------------------------------------------------------- | ------------------ |
+| `change` | The `change` event is emitted when a change to the element's value is committed by the user. | `CustomEvent<any>` |
 
 ---
 

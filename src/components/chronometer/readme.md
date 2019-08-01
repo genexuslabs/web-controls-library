@@ -17,12 +17,12 @@
 
 ## Events
 
-| Event    | Description                                                                      | Type                |
-| -------- | -------------------------------------------------------------------------------- | ------------------- |
-| `change` | The `change` event is emitted every time the chronometer changes                 | `CustomEvent<void>` |
-| `end`    | Event to emit after max time is consumed.                                        | `CustomEvent<void>` |
-| `input`  | The `input` event is emitted every time the chronometer changes (every 1 second) | `CustomEvent<void>` |
-| `tick`   | Event to emit After elapsed time (tickInterval).                                 | `CustomEvent<void>` |
+| Event    | Description                                                                      | Type               |
+| -------- | -------------------------------------------------------------------------------- | ------------------ |
+| `change` | The `change` event is emitted every time the chronometer changes                 | `CustomEvent<any>` |
+| `end`    | Event to emit after max time is consumed.                                        | `CustomEvent<any>` |
+| `input`  | The `input` event is emitted every time the chronometer changes (every 1 second) | `CustomEvent<any>` |
+| `tick`   | Event to emit After elapsed time (tickInterval).                                 | `CustomEvent<any>` |
 
 ## Methods
 
@@ -34,29 +34,29 @@ Returns the id of the inner `input` element (if set).
 
 Type: `Promise<any>`
 
-### `reset() => void`
+### `reset() => Promise<void>`
 
 Stops and set to 0 the Chronometer.
 
 #### Returns
 
-Type: `void`
+Type: `Promise<void>`
 
-### `start() => void`
+### `start() => Promise<void>`
 
 Starts the Chronometer
 
 #### Returns
 
-Type: `void`
+Type: `Promise<void>`
 
-### `stop() => void`
+### `stop() => Promise<void>`
 
 Stops the Chronometer
 
 #### Returns
 
-Type: `void`
+Type: `Promise<void>`
 
 ---
 
