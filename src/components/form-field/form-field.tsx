@@ -1,4 +1,4 @@
-import { Component, Element, Prop } from "@stencil/core";
+import { Component, Element, Prop, h } from "@stencil/core";
 import { FormFieldRender } from "../renders/bootstrap/form-field/form-field-render";
 import { IComponent } from "../common/interfaces";
 
@@ -43,6 +43,6 @@ export class FormField implements IComponent {
   }
 
   render() {
-    return this.renderer.render();
+    return this.renderer.render({ default: <slot /> });
   }
 }

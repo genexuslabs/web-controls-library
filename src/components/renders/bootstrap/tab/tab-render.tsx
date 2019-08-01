@@ -19,19 +19,15 @@ export class TabRender implements IRenderer {
     pageElement.classList.toggle("active", !!captionElement.selected);
   }
 
-  render() {
+  render(slots: { caption; page }) {
     this.setCaptionSlotsClass();
     this.setPageSlotsClass();
 
     return [
       <gx-bootstrap />,
       <div role="tablist">
-        <div class="nav nav-tabs">
-          <slot name="caption" />
-        </div>
-        <div class="tab-content">
-          <slot name="page" />
-        </div>
+        <div class="nav nav-tabs">{slots.caption}</div>
+        <div class="tab-content">{slots.page}</div>
       </div>
     ];
   }

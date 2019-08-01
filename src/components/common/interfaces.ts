@@ -30,7 +30,7 @@ export interface IFormComponent
 
 export interface IRenderer {
   component: IComponent;
-  render: (...args: any[]) => void;
+  render: (slots?: any) => void;
   componentWillLoad?: () => void;
   componentDidLoad?: () => void;
   componentWillUpdate?: () => void;

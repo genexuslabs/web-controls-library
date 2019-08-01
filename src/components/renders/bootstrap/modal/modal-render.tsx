@@ -4,7 +4,6 @@ import Bootstrap from "bootstrap.native/dist/bootstrap-native-v4";
 import { IRenderer } from "../../../common/interfaces";
 import { Modal } from "../../../modal/modal";
 
-const BODY_SLOT_NAME = "body";
 const PRIMARY_ACTION_SLOT_NAME = "primary-action";
 const SECONDARY_ACTION_SLOT_NAME = "secondary-action";
 
@@ -43,7 +42,7 @@ export class ModalRender implements IRenderer {
     }
   }
 
-  render() {
+  render(slots: { header; body; primaryAction; secondaryAction }) {
     const primaryActions = Array.from(
       this.component.element.querySelectorAll<HTMLGxButtonElement>(
         `[slot='${PRIMARY_ACTION_SLOT_NAME}']`
@@ -91,7 +90,7 @@ export class ModalRender implements IRenderer {
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id={this.headerId}>
-                <slot name="header" />
+                {slots.header}
               </h5>
               <button
                 type="button"
@@ -102,13 +101,11 @@ export class ModalRender implements IRenderer {
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
-              <slot name={BODY_SLOT_NAME} />
-            </div>
+            <div class="modal-body">{slots.body}</div>
             {hasFooterActions ? (
               <div class="modal-footer">
-                <slot name={PRIMARY_ACTION_SLOT_NAME} />
-                <slot name={SECONDARY_ACTION_SLOT_NAME} />
+                {slots.primaryAction}
+                {slots.secondaryAction}
               </div>
             ) : null}
           </div>

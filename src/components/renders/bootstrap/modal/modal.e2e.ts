@@ -21,7 +21,7 @@ describe("gx-modal", () => {
     it("should work without parameters", async () => {
       await page.waitForChanges();
       const body = await element.find(".modal-body");
-      expect(body).toEqual("This is the modal content");
+      expect(body.textContent.trim()).toEqual("This is the modal content");
     });
 
     it("should render primary actions", async () => {

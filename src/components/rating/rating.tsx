@@ -16,8 +16,6 @@ import { IFormComponent } from "../common/interfaces";
 export class Rating implements IFormComponent {
   private inputId: string;
 
-  private starShape = <polygon points="50,0 15,95 100,35 0,35 85,95" />;
-
   private svgViewport = {
     viewBox: "0 0 100 100"
   };
@@ -104,7 +102,7 @@ export class Rating implements IFormComponent {
           {...this.svgViewport}
           onClick={ev => this.onClick(ev)}
         >
-          {this.starShape}
+          {this.renderStarShape()}
         </svg>
       );
     }
@@ -131,7 +129,7 @@ export class Rating implements IFormComponent {
           }}
           {...this.svgViewport}
         >
-          {this.starShape}
+          {this.renderStarShape()}
         </svg>
       );
     }
@@ -179,6 +177,10 @@ export class Rating implements IFormComponent {
         console.error("'max-value' has not a value set.", this.element);
       }
     }
+  }
+
+  private renderStarShape() {
+    return <polygon points="50,0 15,95 100,35 0,35 85,95" />;
   }
 }
 

@@ -75,7 +75,7 @@ export class FormFieldRender implements IRenderer {
     }
   }
 
-  renderForRadio(renderLabel: boolean, renderLabelBefore: boolean) {
+  renderForRadio(renderLabel: boolean, renderLabelBefore: boolean, slot) {
     const labelId = `${this.formFieldId}-label`;
     const label = (
       <div class={this.getLabelCssClass()} id={labelId} data-part="label">
@@ -86,16 +86,14 @@ export class FormFieldRender implements IRenderer {
       <div class="form-group mb-0" aria-labelledby={labelId} role="group">
         <div class="row no-gutters">
           {renderLabel && renderLabelBefore ? label : null}
-          <div class={this.getInnerControlContainerClass()}>
-            <slot />
-          </div>
+          <div class={this.getInnerControlContainerClass()}>{slot}</div>
           {renderLabel && !renderLabelBefore ? label : null}
         </div>
       </div>
     );
   }
 
-  render() {
+  render(slots) {
     const formField = this.component;
 
     const isRadioGroup = !!formField.element.querySelector(
@@ -110,7 +108,7 @@ export class FormFieldRender implements IRenderer {
     }
 
     if (isRadioGroup) {
-      return this.renderForRadio(renderLabel, renderLabelBefore);
+      return this.renderForRadio(renderLabel, renderLabelBefore, slots.default);
     } else {
       const label = (
         <label class={this.getLabelCssClass()} data-part="label">
@@ -121,14 +119,14 @@ export class FormFieldRender implements IRenderer {
       const result =
         formField.labelPosition === "float" ? (
           <div>
-            <slot />
+            {slots.default}
             {label}
           </div>
         ) : (
           <div class="form-group row no-gutters mb-0">
             {renderLabel && renderLabelBefore ? label : null}
             <div class={this.getInnerControlContainerClass()}>
-              <slot />
+              {slots.default}
             </div>
             {renderLabel && !renderLabelBefore ? label : null}
           </div>

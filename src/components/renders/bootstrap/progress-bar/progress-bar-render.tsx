@@ -5,7 +5,7 @@ import { ProgressBar } from "../../../progress-bar/progress-bar";
 export class ProgressBarRender implements IRenderer {
   constructor(public component: ProgressBar) {}
 
-  render() {
+  render(slots) {
     return [
       <gx-bootstrap />,
       <div class="progress">
@@ -16,7 +16,7 @@ export class ProgressBarRender implements IRenderer {
           aria-valuemin="0"
           aria-valuemax="100"
         >
-          <slot />
+          {slots.default}
         </div>
       </div>
     ];

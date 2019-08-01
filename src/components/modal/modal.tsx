@@ -4,7 +4,8 @@ import {
   Event,
   EventEmitter,
   Prop,
-  Watch
+  Watch,
+  h
 } from "@stencil/core";
 import { ModalRender } from "../renders/bootstrap/modal/modal-render";
 import { IComponent } from "../common/interfaces";
@@ -72,6 +73,11 @@ export class Modal implements IComponent {
   }
 
   render() {
-    return this.renderer.render();
+    return this.renderer.render({
+      body: <slot name="body" />,
+      header: <slot name="header" />,
+      primaryAction: <slot name="primary-action" />,
+      secondaryAction: <slot name="secondary-action" />
+    });
   }
 }

@@ -114,7 +114,7 @@ export class CardRender implements IRenderer {
     }
   }
 
-  render() {
+  render(slots) {
     const card = this.component;
 
     const lowPriorityActions = Array.from(
@@ -161,13 +161,11 @@ export class CardRender implements IRenderer {
             "card-header": true
           }}
         >
-          <slot name="header" />
-          <div class="float-right">
-            <slot name="high-priority-action" />
-          </div>
+          {slots.header}
+          <div class="float-right">{slots.highPriorityAction}</div>
         </div>
-        <slot name="body" />
-        <slot />
+        {slots.body}
+        {slots.default}
         {renderFooter && (
           <div
             class={{
@@ -175,10 +173,10 @@ export class CardRender implements IRenderer {
               "card-footer": true
             }}
           >
-            <slot name="footer" />
+            {slots.footer}
             {hasFooterActions && (
               <div class="float-right">
-                <slot name="normal-priority-action" />
+                {slots.normalPriorityAction}
                 {hasLowPriorityActions && (
                   <button
                     class="btn btn-sm gx-dropdown-toggle"
@@ -190,9 +188,7 @@ export class CardRender implements IRenderer {
                   />
                 )}
                 {hasLowPriorityActions && (
-                  <div class="dropdown-menu">
-                    <slot name="low-priority-action" />
-                  </div>
+                  <div class="dropdown-menu">{slots.lowPriorityAction}</div>
                 )}
               </div>
             )}
