@@ -2,6 +2,7 @@ gx-edit {
   [data-native-element] {
     margin-top: var(--margin-top, 0);
     margin-bottom: var(--margin-bottom, 0);
+    height: unset;
   }
 
   &:not([show-trigger]),
