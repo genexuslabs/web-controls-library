@@ -34,9 +34,9 @@ The element will show one or the other, depending on the value of the [disabled]
 
 ## Events
 
-| Event     | Description                          | Type                |
-| --------- | ------------------------------------ | ------------------- |
-| `onClick` | Emitted when the element is clicked. | `CustomEvent<void>` |
+| Event     | Description                          | Type               |
+| --------- | ------------------------------------ | ------------------ |
+| `onClick` | Emitted when the element is clicked. | `CustomEvent<any>` |
 
 ---
 

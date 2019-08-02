@@ -4,8 +4,6 @@ import {
   Element,
   Event,
   EventEmitter,
-  EventListenerEnable,
-  Listen,
   Method,
   Prop,
   QueueApi,
@@ -19,6 +17,10 @@ import {
   tag: "gx-grid-infinite-scroll"
 })
 export class GridInfiniteScroll implements ComponentInterface {
+  constructor() {
+    this.onScroll = this.onScroll.bind(this);
+  }
+
   private thrPx = 0;
   private thrPc = 0;
   private scrollEl?: HTMLElement;
@@ -41,8 +43,6 @@ export class GridInfiniteScroll implements ComponentInterface {
 
   @Prop({ context: "queue" })
   queue!: QueueApi;
-  @Prop({ context: "enableListener" })
-  enableListener!: EventListenerEnable;
 
   /**
    * The threshold distance from the bottom
@@ -137,7 +137,6 @@ export class GridInfiniteScroll implements ComponentInterface {
     this.scrollEl = undefined;
   }
 
-  @Listen("scroll", { enabled: false })
   protected onScroll() {
     const scrollEl = this.scrollEl;
     if (!scrollEl || !this.canStart()) {
@@ -180,7 +179,7 @@ export class GridInfiniteScroll implements ComponentInterface {
    * to `enabled`.
    */
   @Method()
-  complete() {
+  async complete() {
     const scrollEl = this.scrollEl;
     if (!this.isLoading || !scrollEl) {
       return;
@@ -238,7 +237,11 @@ export class GridInfiniteScroll implements ComponentInterface {
 
   private enableScrollEvents(shouldListen: boolean) {
     if (this.scrollEl) {
-      this.enableListener(this, "scroll", shouldListen, this.scrollEl);
+      if (shouldListen) {
+        this.scrollEl.addEventListener("scroll", this.onScroll);
+      } else {
+        this.scrollEl.removeEventListener("scroll", this.onScroll);
+      }
     }
   }
 

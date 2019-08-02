@@ -4,7 +4,8 @@ import {
   Event,
   EventEmitter,
   Prop,
-  Watch
+  Watch,
+  h
 } from "@stencil/core";
 import { IComponent, IDisableableComponent } from "../common/interfaces";
 

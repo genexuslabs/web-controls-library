@@ -1,4 +1,11 @@
-import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Prop,
+  h
+} from "@stencil/core";
 import {
   IClickableComponent,
   IComponent,
@@ -91,6 +98,6 @@ export class Table
 
     this.element.addEventListener("click", this.handleClick.bind(this));
 
-    return <slot />;
+    return [<slot />];
   }
 }

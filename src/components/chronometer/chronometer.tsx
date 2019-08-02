@@ -6,7 +6,8 @@ import {
   Method,
   Prop,
   State,
-  Watch
+  Watch,
+  h
 } from "@stencil/core";
 import { IComponent } from "../common/interfaces";
 import { TimerState } from "./chronometer-timer-state";
@@ -113,7 +114,7 @@ export class Chronometer implements IComponent {
    * Starts the Chronometer
    */
   @Method()
-  start() {
+  async start() {
     if (this.started) {
       return;
     }
@@ -143,7 +144,7 @@ export class Chronometer implements IComponent {
    * Stops the Chronometer
    */
   @Method()
-  stop() {
+  async stop() {
     window.clearInterval(this.eventTimer);
     window.clearInterval(this.timer);
     this.started = false;
@@ -154,7 +155,7 @@ export class Chronometer implements IComponent {
    * Stops and set to 0 the Chronometer.
    */
   @Method()
-  reset() {
+  async reset() {
     this.stop();
     this.value = 0;
     this.startedTime = 0;

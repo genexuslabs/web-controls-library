@@ -21,6 +21,7 @@ http://www.idangero.us/swiper/
 | `recordCount`   | `record-count`    | Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.                                                                                                                                                                                                                                                                                      | `number`                     | `null`       |
 | `rows`          | `rows`            | Number of items per column, for multirow layout.                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `number`                     | `undefined`  |
 | `scrollbar`     | `scrollbar`       | If `true`, show the scrollbar.                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `boolean`                    | `false`      |
+| `snapToGrid`    | `snap-to-grid`    | Set to false to enable slides in free mode position.                                                                                                                                                                                                                                                                                                                                                                                                                                               | `boolean`                    | `true`       |
 
 ## Events
 
@@ -89,13 +90,6 @@ Type: `Promise<number>`
 
 Transition to the next slide.
 
-#### Parameters
-
-| Name           | Type      | Description                                                                                 |
-| -------------- | --------- | ------------------------------------------------------------------------------------------- |
-| `speed`        | `number`  | The transition duration (in ms).                                                            |
-| `runCallbacks` | `boolean` | If true, the transition will produce [Transition/SlideChange][start/end] transition events. |
-
 #### Returns
 
 Type: `Promise<void>`
@@ -104,13 +98,6 @@ Type: `Promise<void>`
 
 Transition to the previous slide.
 
-#### Parameters
-
-| Name           | Type      | Description                                                                                     |
-| -------------- | --------- | ----------------------------------------------------------------------------------------------- |
-| `speed`        | `number`  | The transition duration (in ms).                                                                |
-| `runCallbacks` | `boolean` | If true, the transition will produce the [Transition/SlideChange][start/end] transition events. |
-
 #### Returns
 
 Type: `Promise<void>`
@@ -118,14 +105,6 @@ Type: `Promise<void>`
 ### `slideTo(index: number, speed?: number, runCallbacks?: boolean) => Promise<void>`
 
 Transition to the specified slide.
-
-#### Parameters
-
-| Name           | Type      | Description                                                                                 |
-| -------------- | --------- | ------------------------------------------------------------------------------------------- |
-| `index`        | `number`  | The index of the slide to transition to.                                                    |
-| `speed`        | `number`  | The transition duration (in ms).                                                            |
-| `runCallbacks` | `boolean` | If true, the transition will produce [Transition/SlideChange][start/end] transition events. |
 
 #### Returns
 
@@ -151,12 +130,6 @@ Type: `Promise<void>`
 
 Lock or unlock the ability to slide to the next slide.
 
-#### Parameters
-
-| Name   | Type      | Description                                   |
-| ------ | --------- | --------------------------------------------- |
-| `lock` | `boolean` | If `true`, disable swiping to the next slide. |
-
 #### Returns
 
 Type: `Promise<void>`
@@ -165,12 +138,6 @@ Type: `Promise<void>`
 
 Lock or unlock the ability to slide to the previous slide.
 
-#### Parameters
-
-| Name   | Type      | Description                                       |
-| ------ | --------- | ------------------------------------------------- |
-| `lock` | `boolean` | If `true`, disable swiping to the previous slide. |
-
 #### Returns
 
 Type: `Promise<void>`
@@ -178,12 +145,6 @@ Type: `Promise<void>`
 ### `toggleLockSwipes(lock: boolean) => Promise<void>`
 
 Lock or unlock the ability to slide to the next or previous slide.
-
-#### Parameters
-
-| Name   | Type      | Description                                                |
-| ------ | --------- | ---------------------------------------------------------- |
-| `lock` | `boolean` | If `true`, disable swiping to the next and previous slide. |
 
 #### Returns
 
@@ -202,12 +163,6 @@ Type: `Promise<void>`
 
 Force swiper to update its height (when autoHeight is enabled) for the duration
 equal to 'speed' parameter.
-
-#### Parameters
-
-| Name    | Type     | Description                      |
-| ------- | -------- | -------------------------------- |
-| `speed` | `number` | The transition duration (in ms). |
 
 #### Returns
 
