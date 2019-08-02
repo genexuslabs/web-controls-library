@@ -700,6 +700,10 @@ export namespace Components {
       runCallbacks?: boolean
     ) => Promise<void>;
     /**
+     * Set to false to enable slides in free mode position.
+     */
+    snapToGrid: boolean;
+    /**
      * Start auto play.
      */
     startAutoplay: () => Promise<void>;
@@ -837,6 +841,10 @@ export namespace Components {
      * If `true`, show the scrollbar.
      */
     scrollbar?: boolean;
+    /**
+     * Set to false to enable slides in free mode position.
+     */
+    snapToGrid?: boolean;
   }
 
   interface GxGroup {
