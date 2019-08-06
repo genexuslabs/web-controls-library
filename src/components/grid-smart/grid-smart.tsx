@@ -7,7 +7,8 @@ import {
   Listen,
   Method,
   Prop,
-  Watch
+  Watch,
+  h
 } from "@stencil/core";
 
 import { GridBaseHelper, IGridBase } from "../grid-base/grid-base";
@@ -92,6 +93,11 @@ export class GridSmart
    * If `true`, show the scrollbar.
    */
   @Prop() scrollbar = false;
+
+  /**
+   * Set to false to enable slides in free mode position.
+   */
+  @Prop() snapToGrid = true;
 
   /**
    * Emitted after Swiper initialization
@@ -376,8 +382,8 @@ export class GridSmart
       centeredSlides: false,
       direction: this.optionValueDefault(this.direction, "horizontal"),
       effect: undefined,
-      freeMode: false,
-      freeModeMomentum: true,
+      freeMode: !this.snapToGrid,
+      freeModeMomentum: false,
       freeModeMomentumRatio: 1,
       freeModeMomentumBounce: true,
       freeModeMomentumBounceRatio: 1,

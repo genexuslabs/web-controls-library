@@ -18,9 +18,9 @@
 
 ## Events
 
-| Event   | Description                                                                                 | Type                |
-| ------- | ------------------------------------------------------------------------------------------- | ------------------- |
-| `input` | The `input` event is emitted when a change to the element's value is committed by the user. | `CustomEvent<void>` |
+| Event   | Description                                                                                 | Type               |
+| ------- | ------------------------------------------------------------------------------------------- | ------------------ |
+| `input` | The `input` event is emitted when a change to the element's value is committed by the user. | `CustomEvent<any>` |
 
 ## Methods
 

@@ -1,3 +1,4 @@
+import { h } from "@stencil/core";
 import { IRenderer } from "../../../common/interfaces";
 import { Message } from "../../../message/message";
 
@@ -57,7 +58,7 @@ export class MessageRender implements IRenderer {
     }, DEFAULT_SHOW_WAIT);
   }
 
-  render() {
+  render(slots) {
     const message = this.component;
 
     return [
@@ -67,7 +68,7 @@ export class MessageRender implements IRenderer {
         role="alert"
         onTransitionEnd={this.transitionEnd.bind(this)}
       >
-        <slot />
+        {slots.default}
         {message.showCloseButton ? (
           <button
             type="button"

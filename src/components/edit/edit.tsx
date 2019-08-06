@@ -5,7 +5,8 @@ import {
   EventEmitter,
   Method,
   Prop,
-  Watch
+  Watch,
+  h
 } from "@stencil/core";
 import { EditRender } from "../renders/bootstrap/edit/edit-render";
 import { IFormComponent } from "../common/interfaces";
@@ -223,6 +224,8 @@ export class Edit implements IFormComponent {
   }
 
   render() {
-    return this.renderer.render();
+    return this.renderer.render({
+      triggerContent: <slot name="trigger-content" />
+    });
   }
 }

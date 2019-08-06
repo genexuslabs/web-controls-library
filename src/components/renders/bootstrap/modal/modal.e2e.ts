@@ -1,8 +1,8 @@
-import { E2EPage, newE2EPage } from "@stencil/core/testing";
+import { E2EElement, E2EPage, newE2EPage } from "@stencil/core/testing";
 
 describe("gx-modal", () => {
   describe("rendering", () => {
-    let element;
+    let element: E2EElement;
     let page: E2EPage;
     beforeEach(async () => {
       page = await newE2EPage();
@@ -18,10 +18,10 @@ describe("gx-modal", () => {
       element = await page.find("gx-modal");
     });
 
-    it("should work without parameters", () => {
-      expect(element.querySelector(".modal-body").textContent.trim()).toEqual(
-        "This is the modal content"
-      );
+    it("should work without parameters", async () => {
+      await page.waitForChanges();
+      const body = await element.find(".modal-body");
+      expect(body.textContent.trim()).toEqual("This is the modal content");
     });
 
     it("should render primary actions", async () => {

@@ -28,13 +28,14 @@ Represents an item with a link inside a `<gx-navbar>`.
 | `cssClass`      | `css-class`      | A CSS class to set as the inner element class.                                                                                                                                                                                                                                                                                                                                               | `string`                     | `undefined`  |
 | `disabled`      | `disabled`       | This attribute lets you specify if the navbar item is disabled.                                                                                                                                                                                                                                                                                                                              | `boolean`                    | `false`      |
 | `href`          | `href`           | This attribute lets you specify the URL of the navbar item.                                                                                                                                                                                                                                                                                                                                  | `string`                     | `""`         |
+| `iconSrc`       | `icon-src`       | This attribute lets you specify the URL of an icon for the navbar item.                                                                                                                                                                                                                                                                                                                      | `string`                     | `""`         |
 | `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \| | `"collapse" \| "keep-space"` | `"collapse"` |
 
 ## Events
 
-| Event     | Description                          | Type                |
-| --------- | ------------------------------------ | ------------------- |
-| `onClick` | Emitted when the element is clicked. | `CustomEvent<void>` |
+| Event     | Description                          | Type               |
+| --------- | ------------------------------------ | ------------------ |
+| `onClick` | Emitted when the element is clicked. | `CustomEvent<any>` |
 
 ---
 

@@ -1,10 +1,11 @@
+import { h } from "@stencil/core";
 import { IRenderer } from "../../../common/interfaces";
 import { TabCaption } from "../../../tab-caption/tab-caption";
 
 export class TabCaptionRender implements IRenderer {
   constructor(public component: TabCaption) {}
 
-  render() {
+  render(slots) {
     this.component.element.setAttribute(
       "aria-selected",
       (!!this.component.selected).toString()
@@ -21,7 +22,7 @@ export class TabCaptionRender implements IRenderer {
         href="#"
         onClick={this.clickHandler.bind(this)}
       >
-        <slot />
+        {slots.default}
       </a>
     ];
   }

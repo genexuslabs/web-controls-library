@@ -20,9 +20,9 @@ Its children must be gx-table-cell custom elements.
 
 ## Events
 
-| Event     | Description                          | Type                |
-| --------- | ------------------------------------ | ------------------- |
-| `onClick` | Emitted when the element is clicked. | `CustomEvent<void>` |
+| Event     | Description                          | Type               |
+| --------- | ------------------------------------ | ------------------ |
+| `onClick` | Emitted when the element is clicked. | `CustomEvent<any>` |
 
 ---
 

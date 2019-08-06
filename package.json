@@ -1,11 +1,14 @@
 {
   "name": "@genexus/web-controls-library",
-  "version": "0.8.0",
+  "version": "0.10.0",
   "description": "GeneXus Web Controls Library",
-  "module": "dist/esm/index.js",
   "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "jsnext:main": "dist/esm/index.mjs",
   "files": [
     "dist/"
   ],
@@ -40,19 +43,19 @@
     "swiper": "^4.5.0"
   },
   "devDependencies": {
-    "@stencil/core": "^0.18.0",
-    "@stencil/sass": "^0.2.1",
-    "@types/jest": "23.3.3",
-    "@types/puppeteer": "1.11.1",
+    "@stencil/core": "^1.2.3",
+    "@stencil/sass": "^1.0.1",
+    "@types/jest": "24.0.16",
+    "@types/puppeteer": "1.12.4",
     "@types/swiper": "^4.4.2",
     "husky": "^0.14.3",
-    "jest": "23.6.0",
-    "jest-cli": "23.6.0",
+    "jest": "24.8.0",
+    "jest-cli": "24.8.0",
     "jest-environment-node": "^24.3.1",
     "pixelmatch": "4.0.2",
     "prettier": "^1.11.1",
     "pretty-quick": "^1.4.1",
-    "puppeteer": "1.11.0",
+    "puppeteer": "1.17.0",
     "sass-lint": "^1.13.1",
     "sassdoc": "^2.7.0",
     "sassdoc-theme-md": "^1.0.2",
@@ -73,16 +76,6 @@
   },
   "homepage": "https://github.com/genexuslabs/web-controls-library",
   "jest": {
-    "transform": {
-      "^.+\\.(ts|tsx)$": "<rootDir>/node_modules/@stencil/core/testing/jest.preprocessor.js"
-    },
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(tsx?|jsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json",
-      "jsx"
-    ]
+    "preset": "@stencil/core/testing"
   }
 }

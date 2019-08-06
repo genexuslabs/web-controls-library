@@ -1,4 +1,11 @@
-import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Prop,
+  h
+} from "@stencil/core";
 import {
   IClickableComponent,
   IComponent,
@@ -67,6 +74,6 @@ export class TextBlock
       return <a href={this.href}>{body}</a>;
     }
 
-    return body;
+    return [body];
   }
 }

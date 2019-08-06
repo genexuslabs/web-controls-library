@@ -1,0 +1,21 @@
+gx-navbar-link {
+  --gx-navbar-link-icon-size: 24px;
+  a.nav-link[data-has-icon] {
+    display: inline-flex;
+    &::before {
+      content: "";
+      display: inline-block;
+      height: var(--gx-navbar-link-icon-size);
+      width: var(--gx-navbar-link-icon-size);
+      background-image: var(--gx-navbar-link-icon-src);
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      margin-right: 5px;
+      position: relative;
+      top: -3px;
+      align-self: center;
+      flex-shrink: 0;
+    }
+  }
+}

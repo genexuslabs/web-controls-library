@@ -1,4 +1,4 @@
-import { Component, Element, Prop } from "@stencil/core";
+import { Component, Element, Prop, h } from "@stencil/core";
 import { IComponent } from "../common/interfaces";
 
 @Component({
@@ -45,6 +45,6 @@ export class TableCell implements IComponent {
       }
     }
 
-    return <slot />;
+    return [<slot />];
   }
 }

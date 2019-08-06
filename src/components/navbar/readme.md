@@ -10,7 +10,7 @@ A logo or brand image can be specified using an `<img>` element with `slot="head
 
 ### Items
 
-Currently the navigatio bar support specifying a set of links using `<gx-navbar-link>` elements.
+Currently the navigation bar support specifying a set of links using `<gx-navbar-link>` elements.
 
 ## Example
 

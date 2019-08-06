@@ -21,12 +21,12 @@ An `gx-radio-group` can be used to group a set of radios. When radios are inside
 
 ## Events
 
-| Event              | Description                                                                                  | Type                |
-| ------------------ | -------------------------------------------------------------------------------------------- | ------------------- |
-| `change`           | The `change` event is emitted when a change to the element's value is committed by the user. | `CustomEvent<void>` |
-| `gxRadioDidLoad`   | Emitted when the radio loads.                                                                | `CustomEvent<void>` |
-| `gxRadioDidUnload` | Emitted when the radio unloads.                                                              | `CustomEvent<void>` |
-| `gxSelect`         | Emitted when the radio button is selected.                                                   | `CustomEvent<void>` |
+| Event              | Description                                                                                  | Type               |
+| ------------------ | -------------------------------------------------------------------------------------------- | ------------------ |
+| `change`           | The `change` event is emitted when a change to the element's value is committed by the user. | `CustomEvent<any>` |
+| `gxRadioDidLoad`   | Emitted when the radio loads.                                                                | `CustomEvent<any>` |
+| `gxRadioDidUnload` | Emitted when the radio unloads.                                                              | `CustomEvent<any>` |
+| `gxSelect`         | Emitted when the radio button is selected.                                                   | `CustomEvent<any>` |
 
 ---
 

@@ -1,4 +1,11 @@
-import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Prop,
+  h
+} from "@stencil/core";
 import { NavBarLinkRender } from "../renders/bootstrap/navbar-link/navbar-link-render";
 import {
   IComponent,
@@ -42,6 +49,11 @@ export class NavBarLink
   @Prop() href = "";
 
   /**
+   * This attribute lets you specify the URL of an icon for the navbar item.
+   */
+  @Prop() iconSrc = "";
+
+  /**
    * This attribute lets you specify how this element will behave when hidden.
    *
    * | Value        | Details                                                                     |
@@ -57,6 +69,6 @@ export class NavBarLink
   @Event() onClick: EventEmitter;
 
   render() {
-    return this.renderer.render();
+    return this.renderer.render({ default: <slot /> });
   }
 }

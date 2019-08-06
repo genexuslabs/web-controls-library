@@ -22,10 +22,12 @@ Example: `38.89606811858382, -77.0365619659424`
 
 ## Events
 
+
 | Event          | Description                                             | Type                |
 | -------------- | ------------------------------------------------------- | ------------------- |
 | `gxMapDidLoad` | Emmits when the map is loaded.                          | `CustomEvent<void>` |
 | `mapClick`     | Emmits when the map is clicked and return click coords. | `CustomEvent<void>` |
+
 
 ---
 

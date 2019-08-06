@@ -1,4 +1,4 @@
-import { Component, Element, Prop } from "@stencil/core";
+import { Component, Element, Prop, h } from "@stencil/core";
 import { MessageRender } from "../renders/bootstrap/message/message-render";
 import { IComponent, IVisibilityComponent } from "../common/interfaces";
 
@@ -55,6 +55,6 @@ export class Message implements IComponent, IVisibilityComponent {
   }
 
   render() {
-    return this.renderer.render();
+    return this.renderer.render({ default: <slot /> });
   }
 }

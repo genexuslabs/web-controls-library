@@ -5,7 +5,8 @@ import {
   EventEmitter,
   Method,
   Prop,
-  Watch
+  Watch,
+  h
 } from "@stencil/core";
 // tslint:disable-next-line
 import bodymovin from "lottie-web/build/player/lottie_light";
