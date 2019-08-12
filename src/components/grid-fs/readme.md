@@ -3,7 +3,7 @@
 A container for including a repetitive elements list.
 It provides 3 slots:
 
-- 'grid-content' slot: Include the grid content here.
+- `'grid-content'` slot: This slot holds the grid's content
 - 'grid-content-empty' slot: This slot will be shown only when the grid is empty.
 - 'grid-loading-content': This slot will be shown while the grid is being loaded. Include the loading indicator markup here.
 
