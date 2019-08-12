@@ -8,7 +8,7 @@ It provides 3 slots:
 - 'grid-loading-content': This slot will be shown while the grid is being loaded. Include the loading indicator markup here.
 
 When the grid is empty, a CSS Class named 'gx-grid-empty' is added to the host element.
-When grid is loading, a CSS Class name 'gx-grid-loading' is added to the host element.
+When the grid is loading, a CSS Class named 'gx-grid-loading' is added to the host element.
 
 <!-- Auto Generated Below -->
 
