@@ -13,9 +13,9 @@ A container for creating absolute positioned layouts.
 
 ## Events
 
-| Event     | Description                          | Type                |
-| --------- | ------------------------------------ | ------------------- |
-| `onClick` | Emitted when the element is clicked. | `CustomEvent<void>` |
+| Event     | Description                          | Type               |
+| --------- | ------------------------------------ | ------------------ |
+| `onClick` | Emitted when the element is clicked. | `CustomEvent<any>` |
 
 ---
 

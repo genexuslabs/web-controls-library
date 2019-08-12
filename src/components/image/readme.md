@@ -23,9 +23,9 @@ The loading indicator can be disabled by setting the `--image-loading-indicator`
 
 ## Events
 
-| Event     | Description                          | Type                |
-| --------- | ------------------------------------ | ------------------- |
-| `onClick` | Emitted when the element is clicked. | `CustomEvent<void>` |
+| Event     | Description                          | Type               |
+| --------- | ------------------------------------ | ------------------ |
+| `onClick` | Emitted when the element is clicked. | `CustomEvent<any>` |
 
 ---
 

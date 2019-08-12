@@ -1,5 +1,5 @@
+import { Component, Element, Prop, h } from "@stencil/core";
 import { ProgressBarRender } from "../renders/bootstrap/progress-bar/progress-bar-render";
-import { Component, Element, Prop } from "@stencil/core";
 import { IComponent } from "../common/interfaces";
 @Component({
   shadow: false,
@@ -26,6 +26,6 @@ export class ProgressBar implements IComponent {
     };
   }
   render() {
-    return this.renderer.render();
+    return this.renderer.render({ default: <slot /> });
   }
 }

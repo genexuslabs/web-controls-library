@@ -1,4 +1,11 @@
-import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Prop,
+  h
+} from "@stencil/core";
 import { TabCaptionRender } from "../renders/bootstrap/tab-caption/tab-caption-render";
 import { IComponent, IDisableableComponent } from "../common/interfaces";
 
@@ -47,7 +54,7 @@ export class TabCaption implements IComponent, IDisableableComponent {
   }
 
   render() {
-    return this.renderer.render();
+    return this.renderer.render({ default: <slot /> });
   }
 }
 

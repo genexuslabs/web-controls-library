@@ -36,4 +36,10 @@ describe("gx-navbar-link", () => {
     await page.waitForChanges();
     expect(await page.find("a")).toHaveClass("foo-class");
   });
+
+  it("should render an icon", async () => {
+    await element.setAttribute("icon-src", "image.png");
+    await page.waitForChanges();
+    expect(await element.getAttribute("data-has-icon")).toBeDefined();
+  });
 });

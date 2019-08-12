@@ -1,4 +1,4 @@
-import { Component, ComponentInterface, Element } from "@stencil/core";
+import { Component, ComponentInterface, Element, h } from "@stencil/core";
 
 @Component({
   shadow: false,
@@ -9,7 +9,7 @@ export class InfiniteScrollContent implements ComponentInterface {
   @Element() el!: HTMLElement;
 
   render() {
-    return <slot/>;
+    return <slot />;
   }
 
   hostData() {

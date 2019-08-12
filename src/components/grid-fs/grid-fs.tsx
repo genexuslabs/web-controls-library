@@ -3,7 +3,8 @@ import {
   ComponentInterface,
   Element,
   EventEmitter,
-  Prop
+  Prop,
+  h
 } from "@stencil/core";
 import { GridBaseHelper, IGridBase } from "../grid-base/grid-base";
 import { IVisibilityComponent } from "../common/interfaces";

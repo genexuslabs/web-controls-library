@@ -43,10 +43,10 @@ predefined slots:
 
 ## Events
 
-| Event     | Description                           | Type                |
-| --------- | ------------------------------------- | ------------------- |
-| `onClose` | Fired when the modal dialog is closed | `CustomEvent<void>` |
-| `onOpen`  | Fired when the modal dialog is opened | `CustomEvent<void>` |
+| Event     | Description                           | Type               |
+| --------- | ------------------------------------- | ------------------ |
+| `onClose` | Fired when the modal dialog is closed | `CustomEvent<any>` |
+| `onOpen`  | Fired when the modal dialog is opened | `CustomEvent<any>` |
 
 ---
 

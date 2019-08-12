@@ -15,11 +15,11 @@ This element represents a marker inside a `<gx-map>` element.
 
 ## Events
 
-| Event                | Description                                           | Type                |
-| -------------------- | ----------------------------------------------------- | ------------------- |
-| `gxMapMarkerDeleted` | Emmits when the element is deleted from a `<gx-map>`. | `CustomEvent<void>` |
-| `gxMapMarkerDidLoad` | Emmits when the element is added to a `<gx-map>`.     | `CustomEvent<void>` |
-| `gxMapMarkerUpdate`  | Emmits when the element update its data.              | `CustomEvent<void>` |
+| Event                | Description                                           | Type               |
+| -------------------- | ----------------------------------------------------- | ------------------ |
+| `gxMapMarkerDeleted` | Emmits when the element is deleted from a `<gx-map>`. | `CustomEvent<any>` |
+| `gxMapMarkerDidLoad` | Emmits when the element is added to a `<gx-map>`.     | `CustomEvent<any>` |
+| `gxMapMarkerUpdate`  | Emmits when the element update its data.              | `CustomEvent<any>` |
 
 ---
 
