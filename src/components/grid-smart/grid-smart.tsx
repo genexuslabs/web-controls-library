@@ -4,7 +4,6 @@ import {
   Element,
   Event,
   EventEmitter,
-  Listen,
   Method,
   Prop,
   Watch
@@ -202,13 +201,6 @@ export class GridSmart
 
   componentDidUnload() {
     this.swiper.destroy(true, true);
-  }
-
-  @Listen("gxGridDidChange")
-  onSlideChanged(newCurrentPage: number) {
-    if (this.isInitialized()) {
-      this.currentPage = newCurrentPage;
-    }
   }
 
   /**
