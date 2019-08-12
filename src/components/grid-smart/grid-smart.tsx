@@ -67,6 +67,11 @@ export class GridSmart
   @Prop() itemsPerGroup = 1;
 
   /**
+   * For infinite scroll, bind it to the next page grid component handler. It will be called every time threshold is reached.
+   */
+  gxInfinite: EventEmitter<void>;
+
+  /**
    * Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).
    */
   @Prop() direction: "horizontal" | "vertical";
@@ -548,6 +553,9 @@ export class GridSmart
       this.scrollbar && (
         <div class="swiper-scrollbar" ref={el => (this.scrollbarEl = el)} />
       ),
+      <gx-grid-infinite-scroll-content>
+        <slot name="grid-loading-content" />
+      </gx-grid-infinite-scroll-content>,
       <div class="grid-empty-placeholder">
         <slot name="grid-content-empty" />
       </div>,

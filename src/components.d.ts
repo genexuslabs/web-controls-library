@@ -545,6 +545,10 @@ export namespace Components {
      * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
      */
     recordCount: number;
+    /**
+     * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
+     */
+    threshold: string;
   }
   interface GxGridFsAttributes extends StencilHTMLAttributes {
     /**
@@ -559,6 +563,10 @@ export namespace Components {
      * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
      */
     recordCount?: number;
+    /**
+     * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
+     */
+    threshold?: string;
   }
 
   interface GxGridInfiniteScrollContent {}
@@ -570,6 +578,10 @@ export namespace Components {
      * Call `complete()` within the `gxInfinite` output event handler when your async operation has completed. For example, the `loading` state is while the app is performing an asynchronous operation, such as receiving more data from an AJAX request to add more items to a data list. Once the data has been received and UI updated, you then call this method to signify that the loading has completed. This method will change the infinite scroll's state from `loading` to `enabled`.
      */
     complete: () => void;
+    /**
+     * The direction of the scrollable area. The value can be either `vertical` or `horizontal`.
+     */
+    direction: "vertical" | "horizontal";
     /**
      * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
      */
@@ -592,6 +604,10 @@ export namespace Components {
     threshold: string;
   }
   interface GxGridInfiniteScrollAttributes extends StencilHTMLAttributes {
+    /**
+     * The direction of the scrollable area. The value can be either `vertical` or `horizontal`.
+     */
+    direction?: "vertical" | "horizontal";
     /**
      * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
      */
@@ -663,6 +679,10 @@ export namespace Components {
      * Grid loading state. It's purpose is to know whether the grid loading animation or the grid empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
      */
     loadingState: "loading" | "loaded";
+    /**
+     * Logging level. For troubleshooting component update and initialization.
+     */
+    logLevel: "debug" | "off";
     /**
      * Advanced options to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options
      */
@@ -753,6 +773,10 @@ export namespace Components {
      * Grid loading state. It's purpose is to know whether the grid loading animation or the grid empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
      */
     loadingState?: "loading" | "loaded";
+    /**
+     * Logging level. For troubleshooting component update and initialization.
+     */
+    logLevel?: "debug" | "off";
     /**
      * Emitted when the user taps/clicks on the slide's container.
      */
@@ -1605,7 +1629,7 @@ export namespace Components {
     /**
      * Returns the id of the inner `input` element (if set).
      */
-    getNativeInputId: () => Promise<any>;
+    getNativeInputId: () => Promise<string>;
     /**
      * The control id. Must be unique per control!
      */
@@ -1615,11 +1639,11 @@ export namespace Components {
      */
     invisibleMode: "collapse" | "keep-space";
     /**
-     * The current value displayed by the component.
+     * This porpoerty is required if you want to display a score. >E.g: In a score of 4/5 stars the `maxValue` is `5` and the `value` is `4`
      */
     maxValue: number;
     /**
-     * This attribute i0ndicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_
+     * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_
      */
     readonly: boolean;
     /**
@@ -1641,7 +1665,7 @@ export namespace Components {
      */
     invisibleMode?: "collapse" | "keep-space";
     /**
-     * The current value displayed by the component.
+     * This porpoerty is required if you want to display a score. >E.g: In a score of 4/5 stars the `maxValue` is `5` and the `value` is `4`
      */
     maxValue?: number;
     /**
@@ -1649,7 +1673,7 @@ export namespace Components {
      */
     onInput?: (event: CustomEvent) => void;
     /**
-     * This attribute i0ndicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_
+     * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_
      */
     readonly?: boolean;
     /**
