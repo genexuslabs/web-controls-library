@@ -2,10 +2,10 @@
   display: $display;
 
   &[hidden] {
-    display: none;
+    display: none !important;
 
     &[invisible-mode="keep-space"] {
-      display: $display;
+      display: $display !important;
       visibility: hidden;
     }
   }
