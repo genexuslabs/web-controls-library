@@ -1,6 +1,6 @@
 # gx-grid-fs
 
-Container to include repetitive element list.
+A container for including a repetitive elements list.
 It provides 3 slots:
 
 - 'grid-content' slot: Include the grid content here.
