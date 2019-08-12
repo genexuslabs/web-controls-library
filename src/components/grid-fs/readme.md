@@ -4,7 +4,7 @@ A container for including a repetitive elements list.
 It provides 3 slots:
 
 - 'grid-content' slot: Include the grid content here.
-- 'grid-content-empty' slot: This slot will be shown, only if the grid is empty.
+- 'grid-content-empty' slot: This slot will be shown only when the grid is empty.
 - 'grid-loading-content': Include the loading indicator markup here.
 
 When grid is empty, a CSS Class name 'gx-grid-empty' is added to the host element.
