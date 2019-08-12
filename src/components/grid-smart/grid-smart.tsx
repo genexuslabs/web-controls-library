@@ -69,7 +69,7 @@ export class GridSmart
   /**
    * For infinite scroll, bind it to the next page grid component handler. It will be called every time threshold is reached.
    */
-  gxInfinite: EventEmitter<void>;
+  @Event() gxInfinite: EventEmitter<void>;
 
   /**
    * Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).
@@ -498,7 +498,11 @@ export class GridSmart
           }, 20);
         },
         reachBeginning: this.gxGridReachStart.emit,
-        reachEnd: this.gxGridReachEnd.emit,
+        reachEnd: () => {
+          this.log("reachEnd");
+          this.gxGridReachEnd.emit();
+          this.gxInfinite.emit();
+        },
         slideChangeTransitionEnd: () => {
           if (this.swiper) {
             this.gxGridDidChange.emit(
