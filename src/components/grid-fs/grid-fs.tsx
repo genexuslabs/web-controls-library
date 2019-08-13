@@ -1,4 +1,12 @@
-import { Component, ComponentInterface, Element, Prop } from "@stencil/core";
+import {
+  Component,
+  ComponentInterface,
+  Element,
+  Event,
+  EventEmitter,
+  Prop,
+  h
+} from "@stencil/core";
 import { GridBaseHelper, IGridBase } from "../grid-base/grid-base";
 import { IVisibilityComponent } from "../common/interfaces";
 
@@ -8,10 +16,7 @@ import { IVisibilityComponent } from "../common/interfaces";
   tag: "gx-grid-fs"
 })
 export class GridFreeStyle
-  implements
-    IGridBase,
-    ComponentInterface,
-    IVisibilityComponent {
+  implements IGridBase, ComponentInterface, IVisibilityComponent {
   @Element() el!: HTMLElement;
 
   /**
@@ -41,8 +46,40 @@ export class GridFreeStyle
    */
   @Prop() recordCount: number;
 
+  /**
+   * The threshold distance from the bottom
+   * of the content to call the `infinite` output event when scrolled.
+   * The threshold value can be either a percent, or
+   * in pixels. For example, use the value of `10%` for the `infinite`
+   * output event to get called when the user has scrolled 10%
+   * from the bottom of the page. Use the value `100px` when the
+   * scroll is within 100 pixels from the bottom of the page.
+   */
+  @Prop() threshold = "100px";
+
+  /**
+   * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
+   */
+  @Event() gxInfiniteThresholdReached: EventEmitter<void>;
+
   render() {
-    return GridBaseHelper.render(this);
+    return [
+      <slot name="grid-content" />,
+      <gx-grid-infinite-scroll
+        threshold={this.threshold}
+        infiniteScrollContainer="gx-table-cell"
+        itemCount={this.recordCount}
+        onGxInfinite={() => this.gxInfiniteThresholdReached.emit()}
+      >
+        <gx-grid-infinite-scroll-content>
+          <slot name="grid-loading-content" />
+        </gx-grid-infinite-scroll-content>
+      </gx-grid-infinite-scroll>,
+      <div class="grid-empty-placeholder">
+        <slot name="grid-content-empty" />
+      </div>,
+      <slot />
+    ];
   }
 
   hostData() {

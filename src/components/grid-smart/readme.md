@@ -16,6 +16,7 @@ http://www.idangero.us/swiper/
 | `invisibleMode` | `invisible-mode`  | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \|                                                                                                       | `"collapse" \| "keep-space"` | `"collapse"` |
 | `itemsPerGroup` | `items-per-group` | Set numbers of items to define and enable group sliding. Useful to use with rowsPerPage > 1                                                                                                                                                                                                                                                                                                                                                                                                        | `number`                     | `1`          |
 | `loadingState`  | `loading-state`   | Grid loading state. It's purpose is to know whether the grid loading animation or the grid empty placeholder should be shown. \| Value \| Details \| \| ------------ \| ---------------------------------------------------------------------------------------------- \| \| `loading` \| The grid is waiting the server for the grid data. Grid loading mask will be shown. \| \| `loaded` \| The grid data has been loaded. If the grid has no records, the empty place holder will be shown. \| | `"loaded" \| "loading"`      | `undefined`  |
+| `logLevel`      | `log-level`       | Logging level. For troubleshooting component update and initialization.                                                                                                                                                                                                                                                                                                                                                                                                                            | `"debug" \| "off"`           | `"debug"`    |
 | `options`       | --                | Advanced options to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options                                                                                                                                                                                                                                                                                                                                                                                              | `SwiperOptions`              | `{}`         |
 | `pager`         | `pager`           | If `true`, show the pagination buttons.                                                                                                                                                                                                                                                                                                                                                                                                                                                            | `boolean`                    | `true`       |
 | `recordCount`   | `record-count`    | Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.                                                                                                                                                                                                                                                                                      | `number`                     | `null`       |
@@ -25,24 +26,25 @@ http://www.idangero.us/swiper/
 
 ## Events
 
-| Event                   | Description                                                 | Type                  |
-| ----------------------- | ----------------------------------------------------------- | --------------------- |
-| `gxGridClick`           | Emitted when the user taps/clicks on the slide's container. | `CustomEvent<void>`   |
-| `gxGridDidChange`       | Emitted after the active slide has changed.                 | `CustomEvent<number>` |
-| `gxGridDidLoad`         | Emitted after Swiper initialization                         | `CustomEvent<void>`   |
-| `gxGridDoubleClick`     | Emitted when the user double taps on the slide's container. | `CustomEvent<void>`   |
-| `gxGridDrag`            | Emitted when the slider is actively being moved.            | `CustomEvent<void>`   |
-| `gxGridNextEnd`         | Emitted when the next slide has ended.                      | `CustomEvent<void>`   |
-| `gxGridNextStart`       | Emitted when the next slide has started.                    | `CustomEvent<void>`   |
-| `gxGridPrevEnd`         | Emitted when the previous slide has ended.                  | `CustomEvent<void>`   |
-| `gxGridPrevStart`       | Emitted when the previous slide has started.                | `CustomEvent<void>`   |
-| `gxGridReachEnd`        | Emitted when the slider is at the last slide.               | `CustomEvent<void>`   |
-| `gxGridReachStart`      | Emitted when the slider is at its initial position.         | `CustomEvent<void>`   |
-| `gxGridTouchEnd`        | Emitted when the user releases the touch.                   | `CustomEvent<void>`   |
-| `gxGridTouchStart`      | Emitted when the user first touches the slider.             | `CustomEvent<void>`   |
-| `gxGridTransitionEnd`   | Emitted when the slide transition has ended.                | `CustomEvent<void>`   |
-| `gxGridTransitionStart` | Emitted when the slide transition has started.              | `CustomEvent<void>`   |
-| `gxGridWillChange`      | Emitted before the active slide has changed.                | `CustomEvent<void>`   |
+| Event                        | Description                                                                                            | Type                  |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------ | --------------------- |
+| `gxGridClick`                | Emitted when the user taps/clicks on the slide's container.                                            | `CustomEvent<void>`   |
+| `gxGridDidChange`            | Emitted after the active slide has changed.                                                            | `CustomEvent<number>` |
+| `gxGridDidLoad`              | Emitted after Swiper initialization                                                                    | `CustomEvent<void>`   |
+| `gxGridDoubleClick`          | Emitted when the user double taps on the slide's container.                                            | `CustomEvent<void>`   |
+| `gxGridDrag`                 | Emitted when the slider is actively being moved.                                                       | `CustomEvent<void>`   |
+| `gxGridNextEnd`              | Emitted when the next slide has ended.                                                                 | `CustomEvent<void>`   |
+| `gxGridNextStart`            | Emitted when the next slide has started.                                                               | `CustomEvent<void>`   |
+| `gxGridPrevEnd`              | Emitted when the previous slide has ended.                                                             | `CustomEvent<void>`   |
+| `gxGridPrevStart`            | Emitted when the previous slide has started.                                                           | `CustomEvent<void>`   |
+| `gxGridReachEnd`             | Emitted when the slider is at the last slide.                                                          | `CustomEvent<void>`   |
+| `gxGridReachStart`           | Emitted when the slider is at its initial position.                                                    | `CustomEvent<void>`   |
+| `gxGridTouchEnd`             | Emitted when the user releases the touch.                                                              | `CustomEvent<void>`   |
+| `gxGridTouchStart`           | Emitted when the user first touches the slider.                                                        | `CustomEvent<void>`   |
+| `gxGridTransitionEnd`        | Emitted when the slide transition has ended.                                                           | `CustomEvent<void>`   |
+| `gxGridTransitionStart`      | Emitted when the slide transition has started.                                                         | `CustomEvent<void>`   |
+| `gxGridWillChange`           | Emitted before the active slide has changed.                                                           | `CustomEvent<void>`   |
+| `gxInfiniteThresholdReached` | This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids. | `CustomEvent<void>`   |
 
 ## Methods
 
@@ -167,6 +169,20 @@ equal to 'speed' parameter.
 #### Returns
 
 Type: `Promise<void>`
+
+## Dependencies
+
+### Depends on
+
+- [gx-grid-infinite-scroll-content](..\grid-infinite-scroll-content)
+
+### Graph
+
+```mermaid
+graph TD;
+  gx-grid-smart --> gx-grid-infinite-scroll-content
+  style gx-grid-smart fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ---
 

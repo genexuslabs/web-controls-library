@@ -272,6 +272,10 @@ export namespace Components {
      * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
      */
     recordCount: number;
+    /**
+     * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
+     */
+    threshold: string;
   }
   interface GxGridInfiniteScroll {
     /**
@@ -345,6 +349,10 @@ export namespace Components {
      * Grid loading state. It's purpose is to know whether the grid loading animation or the grid empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
      */
     loadingState: "loading" | "loaded";
+    /**
+     * Logging level. For troubleshooting component update and initialization.
+     */
+    logLevel: "debug" | "off";
     /**
      * Advanced options to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options
      */
@@ -1553,9 +1561,17 @@ declare namespace LocalJSX {
      */
     loadingState?: "loading" | "loaded";
     /**
+     * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
+     */
+    onGxInfiniteThresholdReached?: (event: CustomEvent<void>) => void;
+    /**
      * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
      */
     recordCount?: number;
+    /**
+     * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
+     */
+    threshold?: string;
   }
   interface GxGridInfiniteScroll
     extends JSXBase.HTMLAttributes<HTMLGxGridInfiniteScrollElement> {
@@ -1611,6 +1627,10 @@ declare namespace LocalJSX {
      * Grid loading state. It's purpose is to know whether the grid loading animation or the grid empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
      */
     loadingState?: "loading" | "loaded";
+    /**
+     * Logging level. For troubleshooting component update and initialization.
+     */
+    logLevel?: "debug" | "off";
     /**
      * Emitted when the user taps/clicks on the slide's container.
      */
@@ -1675,6 +1695,10 @@ declare namespace LocalJSX {
      * Emitted before the active slide has changed.
      */
     onGxGridWillChange?: (event: CustomEvent<void>) => void;
+    /**
+     * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
+     */
+    onGxInfiniteThresholdReached?: (event: CustomEvent<void>) => void;
     /**
      * Advanced options to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options
      */
@@ -1825,6 +1849,10 @@ declare namespace LocalJSX {
      * Emmits when the map is loaded.
      */
     onGxMapDidLoad?: (event: CustomEvent<any>) => void;
+    /**
+     * Emmits when the map is clicked and return click coords.
+     */
+    onMapClick?: (event: CustomEvent<any>) => void;
     /**
      * The initial zoom level in the map.
      */

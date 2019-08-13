@@ -4,7 +4,6 @@ import {
   Element,
   Event,
   EventEmitter,
-  Listen,
   Method,
   Prop,
   Watch,
@@ -59,6 +58,11 @@ export class GridSmart
   @Prop() loadingState: "loading" | "loaded";
 
   /**
+   * Logging level. For troubleshooting component update and initialization.
+   */
+  @Prop() logLevel: "debug" | "off" = "debug";
+
+  /**
    * Set numbers of items to define and enable group sliding. Useful to use with rowsPerPage > 1
    */
   @Prop() itemsPerGroup = 1;
@@ -98,6 +102,11 @@ export class GridSmart
    * Set to false to enable slides in free mode position.
    */
   @Prop() snapToGrid = true;
+
+  /**
+   * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
+   */
+  @Event() gxInfiniteThresholdReached: EventEmitter<void>;
 
   /**
    * Emitted after Swiper initialization
@@ -181,34 +190,28 @@ export class GridSmart
 
   @Watch("currentPage")
   pageChanged() {
-    if (this.initSwiper()) {
+    if (this.isInitialized()) {
       this.swiper.slideTo(Math.floor(this.currentPage * this.itemsPerGroup));
     }
   }
 
   @Watch("options")
-  @Watch("recordCount")
-  @Watch("loadingState")
   optionsChanged() {
-    if (this.initSwiper()) {
+    if (this.isInitialized()) {
       Object.assign(this.swiper.params, this.options);
-      this.update();
     }
   }
 
   componentDidLoad() {
-    window.requestAnimationFrame(() => this.initSwiper());
+    window.requestAnimationFrame(() => this.ensureSwiper());
+  }
+
+  componentDidUpdate() {
+    this.update();
   }
 
   componentDidUnload() {
     this.swiper.destroy(true, true);
-  }
-
-  @Listen("gxGridDidChange")
-  onSlideChanged(newCurrentPage: number) {
-    if (this.initSwiper()) {
-      this.currentPage = newCurrentPage;
-    }
   }
 
   /**
@@ -217,8 +220,13 @@ export class GridSmart
    */
   @Method()
   async update() {
-    if (this.initSwiper() && this.loadingState !== "loading") {
-      this.swiper.update();
+    if (this.loadingState !== "loading") {
+      if (this.isInitialized()) {
+        this.log("Updating Swiper..");
+        this.swiper.update();
+      } else {
+        window.requestAnimationFrame(() => this.ensureSwiper());
+      }
     }
   }
 
@@ -359,15 +367,31 @@ export class GridSmart
     this.swiper.allowTouchMove = !lock;
   }
 
-  private initSwiper() {
-    if (this.swiper == null && this.recordCount > 0) {
+  private ensureSwiper(): boolean {
+    if (
+      !this.swiper &&
+      this.recordCount > 0 &&
+      this.loadingState !== "loading"
+    ) {
+      const opts: SwiperOptions = this.normalizeOptions();
       const container: HTMLElement = this.el;
       container
         .querySelector("[slot='grid-content']")
         .classList.add("swiper-wrapper");
-      this.swiper = new Swiper(container, this.normalizeOptions());
+      this.log("Initializing Swiper..");
+      this.swiper = new Swiper(container, opts);
     }
-    return this.swiper != null;
+    return this.isInitialized();
+  }
+
+  private isInitialized(): boolean {
+    return this.swiper !== null;
+  }
+
+  private log(msg: any): void {
+    if (msg && this.logLevel !== "off") {
+      // console.log(msg, this.recordCount, this.loadingState, this.el);
+    }
   }
 
   private optionValueDefault(value: any, defaultValue: any): any {
@@ -421,9 +445,10 @@ export class GridSmart
       touchReleaseOnEdges: false,
       iOSEdgeSwipeDetection: false,
       iOSEdgeSwipeThreshold: 20,
-      mousewheel: true,
+      mousewheel: false,
       resistance: true,
       resistanceRatio: 0.85,
+      roundLengths: true,
       watchSlidesProgress: false,
       watchSlidesVisibility: false,
       preventClicks: true,
@@ -479,7 +504,11 @@ export class GridSmart
           }, 20);
         },
         reachBeginning: this.gxGridReachStart.emit,
-        reachEnd: this.gxGridReachEnd.emit,
+        reachEnd: () => {
+          this.log("reachEnd");
+          this.gxGridReachEnd.emit();
+          this.gxInfiniteThresholdReached.emit();
+        },
         slideChangeTransitionEnd: () => {
           if (this.swiper) {
             this.gxGridDidChange.emit(
@@ -534,6 +563,9 @@ export class GridSmart
       this.scrollbar && (
         <div class="swiper-scrollbar" ref={el => (this.scrollbarEl = el)} />
       ),
+      <gx-grid-infinite-scroll-content>
+        <slot name="grid-loading-content" />
+      </gx-grid-infinite-scroll-content>,
       <div class="grid-empty-placeholder">
         <slot name="grid-content-empty" />
       </div>,

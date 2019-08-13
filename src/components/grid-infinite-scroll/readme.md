@@ -38,6 +38,20 @@ to `enabled`.
 
 Type: `Promise<void>`
 
+## Dependencies
+
+### Used by
+
+- [gx-grid-fs](..\grid-fs)
+
+### Graph
+
+```mermaid
+graph TD;
+  gx-grid-fs --> gx-grid-infinite-scroll
+  style gx-grid-infinite-scroll fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_
