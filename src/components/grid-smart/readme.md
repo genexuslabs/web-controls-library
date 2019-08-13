@@ -26,25 +26,25 @@ http://www.idangero.us/swiper/
 
 ## Events
 
-| Event                   | Description                                                                                                              | Type                  |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------ | --------------------- |
-| `gxGridClick`           | Emitted when the user taps/clicks on the slide's container.                                                              | `CustomEvent<void>`   |
-| `gxGridDidChange`       | Emitted after the active slide has changed.                                                                              | `CustomEvent<number>` |
-| `gxGridDidLoad`         | Emitted after Swiper initialization                                                                                      | `CustomEvent<void>`   |
-| `gxGridDoubleClick`     | Emitted when the user double taps on the slide's container.                                                              | `CustomEvent<void>`   |
-| `gxGridDrag`            | Emitted when the slider is actively being moved.                                                                         | `CustomEvent<void>`   |
-| `gxGridNextEnd`         | Emitted when the next slide has ended.                                                                                   | `CustomEvent<void>`   |
-| `gxGridNextStart`       | Emitted when the next slide has started.                                                                                 | `CustomEvent<void>`   |
-| `gxGridPrevEnd`         | Emitted when the previous slide has ended.                                                                               | `CustomEvent<void>`   |
-| `gxGridPrevStart`       | Emitted when the previous slide has started.                                                                             | `CustomEvent<void>`   |
-| `gxGridReachEnd`        | Emitted when the slider is at the last slide.                                                                            | `CustomEvent<void>`   |
-| `gxGridReachStart`      | Emitted when the slider is at its initial position.                                                                      | `CustomEvent<void>`   |
-| `gxGridTouchEnd`        | Emitted when the user releases the touch.                                                                                | `CustomEvent<void>`   |
-| `gxGridTouchStart`      | Emitted when the user first touches the slider.                                                                          | `CustomEvent<void>`   |
-| `gxGridTransitionEnd`   | Emitted when the slide transition has ended.                                                                             | `CustomEvent<void>`   |
-| `gxGridTransitionStart` | Emitted when the slide transition has started.                                                                           | `CustomEvent<void>`   |
-| `gxGridWillChange`      | Emitted before the active slide has changed.                                                                             | `CustomEvent<void>`   |
-| `gxInfinite`            | For infinite scroll, bind it to the next page grid component handler. It will be called every time threshold is reached. | `CustomEvent<void>`   |
+| Event                        | Description                                                                                            | Type                  |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------ | --------------------- |
+| `gxGridClick`                | Emitted when the user taps/clicks on the slide's container.                                            | `CustomEvent<void>`   |
+| `gxGridDidChange`            | Emitted after the active slide has changed.                                                            | `CustomEvent<number>` |
+| `gxGridDidLoad`              | Emitted after Swiper initialization                                                                    | `CustomEvent<void>`   |
+| `gxGridDoubleClick`          | Emitted when the user double taps on the slide's container.                                            | `CustomEvent<void>`   |
+| `gxGridDrag`                 | Emitted when the slider is actively being moved.                                                       | `CustomEvent<void>`   |
+| `gxGridNextEnd`              | Emitted when the next slide has ended.                                                                 | `CustomEvent<void>`   |
+| `gxGridNextStart`            | Emitted when the next slide has started.                                                               | `CustomEvent<void>`   |
+| `gxGridPrevEnd`              | Emitted when the previous slide has ended.                                                             | `CustomEvent<void>`   |
+| `gxGridPrevStart`            | Emitted when the previous slide has started.                                                           | `CustomEvent<void>`   |
+| `gxGridReachEnd`             | Emitted when the slider is at the last slide.                                                          | `CustomEvent<void>`   |
+| `gxGridReachStart`           | Emitted when the slider is at its initial position.                                                    | `CustomEvent<void>`   |
+| `gxGridTouchEnd`             | Emitted when the user releases the touch.                                                              | `CustomEvent<void>`   |
+| `gxGridTouchStart`           | Emitted when the user first touches the slider.                                                        | `CustomEvent<void>`   |
+| `gxGridTransitionEnd`        | Emitted when the slide transition has ended.                                                           | `CustomEvent<void>`   |
+| `gxGridTransitionStart`      | Emitted when the slide transition has started.                                                         | `CustomEvent<void>`   |
+| `gxGridWillChange`           | Emitted before the active slide has changed.                                                           | `CustomEvent<void>`   |
+| `gxInfiniteThresholdReached` | This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids. | `CustomEvent<void>`   |
 
 ## Methods
 

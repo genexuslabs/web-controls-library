@@ -24,9 +24,9 @@ export interface IGridBase {
   loadingState: "loading" | "loaded";
 
   /**
-   * For infinite scroll, bind it to the next page grid component handler. It will be called every time threshold is reached.
+   * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
    */
-  gxInfinite: EventEmitter<void>;
+  gxInfiniteThresholdReached: EventEmitter<void>;
 
   /**
    * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes.

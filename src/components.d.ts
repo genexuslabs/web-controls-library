@@ -1561,6 +1561,10 @@ declare namespace LocalJSX {
      */
     loadingState?: "loading" | "loaded";
     /**
+     * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
+     */
+    onGxInfiniteThresholdReached?: (event: CustomEvent<void>) => void;
+    /**
      * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
      */
     recordCount?: number;
@@ -1692,9 +1696,9 @@ declare namespace LocalJSX {
      */
     onGxGridWillChange?: (event: CustomEvent<void>) => void;
     /**
-     * For infinite scroll, bind it to the next page grid component handler. It will be called every time threshold is reached.
+     * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
      */
-    onGxInfinite?: (event: CustomEvent<void>) => void;
+    onGxInfiniteThresholdReached?: (event: CustomEvent<void>) => void;
     /**
      * Advanced options to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options
      */

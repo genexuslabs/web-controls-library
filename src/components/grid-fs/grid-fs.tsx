@@ -2,6 +2,7 @@ import {
   Component,
   ComponentInterface,
   Element,
+  Event,
   EventEmitter,
   Prop,
   h
@@ -40,11 +41,6 @@ export class GridFreeStyle
   @Prop() loadingState: "loading" | "loaded";
 
   /**
-   * For infinite scroll, bind it to the next page grid component handler. It will be called every time threshold is reached.
-   */
-  gxInfinite: EventEmitter<void>;
-
-  /**
    * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes.
    * If not specified, then grid empty and loading placeholders will not work correctly.
    */
@@ -61,6 +57,11 @@ export class GridFreeStyle
    */
   @Prop() threshold = "100px";
 
+  /**
+   * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
+   */
+  @Event() gxInfiniteThresholdReached: EventEmitter<void>;
+
   render() {
     return [
       <slot name="grid-content" />,
@@ -68,7 +69,7 @@ export class GridFreeStyle
         threshold={this.threshold}
         infiniteScrollContainer="gx-table-cell"
         itemCount={this.recordCount}
-        onGxInfinite={() => this.gxInfinite.emit()}
+        onGxInfinite={() => this.gxInfiniteThresholdReached.emit()}
       >
         <gx-grid-infinite-scroll-content>
           <slot name="grid-loading-content" />

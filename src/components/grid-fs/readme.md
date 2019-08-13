@@ -21,6 +21,12 @@ When the grid is loading, a CSS Class named 'gx-grid-loading' is added to the ho
 | `recordCount`   | `record-count`   | Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.                                                                                                                                                                                                                                                                                     | `number`                     | `undefined`  |
 | `threshold`     | `threshold`      | The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.                                                                                         | `string`                     | `"100px"`    |
 
+## Events
+
+| Event                        | Description                                                                                            | Type                |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------- |
+| `gxInfiniteThresholdReached` | This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids. | `CustomEvent<void>` |
+
 ## Dependencies
 
 ### Depends on

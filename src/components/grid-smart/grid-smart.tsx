@@ -68,11 +68,6 @@ export class GridSmart
   @Prop() itemsPerGroup = 1;
 
   /**
-   * For infinite scroll, bind it to the next page grid component handler. It will be called every time threshold is reached.
-   */
-  @Event() gxInfinite: EventEmitter<void>;
-
-  /**
    * Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).
    */
   @Prop() direction: "horizontal" | "vertical";
@@ -107,6 +102,11 @@ export class GridSmart
    * Set to false to enable slides in free mode position.
    */
   @Prop() snapToGrid = true;
+
+  /**
+   * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
+   */
+  @Event() gxInfiniteThresholdReached: EventEmitter<void>;
 
   /**
    * Emitted after Swiper initialization
@@ -507,7 +507,7 @@ export class GridSmart
         reachEnd: () => {
           this.log("reachEnd");
           this.gxGridReachEnd.emit();
-          this.gxInfinite.emit();
+          this.gxInfiniteThresholdReached.emit();
         },
         slideChangeTransitionEnd: () => {
           if (this.swiper) {
