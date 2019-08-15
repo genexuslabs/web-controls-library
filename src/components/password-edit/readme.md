@@ -22,10 +22,10 @@ An password edit box with that optionally shows a button to reveal the password 
 
 ## Events
 
-| Event    | Description                                                                                                                                                                                                                                | Type                |
-| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------- |
-| `change` | The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus. | `CustomEvent<void>` |
-| `input`  | The `input` event is fired synchronously when the value is changed.                                                                                                                                                                        | `CustomEvent<void>` |
+| Event    | Description                                                                                                                                                                                                                                | Type               |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------ |
+| `change` | The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus. | `CustomEvent<any>` |
+| `input`  | The `input` event is fired synchronously when the value is changed.                                                                                                                                                                        | `CustomEvent<any>` |
 
 ## Methods
 

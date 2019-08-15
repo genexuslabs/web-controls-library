@@ -1,10 +1,18 @@
-import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Prop,
+  h
+} from "@stencil/core";
 import {
   IClickableComponent,
   IComponent,
   IDisableableComponent,
   IVisibilityComponent
 } from "../common/interfaces";
+import { ISwipeable, makeSwipeable } from "../common/swipeable";
 
 @Component({
   shadow: false,
@@ -16,6 +24,7 @@ export class Canvas
     IComponent,
     IVisibilityComponent,
     IDisableableComponent,
+    ISwipeable,
     IClickableComponent {
   @Element() element: HTMLElement;
 
@@ -42,12 +51,37 @@ export class Canvas
   @Event() onClick: EventEmitter;
   // TODO: Implement touch devices events (Tap, DoubleTap, LongTap, SwipeX)
 
+  /**
+   * Emitted when the element is swiped.
+   */
+  @Event() onSwipe: EventEmitter;
+  /**
+   * Emitted when the element is swiped in upward direction.
+   */
+  @Event() onSwipeUp: EventEmitter;
+  /**
+   * Emitted when the element is swiped right direction.
+   */
+  @Event() onSwipeRight: EventEmitter;
+  /**
+   * Emitted when the element is swiped downward direction.
+   */
+  @Event() onSwipeDown: EventEmitter;
+  /**
+   * Emitted when the element is swiped left direction..
+   */
+  @Event() onSwipeLeft: EventEmitter;
+
   handleClick(event: UIEvent) {
     if (this.disabled) {
       return;
     }
 
     this.onClick.emit(event);
+  }
+
+  componentDidLoad() {
+    makeSwipeable(this);
   }
 
   render() {

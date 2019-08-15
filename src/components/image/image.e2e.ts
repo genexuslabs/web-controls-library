@@ -18,4 +18,36 @@ describe("gx-image", () => {
       await element.getProperty("alt")
     );
   });
+
+  it("should lazy load the image", async () => {
+    const img = await page.find("img");
+    const className: string = await img.getProperty("className");
+    expect(className.includes("gx-lazyload")).toBe(true);
+    expect(await img.getAttribute("src")).toBeNull();
+    expect(await img.getAttribute("data-src")).toBe("img.png");
+  });
+
+  it("should load the image", async () => {
+    await element.setAttribute("lazy-load", false);
+    await page.waitForChanges();
+    const img = await page.find("img");
+    const className: string = await img.getProperty("className");
+    expect(className.includes("gx-lazyload")).toBe(false);
+    expect(await img.getAttribute("src")).toBe("img.png");
+  });
+
+  it("should set the inner image class", async () => {
+    await element.setAttribute("css-class", "danger");
+    await page.waitForChanges();
+    const img = await page.find("img");
+    const className: string = await img.getProperty("className");
+    expect(className.includes("danger")).toBe(true);
+  });
+
+  it("should fire click event", async () => {
+    const spy = await element.spyOnEvent("click");
+    const img = await page.find("img");
+    await img.click();
+    expect(spy).toHaveReceivedEvent();
+  });
 });

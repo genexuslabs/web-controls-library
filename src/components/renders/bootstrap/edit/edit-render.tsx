@@ -1,3 +1,4 @@
+import { h } from "@stencil/core";
 import { IRenderer } from "../../../common/interfaces";
 import { Edit } from "../../../edit/edit";
 
@@ -48,7 +49,7 @@ export class EditRender implements IRenderer {
     }
   }
 
-  render() {
+  render(slots) {
     const edit = this.component;
 
     const valueChangingHandler = edit.handleValueChanging.bind(edit);
@@ -91,7 +92,7 @@ export class EditRender implements IRenderer {
                 disabled={edit.disabled}
                 aria-label={edit.triggerText}
               >
-                <slot name="trigger-content" />
+                {slots.triggerContent}
               </button>
             </div>
           </div>
@@ -105,12 +106,7 @@ export class EditRender implements IRenderer {
 
     return [
       <gx-bootstrap />,
-      <ReadonlyTag
-        key="readonly"
-        hidden={!edit.readonly}
-        class={this.getReadonlyClass()}
-        data-readonly=""
-      >
+      <ReadonlyTag key="readonly" hidden={!edit.readonly} data-readonly="">
         {edit.value}
       </ReadonlyTag>,
       editableElement
@@ -123,18 +119,6 @@ export class EditRender implements IRenderer {
       return "span";
     }
     return tag;
-  }
-
-  private getReadonlyClass() {
-    if (
-      this.component.fontCategory === "body" ||
-      !this.component.fontCategory
-    ) {
-      return {
-        "form-control-plaintext": true
-      };
-    }
-    return null;
   }
 }
 

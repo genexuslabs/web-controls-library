@@ -4,8 +4,15 @@
 
 /// Helper mixin to ease styling gx-tab-caption custom elements
 /// @param {string} $class Base class of the component
-@mixin gx-tab-caption($class) {
+/// @param {string} $highlighted Class to be used when the tab caption is active
+@mixin gx-tab-caption($class, $highlighted: null) {
   a.nav-link {
     @extend #{$class} !optional;
+
+    @if ($highlighted != null) {
+      &:active {
+        @extend #{$highlighted} !optional;
+      }
+    }
   }
 }

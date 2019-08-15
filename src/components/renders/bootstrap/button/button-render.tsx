@@ -1,10 +1,11 @@
+import { h } from "@stencil/core";
 import { IRenderer } from "../../../common/interfaces";
 import { Button } from "../../../button/button";
 
 export class ButtonRender implements IRenderer {
   constructor(public component: Button) {}
 
-  render() {
+  render(slots: { default; disabledImage; mainImage }) {
     const button = this.component;
 
     // Main image and disabled image are set an empty alt as they are decorative images.
@@ -26,16 +27,14 @@ export class ButtonRender implements IRenderer {
           "btn-outline-secondary": true,
           "btn-sm": button.size === "small",
           "gx-button": true,
-          [button.cssClass]: true
+          [button.cssClass]: !!button.cssClass
         }}
         onClick={button.handleClick.bind(button)}
         tabindex="0"
       >
-        <slot name="main-image" />
-        <slot name="disabled-image" />
-        <span>
-          <slot />
-        </span>
+        {slots.mainImage}
+        {slots.disabledImage}
+        <span>{slots.default}</span>
       </button>
     ];
   }

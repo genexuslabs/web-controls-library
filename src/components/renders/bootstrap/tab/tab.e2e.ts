@@ -99,7 +99,8 @@ describe("gx-tab", () => {
     const tabCaptionElements = await element.findAll("gx-tab-caption");
     const tabPageElements = await element.findAll("gx-tab-page");
 
-    Array.from(tabCaptionElements).forEach(async (captionEl, i) => {
+    for (let i = 0, len = tabCaptionElements.length; i < len; i++) {
+      const captionEl = tabCaptionElements[i];
       const pageEl = tabPageElements[i];
       expect(await pageEl.getProperty("id")).toEqual(
         await captionEl.getAttribute("aria-controls")
@@ -107,6 +108,6 @@ describe("gx-tab", () => {
       expect(await captionEl.getProperty("id")).toEqual(
         await pageEl.getAttribute("aria-labelledby")
       );
-    });
+    }
   });
 });

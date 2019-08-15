@@ -1,3 +1,4 @@
+import { h } from "@stencil/core";
 import { IRenderer } from "../../../common/interfaces";
 import { NavBar } from "../../../navbar/navbar";
 
@@ -63,7 +64,7 @@ export class NavBarRender implements IRenderer {
     this.transitioning = false;
   }
 
-  render() {
+  render(slots: { default; header }) {
     if (!this.navBarId) {
       this.navBarId = this.component.id
         ? `${this.component.id}__navbar`
@@ -93,7 +94,7 @@ export class NavBarRender implements IRenderer {
         }}
       >
         <a class="navbar-brand" tabindex="-1">
-          <slot name="header" />
+          {slots.header}
           {this.component.caption}
         </a>
         <button
@@ -123,9 +124,7 @@ export class NavBarRender implements IRenderer {
           }}
           // onTransitionEnd={this.handleTransitionEnd.bind(this)}
         >
-          <div class="navbar-nav">
-            <slot />
-          </div>
+          <div class="navbar-nav">{slots.default}</div>
         </div>
       </nav>
     ];

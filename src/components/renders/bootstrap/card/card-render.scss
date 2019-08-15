@@ -1,4 +1,7 @@
 gx-card {
+  display: flex;
+  flex: 1;
+
   gx-button {
     &[slot="high-priority-action"],
     &[slot="normal-priority-action"] {
@@ -17,6 +20,15 @@ gx-card {
       width: 100%;
       clear: both;
       border: 0;
+    }
+  }
+
+  & > .card {
+    display: flex;
+    flex: 1;
+    & > [slot="body"] {
+      flex: 1;
+      display: flex;
     }
   }
 }

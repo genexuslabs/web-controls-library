@@ -1,4 +1,4 @@
-import { Component, Element, Prop } from "@stencil/core";
+import { Component, Element, Prop, h } from "@stencil/core";
 import { CardRender } from "../renders/bootstrap/card/card-render";
 import { IComponent, IVisibilityComponent } from "../common/interfaces";
 
@@ -26,6 +26,21 @@ export class Card implements IComponent, IVisibilityComponent {
    */
   @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
 
+  /**
+   * True to show the card border. False to hide it.
+   */
+  @Prop() showBorder = true;
+
+  /**
+   * True to show the card footer. False to hide it.
+   */
+  @Prop() showFooter = true;
+
+  /**
+   * True to show the card header. False to hide it.
+   */
+  @Prop() showHeader = true;
+
   componentDidLoad() {
     this.renderer.componentDidLoad();
   }
@@ -39,6 +54,14 @@ export class Card implements IComponent, IVisibilityComponent {
   }
 
   render() {
-    return this.renderer.render();
+    return this.renderer.render({
+      body: <slot name="body" />,
+      default: <slot />,
+      footer: <slot name="footer" />,
+      header: <slot name="header" />,
+      highPriorityAction: <slot name="high-priority-action" />,
+      lowPriorityAction: <slot name="low-priority-action" />,
+      normalPriorityAction: <slot name="normal-priority-action" />
+    });
   }
 }

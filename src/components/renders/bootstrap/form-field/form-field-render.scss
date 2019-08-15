@@ -68,17 +68,15 @@ gx-form-field {
 
   & > .form-group {
     overflow: hidden;
-    flex-grow: 1;
+    max-height: 100%;
   }
 
   & > .row {
     overflow: hidden;
-    flex-grow: 1;
+    flex: 1;
     & > div {
-      & > gx-image {
-        max-height: 100%;
-        max-width: 100%;
-      }
+      flex: 1;
+      max-height: 100%;
     }
   }
 

@@ -4,18 +4,27 @@
 
 /// Helper mixin to ease styling gx-grid-base custom elements
 /// @param {string} $class Base class of the component
+/// @param {string} $highlighted Class to be used when the grid is active
 /// @param {string} $odd-row Class for styling the Odd row
 /// @param {string} $even-row Class for styling the Odd even
 /// @param {string} loading-animation Class for styling the grid loading animation
-/// @param {string} loading-animation Class for styling the grid group-separator
+/// @param {string} group-separator Class for styling the grid group-separator
+/// @param {string} $horizontal-line Class of the horizontal line separator (to be implemented)
 @mixin gx-grid-base(
   $class,
+  $highlighted: null,
   $odd-row: null,
   $even-row: null,
   $loading-animation: null,
-  $horizontal-line: null,
-  $group-separator: null
+  $group-separator: null,
+  $horizontal-line: null
 ) {
+  @if ($highlighted != null) {
+    &:active {
+      @extend #{$highlighted} !optional;
+    }
+  }
+
   @if ($odd-row != null) {
     & .gx-grid-row:nth-child(odd) {
       @extend #{$odd-row} !optional;

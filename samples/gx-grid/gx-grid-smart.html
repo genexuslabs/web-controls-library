@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>GeneXus Web Controls Library test page</title>
+    <script src="/build/gx-web-controls.js"></script>
+    <style>
+      .item {
+        height: 100%;
+        width: 100%;
+        background-color: blue;
+        margin: auto;
+        vertical-align: middle;
+        text-align: center;
+        display: table-cell;
+      }
+      gx-grid-smart {
+        height: 400px;
+        width: 400px;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Smart Grid</h1>
+    <gx-grid-smart snap-to-grid="false" direction="horizontal" record-count="5">
+      <div slot="grid-content">
+        <div class="swiper-slide item ">
+          ROW1
+        </div>
+        <div class="swiper-slide item">
+          ROW2
+        </div>
+        <div class="swiper-slide item">
+          ROW3
+        </div>
+        <div class="swiper-slide item">
+          ROW4
+        </div>
+        <div class="swiper-slide item">
+          ROW5
+        </div>
+      </div>
+    </gx-grid-smart>
+  </body>
+</html>

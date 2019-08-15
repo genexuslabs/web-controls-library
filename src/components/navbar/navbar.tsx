@@ -1,4 +1,4 @@
-import { Component, Element, Prop } from "@stencil/core";
+import { Component, Element, Prop, h } from "@stencil/core";
 import { NavBarRender } from "../renders/bootstrap/navbar/navbar-render";
 import { IComponent, IVisibilityComponent } from "../common/interfaces";
 
@@ -52,6 +52,9 @@ export class NavBar implements IComponent, IVisibilityComponent {
   @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
 
   render() {
-    return this.renderer.render();
+    return this.renderer.render({
+      default: <slot />,
+      header: <slot name="header" />
+    });
   }
 }

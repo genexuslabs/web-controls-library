@@ -19,7 +19,7 @@ describe("gx-map", () => {
   });
 
   it("should set a given center", async () => {
-    await element.setProperty("center", "38.87097161910191, -77.0559650659561");
+    element.setProperty("center", "38.87097161910191, -77.0559650659561");
     await page.waitForChanges();
     expect(await element.getProperty("center")).toEqual(
       "38.87097161910191, -77.0559650659561"
@@ -27,13 +27,13 @@ describe("gx-map", () => {
   });
 
   it("should set a given maxZoom", async () => {
-    await element.setProperty("maxZoom", 21);
+    element.setProperty("maxZoom", 21);
     await page.waitForChanges();
     expect(await element.getProperty("maxZoom")).toEqual(21);
   });
 
   it("should set a given zoom", async () => {
-    await element.setProperty("zoom", 16);
+    element.setProperty("zoom", 16);
     await page.waitForChanges();
     expect(await element.getProperty("zoom")).toEqual(16);
   });

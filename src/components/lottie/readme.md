@@ -33,10 +33,10 @@ It also accepts setting the animation with an object, using the `animationData` 
 
 ## Events
 
-| Event           | Description                                      | Type                |
-| --------------- | ------------------------------------------------ | ------------------- |
-| `animationLoad` | Emitted when the animation is loaded in the DOM. | `CustomEvent<void>` |
-| `onClick`       | Emitted when the element is clicked.             | `CustomEvent<void>` |
+| Event           | Description                                      | Type               |
+| --------------- | ------------------------------------------------ | ------------------ |
+| `animationLoad` | Emitted when the animation is loaded in the DOM. | `CustomEvent<any>` |
+| `onClick`       | Emitted when the element is clicked.             | `CustomEvent<any>` |
 
 ## Methods
 
@@ -52,13 +52,6 @@ Type: `Promise<void>`
 
 Start playing the animation
 
-#### Parameters
-
-| Name   | Type     | Description |
-| ------ | -------- | ----------- |
-| `from` | `number` |             |
-| `to`   | `number` |             |
-
 #### Returns
 
 Type: `Promise<void>`
@@ -66,12 +59,6 @@ Type: `Promise<void>`
 ### `setProgress(progress: number) => Promise<void>`
 
 Set the progress of the animation to any point
-
-#### Parameters
-
-| Name       | Type     | Description                                                                               |
-| ---------- | -------- | ----------------------------------------------------------------------------------------- |
-| `progress` | `number` | : Value from 0 to 1 indicating the percentage of progress where the animation will start. |
 
 #### Returns
 
@@ -84,6 +71,20 @@ Stop the animation
 #### Returns
 
 Type: `Promise<void>`
+
+## Dependencies
+
+### Used by
+
+- [gx-loading](..\loading)
+
+### Graph
+
+```mermaid
+graph TD;
+  gx-loading --> gx-lottie
+  style gx-lottie fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ---
 

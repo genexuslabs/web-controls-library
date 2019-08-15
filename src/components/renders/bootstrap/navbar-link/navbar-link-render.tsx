@@ -1,3 +1,4 @@
+import { h } from "@stencil/core";
 import { IRenderer } from "../../../common/interfaces";
 import { NavBarLink } from "../../../navbar-link/navbar-link";
 
@@ -13,7 +14,7 @@ export class NavBarLinkRender implements IRenderer {
     event.preventDefault();
   }
 
-  render() {
+  render(slots) {
     this.component.element.classList.add("nav-item");
 
     return [
@@ -27,8 +28,12 @@ export class NavBarLinkRender implements IRenderer {
         }}
         href={this.component.href}
         onClick={this.handleClick.bind(this)}
+        style={{
+          "--gx-navbar-link-icon-src": `url("${this.component.iconSrc}")`
+        }}
+        data-has-icon={!!this.component.iconSrc}
       >
-        <slot />
+        {slots.default}
       </a>
     ];
   }

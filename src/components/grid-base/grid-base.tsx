@@ -1,3 +1,5 @@
+import { EventEmitter } from "@stencil/core";
+
 export interface IGridBase {
   el: HTMLElement;
 
@@ -22,6 +24,11 @@ export interface IGridBase {
   loadingState: "loading" | "loaded";
 
   /**
+   * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
+   */
+  gxInfiniteThresholdReached: EventEmitter<void>;
+
+  /**
    * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes.
    * If not specified, then grid empty and loading placeholders will not work correctly.
    */
@@ -29,16 +36,6 @@ export interface IGridBase {
 }
 
 export class GridBaseHelper {
-  static render(_cmp: IGridBase) {
-    return [
-      <slot name="grid-content" />,
-      <div class="grid-empty-placeholder">
-        <slot name="grid-content-empty" />
-      </div>,
-      <slot />
-    ];
-  }
-
   static hostData(cmp: IGridBase) {
     const emptyGridData = cmp.recordCount === 0;
     return {

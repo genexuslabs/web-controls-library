@@ -4,7 +4,8 @@ import {
   Event,
   EventEmitter,
   Listen,
-  Prop
+  Prop,
+  h
 } from "@stencil/core";
 import { TabRender } from "../renders/bootstrap/tab/tab-render";
 import { IComponent, IVisibilityComponent } from "../common/interfaces";
@@ -87,6 +88,9 @@ export class Tab implements IComponent, IVisibilityComponent {
   }
 
   render() {
-    return this.renderer.render();
+    return this.renderer.render({
+      caption: <slot name="caption" />,
+      page: <slot name="page" />
+    });
   }
 }

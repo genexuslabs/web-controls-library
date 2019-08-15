@@ -5,7 +5,8 @@ import {
   EventEmitter,
   Listen,
   Prop,
-  Watch
+  Watch,
+  h
 } from "@stencil/core";
 import {
   IComponent,
