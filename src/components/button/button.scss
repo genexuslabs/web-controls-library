@@ -4,6 +4,8 @@
 gx-button {
   @include visibility(inline-block);
 
+  --gx-button-image-size: 16px;
+
   vertical-align: middle;
 
   &[disabled] {
@@ -24,8 +26,8 @@ gx-button {
     position: relative;
 
     & > img {
-      height: 16px;
-      width: 16px;
+      height: var(--gx-button-image-size);
+      width: var(--gx-button-image-size);
       object-fit: contain;
 
       &[slot="disabled-image"] {
