@@ -4,6 +4,8 @@
 gx-button {
   @include visibility(inline-block);
 
+  --gx-button-image-size: 16px;
+
   vertical-align: middle;
 
   &[disabled] {
@@ -23,8 +25,14 @@ gx-button {
     flex-direction: column;
     position: relative;
 
-    & > img[slot="disabled-image"] {
-      display: none;
+    & > img {
+      height: var(--gx-button-image-size);
+      width: var(--gx-button-image-size);
+      object-fit: contain;
+
+      &[slot="disabled-image"] {
+        display: none;
+      }
     }
   }
 
