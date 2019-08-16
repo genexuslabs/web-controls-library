@@ -23,8 +23,14 @@ gx-button {
     flex-direction: column;
     position: relative;
 
-    & > img[slot="disabled-image"] {
-      display: none;
+    & > img {
+      height: 16px;
+      width: 16px;
+      object-fit: contain;
+
+      &[slot="disabled-image"] {
+        display: none;
+      }
     }
   }
 
