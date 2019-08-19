@@ -16,13 +16,11 @@ export class ModalRender implements IRenderer {
   componentDidLoad() {
     const modalElement = this.getModalElement();
 
-    modalElement.addEventListener("show.bs.modal", e => {
-      this.component.onOpen.emit(e);
+    modalElement.addEventListener("show.bs.modal", () => {
       this.component.opened = true;
     });
 
-    modalElement.addEventListener("hide.bs.modal", e => {
-      this.component.onClose.emit(e);
+    modalElement.addEventListener("hide.bs.modal", () => {
       this.component.opened = false;
     });
 

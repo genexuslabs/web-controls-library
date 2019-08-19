@@ -9,6 +9,26 @@ import { TimerState } from "./components/chronometer/chronometer-timer-state";
 import { SwiperOptions } from "swiper";
 
 export namespace Components {
+  interface GxActionSheet {
+    /**
+     * This attribute lets you specify the label for the close button. Important for accessibility.
+     */
+    closeButtonLabel: string;
+    /**
+     * This attribute lets you specify if the action sheet is opened or closed.
+     */
+    opened: boolean;
+  }
+  interface GxActionSheetItem {
+    /**
+     * This attribute lets you specify the type of action. `"cancel"` and `"destructive"` are style differently
+     */
+    actionType: "cancel" | "default" | "destructive";
+    /**
+     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+     */
+    disabled: boolean;
+  }
   interface GxBootstrap {}
   interface GxButton {
     /**
@@ -961,6 +981,22 @@ export namespace Components {
 }
 
 declare global {
+  interface HTMLGxActionSheetElement
+    extends Components.GxActionSheet,
+      HTMLStencilElement {}
+  var HTMLGxActionSheetElement: {
+    prototype: HTMLGxActionSheetElement;
+    new (): HTMLGxActionSheetElement;
+  };
+
+  interface HTMLGxActionSheetItemElement
+    extends Components.GxActionSheetItem,
+      HTMLStencilElement {}
+  var HTMLGxActionSheetItemElement: {
+    prototype: HTMLGxActionSheetItemElement;
+    new (): HTMLGxActionSheetItemElement;
+  };
+
   interface HTMLGxBootstrapElement
     extends Components.GxBootstrap,
       HTMLStencilElement {}
@@ -1241,6 +1277,8 @@ declare global {
     new (): HTMLGxTextblockElement;
   };
   interface HTMLElementTagNameMap {
+    "gx-action-sheet": HTMLGxActionSheetElement;
+    "gx-action-sheet-item": HTMLGxActionSheetItemElement;
     "gx-bootstrap": HTMLGxBootstrapElement;
     "gx-button": HTMLGxButtonElement;
     "gx-canvas": HTMLGxCanvasElement;
@@ -1282,6 +1320,40 @@ declare global {
 }
 
 declare namespace LocalJSX {
+  interface GxActionSheet
+    extends JSXBase.HTMLAttributes<HTMLGxActionSheetElement> {
+    /**
+     * This attribute lets you specify the label for the close button. Important for accessibility.
+     */
+    closeButtonLabel?: string;
+    /**
+     * Fired when the action sheet is closed
+     */
+    onOnClose?: (event: CustomEvent<any>) => void;
+    /**
+     * Fired when the action sheet is opened
+     */
+    onOnOpen?: (event: CustomEvent<any>) => void;
+    /**
+     * This attribute lets you specify if the action sheet is opened or closed.
+     */
+    opened?: boolean;
+  }
+  interface GxActionSheetItem
+    extends JSXBase.HTMLAttributes<HTMLGxActionSheetItemElement> {
+    /**
+     * This attribute lets you specify the type of action. `"cancel"` and `"destructive"` are style differently
+     */
+    actionType?: "cancel" | "default" | "destructive";
+    /**
+     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+     */
+    disabled?: boolean;
+    /**
+     * Fired when the action sheet item is clicked
+     */
+    onOnClick?: (event: CustomEvent<any>) => void;
+  }
   interface GxBootstrap
     extends JSXBase.HTMLAttributes<HTMLGxBootstrapElement> {}
   interface GxButton extends JSXBase.HTMLAttributes<HTMLGxButtonElement> {
@@ -1323,6 +1395,26 @@ declare namespace LocalJSX {
      * Emitted when the element is clicked.
      */
     onOnClick?: (event: CustomEvent<any>) => void;
+    /**
+     * Emitted when the element is swiped.
+     */
+    onOnSwipe?: (event: CustomEvent<any>) => void;
+    /**
+     * Emitted when the element is swiped downward direction.
+     */
+    onOnSwipeDown?: (event: CustomEvent<any>) => void;
+    /**
+     * Emitted when the element is swiped left direction..
+     */
+    onOnSwipeLeft?: (event: CustomEvent<any>) => void;
+    /**
+     * Emitted when the element is swiped right direction.
+     */
+    onOnSwipeRight?: (event: CustomEvent<any>) => void;
+    /**
+     * Emitted when the element is swiped in upward direction.
+     */
+    onOnSwipeUp?: (event: CustomEvent<any>) => void;
   }
   interface GxCanvasCell
     extends JSXBase.HTMLAttributes<HTMLGxCanvasCellElement> {
@@ -2303,6 +2395,26 @@ declare namespace LocalJSX {
      */
     onOnClick?: (event: CustomEvent<any>) => void;
     /**
+     * Emitted when the element is swiped.
+     */
+    onOnSwipe?: (event: CustomEvent<any>) => void;
+    /**
+     * Emitted when the element is swiped downward direction.
+     */
+    onOnSwipeDown?: (event: CustomEvent<any>) => void;
+    /**
+     * Emitted when the element is swiped left direction..
+     */
+    onOnSwipeLeft?: (event: CustomEvent<any>) => void;
+    /**
+     * Emitted when the element is swiped right direction.
+     */
+    onOnSwipeRight?: (event: CustomEvent<any>) => void;
+    /**
+     * Emitted when the element is swiped in upward direction.
+     */
+    onOnSwipeUp?: (event: CustomEvent<any>) => void;
+    /**
      * Like the `grid-templates-rows` CSS property, this attribute defines the rows of the grid with a space-separated list of values. The values represent the height of each row.
      */
     rowsTemplate?: string;
@@ -2345,6 +2457,8 @@ declare namespace LocalJSX {
   }
 
   interface IntrinsicElements {
+    "gx-action-sheet": GxActionSheet;
+    "gx-action-sheet-item": GxActionSheetItem;
     "gx-bootstrap": GxBootstrap;
     "gx-button": GxButton;
     "gx-canvas": GxCanvas;

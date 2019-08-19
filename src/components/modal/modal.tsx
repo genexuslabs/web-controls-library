@@ -63,8 +63,10 @@ export class Modal implements IComponent {
 
     if (newValue) {
       this.renderer.open();
+      this.onOpen.emit();
     } else {
       this.renderer.close();
+      this.onClose.emit();
     }
   }
 

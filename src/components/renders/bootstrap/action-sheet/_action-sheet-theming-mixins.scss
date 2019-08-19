@@ -1,0 +1,11 @@
+////
+/// @group theming-mixins
+////
+
+/// Helper mixin to ease styling gx-action-sheet custom elements
+/// @param {string} $class Base class of the component
+@mixin gx-action-sheet($class) {
+  & {
+    @extend #{$class} !optional;
+  }
+}

@@ -1,0 +1,6 @@
+@import "../common/_base";
+@import "../renders/bootstrap/action-sheet/action-sheet-render";
+
+gx-action-sheet {
+  @include visibility(block);
+}
