@@ -1,4 +1,4 @@
-import { Component, Element, Prop, h } from "@stencil/core";
+import { Component, Element, Listen, Prop, h } from "@stencil/core";
 import { NavBarRender } from "../renders/bootstrap/navbar/navbar-render";
 import { IComponent, IVisibilityComponent } from "../common/interfaces";
 
@@ -50,6 +50,12 @@ export class NavBar implements IComponent, IVisibilityComponent {
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
   @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+
+  @Listen("click")
+  handleClick(e: UIEvent) {
+    const target = e.target as HTMLElement;
+    this.renderer.handleItemClick(target);
+  }
 
   render() {
     return this.renderer.render({
