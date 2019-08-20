@@ -79,6 +79,15 @@ export class NavBarRender implements IRenderer {
     this.transitioning = false;
   }
 
+  handleItemClick(targetElement: HTMLElement) {
+    if (targetElement.matches("gx-navbar-link a")) {
+      const collapseElement = this.component.element.querySelector(
+        ".navbar-collapse"
+      ) as HTMLElement;
+      this.collapse(collapseElement);
+    }
+  }
+
   render(slots: { default; header }) {
     if (!this.navBarId) {
       this.navBarId = this.component.id
