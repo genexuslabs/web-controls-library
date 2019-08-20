@@ -1,0 +1,5 @@
+gx-action-sheet-item {
+  &:not([disabled]) {
+    cursor: pointer;
+  }
+}
