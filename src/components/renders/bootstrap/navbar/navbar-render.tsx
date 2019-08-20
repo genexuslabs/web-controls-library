@@ -31,10 +31,13 @@ export class NavBarRender implements IRenderer {
     this.expanded = true;
     target.classList.remove("collapse");
     target.classList.add("collapsing");
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       this.transitioning = true;
       target.style.height = `${target.scrollHeight}px`;
-    }, 10);
+      if (!this.hasTransition(target)) {
+        this.finishExpandCollapse(target);
+      }
+    });
   }
 
   private collapse(target: HTMLElement) {
@@ -47,14 +50,26 @@ export class NavBarRender implements IRenderer {
     target.classList.add("collapsing");
     target.classList.remove("show");
     target.classList.remove("collapse");
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       this.transitioning = true;
       target.style.height = "";
-    }, 10);
+      if (!this.hasTransition(target)) {
+        this.finishExpandCollapse(target);
+      }
+    });
+  }
+
+  private hasTransition(el: HTMLElement) {
+    return (
+      getComputedStyle(el).getPropertyValue("transition") !== "none 0s ease 0s"
+    );
   }
 
   private handleTransitionEnd(event: UIEvent) {
-    const target = event.currentTarget as HTMLElement;
+    this.finishExpandCollapse(event.currentTarget as HTMLElement);
+  }
+
+  private finishExpandCollapse(target: HTMLElement) {
     target.classList.remove("collapsing");
     target.classList.add("collapse");
     if (this.expanded) {
