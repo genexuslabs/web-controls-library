@@ -63,7 +63,7 @@ export class Gauge implements IComponent {
 
   @State() totalValues = this.minValue;
 
-  @State() children = [];
+  children = [];
 
   @State() minimumSize: number;
 
