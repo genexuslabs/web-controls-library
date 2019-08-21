@@ -125,7 +125,7 @@ export class Gauge implements IComponent {
               parseInt(currentChild.getAttribute("amount"), 10)
             )}, 248.16`}
           fill="none"
-          amount={currentChild.amount}
+          data-amount={currentChild.amount}
           stroke-width={`${component.calcThickness()}%`}
         />
       );
