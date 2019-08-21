@@ -65,7 +65,7 @@ export class Gauge implements IComponent {
 
   children = [];
 
-  @State() minimumSize: number;
+  minimumSize: number;
 
   @Listen("gxGaugeRangeDidLoad")
   onGaugeRangeDidLoad({ detail: childRange }) {
@@ -88,6 +88,13 @@ export class Gauge implements IComponent {
 
   componentWillLoad() {
     this.totalValues = 0;
+  }
+  componentDidLoad() {
+    this.element.setAttribute(
+      "style",
+      this.element.getAttribute("style") +
+        `--minimum-size: ${this.minimumSize}px`
+    );
   }
 
   private calcThickness() {
