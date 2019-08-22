@@ -72,7 +72,7 @@ export class Image
   /**
    * True to lazy load the image, when it enters the viewport.
    */
-  @Prop() lazyLoad = true;
+  @Prop() lazyLoad = false;
 
   /**
    * This attribute lets you specify the low resolution image SRC.
