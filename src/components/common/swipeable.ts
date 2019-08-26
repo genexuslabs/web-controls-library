@@ -14,8 +14,6 @@ export function makeSwipeable(comp: ISwipeable) {
   }
 
   function moveTouch(e) {
-    e.preventDefault();
-
     if (initialX === null) {
       return;
     }
