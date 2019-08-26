@@ -40,23 +40,29 @@ export class NavBarRender implements IRenderer {
     });
   }
 
-  private collapse(target: HTMLElement) {
+  private collapse(target: HTMLElement, animate = true) {
     if (this.transitioning) {
       return;
     }
 
     this.expanded = false;
-    target.style.height = getComputedStyle(target).height;
-    target.classList.add("collapsing");
+    if (animate) {
+      target.style.height = getComputedStyle(target).height;
+      target.classList.add("collapsing");
+    }
     target.classList.remove("show");
     target.classList.remove("collapse");
-    requestAnimationFrame(() => {
-      this.transitioning = true;
-      target.style.height = "";
-      if (!this.hasTransition(target)) {
-        this.finishExpandCollapse(target);
-      }
-    });
+    if (animate) {
+      requestAnimationFrame(() => {
+        this.transitioning = true;
+        target.style.height = "";
+        if (!this.hasTransition(target)) {
+          this.finishExpandCollapse(target);
+        }
+      });
+    } else {
+      this.finishExpandCollapse(target);
+    }
   }
 
   private hasTransition(el: HTMLElement) {
@@ -84,7 +90,7 @@ export class NavBarRender implements IRenderer {
       const collapseElement = this.component.element.querySelector(
         ".navbar-collapse"
       ) as HTMLElement;
-      this.collapse(collapseElement);
+      this.collapse(collapseElement, false);
     }
   }
 

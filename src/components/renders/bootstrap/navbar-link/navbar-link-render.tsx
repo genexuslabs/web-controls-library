@@ -27,8 +27,14 @@ export class NavBarLinkRender implements IRenderer {
         style={{
           "--gx-navbar-link-icon-src": `url("${this.component.iconSrc}")`
         }}
-        data-has-icon={!!this.component.iconSrc}
       >
+        {this.component.iconSrc && (
+          <img
+            class="nav-icon"
+            src={this.component.iconSrc}
+            aria-hidden="true"
+          />
+        )}
         {slots.default}
       </a>
     ];
