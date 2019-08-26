@@ -23,7 +23,7 @@ export class NavBarLinkRender implements IRenderer {
           [this.component.cssClass]: !!this.component.cssClass
         }}
         href={this.component.href}
-        onClick={!this.component.disabled ? this.handleClick.bind(this) : null}
+        onClick={!this.component.disabled && this.handleClick.bind(this)}
         style={{
           "--gx-navbar-link-icon-src": `url("${this.component.iconSrc}")`
         }}
