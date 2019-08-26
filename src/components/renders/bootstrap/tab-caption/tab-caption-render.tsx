@@ -20,7 +20,7 @@ export class TabCaptionRender implements IRenderer {
           "nav-link": true
         }}
         href="#"
-        onClick={this.clickHandler.bind(this)}
+        onClick={!this.component.disabled ? this.clickHandler.bind(this) : null}
       >
         {slots.default}
       </a>
@@ -28,9 +28,6 @@ export class TabCaptionRender implements IRenderer {
   }
 
   private clickHandler(event: UIEvent) {
-    if (this.component.disabled) {
-      return;
-    }
     event.preventDefault();
     this.component.onTabSelect.emit(event);
   }

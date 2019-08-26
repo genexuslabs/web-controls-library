@@ -55,17 +55,16 @@ export class TextBlock
   @Event() onClick: EventEmitter;
 
   handleClick(event: UIEvent) {
-    if (this.disabled) {
-      return;
-    }
-
     this.onClick.emit(event);
     event.preventDefault();
   }
 
   render() {
     const body = (
-      <div class="content" onClick={this.handleClick.bind(this)}>
+      <div
+        class="content"
+        onClick={!this.disabled ? this.handleClick.bind(this) : null}
+      >
         <slot />
       </div>
     );

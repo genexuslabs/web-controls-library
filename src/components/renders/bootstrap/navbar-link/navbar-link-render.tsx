@@ -6,10 +6,6 @@ export class NavBarLinkRender implements IRenderer {
   constructor(public component: NavBarLink) {}
 
   private handleClick(event: UIEvent) {
-    if (this.component.disabled) {
-      return;
-    }
-
     this.component.onClick.emit(event);
     event.preventDefault();
   }
@@ -27,7 +23,7 @@ export class NavBarLinkRender implements IRenderer {
           [this.component.cssClass]: !!this.component.cssClass
         }}
         href={this.component.href}
-        onClick={this.handleClick.bind(this)}
+        onClick={!this.component.disabled && this.handleClick.bind(this)}
         style={{
           "--gx-navbar-link-icon-src": `url("${this.component.iconSrc}")`
         }}
