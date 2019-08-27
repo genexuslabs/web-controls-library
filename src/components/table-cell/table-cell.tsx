@@ -33,9 +33,54 @@ export class TableCell implements IComponent {
   @Prop() overflowMode: "scroll" | "clip";
 
   /**
+   * This attribute defines the minimum height of the cell when its contents are visible.
+   * Ignored if its content has `invisible-mode` = `collapse` and is hidden.
+   *
+   */
+  @Prop() minHeight: string;
+
+  /**
    * Defines the vertical aligmnent of the content of the cell.
    */
   @Prop() valign: "top" | "bottom" | "medium" = "top";
+
+  private observer: MutationObserver;
+
+  componentDidLoad() {
+    const childElement = this.element.firstElementChild as HTMLElement;
+    this.setMinHeight(childElement);
+    this.setupObserver(childElement);
+  }
+
+  private setupObserver(childElement: HTMLElement) {
+    this.observer = new MutationObserver((mutationsList: MutationRecord[]) => {
+      for (const mutation of mutationsList) {
+        if (
+          mutation.type === "attributes" &&
+          mutation.attributeName === "hidden"
+        ) {
+          this.setMinHeight(childElement);
+        }
+      }
+    });
+
+    this.observer.observe(childElement, {
+      attributes: true,
+      childList: false,
+      subtree: false
+    });
+  }
+
+  private setMinHeight(childElement: any) {
+    this.element.style.minHeight =
+      childElement.invisibleMode === "collapse" && childElement.hidden
+        ? "0"
+        : this.minHeight;
+  }
+
+  componentDidUnload() {
+    this.observer.disconnect();
+  }
 
   render() {
     if (this.element) {
