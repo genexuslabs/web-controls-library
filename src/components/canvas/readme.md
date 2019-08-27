@@ -13,9 +13,14 @@ A container for creating absolute positioned layouts.
 
 ## Events
 
-| Event     | Description                          | Type               |
-| --------- | ------------------------------------ | ------------------ |
-| `onClick` | Emitted when the element is clicked. | `CustomEvent<any>` |
+| Event          | Description                                             | Type               |
+| -------------- | ------------------------------------------------------- | ------------------ |
+| `onClick`      | Emitted when the element is clicked.                    | `CustomEvent<any>` |
+| `onSwipe`      | Emitted when the element is swiped.                     | `CustomEvent<any>` |
+| `onSwipeDown`  | Emitted when the element is swiped downward direction.  | `CustomEvent<any>` |
+| `onSwipeLeft`  | Emitted when the element is swiped left direction..     | `CustomEvent<any>` |
+| `onSwipeRight` | Emitted when the element is swiped right direction.     | `CustomEvent<any>` |
+| `onSwipeUp`    | Emitted when the element is swiped in upward direction. | `CustomEvent<any>` |
 
 ---
 
