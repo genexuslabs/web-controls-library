@@ -956,6 +956,14 @@ export namespace Components {
      */
     area: string;
     /**
+     * This attribute defines the maximum height of the cell.
+     */
+    maxHeight: string;
+    /**
+     * This attribute defines the minimum height of the cell when its contents are visible. Ignored if its content has `invisible-mode` = `collapse` and is hidden.
+     */
+    minHeight: string;
+    /**
      * This attribute defines how the control behaves when the content overflows.  | Value    | Details                                                     | | -------- | ----------------------------------------------------------- | | `scroll` | The overflowin content is hidden, but scrollbars are shown  | | `clip`   | The overflowing content is hidden, without scrollbars       |
      */
     overflowMode: "scroll" | "clip";
@@ -2428,6 +2436,14 @@ declare namespace LocalJSX {
      * Like the `grid-area` CSS property, this attribute gives a name to the item, so it can be used from the [areas-template attributes](../table/readme.md#areas-template) of the gx-table element.
      */
     area?: string;
+    /**
+     * This attribute defines the maximum height of the cell.
+     */
+    maxHeight?: string;
+    /**
+     * This attribute defines the minimum height of the cell when its contents are visible. Ignored if its content has `invisible-mode` = `collapse` and is hidden.
+     */
+    minHeight?: string;
     /**
      * This attribute defines how the control behaves when the content overflows.  | Value    | Details                                                     | | -------- | ----------------------------------------------------------- | | `scroll` | The overflowin content is hidden, but scrollbars are shown  | | `clip`   | The overflowing content is hidden, without scrollbars       |
      */
