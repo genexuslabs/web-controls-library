@@ -5,17 +5,18 @@ gx-video {
     * @prop --active-stars-color:
      * Set the color that will have the stars.
     */
-  --gx-video-height: auto;
+  --gx-video-height: 500px;
 
   display: flex;
   width: 100%;
-  height: --gx-video-height;
 
   div.gxVideoContainer {
+    height: var(--gx-video-height);
     display: flex;
     flex: 1;
     iframe {
       flex: 1;
+      border: none;
     }
   }
 }
