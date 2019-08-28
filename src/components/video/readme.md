@@ -20,9 +20,9 @@ A component to load a video.
 
 ## CSS Custom Properties
 
-| Name                   | Description                             |
-| ---------------------- | --------------------------------------- |
-| `--active-stars-color` | Set the color that will have the stars. |
+| Name                | Description                                       |
+| ------------------- | ------------------------------------------------- |
+| `--gx-video-height` | Set the height or the control. (500px by default) |
 
 ---
 
