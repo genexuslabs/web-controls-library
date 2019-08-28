@@ -1,6 +1,7 @@
 @import "../common/_base";
 
 gx-table-cell {
+  overflow: auto;
   @include containerCell();
 
   flex-direction: row;
