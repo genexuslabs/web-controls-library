@@ -1,6 +1,14 @@
-import { Component, Element, Prop, h } from "@stencil/core";
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Prop,
+  h
+} from "@stencil/core";
 
 import {
+  IClickableComponent,
   IComponent,
   IDisableableComponent,
   IVisibilityComponent
@@ -12,7 +20,11 @@ import {
   tag: "gx-video"
 })
 export class Video
-  implements IComponent, IDisableableComponent, IVisibilityComponent {
+  implements
+    IComponent,
+    IClickableComponent,
+    IDisableableComponent,
+    IVisibilityComponent {
   @Element() element: HTMLElement;
 
   /**
@@ -35,20 +47,38 @@ export class Video
   /**
    * This attribute is for specifies the src of the video.
    */
-  @Prop() urlSrc: "String";
+  @Prop() src: string;
+
+  /* Property for tomorrow
+    /**
+     * True to lazy load the image, when it enters the viewport.
+     *
+    @Prop() lazyLoad = true;
+  */
+
+  /**
+   * Emitted when the element is clicked.
+   */
+  @Event() onClick: EventEmitter;
+
+  handleClick(event: UIEvent) {
+    if (this.disabled) {
+      event.stopPropagation();
+      return;
+    }
+    this.onClick.emit(event);
+    event.preventDefault();
+  }
 
   private parseYoutubeSrc(src) {
-    const ytUrl = {
-      domain: src.split("watch?v=")[0],
-      videoId: src.split("watch?v=")[1]
-    };
-    return `${ytUrl.domain}embed/${ytUrl.videoId}`;
+    const domain_ID_Array = src.split("watch?v=");
+    return `${domain_ID_Array[0]}embed/${domain_ID_Array[1]}`;
   }
 
   render() {
     return (
       <div class="gxVideoContainer">
-        <iframe src={this.parseYoutubeSrc} />
+        <iframe src={this.parseYoutubeSrc(this.src)} />
       </div>
     );
   }
