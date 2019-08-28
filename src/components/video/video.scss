@@ -1,0 +1,21 @@
+@import "../common/_base";
+
+gx-video {
+  /**
+    * @prop --active-stars-color:
+     * Set the color that will have the stars.
+    */
+  --gx-video-height: auto;
+
+  display: flex;
+  width: 100%;
+  height: --gx-video-height;
+
+  div.gxVideoContainer {
+    display: flex;
+    flex: 1;
+    iframe {
+      flex: 1;
+    }
+  }
+}
