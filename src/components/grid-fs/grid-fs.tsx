@@ -65,11 +65,15 @@ export class GridFreeStyle
   render() {
     return [
       <slot name="grid-content" />,
+
       <gx-grid-infinite-scroll
         threshold={this.threshold}
         infiniteScrollContainer="gx-table-cell"
         itemCount={this.recordCount}
-        onGxInfinite={() => this.gxInfiniteThresholdReached.emit()}
+        onGxInfinite={() =>
+          this.loadingState !== "loading" &&
+          this.gxInfiniteThresholdReached.emit()
+        }
       >
         <gx-grid-infinite-scroll-content>
           <slot name="grid-loading-content" />
