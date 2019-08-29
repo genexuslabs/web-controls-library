@@ -62,10 +62,6 @@ export class Video
   @Event() onClick: EventEmitter;
 
   handleClick(event: UIEvent) {
-    if (this.disabled) {
-      event.stopPropagation();
-      return;
-    }
     this.onClick.emit(event);
     event.preventDefault();
   }
@@ -77,7 +73,10 @@ export class Video
 
   render() {
     return (
-      <div class="gxVideoContainer">
+      <div
+        class="gxVideoContainer"
+        onClick={!this.disabled ? this.handleClick.bind(this) : null}
+      >
         <iframe src={this.parseYoutubeSrc(this.src)} />
       </div>
     );
