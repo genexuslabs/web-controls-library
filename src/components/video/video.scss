@@ -3,10 +3,10 @@
 gx-video {
   /**
     * @prop --gx-video-height:
-    * Set the height or the control.
-    * (500px by default)
+    * Set the height of the control from the video container or the control itself.
+    * (100% by default)
     */
-  --gx-video-height: 500px;
+  --gx-video-height: 100%;
 
   display: flex;
   width: 100%;
