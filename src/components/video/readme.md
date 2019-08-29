@@ -2,6 +2,16 @@
 
 A component to load a video.
 
+## Video Support
+
+By now, only supports youtube videos. Future updates will support videos URLs from any platform.
+
+## Usage Sample
+
+```HTML
+<gx-video src="https://www.youtube.com/watch?v=k2jT6TlxEOM" style="--gx-video-height: 50vh;"></gx-video>
+```
+
 <!-- Auto Generated Below -->
 
 ## Properties
@@ -20,9 +30,9 @@ A component to load a video.
 
 ## CSS Custom Properties
 
-| Name                | Description                                       |
-| ------------------- | ------------------------------------------------- |
-| `--gx-video-height` | Set the height or the control. (500px by default) |
+| Name                | Description                                                                                     |
+| ------------------- | ----------------------------------------------------------------------------------------------- |
+| `--gx-video-height` | Set the height of the control from the video container or the control itself. (100% by default) |
 
 ---
 
