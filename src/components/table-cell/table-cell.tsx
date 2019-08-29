@@ -33,9 +33,71 @@ export class TableCell implements IComponent {
   @Prop() overflowMode: "scroll" | "clip";
 
   /**
+   * This attribute defines the maximum height of the cell.
+   *
+   */
+  @Prop() maxHeight: string;
+
+  /**
+   * This attribute defines the minimum height of the cell when its contents are visible.
+   * Ignored if its content has `invisible-mode` = `collapse` and is hidden.
+   *
+   */
+  @Prop() minHeight: string;
+
+  /**
    * Defines the vertical aligmnent of the content of the cell.
    */
   @Prop() valign: "top" | "bottom" | "medium" = "top";
+
+  private observer: MutationObserver;
+
+  componentDidRender() {
+    this.setMinHeight(this.element.firstElementChild);
+    this.setMaxHeight();
+  }
+
+  componentDidLoad() {
+    this.setupObserver(this.element.firstElementChild);
+  }
+
+  private setupObserver(childElement: any) {
+    if (childElement.invisibleMode === "collapse") {
+      this.observer = new MutationObserver(
+        (mutationsList: MutationRecord[]) => {
+          for (const mutation of mutationsList) {
+            if (
+              mutation.type === "attributes" &&
+              mutation.attributeName === "hidden"
+            ) {
+              this.setMinHeight(childElement);
+            }
+          }
+        }
+      );
+
+      this.observer.observe(childElement, {
+        attributes: true,
+        childList: false,
+        subtree: false
+      });
+    }
+  }
+
+  private setMinHeight(childElement: any) {
+    this.element.style.minHeight =
+      childElement.invisibleMode === "collapse" && childElement.hidden
+        ? "0"
+        : this.minHeight;
+  }
+
+  private setMaxHeight() {
+    this.element.style.maxHeight = this.maxHeight;
+  }
+
+  componentDidUnload() {
+    this.observer.disconnect();
+  }
 
   render() {
     if (this.element) {
