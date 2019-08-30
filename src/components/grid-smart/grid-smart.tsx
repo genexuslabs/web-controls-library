@@ -211,7 +211,9 @@ export class GridSmart
   }
 
   componentDidUnload() {
-    this.swiper.destroy(true, true);
+    if (this.isInitialized()) {
+      this.swiper.destroy(true, true);
+    }
   }
 
   /**
