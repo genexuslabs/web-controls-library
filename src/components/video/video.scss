@@ -8,7 +8,7 @@ gx-video {
     */
   --gx-video-height: 100%;
 
-  display: flex;
+  @include visibility(flex);
   width: 100%;
 
   & > div {
