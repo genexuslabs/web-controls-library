@@ -96,7 +96,9 @@ export class TableCell implements IComponent {
   }
 
   componentDidUnload() {
-    this.observer.disconnect();
+    if (this.observer) {
+      this.observer.disconnect();
+    }
   }
 
   render() {
