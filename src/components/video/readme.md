@@ -4,7 +4,7 @@ A component to load a video.
 
 ## Video Support
 
-By now, only supports youtube videos. Future updates will support videos URLs from any platform.
+At the moment it only supports Youtube videos. Future updates will support videos URLs from other video publishers and single video files.
 
 ## Usage Sample
 
@@ -33,6 +33,7 @@ By now, only supports youtube videos. Future updates will support videos URLs fr
 | Name                | Description                                                                                     |
 | ------------------- | ----------------------------------------------------------------------------------------------- |
 | `--gx-video-height` | Set the height of the control from the video container or the control itself. (100% by default) |
+| `--gx-video-width`  | Set the width of the control from the video container or the control itself. (100% by default)  |
 
 ---
 
