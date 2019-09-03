@@ -27,6 +27,8 @@ gx-edit {
 
   [data-readonly] {
     margin: 0;
+    margin-right: var(--margin-right, 0);
+    margin-left: var(--margin-left, 0);
     padding: 0;
     line-height: 1.2;
   }
