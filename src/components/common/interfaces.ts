@@ -25,6 +25,10 @@ export interface IFormComponent
   handleChange: (UIEvent) => void;
   id: string;
   input: EventEmitter;
+  /**
+   * Returns the DOM Control Id of the "labelable" element inside the component. This Id will be used for <label> 'for' attribute.
+   * Labelable elements are: button, input (if the type attribute is not in the Hidden state) progress, select, textarea, form-associated custom elements
+   */
   getNativeInputId: () => void;
 }
 

@@ -986,6 +986,20 @@ export namespace Components {
      */
     invisibleMode: "collapse" | "keep-space";
   }
+  interface GxVideo {
+    /**
+     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+     */
+    disabled: boolean;
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode: "collapse" | "keep-space";
+    /**
+     * This attribute is for specifies the src of the video.
+     */
+    src: string;
+  }
 }
 
 declare global {
@@ -1284,6 +1298,12 @@ declare global {
     prototype: HTMLGxTextblockElement;
     new (): HTMLGxTextblockElement;
   };
+
+  interface HTMLGxVideoElement extends Components.GxVideo, HTMLStencilElement {}
+  var HTMLGxVideoElement: {
+    prototype: HTMLGxVideoElement;
+    new (): HTMLGxVideoElement;
+  };
   interface HTMLElementTagNameMap {
     "gx-action-sheet": HTMLGxActionSheetElement;
     "gx-action-sheet-item": HTMLGxActionSheetItemElement;
@@ -1324,6 +1344,7 @@ declare global {
     "gx-table": HTMLGxTableElement;
     "gx-table-cell": HTMLGxTableCellElement;
     "gx-textblock": HTMLGxTextblockElement;
+    "gx-video": HTMLGxVideoElement;
   }
 }
 
@@ -2471,6 +2492,24 @@ declare namespace LocalJSX {
      */
     onOnClick?: (event: CustomEvent<any>) => void;
   }
+  interface GxVideo extends JSXBase.HTMLAttributes<HTMLGxVideoElement> {
+    /**
+     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+     */
+    disabled?: boolean;
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode?: "collapse" | "keep-space";
+    /**
+     * Emitted when the element is clicked.
+     */
+    onOnClick?: (event: CustomEvent<any>) => void;
+    /**
+     * This attribute is for specifies the src of the video.
+     */
+    src?: string;
+  }
 
   interface IntrinsicElements {
     "gx-action-sheet": GxActionSheet;
@@ -2512,6 +2551,7 @@ declare namespace LocalJSX {
     "gx-table": GxTable;
     "gx-table-cell": GxTableCell;
     "gx-textblock": GxTextblock;
+    "gx-video": GxVideo;
   }
 }
 

@@ -3,11 +3,16 @@ import { IRenderer } from "../../../common/interfaces";
 import { Select } from "../../../select/select";
 
 export class SelectRender implements IRenderer {
-  constructor(public component: Select) {}
+  constructor(public component: Select) {
+    if (!this.selectId && !this.component.readonly) {
+      this.selectId = this.component.id
+        ? `${this.component.id}__select`
+        : `gx-select-auto-id-${autoSelectId++}`;
+    }
+  }
 
   protected options: any[] = [];
   protected element: HTMLElement;
-  protected nativeSelect: HTMLSelectElement;
   private selectId: string;
 
   updateOptions(options) {
@@ -15,8 +20,11 @@ export class SelectRender implements IRenderer {
   }
 
   getNativeInputId() {
-    return this.nativeSelect.id;
+    return !this.component.readonly ? this.selectId : null;
   }
+
+  /* tslint:disable-next-line:no-empty */
+  componentDidUnload() {}
 
   private getCssClasses() {
     const classList = [];
@@ -53,17 +61,7 @@ export class SelectRender implements IRenderer {
     this.component.input.emit(event);
   }
 
-  componentDidUnload() {
-    this.nativeSelect = null;
-  }
-
   render() {
-    if (!this.selectId) {
-      this.selectId = this.component.id
-        ? `${this.component.id}__select`
-        : `gx-select-auto-id-${autoSelectId++}`;
-    }
-
     if (this.component.readonly) {
       return (
         <span class={this.getCssClasses()}>
@@ -79,7 +77,6 @@ export class SelectRender implements IRenderer {
         onChange: this.handleChange.bind(this),
         ref: (select: HTMLSelectElement) => {
           select.value = this.component.value;
-          this.nativeSelect = select;
         }
       };
 
