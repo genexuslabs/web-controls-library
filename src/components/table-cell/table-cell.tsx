@@ -62,7 +62,7 @@ export class TableCell implements IComponent {
   }
 
   private setupObserver(childElement: any) {
-    if (childElement.invisibleMode === "collapse") {
+    if (childElement && childElement.invisibleMode === "collapse") {
       this.observer = new MutationObserver(
         (mutationsList: MutationRecord[]) => {
           for (const mutation of mutationsList) {
@@ -85,10 +85,12 @@ export class TableCell implements IComponent {
   }
 
   private setMinHeight(childElement: any) {
-    this.element.style.minHeight =
-      childElement.invisibleMode === "collapse" && childElement.hidden
-        ? "0"
-        : this.minHeight;
+    if (childElement) {
+      this.element.style.minHeight =
+        childElement.invisibleMode === "collapse" && childElement.hidden
+          ? "0"
+          : this.minHeight;
+    }
   }
 
   private setMaxHeight() {
