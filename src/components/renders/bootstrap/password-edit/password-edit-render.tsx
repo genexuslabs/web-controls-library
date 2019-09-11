@@ -63,7 +63,7 @@ export class PasswordEditRender implements IRenderer {
         onInput={this.handleInput.bind(this)}
       >
         <i
-          class={"fa fa-eye" + (this.component.revealed ? "-slash" : "")}
+          class={"icon icon-eye" + (this.component.revealed ? "-slash" : "")}
           slot="trigger-content"
         />
       </gx-edit>
