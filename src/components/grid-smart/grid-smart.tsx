@@ -477,7 +477,7 @@ export class GridSmart
         slideShadows: true
       },
       fadeEffect: {
-        crossfade: false
+        crossFade: false
       }
     };
 
