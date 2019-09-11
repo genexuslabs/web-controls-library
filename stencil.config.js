@@ -17,12 +17,7 @@ exports.config = {
       ]
     }
   ],
-  copy: [
-    {
-      src: "../node_modules/font-awesome/fonts",
-      dest: "bootstrap/font-awesome/fonts"
-    }
-  ],
+  copy: [],
   namespace: "gx-web-controls",
   outputTargets: [
     {

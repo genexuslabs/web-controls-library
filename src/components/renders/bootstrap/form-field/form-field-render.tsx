@@ -8,21 +8,21 @@ export class FormFieldRender implements IRenderer {
   private formFieldId: string;
 
   private LABEL_WIDTH_BY_POSITION = {
-    bottom: "col-sm-12",
+    bottom: "label-bottom",
     float: "",
-    left: "col-sm-2",
+    left: "label-left",
     none: "sr-only",
-    right: "col-sm-2",
-    top: "col-sm-12"
+    right: "label-right",
+    top: "label-top"
   };
 
   private INNER_CONTROL_WIDTH_BY_LABEL_POSITION = {
-    bottom: "col-sm-12",
+    bottom: "field-label-bottom",
     float: "",
-    left: "col-sm-10",
-    none: "col-sm-12",
-    right: "col-sm-10",
-    top: "col-sm-12"
+    left: "field-label-left",
+    none: "field-label-top",
+    right: "field-label-right",
+    top: "field-label-top"
   };
 
   private getLabelCssClass() {
@@ -88,7 +88,7 @@ export class FormFieldRender implements IRenderer {
     );
     return (
       <div class="form-group mb-0" aria-labelledby={labelId} role="group">
-        <div class="row no-gutters">
+        <div class="radio-group no-gutters">
           {renderLabel && renderLabelBefore ? label : null}
           <div class={this.getInnerControlContainerClass()}>{slot}</div>
           {renderLabel && !renderLabelBefore ? label : null}
@@ -127,7 +127,7 @@ export class FormFieldRender implements IRenderer {
             {label}
           </div>
         ) : (
-          <div class="form-group row no-gutters mb-0">
+          <div class="form-group no-gutters mb-0">
             {renderLabel && renderLabelBefore ? label : null}
             <div class={this.getInnerControlContainerClass()}>
               {slots.default}
