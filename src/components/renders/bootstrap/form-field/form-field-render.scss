@@ -66,16 +66,52 @@ gx-form-field {
     }
   }
 
-  & > .form-group {
-    max-height: 100%;
+  .label-left,
+  .label-right {
+    position: relative;
+    width: 100%;
+    flex: 0 0 25%;
+    max-width: 25%;
   }
 
-  & > .row {
+  .label-top,
+  .label-bottom .field-label-top,
+  .field-label-bottom {
+    position: relative;
+    width: 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .field-label-left,
+  .field-label-right {
+    position: relative;
+    width: 100%;
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
+
+  .label-content {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  & > .form-group {
+    max-height: 100%;
+    display: flex;
     flex: 1;
+    flex-wrap: wrap;
     & > div {
       flex: 1;
       max-height: 100%;
     }
+  }
+
+  .radio-group {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
   }
 
   gx-checkbox {
