@@ -2,10 +2,12 @@
 
 gx-textblock {
   --elevation: 0;
+  flex: 1;
 
-  @include visibility(inline-block);
+  @include visibility(inline-flex);
 
   & > .content {
+    flex: 1;
     @include elevation();
   }
 }
