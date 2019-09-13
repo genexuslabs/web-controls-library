@@ -36,6 +36,8 @@ export class NavBarRender implements IRenderer {
       target.style.height = `${target.scrollHeight}px`;
       if (!this.hasTransition(target)) {
         this.finishExpandCollapse(target);
+      } else {
+        this.ensureFinishExpandCollapse(target);
       }
     });
   }
@@ -58,11 +60,21 @@ export class NavBarRender implements IRenderer {
         target.style.height = "";
         if (!this.hasTransition(target)) {
           this.finishExpandCollapse(target);
+        } else {
+          this.ensureFinishExpandCollapse(target);
         }
       });
     } else {
       this.finishExpandCollapse(target);
     }
+  }
+
+  private ensureFinishExpandCollapse(target: HTMLElement) {
+    setTimeout(() => {
+      if (this.transitioning) {
+        this.finishExpandCollapse(target);
+      }
+    }, 500);
   }
 
   private hasTransition(el: HTMLElement) {
