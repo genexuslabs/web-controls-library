@@ -33,14 +33,14 @@ npm run build
 
 ### Script tag
 
-* Put a script tag similar to this `<script src='https://unpkg.com/@genexus/web-controls-library/dist/index.js'></script>` in the head of your index.html
-* Then you can use the elements anywhere in your template, JSX, html etc
+- Put a script tag similar to this `<script src='https://unpkg.com/@genexus/web-controls-library/dist/index.js'></script>` in the head of your index.html
+- Then you can use the elements anywhere in your template, JSX, html etc
 
 ### Node Modules
 
-* Run `npm install @genexus/web-controls-library --save`
-* Put a script tag similar to this `<script src='node_modules/@genexus/web-controls-library/dist/index.js'></script>` in the head of your index.html
-* Then you can use the element anywhere in your template, JSX, html etc
+- Run `npm install @genexus/web-controls-library --save`
+- Put a script tag similar to this `<script src='node_modules/@genexus/web-controls-library/dist/index.js'></script>` in the head of your index.html
+- Then you can use the element anywhere in your template, JSX, html etc
 
 ## Authors
 
@@ -48,4 +48,14 @@ See the list of [contributors](https://github.com/genexuslabs/web-controls-libra
 
 ## License
 
-MIT
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
