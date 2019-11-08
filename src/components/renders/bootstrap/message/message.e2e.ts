@@ -50,7 +50,8 @@ describe("gx-message", () => {
     element = await page.find("gx-message");
     setTimeout(async () => {
       await page.waitForChanges();
-      expect(await page.find(".alert")).not.toHaveClass("show");
+      const alertElement = await page.find(".alert");
+      expect(alertElement).not.toHaveClass("show");
       done();
     }, 300);
   });

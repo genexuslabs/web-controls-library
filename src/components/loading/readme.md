@@ -57,7 +57,7 @@ loadingEl.value = 1;
 
 ### Depends on
 
-- [gx-lottie](..\lottie)
+- [gx-lottie](../lottie)
 
 ### Graph
 

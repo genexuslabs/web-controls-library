@@ -76,7 +76,7 @@ Type: `Promise<void>`
 
 ### Used by
 
-- [gx-loading](..\loading)
+- [gx-loading](../loading)
 
 ### Graph
 

@@ -31,8 +31,8 @@ When the grid is loading, a CSS Class named 'gx-grid-loading' is added to the ho
 
 ### Depends on
 
-- [gx-grid-infinite-scroll](..\grid-infinite-scroll)
-- [gx-grid-infinite-scroll-content](..\grid-infinite-scroll-content)
+- [gx-grid-infinite-scroll](../grid-infinite-scroll)
+- [gx-grid-infinite-scroll-content](../grid-infinite-scroll-content)
 
 ### Graph
 

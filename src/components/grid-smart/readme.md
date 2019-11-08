@@ -174,7 +174,7 @@ Type: `Promise<void>`
 
 ### Depends on
 
-- [gx-grid-infinite-scroll-content](..\grid-infinite-scroll-content)
+- [gx-grid-infinite-scroll-content](../grid-infinite-scroll-content)
 
 ### Graph
 
