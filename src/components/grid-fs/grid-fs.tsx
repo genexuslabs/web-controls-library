@@ -4,10 +4,10 @@ import {
   Element,
   Event,
   EventEmitter,
+  Method,
   Prop,
-  h,
-  Method
-} from "@stencil/core";
+  h
+}  from "@stencil/core";
 import { GridBaseHelper, IGridBase } from "../grid-base/grid-base";
 import { IVisibilityComponent } from "../common/interfaces";
 
@@ -68,9 +68,9 @@ export class GridFreeStyle
   */
   @Method()
   async complete() {
-    this.el.querySelector('gx-grid-infinite-scroll').complete();
+    this.el.querySelector("gx-grid-infinite-scroll").complete();
   }
-    
+
   render() {
     return [
       <slot name="grid-content" />,

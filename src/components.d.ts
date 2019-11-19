@@ -4,1048 +4,1042 @@
  * It contains typing information for all components that exist in this project.
  */
 
-import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { TimerState } from "./components/chronometer/chronometer-timer-state";
-import { SwiperOptions } from "swiper";
+
+import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
+import {
+  TimerState,
+} from './components/chronometer/chronometer-timer-state';
+import {
+  SwiperOptions,
+} from 'swiper';
 
 export namespace Components {
   interface GxActionSheet {
     /**
-     * This attribute lets you specify the label for the close button. Important for accessibility.
-     */
-    closeButtonLabel: string;
+    * This attribute lets you specify the label for the close button. Important for accessibility.
+    */
+    'closeButtonLabel': string;
     /**
-     * This attribute lets you specify if the action sheet is opened or closed.
-     */
-    opened: boolean;
+    * This attribute lets you specify if the action sheet is opened or closed.
+    */
+    'opened': boolean;
   }
   interface GxActionSheetItem {
     /**
-     * This attribute lets you specify the type of action. `"cancel"` and `"destructive"` are style differently
-     */
-    actionType: "cancel" | "default" | "destructive";
+    * This attribute lets you specify the type of action. `"cancel"` and `"destructive"` are style differently
+    */
+    'actionType': "cancel" | "default" | "destructive";
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled': boolean;
   }
   interface GxBootstrap {}
   interface GxButton {
     /**
-     * A CSS class to set as the inner `input` element class.
-     */
-    cssClass: string;
+    * A CSS class to set as the inner `input` element class.
+    */
+    'cssClass': string;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event). If a disabled image has been specified, it will be shown, hiding the base image (if specified).
-     */
-    disabled: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event). If a disabled image has been specified, it will be shown, hiding the base image (if specified).
+    */
+    'disabled': boolean;
     /**
-     * This attribute lets you specify the relative location of the image to the text.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `above`  | The image is located above the text.                    | | `before` | The image is located before the text, in the same line. | | `after`  | The image is located after the text, in the same line.  | | `below`  | The image is located below the text.                    | | `behind` | The image is located behind the text.                   |
-     */
-    imagePosition: "above" | "before" | "after" | "below" | "behind";
+    * This attribute lets you specify the relative location of the image to the text.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `above`  | The image is located above the text.                    | | `before` | The image is located before the text, in the same line. | | `after`  | The image is located after the text, in the same line.  | | `below`  | The image is located below the text.                    | | `behind` | The image is located behind the text.                   |
+    */
+    'imagePosition': "above" | "before" | "after" | "below" | "behind";
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
     /**
-     * This attribute lets you specify the size of the button.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `large`  | Large sized button.                                     | | `normal` | Standard sized button.                                  | | `small`  | Small sized button.                                     |
-     */
-    size: "large" | "normal" | "small";
+    * This attribute lets you specify the size of the button.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `large`  | Large sized button.                                     | | `normal` | Standard sized button.                                  | | `small`  | Small sized button.                                     |
+    */
+    'size': "large" | "normal" | "small";
   }
   interface GxCanvas {
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled': boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
   }
   interface GxCanvasCell {
     /**
-     * Defines the horizontal aligmnent of the content of the cell.
-     */
-    align: "left" | "right" | "center";
+    * Defines the horizontal aligmnent of the content of the cell.
+    */
+    'align': "left" | "right" | "center";
     /**
-     * This attribute defines how the control behaves when the content overflows.  | Value    | Details                                                     | | -------- | ----------------------------------------------------------- | | `scroll` | The overflowin content is hidden, but scrollbars are shown  | | `clip`   | The overflowing content is hidden, without scrollbars       |
-     */
-    overflowMode: "scroll" | "clip";
+    * This attribute defines how the control behaves when the content overflows.  | Value    | Details                                                     | | -------- | ----------------------------------------------------------- | | `scroll` | The overflowin content is hidden, but scrollbars are shown  | | `clip`   | The overflowing content is hidden, without scrollbars       |
+    */
+    'overflowMode': "scroll" | "clip";
     /**
-     * Defines the vertical aligmnent of the content of the cell.
-     */
-    valign: "top" | "bottom" | "medium";
+    * Defines the vertical aligmnent of the content of the cell.
+    */
+    'valign': "top" | "bottom" | "medium";
   }
   interface GxCard {
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
     /**
-     * True to show the card border. False to hide it.
-     */
-    showBorder: boolean;
+    * True to show the card border. False to hide it.
+    */
+    'showBorder': boolean;
     /**
-     * True to show the card footer. False to hide it.
-     */
-    showFooter: boolean;
+    * True to show the card footer. False to hide it.
+    */
+    'showFooter': boolean;
     /**
-     * True to show the card header. False to hide it.
-     */
-    showHeader: boolean;
+    * True to show the card header. False to hide it.
+    */
+    'showHeader': boolean;
   }
   interface GxCheckbox {
     /**
-     * Specifies the label of the checkbox.
-     */
-    caption: string;
+    * Specifies the label of the checkbox.
+    */
+    'caption': string;
     /**
-     * Indicates that the control is selected by default.
-     */
-    checked: boolean;
+    * Indicates that the control is selected by default.
+    */
+    'checked': boolean;
     /**
-     * The value when the checkbox is 'on'
-     */
-    checkedValue: string;
+    * The value when the checkbox is 'on'
+    */
+    'checkedValue': string;
     /**
-     * A CSS class to set as the inner `input` element class.
-     */
-    cssClass: string;
+    * A CSS class to set as the inner `input` element class.
+    */
+    'cssClass': string;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled': boolean;
     /**
-     * Returns the id of the inner `input` element (if set).
-     */
-    getNativeInputId: () => Promise<string>;
+    * Returns the id of the inner `input` element (if set).
+    */
+    'getNativeInputId': () => Promise<string>;
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id': string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
     /**
-     * The value when the checkbox is 'off'
-     */
-    unCheckedValue: string;
+    * The value when the checkbox is 'off'
+    */
+    'unCheckedValue': string;
     /**
-     * The value of the control.
-     */
-    value: string;
+    * The value of the control.
+    */
+    'value': string;
   }
   interface GxChronometer {
     /**
-     * Returns the id of the inner `input` element (if set).
-     */
-    getNativeInputId: () => Promise<any>;
+    * Returns the id of the inner `input` element (if set).
+    */
+    'getNativeInputId': () => Promise<any>;
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id': string;
     /**
-     * Defines the interval that the function onTick will be called.
-     */
-    interval: number;
+    * Defines the interval that the function onTick will be called.
+    */
+    'interval': number;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
     /**
-     * When the chronometer reaches this value, MaxValueText will be shown instead of the Chronometer value.
-     */
-    maxValue: number;
+    * When the chronometer reaches this value, MaxValueText will be shown instead of the Chronometer value.
+    */
+    'maxValue': number;
     /**
-     * Text to be displayed when chronometer value reaches maxValue.
-     */
-    maxValueText: string;
+    * Text to be displayed when chronometer value reaches maxValue.
+    */
+    'maxValueText': string;
     /**
-     * Stops and set to 0 the Chronometer.
-     */
-    reset: () => Promise<void>;
+    * Stops and set to 0 the Chronometer.
+    */
+    'reset': () => Promise<void>;
     /**
-     * Starts the Chronometer
-     */
-    start: () => Promise<void>;
+    * Starts the Chronometer
+    */
+    'start': () => Promise<void>;
     /**
-     * State of the Chronometer.
-     */
-    state: TimerState;
+    * State of the Chronometer.
+    */
+    'state': TimerState;
     /**
-     * Stops the Chronometer
-     */
-    stop: () => Promise<void>;
+    * Stops the Chronometer
+    */
+    'stop': () => Promise<void>;
     /**
-     * Time unit: (s) seconds or (ms) milliseconds for every time control Property.
-     */
-    unit: "s" | "ms";
+    * Time unit: (s) seconds or (ms) milliseconds for every time control Property.
+    */
+    'unit': "s" | "ms";
     /**
-     * The value of the control.
-     */
-    value: number;
+    * The value of the control.
+    */
+    'value': number;
   }
   interface GxEdit {
-    area: string;
+    'area': string;
     /**
-     * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize) attribute for `input` elements. Only supported by Safari and Chrome.
-     */
-    autocapitalize: string;
+    * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize) attribute for `input` elements. Only supported by Safari and Chrome.
+    */
+    'autocapitalize': string;
     /**
-     * This attribute indicates whether the value of the control can be automatically completed by the browser. Same as [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocomplete) attribute for `input` elements.
-     */
-    autocomplete: "on" | "off";
+    * This attribute indicates whether the value of the control can be automatically completed by the browser. Same as [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocomplete) attribute for `input` elements.
+    */
+    'autocomplete': "on" | "off";
     /**
-     * Used to control whether autocorrection should be enabled when the user is entering/editing the text value. Sames as [autocorrect](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocorrect) attribute for `input` elements.
-     */
-    autocorrect: string;
+    * Used to control whether autocorrection should be enabled when the user is entering/editing the text value. Sames as [autocorrect](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocorrect) attribute for `input` elements.
+    */
+    'autocorrect': string;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled': boolean;
     /**
-     * Used to define the semantic of the element when readonly=true.  Font categories are mapped to semantic HTML elements when rendered:  * `"headline"`: `h1` * `"subheadline"`: `h2` * `"body"`: `p` * `"footnote"`: `footer` * `"caption1"`: `span` * `"caption2"`: `span`
-     */
-    fontCategory:
-      | "headline"
-      | "subheadline"
-      | "body"
-      | "footnote"
-      | "caption1"
-      | "caption2";
+    * Used to define the semantic of the element when readonly=true.  Font categories are mapped to semantic HTML elements when rendered:  * `"headline"`: `h1` * `"subheadline"`: `h2` * `"body"`: `p` * `"footnote"`: `footer` * `"caption1"`: `span` * `"caption2"`: `span`
+    */
+    'fontCategory': | "headline"
+    | "subheadline"
+    | "body"
+    | "footnote"
+    | "caption1"
+    | "caption2";
     /**
-     * Returns the id of the inner `input` element (if set).
-     */
-    getNativeInputId: () => Promise<string>;
+    * Returns the id of the inner `input` element (if set).
+    */
+    'getNativeInputId': () => Promise<string>;
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id': string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
     /**
-     * Controls if the element accepts multiline text.
-     */
-    multiline: boolean;
+    * Controls if the element accepts multiline text.
+    */
+    'multiline': boolean;
     /**
-     * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
-     */
-    placeholder: string;
+    * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
+    */
+    'placeholder': string;
     /**
-     * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
-     */
-    readonly: boolean;
+    * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
+    */
+    'readonly': boolean;
     /**
-     * If true, a trigger button is shown next to the edit field. The button can be customized using `trigger-text` and `trigger-class` attributes, or adding a child element with `slot="trigger-content"` attribute to specify the content inside the trigger button.
-     */
-    showTrigger: boolean;
+    * If true, a trigger button is shown next to the edit field. The button can be customized using `trigger-text` and `trigger-class` attributes, or adding a child element with `slot="trigger-content"` attribute to specify the content inside the trigger button.
+    */
+    'showTrigger': boolean;
     /**
-     * The text of the trigger button. If a text is specified and an image is specified (through an element with `slot="trigger-content"`), the content is ignored and the text is used instead.
-     */
-    triggerText: string;
+    * The text of the trigger button. If a text is specified and an image is specified (through an element with `slot="trigger-content"`), the content is ignored and the text is used instead.
+    */
+    'triggerText': string;
     /**
-     * The type of control to render. A subset of the types supported by the `input` element is supported:  * `"date"` * `"datetime-local"` * `"email"` * `"file"` * `"number"` * `"password"` * `"search"` * `"tel"` * `"text"` * `"url"`
-     */
-    type:
-      | "date"
-      | "datetime-local"
-      | "email"
-      | "file"
-      | "number"
-      | "password"
-      | "search"
-      | "tel"
-      | "text"
-      | "url";
+    * The type of control to render. A subset of the types supported by the `input` element is supported:  * `"date"` * `"datetime-local"` * `"email"` * `"file"` * `"number"` * `"password"` * `"search"` * `"tel"` * `"text"` * `"url"`
+    */
+    'type': | "date"
+    | "datetime-local"
+    | "email"
+    | "file"
+    | "number"
+    | "password"
+    | "search"
+    | "tel"
+    | "text"
+    | "url";
     /**
-     * The initial value of the control.
-     */
-    value: string;
+    * The initial value of the control.
+    */
+    'value': string;
   }
   interface GxFormField {
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id': string;
     /**
-     * The text to set as the label of the field.
-     */
-    labelCaption: string;
+    * The text to set as the label of the field.
+    */
+    'labelCaption': string;
     /**
-     * The position where the label will be located, relative to the edit control. The supported values are:  * `"top"`: The label is located above the edit control. * `"right"`: The label is located at the right side of the edit control. * `"bottom"`: The label is located below the edit control. * `"left"`: The label is located at the left side of the edit control. * `"float"`: The label is shown as a placeholder when the edit control's value is empty. When the value is not empty, the label floats and locates above the edit control. * `"none"`: The label is rendered, but hidden.
-     */
-    labelPosition: "none" | "top" | "right" | "bottom" | "left" | "float";
+    * The position where the label will be located, relative to the edit control. The supported values are:  * `"top"`: The label is located above the edit control. * `"right"`: The label is located at the right side of the edit control. * `"bottom"`: The label is located below the edit control. * `"left"`: The label is located at the left side of the edit control. * `"float"`: The label is shown as a placeholder when the edit control's value is empty. When the value is not empty, the label floats and locates above the edit control. * `"none"`: The label is rendered, but hidden.
+    */
+    'labelPosition': "none" | "top" | "right" | "bottom" | "left" | "float";
   }
   interface GxGridFs {
+    'complete': () => Promise<void>;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
     /**
-     * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
-     */
-    loadingState: "loading" | "loaded";
+    * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
+    */
+    'loadingState': "loading" | "loaded";
     /**
-     * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
-     */
-    recordCount: number;
+    * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
+    */
+    'recordCount': number;
     /**
-     * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
-     */
-    threshold: string;
+    * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
+    */
+    'threshold': string;
   }
   interface GxGridInfiniteScroll {
     /**
-     * Call `complete()` within the `gxInfinite` output event handler when your async operation has completed. For example, the `loading` state is while the app is performing an asynchronous operation, such as receiving more data from an AJAX request to add more items to a data list. Once the data has been received and UI updated, you then call this method to signify that the loading has completed. This method will change the infinite scroll's state from `loading` to `enabled`.
-     */
-    complete: () => Promise<void>;
+    * Call `complete()` within the `gxInfinite` output event handler when your async operation has completed. For example, the `loading` state is while the app is performing an asynchronous operation, such as receiving more data from an AJAX request to add more items to a data list. Once the data has been received and UI updated, you then call this method to signify that the loading has completed. This method will change the infinite scroll's state from `loading` to `enabled`.
+    */
+    'complete': () => Promise<void>;
     /**
-     * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
-     */
-    disabled: boolean;
+    * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
+    */
+    'disabled': boolean;
     /**
-     * Query selector where the infinitie scroll would be listening to scroll events.
-     */
-    infiniteScrollContainer: string;
+    * Query selector where the infinitie scroll would be listening to scroll events.
+    */
+    'infiniteScrollContainer': string;
     /**
-     * This property must be bounded to grid item count property. It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the intial batch does not overflow the main container
-     */
-    itemCount: number;
+    * This property must be bounded to grid item count property. It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the intial batch does not overflow the main container
+    */
+    'itemCount': number;
     /**
-     * The position of the infinite scroll element. The value can be either `top` or `bottom`.
-     */
-    position: "top" | "bottom";
+    * The position of the infinite scroll element. The value can be either `top` or `bottom`.
+    */
+    'position': "top" | "bottom";
     /**
-     * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
-     */
-    threshold: string;
+    * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
+    */
+    'threshold': string;
   }
   interface GxGridInfiniteScrollContent {}
   interface GxGridSmart {
     /**
-     * Number of items per column (items visible at the same time on slider's container).
-     */
-    columns: number | "auto";
+    * Number of items per column (items visible at the same time on slider's container).
+    */
+    'columns': number | "auto";
     /**
-     * 0-Indexed number of currently active page
-     */
-    currentPage: number;
+    * 0-Indexed number of currently active page
+    */
+    'currentPage': number;
     /**
-     * Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).
-     */
-    direction: "horizontal" | "vertical";
+    * Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).
+    */
+    'direction': "horizontal" | "vertical";
     /**
-     * Get the index of the current active slide.
-     */
-    getActiveIndex: () => Promise<number>;
+    * Get the index of the current active slide.
+    */
+    'getActiveIndex': () => Promise<number>;
     /**
-     * Get the index of the previous slide.
-     */
-    getPreviousIndex: () => Promise<number>;
+    * Get the index of the previous slide.
+    */
+    'getPreviousIndex': () => Promise<number>;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
     /**
-     * Get whether or not the current slide is the last slide.
-     */
-    isLast: () => Promise<boolean>;
+    * Get whether or not the current slide is the last slide.
+    */
+    'isLast': () => Promise<boolean>;
     /**
-     * Get whether or not the current slide is the first slide.
-     */
-    isStart: () => Promise<boolean>;
+    * Get whether or not the current slide is the first slide.
+    */
+    'isStart': () => Promise<boolean>;
     /**
-     * Set numbers of items to define and enable group sliding. Useful to use with rowsPerPage > 1
-     */
-    itemsPerGroup: number;
+    * Set numbers of items to define and enable group sliding. Useful to use with rowsPerPage > 1
+    */
+    'itemsPerGroup': number;
     /**
-     * Get the total number of slides.
-     */
-    length: () => Promise<number>;
+    * Get the total number of slides.
+    */
+    'length': () => Promise<number>;
     /**
-     * Grid loading state. It's purpose is to know whether the grid loading animation or the grid empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
-     */
-    loadingState: "loading" | "loaded";
+    * Grid loading state. It's purpose is to know whether the grid loading animation or the grid empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
+    */
+    'loadingState': "loading" | "loaded";
     /**
-     * Logging level. For troubleshooting component update and initialization.
-     */
-    logLevel: "debug" | "off";
+    * Logging level. For troubleshooting component update and initialization.
+    */
+    'logLevel': "debug" | "off";
     /**
-     * Advanced options to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options
-     */
-    options: SwiperOptions;
+    * Advanced options to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options
+    */
+    'options': SwiperOptions;
     /**
-     * If `true`, show the pagination buttons.
-     */
-    pager: boolean;
+    * If `true`, show the pagination buttons.
+    */
+    'pager': boolean;
     /**
-     * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
-     */
-    recordCount: number;
+    * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
+    */
+    'recordCount': number;
     /**
-     * Number of items per column, for multirow layout.
-     */
-    rows: number;
+    * Number of items per column, for multirow layout.
+    */
+    'rows': number;
     /**
-     * If `true`, show the scrollbar.
-     */
-    scrollbar: boolean;
+    * If `true`, show the scrollbar.
+    */
+    'scrollbar': boolean;
     /**
-     * Transition to the next slide.
-     * @param speed The transition duration (in ms).
-     * @param runCallbacks If true, the transition will produce [Transition/SlideChange][Start/End] transition events.
-     */
-    slideNext: (speed?: number, runCallbacks?: boolean) => Promise<void>;
+    * Transition to the next slide.
+    * @param speed The transition duration (in ms).
+    * @param runCallbacks If true, the transition will produce [Transition/SlideChange][Start/End] transition events.
+    */
+    'slideNext': (speed?: number, runCallbacks?: boolean) => Promise<void>;
     /**
-     * Transition to the previous slide.
-     * @param speed The transition duration (in ms).
-     * @param runCallbacks If true, the transition will produce the [Transition/SlideChange][Start/End] transition events.
-     */
-    slidePrev: (speed?: number, runCallbacks?: boolean) => Promise<void>;
+    * Transition to the previous slide.
+    * @param speed The transition duration (in ms).
+    * @param runCallbacks If true, the transition will produce the [Transition/SlideChange][Start/End] transition events.
+    */
+    'slidePrev': (speed?: number, runCallbacks?: boolean) => Promise<void>;
     /**
-     * Transition to the specified slide.
-     * @param index The index of the slide to transition to.
-     * @param speed The transition duration (in ms).
-     * @param runCallbacks If true, the transition will produce [Transition/SlideChange][Start/End] transition events.
-     */
-    slideTo: (
-      index: number,
-      speed?: number,
-      runCallbacks?: boolean
-    ) => Promise<void>;
+    * Transition to the specified slide.
+    * @param index The index of the slide to transition to.
+    * @param speed The transition duration (in ms).
+    * @param runCallbacks If true, the transition will produce [Transition/SlideChange][Start/End] transition events.
+    */
+    'slideTo': (index: number, speed?: number, runCallbacks?: boolean) => Promise<void>;
     /**
-     * Set to false to enable slides in free mode position.
-     */
-    snapToGrid: boolean;
+    * Set to false to enable slides in free mode position.
+    */
+    'snapToGrid': boolean;
     /**
-     * Start auto play.
-     */
-    startAutoplay: () => Promise<void>;
+    * Start auto play.
+    */
+    'startAutoplay': () => Promise<void>;
     /**
-     * Stop auto play.
-     */
-    stopAutoplay: () => Promise<void>;
+    * Stop auto play.
+    */
+    'stopAutoplay': () => Promise<void>;
     /**
-     * Lock or unlock the ability to slide to the next slide.
-     * @param lock If `true`, disable swiping to the next slide.
-     */
-    toggleLockSwipeToNext: (lock: boolean) => Promise<void>;
+    * Lock or unlock the ability to slide to the next slide.
+    * @param lock If `true`, disable swiping to the next slide.
+    */
+    'toggleLockSwipeToNext': (lock: boolean) => Promise<void>;
     /**
-     * Lock or unlock the ability to slide to the previous slide.
-     * @param lock If `true`, disable swiping to the previous slide.
-     */
-    toggleLockSwipeToPrev: (lock: boolean) => Promise<void>;
+    * Lock or unlock the ability to slide to the previous slide.
+    * @param lock If `true`, disable swiping to the previous slide.
+    */
+    'toggleLockSwipeToPrev': (lock: boolean) => Promise<void>;
     /**
-     * Lock or unlock the ability to slide to the next or previous slide.
-     * @param lock If `true`, disable swiping to the next and previous slide.
-     */
-    toggleLockSwipes: (lock: boolean) => Promise<void>;
+    * Lock or unlock the ability to slide to the next or previous slide.
+    * @param lock If `true`, disable swiping to the next and previous slide.
+    */
+    'toggleLockSwipes': (lock: boolean) => Promise<void>;
     /**
-     * Update the underlying slider implementation. Call this if you've added or removed child slides.
-     */
-    update: () => Promise<void>;
+    * Update the underlying slider implementation. Call this if you've added or removed child slides.
+    */
+    'update': () => Promise<void>;
     /**
-     * Force swiper to update its height (when autoHeight is enabled) for the duration equal to 'speed' parameter.
-     * @param speed The transition duration (in ms).
-     */
-    updateAutoHeight: (speed?: number) => Promise<void>;
+    * Force swiper to update its height (when autoHeight is enabled) for the duration equal to 'speed' parameter.
+    * @param speed The transition duration (in ms).
+    */
+    'updateAutoHeight': (speed?: number) => Promise<void>;
   }
   interface GxGroup {
     /**
-     * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
-     */
-    autoGrow: boolean;
+    * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+    */
+    'autoGrow': boolean;
     /**
-     * Attribute that provides the caption to the <legend> tag
-     */
-    caption: string;
+    * Attribute that provides the caption to the <legend> tag
+    */
+    'caption': string;
   }
   interface GxImage {
     /**
-     * This attribute lets you specify the alternative text.
-     */
-    alt: string;
+    * This attribute lets you specify the alternative text.
+    */
+    'alt': string;
     /**
-     * A CSS class to set as the inner element class.
-     */
-    cssClass: string;
+    * A CSS class to set as the inner element class.
+    */
+    'cssClass': string;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled': boolean;
     /**
-     * This attribute lets you specify the height.
-     */
-    height: string;
+    * This attribute lets you specify the height.
+    */
+    'height': string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
     /**
-     * True to lazy load the image, when it enters the viewport.
-     */
-    lazyLoad: boolean;
+    * True to lazy load the image, when it enters the viewport.
+    */
+    'lazyLoad': boolean;
     /**
-     * This attribute lets you specify the low resolution image SRC.
-     */
-    lowResolutionSrc: string;
+    * This attribute lets you specify the low resolution image SRC.
+    */
+    'lowResolutionSrc': string;
     /**
-     * This attribute allows specifing how the image is sized according to its container. `contain`, `cover`, `fill` and `none` map directly to the values of the CSS `object-fit` property. The `tile` value repeats the image, both vertically and horizontally, creating a tile effect.
-     */
-    scaleType: "contain" | "cover" | "fill" | "none" | "tile";
+    * This attribute allows specifing how the image is sized according to its container. `contain`, `cover`, `fill` and `none` map directly to the values of the CSS `object-fit` property. The `tile` value repeats the image, both vertically and horizontally, creating a tile effect.
+    */
+    'scaleType': | "contain"
+    | "cover"
+    | "fill"
+    | "none"
+    | "tile";
     /**
-     * This attribute lets you specify the SRC.
-     */
-    src: string;
+    * This attribute lets you specify the SRC.
+    */
+    'src': string;
     /**
-     * This attribute lets you specify the width.
-     */
-    width: string;
+    * This attribute lets you specify the width.
+    */
+    'width': string;
   }
   interface GxLoading {
     /**
-     * Sets the caption text.
-     */
-    caption: string;
+    * Sets the caption text.
+    */
+    'caption': string;
     /**
-     * Sets the description text.
-     */
-    description: string;
+    * Sets the description text.
+    */
+    'description': string;
     /**
-     * Sets if the loading dialog is presented.
-     */
-    presented: boolean;
+    * Sets if the loading dialog is presented.
+    */
+    'presented': boolean;
     /**
-     * Sets the value.
-     */
-    type: "determinate" | "indeterminate";
+    * Sets the value.
+    */
+    'type': "determinate" | "indeterminate";
     /**
-     * Sets the value when type is determinate. Must be a value between 0 and 1.
-     */
-    value: number;
+    * Sets the value when type is determinate. Must be a value between 0 and 1.
+    */
+    'value': number;
   }
   interface GxLottie {
     /**
-     * This attribute lets you specify a Lottie animation object
-     */
-    animationData: any;
+    * This attribute lets you specify a Lottie animation object
+    */
+    'animationData': any;
     /**
-     * This attribute lets you specify if the animation will start playing as soon as it is ready
-     */
-    autoPlay: boolean;
+    * This attribute lets you specify if the animation will start playing as soon as it is ready
+    */
+    'autoPlay': boolean;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled': boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
     /**
-     * This attribute lets you specify if the animation will loop
-     */
-    loop: boolean;
+    * This attribute lets you specify if the animation will loop
+    */
+    'loop': boolean;
     /**
-     * This attribute lets you specify  the relative path to the animation object. (`animationData` and `path` are mutually exclusive)
-     */
-    path: string;
+    * This attribute lets you specify  the relative path to the animation object. (`animationData` and `path` are mutually exclusive)
+    */
+    'path': string;
     /**
-     * Pause the animation
-     */
-    pause: () => Promise<void>;
+    * Pause the animation
+    */
+    'pause': () => Promise<void>;
     /**
-     * Start playing the animation
-     */
-    play: (from?: number, to?: number) => Promise<void>;
+    * Start playing the animation
+    */
+    'play': (from?: number, to?: number) => Promise<void>;
     /**
-     * Set the progress of the animation to any point
-     * @param progress : Value from 0 to 1 indicating the percentage of progress where the animation will start.
-     */
-    setProgress: (progress: number) => Promise<void>;
+    * Set the progress of the animation to any point
+    * @param progress : Value from 0 to 1 indicating the percentage of progress where the animation will start.
+    */
+    'setProgress': (progress: number) => Promise<void>;
     /**
-     * Stop the animation
-     */
-    stop: () => Promise<void>;
+    * Stop the animation
+    */
+    'stop': () => Promise<void>;
   }
   interface GxMap {
     /**
-     * The coord of initial center of the map.
-     */
-    center: string;
+    * The coord of initial center of the map.
+    */
+    'center': string;
     /**
-     * The max zoom level available in the map.
-     */
-    maxZoom: number;
+    * The max zoom level available in the map.
+    */
+    'maxZoom': number;
     /**
-     * The initial zoom level in the map.
-     */
-    zoom: number;
+    * The initial zoom level in the map.
+    */
+    'zoom': number;
   }
   interface GxMapMarker {
     /**
-     * The coordinates where the marker will appear in the map.
-     */
-    coords: string;
+    * The coordinates where the marker will appear in the map.
+    */
+    'coords': string;
     /**
-     * The URL of the marker image.  *Note: The image size must be 25 x 41*
-     */
-    iconSrc: string;
+    * The URL of the marker image.  *Note: The image size must be 25 x 41*
+    */
+    'iconSrc': string;
     /**
-     * The tooltip caption of the marker.
-     */
-    tooltipCaption: string;
+    * The tooltip caption of the marker.
+    */
+    'tooltipCaption': string;
   }
   interface GxMessage {
     /**
-     * Text for the close button.
-     */
-    closeButtonText: string;
+    * Text for the close button.
+    */
+    'closeButtonText': string;
     /**
-     * The time in miliseconds before the message is automatically dismissed. If no duration is specified, the message will not be automatically dismissed.
-     */
-    duration: number;
+    * The time in miliseconds before the message is automatically dismissed. If no duration is specified, the message will not be automatically dismissed.
+    */
+    'duration': number;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
     /**
-     * Show a button for closing the meesage box
-     */
-    showCloseButton: boolean;
+    * Show a button for closing the meesage box
+    */
+    'showCloseButton': boolean;
     /**
-     * Type of the button: * `info`: Information message * `warning`: Warning Message * `error`: Error message
-     */
-    type: "info" | "warning" | "error";
+    * Type of the button: * `info`: Information message * `warning`: Warning Message * `error`: Error message
+    */
+    'type': "info" | "warning" | "error";
   }
   interface GxModal {
     /**
-     * This attribute lets you specify if the modal dialog is automatically closed when an action is clicked.
-     */
-    autoClose: boolean;
+    * This attribute lets you specify if the modal dialog is automatically closed when an action is clicked.
+    */
+    'autoClose': boolean;
     /**
-     * This attribute lets you specify the label for the close button. Important for accessibility.
-     */
-    closeButtonLabel: string;
+    * This attribute lets you specify the label for the close button. Important for accessibility.
+    */
+    'closeButtonLabel': string;
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id': string;
     /**
-     * This attribute lets you specify if the modal dialog is opened or closed.
-     */
-    opened: boolean;
+    * This attribute lets you specify if the modal dialog is opened or closed.
+    */
+    'opened': boolean;
   }
   interface GxNavbar {
     /**
-     * This attribute lets you specify an optional title for the navigation bar  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    caption: string;
+    * This attribute lets you specify an optional title for the navigation bar  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'caption': string;
     /**
-     * A CSS class to set as the inner element class.
-     */
-    cssClass: string;
+    * A CSS class to set as the inner element class.
+    */
+    'cssClass': string;
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id': string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
     /**
-     * This attribute lets you specify the label for the toggle button. Important for accessibility.
-     */
-    toggleButtonLabel: string;
+    * This attribute lets you specify the label for the toggle button. Important for accessibility.
+    */
+    'toggleButtonLabel': string;
   }
   interface GxNavbarLink {
     /**
-     * Indicates if the navbar item is the active one (for example, when the item represents the current page)
-     */
-    active: boolean;
+    * Indicates if the navbar item is the active one (for example, when the item represents the current page)
+    */
+    'active': boolean;
     /**
-     * A CSS class to set as the inner element class.
-     */
-    cssClass: string;
+    * A CSS class to set as the inner element class.
+    */
+    'cssClass': string;
     /**
-     * This attribute lets you specify if the navbar item is disabled.
-     */
-    disabled: boolean;
+    * This attribute lets you specify if the navbar item is disabled.
+    */
+    'disabled': boolean;
     /**
-     * This attribute lets you specify the URL of the navbar item.
-     */
-    href: string;
+    * This attribute lets you specify the URL of the navbar item.
+    */
+    'href': string;
     /**
-     * This attribute lets you specify the URL of an icon for the navbar item.
-     */
-    iconSrc: string;
+    * This attribute lets you specify the URL of an icon for the navbar item.
+    */
+    'iconSrc': string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
   }
   interface GxPasswordEdit {
     /**
-     * A CSS class to set as the inner `input` element class.
-     */
-    cssClass: string;
+    * A CSS class to set as the inner `input` element class.
+    */
+    'cssClass': string;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled': boolean;
     /**
-     * Returns the id of the inner `input` element (if set).
-     */
-    getNativeInputId: () => Promise<any>;
+    * Returns the id of the inner `input` element (if set).
+    */
+    'getNativeInputId': () => Promise<any>;
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id': string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
     /**
-     * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
-     */
-    placeholder: string;
+    * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
+    */
+    'placeholder': string;
     /**
-     * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
-     */
-    readonly: boolean;
+    * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
+    */
+    'readonly': boolean;
     /**
-     * Text of the reveal button to offer hiding the password.
-     */
-    revealButtonTextOff: string;
+    * Text of the reveal button to offer hiding the password.
+    */
+    'revealButtonTextOff': string;
     /**
-     * Text of the reveal button to offer revealing the password.
-     */
-    revealButtonTextOn: string;
+    * Text of the reveal button to offer revealing the password.
+    */
+    'revealButtonTextOn': string;
     /**
-     * Indicates if the value is revealed or masked.
-     */
-    revealed: boolean;
+    * Indicates if the value is revealed or masked.
+    */
+    'revealed': boolean;
     /**
-     * If true, a reveal password button is shown next to the password input. Pressing the reveal button toggles the password mask, allowing the user to view the password text.
-     */
-    showRevealButton: boolean;
+    * If true, a reveal password button is shown next to the password input. Pressing the reveal button toggles the password mask, allowing the user to view the password text.
+    */
+    'showRevealButton': boolean;
     /**
-     * The initial value of the control.
-     */
-    value: string;
+    * The initial value of the control.
+    */
+    'value': string;
   }
   interface GxProgressBar {
     /**
-     * Sets the progress value.
-     */
-    value: number;
+    * Sets the progress value.
+    */
+    'value': number;
   }
   interface GxRadioGroup {
     /**
-     * Specifies how the child `gx-radio-option` will be layed out. It supports two values:  * `horizontal` * `vertical` (default)
-     */
-    direction: "horizontal" | "vertical";
+    * Specifies how the child `gx-radio-option` will be layed out. It supports two values:  * `horizontal` * `vertical` (default)
+    */
+    'direction': "horizontal" | "vertical";
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled': boolean;
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id': string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
     /**
-     * The name that will be set to all the inner inputs of type radio
-     */
-    name: string;
+    * The name that will be set to all the inner inputs of type radio
+    */
+    'name': string;
     /**
-     * The initial value of the control. Setting the value automatically selects the corresponding radio option.
-     */
-    value: string;
+    * The initial value of the control. Setting the value automatically selects the corresponding radio option.
+    */
+    'value': string;
   }
   interface GxRadioOption {
     /**
-     * Specifies the label of the radio.
-     */
-    caption: string;
+    * Specifies the label of the radio.
+    */
+    'caption': string;
     /**
-     * Indicates that the control is selected by default.
-     */
-    checked: boolean;
+    * Indicates that the control is selected by default.
+    */
+    'checked': boolean;
     /**
-     * A CSS class to set as the inner `input` element class.
-     */
-    cssClass: string;
+    * A CSS class to set as the inner `input` element class.
+    */
+    'cssClass': string;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled': boolean;
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id': string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
     /**
-     * The name of the inner input of type radio
-     */
-    name: string;
+    * The name of the inner input of type radio
+    */
+    'name': string;
     /**
-     * The initial value of the control.
-     */
-    value: string;
+    * The initial value of the control.
+    */
+    'value': string;
   }
   interface GxRating {
     /**
-     * This attribute allows you specify if the element is disabled. If disabled, it will not trigger any user interaction related event (for example, click event).
-     */
-    disabled: boolean;
+    * This attribute allows you specify if the element is disabled. If disabled, it will not trigger any user interaction related event (for example, click event).
+    */
+    'disabled': boolean;
     /**
-     * Returns the id of the inner `input` element (if set).
-     */
-    getNativeInputId: () => Promise<string>;
+    * Returns the id of the inner `input` element (if set).
+    */
+    'getNativeInputId': () => Promise<string>;
     /**
-     * The control id. Must be unique per control!
-     */
-    id: string;
+    * The control id. Must be unique per control!
+    */
+    'id': string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
     /**
-     * This porpoerty is required if you want to display a score. >E.g: In a score of 4/5 stars the `maxValue` is `5` and the `value` is `4`
-     */
-    maxValue: number;
+    * This porpoerty is required if you want to display a score. >E.g: In a score of 4/5 stars the `maxValue` is `5` and the `value` is `4`
+    */
+    'maxValue': number;
     /**
-     * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_
-     */
-    readonly: boolean;
+    * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_
+    */
+    'readonly': boolean;
     /**
-     * The current value displayed by the component.
-     */
-    value: number;
+    * The current value displayed by the component.
+    */
+    'value': number;
   }
   interface GxSelect {
     /**
-     * A CSS class to set as the inner `input` element class.
-     */
-    cssClass: string;
+    * A CSS class to set as the inner `input` element class.
+    */
+    'cssClass': string;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled': boolean;
     /**
-     * Returns the id of the inner `input` element (if set).
-     */
-    getNativeInputId: () => Promise<string>;
+    * Returns the id of the inner `input` element (if set).
+    */
+    'getNativeInputId': () => Promise<string>;
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id': string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
     /**
-     * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
-     */
-    readonly: boolean;
+    * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
+    */
+    'readonly': boolean;
     /**
-     * The initial value of the control. Setting the value automatically selects the corresponding option.
-     */
-    value: string;
+    * The initial value of the control. Setting the value automatically selects the corresponding option.
+    */
+    'value': string;
   }
   interface GxSelectOption {
     /**
-     * A CSS class to set as the inner `input` element class.
-     */
-    cssClass: string;
+    * A CSS class to set as the inner `input` element class.
+    */
+    'cssClass': string;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled': boolean;
     /**
-     * Indicates that the control is selected by default.
-     */
-    selected: boolean;
+    * Indicates that the control is selected by default.
+    */
+    'selected': boolean;
     /**
-     * The initial value of the control.
-     */
-    value: string;
+    * The initial value of the control.
+    */
+    'value': string;
   }
   interface GxSwitch {
     /**
-     * Attribute that provides the caption to the control.
-     */
-    caption: string;
+    * Attribute that provides the caption to the control.
+    */
+    'caption': string;
     /**
-     * Indicates if switch control is checked by default.
-     */
-    checked: boolean;
+    * Indicates if switch control is checked by default.
+    */
+    'checked': boolean;
     /**
-     * This attribute allows you specify if the element is disabled. If disabled, it will not trigger any user interaction related event (for example, click event).
-     */
-    disabled: boolean;
+    * This attribute allows you specify if the element is disabled. If disabled, it will not trigger any user interaction related event (for example, click event).
+    */
+    'disabled': boolean;
     /**
-     * Returns the id of the inner `input` element (if set).
-     */
-    getNativeInputId: () => Promise<string>;
+    * Returns the id of the inner `input` element (if set).
+    */
+    'getNativeInputId': () => Promise<string>;
     /**
-     * The control id. Must be unique per control!
-     */
-    id: string;
+    * The control id. Must be unique per control!
+    */
+    'id': string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
-    value: string;
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
+    'value': string;
   }
   interface GxTab {
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
   }
   interface GxTabCaption {
     /**
-     * This attribute lets you specify if the tab page is disabled
-     */
-    disabled: false;
+    * This attribute lets you specify if the tab page is disabled
+    */
+    'disabled': false;
     /**
-     * This attribute lets you specify if the tab page corresponding to this caption is selected
-     */
-    selected: false;
+    * This attribute lets you specify if the tab page corresponding to this caption is selected
+    */
+    'selected': false;
   }
   interface GxTabPage {}
   interface GxTable {
     /**
-     * Like the `grid-templates-areas` CSS property, this attribute defines a grid template by referencing the names of the areas which are specified with the cells [area attribute](../table-cell/readme.md#area). Repeating the name of an area causes the content to span those cells. A period signifies an empty cell. The syntax itself provides a visualization of the structure of the grid.
-     */
-    areasTemplate: string;
+    * Like the `grid-templates-areas` CSS property, this attribute defines a grid template by referencing the names of the areas which are specified with the cells [area attribute](../table-cell/readme.md#area). Repeating the name of an area causes the content to span those cells. A period signifies an empty cell. The syntax itself provides a visualization of the structure of the grid.
+    */
+    'areasTemplate': string;
     /**
-     * Like the `grid-templates-columns` CSS property, this attribute defines the columns of the grid with a space-separated list of values. The values represent the width of column.
-     */
-    columnsTemplate: string;
+    * Like the `grid-templates-columns` CSS property, this attribute defines the columns of the grid with a space-separated list of values. The values represent the width of column.
+    */
+    'columnsTemplate': string;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled': boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
     /**
-     * Like the `grid-templates-rows` CSS property, this attribute defines the rows of the grid with a space-separated list of values. The values represent the height of each row.
-     */
-    rowsTemplate: string;
+    * Like the `grid-templates-rows` CSS property, this attribute defines the rows of the grid with a space-separated list of values. The values represent the height of each row.
+    */
+    'rowsTemplate': string;
   }
   interface GxTableCell {
     /**
-     * Defines the horizontal aligmnent of the content of the cell.
-     */
-    align: "left" | "right" | "center";
+    * Defines the horizontal aligmnent of the content of the cell.
+    */
+    'align': "left" | "right" | "center";
     /**
-     * Like the `grid-area` CSS property, this attribute gives a name to the item, so it can be used from the [areas-template attributes](../table/readme.md#areas-template) of the gx-table element.
-     */
-    area: string;
+    * Like the `grid-area` CSS property, this attribute gives a name to the item, so it can be used from the [areas-template attributes](../table/readme.md#areas-template) of the gx-table element.
+    */
+    'area': string;
     /**
-     * This attribute defines the maximum height of the cell.
-     */
-    maxHeight: string;
+    * This attribute defines the maximum height of the cell.
+    */
+    'maxHeight': string;
     /**
-     * This attribute defines the minimum height of the cell when its contents are visible. Ignored if its content has `invisible-mode` = `collapse` and is hidden.
-     */
-    minHeight: string;
+    * This attribute defines the minimum height of the cell when its contents are visible. Ignored if its content has `invisible-mode` = `collapse` and is hidden.
+    */
+    'minHeight': string;
     /**
-     * This attribute defines how the control behaves when the content overflows.  | Value    | Details                                                     | | -------- | ----------------------------------------------------------- | | `scroll` | The overflowin content is hidden, but scrollbars are shown  | | `clip`   | The overflowing content is hidden, without scrollbars       |
-     */
-    overflowMode: "scroll" | "clip";
+    * This attribute defines how the control behaves when the content overflows.  | Value    | Details                                                     | | -------- | ----------------------------------------------------------- | | `scroll` | The overflowin content is hidden, but scrollbars are shown  | | `clip`   | The overflowing content is hidden, without scrollbars       |
+    */
+    'overflowMode': "scroll" | "clip";
     /**
-     * Defines the vertical aligmnent of the content of the cell.
-     */
-    valign: "top" | "bottom" | "medium";
+    * Defines the vertical aligmnent of the content of the cell.
+    */
+    'valign': "top" | "bottom" | "medium";
   }
   interface GxTextblock {
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled': boolean;
     /**
-     * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
-     */
-    href: string;
+    * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
+    */
+    'href': string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
   }
   interface GxVideo {
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled': boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode': "collapse" | "keep-space";
     /**
-     * This attribute is for specifies the src of the video.
-     */
-    src: string;
+    * This attribute is for specifies the src of the video.
+    */
+    'src': string;
   }
 }
 
 declare global {
-  interface HTMLGxActionSheetElement
-    extends Components.GxActionSheet,
-      HTMLStencilElement {}
+
+
+  interface HTMLGxActionSheetElement extends Components.GxActionSheet, HTMLStencilElement {}
   var HTMLGxActionSheetElement: {
     prototype: HTMLGxActionSheetElement;
     new (): HTMLGxActionSheetElement;
   };
 
-  interface HTMLGxActionSheetItemElement
-    extends Components.GxActionSheetItem,
-      HTMLStencilElement {}
+  interface HTMLGxActionSheetItemElement extends Components.GxActionSheetItem, HTMLStencilElement {}
   var HTMLGxActionSheetItemElement: {
     prototype: HTMLGxActionSheetItemElement;
     new (): HTMLGxActionSheetItemElement;
   };
 
-  interface HTMLGxBootstrapElement
-    extends Components.GxBootstrap,
-      HTMLStencilElement {}
+  interface HTMLGxBootstrapElement extends Components.GxBootstrap, HTMLStencilElement {}
   var HTMLGxBootstrapElement: {
     prototype: HTMLGxBootstrapElement;
     new (): HTMLGxBootstrapElement;
   };
 
-  interface HTMLGxButtonElement
-    extends Components.GxButton,
-      HTMLStencilElement {}
+  interface HTMLGxButtonElement extends Components.GxButton, HTMLStencilElement {}
   var HTMLGxButtonElement: {
     prototype: HTMLGxButtonElement;
     new (): HTMLGxButtonElement;
   };
 
-  interface HTMLGxCanvasElement
-    extends Components.GxCanvas,
-      HTMLStencilElement {}
+  interface HTMLGxCanvasElement extends Components.GxCanvas, HTMLStencilElement {}
   var HTMLGxCanvasElement: {
     prototype: HTMLGxCanvasElement;
     new (): HTMLGxCanvasElement;
   };
 
-  interface HTMLGxCanvasCellElement
-    extends Components.GxCanvasCell,
-      HTMLStencilElement {}
+  interface HTMLGxCanvasCellElement extends Components.GxCanvasCell, HTMLStencilElement {}
   var HTMLGxCanvasCellElement: {
     prototype: HTMLGxCanvasCellElement;
     new (): HTMLGxCanvasCellElement;
@@ -1057,17 +1051,13 @@ declare global {
     new (): HTMLGxCardElement;
   };
 
-  interface HTMLGxCheckboxElement
-    extends Components.GxCheckbox,
-      HTMLStencilElement {}
+  interface HTMLGxCheckboxElement extends Components.GxCheckbox, HTMLStencilElement {}
   var HTMLGxCheckboxElement: {
     prototype: HTMLGxCheckboxElement;
     new (): HTMLGxCheckboxElement;
   };
 
-  interface HTMLGxChronometerElement
-    extends Components.GxChronometer,
-      HTMLStencilElement {}
+  interface HTMLGxChronometerElement extends Components.GxChronometer, HTMLStencilElement {}
   var HTMLGxChronometerElement: {
     prototype: HTMLGxChronometerElement;
     new (): HTMLGxChronometerElement;
@@ -1079,41 +1069,31 @@ declare global {
     new (): HTMLGxEditElement;
   };
 
-  interface HTMLGxFormFieldElement
-    extends Components.GxFormField,
-      HTMLStencilElement {}
+  interface HTMLGxFormFieldElement extends Components.GxFormField, HTMLStencilElement {}
   var HTMLGxFormFieldElement: {
     prototype: HTMLGxFormFieldElement;
     new (): HTMLGxFormFieldElement;
   };
 
-  interface HTMLGxGridFsElement
-    extends Components.GxGridFs,
-      HTMLStencilElement {}
+  interface HTMLGxGridFsElement extends Components.GxGridFs, HTMLStencilElement {}
   var HTMLGxGridFsElement: {
     prototype: HTMLGxGridFsElement;
     new (): HTMLGxGridFsElement;
   };
 
-  interface HTMLGxGridInfiniteScrollElement
-    extends Components.GxGridInfiniteScroll,
-      HTMLStencilElement {}
+  interface HTMLGxGridInfiniteScrollElement extends Components.GxGridInfiniteScroll, HTMLStencilElement {}
   var HTMLGxGridInfiniteScrollElement: {
     prototype: HTMLGxGridInfiniteScrollElement;
     new (): HTMLGxGridInfiniteScrollElement;
   };
 
-  interface HTMLGxGridInfiniteScrollContentElement
-    extends Components.GxGridInfiniteScrollContent,
-      HTMLStencilElement {}
+  interface HTMLGxGridInfiniteScrollContentElement extends Components.GxGridInfiniteScrollContent, HTMLStencilElement {}
   var HTMLGxGridInfiniteScrollContentElement: {
     prototype: HTMLGxGridInfiniteScrollContentElement;
     new (): HTMLGxGridInfiniteScrollContentElement;
   };
 
-  interface HTMLGxGridSmartElement
-    extends Components.GxGridSmart,
-      HTMLStencilElement {}
+  interface HTMLGxGridSmartElement extends Components.GxGridSmart, HTMLStencilElement {}
   var HTMLGxGridSmartElement: {
     prototype: HTMLGxGridSmartElement;
     new (): HTMLGxGridSmartElement;
@@ -1131,17 +1111,13 @@ declare global {
     new (): HTMLGxImageElement;
   };
 
-  interface HTMLGxLoadingElement
-    extends Components.GxLoading,
-      HTMLStencilElement {}
+  interface HTMLGxLoadingElement extends Components.GxLoading, HTMLStencilElement {}
   var HTMLGxLoadingElement: {
     prototype: HTMLGxLoadingElement;
     new (): HTMLGxLoadingElement;
   };
 
-  interface HTMLGxLottieElement
-    extends Components.GxLottie,
-      HTMLStencilElement {}
+  interface HTMLGxLottieElement extends Components.GxLottie, HTMLStencilElement {}
   var HTMLGxLottieElement: {
     prototype: HTMLGxLottieElement;
     new (): HTMLGxLottieElement;
@@ -1153,17 +1129,13 @@ declare global {
     new (): HTMLGxMapElement;
   };
 
-  interface HTMLGxMapMarkerElement
-    extends Components.GxMapMarker,
-      HTMLStencilElement {}
+  interface HTMLGxMapMarkerElement extends Components.GxMapMarker, HTMLStencilElement {}
   var HTMLGxMapMarkerElement: {
     prototype: HTMLGxMapMarkerElement;
     new (): HTMLGxMapMarkerElement;
   };
 
-  interface HTMLGxMessageElement
-    extends Components.GxMessage,
-      HTMLStencilElement {}
+  interface HTMLGxMessageElement extends Components.GxMessage, HTMLStencilElement {}
   var HTMLGxMessageElement: {
     prototype: HTMLGxMessageElement;
     new (): HTMLGxMessageElement;
@@ -1175,81 +1147,61 @@ declare global {
     new (): HTMLGxModalElement;
   };
 
-  interface HTMLGxNavbarElement
-    extends Components.GxNavbar,
-      HTMLStencilElement {}
+  interface HTMLGxNavbarElement extends Components.GxNavbar, HTMLStencilElement {}
   var HTMLGxNavbarElement: {
     prototype: HTMLGxNavbarElement;
     new (): HTMLGxNavbarElement;
   };
 
-  interface HTMLGxNavbarLinkElement
-    extends Components.GxNavbarLink,
-      HTMLStencilElement {}
+  interface HTMLGxNavbarLinkElement extends Components.GxNavbarLink, HTMLStencilElement {}
   var HTMLGxNavbarLinkElement: {
     prototype: HTMLGxNavbarLinkElement;
     new (): HTMLGxNavbarLinkElement;
   };
 
-  interface HTMLGxPasswordEditElement
-    extends Components.GxPasswordEdit,
-      HTMLStencilElement {}
+  interface HTMLGxPasswordEditElement extends Components.GxPasswordEdit, HTMLStencilElement {}
   var HTMLGxPasswordEditElement: {
     prototype: HTMLGxPasswordEditElement;
     new (): HTMLGxPasswordEditElement;
   };
 
-  interface HTMLGxProgressBarElement
-    extends Components.GxProgressBar,
-      HTMLStencilElement {}
+  interface HTMLGxProgressBarElement extends Components.GxProgressBar, HTMLStencilElement {}
   var HTMLGxProgressBarElement: {
     prototype: HTMLGxProgressBarElement;
     new (): HTMLGxProgressBarElement;
   };
 
-  interface HTMLGxRadioGroupElement
-    extends Components.GxRadioGroup,
-      HTMLStencilElement {}
+  interface HTMLGxRadioGroupElement extends Components.GxRadioGroup, HTMLStencilElement {}
   var HTMLGxRadioGroupElement: {
     prototype: HTMLGxRadioGroupElement;
     new (): HTMLGxRadioGroupElement;
   };
 
-  interface HTMLGxRadioOptionElement
-    extends Components.GxRadioOption,
-      HTMLStencilElement {}
+  interface HTMLGxRadioOptionElement extends Components.GxRadioOption, HTMLStencilElement {}
   var HTMLGxRadioOptionElement: {
     prototype: HTMLGxRadioOptionElement;
     new (): HTMLGxRadioOptionElement;
   };
 
-  interface HTMLGxRatingElement
-    extends Components.GxRating,
-      HTMLStencilElement {}
+  interface HTMLGxRatingElement extends Components.GxRating, HTMLStencilElement {}
   var HTMLGxRatingElement: {
     prototype: HTMLGxRatingElement;
     new (): HTMLGxRatingElement;
   };
 
-  interface HTMLGxSelectElement
-    extends Components.GxSelect,
-      HTMLStencilElement {}
+  interface HTMLGxSelectElement extends Components.GxSelect, HTMLStencilElement {}
   var HTMLGxSelectElement: {
     prototype: HTMLGxSelectElement;
     new (): HTMLGxSelectElement;
   };
 
-  interface HTMLGxSelectOptionElement
-    extends Components.GxSelectOption,
-      HTMLStencilElement {}
+  interface HTMLGxSelectOptionElement extends Components.GxSelectOption, HTMLStencilElement {}
   var HTMLGxSelectOptionElement: {
     prototype: HTMLGxSelectOptionElement;
     new (): HTMLGxSelectOptionElement;
   };
 
-  interface HTMLGxSwitchElement
-    extends Components.GxSwitch,
-      HTMLStencilElement {}
+  interface HTMLGxSwitchElement extends Components.GxSwitch, HTMLStencilElement {}
   var HTMLGxSwitchElement: {
     prototype: HTMLGxSwitchElement;
     new (): HTMLGxSwitchElement;
@@ -1261,17 +1213,13 @@ declare global {
     new (): HTMLGxTabElement;
   };
 
-  interface HTMLGxTabCaptionElement
-    extends Components.GxTabCaption,
-      HTMLStencilElement {}
+  interface HTMLGxTabCaptionElement extends Components.GxTabCaption, HTMLStencilElement {}
   var HTMLGxTabCaptionElement: {
     prototype: HTMLGxTabCaptionElement;
     new (): HTMLGxTabCaptionElement;
   };
 
-  interface HTMLGxTabPageElement
-    extends Components.GxTabPage,
-      HTMLStencilElement {}
+  interface HTMLGxTabPageElement extends Components.GxTabPage, HTMLStencilElement {}
   var HTMLGxTabPageElement: {
     prototype: HTMLGxTabPageElement;
     new (): HTMLGxTabPageElement;
@@ -1283,17 +1231,13 @@ declare global {
     new (): HTMLGxTableElement;
   };
 
-  interface HTMLGxTableCellElement
-    extends Components.GxTableCell,
-      HTMLStencilElement {}
+  interface HTMLGxTableCellElement extends Components.GxTableCell, HTMLStencilElement {}
   var HTMLGxTableCellElement: {
     prototype: HTMLGxTableCellElement;
     new (): HTMLGxTableCellElement;
   };
 
-  interface HTMLGxTextblockElement
-    extends Components.GxTextblock,
-      HTMLStencilElement {}
+  interface HTMLGxTextblockElement extends Components.GxTextblock, HTMLStencilElement {}
   var HTMLGxTextblockElement: {
     prototype: HTMLGxTextblockElement;
     new (): HTMLGxTextblockElement;
@@ -1305,1260 +1249,1251 @@ declare global {
     new (): HTMLGxVideoElement;
   };
   interface HTMLElementTagNameMap {
-    "gx-action-sheet": HTMLGxActionSheetElement;
-    "gx-action-sheet-item": HTMLGxActionSheetItemElement;
-    "gx-bootstrap": HTMLGxBootstrapElement;
-    "gx-button": HTMLGxButtonElement;
-    "gx-canvas": HTMLGxCanvasElement;
-    "gx-canvas-cell": HTMLGxCanvasCellElement;
-    "gx-card": HTMLGxCardElement;
-    "gx-checkbox": HTMLGxCheckboxElement;
-    "gx-chronometer": HTMLGxChronometerElement;
-    "gx-edit": HTMLGxEditElement;
-    "gx-form-field": HTMLGxFormFieldElement;
-    "gx-grid-fs": HTMLGxGridFsElement;
-    "gx-grid-infinite-scroll": HTMLGxGridInfiniteScrollElement;
-    "gx-grid-infinite-scroll-content": HTMLGxGridInfiniteScrollContentElement;
-    "gx-grid-smart": HTMLGxGridSmartElement;
-    "gx-group": HTMLGxGroupElement;
-    "gx-image": HTMLGxImageElement;
-    "gx-loading": HTMLGxLoadingElement;
-    "gx-lottie": HTMLGxLottieElement;
-    "gx-map": HTMLGxMapElement;
-    "gx-map-marker": HTMLGxMapMarkerElement;
-    "gx-message": HTMLGxMessageElement;
-    "gx-modal": HTMLGxModalElement;
-    "gx-navbar": HTMLGxNavbarElement;
-    "gx-navbar-link": HTMLGxNavbarLinkElement;
-    "gx-password-edit": HTMLGxPasswordEditElement;
-    "gx-progress-bar": HTMLGxProgressBarElement;
-    "gx-radio-group": HTMLGxRadioGroupElement;
-    "gx-radio-option": HTMLGxRadioOptionElement;
-    "gx-rating": HTMLGxRatingElement;
-    "gx-select": HTMLGxSelectElement;
-    "gx-select-option": HTMLGxSelectOptionElement;
-    "gx-switch": HTMLGxSwitchElement;
-    "gx-tab": HTMLGxTabElement;
-    "gx-tab-caption": HTMLGxTabCaptionElement;
-    "gx-tab-page": HTMLGxTabPageElement;
-    "gx-table": HTMLGxTableElement;
-    "gx-table-cell": HTMLGxTableCellElement;
-    "gx-textblock": HTMLGxTextblockElement;
-    "gx-video": HTMLGxVideoElement;
+    'gx-action-sheet': HTMLGxActionSheetElement;
+    'gx-action-sheet-item': HTMLGxActionSheetItemElement;
+    'gx-bootstrap': HTMLGxBootstrapElement;
+    'gx-button': HTMLGxButtonElement;
+    'gx-canvas': HTMLGxCanvasElement;
+    'gx-canvas-cell': HTMLGxCanvasCellElement;
+    'gx-card': HTMLGxCardElement;
+    'gx-checkbox': HTMLGxCheckboxElement;
+    'gx-chronometer': HTMLGxChronometerElement;
+    'gx-edit': HTMLGxEditElement;
+    'gx-form-field': HTMLGxFormFieldElement;
+    'gx-grid-fs': HTMLGxGridFsElement;
+    'gx-grid-infinite-scroll': HTMLGxGridInfiniteScrollElement;
+    'gx-grid-infinite-scroll-content': HTMLGxGridInfiniteScrollContentElement;
+    'gx-grid-smart': HTMLGxGridSmartElement;
+    'gx-group': HTMLGxGroupElement;
+    'gx-image': HTMLGxImageElement;
+    'gx-loading': HTMLGxLoadingElement;
+    'gx-lottie': HTMLGxLottieElement;
+    'gx-map': HTMLGxMapElement;
+    'gx-map-marker': HTMLGxMapMarkerElement;
+    'gx-message': HTMLGxMessageElement;
+    'gx-modal': HTMLGxModalElement;
+    'gx-navbar': HTMLGxNavbarElement;
+    'gx-navbar-link': HTMLGxNavbarLinkElement;
+    'gx-password-edit': HTMLGxPasswordEditElement;
+    'gx-progress-bar': HTMLGxProgressBarElement;
+    'gx-radio-group': HTMLGxRadioGroupElement;
+    'gx-radio-option': HTMLGxRadioOptionElement;
+    'gx-rating': HTMLGxRatingElement;
+    'gx-select': HTMLGxSelectElement;
+    'gx-select-option': HTMLGxSelectOptionElement;
+    'gx-switch': HTMLGxSwitchElement;
+    'gx-tab': HTMLGxTabElement;
+    'gx-tab-caption': HTMLGxTabCaptionElement;
+    'gx-tab-page': HTMLGxTabPageElement;
+    'gx-table': HTMLGxTableElement;
+    'gx-table-cell': HTMLGxTableCellElement;
+    'gx-textblock': HTMLGxTextblockElement;
+    'gx-video': HTMLGxVideoElement;
   }
 }
 
 declare namespace LocalJSX {
-  interface GxActionSheet
-    extends JSXBase.HTMLAttributes<HTMLGxActionSheetElement> {
+  interface GxActionSheet extends JSXBase.HTMLAttributes<HTMLGxActionSheetElement> {
     /**
-     * This attribute lets you specify the label for the close button. Important for accessibility.
-     */
-    closeButtonLabel?: string;
+    * This attribute lets you specify the label for the close button. Important for accessibility.
+    */
+    'closeButtonLabel'?: string;
     /**
-     * Fired when the action sheet is closed
-     */
-    onOnClose?: (event: CustomEvent<any>) => void;
+    * Fired when the action sheet is closed
+    */
+    'onOnClose'?: (event: CustomEvent<any>) => void;
     /**
-     * Fired when the action sheet is opened
-     */
-    onOnOpen?: (event: CustomEvent<any>) => void;
+    * Fired when the action sheet is opened
+    */
+    'onOnOpen'?: (event: CustomEvent<any>) => void;
     /**
-     * This attribute lets you specify if the action sheet is opened or closed.
-     */
-    opened?: boolean;
+    * This attribute lets you specify if the action sheet is opened or closed.
+    */
+    'opened'?: boolean;
   }
-  interface GxActionSheetItem
-    extends JSXBase.HTMLAttributes<HTMLGxActionSheetItemElement> {
+  interface GxActionSheetItem extends JSXBase.HTMLAttributes<HTMLGxActionSheetItemElement> {
     /**
-     * This attribute lets you specify the type of action. `"cancel"` and `"destructive"` are style differently
-     */
-    actionType?: "cancel" | "default" | "destructive";
+    * This attribute lets you specify the type of action. `"cancel"` and `"destructive"` are style differently
+    */
+    'actionType'?: "cancel" | "default" | "destructive";
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled?: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled'?: boolean;
     /**
-     * Fired when the action sheet item is clicked
-     */
-    onOnClick?: (event: CustomEvent<any>) => void;
+    * Fired when the action sheet item is clicked
+    */
+    'onOnClick'?: (event: CustomEvent<any>) => void;
   }
-  interface GxBootstrap
-    extends JSXBase.HTMLAttributes<HTMLGxBootstrapElement> {}
+  interface GxBootstrap extends JSXBase.HTMLAttributes<HTMLGxBootstrapElement> {}
   interface GxButton extends JSXBase.HTMLAttributes<HTMLGxButtonElement> {
     /**
-     * A CSS class to set as the inner `input` element class.
-     */
-    cssClass?: string;
+    * A CSS class to set as the inner `input` element class.
+    */
+    'cssClass'?: string;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event). If a disabled image has been specified, it will be shown, hiding the base image (if specified).
-     */
-    disabled?: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event). If a disabled image has been specified, it will be shown, hiding the base image (if specified).
+    */
+    'disabled'?: boolean;
     /**
-     * This attribute lets you specify the relative location of the image to the text.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `above`  | The image is located above the text.                    | | `before` | The image is located before the text, in the same line. | | `after`  | The image is located after the text, in the same line.  | | `below`  | The image is located below the text.                    | | `behind` | The image is located behind the text.                   |
-     */
-    imagePosition?: "above" | "before" | "after" | "below" | "behind";
+    * This attribute lets you specify the relative location of the image to the text.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `above`  | The image is located above the text.                    | | `before` | The image is located before the text, in the same line. | | `after`  | The image is located after the text, in the same line.  | | `below`  | The image is located below the text.                    | | `behind` | The image is located behind the text.                   |
+    */
+    'imagePosition'?: "above" | "before" | "after" | "below" | "behind";
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * Emitted when the element is clicked.
-     */
-    onOnClick?: (event: CustomEvent<any>) => void;
+    * Emitted when the element is clicked.
+    */
+    'onOnClick'?: (event: CustomEvent<any>) => void;
     /**
-     * This attribute lets you specify the size of the button.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `large`  | Large sized button.                                     | | `normal` | Standard sized button.                                  | | `small`  | Small sized button.                                     |
-     */
-    size?: "large" | "normal" | "small";
+    * This attribute lets you specify the size of the button.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `large`  | Large sized button.                                     | | `normal` | Standard sized button.                                  | | `small`  | Small sized button.                                     |
+    */
+    'size'?: "large" | "normal" | "small";
   }
   interface GxCanvas extends JSXBase.HTMLAttributes<HTMLGxCanvasElement> {
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled?: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled'?: boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * Emitted when the element is clicked.
-     */
-    onOnClick?: (event: CustomEvent<any>) => void;
+    * Emitted when the element is clicked.
+    */
+    'onOnClick'?: (event: CustomEvent<any>) => void;
     /**
-     * Emitted when the element is swiped.
-     */
-    onOnSwipe?: (event: CustomEvent<any>) => void;
+    * Emitted when the element is swiped.
+    */
+    'onOnSwipe'?: (event: CustomEvent<any>) => void;
     /**
-     * Emitted when the element is swiped downward direction.
-     */
-    onOnSwipeDown?: (event: CustomEvent<any>) => void;
+    * Emitted when the element is swiped downward direction.
+    */
+    'onOnSwipeDown'?: (event: CustomEvent<any>) => void;
     /**
-     * Emitted when the element is swiped left direction..
-     */
-    onOnSwipeLeft?: (event: CustomEvent<any>) => void;
+    * Emitted when the element is swiped left direction..
+    */
+    'onOnSwipeLeft'?: (event: CustomEvent<any>) => void;
     /**
-     * Emitted when the element is swiped right direction.
-     */
-    onOnSwipeRight?: (event: CustomEvent<any>) => void;
+    * Emitted when the element is swiped right direction.
+    */
+    'onOnSwipeRight'?: (event: CustomEvent<any>) => void;
     /**
-     * Emitted when the element is swiped in upward direction.
-     */
-    onOnSwipeUp?: (event: CustomEvent<any>) => void;
+    * Emitted when the element is swiped in upward direction.
+    */
+    'onOnSwipeUp'?: (event: CustomEvent<any>) => void;
   }
-  interface GxCanvasCell
-    extends JSXBase.HTMLAttributes<HTMLGxCanvasCellElement> {
+  interface GxCanvasCell extends JSXBase.HTMLAttributes<HTMLGxCanvasCellElement> {
     /**
-     * Defines the horizontal aligmnent of the content of the cell.
-     */
-    align?: "left" | "right" | "center";
+    * Defines the horizontal aligmnent of the content of the cell.
+    */
+    'align'?: "left" | "right" | "center";
     /**
-     * This attribute defines how the control behaves when the content overflows.  | Value    | Details                                                     | | -------- | ----------------------------------------------------------- | | `scroll` | The overflowin content is hidden, but scrollbars are shown  | | `clip`   | The overflowing content is hidden, without scrollbars       |
-     */
-    overflowMode?: "scroll" | "clip";
+    * This attribute defines how the control behaves when the content overflows.  | Value    | Details                                                     | | -------- | ----------------------------------------------------------- | | `scroll` | The overflowin content is hidden, but scrollbars are shown  | | `clip`   | The overflowing content is hidden, without scrollbars       |
+    */
+    'overflowMode'?: "scroll" | "clip";
     /**
-     * Defines the vertical aligmnent of the content of the cell.
-     */
-    valign?: "top" | "bottom" | "medium";
+    * Defines the vertical aligmnent of the content of the cell.
+    */
+    'valign'?: "top" | "bottom" | "medium";
   }
   interface GxCard extends JSXBase.HTMLAttributes<HTMLGxCardElement> {
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * True to show the card border. False to hide it.
-     */
-    showBorder?: boolean;
+    * True to show the card border. False to hide it.
+    */
+    'showBorder'?: boolean;
     /**
-     * True to show the card footer. False to hide it.
-     */
-    showFooter?: boolean;
+    * True to show the card footer. False to hide it.
+    */
+    'showFooter'?: boolean;
     /**
-     * True to show the card header. False to hide it.
-     */
-    showHeader?: boolean;
+    * True to show the card header. False to hide it.
+    */
+    'showHeader'?: boolean;
   }
   interface GxCheckbox extends JSXBase.HTMLAttributes<HTMLGxCheckboxElement> {
     /**
-     * Specifies the label of the checkbox.
-     */
-    caption?: string;
+    * Specifies the label of the checkbox.
+    */
+    'caption'?: string;
     /**
-     * Indicates that the control is selected by default.
-     */
-    checked?: boolean;
+    * Indicates that the control is selected by default.
+    */
+    'checked'?: boolean;
     /**
-     * The value when the checkbox is 'on'
-     */
-    checkedValue?: string;
+    * The value when the checkbox is 'on'
+    */
+    'checkedValue'?: string;
     /**
-     * A CSS class to set as the inner `input` element class.
-     */
-    cssClass?: string;
+    * A CSS class to set as the inner `input` element class.
+    */
+    'cssClass'?: string;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled?: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled'?: boolean;
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id?: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id'?: string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * The `input` event is emitted when a change to the element's value is committed by the user.
-     */
-    onInput?: (event: CustomEvent<any>) => void;
+    * The `input` event is emitted when a change to the element's value is committed by the user.
+    */
+    'onInput'?: (event: CustomEvent<any>) => void;
     /**
-     * The value when the checkbox is 'off'
-     */
-    unCheckedValue?: string;
+    * The value when the checkbox is 'off'
+    */
+    'unCheckedValue'?: string;
     /**
-     * The value of the control.
-     */
-    value?: string;
+    * The value of the control.
+    */
+    'value'?: string;
   }
-  interface GxChronometer
-    extends JSXBase.HTMLAttributes<HTMLGxChronometerElement> {
+  interface GxChronometer extends JSXBase.HTMLAttributes<HTMLGxChronometerElement> {
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id?: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id'?: string;
     /**
-     * Defines the interval that the function onTick will be called.
-     */
-    interval?: number;
+    * Defines the interval that the function onTick will be called.
+    */
+    'interval'?: number;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * When the chronometer reaches this value, MaxValueText will be shown instead of the Chronometer value.
-     */
-    maxValue?: number;
+    * When the chronometer reaches this value, MaxValueText will be shown instead of the Chronometer value.
+    */
+    'maxValue'?: number;
     /**
-     * Text to be displayed when chronometer value reaches maxValue.
-     */
-    maxValueText?: string;
+    * Text to be displayed when chronometer value reaches maxValue.
+    */
+    'maxValueText'?: string;
     /**
-     * The `change` event is emitted every time the chronometer changes
-     */
-    onChange?: (event: CustomEvent<any>) => void;
+    * The `change` event is emitted every time the chronometer changes
+    */
+    'onChange'?: (event: CustomEvent<any>) => void;
     /**
-     * Event to emit after max time is consumed.
-     */
-    onEnd?: (event: CustomEvent<any>) => void;
+    * Event to emit after max time is consumed.
+    */
+    'onEnd'?: (event: CustomEvent<any>) => void;
     /**
-     * The `input` event is emitted every time the chronometer changes (every 1 second)
-     */
-    onInput?: (event: CustomEvent<any>) => void;
+    * The `input` event is emitted every time the chronometer changes (every 1 second)
+    */
+    'onInput'?: (event: CustomEvent<any>) => void;
     /**
-     * Event to emit After elapsed time (tickInterval).
-     */
-    onTick?: (event: CustomEvent<any>) => void;
+    * Event to emit After elapsed time (tickInterval).
+    */
+    'onTick'?: (event: CustomEvent<any>) => void;
     /**
-     * State of the Chronometer.
-     */
-    state?: TimerState;
+    * State of the Chronometer.
+    */
+    'state'?: TimerState;
     /**
-     * Time unit: (s) seconds or (ms) milliseconds for every time control Property.
-     */
-    unit?: "s" | "ms";
+    * Time unit: (s) seconds or (ms) milliseconds for every time control Property.
+    */
+    'unit'?: "s" | "ms";
     /**
-     * The value of the control.
-     */
-    value?: number;
+    * The value of the control.
+    */
+    'value'?: number;
   }
   interface GxEdit extends JSXBase.HTMLAttributes<HTMLGxEditElement> {
-    area?: string;
+    'area'?: string;
     /**
-     * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize) attribute for `input` elements. Only supported by Safari and Chrome.
-     */
-    autocapitalize?: string;
+    * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize) attribute for `input` elements. Only supported by Safari and Chrome.
+    */
+    'autocapitalize'?: string;
     /**
-     * This attribute indicates whether the value of the control can be automatically completed by the browser. Same as [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocomplete) attribute for `input` elements.
-     */
-    autocomplete?: "on" | "off";
+    * This attribute indicates whether the value of the control can be automatically completed by the browser. Same as [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocomplete) attribute for `input` elements.
+    */
+    'autocomplete'?: "on" | "off";
     /**
-     * Used to control whether autocorrection should be enabled when the user is entering/editing the text value. Sames as [autocorrect](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocorrect) attribute for `input` elements.
-     */
-    autocorrect?: string;
+    * Used to control whether autocorrection should be enabled when the user is entering/editing the text value. Sames as [autocorrect](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocorrect) attribute for `input` elements.
+    */
+    'autocorrect'?: string;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled?: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled'?: boolean;
     /**
-     * Used to define the semantic of the element when readonly=true.  Font categories are mapped to semantic HTML elements when rendered:  * `"headline"`: `h1` * `"subheadline"`: `h2` * `"body"`: `p` * `"footnote"`: `footer` * `"caption1"`: `span` * `"caption2"`: `span`
-     */
-    fontCategory?:
-      | "headline"
-      | "subheadline"
-      | "body"
-      | "footnote"
-      | "caption1"
-      | "caption2";
+    * Used to define the semantic of the element when readonly=true.  Font categories are mapped to semantic HTML elements when rendered:  * `"headline"`: `h1` * `"subheadline"`: `h2` * `"body"`: `p` * `"footnote"`: `footer` * `"caption1"`: `span` * `"caption2"`: `span`
+    */
+    'fontCategory'?: | "headline"
+    | "subheadline"
+    | "body"
+    | "footnote"
+    | "caption1"
+    | "caption2";
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id?: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id'?: string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * Controls if the element accepts multiline text.
-     */
-    multiline?: boolean;
+    * Controls if the element accepts multiline text.
+    */
+    'multiline'?: boolean;
     /**
-     * The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus.
-     */
-    onChange?: (event: CustomEvent<any>) => void;
+    * The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus.
+    */
+    'onChange'?: (event: CustomEvent<any>) => void;
     /**
-     * The `gxTriggerClick` event is fired when the trigger button is clicked.
-     */
-    onGxTriggerClick?: (event: CustomEvent<any>) => void;
+    * The `gxTriggerClick` event is fired when the trigger button is clicked.
+    */
+    'onGxTriggerClick'?: (event: CustomEvent<any>) => void;
     /**
-     * The `input` event is fired synchronously when the value is changed.
-     */
-    onInput?: (event: CustomEvent<any>) => void;
+    * The `input` event is fired synchronously when the value is changed.
+    */
+    'onInput'?: (event: CustomEvent<any>) => void;
     /**
-     * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
-     */
-    placeholder?: string;
+    * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
+    */
+    'placeholder'?: string;
     /**
-     * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
-     */
-    readonly?: boolean;
+    * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
+    */
+    'readonly'?: boolean;
     /**
-     * If true, a trigger button is shown next to the edit field. The button can be customized using `trigger-text` and `trigger-class` attributes, or adding a child element with `slot="trigger-content"` attribute to specify the content inside the trigger button.
-     */
-    showTrigger?: boolean;
+    * If true, a trigger button is shown next to the edit field. The button can be customized using `trigger-text` and `trigger-class` attributes, or adding a child element with `slot="trigger-content"` attribute to specify the content inside the trigger button.
+    */
+    'showTrigger'?: boolean;
     /**
-     * The text of the trigger button. If a text is specified and an image is specified (through an element with `slot="trigger-content"`), the content is ignored and the text is used instead.
-     */
-    triggerText?: string;
+    * The text of the trigger button. If a text is specified and an image is specified (through an element with `slot="trigger-content"`), the content is ignored and the text is used instead.
+    */
+    'triggerText'?: string;
     /**
-     * The type of control to render. A subset of the types supported by the `input` element is supported:  * `"date"` * `"datetime-local"` * `"email"` * `"file"` * `"number"` * `"password"` * `"search"` * `"tel"` * `"text"` * `"url"`
-     */
-    type?:
-      | "date"
-      | "datetime-local"
-      | "email"
-      | "file"
-      | "number"
-      | "password"
-      | "search"
-      | "tel"
-      | "text"
-      | "url";
+    * The type of control to render. A subset of the types supported by the `input` element is supported:  * `"date"` * `"datetime-local"` * `"email"` * `"file"` * `"number"` * `"password"` * `"search"` * `"tel"` * `"text"` * `"url"`
+    */
+    'type'?: | "date"
+    | "datetime-local"
+    | "email"
+    | "file"
+    | "number"
+    | "password"
+    | "search"
+    | "tel"
+    | "text"
+    | "url";
     /**
-     * The initial value of the control.
-     */
-    value?: string;
+    * The initial value of the control.
+    */
+    'value'?: string;
   }
   interface GxFormField extends JSXBase.HTMLAttributes<HTMLGxFormFieldElement> {
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id?: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id'?: string;
     /**
-     * The text to set as the label of the field.
-     */
-    labelCaption?: string;
+    * The text to set as the label of the field.
+    */
+    'labelCaption'?: string;
     /**
-     * The position where the label will be located, relative to the edit control. The supported values are:  * `"top"`: The label is located above the edit control. * `"right"`: The label is located at the right side of the edit control. * `"bottom"`: The label is located below the edit control. * `"left"`: The label is located at the left side of the edit control. * `"float"`: The label is shown as a placeholder when the edit control's value is empty. When the value is not empty, the label floats and locates above the edit control. * `"none"`: The label is rendered, but hidden.
-     */
-    labelPosition?: "none" | "top" | "right" | "bottom" | "left" | "float";
+    * The position where the label will be located, relative to the edit control. The supported values are:  * `"top"`: The label is located above the edit control. * `"right"`: The label is located at the right side of the edit control. * `"bottom"`: The label is located below the edit control. * `"left"`: The label is located at the left side of the edit control. * `"float"`: The label is shown as a placeholder when the edit control's value is empty. When the value is not empty, the label floats and locates above the edit control. * `"none"`: The label is rendered, but hidden.
+    */
+    'labelPosition'?: "none" | "top" | "right" | "bottom" | "left" | "float";
   }
   interface GxGridFs extends JSXBase.HTMLAttributes<HTMLGxGridFsElement> {
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
-     */
-    loadingState?: "loading" | "loaded";
+    * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
+    */
+    'loadingState'?: "loading" | "loaded";
     /**
-     * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
-     */
-    onGxInfiniteThresholdReached?: (event: CustomEvent<void>) => void;
+    * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
+    */
+    'onGxInfiniteThresholdReached'?: (event: CustomEvent<void>) => void;
     /**
-     * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
-     */
-    recordCount?: number;
+    * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
+    */
+    'recordCount'?: number;
     /**
-     * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
-     */
-    threshold?: string;
+    * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
+    */
+    'threshold'?: string;
   }
-  interface GxGridInfiniteScroll
-    extends JSXBase.HTMLAttributes<HTMLGxGridInfiniteScrollElement> {
+  interface GxGridInfiniteScroll extends JSXBase.HTMLAttributes<HTMLGxGridInfiniteScrollElement> {
     /**
-     * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
-     */
-    disabled?: boolean;
+    * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
+    */
+    'disabled'?: boolean;
     /**
-     * Query selector where the infinitie scroll would be listening to scroll events.
-     */
-    infiniteScrollContainer?: string;
+    * Query selector where the infinitie scroll would be listening to scroll events.
+    */
+    'infiniteScrollContainer'?: string;
     /**
-     * This property must be bounded to grid item count property. It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the intial batch does not overflow the main container
-     */
-    itemCount?: number;
+    * This property must be bounded to grid item count property. It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the intial batch does not overflow the main container
+    */
+    'itemCount'?: number;
     /**
-     * Emitted when the scroll reaches the threshold distance. From within your infinite handler, you must call the infinite scroll's `complete()` method when your async operation has completed.
-     */
-    onGxInfinite?: (event: CustomEvent<void>) => void;
+    * Emitted when the scroll reaches the threshold distance. From within your infinite handler, you must call the infinite scroll's `complete()` method when your async operation has completed.
+    */
+    'onGxInfinite'?: (event: CustomEvent<void>) => void;
     /**
-     * The position of the infinite scroll element. The value can be either `top` or `bottom`.
-     */
-    position?: "top" | "bottom";
+    * The position of the infinite scroll element. The value can be either `top` or `bottom`.
+    */
+    'position'?: "top" | "bottom";
     /**
-     * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
-     */
-    threshold?: string;
+    * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
+    */
+    'threshold'?: string;
   }
-  interface GxGridInfiniteScrollContent
-    extends JSXBase.HTMLAttributes<HTMLGxGridInfiniteScrollContentElement> {}
+  interface GxGridInfiniteScrollContent extends JSXBase.HTMLAttributes<HTMLGxGridInfiniteScrollContentElement> {}
   interface GxGridSmart extends JSXBase.HTMLAttributes<HTMLGxGridSmartElement> {
     /**
-     * Number of items per column (items visible at the same time on slider's container).
-     */
-    columns?: number | "auto";
+    * Number of items per column (items visible at the same time on slider's container).
+    */
+    'columns'?: number | "auto";
     /**
-     * 0-Indexed number of currently active page
-     */
-    currentPage?: number;
+    * 0-Indexed number of currently active page
+    */
+    'currentPage'?: number;
     /**
-     * Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).
-     */
-    direction?: "horizontal" | "vertical";
+    * Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).
+    */
+    'direction'?: "horizontal" | "vertical";
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * Set numbers of items to define and enable group sliding. Useful to use with rowsPerPage > 1
-     */
-    itemsPerGroup?: number;
+    * Set numbers of items to define and enable group sliding. Useful to use with rowsPerPage > 1
+    */
+    'itemsPerGroup'?: number;
     /**
-     * Grid loading state. It's purpose is to know whether the grid loading animation or the grid empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
-     */
-    loadingState?: "loading" | "loaded";
+    * Grid loading state. It's purpose is to know whether the grid loading animation or the grid empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
+    */
+    'loadingState'?: "loading" | "loaded";
     /**
-     * Logging level. For troubleshooting component update and initialization.
-     */
-    logLevel?: "debug" | "off";
+    * Logging level. For troubleshooting component update and initialization.
+    */
+    'logLevel'?: "debug" | "off";
     /**
-     * Emitted when the user taps/clicks on the slide's container.
-     */
-    onGxGridClick?: (event: CustomEvent<void>) => void;
+    * Emitted when the user taps/clicks on the slide's container.
+    */
+    'onGxGridClick'?: (event: CustomEvent<void>) => void;
     /**
-     * Emitted after the active slide has changed.
-     */
-    onGxGridDidChange?: (event: CustomEvent<number>) => void;
+    * Emitted after the active slide has changed.
+    */
+    'onGxGridDidChange'?: (event: CustomEvent<number>) => void;
     /**
-     * Emitted after Swiper initialization
-     */
-    onGxGridDidLoad?: (event: CustomEvent<void>) => void;
+    * Emitted after Swiper initialization
+    */
+    'onGxGridDidLoad'?: (event: CustomEvent<void>) => void;
     /**
-     * Emitted when the user double taps on the slide's container.
-     */
-    onGxGridDoubleClick?: (event: CustomEvent<void>) => void;
+    * Emitted when the user double taps on the slide's container.
+    */
+    'onGxGridDoubleClick'?: (event: CustomEvent<void>) => void;
     /**
-     * Emitted when the slider is actively being moved.
-     */
-    onGxGridDrag?: (event: CustomEvent<void>) => void;
+    * Emitted when the slider is actively being moved.
+    */
+    'onGxGridDrag'?: (event: CustomEvent<void>) => void;
     /**
-     * Emitted when the next slide has ended.
-     */
-    onGxGridNextEnd?: (event: CustomEvent<void>) => void;
+    * Emitted when the next slide has ended.
+    */
+    'onGxGridNextEnd'?: (event: CustomEvent<void>) => void;
     /**
-     * Emitted when the next slide has started.
-     */
-    onGxGridNextStart?: (event: CustomEvent<void>) => void;
+    * Emitted when the next slide has started.
+    */
+    'onGxGridNextStart'?: (event: CustomEvent<void>) => void;
     /**
-     * Emitted when the previous slide has ended.
-     */
-    onGxGridPrevEnd?: (event: CustomEvent<void>) => void;
+    * Emitted when the previous slide has ended.
+    */
+    'onGxGridPrevEnd'?: (event: CustomEvent<void>) => void;
     /**
-     * Emitted when the previous slide has started.
-     */
-    onGxGridPrevStart?: (event: CustomEvent<void>) => void;
+    * Emitted when the previous slide has started.
+    */
+    'onGxGridPrevStart'?: (event: CustomEvent<void>) => void;
     /**
-     * Emitted when the slider is at the last slide.
-     */
-    onGxGridReachEnd?: (event: CustomEvent<void>) => void;
+    * Emitted when the slider is at the last slide.
+    */
+    'onGxGridReachEnd'?: (event: CustomEvent<void>) => void;
     /**
-     * Emitted when the slider is at its initial position.
-     */
-    onGxGridReachStart?: (event: CustomEvent<void>) => void;
+    * Emitted when the slider is at its initial position.
+    */
+    'onGxGridReachStart'?: (event: CustomEvent<void>) => void;
     /**
-     * Emitted when the user releases the touch.
-     */
-    onGxGridTouchEnd?: (event: CustomEvent<void>) => void;
+    * Emitted when the user releases the touch.
+    */
+    'onGxGridTouchEnd'?: (event: CustomEvent<void>) => void;
     /**
-     * Emitted when the user first touches the slider.
-     */
-    onGxGridTouchStart?: (event: CustomEvent<void>) => void;
+    * Emitted when the user first touches the slider.
+    */
+    'onGxGridTouchStart'?: (event: CustomEvent<void>) => void;
     /**
-     * Emitted when the slide transition has ended.
-     */
-    onGxGridTransitionEnd?: (event: CustomEvent<void>) => void;
+    * Emitted when the slide transition has ended.
+    */
+    'onGxGridTransitionEnd'?: (event: CustomEvent<void>) => void;
     /**
-     * Emitted when the slide transition has started.
-     */
-    onGxGridTransitionStart?: (event: CustomEvent<void>) => void;
+    * Emitted when the slide transition has started.
+    */
+    'onGxGridTransitionStart'?: (event: CustomEvent<void>) => void;
     /**
-     * Emitted before the active slide has changed.
-     */
-    onGxGridWillChange?: (event: CustomEvent<void>) => void;
+    * Emitted before the active slide has changed.
+    */
+    'onGxGridWillChange'?: (event: CustomEvent<void>) => void;
     /**
-     * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
-     */
-    onGxInfiniteThresholdReached?: (event: CustomEvent<void>) => void;
+    * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
+    */
+    'onGxInfiniteThresholdReached'?: (event: CustomEvent<void>) => void;
     /**
-     * Advanced options to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options
-     */
-    options?: SwiperOptions;
+    * Advanced options to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options
+    */
+    'options'?: SwiperOptions;
     /**
-     * If `true`, show the pagination buttons.
-     */
-    pager?: boolean;
+    * If `true`, show the pagination buttons.
+    */
+    'pager'?: boolean;
     /**
-     * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
-     */
-    recordCount?: number;
+    * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
+    */
+    'recordCount'?: number;
     /**
-     * Number of items per column, for multirow layout.
-     */
-    rows?: number;
+    * Number of items per column, for multirow layout.
+    */
+    'rows'?: number;
     /**
-     * If `true`, show the scrollbar.
-     */
-    scrollbar?: boolean;
+    * If `true`, show the scrollbar.
+    */
+    'scrollbar'?: boolean;
     /**
-     * Set to false to enable slides in free mode position.
-     */
-    snapToGrid?: boolean;
+    * Set to false to enable slides in free mode position.
+    */
+    'snapToGrid'?: boolean;
   }
   interface GxGroup extends JSXBase.HTMLAttributes<HTMLGxGroupElement> {
     /**
-     * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
-     */
-    autoGrow?: boolean;
+    * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+    */
+    'autoGrow'?: boolean;
     /**
-     * Attribute that provides the caption to the <legend> tag
-     */
-    caption?: string;
+    * Attribute that provides the caption to the <legend> tag
+    */
+    'caption'?: string;
   }
   interface GxImage extends JSXBase.HTMLAttributes<HTMLGxImageElement> {
     /**
-     * This attribute lets you specify the alternative text.
-     */
-    alt?: string;
+    * This attribute lets you specify the alternative text.
+    */
+    'alt'?: string;
     /**
-     * A CSS class to set as the inner element class.
-     */
-    cssClass?: string;
+    * A CSS class to set as the inner element class.
+    */
+    'cssClass'?: string;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled?: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled'?: boolean;
     /**
-     * This attribute lets you specify the height.
-     */
-    height?: string;
+    * This attribute lets you specify the height.
+    */
+    'height'?: string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * True to lazy load the image, when it enters the viewport.
-     */
-    lazyLoad?: boolean;
+    * True to lazy load the image, when it enters the viewport.
+    */
+    'lazyLoad'?: boolean;
     /**
-     * This attribute lets you specify the low resolution image SRC.
-     */
-    lowResolutionSrc?: string;
+    * This attribute lets you specify the low resolution image SRC.
+    */
+    'lowResolutionSrc'?: string;
     /**
-     * Emitted when the element is clicked.
-     */
-    onOnClick?: (event: CustomEvent<any>) => void;
+    * Emitted when the element is clicked.
+    */
+    'onOnClick'?: (event: CustomEvent<any>) => void;
     /**
-     * This attribute allows specifing how the image is sized according to its container. `contain`, `cover`, `fill` and `none` map directly to the values of the CSS `object-fit` property. The `tile` value repeats the image, both vertically and horizontally, creating a tile effect.
-     */
-    scaleType?: "contain" | "cover" | "fill" | "none" | "tile";
+    * This attribute allows specifing how the image is sized according to its container. `contain`, `cover`, `fill` and `none` map directly to the values of the CSS `object-fit` property. The `tile` value repeats the image, both vertically and horizontally, creating a tile effect.
+    */
+    'scaleType'?: | "contain"
+    | "cover"
+    | "fill"
+    | "none"
+    | "tile";
     /**
-     * This attribute lets you specify the SRC.
-     */
-    src?: string;
+    * This attribute lets you specify the SRC.
+    */
+    'src'?: string;
     /**
-     * This attribute lets you specify the width.
-     */
-    width?: string;
+    * This attribute lets you specify the width.
+    */
+    'width'?: string;
   }
   interface GxLoading extends JSXBase.HTMLAttributes<HTMLGxLoadingElement> {
     /**
-     * Sets the caption text.
-     */
-    caption?: string;
+    * Sets the caption text.
+    */
+    'caption'?: string;
     /**
-     * Sets the description text.
-     */
-    description?: string;
+    * Sets the description text.
+    */
+    'description'?: string;
     /**
-     * Sets if the loading dialog is presented.
-     */
-    presented?: boolean;
+    * Sets if the loading dialog is presented.
+    */
+    'presented'?: boolean;
     /**
-     * Sets the value.
-     */
-    type?: "determinate" | "indeterminate";
+    * Sets the value.
+    */
+    'type'?: "determinate" | "indeterminate";
     /**
-     * Sets the value when type is determinate. Must be a value between 0 and 1.
-     */
-    value?: number;
+    * Sets the value when type is determinate. Must be a value between 0 and 1.
+    */
+    'value'?: number;
   }
   interface GxLottie extends JSXBase.HTMLAttributes<HTMLGxLottieElement> {
     /**
-     * This attribute lets you specify a Lottie animation object
-     */
-    animationData?: any;
+    * This attribute lets you specify a Lottie animation object
+    */
+    'animationData'?: any;
     /**
-     * This attribute lets you specify if the animation will start playing as soon as it is ready
-     */
-    autoPlay?: boolean;
+    * This attribute lets you specify if the animation will start playing as soon as it is ready
+    */
+    'autoPlay'?: boolean;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled?: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled'?: boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * This attribute lets you specify if the animation will loop
-     */
-    loop?: boolean;
+    * This attribute lets you specify if the animation will loop
+    */
+    'loop'?: boolean;
     /**
-     * Emitted when the animation is loaded in the DOM.
-     */
-    onAnimationLoad?: (event: CustomEvent<any>) => void;
+    * Emitted when the animation is loaded in the DOM.
+    */
+    'onAnimationLoad'?: (event: CustomEvent<any>) => void;
     /**
-     * Emitted when the element is clicked.
-     */
-    onOnClick?: (event: CustomEvent<any>) => void;
+    * Emitted when the element is clicked.
+    */
+    'onOnClick'?: (event: CustomEvent<any>) => void;
     /**
-     * This attribute lets you specify  the relative path to the animation object. (`animationData` and `path` are mutually exclusive)
-     */
-    path?: string;
+    * This attribute lets you specify  the relative path to the animation object. (`animationData` and `path` are mutually exclusive)
+    */
+    'path'?: string;
   }
   interface GxMap extends JSXBase.HTMLAttributes<HTMLGxMapElement> {
     /**
-     * The coord of initial center of the map.
-     */
-    center?: string;
+    * The coord of initial center of the map.
+    */
+    'center'?: string;
     /**
-     * The max zoom level available in the map.
-     */
-    maxZoom?: number;
+    * The max zoom level available in the map.
+    */
+    'maxZoom'?: number;
     /**
-     * Emmits when the map is loaded.
-     */
-    onGxMapDidLoad?: (event: CustomEvent<any>) => void;
+    * Emmits when the map is loaded.
+    */
+    'onGxMapDidLoad'?: (event: CustomEvent<any>) => void;
     /**
-     * Emmits when the map is clicked and return click coords.
-     */
-    onMapClick?: (event: CustomEvent<any>) => void;
+    * Emmits when the map is clicked and return click coords.
+    */
+    'onMapClick'?: (event: CustomEvent<any>) => void;
     /**
-     * The initial zoom level in the map.
-     */
-    zoom?: number;
+    * The initial zoom level in the map.
+    */
+    'zoom'?: number;
   }
   interface GxMapMarker extends JSXBase.HTMLAttributes<HTMLGxMapMarkerElement> {
     /**
-     * The coordinates where the marker will appear in the map.
-     */
-    coords?: string;
+    * The coordinates where the marker will appear in the map.
+    */
+    'coords'?: string;
     /**
-     * The URL of the marker image.  *Note: The image size must be 25 x 41*
-     */
-    iconSrc?: string;
+    * The URL of the marker image.  *Note: The image size must be 25 x 41*
+    */
+    'iconSrc'?: string;
     /**
-     * Emmits when the element is deleted from a `<gx-map>`.
-     */
-    onGxMapMarkerDeleted?: (event: CustomEvent<any>) => void;
+    * Emmits when the element is deleted from a `<gx-map>`.
+    */
+    'onGxMapMarkerDeleted'?: (event: CustomEvent<any>) => void;
     /**
-     * Emmits when the element is added to a `<gx-map>`.
-     */
-    onGxMapMarkerDidLoad?: (event: CustomEvent<any>) => void;
+    * Emmits when the element is added to a `<gx-map>`.
+    */
+    'onGxMapMarkerDidLoad'?: (event: CustomEvent<any>) => void;
     /**
-     * Emmits when the element update its data.
-     */
-    onGxMapMarkerUpdate?: (event: CustomEvent<any>) => void;
+    * Emmits when the element update its data.
+    */
+    'onGxMapMarkerUpdate'?: (event: CustomEvent<any>) => void;
     /**
-     * The tooltip caption of the marker.
-     */
-    tooltipCaption?: string;
+    * The tooltip caption of the marker.
+    */
+    'tooltipCaption'?: string;
   }
   interface GxMessage extends JSXBase.HTMLAttributes<HTMLGxMessageElement> {
     /**
-     * Text for the close button.
-     */
-    closeButtonText?: string;
+    * Text for the close button.
+    */
+    'closeButtonText'?: string;
     /**
-     * The time in miliseconds before the message is automatically dismissed. If no duration is specified, the message will not be automatically dismissed.
-     */
-    duration?: number;
+    * The time in miliseconds before the message is automatically dismissed. If no duration is specified, the message will not be automatically dismissed.
+    */
+    'duration'?: number;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * Show a button for closing the meesage box
-     */
-    showCloseButton?: boolean;
+    * Show a button for closing the meesage box
+    */
+    'showCloseButton'?: boolean;
     /**
-     * Type of the button: * `info`: Information message * `warning`: Warning Message * `error`: Error message
-     */
-    type?: "info" | "warning" | "error";
+    * Type of the button: * `info`: Information message * `warning`: Warning Message * `error`: Error message
+    */
+    'type'?: "info" | "warning" | "error";
   }
   interface GxModal extends JSXBase.HTMLAttributes<HTMLGxModalElement> {
     /**
-     * This attribute lets you specify if the modal dialog is automatically closed when an action is clicked.
-     */
-    autoClose?: boolean;
+    * This attribute lets you specify if the modal dialog is automatically closed when an action is clicked.
+    */
+    'autoClose'?: boolean;
     /**
-     * This attribute lets you specify the label for the close button. Important for accessibility.
-     */
-    closeButtonLabel?: string;
+    * This attribute lets you specify the label for the close button. Important for accessibility.
+    */
+    'closeButtonLabel'?: string;
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id?: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id'?: string;
     /**
-     * Fired when the modal dialog is closed
-     */
-    onOnClose?: (event: CustomEvent<any>) => void;
+    * Fired when the modal dialog is closed
+    */
+    'onOnClose'?: (event: CustomEvent<any>) => void;
     /**
-     * Fired when the modal dialog is opened
-     */
-    onOnOpen?: (event: CustomEvent<any>) => void;
+    * Fired when the modal dialog is opened
+    */
+    'onOnOpen'?: (event: CustomEvent<any>) => void;
     /**
-     * This attribute lets you specify if the modal dialog is opened or closed.
-     */
-    opened?: boolean;
+    * This attribute lets you specify if the modal dialog is opened or closed.
+    */
+    'opened'?: boolean;
   }
   interface GxNavbar extends JSXBase.HTMLAttributes<HTMLGxNavbarElement> {
     /**
-     * This attribute lets you specify an optional title for the navigation bar  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    caption?: string;
+    * This attribute lets you specify an optional title for the navigation bar  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'caption'?: string;
     /**
-     * A CSS class to set as the inner element class.
-     */
-    cssClass?: string;
+    * A CSS class to set as the inner element class.
+    */
+    'cssClass'?: string;
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id?: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id'?: string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * This attribute lets you specify the label for the toggle button. Important for accessibility.
-     */
-    toggleButtonLabel?: string;
+    * This attribute lets you specify the label for the toggle button. Important for accessibility.
+    */
+    'toggleButtonLabel'?: string;
   }
-  interface GxNavbarLink
-    extends JSXBase.HTMLAttributes<HTMLGxNavbarLinkElement> {
+  interface GxNavbarLink extends JSXBase.HTMLAttributes<HTMLGxNavbarLinkElement> {
     /**
-     * Indicates if the navbar item is the active one (for example, when the item represents the current page)
-     */
-    active?: boolean;
+    * Indicates if the navbar item is the active one (for example, when the item represents the current page)
+    */
+    'active'?: boolean;
     /**
-     * A CSS class to set as the inner element class.
-     */
-    cssClass?: string;
+    * A CSS class to set as the inner element class.
+    */
+    'cssClass'?: string;
     /**
-     * This attribute lets you specify if the navbar item is disabled.
-     */
-    disabled?: boolean;
+    * This attribute lets you specify if the navbar item is disabled.
+    */
+    'disabled'?: boolean;
     /**
-     * This attribute lets you specify the URL of the navbar item.
-     */
-    href?: string;
+    * This attribute lets you specify the URL of the navbar item.
+    */
+    'href'?: string;
     /**
-     * This attribute lets you specify the URL of an icon for the navbar item.
-     */
-    iconSrc?: string;
+    * This attribute lets you specify the URL of an icon for the navbar item.
+    */
+    'iconSrc'?: string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * Emitted when the element is clicked.
-     */
-    onOnClick?: (event: CustomEvent<any>) => void;
+    * Emitted when the element is clicked.
+    */
+    'onOnClick'?: (event: CustomEvent<any>) => void;
   }
-  interface GxPasswordEdit
-    extends JSXBase.HTMLAttributes<HTMLGxPasswordEditElement> {
+  interface GxPasswordEdit extends JSXBase.HTMLAttributes<HTMLGxPasswordEditElement> {
     /**
-     * A CSS class to set as the inner `input` element class.
-     */
-    cssClass?: string;
+    * A CSS class to set as the inner `input` element class.
+    */
+    'cssClass'?: string;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled?: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled'?: boolean;
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id?: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id'?: string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus.
-     */
-    onChange?: (event: CustomEvent<any>) => void;
+    * The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus.
+    */
+    'onChange'?: (event: CustomEvent<any>) => void;
     /**
-     * The `input` event is fired synchronously when the value is changed.
-     */
-    onInput?: (event: CustomEvent<any>) => void;
+    * The `input` event is fired synchronously when the value is changed.
+    */
+    'onInput'?: (event: CustomEvent<any>) => void;
     /**
-     * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
-     */
-    placeholder?: string;
+    * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
+    */
+    'placeholder'?: string;
     /**
-     * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
-     */
-    readonly?: boolean;
+    * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
+    */
+    'readonly'?: boolean;
     /**
-     * Text of the reveal button to offer hiding the password.
-     */
-    revealButtonTextOff?: string;
+    * Text of the reveal button to offer hiding the password.
+    */
+    'revealButtonTextOff'?: string;
     /**
-     * Text of the reveal button to offer revealing the password.
-     */
-    revealButtonTextOn?: string;
+    * Text of the reveal button to offer revealing the password.
+    */
+    'revealButtonTextOn'?: string;
     /**
-     * Indicates if the value is revealed or masked.
-     */
-    revealed?: boolean;
+    * Indicates if the value is revealed or masked.
+    */
+    'revealed'?: boolean;
     /**
-     * If true, a reveal password button is shown next to the password input. Pressing the reveal button toggles the password mask, allowing the user to view the password text.
-     */
-    showRevealButton?: boolean;
+    * If true, a reveal password button is shown next to the password input. Pressing the reveal button toggles the password mask, allowing the user to view the password text.
+    */
+    'showRevealButton'?: boolean;
     /**
-     * The initial value of the control.
-     */
-    value?: string;
+    * The initial value of the control.
+    */
+    'value'?: string;
   }
-  interface GxProgressBar
-    extends JSXBase.HTMLAttributes<HTMLGxProgressBarElement> {
+  interface GxProgressBar extends JSXBase.HTMLAttributes<HTMLGxProgressBarElement> {
     /**
-     * Sets the progress value.
-     */
-    value?: number;
+    * Sets the progress value.
+    */
+    'value'?: number;
   }
-  interface GxRadioGroup
-    extends JSXBase.HTMLAttributes<HTMLGxRadioGroupElement> {
+  interface GxRadioGroup extends JSXBase.HTMLAttributes<HTMLGxRadioGroupElement> {
     /**
-     * Specifies how the child `gx-radio-option` will be layed out. It supports two values:  * `horizontal` * `vertical` (default)
-     */
-    direction?: "horizontal" | "vertical";
+    * Specifies how the child `gx-radio-option` will be layed out. It supports two values:  * `horizontal` * `vertical` (default)
+    */
+    'direction'?: "horizontal" | "vertical";
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled?: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled'?: boolean;
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id?: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id'?: string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * The name that will be set to all the inner inputs of type radio
-     */
-    name?: string;
+    * The name that will be set to all the inner inputs of type radio
+    */
+    'name'?: string;
     /**
-     * The `change` event is emitted when a change to the element's value is committed by the user.
-     */
-    onChange?: (event: CustomEvent<any>) => void;
+    * The `change` event is emitted when a change to the element's value is committed by the user.
+    */
+    'onChange'?: (event: CustomEvent<any>) => void;
     /**
-     * The initial value of the control. Setting the value automatically selects the corresponding radio option.
-     */
-    value?: string;
+    * The initial value of the control. Setting the value automatically selects the corresponding radio option.
+    */
+    'value'?: string;
   }
-  interface GxRadioOption
-    extends JSXBase.HTMLAttributes<HTMLGxRadioOptionElement> {
+  interface GxRadioOption extends JSXBase.HTMLAttributes<HTMLGxRadioOptionElement> {
     /**
-     * Specifies the label of the radio.
-     */
-    caption?: string;
+    * Specifies the label of the radio.
+    */
+    'caption'?: string;
     /**
-     * Indicates that the control is selected by default.
-     */
-    checked?: boolean;
+    * Indicates that the control is selected by default.
+    */
+    'checked'?: boolean;
     /**
-     * A CSS class to set as the inner `input` element class.
-     */
-    cssClass?: string;
+    * A CSS class to set as the inner `input` element class.
+    */
+    'cssClass'?: string;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled?: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled'?: boolean;
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id?: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id'?: string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * The name of the inner input of type radio
-     */
-    name?: string;
+    * The name of the inner input of type radio
+    */
+    'name'?: string;
     /**
-     * The `change` event is emitted when a change to the element's value is committed by the user.
-     */
-    onChange?: (event: CustomEvent<any>) => void;
+    * The `change` event is emitted when a change to the element's value is committed by the user.
+    */
+    'onChange'?: (event: CustomEvent<any>) => void;
     /**
-     * Emitted when the radio loads.
-     */
-    onGxRadioDidLoad?: (event: CustomEvent<any>) => void;
+    * Emitted when the radio loads.
+    */
+    'onGxRadioDidLoad'?: (event: CustomEvent<any>) => void;
     /**
-     * Emitted when the radio unloads.
-     */
-    onGxRadioDidUnload?: (event: CustomEvent<any>) => void;
+    * Emitted when the radio unloads.
+    */
+    'onGxRadioDidUnload'?: (event: CustomEvent<any>) => void;
     /**
-     * Emitted when the radio button is selected.
-     */
-    onGxSelect?: (event: CustomEvent<any>) => void;
+    * Emitted when the radio button is selected.
+    */
+    'onGxSelect'?: (event: CustomEvent<any>) => void;
     /**
-     * The initial value of the control.
-     */
-    value?: string;
+    * The initial value of the control.
+    */
+    'value'?: string;
   }
   interface GxRating extends JSXBase.HTMLAttributes<HTMLGxRatingElement> {
     /**
-     * This attribute allows you specify if the element is disabled. If disabled, it will not trigger any user interaction related event (for example, click event).
-     */
-    disabled?: boolean;
+    * This attribute allows you specify if the element is disabled. If disabled, it will not trigger any user interaction related event (for example, click event).
+    */
+    'disabled'?: boolean;
     /**
-     * The control id. Must be unique per control!
-     */
-    id?: string;
+    * The control id. Must be unique per control!
+    */
+    'id'?: string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * This porpoerty is required if you want to display a score. >E.g: In a score of 4/5 stars the `maxValue` is `5` and the `value` is `4`
-     */
-    maxValue?: number;
+    * This porpoerty is required if you want to display a score. >E.g: In a score of 4/5 stars the `maxValue` is `5` and the `value` is `4`
+    */
+    'maxValue'?: number;
     /**
-     * The 'input' event is emitted when a change to the element's value is committed by the user.
-     */
-    onInput?: (event: CustomEvent<any>) => void;
+    * The 'input' event is emitted when a change to the element's value is committed by the user.
+    */
+    'onInput'?: (event: CustomEvent<any>) => void;
     /**
-     * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_
-     */
-    readonly?: boolean;
+    * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_
+    */
+    'readonly'?: boolean;
     /**
-     * The current value displayed by the component.
-     */
-    value?: number;
+    * The current value displayed by the component.
+    */
+    'value'?: number;
   }
   interface GxSelect extends JSXBase.HTMLAttributes<HTMLGxSelectElement> {
     /**
-     * A CSS class to set as the inner `input` element class.
-     */
-    cssClass?: string;
+    * A CSS class to set as the inner `input` element class.
+    */
+    'cssClass'?: string;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled?: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled'?: boolean;
     /**
-     * The identifier of the control. Must be unique.
-     */
-    id?: string;
+    * The identifier of the control. Must be unique.
+    */
+    'id'?: string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * The `input` event is emitted when a change to the element's value is committed by the user.
-     */
-    onInput?: (event: CustomEvent<any>) => void;
+    * The `input` event is emitted when a change to the element's value is committed by the user.
+    */
+    'onInput'?: (event: CustomEvent<any>) => void;
     /**
-     * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
-     */
-    readonly?: boolean;
+    * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
+    */
+    'readonly'?: boolean;
     /**
-     * The initial value of the control. Setting the value automatically selects the corresponding option.
-     */
-    value?: string;
+    * The initial value of the control. Setting the value automatically selects the corresponding option.
+    */
+    'value'?: string;
   }
-  interface GxSelectOption
-    extends JSXBase.HTMLAttributes<HTMLGxSelectOptionElement> {
+  interface GxSelectOption extends JSXBase.HTMLAttributes<HTMLGxSelectOptionElement> {
     /**
-     * A CSS class to set as the inner `input` element class.
-     */
-    cssClass?: string;
+    * A CSS class to set as the inner `input` element class.
+    */
+    'cssClass'?: string;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled?: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled'?: boolean;
     /**
-     * The `change` event is emitted when a change to the element's value is committed by the user.
-     */
-    onChange?: (event: CustomEvent<any>) => void;
+    * The `change` event is emitted when a change to the element's value is committed by the user.
+    */
+    'onChange'?: (event: CustomEvent<any>) => void;
     /**
-     * Emitted when the option is disabled.
-     */
-    onGxDisable?: (event: CustomEvent<any>) => void;
+    * Emitted when the option is disabled.
+    */
+    'onGxDisable'?: (event: CustomEvent<any>) => void;
     /**
-     * Emitted when the option is selected.
-     */
-    onGxSelect?: (event: CustomEvent<any>) => void;
+    * Emitted when the option is selected.
+    */
+    'onGxSelect'?: (event: CustomEvent<any>) => void;
     /**
-     * Emitted when the option loads.
-     */
-    onGxSelectDidLoad?: (event: CustomEvent<any>) => void;
+    * Emitted when the option loads.
+    */
+    'onGxSelectDidLoad'?: (event: CustomEvent<any>) => void;
     /**
-     * Emitted when the option unloads.
-     */
-    onGxSelectDidUnload?: (event: CustomEvent<any>) => void;
+    * Emitted when the option unloads.
+    */
+    'onGxSelectDidUnload'?: (event: CustomEvent<any>) => void;
     /**
-     * Indicates that the control is selected by default.
-     */
-    selected?: boolean;
+    * Indicates that the control is selected by default.
+    */
+    'selected'?: boolean;
     /**
-     * The initial value of the control.
-     */
-    value?: string;
+    * The initial value of the control.
+    */
+    'value'?: string;
   }
   interface GxSwitch extends JSXBase.HTMLAttributes<HTMLGxSwitchElement> {
     /**
-     * Attribute that provides the caption to the control.
-     */
-    caption?: string;
+    * Attribute that provides the caption to the control.
+    */
+    'caption'?: string;
     /**
-     * Indicates if switch control is checked by default.
-     */
-    checked?: boolean;
+    * Indicates if switch control is checked by default.
+    */
+    'checked'?: boolean;
     /**
-     * This attribute allows you specify if the element is disabled. If disabled, it will not trigger any user interaction related event (for example, click event).
-     */
-    disabled?: boolean;
+    * This attribute allows you specify if the element is disabled. If disabled, it will not trigger any user interaction related event (for example, click event).
+    */
+    'disabled'?: boolean;
     /**
-     * The control id. Must be unique per control!
-     */
-    id?: string;
+    * The control id. Must be unique per control!
+    */
+    'id'?: string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * The 'input' event is emitted when a change to the element's value is committed by the user.
-     */
-    onInput?: (event: CustomEvent<any>) => void;
-    value?: string;
+    * The 'input' event is emitted when a change to the element's value is committed by the user.
+    */
+    'onInput'?: (event: CustomEvent<any>) => void;
+    'value'?: string;
   }
   interface GxTab extends JSXBase.HTMLAttributes<HTMLGxTabElement> {
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * Fired when the active tab is changed
-     */
-    onOnTabChange?: (event: CustomEvent<any>) => void;
+    * Fired when the active tab is changed
+    */
+    'onOnTabChange'?: (event: CustomEvent<any>) => void;
   }
-  interface GxTabCaption
-    extends JSXBase.HTMLAttributes<HTMLGxTabCaptionElement> {
+  interface GxTabCaption extends JSXBase.HTMLAttributes<HTMLGxTabCaptionElement> {
     /**
-     * This attribute lets you specify if the tab page is disabled
-     */
-    disabled?: false;
+    * This attribute lets you specify if the tab page is disabled
+    */
+    'disabled'?: false;
     /**
-     * Fired when the tab caption is selected
-     */
-    onOnTabSelect?: (event: CustomEvent<any>) => void;
+    * Fired when the tab caption is selected
+    */
+    'onOnTabSelect'?: (event: CustomEvent<any>) => void;
     /**
-     * This attribute lets you specify if the tab page corresponding to this caption is selected
-     */
-    selected?: false;
+    * This attribute lets you specify if the tab page corresponding to this caption is selected
+    */
+    'selected'?: false;
   }
   interface GxTabPage extends JSXBase.HTMLAttributes<HTMLGxTabPageElement> {}
   interface GxTable extends JSXBase.HTMLAttributes<HTMLGxTableElement> {
     /**
-     * Like the `grid-templates-areas` CSS property, this attribute defines a grid template by referencing the names of the areas which are specified with the cells [area attribute](../table-cell/readme.md#area). Repeating the name of an area causes the content to span those cells. A period signifies an empty cell. The syntax itself provides a visualization of the structure of the grid.
-     */
-    areasTemplate?: string;
+    * Like the `grid-templates-areas` CSS property, this attribute defines a grid template by referencing the names of the areas which are specified with the cells [area attribute](../table-cell/readme.md#area). Repeating the name of an area causes the content to span those cells. A period signifies an empty cell. The syntax itself provides a visualization of the structure of the grid.
+    */
+    'areasTemplate'?: string;
     /**
-     * Like the `grid-templates-columns` CSS property, this attribute defines the columns of the grid with a space-separated list of values. The values represent the width of column.
-     */
-    columnsTemplate?: string;
+    * Like the `grid-templates-columns` CSS property, this attribute defines the columns of the grid with a space-separated list of values. The values represent the width of column.
+    */
+    'columnsTemplate'?: string;
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled?: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled'?: boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * Emitted when the element is clicked.
-     */
-    onOnClick?: (event: CustomEvent<any>) => void;
+    * Emitted when the element is clicked.
+    */
+    'onOnClick'?: (event: CustomEvent<any>) => void;
     /**
-     * Emitted when the element is swiped.
-     */
-    onOnSwipe?: (event: CustomEvent<any>) => void;
+    * Emitted when the element is swiped.
+    */
+    'onOnSwipe'?: (event: CustomEvent<any>) => void;
     /**
-     * Emitted when the element is swiped downward direction.
-     */
-    onOnSwipeDown?: (event: CustomEvent<any>) => void;
+    * Emitted when the element is swiped downward direction.
+    */
+    'onOnSwipeDown'?: (event: CustomEvent<any>) => void;
     /**
-     * Emitted when the element is swiped left direction..
-     */
-    onOnSwipeLeft?: (event: CustomEvent<any>) => void;
+    * Emitted when the element is swiped left direction..
+    */
+    'onOnSwipeLeft'?: (event: CustomEvent<any>) => void;
     /**
-     * Emitted when the element is swiped right direction.
-     */
-    onOnSwipeRight?: (event: CustomEvent<any>) => void;
+    * Emitted when the element is swiped right direction.
+    */
+    'onOnSwipeRight'?: (event: CustomEvent<any>) => void;
     /**
-     * Emitted when the element is swiped in upward direction.
-     */
-    onOnSwipeUp?: (event: CustomEvent<any>) => void;
+    * Emitted when the element is swiped in upward direction.
+    */
+    'onOnSwipeUp'?: (event: CustomEvent<any>) => void;
     /**
-     * Like the `grid-templates-rows` CSS property, this attribute defines the rows of the grid with a space-separated list of values. The values represent the height of each row.
-     */
-    rowsTemplate?: string;
+    * Like the `grid-templates-rows` CSS property, this attribute defines the rows of the grid with a space-separated list of values. The values represent the height of each row.
+    */
+    'rowsTemplate'?: string;
   }
   interface GxTableCell extends JSXBase.HTMLAttributes<HTMLGxTableCellElement> {
     /**
-     * Defines the horizontal aligmnent of the content of the cell.
-     */
-    align?: "left" | "right" | "center";
+    * Defines the horizontal aligmnent of the content of the cell.
+    */
+    'align'?: "left" | "right" | "center";
     /**
-     * Like the `grid-area` CSS property, this attribute gives a name to the item, so it can be used from the [areas-template attributes](../table/readme.md#areas-template) of the gx-table element.
-     */
-    area?: string;
+    * Like the `grid-area` CSS property, this attribute gives a name to the item, so it can be used from the [areas-template attributes](../table/readme.md#areas-template) of the gx-table element.
+    */
+    'area'?: string;
     /**
-     * This attribute defines the maximum height of the cell.
-     */
-    maxHeight?: string;
+    * This attribute defines the maximum height of the cell.
+    */
+    'maxHeight'?: string;
     /**
-     * This attribute defines the minimum height of the cell when its contents are visible. Ignored if its content has `invisible-mode` = `collapse` and is hidden.
-     */
-    minHeight?: string;
+    * This attribute defines the minimum height of the cell when its contents are visible. Ignored if its content has `invisible-mode` = `collapse` and is hidden.
+    */
+    'minHeight'?: string;
     /**
-     * This attribute defines how the control behaves when the content overflows.  | Value    | Details                                                     | | -------- | ----------------------------------------------------------- | | `scroll` | The overflowin content is hidden, but scrollbars are shown  | | `clip`   | The overflowing content is hidden, without scrollbars       |
-     */
-    overflowMode?: "scroll" | "clip";
+    * This attribute defines how the control behaves when the content overflows.  | Value    | Details                                                     | | -------- | ----------------------------------------------------------- | | `scroll` | The overflowin content is hidden, but scrollbars are shown  | | `clip`   | The overflowing content is hidden, without scrollbars       |
+    */
+    'overflowMode'?: "scroll" | "clip";
     /**
-     * Defines the vertical aligmnent of the content of the cell.
-     */
-    valign?: "top" | "bottom" | "medium";
+    * Defines the vertical aligmnent of the content of the cell.
+    */
+    'valign'?: "top" | "bottom" | "medium";
   }
   interface GxTextblock extends JSXBase.HTMLAttributes<HTMLGxTextblockElement> {
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled?: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled'?: boolean;
     /**
-     * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
-     */
-    href?: string;
+    * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
+    */
+    'href'?: string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * Emitted when the element is clicked.
-     */
-    onOnClick?: (event: CustomEvent<any>) => void;
+    * Emitted when the element is clicked.
+    */
+    'onOnClick'?: (event: CustomEvent<any>) => void;
   }
   interface GxVideo extends JSXBase.HTMLAttributes<HTMLGxVideoElement> {
     /**
-     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
-     */
-    disabled?: boolean;
+    * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+    */
+    'disabled'?: boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+    */
+    'invisibleMode'?: "collapse" | "keep-space";
     /**
-     * Emitted when the element is clicked.
-     */
-    onOnClick?: (event: CustomEvent<any>) => void;
+    * Emitted when the element is clicked.
+    */
+    'onOnClick'?: (event: CustomEvent<any>) => void;
     /**
-     * This attribute is for specifies the src of the video.
-     */
-    src?: string;
+    * This attribute is for specifies the src of the video.
+    */
+    'src'?: string;
   }
 
   interface IntrinsicElements {
-    "gx-action-sheet": GxActionSheet;
-    "gx-action-sheet-item": GxActionSheetItem;
-    "gx-bootstrap": GxBootstrap;
-    "gx-button": GxButton;
-    "gx-canvas": GxCanvas;
-    "gx-canvas-cell": GxCanvasCell;
-    "gx-card": GxCard;
-    "gx-checkbox": GxCheckbox;
-    "gx-chronometer": GxChronometer;
-    "gx-edit": GxEdit;
-    "gx-form-field": GxFormField;
-    "gx-grid-fs": GxGridFs;
-    "gx-grid-infinite-scroll": GxGridInfiniteScroll;
-    "gx-grid-infinite-scroll-content": GxGridInfiniteScrollContent;
-    "gx-grid-smart": GxGridSmart;
-    "gx-group": GxGroup;
-    "gx-image": GxImage;
-    "gx-loading": GxLoading;
-    "gx-lottie": GxLottie;
-    "gx-map": GxMap;
-    "gx-map-marker": GxMapMarker;
-    "gx-message": GxMessage;
-    "gx-modal": GxModal;
-    "gx-navbar": GxNavbar;
-    "gx-navbar-link": GxNavbarLink;
-    "gx-password-edit": GxPasswordEdit;
-    "gx-progress-bar": GxProgressBar;
-    "gx-radio-group": GxRadioGroup;
-    "gx-radio-option": GxRadioOption;
-    "gx-rating": GxRating;
-    "gx-select": GxSelect;
-    "gx-select-option": GxSelectOption;
-    "gx-switch": GxSwitch;
-    "gx-tab": GxTab;
-    "gx-tab-caption": GxTabCaption;
-    "gx-tab-page": GxTabPage;
-    "gx-table": GxTable;
-    "gx-table-cell": GxTableCell;
-    "gx-textblock": GxTextblock;
-    "gx-video": GxVideo;
+    'gx-action-sheet': GxActionSheet;
+    'gx-action-sheet-item': GxActionSheetItem;
+    'gx-bootstrap': GxBootstrap;
+    'gx-button': GxButton;
+    'gx-canvas': GxCanvas;
+    'gx-canvas-cell': GxCanvasCell;
+    'gx-card': GxCard;
+    'gx-checkbox': GxCheckbox;
+    'gx-chronometer': GxChronometer;
+    'gx-edit': GxEdit;
+    'gx-form-field': GxFormField;
+    'gx-grid-fs': GxGridFs;
+    'gx-grid-infinite-scroll': GxGridInfiniteScroll;
+    'gx-grid-infinite-scroll-content': GxGridInfiniteScrollContent;
+    'gx-grid-smart': GxGridSmart;
+    'gx-group': GxGroup;
+    'gx-image': GxImage;
+    'gx-loading': GxLoading;
+    'gx-lottie': GxLottie;
+    'gx-map': GxMap;
+    'gx-map-marker': GxMapMarker;
+    'gx-message': GxMessage;
+    'gx-modal': GxModal;
+    'gx-navbar': GxNavbar;
+    'gx-navbar-link': GxNavbarLink;
+    'gx-password-edit': GxPasswordEdit;
+    'gx-progress-bar': GxProgressBar;
+    'gx-radio-group': GxRadioGroup;
+    'gx-radio-option': GxRadioOption;
+    'gx-rating': GxRating;
+    'gx-select': GxSelect;
+    'gx-select-option': GxSelectOption;
+    'gx-switch': GxSwitch;
+    'gx-tab': GxTab;
+    'gx-tab-caption': GxTabCaption;
+    'gx-tab-page': GxTabPage;
+    'gx-table': GxTable;
+    'gx-table-cell': GxTableCell;
+    'gx-textblock': GxTextblock;
+    'gx-video': GxVideo;
   }
 }
 
 export { LocalJSX as JSX };
+
 
 declare module "@stencil/core" {
   export namespace JSX {
     interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
   }
 }
+
+
