@@ -6,8 +6,9 @@ import {
   Prop,
   h
 } from "@stencil/core";
-import { TabCaptionRender } from "../renders/bootstrap/tab-caption/tab-caption-render";
 import { IComponent, IDisableableComponent } from "../common/interfaces";
+
+import { TabCaptionRender } from "../renders/bootstrap/tab-caption/tab-caption-render";
 
 @Component({
   shadow: false,
@@ -27,13 +28,13 @@ export class TabCaption implements IComponent, IDisableableComponent {
    * This attribute lets you specify if the tab page is disabled
    *
    */
-  @Prop() disabled: false;
+  @Prop() disabled = false;
 
   /**
    * This attribute lets you specify if the tab page corresponding to this caption is selected
    *
    */
-  @Prop() selected: false;
+  @Prop() selected = false;
 
   /**
    * Fired when the tab caption is selected
