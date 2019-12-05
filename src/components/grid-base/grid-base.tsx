@@ -37,11 +37,10 @@ export interface IGridBase {
 
 export class GridBaseHelper {
   static hostData(cmp: IGridBase) {
-    const emptyGridData = cmp.recordCount === 0;
     return {
       class: {
         "gx-grid-base": true,
-        "gx-grid-empty": emptyGridData,
+        "gx-grid-empty": cmp.recordCount === 0,
         "gx-grid-loading": cmp.loadingState === "loading"
       }
     };

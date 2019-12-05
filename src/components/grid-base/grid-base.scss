@@ -2,7 +2,7 @@
 
 .gx-grid-base {
   @include visibility(block);
-
+  display: flex;
   .grid-empty-placeholder {
     display: none;
   }
@@ -10,11 +10,15 @@
 
 .gx-grid-base.gx-grid-empty:not(.gx-grid-loading) {
   .grid-empty-placeholder {
-    display: block;
-    margin: auto;
+    flex: 1;
+    display: flex;
     text-align: center;
+    align-items: center;
+    justify-content: center;
   }
+}
 
+.gx-grid-base.gx-grid-empty {
   div[slot="grid-content"],
   .gx-grid-paging {
     display: none;

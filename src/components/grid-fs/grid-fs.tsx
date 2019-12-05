@@ -7,13 +7,13 @@ import {
   Method,
   Prop,
   h
-}  from "@stencil/core";
+} from "@stencil/core";
 import { GridBaseHelper, IGridBase } from "../grid-base/grid-base";
 import { IVisibilityComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
-  styleUrl: "../grid-base/grid-base.scss",
+  styleUrl: "grid-fs.scss",
   tag: "gx-grid-fs"
 })
 export class GridFreeStyle
@@ -64,8 +64,8 @@ export class GridFreeStyle
   @Event() gxInfiniteThresholdReached: EventEmitter<void>;
 
   /*
-  * This method must be called after new grid data was fetched by the infinite scroller.
-  */
+   * This method must be called after new grid data was fetched by the infinite scroller.
+   */
   @Method()
   async complete() {
     this.el.querySelector("gx-grid-infinite-scroll").complete();

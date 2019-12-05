@@ -1,0 +1,9 @@
+@import "../grid-base/grid-base.scss";
+
+gx-grid-fs {
+  flex-direction: column;
+
+  > * {
+    flex: 1;
+  }
+}
