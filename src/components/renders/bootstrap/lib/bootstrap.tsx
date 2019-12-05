@@ -6,12 +6,11 @@ import { Component, h } from "@stencil/core";
   tag: "gx-bootstrap"
 })
 export class Bootstrap {
-  hostData() {
-    return {
-      "aria-hidden": "true"
-    };
-  }
   render() {
-    return <slot />;
+    return (
+      <Host aria-hidden="true" hidden={true}>
+        <slot />
+      </Host>
+    );
   }
 }

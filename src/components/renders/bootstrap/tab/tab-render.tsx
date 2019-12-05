@@ -1,9 +1,9 @@
 import { h } from "@stencil/core";
-import { IRenderer } from "../../../common/interfaces";
+import { Renderer } from "../../../common/interfaces";
 import { Tab } from "../../../tab/tab";
 
-export class TabRender implements IRenderer {
-  constructor(public component: Tab) {}
+export class TabRender implements Renderer {
+  constructor(private component: Tab) {}
 
   setSelectedTab(captionElement: HTMLElement) {
     this.getCaptionSlots().forEach((slotElement: any, i) => {

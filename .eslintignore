@@ -1,0 +1,5 @@
+/dist/**
+/build/**
+/www/**
+/loader/**
+/src/components.d.ts

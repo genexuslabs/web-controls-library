@@ -6,10 +6,11 @@ import {
   Method,
   Prop,
   Watch,
-  h
+  h,
+  Host
 } from "@stencil/core";
 import { EditRender } from "../renders/bootstrap/edit/edit-render";
-import { IFormComponent } from "../common/interfaces";
+import { FormComponent } from "../common/interfaces";
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
 
 @Component({
@@ -17,9 +18,13 @@ import { cssVariablesWatcher } from "../common/css-variables-watcher";
   styleUrl: "edit.scss",
   tag: "gx-edit"
 })
-export class Edit implements IFormComponent {
+export class Edit implements FormComponent {
   constructor() {
-    this.renderer = new EditRender(this);
+    this.renderer = new EditRender(this, {
+      handleChange: this.handleChange.bind(this),
+      handleTriggerClick: this.handleTriggerClick.bind(this),
+      handleValueChanging: this.handleValueChanging.bind(this)
+    });
 
     cssVariablesWatcher(this, [
       {
@@ -31,30 +36,32 @@ export class Edit implements IFormComponent {
 
   private renderer: EditRender;
 
-  @Element() element: HTMLElement;
+  @Element() element: HTMLGxEditElement;
 
-  @Prop({ reflectToAttr: true })
-  area: string;
+  /**
+   * Allows to specify the role of the element when inside a `gx-form-field` element
+   */
+  @Prop({ reflectToAttr: true }) readonly area: "field";
 
   /**
    * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize)
    * attribute for `input` elements. Only supported by Safari and Chrome.
    */
-  @Prop() autocapitalize: string;
+  @Prop() readonly autocapitalize: string;
 
   /**
    * This attribute indicates whether the value of the control can be
    * automatically completed by the browser. Same as [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocomplete)
    * attribute for `input` elements.
    */
-  @Prop() autocomplete: "on" | "off";
+  @Prop() readonly autocomplete: "on" | "off";
 
   /**
    * Used to control whether autocorrection should be enabled when the user
    * is entering/editing the text value. Sames as [autocorrect](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocorrect)
    * attribute for `input` elements.
    */
-  @Prop() autocorrect: string;
+  @Prop() readonly autocorrect: string;
 
   /**
    * Used to define the semantic of the element when readonly=true.
@@ -68,8 +75,7 @@ export class Edit implements IFormComponent {
    * * `"caption1"`: `span`
    * * `"caption2"`: `span`
    */
-  @Prop({ mutable: true })
-  fontCategory:
+  @Prop({ mutable: true }) fontCategory:
     | "headline"
     | "subheadline"
     | "body"
@@ -85,37 +91,32 @@ export class Edit implements IFormComponent {
    * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
-  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() disabled = false;
-
-  /**
-   * The identifier of the control. Must be unique.
-   */
-  @Prop() id: string;
+  @Prop() readonly disabled = false;
 
   /**
    * Controls if the element accepts multiline text.
    */
-  @Prop() multiline: boolean;
+  @Prop() readonly multiline: boolean;
 
   /**
    * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder)
    * attribute for `input` elements.
    */
-  @Prop() placeholder: string;
+  @Prop() readonly placeholder: string;
 
   /**
    * This attribute indicates that the user cannot modify the value of the control.
    * Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly)
    * attribute for `input` elements.
    */
-  @Prop() readonly: boolean;
+  @Prop() readonly readonly: boolean;
 
   /**
    * If true, a trigger button is shown next to the edit field. The button can
@@ -123,14 +124,14 @@ export class Edit implements IFormComponent {
    * or adding a child element with `slot="trigger-content"` attribute to
    * specify the content inside the trigger button.
    */
-  @Prop() showTrigger: boolean;
+  @Prop() readonly showTrigger: boolean;
 
   /**
    * The text of the trigger button. If a text is specified and an image is
    * specified (through an element with `slot="trigger-content"`), the content
    * is ignored and the text is used instead.
    */
-  @Prop() triggerText: string;
+  @Prop() readonly triggerText: string;
 
   /**
    * The type of control to render. A subset of the types supported by the `input` element is supported:
@@ -146,8 +147,7 @@ export class Edit implements IFormComponent {
    * * `"text"`
    * * `"url"`
    */
-  @Prop()
-  type:
+  @Prop() readonly type:
     | "date"
     | "datetime-local"
     | "email"
@@ -162,8 +162,7 @@ export class Edit implements IFormComponent {
   /**
    * The initial value of the control.
    */
-  @Prop({ mutable: true })
-  value: string;
+  @Prop({ mutable: true }) value: string;
 
   /**
    * The `change` event is emitted when a change to the element's value is
@@ -209,23 +208,27 @@ export class Edit implements IFormComponent {
     }
   }
 
-  handleChange(event: UIEvent) {
+  private handleChange(event: UIEvent) {
     this.value = this.renderer.getValueFromEvent(event);
     this.change.emit(event);
   }
 
-  handleValueChanging(event: UIEvent) {
+  private handleValueChanging(event: UIEvent) {
     this.value = this.renderer.getValueFromEvent(event);
     this.input.emit(event);
   }
 
-  handleTriggerClick(event: UIEvent) {
+  private handleTriggerClick(event: UIEvent) {
     this.gxTriggerClick.emit(event);
   }
 
   render() {
-    return this.renderer.render({
-      triggerContent: <slot name="trigger-content" />
-    });
+    return (
+      <Host>
+        {this.renderer.render({
+          triggerContent: <slot name="trigger-content" />
+        })}
+      </Host>
+    );
   }
 }

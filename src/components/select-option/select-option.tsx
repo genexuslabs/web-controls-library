@@ -7,38 +7,39 @@ import {
   Watch,
   h
 } from "@stencil/core";
-import { IComponent, IDisableableComponent } from "../common/interfaces";
+import {
+  Component as GxComponent,
+  DisableableComponent
+} from "../common/interfaces";
 
 @Component({
   shadow: false,
   tag: "gx-select-option"
 })
-export class SelectOption implements IComponent, IDisableableComponent {
-  @Element() element;
+export class SelectOption implements GxComponent, DisableableComponent {
+  @Element() element: HTMLGxSelectOptionElement;
 
   /**
    * Indicates that the control is selected by default.
    */
-  @Prop({ mutable: true })
-  selected: boolean;
+  @Prop({ mutable: true }) selected: boolean;
 
   /**
    * A CSS class to set as the inner `input` element class.
    */
-  @Prop() cssClass: string;
+  @Prop() readonly cssClass: string;
 
   /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() disabled = false;
+  @Prop() readonly disabled = false;
 
   /**
    * The initial value of the control.
    */
-  @Prop({ mutable: true })
-  value: string;
+  @Prop({ mutable: true }) value: string;
 
   /**
    * The `change` event is emitted when a change to the element's value is
@@ -93,14 +94,11 @@ export class SelectOption implements IComponent, IDisableableComponent {
     this.gxSelectDidUnload.emit({ select: this });
   }
 
-  hostData() {
-    return {
-      "aria-hidden": "true",
-      hidden: true
-    };
-  }
-
   render() {
-    return <slot />;
+    return (
+      <Host aria-hidden="true" hidden={true}>
+        <slot />
+      </Host>
+    );
   }
 }

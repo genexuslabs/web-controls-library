@@ -1,9 +1,9 @@
 import { h } from "@stencil/core";
-import { IRenderer } from "../../../common/interfaces";
+import { Renderer } from "../../../common/interfaces";
 import { ProgressBar } from "../../../progress-bar/progress-bar";
 
-export class ProgressBarRender implements IRenderer {
-  constructor(public component: ProgressBar) {}
+export class ProgressBarRender implements Renderer {
+  constructor(private component: ProgressBar) {}
 
   render(slots) {
     return [

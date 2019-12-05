@@ -1,9 +1,12 @@
 import { h } from "@stencil/core";
-import { IRenderer } from "../../../common/interfaces";
+import { Renderer } from "../../../common/interfaces";
 import { PasswordEdit } from "../../../password-edit/password-edit";
 
-export class PasswordEditRender implements IRenderer {
-  constructor(public component: PasswordEdit) {}
+export class PasswordEditRender implements Renderer {
+  constructor(private component: PasswordEdit) {
+    this.handleChange = this.handleChange.bind(this);
+    this.handleInput = this.handleInput.bind(this);
+  }
 
   private innerEdit: any;
 
@@ -11,16 +14,16 @@ export class PasswordEditRender implements IRenderer {
     return this.innerEdit.getNativeInputId();
   }
 
-  private getValueFromEvent(event: UIEvent): string {
+  private getValueFromEvent(event: CustomEvent<any>): string {
     return event.target && (event.target as HTMLInputElement).value;
   }
 
-  handleChange(event: UIEvent) {
+  handleChange(event: CustomEvent<any>) {
     this.component.value = this.getValueFromEvent(event);
     this.component.change.emit(event);
   }
 
-  handleInput(event: UIEvent) {
+  handleInput(event: CustomEvent<any>) {
     this.component.value = this.getValueFromEvent(event);
     this.component.input.emit(event);
   }
@@ -40,30 +43,29 @@ export class PasswordEditRender implements IRenderer {
   }
 
   render() {
+    const passwordEdit = this.component;
     return (
       <gx-edit
         ref={input => (this.innerEdit = input as any)}
-        css-class={this.component.cssClass}
-        disabled={this.component.disabled}
-        id={`gx-password-edit-${this.component.id}`}
-        placeholder={this.component.placeholder}
-        readonly={this.component.readonly}
-        show-trigger={
-          !this.component.readonly && this.component.showRevealButton
-        }
-        trigger-class={this.component.revealed ? "active" : ""}
+        css-class={passwordEdit.cssClass}
+        disabled={passwordEdit.disabled}
+        id={`gx-password-edit-${passwordEdit.element.id}`}
+        placeholder={passwordEdit.placeholder}
+        readonly={passwordEdit.readonly}
+        show-trigger={!passwordEdit.readonly && passwordEdit.showRevealButton}
+        trigger-class={passwordEdit.revealed ? "active" : ""}
         trigger-text={
-          this.component.revealed
-            ? this.component.revealButtonTextOff
-            : this.component.revealButtonTextOn
+          passwordEdit.revealed
+            ? passwordEdit.revealButtonTextOff
+            : passwordEdit.revealButtonTextOn
         }
-        type={this.component.revealed ? "text" : "password"}
-        value={this.component.value}
-        onChange={this.handleChange.bind(this)}
-        onInput={this.handleInput.bind(this)}
+        type={passwordEdit.revealed ? "text" : "password"}
+        value={passwordEdit.value}
+        onChange={this.handleChange}
+        onInput={this.handleInput}
       >
         <i
-          class={"icon icon-eye" + (this.component.revealed ? "-slash" : "")}
+          class={"icon icon-eye" + (passwordEdit.revealed ? "-slash" : "")}
           slot="trigger-content"
         />
       </gx-edit>

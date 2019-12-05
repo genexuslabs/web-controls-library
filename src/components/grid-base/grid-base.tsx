@@ -1,6 +1,6 @@
 import { EventEmitter } from "@stencil/core";
 
-export interface IGridBase {
+export interface GridBase {
   el: HTMLElement;
 
   /**
@@ -36,7 +36,7 @@ export interface IGridBase {
 }
 
 export class GridBaseHelper {
-  static hostData(cmp: IGridBase) {
+  static hostData(cmp: GridBase) {
     return {
       class: {
         "gx-grid-base": true,

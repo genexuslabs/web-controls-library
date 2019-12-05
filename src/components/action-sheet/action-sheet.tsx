@@ -5,9 +5,10 @@ import {
   EventEmitter,
   Listen,
   Prop,
-  h
+  h,
+  Host
 } from "@stencil/core";
-import { IComponent } from "../common/interfaces";
+import { Component as GxComponent } from "../common/interfaces";
 import { ActionSheetRender } from "../renders/bootstrap/action-sheet/action-sheet-render";
 
 @Component({
@@ -15,7 +16,7 @@ import { ActionSheetRender } from "../renders/bootstrap/action-sheet/action-shee
   styleUrl: "action-sheet.scss",
   tag: "gx-action-sheet"
 })
-export class ActionSheet implements IComponent {
+export class ActionSheet implements GxComponent {
   constructor() {
     this.renderer = new ActionSheetRender(this);
   }
@@ -27,13 +28,12 @@ export class ActionSheet implements IComponent {
   /**
    * This attribute lets you specify the label for the close button. Important for accessibility.
    */
-  @Prop() closeButtonLabel: string;
+  @Prop() readonly closeButtonLabel: string;
 
   /**
    * This attribute lets you specify if the action sheet is opened or closed.
    */
-  @Prop({ mutable: true })
-  opened = false;
+  @Prop({ mutable: true }) opened = false;
 
   /**
    * Fired when the action sheet is closed
@@ -51,6 +51,6 @@ export class ActionSheet implements IComponent {
   }
 
   render() {
-    return this.renderer.render({ default: <slot /> });
+    return <Host>{this.renderer.render({ default: <slot /> })}</Host>;
   }
 }

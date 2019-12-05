@@ -1,4 +1,3 @@
-// tslint:disable
 export const animationData = {
   v: "4.5.8",
   fr: 60,

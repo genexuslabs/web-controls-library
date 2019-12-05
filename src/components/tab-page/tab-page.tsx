@@ -1,13 +1,15 @@
 import { Component, Element, h } from "@stencil/core";
-import { IComponent } from "../common/interfaces";
+import { Component as GxComponent } from "../common/interfaces";
+
+let autoTabId = 0;
 
 @Component({
   shadow: false,
   styleUrl: "tab-page.scss",
   tag: "gx-tab-page"
 })
-export class TabPage implements IComponent {
-  @Element() element: HTMLElement;
+export class TabPage implements GxComponent {
+  @Element() element: HTMLGxTabPageElement;
 
   componentWillLoad() {
     if (!this.element.id) {
@@ -15,16 +17,11 @@ export class TabPage implements IComponent {
     }
   }
 
-  hostData() {
-    return {
-      role: "tabpanel",
-      tabindex: 0
-    };
-  }
-
   render() {
-    return <slot />;
+    return (
+      <Host role="tabpanel" tabindex="0">
+        <slot />
+      </Host>
+    );
   }
 }
-
-let autoTabId = 0;

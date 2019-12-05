@@ -5,13 +5,14 @@ import {
   Event,
   EventEmitter,
   Prop,
-  h
+  h,
+  Host
 } from "@stencil/core";
 import {
-  IClickableComponent,
-  IComponent,
-  IDisableableComponent,
-  IVisibilityComponent
+  ClickableComponent,
+  Component as GxComponent,
+  DisableableComponent,
+  VisibilityComponent
 } from "../common/interfaces";
 
 @Component({
@@ -21,22 +22,24 @@ import {
 })
 export class Button
   implements
-    IComponent,
-    IClickableComponent,
-    IDisableableComponent,
-    IVisibilityComponent {
+    GxComponent,
+    ClickableComponent,
+    DisableableComponent,
+    VisibilityComponent {
   constructor() {
-    this.renderer = new ButtonRender(this);
+    this.renderer = new ButtonRender(this, {
+      handleClick: this.handleClick.bind(this)
+    });
   }
 
   private renderer: ButtonRender;
 
-  @Element() element: HTMLElement;
+  @Element() element: HTMLGxButtonElement;
 
   /**
    * A CSS class to set as the inner `input` element class.
    */
-  @Prop() cssClass: string;
+  @Prop() readonly cssClass: string;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -46,7 +49,7 @@ export class Button
    * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
-  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * This attribute lets you specify if the element is disabled.
@@ -54,7 +57,7 @@ export class Button
    * (for example, click event). If a disabled image has been specified,
    * it will be shown, hiding the base image (if specified).
    */
-  @Prop() disabled = false;
+  @Prop() readonly disabled = false;
 
   /**
    * This attribute lets you specify the relative location of the image to the text.
@@ -67,8 +70,12 @@ export class Button
    * | `below`  | The image is located below the text.                    |
    * | `behind` | The image is located behind the text.                   |
    */
-  @Prop()
-  imagePosition: "above" | "before" | "after" | "below" | "behind" = "above";
+  @Prop() readonly imagePosition:
+    | "above"
+    | "before"
+    | "after"
+    | "below"
+    | "behind" = "above";
 
   /**
    * This attribute lets you specify the size of the button.
@@ -79,20 +86,14 @@ export class Button
    * | `normal` | Standard sized button.                                  |
    * | `small`  | Small sized button.                                     |
    */
-  @Prop() size: "large" | "normal" | "small" = "normal";
+  @Prop() readonly size: "large" | "normal" | "small" = "normal";
 
   /**
    * Emitted when the element is clicked.
    */
   @Event() onClick: EventEmitter;
 
-  hostData() {
-    return {
-      role: "button"
-    };
-  }
-
-  handleClick(event: UIEvent) {
+  private handleClick(event: UIEvent) {
     if (this.disabled) {
       return;
     }
@@ -101,10 +102,14 @@ export class Button
   }
 
   render() {
-    return this.renderer.render({
-      default: <slot />,
-      disabledImage: <slot name="disabled-image" />,
-      mainImage: <slot name="main-image" />
-    });
+    return (
+      <Host role="button">
+        {this.renderer.render({
+          default: <slot />,
+          disabledImage: <slot name="disabled-image" />,
+          mainImage: <slot name="main-image" />
+        })}
+      </Host>
+    );
   }
 }

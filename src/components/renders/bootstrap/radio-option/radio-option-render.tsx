@@ -1,9 +1,11 @@
 import { h } from "@stencil/core";
-import { IRenderer } from "../../../common/interfaces";
+import { Renderer } from "../../../common/interfaces";
 import { RadioOption } from "../../../radio-option/radio-option";
 
-export class RadioOptionRender implements IRenderer {
-  constructor(public component: RadioOption) {}
+let autoRadioId = 0;
+
+export class RadioOptionRender implements Renderer {
+  constructor(private component: RadioOption) {}
 
   private checkedTmr: any;
   private didLoad: boolean;
@@ -83,22 +85,23 @@ export class RadioOptionRender implements IRenderer {
   }
 
   render() {
+    const radioOption = this.component;
     if (!this.inputId) {
-      this.inputId = this.component.id
-        ? `${this.component.id}__radio-option`
+      this.inputId = radioOption.element.id
+        ? `${radioOption.element.id}__radio-option`
         : `gx-radio-auto-id-${autoRadioId++}`;
     }
 
     const attris = {
-      "aria-disabled": this.component.disabled ? "true" : undefined,
+      "aria-disabled": radioOption.disabled ? "true" : undefined,
       class: this.getCssClasses(),
       "data-native-element": "",
-      disabled: this.component.disabled,
+      disabled: radioOption.disabled,
       id: this.inputId,
-      name: this.component.name,
+      name: radioOption.name,
       onChange: this.handleChange.bind(this),
       onClick: this.handleClick.bind(this),
-      value: this.component.value
+      value: radioOption.value
     };
 
     const forAttris = {
@@ -108,13 +111,11 @@ export class RadioOptionRender implements IRenderer {
     return [
       <gx-bootstrap />,
       <div class={this.getInnerControlContainerClass()}>
-        <input {...attris} type="radio" checked={this.component.checked} />
+        <input {...attris} type="radio" checked={radioOption.checked} />
         <label class="custom-control-label" {...forAttris}>
-          {this.component.caption}
+          {radioOption.caption}
         </label>
       </div>
     ];
   }
 }
-
-let autoRadioId = 0;

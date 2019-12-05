@@ -1,12 +1,14 @@
 import { h } from "@stencil/core";
-import { IRenderer } from "../../../common/interfaces";
+import { Renderer } from "../../../common/interfaces";
 import { Select } from "../../../select/select";
 
-export class SelectRender implements IRenderer {
-  constructor(public component: Select) {
+let autoSelectId = 0;
+
+export class SelectRender implements Renderer {
+  constructor(private component: Select) {
     if (!this.selectId && !this.component.readonly) {
-      this.selectId = this.component.id
-        ? `${this.component.id}__select`
+      this.selectId = this.component.element.id
+        ? `${this.component.element.id}__select`
         : `gx-select-auto-id-${autoSelectId++}`;
     }
   }
@@ -22,9 +24,6 @@ export class SelectRender implements IRenderer {
   getNativeInputId() {
     return !this.component.readonly ? this.selectId : null;
   }
-
-  /* tslint:disable-next-line:no-empty */
-  componentDidUnload() {}
 
   private getCssClasses() {
     const classList = [];
@@ -93,5 +92,3 @@ export class SelectRender implements IRenderer {
     }
   }
 }
-
-let autoSelectId = 0;

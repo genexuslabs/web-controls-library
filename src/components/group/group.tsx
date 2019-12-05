@@ -1,24 +1,24 @@
 import { Component, Element, Prop, h } from "@stencil/core";
-import { IComponent } from "../common/interfaces";
+import { Component as GxComponent } from "../common/interfaces";
 @Component({
   shadow: false,
   styleUrl: "group.scss",
   tag: "gx-group"
 })
-export class Group implements IComponent {
-  @Element() element;
+export class Group implements GxComponent {
+  @Element() element: HTMLGxGroupElement;
 
   /**
    * Attribute that provides the caption to the <legend> tag
    */
-  @Prop() caption: string;
+  @Prop() readonly caption: string;
   /**
    * This attribute defines if the control size will grow automatically,
    * to adjust to its content size.
    * If set to `false`, it won't grow automatically and it will show scrollbars
    * if the content overflows.
    */
-  @Prop() autoGrow: boolean;
+  @Prop() readonly autoGrow: boolean;
 
   render() {
     return (

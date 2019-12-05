@@ -1,6 +1,6 @@
 import { EventEmitter } from "@stencil/core";
 
-export function makeSwipeable(comp: ISwipeable) {
+export function makeSwipeable(comp: Swipeable) {
   const element = comp.element;
   element.addEventListener("touchstart", startTouch);
   element.addEventListener("touchmove", moveTouch);
@@ -54,7 +54,7 @@ export function makeSwipeable(comp: ISwipeable) {
   }
 }
 
-export interface ISwipeable {
+export interface Swipeable {
   element: HTMLElement;
   onSwipe: EventEmitter;
   onSwipeLeft: EventEmitter;

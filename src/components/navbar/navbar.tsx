@@ -1,20 +1,23 @@
-import { Component, Element, Listen, Prop, h } from "@stencil/core";
+import { Component, Element, Prop, h, Host } from "@stencil/core";
 import { NavBarRender } from "../renders/bootstrap/navbar/navbar-render";
-import { IComponent, IVisibilityComponent } from "../common/interfaces";
+import {
+  Component as GxComponent,
+  VisibilityComponent
+} from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "navbar.scss",
   tag: "gx-navbar"
 })
-export class NavBar implements IComponent, IVisibilityComponent {
+export class NavBar implements GxComponent, VisibilityComponent {
   constructor() {
     this.renderer = new NavBarRender(this);
   }
 
   private renderer: NavBarRender;
 
-  @Element() element: HTMLElement;
+  @Element() element: HTMLGxNavbarElement;
 
   /**
    * This attribute lets you specify an optional title for the navigation bar
@@ -24,22 +27,17 @@ export class NavBar implements IComponent, IVisibilityComponent {
    * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
-  @Prop() caption: string;
-
-  /**
-   * The identifier of the control. Must be unique.
-   */
-  @Prop() id: string;
+  @Prop() readonly caption: string;
 
   /**
    * This attribute lets you specify the label for the toggle button. Important for accessibility.
    */
-  @Prop() toggleButtonLabel: string;
+  @Prop() readonly toggleButtonLabel: string;
 
   /**
    * A CSS class to set as the inner element class.
    */
-  @Prop() cssClass: string;
+  @Prop() readonly cssClass: string;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -49,18 +47,16 @@ export class NavBar implements IComponent, IVisibilityComponent {
    * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
-  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
-
-  @Listen("click")
-  handleClick(e: UIEvent) {
-    const target = e.target as HTMLElement;
-    this.renderer.handleItemClick(target);
-  }
+  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   render() {
-    return this.renderer.render({
-      default: <slot />,
-      header: <slot name="header" />
-    });
+    return (
+      <Host>
+        {this.renderer.render({
+          default: <slot />,
+          header: <slot name="header" />
+        })}
+      </Host>
+    );
   }
 }

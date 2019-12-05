@@ -6,12 +6,13 @@ import {
   Listen,
   Prop,
   Watch,
-  h
+  h,
+  Host
 } from "@stencil/core";
 import {
-  IComponent,
-  IDisableableComponent,
-  IVisibilityComponent
+  Component as GxComponent,
+  DisableableComponent,
+  VisibilityComponent
 } from "../common/interfaces";
 
 @Component({
@@ -20,11 +21,11 @@ import {
   tag: "gx-radio-group"
 })
 export class RadioGroup
-  implements IComponent, IDisableableComponent, IVisibilityComponent {
+  implements GxComponent, DisableableComponent, VisibilityComponent {
   private radios: any[] = [];
   private didLoad: boolean;
 
-  @Element() element: HTMLElement;
+  @Element() element: HTMLGxRadioGroupElement;
 
   /**
    * Specifies how the child `gx-radio-option` will be layed out.
@@ -33,7 +34,7 @@ export class RadioGroup
    * * `horizontal`
    * * `vertical` (default)
    */
-  @Prop() direction: "horizontal" | "vertical" = "horizontal";
+  @Prop() readonly direction: "horizontal" | "vertical" = "horizontal";
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -43,46 +44,31 @@ export class RadioGroup
    * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
-  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() disabled = false;
-
-  /**
-   * The identifier of the control. Must be unique.
-   */
-  @Prop() id: string;
+  @Prop() readonly disabled = false;
 
   /**
    * The name that will be set to all the inner inputs of type radio
    */
-  @Prop() name: string;
+  @Prop() readonly name: string;
 
   /**
    * The initial value of the control. Setting the value automatically selects
    * the corresponding radio option.
    */
-  @Prop({ mutable: true })
-  value: string;
+  @Prop({ mutable: true }) value: string;
 
   /**
    * The `change` event is emitted when a change to the element's value is
    * committed by the user.
    */
   @Event() change: EventEmitter;
-
-  private getValueFromEvent(event: UIEvent): string {
-    return event.target && (event.target as HTMLInputElement).value;
-  }
-
-  handleChange(event: UIEvent) {
-    this.value = this.getValueFromEvent(event);
-    this.change.emit(event);
-  }
 
   @Watch("disabled")
   disabledChanged() {
@@ -135,7 +121,7 @@ export class RadioGroup
   }
 
   @Listen("gxRadioDidLoad")
-  onRadioDidLoad(ev: IHTMLRadioOptionElementEvent) {
+  onRadioDidLoad(ev: HTMLRadioOptionElementEvent) {
     const radio = ev.target;
     this.radios.push(radio);
     radio.name = this.name;
@@ -158,7 +144,7 @@ export class RadioGroup
   }
 
   @Listen("gxRadioDidUnload")
-  onRadioDidUnload(ev: IHTMLRadioOptionElementEvent) {
+  onRadioDidUnload(ev: HTMLRadioOptionElementEvent) {
     const index = this.radios.indexOf(ev.target);
     if (index > -1) {
       this.radios.splice(index, 1);
@@ -166,7 +152,7 @@ export class RadioGroup
   }
 
   @Listen("gxSelect")
-  onRadioSelect(ev: IHTMLRadioOptionElementEvent) {
+  onRadioSelect(ev: HTMLRadioOptionElementEvent) {
     this.radios.forEach(radio => {
       if (radio === ev.target) {
         if (radio.value !== this.value) {
@@ -189,17 +175,15 @@ export class RadioGroup
     this.didLoad = true;
   }
 
-  hostData() {
-    return {
-      role: "radiogroup"
-    };
-  }
-
   render() {
-    return <slot />;
+    return (
+      <Host role="radiogroup">
+        <slot />
+      </Host>
+    );
   }
 }
 
-interface IHTMLRadioOptionElementEvent extends CustomEvent {
+interface HTMLRadioOptionElementEvent extends CustomEvent {
   target: any;
 }

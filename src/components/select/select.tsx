@@ -10,13 +10,13 @@ import {
   Watch
 } from "@stencil/core";
 import { SelectRender } from "../renders/bootstrap/select/select-render";
-import { IFormComponent } from "../common/interfaces";
+import { FormComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
   tag: "gx-select"
 })
-export class Select implements IFormComponent {
+export class Select implements FormComponent {
   constructor() {
     this.renderer = new SelectRender(this);
   }
@@ -26,12 +26,12 @@ export class Select implements IFormComponent {
   @State() protected options: any[] = [];
   private didLoad: boolean;
 
-  @Element() element: HTMLElement;
+  @Element() element: HTMLGxSelectElement;
 
   /**
    * A CSS class to set as the inner `input` element class.
    */
-  @Prop() cssClass: string;
+  @Prop() readonly cssClass: string;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -41,33 +41,27 @@ export class Select implements IFormComponent {
    * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
-  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() disabled = false;
-
-  /**
-   * The identifier of the control. Must be unique.
-   */
-  @Prop() id: string;
+  @Prop() readonly disabled = false;
 
   /**
    * This attribute indicates that the user cannot modify the value of the control.
    * Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly)
    * attribute for `input` elements.
    */
-  @Prop() readonly: boolean;
+  @Prop() readonly readonly: boolean;
 
   /**
    * The initial value of the control. Setting the value automatically selects
    * the corresponding option.
    */
-  @Prop({ mutable: true })
-  value: string;
+  @Prop({ mutable: true }) value: string;
 
   /**
    * The `input` event is emitted when a change to the element's value is
@@ -84,10 +78,6 @@ export class Select implements IFormComponent {
         value: option.value
       })
     );
-  }
-
-  handleChange(event: UIEvent) {
-    this.input.emit(event);
   }
 
   private updateOptions(options) {
@@ -141,7 +131,7 @@ export class Select implements IFormComponent {
   }
 
   @Listen("gxSelectDidLoad")
-  onSelectOptionDidLoad(ev: IHTMLSelectOptionElementEvent) {
+  onSelectOptionDidLoad(ev: HTMLSelectOptionElementEvent) {
     const option = ev.target;
     this.updateOptions(this.getChildOptions());
 
@@ -178,7 +168,7 @@ export class Select implements IFormComponent {
   }
 
   @Listen("gxSelect")
-  onSelectOptionSelect(ev: IHTMLSelectOptionElementEvent) {
+  onSelectOptionSelect(ev: HTMLSelectOptionElementEvent) {
     this.options.forEach(option => {
       if (option === ev.target) {
         if (option.value !== this.value) {
@@ -198,7 +188,7 @@ export class Select implements IFormComponent {
     return this.renderer.getNativeInputId();
   }
 
-  setDisabled() {
+  private setDisabled() {
     this.options.forEach(option => {
       option.disabled = this.disabled;
     });
@@ -209,15 +199,11 @@ export class Select implements IFormComponent {
     this.didLoad = true;
   }
 
-  componentDidUnload() {
-    this.renderer.componentDidUnload();
-  }
-
   render() {
     return this.renderer.render();
   }
 }
 
-interface IHTMLSelectOptionElementEvent extends CustomEvent {
+interface HTMLSelectOptionElementEvent extends CustomEvent {
   target: any;
 }

@@ -1,10 +1,12 @@
 import { h } from "@stencil/core";
 import Popper from "popper.js";
-import { IRenderer } from "../../../common/interfaces";
+import { Renderer } from "../../../common/interfaces";
 import { Card } from "../../../card/card";
 
-export class CardRender implements IRenderer {
-  constructor(public component: Card) {}
+export class CardRender implements Renderer {
+  constructor(private component: Card) {
+    this.handleDropDownToggleClick = this.handleDropDownToggleClick.bind(this);
+  }
 
   private bodyClickHandler;
 
@@ -66,19 +68,26 @@ export class CardRender implements IRenderer {
       ":scope > .card > .card-footer"
     ) as HTMLElement;
 
-    const lowPriorityActions = cardFooter
-      ? Array.from(cardFooter.querySelectorAll("[slot='low-priority-action']"))
-      : [];
+    const lowPriorityActions =
+      cardFooter !== null
+        ? Array.from(
+            cardFooter.querySelectorAll("[slot='low-priority-action']")
+          )
+        : [];
 
-    const highPriorityActions = cardHeader
-      ? Array.from(cardHeader.querySelectorAll("[slot='high-priority-action']"))
-      : [];
+    const highPriorityActions =
+      cardHeader !== null
+        ? Array.from(
+            cardHeader.querySelectorAll("[slot='high-priority-action']")
+          )
+        : [];
 
-    const normalPriorityActions = cardFooter
-      ? Array.from(
-          cardFooter.querySelectorAll("[slot='normal-priority-action']")
-        )
-      : [];
+    const normalPriorityActions =
+      cardFooter !== null
+        ? Array.from(
+            cardFooter.querySelectorAll("[slot='normal-priority-action']")
+          )
+        : [];
 
     const buttonActions = [...highPriorityActions, ...normalPriorityActions];
     buttonActions.forEach((btn: any) => (btn.size = "small"));
@@ -100,16 +109,18 @@ export class CardRender implements IRenderer {
 
     const renderHeader =
       hasHeaderActions ||
-      (cardHeader && !!cardHeader.querySelector("[slot='header']"));
+      (cardHeader !== null &&
+        cardHeader.querySelector("[slot='header']") !== null);
 
     const renderFooter =
       hasFooterActions ||
-      (cardFooter && !!cardFooter.querySelector("[slot='footer']"));
+      (cardFooter !== null &&
+        cardFooter.querySelector("[slot='footer']") !== null);
 
-    if (cardHeader) {
+    if (cardHeader !== null) {
       cardHeader.hidden = !(renderHeader && card.showHeader);
     }
-    if (cardFooter) {
+    if (cardFooter !== null) {
       cardFooter.hidden = !(renderFooter && card.showFooter);
     }
   }
@@ -142,10 +153,12 @@ export class CardRender implements IRenderer {
 
     const hasLowPriorityActions = lowPriorityActions.length > 0;
 
-    const hasFooterActions = hasLowPriorityActions || !!normalPriorityActions;
+    const hasFooterActions =
+      hasLowPriorityActions || normalPriorityActions.length > 0;
 
     const renderFooter =
-      hasFooterActions || !!card.element.querySelector("[slot='footer']");
+      hasFooterActions ||
+      card.element.querySelector("[slot='footer']") !== null;
 
     return [
       <gx-bootstrap />,
@@ -184,7 +197,7 @@ export class CardRender implements IRenderer {
                     aria-haspopup="true"
                     aria-expanded="false"
                     aria-label="More actions"
-                    onClick={this.handleDropDownToggleClick.bind(this)}
+                    onClick={this.handleDropDownToggleClick}
                   />
                 )}
                 {hasLowPriorityActions && (

@@ -8,7 +8,9 @@ import {
   Prop,
   QueueApi,
   State,
-  Watch
+  Watch,
+  Host,
+  h
 } from "@stencil/core";
 
 @Component({
@@ -30,17 +32,19 @@ export class GridInfiniteScroll implements ComponentInterface {
   private attachedToWindow = false;
   private attached = false;
 
-  @Element() el!: HTMLElement;
+  @Element() el!: HTMLGxGridInfiniteScrollElement;
   @State() isLoading = false;
 
   /**
    * This property must be bounded to grid item count property.
    * It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the intial batch does not overflow the main container
    */
-  @Prop() itemCount = 0;
+  @Prop() readonly itemCount: number = 0;
 
-  @Prop({ context: "queue" })
-  queue!: QueueApi;
+  /**
+   * A QueueAPI object
+   */
+  @Prop({ context: "queue" }) readonly queue!: QueueApi;
 
   /**
    * The threshold distance from the bottom
@@ -51,7 +55,7 @@ export class GridInfiniteScroll implements ComponentInterface {
    * from the bottom of the page. Use the value `100px` when the
    * scroll is within 100 pixels from the bottom of the page.
    */
-  @Prop() threshold = "15%";
+  @Prop() readonly threshold: string = "15%";
 
   /**
    * If `true`, the infinite scroll will be hidden and scroll event listeners
@@ -62,13 +66,13 @@ export class GridInfiniteScroll implements ComponentInterface {
    * when it is known that there is no more data that can be added, and
    * the infinite scroll is no longer needed.
    */
-  @Prop() disabled = false;
+  @Prop() readonly disabled = false;
 
   /**
    * The position of the infinite scroll element.
    * The value can be either `top` or `bottom`.
    */
-  @Prop() position: "top" | "bottom" = "bottom";
+  @Prop() readonly position: "top" | "bottom" = "bottom";
 
   /**
    * Emitted when the scroll reaches
@@ -184,7 +188,7 @@ export class GridInfiniteScroll implements ComponentInterface {
 
   protected onScroll() {
     const scrollEl = this.scrollEl;
-    if (!scrollEl || !this.canStart()) {
+    if (scrollEl === null || !this.canStart()) {
       return 1;
     }
 
@@ -230,7 +234,7 @@ export class GridInfiniteScroll implements ComponentInterface {
   @Method()
   async complete() {
     const scrollEl = this.scrollEl;
-    if (!this.isLoading || !scrollEl) {
+    if (!this.isLoading || scrollEl === null) {
       return;
     }
     this.isLoading = false;
@@ -281,12 +285,17 @@ export class GridInfiniteScroll implements ComponentInterface {
   }
 
   private canStart(): boolean {
-    return !this.disabled && !this.isBusy && !!this.scrollEl && !this.isLoading;
+    return (
+      !this.disabled &&
+      !this.isBusy &&
+      this.scrollEl !== null &&
+      !this.isLoading
+    );
   }
 
   private enableScrollEvents(shouldListen: boolean) {
     const scrollListener = this.scrollListenerEl;
-    if (scrollListener) {
+    if (scrollListener !== null) {
       if (shouldListen) {
         scrollListener.addEventListener("scroll", this.onScroll);
       } else {
@@ -295,12 +304,12 @@ export class GridInfiniteScroll implements ComponentInterface {
     }
   }
 
-  hostData() {
-    return {
-      class: {
+  render() {
+    <Host
+      class={{
         "infinite-scroll-enabled": !this.disabled,
         "infinite-scroll-loading": this.isLoading
-      }
-    };
+      }}
+    ></Host>;
   }
 }

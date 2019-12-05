@@ -1,9 +1,9 @@
 import { h } from "@stencil/core";
-import { IRenderer } from "../../../common/interfaces";
+import { Renderer } from "../../../common/interfaces";
 import { NavBarLink } from "../../../navbar-link/navbar-link";
 
-export class NavBarLinkRender implements IRenderer {
-  constructor(public component: NavBarLink) {}
+export class NavBarLinkRender implements Renderer {
+  constructor(private component: NavBarLink) {}
 
   private handleClick(event: UIEvent) {
     this.component.onClick.emit(event);

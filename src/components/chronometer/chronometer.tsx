@@ -9,7 +9,7 @@ import {
   Watch,
   h
 } from "@stencil/core";
-import { IComponent } from "../common/interfaces";
+import { Component as GxComponent } from "../common/interfaces";
 import { TimerState } from "./chronometer-timer-state";
 
 @Component({
@@ -17,20 +17,15 @@ import { TimerState } from "./chronometer-timer-state";
   styleUrl: "chronometer.scss",
   tag: "gx-chronometer"
 })
-export class Chronometer implements IComponent {
-  eventTimer: number;
-  startedTime = 0;
-  started = false;
-  timer: number;
+export class Chronometer implements GxComponent {
+  private eventTimer: number;
+  private startedTime = 0;
+  private started = false;
+  private timer: number;
 
-  @Element() element;
+  @Element() element: HTMLGxChronometerElement;
 
   @State() elapsedTime = 0;
-
-  /**
-   * The identifier of the control. Must be unique.
-   */
-  @Prop() id: string;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -40,39 +35,38 @@ export class Chronometer implements IComponent {
    * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
-  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * When the chronometer reaches this value,
    * MaxValueText will be shown instead of the Chronometer value.
    */
-  @Prop() maxValue = 0;
+  @Prop() readonly maxValue = 0;
 
   /**
    * Text to be displayed when chronometer value reaches maxValue.
    */
-  @Prop() maxValueText: string;
+  @Prop() readonly maxValueText: string;
 
   /**
    * Time unit: (s) seconds or (ms) milliseconds for every time control Property.
    */
-  @Prop() unit: "s" | "ms" = "s";
+  @Prop() readonly unit: "s" | "ms" = "s";
 
   /**
    * Defines the interval that the function onTick will be called.
    */
-  @Prop() interval = 1;
+  @Prop() readonly interval = 1;
 
   /**
    * State of the Chronometer.
    */
-  @Prop() state: TimerState = TimerState.Stopped;
+  @Prop() readonly state: TimerState = TimerState.Stopped;
 
   /**
    * The value of the control.
    */
-  @Prop({ mutable: true })
-  value = 0;
+  @Prop({ mutable: true }) value = 0;
 
   /**
    * The `input` event is emitted every time the chronometer changes (every 1 second)
@@ -168,7 +162,7 @@ export class Chronometer implements IComponent {
     this.change.emit();
   }
 
-  tickHandler() {
+  private tickHandler() {
     this.tick.emit();
   }
 
@@ -192,11 +186,11 @@ export class Chronometer implements IComponent {
     }
   }
 
-  getUnit() {
+  private getUnit() {
     return this.unit === "s" ? 1000 : 1;
   }
 
-  updateElapsedTime() {
+  private updateElapsedTime() {
     this.elapsedTime = Date.now() - this.startedTime;
     this.value = Math.floor(this.elapsedTime / this.getUnit());
   }

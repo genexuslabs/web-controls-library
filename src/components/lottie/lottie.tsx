@@ -8,13 +8,12 @@ import {
   Watch,
   h
 } from "@stencil/core";
-// tslint:disable-next-line
 import bodymovin from "lottie-web/build/player/lottie_light";
 import {
-  IClickableComponent,
-  IComponent,
-  IDisableableComponent,
-  IVisibilityComponent
+  ClickableComponent,
+  Component as GxComponent,
+  DisableableComponent,
+  VisibilityComponent
 } from "../common/interfaces";
 
 @Component({
@@ -24,26 +23,26 @@ import {
 })
 export class Lottie
   implements
-    IComponent,
-    IClickableComponent,
-    IVisibilityComponent,
-    IDisableableComponent {
+    GxComponent,
+    ClickableComponent,
+    VisibilityComponent,
+    DisableableComponent {
   private animation: any;
   private animationTotalFrames: number;
 
-  @Element() element: HTMLElement;
+  @Element() element: HTMLGxLottieElement;
 
   /**
    * This attribute lets you specify a Lottie animation object
    *
    */
-  @Prop() animationData: any;
+  @Prop() readonly animationData: any;
 
   /**
    * This attribute lets you specify if the animation will start playing as soon as it is ready
    *
    */
-  @Prop() autoPlay = true;
+  @Prop() readonly autoPlay = true;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -53,24 +52,24 @@ export class Lottie
    * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
-  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() disabled = false;
+  @Prop() readonly disabled = false;
 
   /**
    * This attribute lets you specify if the animation will loop
    */
-  @Prop() loop = true;
+  @Prop() readonly loop = true;
 
   /**
    * This attribute lets you specify  the relative path to the animation object. (`animationData` and `path` are mutually exclusive)
    */
-  @Prop() path: string;
+  @Prop() readonly path: string;
 
   /**
    * Emitted when the element is clicked.
@@ -111,8 +110,8 @@ export class Lottie
       return;
     }
 
-    if (from || to) {
-      if (!to) {
+    if (from !== 0 || to !== 0) {
+      if (to !== 0) {
         to = from;
         from = 0;
       }
@@ -154,14 +153,6 @@ export class Lottie
     return Math.trunc(this.animationTotalFrames * duration);
   }
 
-  handleClick(event: UIEvent) {
-    if (this.disabled) {
-      return;
-    }
-
-    this.onClick.emit(event);
-  }
-
   componentDidLoad() {
     this.setAnimation();
   }
@@ -174,7 +165,7 @@ export class Lottie
     this.animation.destroy();
   }
 
-  setAnimation() {
+  private setAnimation() {
     if (this.animation) {
       this.animation.loop = this.loop;
       return;

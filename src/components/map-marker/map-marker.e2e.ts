@@ -16,7 +16,7 @@ describe("gx-map-marker", () => {
     element = await parentElement.find("gx-map-marker");
     ///////////////////////////////////////
     const innerContent = await parentElement.find(".leaflet-marker-icon");
-    expect(!!innerContent).toBeTruthy();
+    expect(innerContent).not.toBeNull();
     expect(await element.getProperty("coords")).toEqual("0, 0");
     expect(await element.getProperty("tooltipCaption")).toBeUndefined();
   });

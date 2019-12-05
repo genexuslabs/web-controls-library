@@ -1,9 +1,11 @@
 import { h } from "@stencil/core";
-import { IRenderer } from "../../../common/interfaces";
+import { Renderer } from "../../../common/interfaces";
 import { FormField } from "../../../form-field/form-field";
 
-export class FormFieldRender implements IRenderer {
-  constructor(public component: FormField) {}
+let autoFormFieldId = 0;
+
+export class FormFieldRender implements Renderer {
+  constructor(private component: FormField) {}
 
   private formFieldId: string;
 
@@ -68,7 +70,7 @@ export class FormFieldRender implements IRenderer {
         const nativeInput = formField.element.querySelector(
           `#${nativeInputId}`
         );
-        if (nativeInput) {
+        if (nativeInput !== null) {
           nativeInput.setAttribute("data-part", "field");
         }
         const innerLabel: any = formField.element.querySelector("label");
@@ -100,9 +102,8 @@ export class FormFieldRender implements IRenderer {
   render(slots) {
     const formField = this.component;
 
-    const isRadioGroup = !!formField.element.querySelector(
-      "gx-radio-group[area='field']"
-    );
+    const isRadioGroup =
+      formField.element.querySelector("gx-radio-group[area='field']") !== null;
     const renderLabelBefore = this.shouldRenderLabelBefore();
     const renderLabel = formField.labelPosition !== "none";
 
@@ -140,5 +141,3 @@ export class FormFieldRender implements IRenderer {
     }
   }
 }
-
-let autoFormFieldId = 0;

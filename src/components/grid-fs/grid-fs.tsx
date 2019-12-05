@@ -6,10 +6,11 @@ import {
   EventEmitter,
   Method,
   Prop,
-  h
+  h,
+  Host
 } from "@stencil/core";
-import { GridBaseHelper, IGridBase } from "../grid-base/grid-base";
-import { IVisibilityComponent } from "../common/interfaces";
+import { GridBaseHelper, GridBase } from "../grid-base/grid-base";
+import { VisibilityComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
@@ -17,8 +18,12 @@ import { IVisibilityComponent } from "../common/interfaces";
   tag: "gx-grid-fs"
 })
 export class GridFreeStyle
-  implements IGridBase, ComponentInterface, IVisibilityComponent {
-  @Element() el!: HTMLElement;
+  implements GridBase, ComponentInterface, VisibilityComponent {
+  constructor() {
+    this.handleGxInfinite = this.handleGxInfinite.bind(this);
+  }
+
+  @Element() el!: HTMLGxGridFsElement;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -28,7 +33,7 @@ export class GridFreeStyle
    * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
-  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.
@@ -39,13 +44,13 @@ export class GridFreeStyle
    * | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
    */
 
-  @Prop() loadingState: "loading" | "loaded";
+  @Prop() readonly loadingState: "loading" | "loaded";
 
   /**
    * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes.
    * If not specified, then grid empty and loading placeholders will not work correctly.
    */
-  @Prop() recordCount: number;
+  @Prop() readonly recordCount: number;
 
   /**
    * The threshold distance from the bottom
@@ -56,7 +61,7 @@ export class GridFreeStyle
    * from the bottom of the page. Use the value `100px` when the
    * scroll is within 100 pixels from the bottom of the page.
    */
-  @Prop() threshold = "100px";
+  @Prop() readonly threshold: string = "100px";
 
   /**
    * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
@@ -72,29 +77,31 @@ export class GridFreeStyle
   }
 
   render() {
-    return [
-      <slot name="grid-content" />,
+    return (
+      <Host {...GridBaseHelper.hostData(this)}>
+        {[
+          <slot name="grid-content" />,
 
-      <gx-grid-infinite-scroll
-        threshold={this.threshold}
-        itemCount={this.recordCount}
-        onGxInfinite={() =>
-          this.loadingState !== "loading" &&
-          this.gxInfiniteThresholdReached.emit()
-        }
-      >
-        <gx-grid-infinite-scroll-content>
-          <slot name="grid-loading-content" />
-        </gx-grid-infinite-scroll-content>
-      </gx-grid-infinite-scroll>,
-      <div class="grid-empty-placeholder">
-        <slot name="grid-content-empty" />
-      </div>,
-      <slot />
-    ];
+          <gx-grid-infinite-scroll
+            threshold={this.threshold}
+            itemCount={this.recordCount}
+            onGxInfinite={this.handleGxInfinite}
+          >
+            <gx-grid-infinite-scroll-content>
+              <slot name="grid-loading-content" />
+            </gx-grid-infinite-scroll-content>
+          </gx-grid-infinite-scroll>,
+          <div class="grid-empty-placeholder">
+            <slot name="grid-content-empty" />
+          </div>,
+          <slot />
+        ]}
+      </Host>
+    );
   }
 
-  hostData() {
-    return GridBaseHelper.hostData(this);
+  private handleGxInfinite() {
+    this.loadingState !== "loading";
+    this.gxInfiniteThresholdReached.emit();
   }
 }

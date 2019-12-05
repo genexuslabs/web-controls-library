@@ -7,12 +7,12 @@ import {
   h
 } from "@stencil/core";
 import {
-  IClickableComponent,
-  IComponent,
-  IDisableableComponent,
-  IVisibilityComponent
+  ClickableComponent,
+  Component as GxComponent,
+  DisableableComponent,
+  VisibilityComponent
 } from "../common/interfaces";
-import { ISwipeable, makeSwipeable } from "../common/swipeable";
+import { Swipeable, makeSwipeable } from "../common/swipeable";
 
 @Component({
   shadow: false,
@@ -21,12 +21,16 @@ import { ISwipeable, makeSwipeable } from "../common/swipeable";
 })
 export class Canvas
   implements
-    IComponent,
-    IVisibilityComponent,
-    IDisableableComponent,
-    ISwipeable,
-    IClickableComponent {
-  @Element() element: HTMLElement;
+    GxComponent,
+    VisibilityComponent,
+    DisableableComponent,
+    Swipeable,
+    ClickableComponent {
+  constructor() {
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  @Element() element: HTMLGxCanvasElement;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -36,14 +40,14 @@ export class Canvas
    * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
-  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() disabled = false;
+  @Prop() readonly disabled = false;
 
   /**
    * Emitted when the element is clicked.
@@ -72,7 +76,7 @@ export class Canvas
    */
   @Event() onSwipeLeft: EventEmitter;
 
-  handleClick(event: UIEvent) {
+  private handleClick(event: UIEvent) {
     if (this.disabled) {
       return;
     }
@@ -85,7 +89,7 @@ export class Canvas
   }
 
   render() {
-    this.element.addEventListener("click", this.handleClick.bind(this));
+    this.element.addEventListener("click", this.handleClick);
 
     return <slot />;
   }

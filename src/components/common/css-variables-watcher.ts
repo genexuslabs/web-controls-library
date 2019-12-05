@@ -1,9 +1,9 @@
-import { IComponent } from "./interfaces";
+import { Component } from "./interfaces";
 
 export function cssVariablesWatcher(
-  component: IComponent,
-  properties: ICssVariableWatcherProperty[]
-) {
+  component: Component,
+  properties: CssVariableWatcherProperty[]
+): void {
   // Set up a MutationObserver to monitor changes on style and class attributes.
   // When a change occurs on this attributes, the properties listed in
   // properties are updated with their corresponding CSS variables values.
@@ -23,7 +23,7 @@ export function cssVariablesWatcher(
     }
   );
 
-  const updatePropertiesFromCss = () => {
+  function updatePropertiesFromCss(): void {
     for (const prop of properties) {
       const propCssValue = getComputedStyle(component.element)
         .getPropertyValue(prop.cssVariableName)
@@ -32,7 +32,7 @@ export function cssVariablesWatcher(
         component[prop.propertyName] = propCssValue;
       }
     }
-  };
+  }
 
   // componentDidLoad, componentDidUpdate and componentDidUnload are overriden
   // to start and end observing the mutations, and to update the properties values.
@@ -57,27 +57,27 @@ export function cssVariablesWatcher(
 }
 
 function overrideMethod(
-  component: IComponent,
+  component: Component,
   methodName: string,
   { before, after }: { before?: () => void; after?: () => void }
 ) {
   const oldMethod = component[methodName];
   component[methodName] = () => {
-    if (before) {
+    if (before !== undefined) {
       before();
     }
 
-    if (oldMethod) {
+    if (oldMethod !== undefined) {
       oldMethod.call(component);
     }
 
-    if (after) {
+    if (after !== undefined) {
       after();
     }
   };
 }
 
-export interface ICssVariableWatcherProperty {
+export interface CssVariableWatcherProperty {
   propertyName: string;
   cssVariableName: string;
 }

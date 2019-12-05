@@ -1,29 +1,26 @@
 import { ComponentInterface, EventEmitter } from "@stencil/core";
 
-export interface IClickableComponent {
-  handleClick: (UIEvent) => void;
+export interface ClickableComponent {
   onClick: EventEmitter;
 }
 
-export interface IVisibilityComponent {
+export interface VisibilityComponent {
   invisibleMode: "collapse" | "keep-space";
 }
 
-export interface IDisableableComponent {
+export interface DisableableComponent {
   disabled: boolean;
 }
 
-export interface IComponent extends ComponentInterface {
-  element: HTMLElement;
+export interface Component extends ComponentInterface {
+  element: Element;
   render: () => void;
 }
 
-export interface IFormComponent
-  extends IComponent,
-    IDisableableComponent,
-    IVisibilityComponent {
-  handleChange: (UIEvent) => void;
-  id: string;
+export interface FormComponent
+  extends Component,
+    DisableableComponent,
+    VisibilityComponent {
   input: EventEmitter;
   /**
    * Returns the DOM Control Id of the "labelable" element inside the component. This Id will be used for <label> 'for' attribute.
@@ -32,12 +29,20 @@ export interface IFormComponent
   getNativeInputId: () => void;
 }
 
-export interface IRenderer {
-  component: IComponent;
-  render: (slots?: any) => void;
+export interface Renderer {
+  render: (slots?: object) => void;
   componentWillLoad?: () => void;
   componentDidLoad?: () => void;
   componentWillUpdate?: () => void;
   componentDidUpdate?: () => void;
   componentDidUnload?: () => void;
 }
+
+export interface RendererConstructor {
+  new (
+    component: Component,
+    handlers?: { [key: string]: (event: UIEvent) => void }
+  ): Renderer;
+}
+
+declare const Renderer: RendererConstructor;
