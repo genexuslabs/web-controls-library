@@ -124,7 +124,7 @@ export class GridInfiniteScroll implements ComponentInterface {
     }
   }
 
-  isVisibleInViewport(el) {
+  isVisibleInViewport(el: HTMLElement) {
     const rect = el.getBoundingClientRect();
     const elemTop = rect.top;
     return elemTop >= 0 && elemTop <= window.innerHeight;
