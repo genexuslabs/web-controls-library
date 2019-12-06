@@ -36,7 +36,7 @@ The element will show one or the other, depending on the value of the [disabled]
 
 | Event     | Description                          | Type               |
 | --------- | ------------------------------------ | ------------------ |
-| `onClick` | Emitted when the element is clicked. | `CustomEvent<any>` |
+| `gxClick` | Emitted when the element is clicked. | `CustomEvent<any>` |
 
 ---
 

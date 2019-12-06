@@ -51,13 +51,13 @@ loadingEl.value = 1;
 | `description` | `description` | Sets the description text.                                                | `string`                           | `undefined` |
 | `presented`   | `presented`   | Sets if the loading dialog is presented.                                  | `boolean`                          | `false`     |
 | `type`        | `type`        | Sets the value.                                                           | `"determinate" \| "indeterminate"` | `undefined` |
-| `value`       | `value`       | Sets the value when type is determinate. Must be a value between 0 and 1. | `number`                           | `0`         |
+| `value`       | `value`       | Sets the value when type is determinate. Must be a value between 0 and 1. | `0`                                | `0`         |
 
 ## Dependencies
 
 ### Depends on
 
-- [gx-lottie](..\lottie)
+- [gx-lottie](../lottie)
 
 ### Graph
 

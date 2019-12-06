@@ -31,10 +31,10 @@ A SASS mixin called `gx-action-sheet` is provided in `theming/theming-mixins.scs
 
 ## Events
 
-| Event     | Description                           | Type               |
-| --------- | ------------------------------------- | ------------------ |
-| `onClose` | Fired when the action sheet is closed | `CustomEvent<any>` |
-| `onOpen`  | Fired when the action sheet is opened | `CustomEvent<any>` |
+| Event   | Description                           | Type               |
+| ------- | ------------------------------------- | ------------------ |
+| `close` | Fired when the action sheet is closed | `CustomEvent<any>` |
+| `open`  | Fired when the action sheet is opened | `CustomEvent<any>` |
 
 ---
 

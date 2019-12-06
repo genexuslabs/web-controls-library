@@ -1,7 +1,7 @@
 import { ComponentInterface, EventEmitter } from "@stencil/core";
 
 export interface ClickableComponent {
-  onClick: EventEmitter;
+  gxClick: EventEmitter;
 }
 
 export interface VisibilityComponent {

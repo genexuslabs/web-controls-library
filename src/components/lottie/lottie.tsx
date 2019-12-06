@@ -42,7 +42,7 @@ export class Lottie
    * This attribute lets you specify if the animation will start playing as soon as it is ready
    *
    */
-  @Prop() readonly autoPlay = true;
+  @Prop() readonly autoPlay: boolean = true;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -64,7 +64,7 @@ export class Lottie
   /**
    * This attribute lets you specify if the animation will loop
    */
-  @Prop() readonly loop = true;
+  @Prop() readonly loop: boolean = true;
 
   /**
    * This attribute lets you specify  the relative path to the animation object. (`animationData` and `path` are mutually exclusive)
@@ -74,7 +74,7 @@ export class Lottie
   /**
    * Emitted when the element is clicked.
    */
-  @Event() onClick: EventEmitter;
+  @Event() gxClick: EventEmitter;
 
   /**
    * Emitted when the animation is loaded in the DOM.

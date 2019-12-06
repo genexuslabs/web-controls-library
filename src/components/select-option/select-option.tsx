@@ -5,7 +5,8 @@ import {
   EventEmitter,
   Prop,
   Watch,
-  h
+  h,
+  Host
 } from "@stencil/core";
 import {
   Component as GxComponent,

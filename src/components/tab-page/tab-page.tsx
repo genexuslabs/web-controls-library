@@ -1,4 +1,4 @@
-import { Component, Element, h } from "@stencil/core";
+import { Component, Element, h, Host } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
 let autoTabId = 0;

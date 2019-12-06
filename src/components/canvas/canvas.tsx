@@ -52,36 +52,36 @@ export class Canvas
   /**
    * Emitted when the element is clicked.
    */
-  @Event() onClick: EventEmitter;
+  @Event() gxClick: EventEmitter;
   // TODO: Implement touch devices events (Tap, DoubleTap, LongTap, SwipeX)
 
   /**
    * Emitted when the element is swiped.
    */
-  @Event() onSwipe: EventEmitter;
+  @Event() swipe: EventEmitter;
   /**
    * Emitted when the element is swiped in upward direction.
    */
-  @Event() onSwipeUp: EventEmitter;
+  @Event() swipeUp: EventEmitter;
   /**
    * Emitted when the element is swiped right direction.
    */
-  @Event() onSwipeRight: EventEmitter;
+  @Event() swipeRight: EventEmitter;
   /**
    * Emitted when the element is swiped downward direction.
    */
-  @Event() onSwipeDown: EventEmitter;
+  @Event() swipeDown: EventEmitter;
   /**
    * Emitted when the element is swiped left direction..
    */
-  @Event() onSwipeLeft: EventEmitter;
+  @Event() swipeLeft: EventEmitter;
 
   private handleClick(event: UIEvent) {
     if (this.disabled) {
       return;
     }
 
-    this.onClick.emit(event);
+    this.gxClick.emit(event);
   }
 
   componentDidLoad() {

@@ -5,7 +5,8 @@ import {
   EventEmitter,
   Prop,
   Watch,
-  Host
+  Host,
+  h
 } from "@stencil/core";
 import { RadioOptionRender } from "../renders/bootstrap/radio-option/radio-option-render";
 import {

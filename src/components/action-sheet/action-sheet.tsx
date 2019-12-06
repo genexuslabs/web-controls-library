@@ -38,14 +38,14 @@ export class ActionSheet implements GxComponent {
   /**
    * Fired when the action sheet is closed
    */
-  @Event() onClose: EventEmitter;
+  @Event() close: EventEmitter;
 
   /**
    * Fired when the action sheet is opened
    */
-  @Event() onOpen: EventEmitter;
+  @Event() open: EventEmitter;
 
-  @Listen("onClick")
+  @Listen("gxClick")
   handleItemClick() {
     this.opened = false;
   }

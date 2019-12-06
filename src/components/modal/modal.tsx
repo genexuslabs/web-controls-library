@@ -43,12 +43,12 @@ export class Modal implements GxComponent {
   /**
    * Fired when the modal dialog is closed
    */
-  @Event() onClose: EventEmitter;
+  @Event() close: EventEmitter;
 
   /**
    * Fired when the modal dialog is opened
    */
-  @Event() onOpen: EventEmitter;
+  @Event() open: EventEmitter;
 
   @Watch("opened")
   openedHandler(newValue: boolean, oldValue = false) {
@@ -58,10 +58,10 @@ export class Modal implements GxComponent {
 
     if (newValue) {
       this.renderer.open();
-      this.onOpen.emit();
+      this.open.emit();
     } else {
       this.renderer.close();
-      this.onClose.emit();
+      this.close.emit();
     }
   }
 

@@ -91,14 +91,14 @@ export class Button
   /**
    * Emitted when the element is clicked.
    */
-  @Event() onClick: EventEmitter;
+  @Event() gxClick: EventEmitter;
 
   private handleClick(event: UIEvent) {
     if (this.disabled) {
       return;
     }
 
-    this.onClick.emit(event);
+    this.gxClick.emit(event);
   }
 
   render() {

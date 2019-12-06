@@ -31,7 +31,6 @@ The `gx-rating` component allows displaying scores or rate items using stars.
 | Property        | Attribute        | Description                                                                                                                                                                                                                                                                                                                                                                                  | Type                         | Default      |
 | --------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------ |
 | `disabled`      | `disabled`       | This attribute allows you specify if the element is disabled. If disabled, it will not trigger any user interaction related event (for example, click event).                                                                                                                                                                                                                                | `boolean`                    | `false`      |
-| `id`            | `id`             | The control id. Must be unique per control!                                                                                                                                                                                                                                                                                                                                                  | `string`                     | `undefined`  |
 | `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \| | `"collapse" \| "keep-space"` | `"collapse"` |
 | `maxValue`      | `max-value`      | This porpoerty is required if you want to display a score. >E.g: In a score of 4/5 stars the `maxValue` is `5` and the `value` is `4`                                                                                                                                                                                                                                                        | `number`                     | `undefined`  |
 | `readonly`      | `readonly`       | This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_                                                                                                                                                        | `boolean`                    | `false`      |
@@ -45,13 +44,13 @@ The `gx-rating` component allows displaying scores or rate items using stars.
 
 ## Methods
 
-### `getNativeInputId() => Promise<string>`
+### `getNativeInputId() => Promise<any>`
 
 Returns the id of the inner `input` element (if set).
 
 #### Returns
 
-Type: `Promise<string>`
+Type: `Promise<any>`
 
 ## CSS Custom Properties
 

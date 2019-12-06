@@ -26,7 +26,7 @@ At the moment it only supports Youtube videos. Future updates will support video
 
 | Event     | Description                          | Type               |
 | --------- | ------------------------------------ | ------------------ |
-| `onClick` | Emitted when the element is clicked. | `CustomEvent<any>` |
+| `gxClick` | Emitted when the element is clicked. | `CustomEvent<any>` |
 
 ## CSS Custom Properties
 

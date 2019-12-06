@@ -36,21 +36,21 @@ export class ActionSheetItem implements ClickableComponent, GxComponent {
   /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
-   * (for example, click event).
+   * (for example, gxClick event).
    */
   @Prop() readonly disabled = false;
 
   /**
    * Fired when the action sheet item is clicked
    */
-  @Event() onClick: EventEmitter;
+  @Event() gxClick: EventEmitter;
 
   private handleClick(event: UIEvent) {
     if (this.disabled) {
       return;
     }
 
-    this.onClick.emit(event);
+    this.gxClick.emit(event);
     event.preventDefault();
   }
 

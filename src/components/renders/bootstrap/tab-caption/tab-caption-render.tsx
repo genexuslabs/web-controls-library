@@ -31,6 +31,6 @@ export class TabCaptionRender implements Renderer {
 
   private clickHandler(event: UIEvent) {
     event.preventDefault();
-    this.component.onTabSelect.emit(event);
+    this.component.tabSelect.emit(event);
   }
 }

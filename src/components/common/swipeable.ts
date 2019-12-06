@@ -8,12 +8,12 @@ export function makeSwipeable(comp: Swipeable) {
   let initialX = null;
   let initialY = null;
 
-  function startTouch(e) {
+  function startTouch(e: TouchEvent) {
     initialX = e.touches[0].clientX;
     initialY = e.touches[0].clientY;
   }
 
-  function moveTouch(e) {
+  function moveTouch(e: TouchEvent) {
     if (initialX === null) {
       return;
     }
@@ -28,24 +28,24 @@ export function makeSwipeable(comp: Swipeable) {
     const diffX = initialX - currentX;
     const diffY = initialY - currentY;
 
-    comp.onSwipe.emit(event);
+    comp.swipe.emit(event);
     if (Math.abs(diffX) > Math.abs(diffY)) {
       // sliding horizontally
       if (diffX > 0) {
         // swiped left
-        comp.onSwipeLeft.emit(event);
+        comp.swipeLeft.emit(event);
       } else {
         // swiped right
-        comp.onSwipeRight.emit(event);
+        comp.swipeRight.emit(event);
       }
     } else {
       // sliding vertically
       if (diffY > 0) {
         // swiped up
-        comp.onSwipeUp.emit(event);
+        comp.swipeUp.emit(event);
       } else {
         // swiped down
-        comp.onSwipeDown.emit(event);
+        comp.swipeDown.emit(event);
       }
     }
 
@@ -56,9 +56,9 @@ export function makeSwipeable(comp: Swipeable) {
 
 export interface Swipeable {
   element: HTMLElement;
-  onSwipe: EventEmitter;
-  onSwipeLeft: EventEmitter;
-  onSwipeRight: EventEmitter;
-  onSwipeUp: EventEmitter;
-  onSwipeDown: EventEmitter;
+  swipe: EventEmitter;
+  swipeLeft: EventEmitter;
+  swipeRight: EventEmitter;
+  swipeUp: EventEmitter;
+  swipeDown: EventEmitter;
 }

@@ -6,7 +6,7 @@ export class NavBarLinkRender implements Renderer {
   constructor(private component: NavBarLink) {}
 
   private handleClick(event: UIEvent) {
-    this.component.onClick.emit(event);
+    this.component.gxClick.emit(event);
     event.preventDefault();
   }
 

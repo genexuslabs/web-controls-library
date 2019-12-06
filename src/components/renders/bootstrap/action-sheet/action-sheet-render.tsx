@@ -10,12 +10,12 @@ export class ActionSheetRender implements Renderer {
 
   private handleOnClose(e: CustomEvent) {
     this.component.opened = false;
-    this.component.onClose.emit(e);
+    this.component.close.emit(e);
   }
 
   private handleOnOpen(e: CustomEvent) {
     this.component.opened = true;
-    this.component.onOpen.emit(e);
+    this.component.open.emit(e);
   }
 
   render(slots: { default }) {
@@ -26,8 +26,8 @@ export class ActionSheetRender implements Renderer {
       <gx-modal
         opened={actionSheet.opened}
         closeButtonLabel={actionSheet.closeButtonLabel}
-        onOnClose={this.handleOnClose}
-        onOnOpen={this.handleOnOpen}
+        onClose={this.handleOnClose}
+        onOpen={this.handleOnOpen}
       >
         <div slot="body">
           <div class="list-group list-group-flush">{slots.default}</div>

@@ -6,7 +6,8 @@ import {
   Method,
   Prop,
   Watch,
-  h
+  h,
+  Host
 } from "@stencil/core";
 import { SwitchRender } from "../renders/bootstrap/switch/switch-render";
 import { FormComponent } from "../common/interfaces";

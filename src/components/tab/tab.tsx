@@ -5,7 +5,8 @@ import {
   EventEmitter,
   Listen,
   Prop,
-  h
+  h,
+  Host
 } from "@stencil/core";
 import { TabRender } from "../renders/bootstrap/tab/tab-render";
 import {
@@ -43,14 +44,14 @@ export class Tab implements GxComponent, VisibilityComponent {
    * Fired when the active tab is changed
    *
    */
-  @Event() onTabChange: EventEmitter;
+  @Event() tabChange: EventEmitter;
 
-  @Listen("onTabSelect")
+  @Listen("tabSelect")
   tabClickHandler(event: CustomEvent) {
     const oldSelectedTab = this.lastSelectedTab;
     this.setSelectedTab(event.target as HTMLElement);
     if (oldSelectedTab !== this.lastSelectedTab) {
-      this.onTabChange.emit(event);
+      this.tabChange.emit(event);
     }
   }
 

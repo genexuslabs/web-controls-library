@@ -4,7 +4,8 @@ import {
   Event,
   EventEmitter,
   Prop,
-  h
+  h,
+  Host
 } from "@stencil/core";
 import {
   Component as GxComponent,
@@ -67,23 +68,23 @@ export class Table
   /**
    * Emitted when the element is swiped.
    */
-  @Event() onSwipe: EventEmitter;
+  @Event() swipe: EventEmitter;
   /**
    * Emitted when the element is swiped in upward direction.
    */
-  @Event() onSwipeUp: EventEmitter;
+  @Event() swipeUp: EventEmitter;
   /**
    * Emitted when the element is swiped right direction.
    */
-  @Event() onSwipeRight: EventEmitter;
+  @Event() swipeRight: EventEmitter;
   /**
    * Emitted when the element is swiped downward direction.
    */
-  @Event() onSwipeDown: EventEmitter;
+  @Event() swipeDown: EventEmitter;
   /**
    * Emitted when the element is swiped left direction..
    */
-  @Event() onSwipeLeft: EventEmitter;
+  @Event() swipeLeft: EventEmitter;
 
   componentDidLoad() {
     makeSwipeable(this);

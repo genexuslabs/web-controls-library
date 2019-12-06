@@ -4,7 +4,8 @@ import {
   Event,
   EventEmitter,
   Prop,
-  h
+  h,
+  Host
 } from "@stencil/core";
 import {
   Component as GxComponent,
@@ -44,7 +45,7 @@ export class TabCaption implements GxComponent, DisableableComponent {
    * Fired when the tab caption is selected
    *
    */
-  @Event() onTabSelect: EventEmitter;
+  @Event() tabSelect: EventEmitter;
 
   componentWillLoad() {
     if (!this.element.id) {

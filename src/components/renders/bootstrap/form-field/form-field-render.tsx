@@ -109,7 +109,7 @@ export class FormFieldRender implements Renderer {
 
     if (!this.formFieldId) {
       this.formFieldId =
-        formField.id || `gx-form-field-auto-id-${autoFormFieldId++}`;
+        formField.element.id || `gx-form-field-auto-id-${autoFormFieldId++}`;
     }
 
     if (isRadioGroup) {

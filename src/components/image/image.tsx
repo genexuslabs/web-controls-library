@@ -111,14 +111,14 @@ export class Image
   /**
    * Emitted when the element is clicked.
    */
-  @Event() onClick: EventEmitter;
+  @Event() gxClick: EventEmitter;
 
   private handleClick(event: UIEvent) {
     if (this.disabled) {
       event.stopPropagation();
       return;
     }
-    this.onClick.emit(event);
+    this.gxClick.emit(event);
     event.preventDefault();
   }
 

@@ -42,9 +42,9 @@ tab content, using the `gx-tab-page` element.
 
 ## Events
 
-| Event         | Description                          | Type               |
-| ------------- | ------------------------------------ | ------------------ |
-| `onTabChange` | Fired when the active tab is changed | `CustomEvent<any>` |
+| Event       | Description                          | Type               |
+| ----------- | ------------------------------------ | ------------------ |
+| `tabChange` | Fired when the active tab is changed | `CustomEvent<any>` |
 
 ---
 

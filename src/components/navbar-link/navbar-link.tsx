@@ -67,7 +67,7 @@ export class NavBarLink
   /**
    * Emitted when the element is clicked.
    */
-  @Event() onClick: EventEmitter;
+  @Event() gxClick: EventEmitter;
 
   render() {
     return <Host>{this.renderer.render({ default: <slot /> })}</Host>;

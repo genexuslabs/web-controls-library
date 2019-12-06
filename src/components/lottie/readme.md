@@ -36,7 +36,7 @@ It also accepts setting the animation with an object, using the `animationData` 
 | Event           | Description                                      | Type               |
 | --------------- | ------------------------------------------------ | ------------------ |
 | `animationLoad` | Emitted when the animation is loaded in the DOM. | `CustomEvent<any>` |
-| `onClick`       | Emitted when the element is clicked.             | `CustomEvent<any>` |
+| `gxClick`       | Emitted when the element is clicked.             | `CustomEvent<any>` |
 
 ## Methods
 
@@ -76,7 +76,7 @@ Type: `Promise<void>`
 
 ### Used by
 
-- [gx-loading](..\loading)
+- [gx-loading](../loading)
 
 ### Graph
 
