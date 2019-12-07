@@ -24,7 +24,7 @@ export class GridInfiniteScroll implements ComponentInterface {
   private thrPx = 0;
   private thrPc = 0;
   private scrollEl?: HTMLElement;
-  private scrollListenerEl?: any;
+  private scrollListenerEl?: HTMLElement | Window;
   private didFire = false;
   private isBusy = false;
   private attachedToWindow = false;
@@ -131,7 +131,7 @@ export class GridInfiniteScroll implements ComponentInterface {
   }
 
   getScrollParent(node: any) {
-    if (node == null) {
+    if (node === null) {
       return null;
     }
 
