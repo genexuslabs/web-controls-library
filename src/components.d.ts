@@ -280,6 +280,7 @@ export namespace Components {
     labelPosition: "none" | "top" | "right" | "bottom" | "left" | "float";
   }
   interface GxGridFs {
+    complete: () => Promise<void>;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -306,10 +307,6 @@ export namespace Components {
      * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
      */
     disabled: boolean;
-    /**
-     * Query selector where the infinitie scroll would be listening to scroll events.
-     */
-    infiniteScrollContainer: string;
     /**
      * This property must be bounded to grid item count property. It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the intial batch does not overflow the main container
      */
@@ -1700,10 +1697,6 @@ declare namespace LocalJSX {
      * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
      */
     disabled?: boolean;
-    /**
-     * Query selector where the infinitie scroll would be listening to scroll events.
-     */
-    infiniteScrollContainer?: string;
     /**
      * This property must be bounded to grid item count property. It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the intial batch does not overflow the main container
      */

@@ -9,8 +9,8 @@ This component will be shown automatically every time the Grid Infinite Scroll i
 
 ### Used by
 
-- [gx-grid-fs](..\grid-fs)
-- [gx-grid-smart](..\grid-smart)
+- [gx-grid-fs](../grid-fs)
+- [gx-grid-smart](../grid-smart)
 
 ### Graph
 

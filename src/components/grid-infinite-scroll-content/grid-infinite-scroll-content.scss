@@ -1,9 +1,18 @@
-
-.infinite-scroll-loading .infinite-scroll-content, .gx-grid-loading .infinite-scroll-content {
-    display: block;
-    text-align: center;
+gx-grid-infinite-scroll {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex: 1;
 }
 
-.infinite-scroll-content {
-    display:none;
+gx-grid-infinite-scroll-content,
+.gx-grid-empty:not(.gx-grid-loading) gx-grid-infinite-scroll {
+  display: none;
+}
+
+.infinite-scroll-loading gx-grid-infinite-scroll-content,
+.gx-grid-loading gx-grid-infinite-scroll-content {
+  display: block;
+  flex: 1;
 }

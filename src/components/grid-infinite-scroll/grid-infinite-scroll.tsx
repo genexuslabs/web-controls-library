@@ -24,16 +24,14 @@ export class GridInfiniteScroll implements ComponentInterface {
   private thrPx = 0;
   private thrPc = 0;
   private scrollEl?: HTMLElement;
+  private scrollListenerEl?: HTMLElement | Window;
   private didFire = false;
   private isBusy = false;
+  private attachedToWindow = false;
+  private attached = false;
 
   @Element() el!: HTMLElement;
   @State() isLoading = false;
-
-  /**
-   * Query selector where the infinitie scroll would be listening to scroll events.
-   */
-  @Prop() infiniteScrollContainer = "div";
 
   /**
    * This property must be bounded to grid item count property.
@@ -86,11 +84,21 @@ export class GridInfiniteScroll implements ComponentInterface {
 
   @Watch("itemCount")
   public itemCountChanged() {
-    setTimeout(() => {
-      const containerHeight = this.scrollEl.offsetHeight;
-      const contentHeight = this.scrollEl.querySelector("div").offsetHeight;
+    if (this.disabled || this.itemCount === 0) {
+      return;
+    }
 
-      if (contentHeight < containerHeight) {
+    setTimeout(() => {
+      let emitInfinite = false;
+      this.ensure();
+      if (this.attached) {
+        const containerHeight = this.scrollEl.offsetHeight;
+        const contentHeight = this.scrollEl.querySelector("div").offsetHeight;
+        emitInfinite = contentHeight < containerHeight;
+      } else {
+        emitInfinite = this.isVisibleInViewport(this.el);
+      }
+      if (emitInfinite) {
         this.gxInfinite.emit();
       }
     }, 100);
@@ -116,25 +124,62 @@ export class GridInfiniteScroll implements ComponentInterface {
     }
   }
 
-  async componentDidLoad() {
-    const contentEl = this.el.closest(this.infiniteScrollContainer);
-    if (contentEl) {
-      this.scrollEl = contentEl as HTMLElement;
-      this.thresholdChanged(this.threshold);
-      this.enableScrollEvents(!this.disabled);
-      if (this.position === "top") {
-        this.queue.write(() => {
-          if (this.scrollEl) {
-            this.scrollEl.scrollTop =
-              this.scrollEl.scrollHeight - this.scrollEl.clientHeight;
-          }
-        });
+  isVisibleInViewport(el: HTMLElement) {
+    const rect = el.getBoundingClientRect();
+    const elemTop = rect.top;
+    return elemTop >= 0 && elemTop <= window.innerHeight;
+  }
+
+  getScrollParent(node: any) {
+    if (node === null) {
+      return null;
+    }
+
+    if (node.scrollHeight > node.clientHeight) {
+      return node;
+    } else {
+      return this.getScrollParent(node.parentNode);
+    }
+  }
+
+  ensure() {
+    if (!this.attached && this.itemCount > 0) {
+      let contentEl = this.getScrollParent(this.el);
+      if (contentEl) {
+        if (contentEl === window.document.documentElement) {
+          this.scrollListenerEl = window;
+          contentEl = window.document.body;
+          this.attachedToWindow = true;
+        } else {
+          this.scrollListenerEl = contentEl.parentNode;
+          contentEl = this.scrollListenerEl;
+        }
+
+        this.scrollEl = contentEl as HTMLElement;
+        this.thresholdChanged(this.threshold);
+        this.enableScrollEvents(!this.disabled);
+        this.attached = !this.disabled;
+        if (this.position === "top") {
+          this.queue.write(() => {
+            if (this.scrollEl) {
+              this.scrollEl.scrollTop =
+                this.scrollEl.scrollHeight - this.scrollEl.clientHeight;
+            }
+          });
+        }
       }
     }
   }
 
+  async componentDidLoad() {
+    this.ensure();
+  }
+
   componentDidUnload() {
     this.scrollEl = undefined;
+    this.attachedToWindow = false;
+    this.attached = false;
+    this.scrollListenerEl = undefined;
   }
 
   protected onScroll() {
@@ -144,9 +189,13 @@ export class GridInfiniteScroll implements ComponentInterface {
     }
 
     const infiniteHeight = this.el.offsetHeight;
-    const scrollTop = scrollEl.scrollTop;
+    const scrollTop = !this.attachedToWindow
+      ? scrollEl.scrollTop
+      : window.scrollY;
     const scrollHeight = scrollEl.scrollHeight;
-    const height = scrollEl.offsetHeight;
+    const height = !this.attachedToWindow
+      ? scrollEl.offsetHeight
+      : window.innerHeight;
     const threshold = this.thrPc !== 0 ? height * this.thrPc : this.thrPx;
 
     const distanceFromInfinite =
@@ -236,11 +285,12 @@ export class GridInfiniteScroll implements ComponentInterface {
   }
 
   private enableScrollEvents(shouldListen: boolean) {
-    if (this.scrollEl) {
+    const scrollListener = this.scrollListenerEl;
+    if (scrollListener) {
       if (shouldListen) {
-        this.scrollEl.addEventListener("scroll", this.onScroll);
+        scrollListener.addEventListener("scroll", this.onScroll);
       } else {
-        this.scrollEl.removeEventListener("scroll", this.onScroll);
+        scrollListener.removeEventListener("scroll", this.onScroll);
       }
     }
   }

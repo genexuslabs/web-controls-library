@@ -42,7 +42,7 @@ Type: `Promise<void>`
 
 ### Used by
 
-- [gx-grid-fs](..\grid-fs)
+- [gx-grid-fs](../grid-fs)
 
 ### Graph
 
