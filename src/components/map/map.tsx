@@ -99,7 +99,7 @@ export class Map implements GxComponent {
   }
 
   private getZoom() {
-    this.zoom > 0 ? this.zoom : 20;
+    return this.zoom > 0 ? this.zoom : 20;
   }
 
   componentDidUpdate() {
