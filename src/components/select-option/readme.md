@@ -4,6 +4,7 @@ Options for `gx-select` custom element, like the `option` native element.
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
 | Property   | Attribute   | Description                                                                                                                                              | Type      | Default     |
@@ -12,6 +13,7 @@ Options for `gx-select` custom element, like the `option` native element.
 | `disabled` | `disabled`  | This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event). | `boolean` | `false`     |
 | `selected` | `selected`  | Indicates that the control is selected by default.                                                                                                       | `boolean` | `undefined` |
 | `value`    | `value`     | The initial value of the control.                                                                                                                        | `string`  | `undefined` |
+
 
 ## Events
 
@@ -23,6 +25,7 @@ Options for `gx-select` custom element, like the `option` native element.
 | `gxSelectDidLoad`   | Emitted when the option loads.                                                               | `CustomEvent<any>` |
 | `gxSelectDidUnload` | Emitted when the option unloads.                                                             | `CustomEvent<any>` |
 
----
 
-_Built with [StencilJS](https://stenciljs.com/)_
+----------------------------------------------
+
+*Built with [StencilJS](https://stenciljs.com/)*

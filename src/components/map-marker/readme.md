@@ -5,13 +5,15 @@ This element represents a marker inside a `<gx-map>` element.
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
-| Property         | Attribute         | Description                                                         | Type     | Default     |
-| ---------------- | ----------------- | ------------------------------------------------------------------- | -------- | ----------- |
-| `coords`         | `coords`          | The coordinates where the marker will appear in the map.            | `string` | `"0, 0"`    |
-| `iconSrc`        | `icon-src`        | The URL of the marker image. _Note: The image size must be 25 x 41_ | `string` | `undefined` |
-| `tooltipCaption` | `tooltip-caption` | The tooltip caption of the marker.                                  | `string` | `undefined` |
+| Property         | Attribute         | Description                                                          | Type     | Default     |
+| ---------------- | ----------------- | -------------------------------------------------------------------- | -------- | ----------- |
+| `coords`         | `coords`          | The coordinates where the marker will appear in the map.             | `string` | `"0, 0"`    |
+| `iconSrc`        | `icon-src`        | The URL of the marker image.  *Note: The image size must be 25 x 41* | `string` | `undefined` |
+| `tooltipCaption` | `tooltip-caption` | The tooltip caption of the marker.                                   | `string` | `undefined` |
+
 
 ## Events
 
@@ -21,6 +23,7 @@ This element represents a marker inside a `<gx-map>` element.
 | `gxMapMarkerDidLoad` | Emmits when the element is added to a `<gx-map>`.     | `CustomEvent<any>` |
 | `gxMapMarkerUpdate`  | Emmits when the element update its data.              | `CustomEvent<any>` |
 
----
 
-_Built with [StencilJS](https://stenciljs.com/)_
+----------------------------------------------
+
+*Built with [StencilJS](https://stenciljs.com/)*

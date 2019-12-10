@@ -14,6 +14,7 @@ This component allows showing an action in a `gx-action-sheet` component.
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
 | Property     | Attribute     | Description                                                                                                                                                | Type                                     | Default     |
@@ -21,12 +22,14 @@ This component allows showing an action in a `gx-action-sheet` component.
 | `actionType` | `action-type` | This attribute lets you specify the type of action. `"cancel"` and `"destructive"` are style differently                                                   | `"cancel" \| "default" \| "destructive"` | `"default"` |
 | `disabled`   | `disabled`    | This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, gxClick event). | `boolean`                                | `false`     |
 
+
 ## Events
 
 | Event     | Description                                 | Type               |
 | --------- | ------------------------------------------- | ------------------ |
 | `gxClick` | Fired when the action sheet item is clicked | `CustomEvent<any>` |
 
----
 
-_Built with [StencilJS](https://stenciljs.com/)_
+----------------------------------------------
+
+*Built with [StencilJS](https://stenciljs.com/)*

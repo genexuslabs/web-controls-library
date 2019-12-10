@@ -32,6 +32,7 @@ predefined slots:
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
 | Property           | Attribute            | Description                                                                                            | Type      | Default     |
@@ -40,6 +41,7 @@ predefined slots:
 | `closeButtonLabel` | `close-button-label` | This attribute lets you specify the label for the close button. Important for accessibility.           | `string`  | `undefined` |
 | `opened`           | `opened`             | This attribute lets you specify if the modal dialog is opened or closed.                               | `boolean` | `false`     |
 
+
 ## Events
 
 | Event   | Description                           | Type               |
@@ -47,6 +49,7 @@ predefined slots:
 | `close` | Fired when the modal dialog is closed | `CustomEvent<any>` |
 | `open`  | Fired when the modal dialog is opened | `CustomEvent<any>` |
 
----
 
-_Built with [StencilJS](https://stenciljs.com/)_
+----------------------------------------------
+
+*Built with [StencilJS](https://stenciljs.com/)*

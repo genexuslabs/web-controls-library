@@ -43,6 +43,7 @@ loadingEl.value = 1;
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
 | Property      | Attribute     | Description                                                               | Type                               | Default     |
@@ -53,6 +54,7 @@ loadingEl.value = 1;
 | `type`        | `type`        | Sets the value.                                                           | `"determinate" \| "indeterminate"` | `undefined` |
 | `value`       | `value`       | Sets the value when type is determinate. Must be a value between 0 and 1. | `0`                                | `0`         |
 
+
 ## Dependencies
 
 ### Depends on
@@ -60,13 +62,12 @@ loadingEl.value = 1;
 - [gx-lottie](../lottie)
 
 ### Graph
-
 ```mermaid
 graph TD;
   gx-loading --> gx-lottie
   style gx-loading fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
----
+----------------------------------------------
 
-_Built with [StencilJS](https://stenciljs.com/)_
+*Built with [StencilJS](https://stenciljs.com/)*

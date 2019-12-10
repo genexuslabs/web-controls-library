@@ -22,12 +22,14 @@ A SASS mixin called `gx-action-sheet` is provided in `theming/theming-mixins.scs
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
 | Property           | Attribute            | Description                                                                                  | Type      | Default     |
 | ------------------ | -------------------- | -------------------------------------------------------------------------------------------- | --------- | ----------- |
 | `closeButtonLabel` | `close-button-label` | This attribute lets you specify the label for the close button. Important for accessibility. | `string`  | `undefined` |
 | `opened`           | `opened`             | This attribute lets you specify if the action sheet is opened or closed.                     | `boolean` | `false`     |
+
 
 ## Events
 
@@ -36,6 +38,7 @@ A SASS mixin called `gx-action-sheet` is provided in `theming/theming-mixins.scs
 | `close` | Fired when the action sheet is closed | `CustomEvent<any>` |
 | `open`  | Fired when the action sheet is opened | `CustomEvent<any>` |
 
----
 
-_Built with [StencilJS](https://stenciljs.com/)_
+----------------------------------------------
+
+*Built with [StencilJS](https://stenciljs.com/)*
