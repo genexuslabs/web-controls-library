@@ -22,7 +22,6 @@
     "docs": "stencil build --dev --docs && npm run sassdoc",
     "eslint": "eslint . --ext .tsx,.ts,.jsx,.js",
     "lint": "npm run eslint",
-    "precommit": "pretty-quick --staged && npm run lint",
     "pretty-quick": "pretty-quick",
     "sassdoc": "sassdoc src/components/**/*-theming-mixins.scss -c sassdoc.config.json",
     "scss-bundle": "scss-bundle -e ./src/components/_components-theming-mixins.scss -d dist/theming/theming-mixins.scss",
@@ -58,10 +57,11 @@
     "eslint-plugin-local": "^1.0.0",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.16.0",
-    "husky": "^0.14.3",
+    "husky": "^3.1.0",
     "jest": "24.9.0",
     "jest-cli": "24.9.0",
     "jest-environment-node": "^24.3.1",
+    "lint-staged": "^9.5.0",
     "pixelmatch": "4.0.2",
     "prettier": "^1.18.2",
     "pretty-quick": "^1.4.1",
@@ -71,6 +71,21 @@
     "sassdoc-theme-md": "^1.0.2",
     "scss-bundle": "^2.3.2",
     "typescript": "^3.7.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged && lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{tsx,ts,jsx,js,css,json,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{tsx,ts,jsx,js}": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
