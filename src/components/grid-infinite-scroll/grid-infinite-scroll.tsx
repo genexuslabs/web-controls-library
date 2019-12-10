@@ -165,7 +165,7 @@ export class GridInfiniteScroll implements ComponentInterface {
         this.attached = !this.disabled;
         if (this.position === "top") {
           this.queue.write(() => {
-            if (this.scrollEl) {
+            if (this.scrollEl !== null) {
               this.scrollEl.scrollTop =
                 this.scrollEl.scrollHeight - this.scrollEl.clientHeight;
             }
