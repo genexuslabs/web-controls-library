@@ -66,7 +66,7 @@ export class GridInfiniteScroll implements ComponentInterface {
    * when it is known that there is no more data that can be added, and
    * the infinite scroll is no longer needed.
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * The position of the infinite scroll element.
