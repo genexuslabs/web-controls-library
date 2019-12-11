@@ -9,6 +9,10 @@ gx-image {
   align-items: stretch;
   flex: 1;
 
+  &.gx-img-lazyloading {
+    overflow: hidden;
+  }
+
   & > img {
     @include elevation();
     margin-top: var(--margin-top);
