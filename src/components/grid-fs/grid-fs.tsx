@@ -66,7 +66,7 @@ export class GridFreeStyle
   /**
    * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
    */
-  @Event() gxInfiniteThresholdReached: EventEmitter<void>;
+  @Event({ bubbles: false }) gxInfiniteThresholdReached: EventEmitter<void>;
 
   /*
    * This method must be called after new grid data was fetched by the infinite scroller.
