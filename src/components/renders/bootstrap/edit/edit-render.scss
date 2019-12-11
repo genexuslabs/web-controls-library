@@ -32,6 +32,13 @@ gx-edit {
     padding: 0;
     line-height: 1.2;
   }
+
+  h1,
+  h2,
+  footer {
+    font-size: inherit;
+    font-weight: inherit;
+  }
 }
 
 gx-table-cell {
