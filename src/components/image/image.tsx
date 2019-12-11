@@ -40,6 +40,9 @@ export class Image
     ]);
 
     this.handleClick = this.handleClick.bind(this);
+
+    this.handleLazyLoaded = this.handleLazyLoaded.bind(this);
+    document.addEventListener("lazyloaded", this.handleLazyLoaded);
   }
 
   @Element() element: HTMLGxImageElement;
@@ -122,6 +125,10 @@ export class Image
     event.preventDefault();
   }
 
+  componentDidUnload() {
+    document.removeEventListener("lazyloaded", this.handleLazyLoaded);
+  }
+
   render() {
     const shouldLazyLoad = this.shouldLazyLoad();
 
@@ -146,7 +153,7 @@ export class Image
       />,
       <span />
     ];
-    return <Host>{body}</Host>;
+    return <Host class={{ "gx-img-lazyloading": shouldLazyLoad }}>{body}</Host>;
   }
 
   private shouldLazyLoad(): boolean {
@@ -156,6 +163,13 @@ export class Image
 
     const img: HTMLImageElement = this.element.querySelector("img");
     return img === null || img.classList.contains(LAZY_LOAD_CLASS);
+  }
+
+  private handleLazyLoaded(event: CustomEvent) {
+    const img: HTMLImageElement = this.element.querySelector("img");
+    if (event.target === img) {
+      this.element.classList.remove("gx-img-lazyloading");
+    }
   }
 }
 
