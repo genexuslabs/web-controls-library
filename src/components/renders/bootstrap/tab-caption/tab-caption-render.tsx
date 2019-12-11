@@ -1,9 +1,11 @@
 import { h } from "@stencil/core";
-import { IRenderer } from "../../../common/interfaces";
+import { Renderer } from "../../../common/interfaces";
 import { TabCaption } from "../../../tab-caption/tab-caption";
 
-export class TabCaptionRender implements IRenderer {
-  constructor(public component: TabCaption) {}
+export class TabCaptionRender implements Renderer {
+  constructor(private component: TabCaption) {
+    this.clickHandler = this.clickHandler.bind(this);
+  }
 
   render(slots) {
     this.component.element.setAttribute(
@@ -20,7 +22,7 @@ export class TabCaptionRender implements IRenderer {
           "nav-link": true
         }}
         href="#"
-        onClick={!this.component.disabled ? this.clickHandler.bind(this) : null}
+        onClick={!this.component.disabled ? this.clickHandler : null}
       >
         {slots.default}
       </a>
@@ -29,6 +31,6 @@ export class TabCaptionRender implements IRenderer {
 
   private clickHandler(event: UIEvent) {
     event.preventDefault();
-    this.component.onTabSelect.emit(event);
+    this.component.tabSelect.emit(event);
   }
 }

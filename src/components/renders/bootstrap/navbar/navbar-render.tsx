@@ -1,9 +1,15 @@
 import { h } from "@stencil/core";
-import { IRenderer } from "../../../common/interfaces";
+import { Renderer } from "../../../common/interfaces";
 import { NavBar } from "../../../navbar/navbar";
 
-export class NavBarRender implements IRenderer {
-  constructor(public component: NavBar) {}
+let autoNavBarId = 0;
+
+export class NavBarRender implements Renderer {
+  constructor(private component: NavBar) {
+    this.toggleCollapseHandler = this.toggleCollapseHandler.bind(this);
+    this.handleTransitionEnd = this.handleTransitionEnd.bind(this);
+    this.handleItemClick = this.handleItemClick.bind(this);
+  }
 
   private navBarId: string;
 
@@ -97,7 +103,8 @@ export class NavBarRender implements IRenderer {
     this.transitioning = false;
   }
 
-  handleItemClick(targetElement: HTMLElement) {
+  handleItemClick(event: UIEvent) {
+    const targetElement = event.target as HTMLEmbedElement;
     if (targetElement.matches("gx-navbar-link a")) {
       const collapseElement = this.component.element.querySelector(
         ".navbar-collapse"
@@ -107,18 +114,19 @@ export class NavBarRender implements IRenderer {
   }
 
   render(slots: { default; header }) {
+    const navbar = this.component;
     if (!this.navBarId) {
-      this.navBarId = this.component.id
-        ? `${this.component.id}__navbar`
+      this.navBarId = navbar.element.id
+        ? `${navbar.element.id}__navbar`
         : `gx-navbar-auto-id-${autoNavBarId++}`;
     }
 
     const navBarNavId = `${this.navBarId}_navbarNav`;
 
-    const header = this.component.element.querySelector(
+    const header = navbar.element.querySelector(
       "[slot='header']"
     ) as HTMLImageElement;
-    if (header) {
+    if (header !== null) {
       header.classList.add("d-inline-block", "align-top");
       header.alt = header.alt || "";
     }
@@ -132,12 +140,13 @@ export class NavBarRender implements IRenderer {
           navbar: true,
           "navbar-expand-sm": true,
           "navbar-light": true,
-          [this.component.cssClass]: !!this.component.cssClass
+          [navbar.cssClass]: !!navbar.cssClass
         }}
+        onClick={this.handleItemClick}
       >
         <a class="navbar-brand" tabindex="-1">
           {slots.header}
-          {this.component.caption}
+          {navbar.caption}
         </a>
         <button
           class="navbar-toggler"
@@ -145,8 +154,8 @@ export class NavBarRender implements IRenderer {
           data-target={`#${navBarNavId}`}
           aria-controls={navBarNavId}
           aria-expanded={this.expanded}
-          aria-label={this.component.toggleButtonLabel}
-          onClick={this.toggleCollapseHandler.bind(this)}
+          aria-label={navbar.toggleButtonLabel}
+          onClick={this.toggleCollapseHandler}
         >
           <span class="navbar-toggler-icon" />
         </button>
@@ -159,12 +168,9 @@ export class NavBarRender implements IRenderer {
           id={navBarNavId}
           ref={(el: HTMLElement) => {
             // Had to subscribe to the transitionend this way because onTransitionEnd attribute is not working
-            el.addEventListener(
-              "transitionend",
-              this.handleTransitionEnd.bind(this)
-            );
+            el.addEventListener("transitionend", this.handleTransitionEnd);
           }}
-          // onTransitionEnd={this.handleTransitionEnd.bind(this)}
+          // onTransitionEnd={this.handleTransitionEnd}
         >
           <div class="navbar-nav">{slots.default}</div>
         </div>
@@ -172,5 +178,3 @@ export class NavBarRender implements IRenderer {
     ];
   }
 }
-
-let autoNavBarId = 0;

@@ -7,20 +7,27 @@ import {
   Prop,
   h
 } from "@stencil/core";
-import { IFormComponent } from "../common/interfaces";
+import { FormComponent } from "../common/interfaces";
+
+let autoInputRangeId = 0;
+
 @Component({
   shadow: false,
   styleUrl: "rating.scss",
   tag: "gx-rating"
 })
-export class Rating implements IFormComponent {
+export class Rating implements FormComponent {
+  constructor() {
+    this.handleClick = this.handleClick.bind(this);
+  }
+
   private inputId: string;
 
   private svgViewport = {
     viewBox: "0 0 100 100"
   };
 
-  @Element() element: HTMLElement;
+  @Element() element: HTMLGxRatingElement;
 
   /**
    * This attribute allows you specify if the element is disabled.
@@ -28,11 +35,6 @@ export class Rating implements IFormComponent {
    * (for example, click event).
    */
   @Prop() disabled = false;
-
-  /**
-   * The control id. Must be unique per control!
-   */
-  @Prop() id: string;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -65,14 +67,12 @@ export class Rating implements IFormComponent {
    */
   @Prop({ mutable: true }) value = 0;
 
-  handleChange: (UIEvent: any) => void;
-
   /**
    * The 'input' event is emitted when a change to the element's value is committed by the user.
    */
   @Event() input: EventEmitter;
 
-  onClick(event: UIEvent) {
+  handleClick(event: UIEvent) {
     const element = event.target as HTMLElement;
     const targetParent = element.parentElement;
     const score =
@@ -97,11 +97,7 @@ export class Rating implements IFormComponent {
     const stars = [];
     for (let i = 0; i < 5; i++) {
       stars.push(
-        <svg
-          class="rating"
-          {...this.svgViewport}
-          onClick={ev => this.onClick(ev)}
-        >
+        <svg class="rating" {...this.svgViewport} onClick={this.handleClick}>
           {this.renderStarShape()}
         </svg>
       );
@@ -117,7 +113,6 @@ export class Rating implements IFormComponent {
       percent = (this.value * 100) / this.maxValue;
       starsScore = Math.round((percent * 5) / 100);
     } else {
-      // tslint:disable-next-line:no-console
       console.error("'value' cannot be greater than 'max-value'");
     }
     for (let i = 0; i < 5; i++) {
@@ -139,8 +134,8 @@ export class Rating implements IFormComponent {
   render() {
     const valuesDifference = this.maxValue - this.value;
     if (!this.inputId) {
-      this.id
-        ? (this.inputId = `${this.id}_inputRange`)
+      this.element.id
+        ? (this.inputId = `${this.element.id}_inputRange`)
         : (this.inputId = `gx-inputRange-auto-id-${autoInputRangeId++}`);
     }
     if ((valuesDifference >= 0 && this.readonly) || !this.readonly) {
@@ -166,14 +161,12 @@ export class Rating implements IFormComponent {
         </div>
       );
     } else {
-      if (this.maxValue) {
-        // tslint:disable-next-line:no-console
+      if (this.maxValue !== 0) {
         console.error(
           "'value' cannot be higher than 'max-value'.",
           this.element
         );
       } else {
-        // tslint:disable-next-line:no-console
         console.error("'max-value' has not a value set.", this.element);
       }
     }
@@ -183,5 +176,3 @@ export class Rating implements IFormComponent {
     return <polygon points="50,0 15,95 100,35 0,35 85,95" />;
   }
 }
-
-let autoInputRangeId = 0;

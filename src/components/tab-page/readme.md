@@ -4,6 +4,7 @@ A content container for gx-tab items. Must be preceded by a `gx-tab-caption` ele
 
 <!-- Auto Generated Below -->
 
----
 
-_Built with [StencilJS](https://stenciljs.com/)_
+----------------------------------------------
+
+*Built with [StencilJS](https://stenciljs.com/)*

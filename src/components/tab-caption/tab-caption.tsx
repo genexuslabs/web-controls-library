@@ -4,25 +4,30 @@ import {
   Event,
   EventEmitter,
   Prop,
-  h
+  h,
+  Host
 } from "@stencil/core";
-import { IComponent, IDisableableComponent } from "../common/interfaces";
-
+import {
+  Component as GxComponent,
+  DisableableComponent
+} from "../common/interfaces";
 import { TabCaptionRender } from "../renders/bootstrap/tab-caption/tab-caption-render";
+
+let autoTabId = 0;
 
 @Component({
   shadow: false,
   styleUrl: "tab-caption.scss",
   tag: "gx-tab-caption"
 })
-export class TabCaption implements IComponent, IDisableableComponent {
+export class TabCaption implements GxComponent, DisableableComponent {
   constructor() {
     this.renderer = new TabCaptionRender(this);
   }
 
   private renderer: TabCaptionRender;
 
-  @Element() element: HTMLElement;
+  @Element() element: HTMLGxTabCaptionElement;
 
   /**
    * This attribute lets you specify if the tab page is disabled
@@ -40,7 +45,7 @@ export class TabCaption implements IComponent, IDisableableComponent {
    * Fired when the tab caption is selected
    *
    */
-  @Event() onTabSelect: EventEmitter;
+  @Event() tabSelect: EventEmitter;
 
   componentWillLoad() {
     if (!this.element.id) {
@@ -48,15 +53,9 @@ export class TabCaption implements IComponent, IDisableableComponent {
     }
   }
 
-  hostData() {
-    return {
-      role: "tab"
-    };
-  }
-
   render() {
-    return this.renderer.render({ default: <slot /> });
+    return (
+      <Host role="tab">{this.renderer.render({ default: <slot /> })}</Host>
+    );
   }
 }
-
-let autoTabId = 0;

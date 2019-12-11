@@ -12,13 +12,15 @@ Example: `38.89606811858382, -77.0365619659424`
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
 | Property  | Attribute  | Description                              | Type     | Default  |
 | --------- | ---------- | ---------------------------------------- | -------- | -------- |
 | `center`  | `center`   | The coord of initial center of the map.  | `string` | `"0, 0"` |
-| `maxZoom` | `max-zoom` | The max zoom level available in the map. | `number` | `20`     |
+| `maxZoom` | `max-zoom` | The max zoom level available in the map. | `20`     | `20`     |
 | `zoom`    | `zoom`     | The initial zoom level in the map.       | `number` | `1`      |
+
 
 ## Events
 
@@ -27,6 +29,7 @@ Example: `38.89606811858382, -77.0365619659424`
 | `gxMapDidLoad` | Emmits when the map is loaded.                          | `CustomEvent<any>` |
 | `mapClick`     | Emmits when the map is clicked and return click coords. | `CustomEvent<any>` |
 
----
 
-_Built with [StencilJS](https://stenciljs.com/)_
+----------------------------------------------
+
+*Built with [StencilJS](https://stenciljs.com/)*

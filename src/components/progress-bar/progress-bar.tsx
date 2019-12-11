@@ -1,31 +1,30 @@
-import { Component, Element, Prop, h } from "@stencil/core";
+import { Component, Element, Prop, h, Host } from "@stencil/core";
 import { ProgressBarRender } from "../renders/bootstrap/progress-bar/progress-bar-render";
-import { IComponent } from "../common/interfaces";
+import { Component as GxComponent } from "../common/interfaces";
 @Component({
   shadow: false,
   styleUrl: "progress-bar.scss",
   tag: "gx-progress-bar"
 })
-export class ProgressBar implements IComponent {
+export class ProgressBar implements GxComponent {
   constructor() {
     this.renderer = new ProgressBarRender(this);
   }
 
-  @Element() element;
+  @Element() element: HTMLGxProgressBarElement;
 
   private renderer: ProgressBarRender;
   /**
    * Sets the progress value.
    *
    */
-  @Prop() value: number;
+  @Prop() readonly value: number;
 
-  hostData() {
-    return {
-      role: "progressbar"
-    };
-  }
   render() {
-    return this.renderer.render({ default: <slot /> });
+    return (
+      <Host role="progressbar">
+        {this.renderer.render({ default: <slot /> })}
+      </Host>
+    );
   }
 }

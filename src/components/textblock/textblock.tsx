@@ -7,10 +7,10 @@ import {
   h
 } from "@stencil/core";
 import {
-  IClickableComponent,
-  IComponent,
-  IDisableableComponent,
-  IVisibilityComponent
+  ClickableComponent,
+  Component as GxComponent,
+  DisableableComponent,
+  VisibilityComponent
 } from "../common/interfaces";
 
 @Component({
@@ -20,17 +20,21 @@ import {
 })
 export class TextBlock
   implements
-    IClickableComponent,
-    IComponent,
-    IDisableableComponent,
-    IVisibilityComponent {
-  @Element() element;
+    ClickableComponent,
+    GxComponent,
+    DisableableComponent,
+    VisibilityComponent {
+  constructor() {
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  @Element() element: HTMLGxTextblockElement;
 
   /**
    * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
    */
 
-  @Prop() href = "";
+  @Prop() readonly href = "";
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -40,31 +44,28 @@ export class TextBlock
    * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
-  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() disabled = false;
+  @Prop() readonly disabled = false;
 
   /**
    * Emitted when the element is clicked.
    */
-  @Event() onClick: EventEmitter;
+  @Event() gxClick: EventEmitter;
 
-  handleClick(event: UIEvent) {
-    this.onClick.emit(event);
+  private handleClick(event: UIEvent) {
+    this.gxClick.emit(event);
     event.preventDefault();
   }
 
   render() {
     const body = (
-      <div
-        class="content"
-        onClick={!this.disabled ? this.handleClick.bind(this) : null}
-      >
+      <div class="content" onClick={!this.disabled ? this.handleClick : null}>
         <slot />
       </div>
     );
@@ -73,6 +74,6 @@ export class TextBlock
       return <a href={this.href}>{body}</a>;
     }
 
-    return [body];
+    return body;
   }
 }

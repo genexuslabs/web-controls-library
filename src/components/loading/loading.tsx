@@ -1,13 +1,13 @@
 import { Component, Element, Prop, State, Watch, h } from "@stencil/core";
-import { IComponent } from "../common/interfaces";
+import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "loading.scss",
   tag: "gx-loading"
 })
-export class Loading implements IComponent {
-  @Element() element: HTMLElement;
+export class Loading implements GxComponent {
+  @Element() element: HTMLGxLoadingElement;
 
   @State() private lottiePath = "";
 
@@ -15,30 +15,30 @@ export class Loading implements IComponent {
    * Sets the description text.
    *
    */
-  @Prop() description: string;
+  @Prop() readonly description: string;
 
   /**
    * Sets the caption text.
    *
    */
-  @Prop() caption: string;
+  @Prop() readonly caption: string;
 
   /**
    * Sets if the loading dialog is presented.
    */
-  @Prop() presented = false;
+  @Prop() readonly presented = false;
 
   /**
    * Sets the value.
    *
    */
-  @Prop() type: "determinate" | "indeterminate";
+  @Prop() readonly type: "determinate" | "indeterminate";
 
   /**
    * Sets the value when type is determinate. Must be a value between 0 and 1.
    *
    */
-  @Prop() value = 0;
+  @Prop() readonly value = 0;
 
   @Watch("value")
   valueWatchHandler(newValue: number, oldValue: number) {
@@ -48,7 +48,7 @@ export class Loading implements IComponent {
 
     if (this.lottiePath) {
       const gxLottie = this.element.querySelector("gx-lottie");
-      if (gxLottie) {
+      if (gxLottie !== null) {
         const from = oldValue > newValue ? 0 : oldValue;
         gxLottie.play(from, newValue);
       }
@@ -68,7 +68,7 @@ export class Loading implements IComponent {
     }
   }
 
-  present() {
+  private present() {
     const rawLottiePath = window
       .getComputedStyle(this.element.querySelector(".gx-lottie-test"))
       .getPropertyValue("--gx-lottie-file-path");
@@ -83,7 +83,7 @@ export class Loading implements IComponent {
     this.element.style.display = "block";
   }
 
-  dismiss() {
+  private dismiss() {
     this.element.style.display = "none";
   }
 

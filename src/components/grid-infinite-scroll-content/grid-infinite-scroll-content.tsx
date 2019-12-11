@@ -1,4 +1,4 @@
-import { Component, ComponentInterface, Element, h } from "@stencil/core";
+import { Component, ComponentInterface, Element, h, Host } from "@stencil/core";
 
 @Component({
   shadow: false,
@@ -6,17 +6,13 @@ import { Component, ComponentInterface, Element, h } from "@stencil/core";
   tag: "gx-grid-infinite-scroll-content"
 })
 export class InfiniteScrollContent implements ComponentInterface {
-  @Element() el!: HTMLElement;
+  @Element() el!: HTMLGxGridInfiniteScrollContentElement;
 
   render() {
-    return <slot />;
-  }
-
-  hostData() {
-    return {
-      class: {
-        "infinite-scroll-content": true
-      }
-    };
+    return (
+      <Host class="infinite-scroll-content">
+        <slot />
+      </Host>
+    );
   }
 }

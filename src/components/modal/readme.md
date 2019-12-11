@@ -32,22 +32,24 @@ predefined slots:
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
 | Property           | Attribute            | Description                                                                                            | Type      | Default     |
 | ------------------ | -------------------- | ------------------------------------------------------------------------------------------------------ | --------- | ----------- |
 | `autoClose`        | `auto-close`         | This attribute lets you specify if the modal dialog is automatically closed when an action is clicked. | `boolean` | `undefined` |
 | `closeButtonLabel` | `close-button-label` | This attribute lets you specify the label for the close button. Important for accessibility.           | `string`  | `undefined` |
-| `id`               | `id`                 | The identifier of the control. Must be unique.                                                         | `string`  | `undefined` |
 | `opened`           | `opened`             | This attribute lets you specify if the modal dialog is opened or closed.                               | `boolean` | `false`     |
+
 
 ## Events
 
-| Event     | Description                           | Type               |
-| --------- | ------------------------------------- | ------------------ |
-| `onClose` | Fired when the modal dialog is closed | `CustomEvent<any>` |
-| `onOpen`  | Fired when the modal dialog is opened | `CustomEvent<any>` |
+| Event   | Description                           | Type               |
+| ------- | ------------------------------------- | ------------------ |
+| `close` | Fired when the modal dialog is closed | `CustomEvent<any>` |
+| `open`  | Fired when the modal dialog is opened | `CustomEvent<any>` |
 
----
 
-_Built with [StencilJS](https://stenciljs.com/)_
+----------------------------------------------
+
+*Built with [StencilJS](https://stenciljs.com/)*

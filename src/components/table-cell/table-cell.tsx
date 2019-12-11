@@ -1,25 +1,25 @@
-import { Component, Element, Prop, h } from "@stencil/core";
-import { IComponent } from "../common/interfaces";
+import { Component, Element, Prop, h, Host } from "@stencil/core";
+import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "table-cell.scss",
   tag: "gx-table-cell"
 })
-export class TableCell implements IComponent {
-  @Element() element: HTMLElement;
+export class TableCell implements GxComponent {
+  @Element() element: HTMLGxTableCellElement;
 
   /**
    * Like the `grid-area` CSS property, this attribute gives a name to the item,
    * so it can be used from the [areas-template attributes](../table/readme.md#areas-template)
    * of the gx-table element.
    */
-  @Prop() area: string;
+  @Prop() readonly area: string;
 
   /**
    * Defines the horizontal aligmnent of the content of the cell.
    */
-  @Prop() align: "left" | "right" | "center" = "left";
+  @Prop() readonly align: "left" | "right" | "center" = "left";
 
   /**
    * This attribute defines how the control behaves when the content overflows.
@@ -30,25 +30,25 @@ export class TableCell implements IComponent {
    * | `clip`   | The overflowing content is hidden, without scrollbars       |
    *
    */
-  @Prop() overflowMode: "scroll" | "clip";
+  @Prop() readonly overflowMode: "scroll" | "clip";
 
   /**
    * This attribute defines the maximum height of the cell.
    *
    */
-  @Prop() maxHeight: string;
+  @Prop() readonly maxHeight: string;
 
   /**
    * This attribute defines the minimum height of the cell when its contents are visible.
    * Ignored if its content has `invisible-mode` = `collapse` and is hidden.
    *
    */
-  @Prop() minHeight: string;
+  @Prop() readonly minHeight: string;
 
   /**
    * Defines the vertical aligmnent of the content of the cell.
    */
-  @Prop() valign: "top" | "bottom" | "medium" = "top";
+  @Prop() readonly valign: "top" | "bottom" | "medium" = "top";
 
   private observer: MutationObserver;
 
@@ -98,19 +98,20 @@ export class TableCell implements IComponent {
   }
 
   componentDidUnload() {
-    if (this.observer) {
+    if (this.observer !== undefined) {
       this.observer.disconnect();
     }
   }
 
   render() {
-    if (this.element) {
-      if (this.area) {
-        // tslint:disable-next-line
-        this.element.style["gridArea"] = this.area;
-      }
+    if (this.area) {
+      this.element.style["gridArea"] = this.area;
     }
 
-    return [<slot />];
+    return (
+      <Host>
+        <slot />
+      </Host>
+    );
   }
 }

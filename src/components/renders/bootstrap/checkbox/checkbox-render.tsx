@@ -1,10 +1,15 @@
 import { h } from "@stencil/core";
-import { IRenderer } from "../../../common/interfaces";
+import { Renderer } from "../../../common/interfaces";
 import { CheckBox } from "../../../checkbox/checkbox";
 
-export class CheckBoxRender implements IRenderer {
-  constructor(public component: CheckBox) {}
+let autoCheckBoxId = 0;
+
+export class CheckBoxRender implements Renderer {
+  constructor(private component: CheckBox, handlers: { handleChange }) {
+    this.handleChange = handlers.handleChange;
+  }
   private inputId: string;
+  private handleChange: (event: UIEvent) => void;
 
   getNativeInputId() {
     return this.getNativeInput().id;
@@ -50,8 +55,8 @@ export class CheckBoxRender implements IRenderer {
     const checkbox = this.component;
 
     if (!this.inputId) {
-      this.inputId = checkbox.id
-        ? `${checkbox.id}__checkbox`
+      this.inputId = checkbox.element.id
+        ? `${checkbox.element.id}__checkbox`
         : `gx-checkbox-auto-id-${autoCheckBoxId++}`;
     }
 
@@ -61,7 +66,7 @@ export class CheckBoxRender implements IRenderer {
       "data-native-element": "",
       disabled: checkbox.disabled,
       id: this.inputId,
-      onChange: checkbox.handleChange.bind(checkbox)
+      onChange: this.handleChange
     };
 
     const forAttris = {
@@ -83,5 +88,3 @@ export class CheckBoxRender implements IRenderer {
     ];
   }
 }
-
-let autoCheckBoxId = 0;

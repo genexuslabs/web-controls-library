@@ -1,14 +1,15 @@
 import { h } from "@stencil/core";
-// tslint:disable-next-line
 import Bootstrap from "bootstrap.native/dist/bootstrap-native-v4";
-import { IRenderer } from "../../../common/interfaces";
+import { Renderer } from "../../../common/interfaces";
 import { Modal } from "../../../modal/modal";
 
 const PRIMARY_ACTION_SLOT_NAME = "primary-action";
 const SECONDARY_ACTION_SLOT_NAME = "secondary-action";
 
-export class ModalRender implements IRenderer {
-  constructor(public component: Modal) {}
+let autoId = 0;
+
+export class ModalRender implements Renderer {
+  constructor(private component: Modal) {}
 
   private headerId: string;
   private bootstrapModal: Bootstrap.Modal;
@@ -41,8 +42,10 @@ export class ModalRender implements IRenderer {
   }
 
   render(slots: { header; body; primaryAction; secondaryAction }) {
+    const modal = this.component;
+
     const primaryActions = Array.from(
-      this.component.element.querySelectorAll<HTMLGxButtonElement>(
+      modal.element.querySelectorAll<HTMLGxButtonElement>(
         `[slot='${PRIMARY_ACTION_SLOT_NAME}']`
       )
     );
@@ -55,7 +58,7 @@ export class ModalRender implements IRenderer {
     );
 
     const secondaryActions = Array.from(
-      this.component.element.querySelectorAll<HTMLGxButtonElement>(
+      modal.element.querySelectorAll<HTMLGxButtonElement>(
         `[slot='${SECONDARY_ACTION_SLOT_NAME}']`
       )
     );
@@ -67,11 +70,12 @@ export class ModalRender implements IRenderer {
         ))
     );
 
-    const hasFooterActions = primaryActions.length || secondaryActions.length;
+    const hasFooterActions =
+      primaryActions.length > 0 || secondaryActions.length > 0;
 
     if (!this.headerId) {
-      this.headerId = this.component.id
-        ? `${this.component.id}__modal`
+      this.headerId = modal.element.id
+        ? `${modal.element.id}__modal`
         : `gx-modal-auto-id-${autoId++}`;
     }
 
@@ -94,7 +98,7 @@ export class ModalRender implements IRenderer {
                 type="button"
                 class="close"
                 data-dismiss="modal"
-                aria-label={this.component.closeButtonLabel}
+                aria-label={modal.closeButtonLabel}
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -131,5 +135,3 @@ export class ModalRender implements IRenderer {
       .join(" ");
   }
 }
-
-let autoId = 0;

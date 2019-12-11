@@ -4,9 +4,13 @@ import {
   Event,
   EventEmitter,
   Prop,
-  h
+  h,
+  Host
 } from "@stencil/core";
-import { IClickableComponent, IComponent } from "../common/interfaces";
+import {
+  ClickableComponent,
+  Component as GxComponent
+} from "../common/interfaces";
 import { ActionSheetItemRender } from "../renders/bootstrap/action-sheet-item/action-sheet-item-render";
 
 @Component({
@@ -14,9 +18,11 @@ import { ActionSheetItemRender } from "../renders/bootstrap/action-sheet-item/ac
   styleUrl: "action-sheet-item.scss",
   tag: "gx-action-sheet-item"
 })
-export class ActionSheetItem implements IClickableComponent, IComponent {
+export class ActionSheetItem implements ClickableComponent, GxComponent {
   constructor() {
-    this.renderer = new ActionSheetItemRender(this);
+    this.renderer = new ActionSheetItemRender(this, {
+      handleClick: this.handleClick
+    });
   }
 
   private renderer: ActionSheetItemRender;
@@ -25,26 +31,26 @@ export class ActionSheetItem implements IClickableComponent, IComponent {
   /**
    * This attribute lets you specify the type of action. `"cancel"` and `"destructive"` are style differently
    */
-  @Prop() actionType: "cancel" | "default" | "destructive" = "default";
+  @Prop() readonly actionType: "cancel" | "default" | "destructive" = "default";
 
   /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
-   * (for example, click event).
+   * (for example, gxClick event).
    */
-  @Prop() disabled = false;
+  @Prop() readonly disabled = false;
 
   /**
    * Fired when the action sheet item is clicked
    */
-  @Event() onClick: EventEmitter;
+  @Event() gxClick: EventEmitter;
 
-  handleClick(event: UIEvent) {
+  private handleClick(event: UIEvent) {
     if (this.disabled) {
       return;
     }
 
-    this.onClick.emit(event);
+    this.gxClick.emit(event);
     event.preventDefault();
   }
 
@@ -53,6 +59,6 @@ export class ActionSheetItem implements IClickableComponent, IComponent {
   }
 
   render() {
-    return this.renderer.render({ default: <slot /> });
+    return <Host>{this.renderer.render({ default: <slot /> })}</Host>;
   }
 }

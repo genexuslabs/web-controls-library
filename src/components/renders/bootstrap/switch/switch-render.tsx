@@ -1,9 +1,11 @@
 import { h } from "@stencil/core";
-import { IRenderer } from "../../../common/interfaces";
+import { Renderer } from "../../../common/interfaces";
 import { Switch } from "../../../switch/switch";
 
-export class SwitchRender implements IRenderer {
-  constructor(public component: Switch) {}
+let autoCheckBoxId = 0;
+
+export class SwitchRender implements Renderer {
+  constructor(private component: Switch) {}
 
   private inputId: string;
 
@@ -35,19 +37,20 @@ export class SwitchRender implements IRenderer {
   }
 
   render() {
+    const switchCmp = this.component;
     if (!this.inputId) {
-      this.inputId = this.component.id
-        ? `${this.component.id}_checkbox`
+      this.inputId = switchCmp.element.id
+        ? `${switchCmp.element.id}_checkbox`
         : `gx-checkbox-auto-id-${autoCheckBoxId++}`;
     }
 
     const inputAttrs = {
-      "aria-checked": this.component.checked ? "true" : "false",
-      "aria-disabled": this.component.disabled ? "true" : "false",
-      checked: this.component.checked,
+      "aria-checked": switchCmp.checked ? "true" : "false",
+      "aria-disabled": switchCmp.disabled ? "true" : "false",
+      checked: switchCmp.checked,
       class: "switch",
       "data-native-element": "",
-      disabled: this.component.disabled,
+      disabled: switchCmp.disabled,
       id: this.inputId,
       onChange: this.handleChange.bind(this),
       type: "checkbox"
@@ -57,10 +60,8 @@ export class SwitchRender implements IRenderer {
       <gx-bootstrap />,
       <span class="switch switch-sm">
         <input {...inputAttrs} />
-        <label htmlFor={this.inputId}>{this.component.caption}</label>
+        <label htmlFor={this.inputId}>{switchCmp.caption}</label>
       </span>
     ];
   }
 }
-
-let autoCheckBoxId = 0;

@@ -45,14 +45,14 @@ describe("gx-action-sheet", () => {
   });
 
   it("should fire the onClose and onOpen events", async () => {
-    const spyOnClose = await element.spyOnEvent("onClose");
+    const spyOnClose = await element.spyOnEvent("close");
     const modal = await element.find("gx-modal");
     await modal.setProperty("opened", false);
     await page.waitForChanges();
 
     expect(spyOnClose).toHaveReceivedEvent();
 
-    const spyOnOpen = await element.spyOnEvent("onOpen");
+    const spyOnOpen = await element.spyOnEvent("open");
     await modal.setProperty("opened", true);
     await page.waitForChanges();
 

@@ -3,14 +3,15 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Prop,
   h
 } from "@stencil/core";
 import { NavBarLinkRender } from "../renders/bootstrap/navbar-link/navbar-link-render";
 import {
-  IComponent,
-  IDisableableComponent,
-  IVisibilityComponent
+  Component as GxComponent,
+  DisableableComponent,
+  VisibilityComponent
 } from "../common/interfaces";
 
 @Component({
@@ -19,39 +20,39 @@ import {
   tag: "gx-navbar-link"
 })
 export class NavBarLink
-  implements IComponent, IDisableableComponent, IVisibilityComponent {
+  implements GxComponent, DisableableComponent, VisibilityComponent {
   constructor() {
     this.renderer = new NavBarLinkRender(this);
   }
 
   private renderer: NavBarLinkRender;
 
-  @Element() element: HTMLElement;
+  @Element() element: HTMLGxNavbarLinkElement;
 
   /**
    * Indicates if the navbar item is the active one (for example, when the item represents the current page)
    */
-  @Prop() active = false;
+  @Prop() readonly active = false;
 
   /**
    * A CSS class to set as the inner element class.
    */
-  @Prop() cssClass: string;
+  @Prop() readonly cssClass: string;
 
   /**
    * This attribute lets you specify if the navbar item is disabled.
    */
-  @Prop() disabled = false;
+  @Prop() readonly disabled = false;
 
   /**
    * This attribute lets you specify the URL of the navbar item.
    */
-  @Prop() href = "";
+  @Prop() readonly href = "";
 
   /**
    * This attribute lets you specify the URL of an icon for the navbar item.
    */
-  @Prop() iconSrc = "";
+  @Prop() readonly iconSrc = "";
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -61,14 +62,14 @@ export class NavBarLink
    * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
-  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * Emitted when the element is clicked.
    */
-  @Event() onClick: EventEmitter;
+  @Event() gxClick: EventEmitter;
 
   render() {
-    return this.renderer.render({ default: <slot /> });
+    return <Host>{this.renderer.render({ default: <slot /> })}</Host>;
   }
 }

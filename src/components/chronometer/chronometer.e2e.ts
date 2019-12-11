@@ -12,7 +12,7 @@ describe("gx-chronometer", () => {
     element = await page.find("gx-chronometer");
   });
 
-  const delay = value =>
+  const delay = (value: Promise<void>) =>
     new Promise(resolve => setTimeout(() => resolve(), value));
 
   it("Sets the chronometer state to started", async () => {

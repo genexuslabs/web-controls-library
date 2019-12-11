@@ -1,18 +1,21 @@
 import { h } from "@stencil/core";
-import { IRenderer } from "../../../common/interfaces";
+import { Renderer } from "../../../common/interfaces";
 import { ActionSheet } from "../../../action-sheet/action-sheet";
 
-export class ActionSheetRender implements IRenderer {
-  constructor(public component: ActionSheet) {}
+export class ActionSheetRender implements Renderer {
+  constructor(private component: ActionSheet) {
+    this.handleOnClose = this.handleOnClose.bind(this);
+    this.handleOnOpen = this.handleOnOpen.bind(this);
+  }
 
   private handleOnClose(e: CustomEvent) {
     this.component.opened = false;
-    this.component.onClose.emit(e);
+    this.component.close.emit(e);
   }
 
   private handleOnOpen(e: CustomEvent) {
     this.component.opened = true;
-    this.component.onOpen.emit(e);
+    this.component.open.emit(e);
   }
 
   render(slots: { default }) {
@@ -23,8 +26,8 @@ export class ActionSheetRender implements IRenderer {
       <gx-modal
         opened={actionSheet.opened}
         closeButtonLabel={actionSheet.closeButtonLabel}
-        onOnClose={this.handleOnClose.bind(this)}
-        onOnOpen={this.handleOnOpen.bind(this)}
+        onClose={this.handleOnClose}
+        onOpen={this.handleOnOpen}
       >
         <div slot="body">
           <div class="list-group list-group-flush">{slots.default}</div>

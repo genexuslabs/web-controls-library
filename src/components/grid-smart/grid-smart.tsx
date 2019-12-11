@@ -7,11 +7,12 @@ import {
   Method,
   Prop,
   Watch,
-  h
+  h,
+  Host
 } from "@stencil/core";
 
-import { GridBaseHelper, IGridBase } from "../grid-base/grid-base";
-import { IVisibilityComponent } from "../common/interfaces";
+import { GridBaseHelper, GridBase } from "../grid-base/grid-base";
+import { VisibilityComponent } from "../common/interfaces";
 import Swiper, { SwiperOptions } from "swiper";
 
 @Component({
@@ -19,8 +20,8 @@ import Swiper, { SwiperOptions } from "swiper";
   tag: "gx-grid-smart"
 })
 export class GridSmart
-  implements IGridBase, ComponentInterface, IVisibilityComponent {
-  @Element() el!: HTMLElement;
+  implements GridBase, ComponentInterface, VisibilityComponent {
+  @Element() el!: HTMLGxGridSmartElement;
 
   private scrollbarEl?: HTMLElement;
   private paginationEl?: HTMLElement;
@@ -29,7 +30,7 @@ export class GridSmart
   /**
    * Number of items per column (items visible at the same time on slider's container).
    */
-  @Prop() columns: number | "auto";
+  @Prop() readonly columns: number | "auto";
 
   /**
    * 0-Indexed number of currently active page
@@ -44,7 +45,7 @@ export class GridSmart
    * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
-  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * Grid loading state. It's purpose is to know whether the grid loading animation or the grid empty placeholder should be shown.
@@ -55,53 +56,53 @@ export class GridSmart
    * | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
    */
 
-  @Prop() loadingState: "loading" | "loaded";
+  @Prop() readonly loadingState: "loading" | "loaded";
 
   /**
    * Logging level. For troubleshooting component update and initialization.
    */
-  @Prop() logLevel: "debug" | "off" = "debug";
+  @Prop() readonly logLevel: "debug" | "off" = "debug";
 
   /**
    * Set numbers of items to define and enable group sliding. Useful to use with rowsPerPage > 1
    */
-  @Prop() itemsPerGroup = 1;
+  @Prop() readonly itemsPerGroup = 1;
 
   /**
    * Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).
    */
-  @Prop() direction: "horizontal" | "vertical";
+  @Prop() readonly direction: "horizontal" | "vertical";
   /**
    * Advanced options to pass to the swiper instance.
    * See http://idangero.us/swiper/api/ for valid options
    */
-  @Prop() options: SwiperOptions = {};
+  @Prop() readonly options: SwiperOptions = {};
 
   /**
    * If `true`, show the pagination buttons.
    */
-  @Prop() pager = true;
+  @Prop() readonly pager = true;
 
   /**
    * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes.
    * If not specified, then grid empty and loading placeholders will not work correctly.
    */
-  @Prop() recordCount: number = null;
+  @Prop() readonly recordCount: number = null;
 
   /**
    * Number of items per column, for multirow layout.
    */
-  @Prop() rows: number;
+  @Prop() readonly rows: number;
 
   /**
    * If `true`, show the scrollbar.
    */
-  @Prop() scrollbar = false;
+  @Prop() readonly scrollbar = false;
 
   /**
    * Set to false to enable slides in free mode position.
    */
-  @Prop() snapToGrid = true;
+  @Prop() readonly snapToGrid = true;
 
   /**
    * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
@@ -322,7 +323,7 @@ export class GridSmart
    */
   @Method()
   async startAutoplay() {
-    if (this.swiper.autoplay) {
+    if (this.swiper.autoplay !== null) {
       this.swiper.autoplay.start();
     }
   }
@@ -332,7 +333,7 @@ export class GridSmart
    */
   @Method()
   async stopAutoplay() {
-    if (this.swiper.autoplay) {
+    if (this.swiper.autoplay !== null) {
       this.swiper.autoplay.stop();
     }
   }
@@ -371,7 +372,7 @@ export class GridSmart
 
   private ensureSwiper(): boolean {
     if (
-      !this.swiper &&
+      this.swiper === null &&
       this.recordCount > 0 &&
       this.loadingState !== "loading"
     ) {
@@ -401,7 +402,6 @@ export class GridSmart
   }
 
   private normalizeOptions(): SwiperOptions {
-    // tslint:disable:object-literal-sort-keys
     const swiperOptions: SwiperOptions = {
       autoHeight: false,
       autoplay: false,
@@ -512,7 +512,7 @@ export class GridSmart
           this.gxInfiniteThresholdReached.emit();
         },
         slideChangeTransitionEnd: () => {
-          if (this.swiper) {
+          if (this.swiper !== null) {
             this.gxGridDidChange.emit(
               Math.ceil(this.swiper.activeIndex / this.itemsPerGroup)
             );
@@ -532,8 +532,7 @@ export class GridSmart
       }
     };
 
-    const customEvents =
-      !!this.options && !!this.options.on ? this.options.on : {};
+    const customEvents = this.options.on || {};
 
     // merge "on" event listeners, while giving our event listeners priority
     const mergedEventOptions = { on: { ...customEvents, ...eventOptions.on } };
@@ -542,7 +541,7 @@ export class GridSmart
     return { ...swiperOptions, ...this.options, ...mergedEventOptions };
   }
 
-  hostData() {
+  render() {
     const hostData = GridBaseHelper.hostData(this);
     hostData.class = {
       ...hostData.class,
@@ -550,30 +549,31 @@ export class GridSmart
         "swiper-container": true
       }
     };
-    return hostData;
-  }
 
-  render() {
-    return [
-      <slot name="grid-content" />,
-      this.pager && (
-        <div
-          class="gx-grid-paging swiper-pagination"
-          ref={el => (this.paginationEl = el)}
-        />
-      ),
-      this.scrollbar && (
-        <div class="swiper-scrollbar" ref={el => (this.scrollbarEl = el)} />
-      ),
-      <gx-grid-infinite-scroll disabled={true}>
-        <gx-grid-infinite-scroll-content>
-          <slot name="grid-loading-content" />
-        </gx-grid-infinite-scroll-content>
-      </gx-grid-infinite-scroll>,
-      <div class="grid-empty-placeholder">
-        <slot name="grid-content-empty" />
-      </div>,
-      <slot />
-    ];
+    return (
+      <Host {...hostData}>
+        {[
+          <slot name="grid-content" />,
+          this.pager && (
+            <div
+              class="gx-grid-paging swiper-pagination"
+              ref={el => (this.paginationEl = el)}
+            />
+          ),
+          this.scrollbar && (
+            <div class="swiper-scrollbar" ref={el => (this.scrollbarEl = el)} />
+          ),
+          <gx-grid-infinite-scroll disabled={true}>
+            <gx-grid-infinite-scroll-content>
+              <slot name="grid-loading-content" />
+            </gx-grid-infinite-scroll-content>
+          </gx-grid-infinite-scroll>,
+          <div class="grid-empty-placeholder">
+            <slot name="grid-content-empty" />
+          </div>,
+          <slot />
+        ]}
+      </Host>
+    );
   }
 }

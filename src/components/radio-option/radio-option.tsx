@@ -4,13 +4,15 @@ import {
   Event,
   EventEmitter,
   Prop,
-  Watch
+  Watch,
+  Host,
+  h
 } from "@stencil/core";
 import { RadioOptionRender } from "../renders/bootstrap/radio-option/radio-option-render";
 import {
-  IComponent,
-  IDisableableComponent,
-  IVisibilityComponent
+  Component as GxComponent,
+  DisableableComponent,
+  VisibilityComponent
 } from "../common/interfaces";
 
 @Component({
@@ -19,30 +21,29 @@ import {
   tag: "gx-radio-option"
 })
 export class RadioOption
-  implements IComponent, IDisableableComponent, IVisibilityComponent {
+  implements GxComponent, DisableableComponent, VisibilityComponent {
   constructor() {
     this.renderer = new RadioOptionRender(this);
   }
 
   private renderer: RadioOptionRender;
 
-  @Element() element: HTMLElement;
+  @Element() element: HTMLGxRadioOptionElement;
 
   /**
    * Specifies the label of the radio.
    */
-  @Prop() caption: string;
+  @Prop() readonly caption: string;
 
   /**
    * Indicates that the control is selected by default.
    */
-  @Prop({ mutable: true })
-  checked: boolean;
+  @Prop({ mutable: true }) checked: boolean;
 
   /**
    * A CSS class to set as the inner `input` element class.
    */
-  @Prop() cssClass: string;
+  @Prop() readonly cssClass: string;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -52,30 +53,24 @@ export class RadioOption
    * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
-  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() disabled = false;
-
-  /**
-   * The identifier of the control. Must be unique.
-   */
-  @Prop() id: string;
+  @Prop() readonly disabled = false;
 
   /**
    * The name of the inner input of type radio
    */
-  @Prop() name: string;
+  @Prop() readonly name: string;
 
   /**
    * The initial value of the control.
    */
-  @Prop({ mutable: true })
-  value: string;
+  @Prop({ mutable: true }) value: string;
 
   /**
    * The `change` event is emitted when a change to the element's value is
@@ -118,6 +113,6 @@ export class RadioOption
   }
 
   render() {
-    return this.renderer.render();
+    return <Host>{this.renderer.render()}</Host>;
   }
 }

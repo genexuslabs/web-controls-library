@@ -1,5 +1,5 @@
 import { h } from "@stencil/core";
-import { IRenderer } from "../../../common/interfaces";
+import { Renderer } from "../../../common/interfaces";
 import { Message } from "../../../message/message";
 
 const TYPE_TO_CLASS_MAPPING = {
@@ -10,8 +10,11 @@ const TYPE_TO_CLASS_MAPPING = {
 
 const DEFAULT_SHOW_WAIT = 100;
 
-export class MessageRender implements IRenderer {
-  constructor(public component: Message) {}
+export class MessageRender implements Renderer {
+  constructor(private component: Message) {
+    this.transitionEnd = this.transitionEnd.bind(this);
+    this.dismiss = this.dismiss.bind(this);
+  }
 
   private dismissing = false;
 
@@ -36,7 +39,7 @@ export class MessageRender implements IRenderer {
   private transitionEnd() {
     if (this.dismissing) {
       const message = this.component;
-      if (message.element) {
+      if (message.element !== undefined) {
         message.element.parentNode.removeChild(message.element);
       }
     }
@@ -50,7 +53,7 @@ export class MessageRender implements IRenderer {
     setTimeout(() => {
       message.element.querySelector(".alert").classList.add("show");
 
-      if (message.duration) {
+      if (message.duration > 0) {
         setTimeout(() => {
           this.dismiss();
         }, message.duration);
@@ -66,7 +69,7 @@ export class MessageRender implements IRenderer {
       <div
         class={this.wrapperClass()}
         role="alert"
-        onTransitionEnd={this.transitionEnd.bind(this)}
+        onTransitionEnd={this.transitionEnd}
       >
         {slots.default}
         {message.showCloseButton ? (
@@ -74,7 +77,7 @@ export class MessageRender implements IRenderer {
             type="button"
             class="close"
             aria-label={message.closeButtonText}
-            onClick={this.dismiss.bind(this)}
+            onClick={this.dismiss}
           >
             <span aria-hidden="true">&times;</span>
           </button>

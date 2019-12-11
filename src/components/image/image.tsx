@@ -4,16 +4,21 @@ import {
   Event,
   EventEmitter,
   Prop,
-  h
+  h,
+  Host
 } from "@stencil/core";
 import lazySizes from "lazysizes";
 import {
-  IClickableComponent,
-  IComponent,
-  IDisableableComponent,
-  IVisibilityComponent
+  ClickableComponent,
+  Component as GxComponent,
+  DisableableComponent,
+  VisibilityComponent
 } from "../common/interfaces";
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
+
+const LAZY_LOAD_CLASS = "gx-lazyload";
+const LAZY_LOADING_CLASS = "gx-lazyloading";
+const LAZY_LOADED_CLASS = "gx-lazyloaded";
 
 @Component({
   shadow: false,
@@ -22,10 +27,10 @@ import { cssVariablesWatcher } from "../common/css-variables-watcher";
 })
 export class Image
   implements
-    IComponent,
-    IDisableableComponent,
-    IVisibilityComponent,
-    IClickableComponent {
+    GxComponent,
+    DisableableComponent,
+    VisibilityComponent,
+    ClickableComponent {
   constructor() {
     cssVariablesWatcher(this, [
       {
@@ -33,6 +38,8 @@ export class Image
         propertyName: "scaleType"
       }
     ]);
+
+    this.handleClick = this.handleClick.bind(this);
   }
 
   @Element() element: HTMLGxImageElement;
@@ -40,24 +47,24 @@ export class Image
   /**
    * This attribute lets you specify the alternative text.
    */
-  @Prop() alt = "";
+  @Prop() readonly alt = "";
 
   /**
    * A CSS class to set as the inner element class.
    */
-  @Prop() cssClass: string;
+  @Prop() readonly cssClass: string;
 
   /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() disabled = false;
+  @Prop() readonly disabled = false;
 
   /**
    * This attribute lets you specify the height.
    */
-  @Prop() height: string;
+  @Prop() readonly height: string;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -67,17 +74,17 @@ export class Image
    * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
-  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * True to lazy load the image, when it enters the viewport.
    */
-  @Prop() lazyLoad = true;
+  @Prop() readonly lazyLoad = true;
 
   /**
    * This attribute lets you specify the low resolution image SRC.
    */
-  @Prop() lowResolutionSrc = "";
+  @Prop() readonly lowResolutionSrc = "";
 
   /**
    * This attribute allows specifing how the image is sized according to its container.
@@ -94,24 +101,24 @@ export class Image
   /**
    * This attribute lets you specify the SRC.
    */
-  @Prop() src = "";
+  @Prop() readonly src = "";
 
   /**
    * This attribute lets you specify the width.
    */
-  @Prop() width: string;
+  @Prop() readonly width: string;
 
   /**
    * Emitted when the element is clicked.
    */
-  @Event() onClick: EventEmitter;
+  @Event() gxClick: EventEmitter;
 
-  handleClick(event: UIEvent) {
+  private handleClick(event: UIEvent) {
     if (this.disabled) {
       event.stopPropagation();
       return;
     }
-    this.onClick.emit(event);
+    this.gxClick.emit(event);
     event.preventDefault();
   }
 
@@ -122,7 +129,7 @@ export class Image
       <img
         class={{
           [LAZY_LOAD_CLASS]: shouldLazyLoad,
-          [this.cssClass]: !!this.cssClass,
+          [this.cssClass]: this.cssClass !== "",
           "gx-image-tile": this.scaleType === "tile"
         }}
         style={
@@ -130,16 +137,16 @@ export class Image
             ? { backgroundImage: `url(${this.src})` }
             : { objectFit: this.scaleType }
         }
-        onClick={this.handleClick.bind(this)}
+        onClick={this.handleClick}
         data-src={shouldLazyLoad ? this.src : undefined}
         src={!shouldLazyLoad ? this.src : undefined}
-        alt={this.alt ? this.alt : ""}
+        alt={this.alt}
         width={this.width}
         height={this.height}
       />,
       <span />
     ];
-    return body;
+    return <Host>{body}</Host>;
   }
 
   private shouldLazyLoad(): boolean {
@@ -148,13 +155,9 @@ export class Image
     }
 
     const img: HTMLImageElement = this.element.querySelector("img");
-    return !img || img.classList.contains(LAZY_LOAD_CLASS);
+    return img === null || img.classList.contains(LAZY_LOAD_CLASS);
   }
 }
-
-const LAZY_LOAD_CLASS = "gx-lazyload";
-const LAZY_LOADING_CLASS = "gx-lazyloading";
-const LAZY_LOADED_CLASS = "gx-lazyloaded";
 
 lazySizes.cfg.lazyClass = LAZY_LOAD_CLASS;
 lazySizes.cfg.loadingClass = LAZY_LOADING_CLASS;

@@ -1,18 +1,18 @@
 import { Component, Element, Prop, h } from "@stencil/core";
-import { IComponent } from "../common/interfaces";
+import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "canvas-cell.scss",
   tag: "gx-canvas-cell"
 })
-export class CanvasCell implements IComponent {
-  @Element() element: HTMLElement;
+export class CanvasCell implements GxComponent {
+  @Element() element: HTMLGxCanvasCellElement;
 
   /**
    * Defines the horizontal aligmnent of the content of the cell.
    */
-  @Prop() align: "left" | "right" | "center" = "left";
+  @Prop() readonly align: "left" | "right" | "center" = "left";
 
   /**
    * This attribute defines how the control behaves when the content overflows.
@@ -23,12 +23,12 @@ export class CanvasCell implements IComponent {
    * | `clip`   | The overflowing content is hidden, without scrollbars       |
    *
    */
-  @Prop() overflowMode: "scroll" | "clip";
+  @Prop() readonly overflowMode: "scroll" | "clip";
 
   /**
    * Defines the vertical aligmnent of the content of the cell.
    */
-  @Prop() valign: "top" | "bottom" | "medium" = "top";
+  @Prop() readonly valign: "top" | "bottom" | "medium" = "top";
 
   render() {
     return <slot />;

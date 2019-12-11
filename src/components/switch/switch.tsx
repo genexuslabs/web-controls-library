@@ -5,49 +5,47 @@ import {
   EventEmitter,
   Method,
   Prop,
-  Watch
+  Watch,
+  h,
+  Host
 } from "@stencil/core";
 import { SwitchRender } from "../renders/bootstrap/switch/switch-render";
-import { IFormComponent } from "../common/interfaces";
+import { FormComponent } from "../common/interfaces";
 @Component({
   shadow: false,
   styleUrl: "switch.scss",
   tag: "gx-switch"
 })
-export class Switch implements IFormComponent {
-  handleChange: (UIEvent: any) => void;
-
+export class Switch implements FormComponent {
   constructor() {
     this.renderer = new SwitchRender(this);
   }
 
   private renderer: SwitchRender;
 
-  @Element() element;
+  @Element() element: HTMLGxSwitchElement;
 
   /**
    * Attribute that provides the caption to the control.
    */
-  @Prop() caption: string;
+  @Prop() readonly caption: string;
+
   /**
    * Indicates if switch control is checked by default.
    */
-  @Prop({ mutable: true })
-  checked: boolean;
+  @Prop({ mutable: true }) checked: boolean;
 
-  @Prop({ mutable: true })
-  value: string;
+  /**
+   * The value of the control.
+   */
+  @Prop({ mutable: true }) value: string;
+
   /**
    * This attribute allows you specify if the element is disabled.
    * If disabled, it will not trigger any user interaction related event
    * (for example, click event).
    */
-  @Prop() disabled = false;
-
-  /**
-   * The control id. Must be unique per control!
-   */
-  @Prop() id: string;
+  @Prop() readonly disabled = false;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -57,7 +55,7 @@ export class Switch implements IFormComponent {
    * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
-  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * The 'input' event is emitted when a change to the element's value is committed by the user.
@@ -77,13 +75,7 @@ export class Switch implements IFormComponent {
     this.renderer.checkedChanged();
   }
 
-  hostData() {
-    return {
-      role: "switch"
-    };
-  }
-
   render() {
-    return this.renderer.render();
+    return <Host role="switch">{this.renderer.render()}</Host>;
   }
 }

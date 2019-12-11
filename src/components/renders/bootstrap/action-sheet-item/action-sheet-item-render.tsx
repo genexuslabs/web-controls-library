@@ -1,9 +1,12 @@
 import { h } from "@stencil/core";
-import { IRenderer } from "../../../common/interfaces";
+import { Renderer } from "../../../common/interfaces";
 import { ActionSheetItem } from "../../../action-sheet-item/action-sheet-item";
 
-export class ActionSheetItemRender implements IRenderer {
-  constructor(public component: ActionSheetItem) {}
+export class ActionSheetItemRender implements Renderer {
+  constructor(private component: ActionSheetItem, handlers: { handleClick }) {
+    this.handleClick = handlers.handleClick;
+  }
+  private handleClick: (event: UIEvent) => void;
 
   componentDidLoad() {
     const actionSheetItem = this.component;
@@ -19,9 +22,7 @@ export class ActionSheetItemRender implements IRenderer {
 
     actionSheetItem.element.classList.add(...classes);
 
-    actionSheetItem.element.addEventListener("click", e =>
-      actionSheetItem.handleClick(e)
-    );
+    actionSheetItem.element.addEventListener("click", this.handleClick);
   }
 
   render(slots: { default }) {

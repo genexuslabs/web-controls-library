@@ -1,9 +1,13 @@
 import { h } from "@stencil/core";
-import { IRenderer } from "../../../common/interfaces";
+import { Renderer } from "../../../common/interfaces";
 import { Button } from "../../../button/button";
 
-export class ButtonRender implements IRenderer {
-  constructor(public component: Button) {}
+export class ButtonRender implements Renderer {
+  constructor(private component: Button, handlers: { handleClick }) {
+    this.handleClick = handlers.handleClick;
+  }
+
+  private handleClick: (event: UIEvent) => void;
 
   render(slots: { default; disabledImage; mainImage }) {
     const button = this.component;
@@ -29,7 +33,7 @@ export class ButtonRender implements IRenderer {
           "gx-button": true,
           [button.cssClass]: !!button.cssClass
         }}
-        onClick={button.handleClick.bind(button)}
+        onClick={this.handleClick}
         tabindex="0"
       >
         {slots.mainImage}

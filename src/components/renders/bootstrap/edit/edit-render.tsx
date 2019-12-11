@@ -1,10 +1,36 @@
 import { h } from "@stencil/core";
-import { IRenderer } from "../../../common/interfaces";
+import { Renderer } from "../../../common/interfaces";
 import { Edit } from "../../../edit/edit";
 
-export class EditRender implements IRenderer {
-  constructor(public component: Edit) {}
+let autoEditId = 0;
+
+const fontCategoryTagMap = {
+  body: "p",
+  caption1: "span",
+  caption2: "span",
+  footnote: "footer",
+  headline: "h1",
+  subheadline: "h2"
+};
+
+export class EditRender implements Renderer {
+  constructor(
+    private component: Edit,
+    handlers: {
+      handleChange;
+      handleTriggerClick;
+      handleValueChanging;
+    }
+  ) {
+    this.handleChange = handlers.handleChange;
+    this.handleTriggerClick = handlers.handleTriggerClick;
+    this.handleValueChanging = handlers.handleValueChanging;
+  }
+
   private inputId: string;
+  private handleChange: (event: UIEvent) => void;
+  private handleTriggerClick: (event: UIEvent) => void;
+  private handleValueChanging: (event: UIEvent) => void;
 
   getNativeInputId() {
     return this.getNativeInput().id;
@@ -52,10 +78,10 @@ export class EditRender implements IRenderer {
   render(slots) {
     const edit = this.component;
 
-    const valueChangingHandler = edit.handleValueChanging.bind(edit);
+    const valueChangingHandler = this.handleValueChanging;
     if (!this.inputId) {
-      this.inputId = edit.id
-        ? `${edit.id}__edit`
+      this.inputId = edit.element.id
+        ? `${edit.element.id}__edit`
         : `gx-edit-auto-id-${autoEditId++}`;
     }
 
@@ -69,7 +95,7 @@ export class EditRender implements IRenderer {
       disabled: edit.disabled,
       hidden: edit.readonly,
       id: this.inputId,
-      onChange: edit.handleChange.bind(edit),
+      onChange: this.handleChange,
       onInput: valueChangingHandler,
       placeholder: edit.placeholder
     };
@@ -87,7 +113,7 @@ export class EditRender implements IRenderer {
             <div class="input-group-append">
               <button
                 class={this.getTriggerCssClasses()}
-                onClick={edit.handleTriggerClick.bind(edit)}
+                onClick={this.handleTriggerClick}
                 type="button"
                 disabled={edit.disabled}
                 aria-label={edit.triggerText}
@@ -121,14 +147,3 @@ export class EditRender implements IRenderer {
     return tag;
   }
 }
-
-let autoEditId = 0;
-
-const fontCategoryTagMap = {
-  body: "p",
-  caption1: "span",
-  caption2: "span",
-  footnote: "footer",
-  headline: "h1",
-  subheadline: "h2"
-};
