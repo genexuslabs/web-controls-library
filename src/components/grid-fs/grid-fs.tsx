@@ -61,7 +61,7 @@ export class GridFreeStyle
    * from the bottom of the page. Use the value `100px` when the
    * scroll is within 100 pixels from the bottom of the page.
    */
-  @Prop() readonly threshold: string = "100px";
+  @Prop() readonly threshold: string = "15%";
 
   /**
    * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
@@ -73,7 +73,7 @@ export class GridFreeStyle
    */
   @Method()
   async complete() {
-    this.el.querySelector("gx-grid-infinite-scroll").complete();
+    this.el.querySelector(":scope > gx-grid-infinite-scroll")["complete"]();
   }
 
   render() {
@@ -81,7 +81,6 @@ export class GridFreeStyle
       <Host {...GridBaseHelper.hostData(this)}>
         {[
           <slot name="grid-content" />,
-
           <gx-grid-infinite-scroll
             threshold={this.threshold}
             itemCount={this.recordCount}

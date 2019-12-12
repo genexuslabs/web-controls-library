@@ -13,6 +13,8 @@ import {
   h
 } from "@stencil/core";
 
+import { GridBaseHelper } from "../grid-base/grid-base";
+
 @Component({
   shadow: false,
   styleUrl: "grid-infinite-scroll.scss",
@@ -25,8 +27,8 @@ export class GridInfiniteScroll implements ComponentInterface {
 
   private thrPx = 0;
   private thrPc = 0;
-  private scrollEl?: HTMLElement;
-  private scrollListenerEl?: HTMLElement | Window;
+  private scrollEl?: HTMLElement = null;
+  private scrollListenerEl?: HTMLElement | Window = null;
   private didFire = false;
   private isBusy = false;
   private attachedToWindow = false;
@@ -80,7 +82,7 @@ export class GridInfiniteScroll implements ComponentInterface {
    * you must call the infinite scroll's `complete()` method when
    * your async operation has completed.
    */
-  @Event() gxInfinite!: EventEmitter<void>;
+  @Event({ bubbles: false }) gxInfinite!: EventEmitter<void>;
 
   componentWillLoad() {
     this.itemCountChanged();
@@ -95,13 +97,7 @@ export class GridInfiniteScroll implements ComponentInterface {
     setTimeout(() => {
       let emitInfinite = false;
       this.ensure();
-      if (this.attached) {
-        const containerHeight = this.scrollEl.offsetHeight;
-        const contentHeight = this.scrollEl.querySelector("div").offsetHeight;
-        emitInfinite = contentHeight < containerHeight;
-      } else {
-        emitInfinite = this.isVisibleInViewport(this.el);
-      }
+      emitInfinite = this.isVisibleInViewport(this.el);
       if (emitInfinite) {
         this.gxInfinite.emit();
       }
@@ -128,49 +124,70 @@ export class GridInfiniteScroll implements ComponentInterface {
     }
   }
 
-  isVisibleInViewport(el: HTMLElement) {
+  private isVisibleInViewport(el: HTMLElement): boolean {
     const rect = el.getBoundingClientRect();
     const elemTop = rect.top;
     return elemTop >= 0 && elemTop <= window.innerHeight;
   }
 
-  getScrollParent(node: any) {
+  private getScrollParent(node: any): HTMLElement {
     if (node === null) {
       return null;
     }
 
-    if (node.scrollHeight > node.clientHeight) {
+    if (node === window.document.documentElement) {
       return node;
-    } else {
-      return this.getScrollParent(node.parentNode);
     }
+    const classList = node.classList;
+    if (
+      classList !== undefined &&
+      classList.contains(GridBaseHelper.GRID_BASE_CLASSNAME)
+    ) {
+      return null;
+    }
+    if (node.scrollHeight > node.innerHeight) {
+      const overflow = window.getComputedStyle(node).overflow;
+      if (overflow == "auto" || overflow == "scroll") {
+        return node;
+      }
+    }
+    return this.getScrollParent(node.parentNode);
   }
 
-  ensure() {
-    if (!this.attached && this.itemCount > 0) {
-      let contentEl = this.getScrollParent(this.el);
-      if (contentEl) {
-        if (contentEl === window.document.documentElement) {
-          this.scrollListenerEl = window;
-          contentEl = window.document.body;
-          this.attachedToWindow = true;
-        } else {
-          this.scrollListenerEl = contentEl.parentNode;
-          contentEl = this.scrollListenerEl;
-        }
+  private ensure() {
+    if (this.disabled || this.attached || this.itemCount === 0) {
+      return;
+    }
 
-        this.scrollEl = contentEl as HTMLElement;
-        this.thresholdChanged(this.threshold);
-        this.enableScrollEvents(!this.disabled);
-        this.attached = !this.disabled;
-        if (this.position === "top") {
-          this.queue.write(() => {
-            if (this.scrollEl !== null) {
-              this.scrollEl.scrollTop =
-                this.scrollEl.scrollHeight - this.scrollEl.clientHeight;
-            }
-          });
-        }
+    const gridContainer = this.el.closest(
+      "." + GridBaseHelper.GRID_BASE_CLASSNAME
+    );
+    if (gridContainer === null) {
+      return;
+    }
+    let contentEl = this.getScrollParent(gridContainer.parentNode);
+
+    if (contentEl !== null) {
+      if (contentEl === window.document.documentElement) {
+        this.scrollListenerEl = window;
+        contentEl = window.document.body;
+        this.attachedToWindow = true;
+      } else {
+        this.scrollListenerEl = contentEl;
+        contentEl = this.scrollListenerEl;
+      }
+
+      this.scrollEl = contentEl as HTMLElement;
+      this.thresholdChanged(this.threshold);
+      this.enableScrollEvents(!this.disabled);
+      this.attached = !this.disabled;
+      if (this.position === "top") {
+        this.queue.write(() => {
+          if (this.scrollEl !== null) {
+            this.scrollEl.scrollTop =
+              this.scrollEl.scrollHeight - this.scrollEl.clientHeight;
+          }
+        });
       }
     }
   }
@@ -180,18 +197,17 @@ export class GridInfiniteScroll implements ComponentInterface {
   }
 
   componentDidUnload() {
-    this.scrollEl = undefined;
+    this.scrollEl = null;
     this.attachedToWindow = false;
     this.attached = false;
-    this.scrollListenerEl = undefined;
+    this.scrollListenerEl = null;
   }
 
-  protected onScroll() {
+  private onScroll() {
     const scrollEl = this.scrollEl;
     if (scrollEl === null || !this.canStart()) {
       return 1;
     }
-
     const infiniteHeight = this.el.offsetHeight;
     const scrollTop = !this.attachedToWindow
       ? scrollEl.scrollTop
@@ -206,7 +222,6 @@ export class GridInfiniteScroll implements ComponentInterface {
       this.position === "bottom"
         ? scrollHeight - infiniteHeight - scrollTop - threshold - height
         : scrollTop - infiniteHeight - threshold;
-
     if (distanceFromInfinite < 0) {
       if (!this.didFire) {
         this.isLoading = true;
@@ -305,11 +320,13 @@ export class GridInfiniteScroll implements ComponentInterface {
   }
 
   render() {
-    <Host
-      class={{
-        "infinite-scroll-enabled": !this.disabled,
-        "infinite-scroll-loading": this.isLoading
-      }}
-    ></Host>;
+    return (
+      <Host
+        class={{
+          "infinite-scroll-enabled": !this.disabled,
+          "infinite-scroll-loading": this.isLoading
+        }}
+      />
+    );
   }
 }
