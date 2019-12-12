@@ -36,6 +36,8 @@ export interface GridBase {
 }
 
 export class GridBaseHelper {
+  static GRID_BASE_CLASSNAME = "gx-grid-base";
+
   static hostData(cmp: GridBase) {
     return {
       class: {
