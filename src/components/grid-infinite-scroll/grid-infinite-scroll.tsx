@@ -124,27 +124,34 @@ export class GridInfiniteScroll implements ComponentInterface {
     }
   }
 
-  private isVisibleInViewport(el: HTMLElement) {
+  private isVisibleInViewport(el: HTMLElement): boolean {
     const rect = el.getBoundingClientRect();
     const elemTop = rect.top;
     return elemTop >= 0 && elemTop <= window.innerHeight;
   }
 
-  private getScrollParent(node: any) {
+  private getScrollParent(node: any): HTMLElement {
     if (node === null) {
       return null;
     }
+
+    if (node === window.document.documentElement) {
+      return node;
+    }
+    const classList = node.classList;
     if (
-      node.classList !== undefined &&
-      node.classList.contains(GridBaseHelper.GRID_BASE_CLASSNAME)
+      classList !== undefined &&
+      classList.contains(GridBaseHelper.GRID_BASE_CLASSNAME)
     ) {
       return null;
     }
-    if (node.scrollHeight > node.clientHeight) {
-      return node;
-    } else {
-      return this.getScrollParent(node.parentNode);
+    if (node.scrollHeight > node.innerHeight) {
+      const overflow = window.getComputedStyle(node).overflow;
+      if (overflow == "auto" || overflow == "scroll") {
+        return node;
+      }
     }
+    return this.getScrollParent(node.parentNode);
   }
 
   private ensure() {
@@ -159,7 +166,8 @@ export class GridInfiniteScroll implements ComponentInterface {
       return;
     }
     let contentEl = this.getScrollParent(gridContainer.parentNode);
-    if (contentEl) {
+
+    if (contentEl !== null) {
       if (contentEl === window.document.documentElement) {
         this.scrollListenerEl = window;
         contentEl = window.document.body;
