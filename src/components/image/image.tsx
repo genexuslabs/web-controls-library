@@ -155,11 +155,9 @@ export class Image
           <span />
         ]
       : [];
+
     return (
-      <Host
-        class={{ "gx-img-lazyloading": shouldLazyLoad }}
-        aria-hidden={!this.src}
-      >
+      <Host class={{ "gx-img-lazyloading": shouldLazyLoad }} hidden={!this.src}>
         {body}
       </Host>
     );
