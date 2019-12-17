@@ -132,28 +132,35 @@ export class Image
   render() {
     const shouldLazyLoad = this.shouldLazyLoad();
 
-    const body = [
-      <img
-        class={{
-          [LAZY_LOAD_CLASS]: shouldLazyLoad,
-          [this.cssClass]: this.cssClass !== "",
-          "gx-image-tile": this.scaleType === "tile"
-        }}
-        style={
-          this.scaleType === "tile"
-            ? { backgroundImage: `url(${this.src})` }
-            : { objectFit: this.scaleType }
-        }
-        onClick={this.handleClick}
-        data-src={shouldLazyLoad ? this.src : undefined}
-        src={!shouldLazyLoad ? this.src : undefined}
-        alt={this.alt}
-        width={this.width}
-        height={this.height}
-      />,
-      <span />
-    ];
-    return <Host class={{ "gx-img-lazyloading": shouldLazyLoad }}>{body}</Host>;
+    const body = this.src
+      ? [
+          <img
+            class={{
+              [LAZY_LOAD_CLASS]: shouldLazyLoad,
+              [this.cssClass]: this.cssClass !== "",
+              "gx-image-tile": this.scaleType === "tile"
+            }}
+            style={
+              this.scaleType === "tile"
+                ? { backgroundImage: `url(${this.src})` }
+                : { objectFit: this.scaleType }
+            }
+            onClick={this.handleClick}
+            data-src={shouldLazyLoad ? this.src : undefined}
+            src={!shouldLazyLoad ? this.src : undefined}
+            alt={this.alt}
+            width={this.width}
+            height={this.height}
+          />,
+          <span />
+        ]
+      : [];
+
+    return (
+      <Host class={{ "gx-img-lazyloading": shouldLazyLoad }} hidden={!this.src}>
+        {body}
+      </Host>
+    );
   }
 
   private shouldLazyLoad(): boolean {

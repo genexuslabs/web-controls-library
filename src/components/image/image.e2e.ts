@@ -52,4 +52,15 @@ describe("gx-image", () => {
     await img.click();
     expect(spy).toHaveReceivedEvent();
   });
+
+  it("should not render when src is empty", async () => {
+    let isHidden = await element.getProperty("hidden");
+    expect(isHidden).toBe(false);
+
+    await element.setAttribute("src", "");
+    await page.waitForChanges();
+    isHidden = await element.getProperty("hidden");
+
+    expect(isHidden).toBe(true);
+  });
 });
