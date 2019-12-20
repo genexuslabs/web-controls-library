@@ -3,6 +3,10 @@ gx-edit {
     margin-top: var(--margin-top, 0);
     margin-bottom: var(--margin-bottom, 0);
     height: unset;
+
+    &:focus {
+      box-shadow: none;
+    }
   }
 
   &:not([show-trigger]),
