@@ -2,7 +2,7 @@
 @import "../renders/bootstrap/button/button-render";
 
 gx-button {
-  @include visibility(inline-block);
+  @include visibility(inline-flex);
 
   --gx-button-image-size: 16px;
 
@@ -21,9 +21,12 @@ gx-button {
   }
 
   & > button.gx-button {
+    flex: 1;
     display: flex;
     flex-direction: column;
     position: relative;
+    align-items: center;
+    justify-content: center;
 
     & > img {
       height: var(--gx-button-image-size);
@@ -32,6 +35,13 @@ gx-button {
 
       &[slot="disabled-image"] {
         display: none;
+      }
+    }
+
+    &:not(:disabled):not(.disabled) {
+      &:focus,
+      &:active:focus {
+        box-shadow: none;
       }
     }
   }
