@@ -31,4 +31,15 @@ describe("gx-checkbox", () => {
     await page.waitForChanges();
     expect(await input.getProperty("checked")).toEqual(false);
   });
+
+  it("fires input event", async () => {
+    await element.setProperty("checkedValue", "yes");
+    await element.setProperty("unCheckedValue", "no");
+    await page.waitForChanges();
+    const spy = await element.spyOnEvent("input");
+    const input = await page.find("input");
+    await input.click();
+    expect(spy).toHaveReceivedEvent();
+    expect(await element.getProperty("value")).toBe("no");
+  });
 });
