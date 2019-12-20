@@ -76,7 +76,14 @@ export class CheckBoxRender implements Renderer {
     return [
       <gx-bootstrap />,
       <div class="custom-control custom-checkbox">
-        <input {...attris} type="checkbox" checked={checkbox.checked} />
+        <input
+          {...attris}
+          type="checkbox"
+          checked={checkbox.checked}
+          value={
+            checkbox.checked ? checkbox.checkedValue : checkbox.unCheckedValue
+          }
+        />
         <label
           class="custom-control-label"
           {...forAttris}
