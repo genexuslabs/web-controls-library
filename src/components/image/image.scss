@@ -68,6 +68,34 @@ gx-image {
   }
 }
 
+[align="center"] {
+  & > gx-image {
+    justify-self: stretch;
+    justify-content: center;
+  }
+}
+
+[align="right"] {
+  & > gx-image {
+    justify-self: stretch;
+    justify-content: flex-end;
+  }
+}
+
+[valign="middle"] {
+  & > gx-image {
+    align-self: stretch;
+    align-items: center;
+  }
+}
+
+[valign="bottom"] {
+  & > gx-image {
+    align-self: stretch;
+    align-items: flex-end;
+  }
+}
+
 @keyframes gx-image-loading {
   0% {
     -webkit-transform: rotate(0deg);
