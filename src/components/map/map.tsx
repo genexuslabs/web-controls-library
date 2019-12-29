@@ -27,6 +27,13 @@ export class Map implements GxComponent {
   @Prop({ mutable: true }) center = "0, 0";
 
   /**
+   * The map provider.
+   *
+   */
+  @Prop() mapProvider =
+    "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png";
+
+  /**
    * The max zoom level available in the map.
    *
    */
@@ -88,10 +95,7 @@ export class Map implements GxComponent {
       );
       this.map = LFMap(elementVar).setView([0, 0], this.getZoom());
     }
-    tileLayer(
-      "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png",
-      {}
-    ).addTo(this.map);
+    tileLayer(this.mapProvider, {}).addTo(this.map);
     this.gxMapDidLoad.emit(this);
     this.map.addEventListener("click", ev => {
       this.mapClick.emit(ev.latlng);
