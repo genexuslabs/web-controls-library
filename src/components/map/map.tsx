@@ -1,3 +1,9 @@
+/* To do:
+    - Test (deploy) the mapProvider feature
+    - Research about the usertracking feature
+    - Research about map centering and zomming for show all markers
+*/
+
 import {
   Component,
   Element,

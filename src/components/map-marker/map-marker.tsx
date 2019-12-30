@@ -1,3 +1,13 @@
+/* To do:
+    - Improve the custom img feature:
+        . Img size (iconSize)
+        . Img position (iconAnchor)
+    - Add popup feature
+        . Use <slot> to accept incoming HTML
+        . Ask for size of popup (90% wide up to a maximum of 300px as an example)
+    - Research about set classes in the marker.
+*/
+
 import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 import { icon, marker } from "leaflet/dist/leaflet-src.esm";
