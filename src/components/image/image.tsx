@@ -53,6 +53,13 @@ export class Image
   @Prop() readonly alt = "";
 
   /**
+   * If true, the component will be sized to match the image's intrinsic size when not constrained
+   * via CSS dimension properties (for example, height or width).
+   * If false, the component will never force its dimensions to match the image's intrinsic size.
+   */
+  @Prop() readonly autoGrow = true;
+
+  /**
    * A CSS class to set as the inner element class.
    */
   @Prop() readonly cssClass: string;
@@ -157,7 +164,13 @@ export class Image
       : [];
 
     return (
-      <Host class={{ "gx-img-lazyloading": shouldLazyLoad }} hidden={!this.src}>
+      <Host
+        class={{
+          "gx-img-lazyloading": shouldLazyLoad,
+          "gx-img-no-auto-grow": !this.autoGrow
+        }}
+        hidden={!this.src}
+      >
         {body}
       </Host>
     );

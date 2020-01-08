@@ -46,6 +46,13 @@ describe("gx-image", () => {
     expect(className.includes("danger")).toBe(true);
   });
 
+  it("should add gx-img-no-auto-grow class", async () => {
+    expect(element.classList.contains("gx-img-no-auto-grow")).toBe(false);
+    await element.setProperty("autoGrow", false);
+    await page.waitForChanges();
+    expect(element.classList.contains("gx-img-no-auto-grow")).toBe(true);
+  });
+
   it("should fire click event", async () => {
     const spy = await element.spyOnEvent("click");
     const img = await page.find("img");
