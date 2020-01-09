@@ -458,7 +458,7 @@ export namespace Components {
      */
     alt: "";
     /**
-     * If true, the component will be sized to match the image's intrinsic size when not constrained via CSS dimension properties (for example, height or width). If false, the component will never force its dimensions to match the image's intrinsic size.
+     * If true, the component will be sized to match the image's intrinsic size when not constrained via CSS dimension properties (for example, height or width). If false, the component will never force its height to match the image's intrinsic size. The width, however, will match the intrinsic width. In GeneXus terms, it will auto grow horizontally, but not vertically.
      */
     autoGrow: true;
     /**
@@ -1805,7 +1805,7 @@ declare namespace LocalJSX {
      */
     alt?: "";
     /**
-     * If true, the component will be sized to match the image's intrinsic size when not constrained via CSS dimension properties (for example, height or width). If false, the component will never force its dimensions to match the image's intrinsic size.
+     * If true, the component will be sized to match the image's intrinsic size when not constrained via CSS dimension properties (for example, height or width). If false, the component will never force its height to match the image's intrinsic size. The width, however, will match the intrinsic width. In GeneXus terms, it will auto grow horizontally, but not vertically.
      */
     autoGrow?: true;
     /**

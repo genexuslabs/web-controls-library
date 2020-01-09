@@ -40,6 +40,7 @@ export class Image
     ]);
 
     this.handleClick = this.handleClick.bind(this);
+    this.handleImageLoad = this.handleImageLoad.bind(this);
 
     this.handleLazyLoaded = this.handleLazyLoaded.bind(this);
     document.addEventListener("lazyloaded", this.handleLazyLoaded);
@@ -55,7 +56,8 @@ export class Image
   /**
    * If true, the component will be sized to match the image's intrinsic size when not constrained
    * via CSS dimension properties (for example, height or width).
-   * If false, the component will never force its dimensions to match the image's intrinsic size.
+   * If false, the component will never force its height to match the image's intrinsic size. The width, however,
+   * will match the intrinsic width. In GeneXus terms, it will auto grow horizontally, but not vertically.
    */
   @Prop() readonly autoGrow = true;
 
@@ -116,7 +118,7 @@ export class Image
   /**
    * This attribute lets you specify the width.
    */
-  @Prop() readonly width: string;
+  @Prop({ mutable: true }) width: string;
 
   /**
    * Emitted when the element is clicked.
@@ -130,6 +132,16 @@ export class Image
     }
     this.gxClick.emit(event);
     event.preventDefault();
+  }
+
+  private handleImageLoad(event: UIEvent) {
+    if (!this.autoGrow) {
+      const img = event.target as HTMLImageElement;
+      // Some image formats do not specify intrinsic dimensions. The naturalWidth property returns 0 in those cases.
+      if (img.naturalWidth !== 0) {
+        this.width = `${img.naturalWidth}px`;
+      }
+    }
   }
 
   componentDidUnload() {
@@ -153,11 +165,10 @@ export class Image
                 : { objectFit: this.scaleType }
             }
             onClick={this.handleClick}
+            onLoad={this.handleImageLoad}
             data-src={shouldLazyLoad ? this.src : undefined}
             src={!shouldLazyLoad ? this.src : undefined}
             alt={this.alt}
-            width={this.width}
-            height={this.height}
           />,
           <span />
         ]
@@ -170,6 +181,10 @@ export class Image
           "gx-img-no-auto-grow": !this.autoGrow
         }}
         hidden={!this.src}
+        style={{
+          width: this.width,
+          height: this.height
+        }}
       >
         {body}
       </Host>
