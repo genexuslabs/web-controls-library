@@ -62,11 +62,6 @@ export class Image
   @Prop() readonly autoGrow = true;
 
   /**
-   * A CSS class to set as the inner element class.
-   */
-  @Prop() readonly cssClass: string;
-
-  /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
@@ -156,7 +151,6 @@ export class Image
           <img
             class={{
               [LAZY_LOAD_CLASS]: shouldLazyLoad,
-              [this.cssClass]: this.cssClass !== "",
               "gx-image-tile": this.scaleType === "tile"
             }}
             style={
@@ -182,8 +176,12 @@ export class Image
         }}
         hidden={!this.src}
         style={{
-          width: this.width,
+          width: this.width
+            ? `calc(${this.width} + var(--margin-left, 0px) + var(--margin-right, 0px))`
+            : null,
           height: this.height
+            ? `calc(${this.height} + var(--margin-top, 0px) + var(--margin-bottom, 0px))`
+            : null
         }}
       >
         {body}
