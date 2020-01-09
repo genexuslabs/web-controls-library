@@ -27,14 +27,6 @@ describe("gx-image", () => {
     );
   });
 
-  it("should set the inner image class", async () => {
-    await element.setAttribute("css-class", "danger");
-    await page.waitForChanges();
-    const img = await page.find("img");
-    const className: string = await img.getProperty("className");
-    expect(className.includes("danger")).toBe(true);
-  });
-
   it("should add gx-img-no-auto-grow class", async () => {
     expect(element.classList.contains("gx-img-no-auto-grow")).toBe(false);
     await element.setProperty("autoGrow", false);
