@@ -1,5 +1,4 @@
 /* To do:
-    - Test (deploy) the mapProvider feature
     - Research about the usertracking feature
     - Research about map centering and zomming for show all markers
 */
@@ -24,6 +23,7 @@ import { parseCoords } from "../common/coordsValidate";
 })
 export class Map implements GxComponent {
   private map: any;
+  private markersList = [];
   @Element() element: HTMLGxMapElement;
 
   /**
@@ -43,7 +43,7 @@ export class Map implements GxComponent {
    * The max zoom level available in the map.
    *
    */
-  @Prop() readonly maxZoom = 20;
+  @Prop() readonly maxZoom: number = 20;
 
   /**
    * The initial zoom level in the map.
@@ -67,6 +67,7 @@ export class Map implements GxComponent {
   onMapMarkerDidLoad(event: CustomEvent) {
     const markerElement = event.target;
     const markerV = event.detail;
+    console.log("markerV", markerV, typeof markerV);
 
     if (this.map) {
       markerV.addTo(this.map);
@@ -75,10 +76,24 @@ export class Map implements GxComponent {
         markerV.addTo(this.map);
       });
     }
-    markerElement.addEventListener(
-      "gxMapMarkerDeleted",
-      this.onMapMarkerDeleted.bind(this, markerV)
-    );
+    this.markersList.push(markerV);
+    console.log(this.markersList);
+    markerElement.addEventListener("gxMapMarkerDeleted", () => {
+      let i = 0;
+      this.onMapMarkerDeleted(markerV);
+      while (
+        i <= this.markersList.length &&
+        this.markersList[i]._leaflet_id !== markerV._leaflet_id
+      ) {
+        i++;
+      }
+      if (i <= this.markersList.length) {
+        this.markersList.splice(i, 1);
+      } else {
+        console.warn("There was an error in the markers list!");
+      }
+      console.log(this.markersList);
+    });
   }
 
   private onMapMarkerDeleted(markerV: Marker) {
@@ -127,6 +142,8 @@ export class Map implements GxComponent {
     }
     this.map.setMaxZoom(maxZoom);
   }
+
+  // fitMapToMarkers() {}
 
   render() {
     return (
