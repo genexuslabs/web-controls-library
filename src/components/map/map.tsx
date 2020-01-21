@@ -9,11 +9,17 @@ import {
   Event,
   EventEmitter,
   Listen,
+  Method,
   Prop,
   h
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
-import { Marker, map as LFMap, tileLayer } from "leaflet/dist/leaflet-src.esm";
+import {
+  FeatureGroup,
+  Marker,
+  map as LFMap,
+  tileLayer
+} from "leaflet/dist/leaflet-src.esm";
 import { parseCoords } from "../common/coordsValidate";
 
 @Component({
@@ -96,10 +102,6 @@ export class Map implements GxComponent {
     });
   }
 
-  private onMapMarkerDeleted(markerV: Marker) {
-    markerV.remove();
-  }
-
   componentDidLoad() {
     const elementVar = this.element.querySelector(".gxMap");
     const coords = parseCoords(this.center);
@@ -118,13 +120,10 @@ export class Map implements GxComponent {
     }
     tileLayer(this.mapProvider, {}).addTo(this.map);
     this.gxMapDidLoad.emit(this);
+    this.fitMapToMarkers();
     this.map.addEventListener("click", ev => {
       this.mapClick.emit(ev.latlng);
     });
-  }
-
-  private getZoom() {
-    return this.zoom > 0 ? this.zoom : 20;
   }
 
   componentDidUpdate() {
@@ -143,7 +142,19 @@ export class Map implements GxComponent {
     this.map.setMaxZoom(maxZoom);
   }
 
-  // fitMapToMarkers() {}
+  @Method()
+  async fitMapToMarkers() {
+    const markersGroup = new FeatureGroup(this.markersList);
+    this.map.fitBounds(markersGroup.getBounds());
+  }
+
+  private getZoom() {
+    return this.zoom > 0 ? this.zoom : 20;
+  }
+
+  private onMapMarkerDeleted(markerV: Marker) {
+    markerV.remove();
+  }
 
   render() {
     return (
