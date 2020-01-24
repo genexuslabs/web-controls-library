@@ -1,6 +1,5 @@
 /* To do:
     - Research about the usertracking feature
-    - Research about map centering and zomming for show all markers
 */
 
 import {
@@ -73,7 +72,6 @@ export class Map implements GxComponent {
   onMapMarkerDidLoad(event: CustomEvent) {
     const markerElement = event.target;
     const markerV = event.detail;
-    console.log("markerV", markerV, typeof markerV);
 
     if (this.map) {
       markerV.addTo(this.map);
@@ -83,7 +81,6 @@ export class Map implements GxComponent {
       });
     }
     this.markersList.push(markerV);
-    console.log(this.markersList);
     markerElement.addEventListener("gxMapMarkerDeleted", () => {
       let i = 0;
       this.onMapMarkerDeleted(markerV);
@@ -98,7 +95,6 @@ export class Map implements GxComponent {
       } else {
         console.warn("There was an error in the markers list!");
       }
-      console.log(this.markersList);
     });
   }
 
