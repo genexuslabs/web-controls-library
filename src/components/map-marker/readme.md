@@ -5,15 +5,15 @@ This element represents a marker inside a `<gx-map>` element.
 
 <!-- Auto Generated Below -->
 
-
 ## Properties
 
-| Property         | Attribute         | Description                                                          | Type     | Default     |
-| ---------------- | ----------------- | -------------------------------------------------------------------- | -------- | ----------- |
-| `coords`         | `coords`          | The coordinates where the marker will appear in the map.             | `string` | `"0, 0"`    |
-| `iconSrc`        | `icon-src`        | The URL of the marker image.  *Note: The image size must be 25 x 41* | `string` | `undefined` |
-| `tooltipCaption` | `tooltip-caption` | The tooltip caption of the marker.                                   | `string` | `undefined` |
-
+| Property         | Attribute          | Description                                                                                                                                              | Type     | Default         |
+| ---------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------------- |
+| `coords`         | `coords`           | The coordinates where the marker will appear in the map.                                                                                                 | `string` | `"0, 0"`        |
+| `iconSizeHeight` | `icon-size-height` | The marker image height.                                                                                                                                 | `number` | `30`            |
+| `iconSizeWidth`  | `icon-size-width`  | The marker image width.                                                                                                                                  | `number` | `30`            |
+| `markerClass`    | `marker-class`     | The class that the marker will have. _Tip: Set the background-image to use it as icon of the marker._ _Note: The default class is defined in map style._ | `string` | `"defaultIcon"` |
+| `tooltipCaption` | `tooltip-caption`  | The tooltip caption of the marker.                                                                                                                       | `string` | `undefined`     |
 
 ## Events
 
@@ -23,7 +23,6 @@ This element represents a marker inside a `<gx-map>` element.
 | `gxMapMarkerDidLoad` | Emmits when the element is added to a `<gx-map>`.     | `CustomEvent<any>` |
 | `gxMapMarkerUpdate`  | Emmits when the element update its data.              | `CustomEvent<any>` |
 
+---
 
-----------------------------------------------
-
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_
