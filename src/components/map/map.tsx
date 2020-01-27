@@ -8,7 +8,6 @@ import {
   Event,
   EventEmitter,
   Listen,
-  Method,
   Prop,
   h
 } from "@stencil/core";
@@ -98,6 +97,19 @@ export class Map implements GxComponent {
     });
   }
 
+  private fitBounds() {
+    const markersGroup = new FeatureGroup(this.markersList);
+    this.map.fitBounds(markersGroup.getBounds());
+  }
+
+  private getZoom() {
+    return this.zoom > 0 ? this.zoom : 20;
+  }
+
+  private onMapMarkerDeleted(markerV: Marker) {
+    markerV.remove();
+  }
+
   componentDidLoad() {
     const elementVar = this.element.querySelector(".gxMap");
     const coords = parseCoords(this.center);
@@ -116,7 +128,7 @@ export class Map implements GxComponent {
     }
     tileLayer(this.mapProvider, {}).addTo(this.map);
     this.gxMapDidLoad.emit(this);
-    this.fitMapToMarkers();
+    this.fitBounds();
     this.map.addEventListener("click", ev => {
       this.mapClick.emit(ev.latlng);
     });
@@ -136,20 +148,6 @@ export class Map implements GxComponent {
       this.map.setView([0, 0], zoom);
     }
     this.map.setMaxZoom(maxZoom);
-  }
-
-  @Method()
-  async fitMapToMarkers() {
-    const markersGroup = new FeatureGroup(this.markersList);
-    this.map.fitBounds(markersGroup.getBounds());
-  }
-
-  private getZoom() {
-    return this.zoom > 0 ? this.zoom : 20;
-  }
-
-  private onMapMarkerDeleted(markerV: Marker) {
-    markerV.remove();
   }
 
   render() {
