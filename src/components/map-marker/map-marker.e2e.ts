@@ -35,41 +35,19 @@ describe("gx-map-marker", () => {
     expect(await element.getProperty("tooltipCaption")).toBeUndefined();
   });
 
-  it("should set a given coords and iconSrc", async () => {
-    await page.setContent(
-      "<gx-map><gx-map-marker coords='-34.896589, -56.165579' icon-src='https://markmed.github.io/map/Resources/location.svg'></gx-map-marker></gx-map>"
-    );
-    await page.waitForChanges();
-    parentElement = await page.find("gx-map");
-    element = await parentElement.find("gx-map-marker");
-    ///////////////////////////////////////
-    expect(await element.getProperty("coords")).toEqual(
-      "-34.896589, -56.165579"
-    );
-    expect(await element.getProperty("iconSrc")).toEqual(
-      "https://markmed.github.io/map/Resources/location.svg"
-    );
-    expect(await element.getProperty("tooltipCaption")).toBeUndefined();
-  });
-
-  it("should set a given iconSrc (but default coords)", async () => {
-    await page.setContent(
-      "<gx-map><gx-map-marker icon-src='https://markmed.github.io/map/Resources/location.svg'></gx-map-marker></gx-map>"
-    );
+  it("should set default coords", async () => {
+    await page.setContent("<gx-map><gx-map-marker></gx-map-marker></gx-map>");
     await page.waitForChanges();
     parentElement = await page.find("gx-map");
     element = await parentElement.find("gx-map-marker");
     ///////////////////////////////////////
     expect(await element.getProperty("coords")).toEqual("0, 0");
-    expect(await element.getProperty("iconSrc")).toEqual(
-      "https://markmed.github.io/map/Resources/location.svg"
-    );
     expect(await element.getProperty("tooltipCaption")).toBeUndefined();
   });
 
-  it("should set a given iconSrc, coords, and tooltip caption", async () => {
+  it("should set coords, and tooltip caption", async () => {
     await page.setContent(
-      "<gx-map><gx-map-marker coords='-34.896589, -56.165579' tooltip-caption='The new life' icon-src='https://markmed.github.io/map/Resources/location.svg'></gx-map-marker></gx-map>"
+      "<gx-map><gx-map-marker coords='-34.896589, -56.165579' tooltip-caption='Text Here'></gx-map-marker></gx-map>"
     );
     await page.waitForChanges();
     parentElement = await page.find("gx-map");
@@ -78,9 +56,41 @@ describe("gx-map-marker", () => {
     expect(await element.getProperty("coords")).toEqual(
       "-34.896589, -56.165579"
     );
-    expect(await element.getProperty("iconSrc")).toEqual(
-      "https://markmed.github.io/map/Resources/location.svg"
+    expect(await element.getProperty("tooltipCaption")).toEqual("Text Here");
+  });
+
+  it("should set the given class to the marker and has the default sizes", async () => {
+    await page.setContent(
+      "<gx-map><gx-map-marker coords='-34.896589, -56.165579' tooltip-caption='Text Here' marker-class='myCustomClass'></gx-map-marker></gx-map>"
     );
-    expect(await element.getProperty("tooltipCaption")).toEqual("The new life");
+    await page.waitForChanges();
+    parentElement = await page.find("gx-map");
+    element = await parentElement.find("gx-map-marker");
+    const insertedMarker = await parentElement.find(".myCustomClass");
+    ///////////////////////////////////////
+    expect(await element.getProperty("coords")).toEqual(
+      "-34.896589, -56.165579"
+    );
+    expect(await element.getProperty("tooltipCaption")).toEqual("Text Here");
+    expect(insertedMarker).toBeTruthy();
+    expect((await insertedMarker.getComputedStyle()).width).toEqual("30px");
+    expect((await insertedMarker.getComputedStyle()).height).toEqual("30px");
+  });
+
+  it("should set the given sizes to the marker", async () => {
+    await page.setContent(
+      "<gx-map><gx-map-marker coords='-34.896589, -56.165579' tooltip-caption='Text Here' marker-class='myCustomClass' icon-size-height='45' icon-size-width='45'></gx-map-marker></gx-map>"
+    );
+    await page.waitForChanges();
+    parentElement = await page.find("gx-map");
+    element = await parentElement.find("gx-map-marker");
+    const insertedMarker = await parentElement.find(".myCustomClass");
+    ///////////////////////////////////////
+    expect(await element.getProperty("coords")).toEqual(
+      "-34.896589, -56.165579"
+    );
+    expect(await element.getProperty("tooltipCaption")).toEqual("Text Here");
+    expect((await insertedMarker.getComputedStyle()).width).toEqual("45px");
+    expect((await insertedMarker.getComputedStyle()).height).toEqual("45px");
   });
 });
