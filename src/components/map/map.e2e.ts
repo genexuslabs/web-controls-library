@@ -6,11 +6,12 @@ describe("gx-map", () => {
 
   beforeEach(async () => {
     page = await newE2EPage();
-    await page.setContent("<gx-map></gx-map>");
-    element = await page.find("gx-map");
   });
 
   it("should work without attributes", async () => {
+    await page.setContent("<gx-map></gx-map>");
+    await page.waitForChanges();
+    element = await page.find("gx-map");
     const innerContent = await element.find("div .leaflet-control-container");
     expect(innerContent).not.toBeNull();
     expect(await element.getProperty("center")).toEqual("0, 0");
@@ -19,7 +20,11 @@ describe("gx-map", () => {
   });
 
   it("should set a given center", async () => {
-    element.setProperty("center", "38.87097161910191, -77.0559650659561");
+    await page.setContent(
+      "<gx-map center='38.87097161910191, -77.0559650659561'></gx-map>"
+    );
+    await page.waitForChanges();
+    element = await page.find("gx-map");
     await page.waitForChanges();
     expect(await element.getProperty("center")).toEqual(
       "38.87097161910191, -77.0559650659561"
@@ -27,14 +32,38 @@ describe("gx-map", () => {
   });
 
   it("should set a given maxZoom", async () => {
-    element.setProperty("maxZoom", 21);
+    await page.setContent("<gx-map max-zoom='17'></gx-map>");
     await page.waitForChanges();
-    expect(await element.getProperty("maxZoom")).toEqual(21);
+    element = await page.find("gx-map");
+    await page.waitForChanges();
+    expect(await element.getProperty("maxZoom")).toEqual(17);
   });
 
   it("should set a given zoom", async () => {
-    element.setProperty("zoom", 16);
+    await page.setContent("<gx-map zoom='15'></gx-map>");
     await page.waitForChanges();
-    expect(await element.getProperty("zoom")).toEqual(16);
+    element = await page.find("gx-map");
+    await page.waitForChanges();
+    expect(await element.getProperty("zoom")).toEqual(15);
+  });
+
+  it("should have defined the default mapProvider", async () => {
+    await page.setContent("<gx-map></gx-map>");
+    await page.waitForChanges();
+    element = await page.find("gx-map");
+    expect(await element.getProperty("mapProvider")).toEqual(
+      "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
+    );
+  });
+
+  it("should set the given mapProvider", async () => {
+    await page.setContent(
+      "<gx-map map-provider='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'></gx-map>"
+    );
+    await page.waitForChanges();
+    element = await page.find("gx-map");
+    expect(await element.getProperty("mapProvider")).toEqual(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    );
   });
 });
