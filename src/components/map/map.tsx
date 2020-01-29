@@ -28,6 +28,7 @@ import { parseCoords } from "../common/coordsValidate";
 export class Map implements GxComponent {
   private map: any;
   private markersList = [];
+  private mapProviderApplied: string;
   @Element() element: HTMLGxMapElement;
 
   /**
@@ -110,6 +111,26 @@ export class Map implements GxComponent {
     markerV.remove();
   }
 
+  private setMapProvider() {
+    if (this.mapProviderApplied) {
+      this.map.removeLayer(this.mapProviderApplied);
+    }
+    console.log("this.mapProvider", this.mapProvider);
+    if (this.mapProvider) {
+      tileLayer(this.mapProvider, { maxZoom: 20 }).addTo(this.map);
+      this.mapProviderApplied = tileLayer(this.mapProvider, { maxZoom: 20 });
+    } else {
+      tileLayer(
+        "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png",
+        {}
+      ).addTo(this.map);
+      this.mapProviderApplied = tileLayer(
+        "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png",
+        { maxZoom: 20 }
+      );
+    }
+  }
+
   componentDidLoad() {
     const elementVar = this.element.querySelector(".gxMap");
     const coords = parseCoords(this.center);
@@ -126,7 +147,7 @@ export class Map implements GxComponent {
       );
       this.map = LFMap(elementVar).setView([0, 0], this.getZoom());
     }
-    tileLayer(this.mapProvider, {}).addTo(this.map);
+    this.setMapProvider();
     this.gxMapDidLoad.emit(this);
     this.fitBounds();
     this.map.addEventListener("click", ev => {
@@ -135,18 +156,8 @@ export class Map implements GxComponent {
   }
 
   componentDidUpdate() {
-    const centerCoords = parseCoords(this.center);
-    const zoom = parseInt("" + this.zoom, 10) || 0;
     const maxZoom = parseInt("" + this.maxZoom, 10) || 20;
-    if (centerCoords !== null) {
-      this.map.setView(centerCoords, zoom);
-    } else {
-      console.warn(
-        "GX warning: Can not read 'center' attribute, default center set (gx-map)",
-        this.element
-      );
-      this.map.setView([0, 0], zoom);
-    }
+    this.setMapProvider();
     this.map.setMaxZoom(maxZoom);
   }
 
