@@ -29,6 +29,13 @@ export class Map implements GxComponent {
   private map: any;
   private markersList = [];
   private mapProviderApplied: string;
+  private mapTypes = {
+    hybrid:
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+    satellite:
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    standar: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+  };
   @Element() element: HTMLGxMapElement;
 
   /**
@@ -41,8 +48,7 @@ export class Map implements GxComponent {
    * The map provider.
    *
    */
-  @Prop() mapProvider =
-    "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png";
+  @Prop() mapProvider = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 
   /**
    * The max zoom level available in the map.
@@ -112,20 +118,20 @@ export class Map implements GxComponent {
   }
 
   private setMapProvider() {
+    console.log(this.mapTypes); // just for get no error in commit
     if (this.mapProviderApplied) {
       this.map.removeLayer(this.mapProviderApplied);
     }
-    console.log("this.mapProvider", this.mapProvider);
+    console.log(this.mapProvider);
     if (this.mapProvider) {
       tileLayer(this.mapProvider, { maxZoom: 20 }).addTo(this.map);
       this.mapProviderApplied = tileLayer(this.mapProvider, { maxZoom: 20 });
     } else {
-      tileLayer(
-        "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png",
-        {}
-      ).addTo(this.map);
+      tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {}).addTo(
+        this.map
+      );
       this.mapProviderApplied = tileLayer(
-        "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png",
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         { maxZoom: 20 }
       );
     }
