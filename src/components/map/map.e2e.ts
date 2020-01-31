@@ -47,23 +47,28 @@ describe("gx-map", () => {
     expect(await element.getProperty("zoom")).toEqual(15);
   });
 
-  it("should have defined the default mapProvider", async () => {
+  it("should set the default mapType if mapType is no defined by user", async () => {
     await page.setContent("<gx-map></gx-map>");
     await page.waitForChanges();
     element = await page.find("gx-map");
-    expect(await element.getProperty("mapProvider")).toEqual(
-      "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
-    );
+    expect(await element.getProperty("mapType")).toEqual("standar");
+  });
+
+  it("should set the mapType defined by user", async () => {
+    await page.setContent("<gx-map map-type='satellite'></gx-map>");
+    await page.waitForChanges();
+    element = await page.find("gx-map");
+    expect(await element.getProperty("mapType")).toEqual("satellite");
   });
 
   it("should set the given mapProvider", async () => {
     await page.setContent(
-      "<gx-map map-provider='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'></gx-map>"
+      "<gx-map map-provider='http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png'></gx-map>"
     );
     await page.waitForChanges();
     element = await page.find("gx-map");
     expect(await element.getProperty("mapProvider")).toEqual(
-      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
     );
   });
 });

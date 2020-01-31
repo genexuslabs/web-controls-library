@@ -130,6 +130,7 @@ export class Map implements GxComponent {
       tileLayerToApply.addTo(thisComponent.map);
       thisComponent.mapProviderApplied = tileLayerToApply;
     }
+
     if (this.mapProviderApplied) {
       this.map.removeLayer(this.mapProviderApplied);
     }
@@ -147,7 +148,6 @@ export class Map implements GxComponent {
         }
       }
     }
-    console.log(this.mapProviderApplied);
   }
 
   componentDidLoad() {
