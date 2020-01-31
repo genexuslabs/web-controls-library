@@ -29,7 +29,7 @@ export class Map implements GxComponent {
   private map: any;
   private markersList = [];
   private mapProviderApplied: string;
-  private mapTypes = {
+  private mapTypesProviders = {
     hybrid:
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
     satellite:
@@ -48,7 +48,14 @@ export class Map implements GxComponent {
    * The map provider.
    *
    */
-  @Prop() mapProvider = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  @Prop() mapProvider: string;
+
+  /**
+   * Map type to be used instead a custom map provider.
+   * _Note: If you set a map provider, the selected map type will be ignored._
+   *
+   */
+  @Prop() mapType: "standar" | "satellite" | "hybrid" = "standar";
 
   /**
    * The max zoom level available in the map.
@@ -118,23 +125,29 @@ export class Map implements GxComponent {
   }
 
   private setMapProvider() {
-    console.log(this.mapTypes); // just for get no error in commit
+    function selectingTypes(mapType, thisComponent) {
+      const tileLayerToApply = tileLayer(mapType, { maxZoom: 20 });
+      tileLayerToApply.addTo(thisComponent.map);
+      thisComponent.mapProviderApplied = tileLayerToApply;
+    }
     if (this.mapProviderApplied) {
       this.map.removeLayer(this.mapProviderApplied);
     }
-    console.log(this.mapProvider);
     if (this.mapProvider) {
       tileLayer(this.mapProvider, { maxZoom: 20 }).addTo(this.map);
       this.mapProviderApplied = tileLayer(this.mapProvider, { maxZoom: 20 });
     } else {
-      tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {}).addTo(
-        this.map
-      );
-      this.mapProviderApplied = tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        { maxZoom: 20 }
-      );
+      if (!this.mapType || this.mapType === "standar") {
+        selectingTypes(this.mapTypesProviders.standar, this);
+      } else {
+        if (this.mapType === "hybrid") {
+          selectingTypes(this.mapTypesProviders.hybrid, this);
+        } else if (this.mapType === "satellite") {
+          selectingTypes(this.mapTypesProviders.satellite, this);
+        }
+      }
     }
+    console.log(this.mapProviderApplied);
   }
 
   componentDidLoad() {
