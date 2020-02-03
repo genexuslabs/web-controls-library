@@ -16,12 +16,13 @@ Example: `38.89606811858382, -77.0365619659424`
 
 ## Properties
 
-| Property      | Attribute      | Description                              | Type     | Default                                                    |
-| ------------- | -------------- | ---------------------------------------- | -------- | ---------------------------------------------------------- |
-| `center`      | `center`       | The coord of initial center of the map.  | `string` | `"0, 0"`                                                   |
-| `mapProvider` | `map-provider` | The map provider.                        | `string` | `"http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"` |
-| `maxZoom`     | `max-zoom`     | The max zoom level available in the map. | `number` | `20`                                                       |
-| `zoom`        | `zoom`         | The initial zoom level in the map.       | `number` | `1`                                                        |
+| Property      | Attribute      | Description                                                                                                                  | Type                                   | Default     |
+| ------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | ----------- |
+| `center`      | `center`       | The coord of initial center of the map.                                                                                      | `string`                               | `"0, 0"`    |
+| `mapProvider` | `map-provider` | The map provider.                                                                                                            | `string`                               | `undefined` |
+| `mapType`     | `map-type`     | Map type to be used instead a custom map provider. _Note: If you set a map provider, the selected map type will be ignored._ | `"hybrid" \| "satellite" \| "standar"` | `"standar"` |
+| `maxZoom`     | `max-zoom`     | The max zoom level available in the map.                                                                                     | `number`                               | `20`        |
+| `zoom`        | `zoom`         | The initial zoom level in the map.                                                                                           | `number`                               | `1`         |
 
 ## Events
 
@@ -29,14 +30,6 @@ Example: `38.89606811858382, -77.0365619659424`
 | -------------- | ------------------------------------------------------- | ------------------ |
 | `gxMapDidLoad` | Emmits when the map is loaded.                          | `CustomEvent<any>` |
 | `mapClick`     | Emmits when the map is clicked and return click coords. | `CustomEvent<any>` |
-
-## Methods
-
-### `fitMapToMarkers() => Promise<void>`
-
-#### Returns
-
-Type: `Promise<void>`
 
 ---
 

@@ -126,7 +126,9 @@ export class Map implements GxComponent {
 
   private setMapProvider() {
     function selectingTypes(mapType, thisComponent) {
-      const tileLayerToApply = tileLayer(mapType, { maxZoom: 20 });
+      const tileLayerToApply = tileLayer(mapType, {
+        maxZoom: thisComponent.maxZoom
+      });
       tileLayerToApply.addTo(thisComponent.map);
       thisComponent.mapProviderApplied = tileLayerToApply;
     }
@@ -135,8 +137,10 @@ export class Map implements GxComponent {
       this.map.removeLayer(this.mapProviderApplied);
     }
     if (this.mapProvider) {
-      tileLayer(this.mapProvider, { maxZoom: 20 }).addTo(this.map);
-      this.mapProviderApplied = tileLayer(this.mapProvider, { maxZoom: 20 });
+      tileLayer(this.mapProvider, { maxZoom: this.maxZoom }).addTo(this.map);
+      this.mapProviderApplied = tileLayer(this.mapProvider, {
+        maxZoom: this.maxZoom
+      });
     } else {
       if (!this.mapType || this.mapType === "standar") {
         selectingTypes(this.mapTypesProviders.standar, this);
@@ -153,6 +157,9 @@ export class Map implements GxComponent {
   componentDidLoad() {
     const elementVar = this.element.querySelector(".gxMap");
     const coords = parseCoords(this.center);
+    const maxZoom = parseInt("" + this.maxZoom, 10) || 20;
+    console.log(maxZoom);
+    console.log(this.getZoom());
     if (coords !== null) {
       this.map = LFMap(elementVar).setView(
         coords,
@@ -167,6 +174,7 @@ export class Map implements GxComponent {
       this.map = LFMap(elementVar).setView([0, 0], this.getZoom());
     }
     this.setMapProvider();
+    this.map.setMaxZoom(maxZoom);
     this.gxMapDidLoad.emit(this);
     this.fitBounds();
     this.map.addEventListener("click", ev => {
