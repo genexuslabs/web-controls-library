@@ -112,12 +112,18 @@ export class Map implements GxComponent {
   }
 
   private fitBounds() {
-    const markersGroup = new FeatureGroup(this.markersList);
-    this.map.fitBounds(markersGroup.getBounds());
+    if (this.markersList.length > 1) {
+      const markersGroup = new FeatureGroup(this.markersList);
+      this.map.fitBounds(markersGroup.getBounds());
+    } else if (this.markersList.length === 1) {
+      const marker = this.markersList[0];
+      const markerCoords = [marker._latlng.lat, marker._latlng.lng];
+      this.map.setView(markerCoords, this.zoom);
+    }
   }
 
   private getZoom() {
-    return this.zoom > 0 ? this.zoom : 20;
+    return this.zoom > 0 ? (this.zoom < 20 ? this.zoom : 19) : 1;
   }
 
   private onMapMarkerDeleted(markerV: Marker) {
@@ -175,8 +181,8 @@ export class Map implements GxComponent {
     }
     this.setMapProvider();
     this.map.setMaxZoom(maxZoom);
-    this.gxMapDidLoad.emit(this);
     this.fitBounds();
+    this.gxMapDidLoad.emit(this);
     this.map.addEventListener("click", ev => {
       this.mapClick.emit(ev.latlng);
     });
