@@ -12,22 +12,5 @@
   </head>
   <body>
     <h1>Test page</h1>
-    <gx-map
-      map-type="satellite"
-      center="-34.891017635335984, -56.16571426391602"
-    >
-      <gx-map-marker
-        coords="-34.891017635335984, -56.16571426391602"
-        icon-size-height="45"
-        icon-size-width="45"
-      ></gx-map-marker>
-    </gx-map>
-    <script>
-      document
-        .getElementsByTagName("body")[0]
-        .addEventListener("mapClick", ev => {
-          console.log(ev.detail);
-        });
-    </script>
   </body>
 </html>
