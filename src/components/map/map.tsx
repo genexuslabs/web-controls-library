@@ -36,6 +36,7 @@ export class Map implements GxComponent {
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     standar: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   };
+  private tileLayerApplied: tileLayer;
   @Element() element: HTMLGxMapElement;
 
   /**
@@ -135,18 +136,21 @@ export class Map implements GxComponent {
       const tileLayerToApply = tileLayer(mapType, {
         maxZoom: thisComponent.maxZoom
       });
-      tileLayerToApply.addTo(thisComponent.map);
+      // tileLayerToApply.addTo(thisComponent.map);
       thisComponent.mapProviderApplied = tileLayerToApply;
     }
-
     if (this.mapProviderApplied) {
-      this.map.removeLayer(this.mapProviderApplied);
+      console.log("mapProviderApplied exist! It suppose to be removed...");
+      console.log(this.tileLayerApplied);
+      this.tileLayerApplied.removeFrom(this.map);
     }
     if (this.mapProvider) {
-      tileLayer(this.mapProvider, { maxZoom: this.maxZoom }).addTo(this.map);
-      this.mapProviderApplied = tileLayer(this.mapProvider, {
+      const tileLayerToApply = tileLayer(this.mapProvider, {
         maxZoom: this.maxZoom
       });
+      tileLayerToApply.addTo(this.map);
+      this.mapProviderApplied = this.mapProvider;
+      this.tileLayerApplied = tileLayerToApply;
     } else {
       if (!this.mapType || this.mapType === "standar") {
         selectingTypes(this.mapTypesProviders.standar, this);
@@ -158,6 +162,7 @@ export class Map implements GxComponent {
         }
       }
     }
+    console.log("mapProviderApplied:", this.mapProviderApplied);
   }
 
   componentDidLoad() {
