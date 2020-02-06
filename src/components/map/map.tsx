@@ -47,6 +47,7 @@ export class Map implements GxComponent {
 
   /**
    * The map provider.
+   * _Note: By now, this proprty is for set a custom map provider using an URL._
    *
    */
   @Prop() mapProvider: string;
@@ -60,7 +61,7 @@ export class Map implements GxComponent {
 
   /**
    * The max zoom level available in the map.
-   *
+   * _Note: 20 is the best value to be used. Is highly recommended to no change this value if you are not secure about the maxZoom supported by the map._
    */
   @Prop() readonly maxZoom: number = 20;
 
@@ -140,8 +141,6 @@ export class Map implements GxComponent {
       thisComponent.mapProviderApplied = tileLayerToApply;
     }
     if (this.mapProviderApplied) {
-      console.log("mapProviderApplied exist! It suppose to be removed...");
-      console.log(this.tileLayerApplied);
       this.tileLayerApplied.removeFrom(this.map);
     }
     if (this.mapProvider) {
@@ -162,15 +161,12 @@ export class Map implements GxComponent {
         }
       }
     }
-    console.log("mapProviderApplied:", this.mapProviderApplied);
   }
 
   componentDidLoad() {
     const elementVar = this.element.querySelector(".gxMap");
     const coords = parseCoords(this.center);
     const maxZoom = parseInt("" + this.maxZoom, 10) || 20;
-    console.log(maxZoom);
-    console.log(this.getZoom());
     if (coords !== null) {
       this.map = LFMap(elementVar).setView(
         coords,
