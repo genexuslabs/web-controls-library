@@ -87,6 +87,7 @@ export class MapMarker implements GxComponent {
         })
       });
     }
+    this.setPopup();
     if (this.tooltipCaption) {
       this.markerInstance.bindTooltip(this.tooltipCaption);
     }
@@ -112,6 +113,7 @@ export class MapMarker implements GxComponent {
         tooltipAnchor: [0, -28]
       })
     );
+    this.setPopup();
   }
 
   componentDidUnload() {
@@ -119,6 +121,10 @@ export class MapMarker implements GxComponent {
   }
 
   render() {
-    return "";
+    return (
+      <div class="popupHtml">
+        <slot />
+      </div>
+    );
   }
 }
