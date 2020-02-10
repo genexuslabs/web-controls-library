@@ -64,6 +64,18 @@ export class MapMarker implements GxComponent {
 
   componentDidLoad() {
     const halfIconWidth = this.iconWidth / 2;
+  private setPopup() {
+    const popupHtml = this.element.querySelector("[class='popupHtml']");
+    if (popupHtml.innerHTML) {
+      this.markerInstance.bindPopup(popupHtml);
+    }
+  }
+
+  componentDidLoad() {
+    const halfIconSizes = {
+      height: this.iconSizeHeight / 2,
+      width: this.iconSizeWidth / 2
+    };
     const coords = parseCoords(this.coords);
     if (coords !== null) {
       this.markerInstance = marker(coords, {
@@ -71,6 +83,9 @@ export class MapMarker implements GxComponent {
           className: this.markerClass,
           iconAnchor: [halfIconWidth, this.iconHeight],
           iconSize: [this.iconWidth, this.iconHeight],
+          iconAnchor: [halfIconSizes.width, this.iconSizeHeight],
+          popupAnchor: [0, -halfIconSizes.height],
+          iconSize: [this.iconSizeWidth, this.iconSizeHeight],
           tooltipAnchor: [0, -28]
         })
       });
@@ -83,6 +98,10 @@ export class MapMarker implements GxComponent {
         icon: divIcon({
           iconAnchor: [halfIconWidth, this.iconHeight],
           iconSize: [this.iconWidth, this.iconHeight],
+          iconAnchor: [halfIconSizes.width, this.iconSizeHeight],
+          popupAnchor: [0, -halfIconSizes.height],
+          iconSize: [this.iconSizeWidth, this.iconSizeHeight],
+          // iconUrl: this.iconSrc,
           tooltipAnchor: [0, -28]
         })
       });
@@ -98,6 +117,10 @@ export class MapMarker implements GxComponent {
 
   componentDidUpdate() {
     const halfIconWidth = this.iconWidth / 2;
+    const halfIconSizes = {
+      height: this.iconSizeHeight / 2,
+      width: this.iconSizeWidth / 2
+    };
     const coords = parseCoords(this.coords);
     if (coords !== null) {
       this.markerInstance.setLatLng(coords);
@@ -112,6 +135,10 @@ export class MapMarker implements GxComponent {
       divIcon({
         iconAnchor: [halfIconWidth, this.iconHeight],
         iconSize: [this.iconWidth, this.iconHeight],
+        iconAnchor: [halfIconSizes.width, this.iconSizeHeight],
+        popupAnchor: [0, -halfIconSizes.height],
+        iconSize: [this.iconSizeWidth, this.iconSizeHeight],
+        // iconUrl: this.iconSrc || this.defaultIcon,
         tooltipAnchor: [0, -28]
       })
     );
