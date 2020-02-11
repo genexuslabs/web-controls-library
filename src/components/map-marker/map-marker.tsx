@@ -67,7 +67,11 @@ export class MapMarker implements GxComponent {
   private setPopup() {
     const popupHtml = this.element.querySelector("[class='popupHtml']");
     if (popupHtml.innerHTML) {
-      this.markerInstance.bindPopup(popupHtml);
+      this.markerInstance.bindPopup(popupHtml, {
+        keepInView: true,
+        maxHeight: 300,
+        minWidth: 100
+      });
     }
   }
 
