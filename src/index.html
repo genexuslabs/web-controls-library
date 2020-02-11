@@ -44,20 +44,28 @@
       </gx-map-marker>
 
       <gx-map-marker
-        coords="32.28589910927108, -90.1860809326172"
+        coords="-33.3341904182158, -55.1328088063821"
         marker-class="MkM_Marker"
       >
       </gx-map-marker>
 
       <gx-map-marker
-        coords="52.1940345151315,0.15930175781250003"
+        coords="-34.74717452958529, -56.14659365206457"
         marker-class="MkM_Marker"
-      ></gx-map-marker>
+      >
+        <div>
+          <h3>
+            Title of popUp here
+          </h3>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+          <p>
+            Sequi quasi sed error maxime repellat amet laborum ipsum vel labore
+            qui, veritatis voluptas deleniti, inventore similique.
+          </p>
+          <p>Tempora molestias minus eveniet itaque!</p>
+        </div>
+      </gx-map-marker>
 
-      <gx-map-marker
-        coords="22.270948323125065, 114.20082092285158"
-        marker-class="MkM_Marker"
-      ></gx-map-marker>
       <!--
         <gx-map-marker
             coords="-34.35052255873809, -56.08520507812501"
@@ -82,7 +90,7 @@
       document
         .getElementsByTagName("body")[0]
         .addEventListener("mapClick", ev => {
-          console.log(ev.detail);
+          console.log(`${ev.detail.lat}, ${ev.detail.lng}`);
         });
     </script>
   </body>

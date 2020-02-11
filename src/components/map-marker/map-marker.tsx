@@ -72,6 +72,7 @@ export class MapMarker implements GxComponent {
   private setPopup() {
     const popupHtml = this.element.querySelector("[class='popupHtml']");
     if (popupHtml.innerHTML) {
+<<<<<<< HEAD
       const marginProportion = 83 / 100;
       const maxPopupSize = {
         height:
@@ -82,6 +83,11 @@ export class MapMarker implements GxComponent {
         keepInView: true,
         maxHeight: maxPopupSize.height,
         maxWidth: maxPopupSize.width,
+=======
+      this.markerInstance.bindPopup(popupHtml, {
+        keepInView: true,
+        maxHeight: 300,
+>>>>>>> trying popUp options
         minWidth: 100
       });
     }
