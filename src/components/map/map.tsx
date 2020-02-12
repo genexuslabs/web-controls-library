@@ -189,6 +189,11 @@ export class Map implements GxComponent {
     this.map.setMaxZoom(this.maxZoom);
     this.fitBounds();
     this.gxMapDidLoad.emit(this);
+    this.map.on("popupopen", function(e) {
+      const px = this.project(e.target._popup._latlng);
+      px.y -= e.target._popup._container.clientHeight / 2;
+      this.panTo(this.unproject(px), { animate: true });
+    });
     this.map.addEventListener("click", ev => {
       this.mapClick.emit(ev.latlng);
     });
