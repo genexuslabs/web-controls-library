@@ -67,9 +67,14 @@ export class MapMarker implements GxComponent {
   private setPopup() {
     const popupHtml = this.element.querySelector("[class='popupHtml']");
     if (popupHtml.innerHTML) {
+      const marginProportion = 83 / 100;
+      const maxPopupWidth =
+        document.querySelector(".gxMap").clientWidth * marginProportion;
+      console.log(maxPopupWidth);
       this.markerInstance.bindPopup(popupHtml, {
         keepInView: true,
         maxHeight: 300,
+        maxWidth: maxPopupWidth,
         minWidth: 100
       });
     }
@@ -90,7 +95,7 @@ export class MapMarker implements GxComponent {
           iconAnchor: [halfIconSizes.width, this.iconSizeHeight],
           popupAnchor: [0, -halfIconSizes.height],
           iconSize: [this.iconSizeWidth, this.iconSizeHeight],
-          tooltipAnchor: [0, -28]
+          tooltipAnchor: [0, -halfIconSizes.height]
         })
       });
     } else {
@@ -105,8 +110,7 @@ export class MapMarker implements GxComponent {
           iconAnchor: [halfIconSizes.width, this.iconSizeHeight],
           popupAnchor: [0, -halfIconSizes.height],
           iconSize: [this.iconSizeWidth, this.iconSizeHeight],
-          // iconUrl: this.iconSrc,
-          tooltipAnchor: [0, -28]
+          tooltipAnchor: [0, -halfIconSizes.height]
         })
       });
     }
@@ -142,8 +146,7 @@ export class MapMarker implements GxComponent {
         iconAnchor: [halfIconSizes.width, this.iconSizeHeight],
         popupAnchor: [0, -halfIconSizes.height],
         iconSize: [this.iconSizeWidth, this.iconSizeHeight],
-        // iconUrl: this.iconSrc || this.defaultIcon,
-        tooltipAnchor: [0, -28]
+        tooltipAnchor: [0, -halfIconSizes.height]
       })
     );
     this.setPopup();
