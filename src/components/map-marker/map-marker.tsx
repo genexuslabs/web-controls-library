@@ -89,7 +89,9 @@ export class MapMarker implements GxComponent {
     }
     this.setPopup();
     if (this.tooltipCaption) {
-      this.markerInstance.bindTooltip(this.tooltipCaption);
+      this.markerInstance.bindTooltip(this.tooltipCaption, {
+        direction: "top"
+      });
     }
     this.gxMapMarkerDidLoad.emit(this.markerInstance);
   }
