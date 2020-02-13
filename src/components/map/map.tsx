@@ -137,7 +137,7 @@ export class Map implements GxComponent {
       const tileLayerToApply = tileLayer(mapType, {
         maxZoom: thisComponent.maxZoom
       });
-      // tileLayerToApply.addTo(thisComponent.map);
+      tileLayerToApply.addTo(thisComponent.map);
       thisComponent.mapProviderApplied = tileLayerToApply;
     }
     if (this.mapProviderApplied) {
