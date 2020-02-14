@@ -21,24 +21,22 @@ export class MapMarker implements GxComponent {
   /**
    * The class that the marker will have.
    *
-   * _Tip: Set the background-image to use it as icon of the marker._
-   *
-   * _Note: The default class is defined in map style._
+   * Set the `background-image` to use it as icon of the marker.
    *
    */
-  @Prop() markerClass = "defaultIcon";
+  @Prop() markerClass = "gx-defaultIcon";
 
   /**
    * The marker image height.
    *
    */
-  @Prop() iconSizeHeight = 30;
+  @Prop() iconHeight = 30;
 
   /**
    * The marker image width.
    *
    */
-  @Prop() iconSizeWidth = 30;
+  @Prop() iconWidth = 30;
 
   /**
    * The tooltip caption of the marker.
@@ -65,14 +63,14 @@ export class MapMarker implements GxComponent {
   @Event() gxMapMarkerDeleted: EventEmitter;
 
   componentDidLoad() {
-    const halfIconWidth = this.iconSizeWidth / 2;
+    const halfIconWidth = this.iconWidth / 2;
     const coords = parseCoords(this.coords);
     if (coords !== null) {
       this.markerInstance = marker(coords, {
         icon: divIcon({
           className: this.markerClass,
-          iconAnchor: [halfIconWidth, this.iconSizeHeight],
-          iconSize: [this.iconSizeWidth, this.iconSizeHeight],
+          iconAnchor: [halfIconWidth, this.iconHeight],
+          iconSize: [this.iconWidth, this.iconHeight],
           tooltipAnchor: [0, -28]
         })
       });
@@ -83,8 +81,8 @@ export class MapMarker implements GxComponent {
       );
       this.markerInstance = marker([0, 0], {
         icon: divIcon({
-          iconAnchor: [halfIconWidth, this.iconSizeHeight],
-          iconSize: [this.iconSizeWidth, this.iconSizeHeight],
+          iconAnchor: [halfIconWidth, this.iconHeight],
+          iconSize: [this.iconWidth, this.iconHeight],
           tooltipAnchor: [0, -28]
         })
       });
@@ -96,7 +94,7 @@ export class MapMarker implements GxComponent {
   }
 
   componentDidUpdate() {
-    const halfIconWidth = this.iconSizeWidth / 2;
+    const halfIconWidth = this.iconWidth / 2;
     const coords = parseCoords(this.coords);
     if (coords !== null) {
       this.markerInstance.setLatLng(coords);
@@ -109,8 +107,8 @@ export class MapMarker implements GxComponent {
     }
     this.markerInstance.setIcon(
       divIcon({
-        iconAnchor: [halfIconWidth, this.iconSizeHeight],
-        iconSize: [this.iconSizeWidth, this.iconSizeHeight],
+        iconAnchor: [halfIconWidth, this.iconHeight],
+        iconSize: [this.iconWidth, this.iconHeight],
         tooltipAnchor: [0, -28]
       })
     );
