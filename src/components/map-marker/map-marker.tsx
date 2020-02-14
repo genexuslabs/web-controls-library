@@ -68,13 +68,15 @@ export class MapMarker implements GxComponent {
     const popupHtml = this.element.querySelector("[class='popupHtml']");
     if (popupHtml.innerHTML) {
       const marginProportion = 83 / 100;
-      const maxPopupWidth =
-        document.querySelector(".gxMap").clientWidth * marginProportion;
-      console.log(maxPopupWidth);
+      const maxPopupSize = {
+        height:
+          document.querySelector(".gxMap").clientHeight * marginProportion,
+        width: document.querySelector(".gxMap").clientWidth * marginProportion
+      };
       this.markerInstance.bindPopup(popupHtml, {
         keepInView: true,
-        maxHeight: 300,
-        maxWidth: maxPopupWidth,
+        maxHeight: maxPopupSize.height,
+        maxWidth: maxPopupSize.width,
         minWidth: 100
       });
     }
@@ -152,6 +154,7 @@ export class MapMarker implements GxComponent {
     this.setPopup();
   }
 
+  // eslint-disable-next-line @stencil/own-methods-must-be-private
   componentDidUnload() {
     this.gxMapMarkerDeleted.emit(this.markerInstance);
   }
