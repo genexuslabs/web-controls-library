@@ -7,13 +7,13 @@ This element represents a marker inside a `<gx-map>` element.
 
 ## Properties
 
-| Property         | Attribute          | Description                                                                                                                                              | Type     | Default         |
-| ---------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------------- |
-| `coords`         | `coords`           | The coordinates where the marker will appear in the map.                                                                                                 | `string` | `"0, 0"`        |
-| `iconSizeHeight` | `icon-size-height` | The marker image height.                                                                                                                                 | `number` | `30`            |
-| `iconSizeWidth`  | `icon-size-width`  | The marker image width.                                                                                                                                  | `number` | `30`            |
-| `markerClass`    | `marker-class`     | The class that the marker will have. _Tip: Set the background-image to use it as icon of the marker._ _Note: The default class is defined in map style._ | `string` | `"defaultIcon"` |
-| `tooltipCaption` | `tooltip-caption`  | The tooltip caption of the marker.                                                                                                                       | `string` | `undefined`     |
+| Property         | Attribute         | Description                                                                                      | Type     | Default            |
+| ---------------- | ----------------- | ------------------------------------------------------------------------------------------------ | -------- | ------------------ |
+| `coords`         | `coords`          | The coordinates where the marker will appear in the map.                                         | `string` | `"0, 0"`           |
+| `iconHeight`     | `icon-height`     | The marker image height.                                                                         | `number` | `30`               |
+| `iconWidth`      | `icon-width`      | The marker image width.                                                                          | `number` | `30`               |
+| `markerClass`    | `marker-class`    | The class that the marker will have. Set the `background-image` to use it as icon of the marker. | `string` | `"gx-defaultIcon"` |
+| `tooltipCaption` | `tooltip-caption` | The tooltip caption of the marker.                                                               | `string` | `undefined`        |
 
 ## Events
 
