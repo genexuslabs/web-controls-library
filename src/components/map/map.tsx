@@ -1,7 +1,3 @@
-/* To do:
-    - Research about the usertracking feature
-*/
-
 import {
   Component,
   Element,
