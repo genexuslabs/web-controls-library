@@ -155,7 +155,6 @@ export class MapMarker implements GxComponent {
     this.setPopup();
   }
 
-  // eslint-disable-next-line @stencil/own-methods-must-be-private
   componentDidUnload() {
     this.gxMapMarkerDeleted.emit(this.markerInstance);
   }
