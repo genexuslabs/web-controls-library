@@ -72,8 +72,6 @@ export class MapMarker implements GxComponent {
   private setPopup() {
     const popupHtml = this.element.querySelector("[class='popupHtml']");
     if (popupHtml.innerHTML) {
-<<<<<<< HEAD
-<<<<<<< HEAD
       const marginProportion = 83 / 100;
       const maxPopupSize = {
         height:
@@ -84,21 +82,6 @@ export class MapMarker implements GxComponent {
         keepInView: true,
         maxHeight: maxPopupSize.height,
         maxWidth: maxPopupSize.width,
-=======
-      this.markerInstance.bindPopup(popupHtml, {
-        keepInView: true,
-        maxHeight: 300,
->>>>>>> trying popUp options
-=======
-      const marginProportion = 83 / 100;
-      const maxPopupWidth =
-        document.querySelector(".gxMap").clientWidth * marginProportion;
-      console.log(maxPopupWidth);
-      this.markerInstance.bindPopup(popupHtml, {
-        keepInView: true,
-        maxHeight: 300,
-        maxWidth: maxPopupWidth,
->>>>>>> popup sizes has been set
         minWidth: 100
       });
     }
@@ -116,11 +99,7 @@ export class MapMarker implements GxComponent {
           className: this.markerClass,
           iconAnchor: [halfIconSizes.width, this.iconHeight],
           popupAnchor: [0, -halfIconSizes.height],
-<<<<<<< HEAD
           iconSize: [this.iconWidth, this.iconHeight],
-=======
-          iconSize: [this.iconSizeWidth, this.iconSizeHeight],
->>>>>>> popup sizes has been set
           tooltipAnchor: [0, -halfIconSizes.height]
         })
       });
@@ -134,11 +113,7 @@ export class MapMarker implements GxComponent {
           className: this.markerClass,
           iconAnchor: [halfIconSizes.width, this.iconHeight],
           popupAnchor: [0, -halfIconSizes.height],
-<<<<<<< HEAD
           iconSize: [this.iconWidth, this.iconHeight],
-=======
-          iconSize: [this.iconSizeWidth, this.iconSizeHeight],
->>>>>>> popup sizes has been set
           tooltipAnchor: [0, -halfIconSizes.height]
         })
       });
@@ -173,11 +148,7 @@ export class MapMarker implements GxComponent {
         className: this.markerClass,
         iconAnchor: [halfIconSizes.width, this.iconHeight],
         popupAnchor: [0, -halfIconSizes.height],
-<<<<<<< HEAD
         iconSize: [this.iconWidth, this.iconHeight],
-=======
-        iconSize: [this.iconSizeWidth, this.iconSizeHeight],
->>>>>>> popup sizes has been set
         tooltipAnchor: [0, -halfIconSizes.height]
       })
     );
