@@ -1,4 +1,11 @@
-import { Component, Element, Event, EventEmitter, Prop } from "@stencil/core";
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Prop
+} from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 import { divIcon, marker } from "leaflet/dist/leaflet-src.esm";
 import { parseCoords } from "../common/coordsValidate";
@@ -62,8 +69,6 @@ export class MapMarker implements GxComponent {
    */
   @Event() gxMapMarkerDeleted: EventEmitter;
 
-  componentDidLoad() {
-    const halfIconWidth = this.iconWidth / 2;
   private setPopup() {
     const popupHtml = this.element.querySelector("[class='popupHtml']");
     if (popupHtml.innerHTML) {
@@ -84,19 +89,17 @@ export class MapMarker implements GxComponent {
 
   componentDidLoad() {
     const halfIconSizes = {
-      height: this.iconSizeHeight / 2,
-      width: this.iconSizeWidth / 2
+      height: this.iconHeight / 2,
+      width: this.iconWidth / 2
     };
     const coords = parseCoords(this.coords);
     if (coords !== null) {
       this.markerInstance = marker(coords, {
         icon: divIcon({
           className: this.markerClass,
-          iconAnchor: [halfIconWidth, this.iconHeight],
-          iconSize: [this.iconWidth, this.iconHeight],
-          iconAnchor: [halfIconSizes.width, this.iconSizeHeight],
+          iconAnchor: [halfIconSizes.width, this.iconHeight],
           popupAnchor: [0, -halfIconSizes.height],
-          iconSize: [this.iconSizeWidth, this.iconSizeHeight],
+          iconSize: [this.iconWidth, this.iconHeight],
           tooltipAnchor: [0, -halfIconSizes.height]
         })
       });
@@ -107,11 +110,10 @@ export class MapMarker implements GxComponent {
       );
       this.markerInstance = marker([0, 0], {
         icon: divIcon({
-          iconAnchor: [halfIconWidth, this.iconHeight],
-          iconSize: [this.iconWidth, this.iconHeight],
-          iconAnchor: [halfIconSizes.width, this.iconSizeHeight],
+          className: this.markerClass,
+          iconAnchor: [halfIconSizes.width, this.iconHeight],
           popupAnchor: [0, -halfIconSizes.height],
-          iconSize: [this.iconSizeWidth, this.iconSizeHeight],
+          iconSize: [this.iconWidth, this.iconHeight],
           tooltipAnchor: [0, -halfIconSizes.height]
         })
       });
@@ -126,10 +128,9 @@ export class MapMarker implements GxComponent {
   }
 
   componentDidUpdate() {
-    const halfIconWidth = this.iconWidth / 2;
     const halfIconSizes = {
-      height: this.iconSizeHeight / 2,
-      width: this.iconSizeWidth / 2
+      height: this.iconHeight / 2,
+      width: this.iconWidth / 2
     };
     const coords = parseCoords(this.coords);
     if (coords !== null) {
@@ -141,13 +142,13 @@ export class MapMarker implements GxComponent {
       );
       this.markerInstance.setLatLng([0, 0]);
     }
+    // this.setIconSrc();
     this.markerInstance.setIcon(
       divIcon({
-        iconAnchor: [halfIconWidth, this.iconHeight],
-        iconSize: [this.iconWidth, this.iconHeight],
-        iconAnchor: [halfIconSizes.width, this.iconSizeHeight],
+        className: this.markerClass,
+        iconAnchor: [halfIconSizes.width, this.iconHeight],
         popupAnchor: [0, -halfIconSizes.height],
-        iconSize: [this.iconSizeWidth, this.iconSizeHeight],
+        iconSize: [this.iconWidth, this.iconHeight],
         tooltipAnchor: [0, -halfIconSizes.height]
       })
     );
