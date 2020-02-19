@@ -29,13 +29,13 @@ Example: `-34.87945241095968, -56.078210142066956`
 
 ## Properties
 
-| Property      | Attribute      | Description                                                                                                                                                                                   | Type                                   | Default     |
-| ------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | ----------- |
-| `center`      | `center`       | The coord of initial center of the map.                                                                                                                                                       | `string`                               | `"0, 0"`    |
-| `mapProvider` | `map-provider` | The map provider. _Note: By now, this proprty is for set a custom map provider using an URL._                                                                                                 | `string`                               | `undefined` |
-| `mapType`     | `map-type`     | Map type to be used instead a custom map provider. _Note: If you set a map provider, the selected map type will be ignored._                                                                  | `"hybrid" \| "satellite" \| "standar"` | `"standar"` |
-| `maxZoom`     | `max-zoom`     | The max zoom level available in the map. _Note: 20 is the best value to be used. Is highly recommended to no change this value if you are not secure about the maxZoom supported by the map._ | `number`                               | `20`        |
-| `zoom`        | `zoom`         | The initial zoom level in the map.                                                                                                                                                            | `number`                               | `1`         |
+| Property      | Attribute      | Description                                                                                                                                                                                   | Type                                    | Default      |
+| ------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- | ------------ |
+| `center`      | `center`       | The coord of initial center of the map.                                                                                                                                                       | `string`                                | `"0, 0"`     |
+| `mapProvider` | `map-provider` | The map provider. _Note: Currently, this property is for setting a custom map provider using an URL._                                                                                         | `string`                                | `undefined`  |
+| `mapType`     | `map-type`     | Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._                                                                                                | `"hybrid" \| "satellite" \| "standard"` | `"standard"` |
+| `maxZoom`     | `max-zoom`     | The max zoom level available in the map. _Note: 20 is the best value to be used. Is highly recommended to no change this value if you are not sure about the `maxZoom` supported by the map._ | `number`                                | `20`         |
+| `zoom`        | `zoom`         | The initial zoom level in the map.                                                                                                                                                            | `number`                                | `1`          |
 
 ## Events
 
