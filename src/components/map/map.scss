@@ -1,16 +1,16 @@
 @import "../common/_base";
 @import "../../../node_modules/leaflet/dist/leaflet.css";
 
-@mixin widthHeightSize($valueX, $valueY) {
-  height: $valueY;
-  width: $valueX;
+@mixin size($width, $height) {
+  height: $height;
+  width: $width;
 }
 gx-map {
   @include visibility(block);
   .gxMapContainer {
-    @include widthHeightSize(100%, 500px);
+    @include size(100%, 500px);
     .gxMap {
-      @include widthHeightSize(100%, 100%);
+      @include size(100%, 100%);
     }
   }
   .gx-default-icon {

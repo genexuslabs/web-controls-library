@@ -31,20 +31,20 @@ describe("gx-map", () => {
     );
   });
 
-  it("should set a given maxZoom", async () => {
-    await page.setContent("<gx-map max-zoom='17'></gx-map>");
+  it("should set a default maxZoom if given maxZoom exceed optimal range", async () => {
+    await page.setContent("<gx-map max-zoom='24'></gx-map>");
     await page.waitForChanges();
     element = await page.find("gx-map");
     await page.waitForChanges();
-    expect(await element.getProperty("maxZoom")).toEqual(17);
+    expect(await element.getProperty("maxZoom")).toEqual(20);
   });
 
-  it("should set a given zoom", async () => {
-    await page.setContent("<gx-map zoom='15'></gx-map>");
+  it("should set a default zoom if given zoom exceed optimal range", async () => {
+    await page.setContent("<gx-map zoom='35'></gx-map>");
     await page.waitForChanges();
     element = await page.find("gx-map");
     await page.waitForChanges();
-    expect(await element.getProperty("zoom")).toEqual(15);
+    expect(await element.getProperty("zoom")).toEqual(19);
   });
 
   it("should set the default mapType if mapType is no defined by user", async () => {
