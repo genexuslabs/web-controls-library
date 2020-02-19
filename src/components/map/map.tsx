@@ -30,7 +30,7 @@ export class Map implements GxComponent {
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
     satellite:
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-    standar: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    standard: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   };
   private tileLayerApplied: tileLayer;
   @Element() element: HTMLGxMapElement;
@@ -43,21 +43,21 @@ export class Map implements GxComponent {
 
   /**
    * The map provider.
-   * _Note: By now, this proprty is for set a custom map provider using an URL._
+   * _Note: Currently, this property is for setting a custom map provider using an URL._
    *
    */
   @Prop() mapProvider: string;
 
   /**
-   * Map type to be used instead a custom map provider.
+   * Map type to be used.
    * _Note: If you set a map provider, the selected map type will be ignored._
    *
    */
-  @Prop() mapType: "standar" | "satellite" | "hybrid" = "standar";
+  @Prop() mapType: "standard" | "satellite" | "hybrid" = "standard";
 
   /**
    * The max zoom level available in the map.
-   * _Note: 20 is the best value to be used. Is highly recommended to no change this value if you are not secure about the maxZoom supported by the map._
+   * _Note: 20 is the best value to be used. Is highly recommended to no change this value if you are not sure about the `maxZoom` supported by the map._
    */
   @Prop() readonly maxZoom: number = 20;
 
@@ -147,8 +147,8 @@ export class Map implements GxComponent {
       this.mapProviderApplied = this.mapProvider;
       this.tileLayerApplied = tileLayerToApply;
     } else {
-      if (!this.mapType || this.mapType === "standar") {
-        selectingTypes(this.mapTypesProviders.standar, this);
+      if (!this.mapType || this.mapType === "standard") {
+        selectingTypes(this.mapTypesProviders.standard, this);
       } else {
         if (this.mapType === "hybrid") {
           selectingTypes(this.mapTypesProviders.hybrid, this);

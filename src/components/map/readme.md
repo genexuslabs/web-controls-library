@@ -8,20 +8,20 @@ The coordinate system used is the [EPSG:3857](https://epsg.io/) also known as "W
 
 Syntax: `lat, lng`
 
-Example: `-34.87845241095968, -56.07882142066956`
+Example: `-34.87945241095968, -56.078210142066956`
 
-## Using Sample
+## Example
 
 ```HTML
-    <gx-map center="-34.87845241095968, -56.07882142066956" zoom="12">
+    <gx-map center="-34.87945241095968, -56.078210142066956" zoom="12">
     </gx-map>
 ```
 
-> ### Sample with Marker
+> ### Example with Marker
 
 ```HTML
-    <gx-map center="-34.87845241095968, -56.07882142066956" zoom="12">
-      <gx-map-marker coords="-34.87845241095968, -56.07882142066956" tooltip-caption="Some title here"></gx-map-marker>
+    <gx-map center="-34.87945241095968, -56.078210142066956" zoom="12">
+      <gx-map-marker coords="-34.87945241095968, -56.078210142066956" tooltip-caption="Some title here"></gx-map-marker>
     </gx-map>
 ```
 
