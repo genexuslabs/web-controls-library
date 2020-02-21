@@ -61,7 +61,7 @@ export class Map implements GxComponent {
    * The max zoom level available in the map.
    * _Note: 20 is the best value to be used, only lower values are allowed. Is highly recommended to no change this value if you are not sure about the `maxZoom` supported by the map._
    */
-  @Prop() readonly maxZoom: number = this.RECOMMENDED_MAX_ZOOM;
+  @Prop({ mutable: true }) maxZoom: number = this.RECOMMENDED_MAX_ZOOM;
 
   /**
    * The initial zoom level in the map.
@@ -100,7 +100,7 @@ export class Map implements GxComponent {
   }
 
   private checkForMaxZoom() {
-    return this.maxZoom || this.RECOMMENDED_MAX_ZOOM;
+    return this.maxZoom < 20 ? this.maxZoom : this.RECOMMENDED_MAX_ZOOM;
   }
 
   private fitBounds() {
@@ -147,7 +147,7 @@ export class Map implements GxComponent {
   }
 
   private setMapProvider() {
-    if (this.mapProviderApplied) {
+    if (this.mapProviderApplied && this.tileLayerApplied) {
       this.tileLayerApplied.removeFrom(this.map);
     }
     if (this.mapProvider) {
@@ -173,13 +173,10 @@ export class Map implements GxComponent {
   componentDidLoad() {
     const elementVar = this.element.querySelector(".gxMap");
     const coords = parseCoords(this.center);
-    const maxZoom = this.checkForMaxZoom();
+    this.maxZoom = this.checkForMaxZoom();
+    this.zoom = this.getZoom();
     if (coords !== null) {
-      this.map = LFMap(elementVar).setView(
-        coords,
-        this.getZoom(),
-        this.maxZoom
-      );
+      this.map = LFMap(elementVar).setView(coords, this.zoom, this.maxZoom);
     } else {
       console.warn(
         "GX warning: Can not read 'center' attribute, default center set (gx-map)",
@@ -188,7 +185,7 @@ export class Map implements GxComponent {
       this.map = LFMap(elementVar).setView([0, 0], this.getZoom());
     }
     this.setMapProvider();
-    this.map.setMaxZoom(maxZoom);
+    this.map.setMaxZoom(this.maxZoom);
     this.fitBounds();
     this.gxMapDidLoad.emit(this);
     this.map.addEventListener("click", ev => {
