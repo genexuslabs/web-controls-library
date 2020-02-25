@@ -1,4 +1,12 @@
-import { Element, Event, EventEmitter, Listen, Prop, h } from "@stencil/core";
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Listen,
+  Prop,
+  h
+} from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 import {
   FeatureGroup,
@@ -10,6 +18,12 @@ import { parseCoords } from "../common/coordsValidate";
 
 const MIN_ZOOM = 1;
 const RECOMMENDED_MAX_ZOOM = 20;
+
+@Component({
+  shadow: false,
+  styleUrl: "map.scss",
+  tag: "gx-map"
+})
 export class Map implements GxComponent {
   private map: LFMap;
   private markersList = [];
