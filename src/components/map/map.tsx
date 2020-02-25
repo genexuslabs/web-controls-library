@@ -1,12 +1,4 @@
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Listen,
-  Prop,
-  h
-} from "@stencil/core";
+import { Element, Event, EventEmitter, Listen, Prop, h } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 import {
   FeatureGroup,
@@ -16,11 +8,8 @@ import {
 } from "leaflet/dist/leaflet-src.esm";
 import { parseCoords } from "../common/coordsValidate";
 
-@Component({
-  shadow: false,
-  styleUrl: "map.scss",
-  tag: "gx-map"
-})
+const MIN_ZOOM = 1;
+const RECOMMENDED_MAX_ZOOM = 20;
 export class Map implements GxComponent {
   private map: LFMap;
   private markersList = [];
@@ -32,8 +21,6 @@ export class Map implements GxComponent {
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     standard: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   };
-  private MIN_ZOOM = 1;
-  private RECOMMENDED_MAX_ZOOM = 20;
   private tileLayerApplied: tileLayer;
   @Element() element: HTMLGxMapElement;
 
@@ -61,7 +48,7 @@ export class Map implements GxComponent {
    * The max zoom level available in the map.
    * _Note: 20 is the best value to be used, only lower values are allowed. Is highly recommended to no change this value if you are not sure about the `maxZoom` supported by the map._
    */
-  @Prop({ mutable: true }) maxZoom: number = this.RECOMMENDED_MAX_ZOOM;
+  @Prop({ mutable: true }) maxZoom: number = RECOMMENDED_MAX_ZOOM;
 
   /**
    * The initial zoom level in the map.
@@ -100,7 +87,7 @@ export class Map implements GxComponent {
   }
 
   private checkForMaxZoom() {
-    return this.maxZoom < 20 ? this.maxZoom : this.RECOMMENDED_MAX_ZOOM;
+    return this.maxZoom < 20 ? this.maxZoom : RECOMMENDED_MAX_ZOOM;
   }
 
   private fitBounds() {
@@ -116,10 +103,10 @@ export class Map implements GxComponent {
 
   private getZoom() {
     return this.zoom > 0
-      ? this.zoom < this.RECOMMENDED_MAX_ZOOM
+      ? this.zoom < RECOMMENDED_MAX_ZOOM
         ? this.zoom
-        : this.RECOMMENDED_MAX_ZOOM - 1
-      : this.MIN_ZOOM;
+        : RECOMMENDED_MAX_ZOOM - 1
+      : MIN_ZOOM;
   }
 
   private onMapMarkerDeleted(marker: Marker) {

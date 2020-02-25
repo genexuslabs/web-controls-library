@@ -53,26 +53,7 @@ describe("gx-map", () => {
     element = await page.find("gx-map");
     expect(await element.getProperty("mapType")).toEqual("standard");
   });
-
-  it("should set the mapType defined by user", async () => {
-    await page.setContent("<gx-map map-type='satellite'></gx-map>");
-    await page.waitForChanges();
-    element = await page.find("gx-map");
-    expect(await element.getProperty("mapType")).toEqual("satellite");
-  });
-
-  it("should set the given mapProvider", async () => {
-    await page.setContent(
-      "<gx-map map-provider='http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png'></gx-map>"
-    );
-    await page.waitForChanges();
-    element = await page.find("gx-map");
-    expect(await element.getProperty("mapProvider")).toEqual(
-      "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
-    );
-  });
-
-  it("should properly intereact with gx-map-marker components", async () => {
+  +it("should properly intereact with gx-map-marker components", async () => {
     let childCounts: E2EElement[];
 
     await page.setContent(
