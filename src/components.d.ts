@@ -565,9 +565,17 @@ export namespace Components {
      */
     center: string;
     /**
+     * The map provider.
+     */
+    mapProvider: string;
+    /**
+     * Map type to be used instead a custom map provider. _Note: If you set a map provider, the selected map type will be ignored._
+     */
+    mapType: "standar" | "satellite" | "hybrid";
+    /**
      * The max zoom level available in the map.
      */
-    maxZoom: 20;
+    maxZoom: number;
     /**
      * The initial zoom level in the map.
      */
@@ -579,9 +587,17 @@ export namespace Components {
      */
     coords: string;
     /**
-     * The URL of the marker image.  *Note: The image size must be 25 x 41*
+     * The marker image height.
      */
-    iconSrc: string;
+    iconSizeHeight: number;
+    /**
+     * The marker image width.
+     */
+    iconSizeWidth: number;
+    /**
+     * The class that the marker will have.  _Tip: Set the background-image to use it as icon of the marker._  _Note: The default class is defined in map style._
+     */
+    markerClass: string;
     /**
      * The tooltip caption of the marker.
      */
@@ -1903,9 +1919,17 @@ declare namespace LocalJSX {
      */
     center?: string;
     /**
+     * The map provider.
+     */
+    mapProvider?: string;
+    /**
+     * Map type to be used instead a custom map provider. _Note: If you set a map provider, the selected map type will be ignored._
+     */
+    mapType?: "standar" | "satellite" | "hybrid";
+    /**
      * The max zoom level available in the map.
      */
-    maxZoom?: 20;
+    maxZoom?: number;
     /**
      * Emmits when the map is loaded.
      */
@@ -1925,9 +1949,17 @@ declare namespace LocalJSX {
      */
     coords?: string;
     /**
-     * The URL of the marker image.  *Note: The image size must be 25 x 41*
+     * The marker image height.
      */
-    iconSrc?: string;
+    iconSizeHeight?: number;
+    /**
+     * The marker image width.
+     */
+    iconSizeWidth?: number;
+    /**
+     * The class that the marker will have.  _Tip: Set the background-image to use it as icon of the marker._  _Note: The default class is defined in map style._
+     */
+    markerClass?: string;
     /**
      * Emmits when the element is deleted from a `<gx-map>`.
      */
