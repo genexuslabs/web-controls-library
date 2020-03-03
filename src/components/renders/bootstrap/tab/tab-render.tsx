@@ -2,14 +2,17 @@ import { h } from "@stencil/core";
 import { Renderer } from "../../../common/interfaces";
 import { Tab } from "../../../tab/tab";
 
+const BASE_TABLIST_SELECTOR = ":scope > [role='tablist']";
 export class TabRender implements Renderer {
   constructor(private component: Tab) {}
 
   setSelectedTab(captionElement: HTMLElement) {
     this.getCaptionSlots().forEach((slotElement: any, i) => {
       slotElement.selected = slotElement === captionElement;
+      const nthChild = i + 1;
       const pageElement = this.component.element.querySelector(
-        `gx-tab-page:nth-child(${i + 1})`
+        `:scope > gx-tab-page:nth-child(${nthChild}), 
+        ${BASE_TABLIST_SELECTOR} > .tab-content > gx-tab-page:nth-child(${nthChild})`
       ) as HTMLElement;
       this.mapPageToCaptionSelection(slotElement, pageElement);
     });
@@ -42,7 +45,10 @@ export class TabRender implements Renderer {
 
   getCaptionSlots(): HTMLElement[] {
     return Array.from(
-      this.component.element.querySelectorAll("[slot='caption']")
+      this.component.element.querySelectorAll(
+        `:scope > [slot='caption'], 
+         ${BASE_TABLIST_SELECTOR} > .nav > [slot='caption']`
+      )
     );
   }
 
@@ -55,6 +61,11 @@ export class TabRender implements Renderer {
   }
 
   getPageSlots(): HTMLElement[] {
-    return Array.from(this.component.element.querySelectorAll("[slot='page']"));
+    return Array.from(
+      this.component.element.querySelectorAll(
+        `:scope > [slot='page'], 
+         ${BASE_TABLIST_SELECTOR} > .tab-content > [slot='page']`
+      )
+    );
   }
 }

@@ -48,8 +48,13 @@ export class Tab implements GxComponent, VisibilityComponent {
 
   @Listen("tabSelect")
   tabClickHandler(event: CustomEvent) {
+    const targetElement = event.target as HTMLElement;
+    if (targetElement.closest("gx-tab") !== this.element) {
+      return;
+    }
+
     const oldSelectedTab = this.lastSelectedTab;
-    this.setSelectedTab(event.target as HTMLElement);
+    this.setSelectedTab(targetElement);
     if (oldSelectedTab !== this.lastSelectedTab) {
       this.tabChange.emit(event);
     }
