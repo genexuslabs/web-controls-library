@@ -565,15 +565,15 @@ export namespace Components {
      */
     center: string;
     /**
-     * The map provider.
+     * The map provider. _Note: Currently, this property is for setting a custom map provider using an URL._
      */
     mapProvider: string;
     /**
-     * Map type to be used instead a custom map provider. _Note: If you set a map provider, the selected map type will be ignored._
+     * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._
      */
-    mapType: "standar" | "satellite" | "hybrid";
+    mapType: "standard" | "satellite" | "hybrid";
     /**
-     * The max zoom level available in the map.
+     * The max zoom level available in the map. _Note: 20 is the best value to be used, only lower values are allowed. Is highly recommended to no change this value if you are not sure about the `maxZoom` supported by the map._
      */
     maxZoom: number;
     /**
@@ -589,13 +589,13 @@ export namespace Components {
     /**
      * The marker image height.
      */
-    iconSizeHeight: number;
+    iconHeight: number;
     /**
      * The marker image width.
      */
-    iconSizeWidth: number;
+    iconWidth: number;
     /**
-     * The class that the marker will have.  _Tip: Set the background-image to use it as icon of the marker._  _Note: The default class is defined in map style._
+     * The class that the marker will have.  Set the `background-image` property to use it as icon of the marker.
      */
     markerClass: string;
     /**
@@ -1919,15 +1919,15 @@ declare namespace LocalJSX {
      */
     center?: string;
     /**
-     * The map provider.
+     * The map provider. _Note: Currently, this property is for setting a custom map provider using an URL._
      */
     mapProvider?: string;
     /**
-     * Map type to be used instead a custom map provider. _Note: If you set a map provider, the selected map type will be ignored._
+     * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._
      */
-    mapType?: "standar" | "satellite" | "hybrid";
+    mapType?: "standard" | "satellite" | "hybrid";
     /**
-     * The max zoom level available in the map.
+     * The max zoom level available in the map. _Note: 20 is the best value to be used, only lower values are allowed. Is highly recommended to no change this value if you are not sure about the `maxZoom` supported by the map._
      */
     maxZoom?: number;
     /**
@@ -1951,13 +1951,13 @@ declare namespace LocalJSX {
     /**
      * The marker image height.
      */
-    iconSizeHeight?: number;
+    iconHeight?: number;
     /**
      * The marker image width.
      */
-    iconSizeWidth?: number;
+    iconWidth?: number;
     /**
-     * The class that the marker will have.  _Tip: Set the background-image to use it as icon of the marker._  _Note: The default class is defined in map style._
+     * The class that the marker will have.  Set the `background-image` property to use it as icon of the marker.
      */
     markerClass?: string;
     /**
