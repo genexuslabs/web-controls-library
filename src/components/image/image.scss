@@ -10,6 +10,9 @@ gx-image {
   flex: 1;
 
   &.gx-img-no-auto-grow {
+    width: var(--width);
+    height: var(--height);
+
     position: relative;
 
     & > img {
@@ -25,6 +28,9 @@ gx-image {
 
   &:not(.gx-img-no-auto-grow) {
     & > img {
+      width: var(--width);
+      height: var(--height);
+
       max-height: calc(
         100% - var(--margin-top, 0px) - var(--margin-bottom, 0px)
       );
