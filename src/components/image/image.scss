@@ -21,8 +21,6 @@ gx-image {
       right: 0;
       bottom: 0;
       left: 0;
-      height: calc(100% - var(--margin-top, 0px) - var(--margin-bottom, 0px));
-      width: calc(100% - var(--margin-right, 0px) - var(--margin-left, 0px));
     }
   }
 
