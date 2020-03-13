@@ -18,11 +18,6 @@ export class TabCaptionRender implements Renderer {
     const element = this.component.element;
     this.hasDisabledImage =
       element.querySelector("[slot='disabled-image']") !== null;
-    console.log(
-      this.hasDisabledImage,
-      element,
-      element.querySelector("[slot='disabled-image']")
-    );
   }
 
   render(slots) {
@@ -31,11 +26,6 @@ export class TabCaptionRender implements Renderer {
       (!!this.component.selected).toString()
     );
 
-    console.log(
-      this.component.element.id,
-      this.component.selected,
-      this.hasDisabledImage
-    );
     return (
       <Host
         role="tab"
