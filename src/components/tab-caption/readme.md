@@ -4,7 +4,7 @@ A container for tab items caption. Must be followed by a `gx-tab-page` element c
 
 ### Child images
 
-`gx-tab-page` accepts two child `<img>` elements that work as the main image and the unselected image. The unselected image is the image to display when the tab page isn't selected.
+`gx-tab-caption` accepts two child `<img>` elements that work as the main image and the unselected image. The unselected image is the image to display when the tab caption isn't selected.
 
 To tag an image as the main one, use the `slot` attribute with value "main-image". For example:
 
@@ -15,7 +15,7 @@ To tag an image as the unselected one, use the slot attribute with value "disabl
 `<img href="..." slot="disabled-image" />`
 
 The element will show one or the other, depending on the value of the [selected](../common/readme.md#selected) attribute.
-If only the main image was specified, it will be displayed both when the tab page is selected and unselected.
+If the main image is the only image specified, it will be displayed both when the tab caption is selected and unselected.
 
 <!-- Auto Generated Below -->
 

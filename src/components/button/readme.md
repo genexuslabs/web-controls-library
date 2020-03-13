@@ -19,7 +19,7 @@ To tag an image as the disabled one, use the slot attribute with value "disabled
 `<img href="..." slot="disabled-image" />`
 
 The element will show one or the other, depending on the value of the [disabled](../common/readme.md#disabled) attribute.
-If only the main image was specified, it will be displayed both when the button is enabled and disabled.
+If the main image is the only image specified, it will be displayed both when the button is enabled and disabled.
 
 <!-- Auto Generated Below -->
 
