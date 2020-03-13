@@ -5,8 +5,7 @@ import {
   Event,
   EventEmitter,
   Prop,
-  h,
-  Host
+  h
 } from "@stencil/core";
 import {
   ClickableComponent,
@@ -101,15 +100,15 @@ export class Button
     this.gxClick.emit(event);
   }
 
+  componentWillLoad() {
+    this.renderer.componentWillLoad();
+  }
+
   render() {
-    return (
-      <Host role="button">
-        {this.renderer.render({
-          default: <slot />,
-          disabledImage: <slot name="disabled-image" />,
-          mainImage: <slot name="main-image" />
-        })}
-      </Host>
-    );
+    return this.renderer.render({
+      default: <slot />,
+      disabledImage: <slot name="disabled-image" />,
+      mainImage: <slot name="main-image" />
+    });
   }
 }

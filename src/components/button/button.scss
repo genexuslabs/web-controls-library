@@ -1,4 +1,5 @@
 @import "../common/_base";
+@import "../common/_image-position";
 @import "../renders/bootstrap/button/button-render";
 
 gx-button {
@@ -7,18 +8,6 @@ gx-button {
   --gx-button-image-size: 16px;
 
   vertical-align: middle;
-
-  &[disabled] {
-    & > button {
-      & > img[slot="image"] {
-        display: none;
-      }
-
-      & > img[slot="disabled-image"] {
-        display: inline-block;
-      }
-    }
-  }
 
   & > button.gx-button {
     flex: 1;
@@ -32,10 +21,6 @@ gx-button {
       height: var(--gx-button-image-size);
       width: var(--gx-button-image-size);
       object-fit: contain;
-
-      &[slot="disabled-image"] {
-        display: none;
-      }
     }
 
     &:not(:disabled):not(.disabled) {
@@ -46,37 +31,5 @@ gx-button {
     }
   }
 
-  &[image-position="below"] {
-    & > button {
-      & > img {
-        order: 99;
-      }
-    }
-  }
-
-  &[image-position="before"] {
-    & > button {
-      flex-direction: row;
-    }
-  }
-
-  &[image-position="after"] {
-    & > button {
-      flex-direction: row;
-
-      & > img {
-        order: 99;
-      }
-    }
-  }
-
-  &[image-position="behind"] {
-    & > button {
-      flex-direction: column;
-
-      & > span {
-        position: absolute;
-      }
-    }
-  }
+  @include imagePosition("button.gx-button", ".gx-button--disabled");
 }

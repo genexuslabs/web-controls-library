@@ -1,0 +1,64 @@
+@mixin imagePosition($imgParent, $disabledSelector) {
+  & > #{$imgParent} {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+
+    & > img[slot="disabled-image"] {
+      display: none;
+    }
+  }
+
+  &.gx-image-position--below {
+    & > #{$imgParent} {
+      & > img {
+        order: 99;
+      }
+    }
+  }
+
+  &.gx-image-position--before {
+    & > #{$imgParent} {
+      flex-direction: row;
+    }
+  }
+
+  &.gx-image-position--after {
+    & > #{$imgParent} {
+      flex-direction: row;
+
+      & > img {
+        order: 99;
+      }
+    }
+  }
+
+  &.gx-image-position--behind {
+    & > #{$imgParent} {
+      flex-direction: column;
+
+      & > span {
+        position: absolute;
+      }
+    }
+  }
+
+  &.gx-image-position--hide-main {
+    & > #{$imgParent} {
+      & > img[slot="main-image"] {
+        display: none;
+      }
+    }
+  }
+
+  &#{$disabledSelector} {
+    & > #{$imgParent} {
+      & > img[slot="disabled-image"] {
+        display: inline-block;
+      }
+    }
+  }
+}
