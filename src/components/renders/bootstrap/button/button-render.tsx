@@ -1,6 +1,11 @@
-import { h } from "@stencil/core";
+import { h, Host } from "@stencil/core";
 import { Renderer } from "../../../common/interfaces";
 import { Button } from "../../../button/button";
+import {
+  imagePositionRender,
+  imagePositionClass,
+  hideMainImageWhenDisabledClass
+} from "../../../common/image-position";
 
 export class ButtonRender implements Renderer {
   constructor(private component: Button, handlers: { handleClick }) {
@@ -8,6 +13,13 @@ export class ButtonRender implements Renderer {
   }
 
   private handleClick: (event: UIEvent) => void;
+  private hasDisabledImage = false;
+
+  componentWillLoad() {
+    const element = this.component.element;
+    this.hasDisabledImage =
+      element.querySelector("[slot='disabled-image']") !== null;
+  }
 
   render(slots: { default; disabledImage; mainImage }) {
     const button = this.component;
@@ -22,24 +34,32 @@ export class ButtonRender implements Renderer {
       }
     });
 
-    return [
-      <gx-bootstrap />,
-      <button
+    return (
+      <Host
+        role="button"
         class={{
-          btn: true,
-          "btn-lg": button.size === "large",
-          "btn-outline-secondary": true,
-          "btn-sm": button.size === "small",
-          "gx-button": true,
-          [button.cssClass]: !!button.cssClass
+          "gx-button--disabled": this.component.disabled,
+          [imagePositionClass(this.component.imagePosition)]: true,
+          [hideMainImageWhenDisabledClass]:
+            this.component.disabled && this.hasDisabledImage
         }}
-        onClick={this.handleClick}
-        tabindex="0"
       >
-        {slots.mainImage}
-        {slots.disabledImage}
-        <span>{slots.default}</span>
-      </button>
-    ];
+        <gx-bootstrap />
+        <button
+          class={{
+            btn: true,
+            "btn-lg": button.size === "large",
+            "btn-outline-secondary": true,
+            "btn-sm": button.size === "small",
+            "gx-button": true,
+            [button.cssClass]: !!button.cssClass
+          }}
+          onClick={this.handleClick}
+          tabindex="0"
+        >
+          {imagePositionRender(slots)}
+        </button>
+      </Host>
+    );
   }
 }

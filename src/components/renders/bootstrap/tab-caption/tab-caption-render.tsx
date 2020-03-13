@@ -1,10 +1,28 @@
-import { h } from "@stencil/core";
+import { h, Host } from "@stencil/core";
 import { Renderer } from "../../../common/interfaces";
 import { TabCaption } from "../../../tab-caption/tab-caption";
+import {
+  imagePositionRender,
+  imagePositionClass,
+  hideMainImageWhenDisabledClass
+} from "../../../common/image-position";
 
 export class TabCaptionRender implements Renderer {
   constructor(private component: TabCaption) {
     this.clickHandler = this.clickHandler.bind(this);
+  }
+
+  private hasDisabledImage = false;
+
+  componentWillLoad() {
+    const element = this.component.element;
+    this.hasDisabledImage =
+      element.querySelector("[slot='disabled-image']") !== null;
+    console.log(
+      this.hasDisabledImage,
+      element,
+      element.querySelector("[slot='disabled-image']")
+    );
   }
 
   render(slots) {
@@ -13,20 +31,35 @@ export class TabCaptionRender implements Renderer {
       (!!this.component.selected).toString()
     );
 
-    return [
-      <gx-bootstrap />,
-      <a
+    console.log(
+      this.component.element.id,
+      this.component.selected,
+      this.hasDisabledImage
+    );
+    return (
+      <Host
+        role="tab"
         class={{
-          active: this.component.selected,
-          disabled: this.component.disabled,
-          "nav-link": true
+          "gx-tab-caption--unselected": !this.component.selected,
+          [imagePositionClass(this.component.imagePosition)]: true,
+          [hideMainImageWhenDisabledClass]:
+            !this.component.selected && this.hasDisabledImage
         }}
-        href="#"
-        onClick={!this.component.disabled ? this.clickHandler : null}
       >
-        {slots.default}
-      </a>
-    ];
+        <gx-bootstrap />
+        <a
+          class={{
+            active: this.component.selected,
+            disabled: this.component.disabled,
+            "nav-link": true
+          }}
+          href="#"
+          onClick={!this.component.disabled ? this.clickHandler : null}
+        >
+          {imagePositionRender(slots)}
+        </a>
+      </Host>
+    );
   }
 
   private clickHandler(event: UIEvent) {

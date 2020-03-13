@@ -895,6 +895,10 @@ export namespace Components {
      */
     disabled: boolean;
     /**
+     * This attribute lets you specify the relative location of the image to the text.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `above`  | The image is located above the text.                    | | `before` | The image is located before the text, in the same line. | | `after`  | The image is located after the text, in the same line.  | | `below`  | The image is located below the text.                    | | `behind` | The image is located behind the text.                   |
+     */
+    imagePosition: "above" | "before" | "after" | "below" | "behind";
+    /**
      * This attribute lets you specify if the tab page corresponding to this caption is selected
      */
     selected: boolean;
@@ -2328,6 +2332,10 @@ declare namespace LocalJSX {
      * This attribute lets you specify if the tab page is disabled
      */
     disabled?: boolean;
+    /**
+     * This attribute lets you specify the relative location of the image to the text.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `above`  | The image is located above the text.                    | | `before` | The image is located before the text, in the same line. | | `after`  | The image is located after the text, in the same line.  | | `below`  | The image is located below the text.                    | | `behind` | The image is located behind the text.                   |
+     */
+    imagePosition?: "above" | "before" | "after" | "below" | "behind";
     /**
      * Fired when the tab caption is selected
      */
