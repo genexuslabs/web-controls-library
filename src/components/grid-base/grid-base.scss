@@ -3,6 +3,8 @@
 .gx-grid-base {
   @include visibility(block);
   display: flex;
+  flex: 1;
+
   .grid-empty-placeholder {
     display: none;
   }

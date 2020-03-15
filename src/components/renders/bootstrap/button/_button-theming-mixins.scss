@@ -9,6 +9,14 @@
   button {
     @extend #{$class} !optional;
 
+    &:hover,
+    &:focus,
+    &:not(:disabled):not(.disabled):active {
+      @extend #{$class} !optional;
+
+      filter: brightness(85%);
+    }
+
     @if ($highlighted != null) {
       &:not(:disabled):not(.disabled):active {
         @extend #{$highlighted} !optional;

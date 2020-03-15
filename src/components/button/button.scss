@@ -6,6 +6,10 @@ gx-button {
   @include visibility(inline-flex);
 
   --gx-button-image-size: 16px;
+  margin-top: var(--margin-top);
+  margin-right: var(--margin-right);
+  margin-bottom: var(--margin-bottom);
+  margin-left: var(--margin-left);
 
   vertical-align: middle;
 

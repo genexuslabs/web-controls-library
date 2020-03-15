@@ -12,6 +12,10 @@ gx-image {
   &.gx-img-no-auto-grow {
     width: var(--width);
     height: var(--height);
+    margin-top: var(--margin-top);
+    margin-right: var(--margin-right);
+    margin-bottom: var(--margin-bottom);
+    margin-left: var(--margin-left);
 
     position: relative;
 
@@ -21,6 +25,8 @@ gx-image {
       right: 0;
       bottom: 0;
       left: 0;
+      height: 100%;
+      width: 100%;
     }
   }
 
@@ -28,6 +34,10 @@ gx-image {
     & > img {
       width: var(--width);
       height: var(--height);
+      margin-top: var(--margin-top);
+      margin-right: var(--margin-right);
+      margin-bottom: var(--margin-bottom);
+      margin-left: var(--margin-left);
 
       max-height: calc(
         100% - var(--margin-top, 0px) - var(--margin-bottom, 0px)
@@ -45,10 +55,6 @@ gx-image {
 
   & > img {
     @include elevation();
-    margin-top: var(--margin-top);
-    margin-right: var(--margin-right);
-    margin-bottom: var(--margin-bottom);
-    margin-left: var(--margin-left);
     object-fit: var(--image-scale-type, contain);
   }
 
@@ -106,6 +112,12 @@ gx-image {
   & > gx-image {
     justify-self: stretch;
     justify-content: flex-end;
+
+    &.gx-img-no-auto-grow {
+      img {
+        left: unset;
+      }
+    }
   }
 }
 
@@ -120,6 +132,12 @@ gx-image {
   & > gx-image {
     align-self: stretch;
     align-items: flex-end;
+
+    &.gx-img-no-auto-grow {
+      img {
+        top: unset;
+      }
+    }
   }
 }
 
