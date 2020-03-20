@@ -174,7 +174,6 @@ export class Image
           "gx-img-lazyloading": shouldLazyLoad,
           "gx-img-no-auto-grow": !this.autoGrow
         }}
-        hidden={!this.src}
         style={{
           width: this.width
             ? `calc(${this.width} + var(--margin-left, 0px) + var(--margin-right, 0px))`
