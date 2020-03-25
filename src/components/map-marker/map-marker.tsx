@@ -142,7 +142,6 @@ export class MapMarker implements GxComponent {
       );
       this.markerInstance.setLatLng([0, 0]);
     }
-    // this.setIconSrc();
     this.markerInstance.setIcon(
       divIcon({
         className: this.markerClass,
