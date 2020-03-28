@@ -70,15 +70,17 @@ export class MapMarker implements GxComponent {
   @Event() gxMapMarkerDeleted: EventEmitter;
 
   private setPopup() {
-    const popupHtml = this.element.querySelector("[class='popupHtml']");
-    if (popupHtml.innerHTML) {
+    const popupContainerEl = this.element.querySelector(
+      "[class='popup-data-container']"
+    );
+    if (popupContainerEl.innerHTML) {
       const marginProportion = 83 / 100;
       const maxPopupSize = {
         height:
           document.querySelector(".gxMap").clientHeight * marginProportion,
         width: document.querySelector(".gxMap").clientWidth * marginProportion
       };
-      this.markerInstance.bindPopup(popupHtml, {
+      this.markerInstance.bindPopup(popupContainerEl, {
         keepInView: true,
         maxHeight: maxPopupSize.height,
         maxWidth: maxPopupSize.width,
@@ -160,7 +162,7 @@ export class MapMarker implements GxComponent {
 
   render() {
     return (
-      <div class="popupHtml">
+      <div class="popup-data-container">
         <slot />
       </div>
     );

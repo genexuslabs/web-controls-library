@@ -3,7 +3,7 @@
 This element represents a marker inside a `<gx-map>` element.
 `coords` attribute must always have a value. If value is not specified, the marker will be initialized with default values and it will be drawn at `0, 0` coordinates.
 
-## Using Sample
+## Usage Sample
 
 ```HTML
 <gx-map-marker coords="-34.87845241095968, -56.07882142066956" tooltip-caption="Some title here"></gx-map-marker>
