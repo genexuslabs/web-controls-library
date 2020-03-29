@@ -69,11 +69,31 @@ export class MapMarker implements GxComponent {
    */
   @Event() gxMapMarkerDeleted: EventEmitter;
 
+  private getHalfSizes(): any {
+    const halfIconSizes = {
+      height: this.iconHeight / 2,
+      width: this.iconWidth / 2
+    };
+    return halfIconSizes;
+  }
+
+  private setupMarker(coords) {
+    this.markerInstance = marker(coords, {
+      icon: divIcon({
+        className: this.markerClass,
+        iconAnchor: [this.getHalfSizes().width, this.iconHeight],
+        popupAnchor: [0, -this.getHalfSizes().height],
+        iconSize: [this.iconWidth, this.iconHeight],
+        tooltipAnchor: [0, -this.getHalfSizes().height]
+      })
+    });
+  }
+
   private setPopup() {
     const popupContainerEl = this.element.querySelector(
       "[class='popup-data-container']"
     );
-    if (popupContainerEl.innerHTML) {
+    if (popupContainerEl.firstElementChild !== null) {
       const marginProportion = 83 / 100;
       const maxPopupSize = {
         height:
@@ -90,35 +110,15 @@ export class MapMarker implements GxComponent {
   }
 
   componentDidLoad() {
-    const halfIconSizes = {
-      height: this.iconHeight / 2,
-      width: this.iconWidth / 2
-    };
     const coords = parseCoords(this.coords);
     if (coords !== null) {
-      this.markerInstance = marker(coords, {
-        icon: divIcon({
-          className: this.markerClass,
-          iconAnchor: [halfIconSizes.width, this.iconHeight],
-          popupAnchor: [0, -halfIconSizes.height],
-          iconSize: [this.iconWidth, this.iconHeight],
-          tooltipAnchor: [0, -halfIconSizes.height]
-        })
-      });
+      this.setupMarker(coords);
     } else {
       console.warn(
         "GX warning: Can not read 'coords' attribute, default coords set (gx-map-marker)",
         this.element
       );
-      this.markerInstance = marker([0, 0], {
-        icon: divIcon({
-          className: this.markerClass,
-          iconAnchor: [halfIconSizes.width, this.iconHeight],
-          popupAnchor: [0, -halfIconSizes.height],
-          iconSize: [this.iconWidth, this.iconHeight],
-          tooltipAnchor: [0, -halfIconSizes.height]
-        })
-      });
+      this.setupMarker([0, 0]);
     }
     this.setPopup();
     if (this.tooltipCaption) {
@@ -147,8 +147,8 @@ export class MapMarker implements GxComponent {
     this.markerInstance.setIcon(
       divIcon({
         className: this.markerClass,
-        iconAnchor: [halfIconSizes.width, this.iconHeight],
-        popupAnchor: [0, -halfIconSizes.height],
+        iconAnchor: [this.getHalfSizes().width, this.iconHeight],
+        popupAnchor: [0, -this.getHalfSizes().height],
         iconSize: [this.iconWidth, this.iconHeight],
         tooltipAnchor: [0, -halfIconSizes.height]
       })
