@@ -10,6 +10,8 @@ import { Component as GxComponent } from "../common/interfaces";
 import { divIcon, marker } from "leaflet/dist/leaflet-src.esm";
 import { parseCoords } from "../common/coordsValidate";
 
+const MAX_POPUP_SIZE_FACTOR = 0.83;
+
 @Component({
   shadow: false,
   styleUrl: "map-marker.scss",
@@ -94,11 +96,11 @@ export class MapMarker implements GxComponent {
       "[class='popup-data-container']"
     );
     if (popupContainerEl.firstElementChild !== null) {
-      const marginProportion = 83 / 100;
       const maxPopupSize = {
         height:
-          document.querySelector(".gxMap").clientHeight * marginProportion,
-        width: document.querySelector(".gxMap").clientWidth * marginProportion
+          document.querySelector(".gxMap").clientHeight * MAX_POPUP_SIZE_FACTOR,
+        width:
+          document.querySelector(".gxMap").clientWidth * MAX_POPUP_SIZE_FACTOR
       };
       this.markerInstance.bindPopup(popupContainerEl, {
         keepInView: true,
@@ -130,10 +132,6 @@ export class MapMarker implements GxComponent {
   }
 
   componentDidUpdate() {
-    const halfIconSizes = {
-      height: this.iconHeight / 2,
-      width: this.iconWidth / 2
-    };
     const coords = parseCoords(this.coords);
     if (coords !== null) {
       this.markerInstance.setLatLng(coords);
@@ -150,7 +148,7 @@ export class MapMarker implements GxComponent {
         iconAnchor: [this.getHalfSizes().width, this.iconHeight],
         popupAnchor: [0, -this.getHalfSizes().height],
         iconSize: [this.iconWidth, this.iconHeight],
-        tooltipAnchor: [0, -halfIconSizes.height]
+        tooltipAnchor: [0, -this.getHalfSizes().height]
       })
     );
     this.setPopup();
