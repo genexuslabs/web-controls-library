@@ -5,6 +5,7 @@ import {
   EventEmitter,
   Listen,
   Prop,
+  State,
   h
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
@@ -15,6 +16,7 @@ import {
   tileLayer
 } from "leaflet/dist/leaflet-src.esm";
 import { parseCoords } from "../common/coordsValidate";
+import { watchPosition } from "./geolocation";
 
 const MIN_ZOOM = 1;
 const RECOMMENDED_MAX_ZOOM = 20;
@@ -25,6 +27,7 @@ const RECOMMENDED_MAX_ZOOM = 20;
   tag: "gx-map"
 })
 export class Map implements GxComponent {
+  private watchPositionId: number;
   private map: LFMap;
   private markersList = [];
   private mapProviderApplied: string;
@@ -36,13 +39,22 @@ export class Map implements GxComponent {
     standard: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   };
   private tileLayerApplied: tileLayer;
+
   @Element() element: HTMLGxMapElement;
+
+  @State() userLocationCoords: string;
 
   /**
    * The coord of initial center of the map.
    *
    */
   @Prop({ mutable: true }) center = "0, 0";
+
+  /**
+   * Enable the High Accuracy in user location.
+   * _Note: Set this when ```watchPosition = true```._
+   */
+  @Prop() highAccuracyLocator = true;
 
   /**
    * The map provider.
@@ -65,6 +77,11 @@ export class Map implements GxComponent {
   @Prop({ mutable: true }) maxZoom: number = RECOMMENDED_MAX_ZOOM;
 
   /**
+   * Indicates if the current location of the device is displayed on the map.
+   */
+  @Prop() watchPosition = false;
+
+  /**
    * The initial zoom level in the map.
    *
    */
@@ -81,6 +98,12 @@ export class Map implements GxComponent {
    *
    */
   @Event() mapClick: EventEmitter;
+
+  /**
+   * Emmits when user location coords have been changed.
+   *
+   */
+  @Event() userLocationChange: EventEmitter;
 
   @Listen("gxMapMarkerDidLoad")
   onMapMarkerDidLoad(event: CustomEvent) {
@@ -171,9 +194,31 @@ export class Map implements GxComponent {
     }
   }
 
+  private setUserLocation({ coords }) {
+    this.userLocationCoords = `${coords.latitude}, ${coords.longitude}`;
+    this.userLocationChange.emit(this.userLocationCoords);
+    console.log("this.userLocationCoords", this.userLocationCoords);
+  }
+
+  componentWillLoad() {
+    console.log("WILL LOAD!");
+    if (this.watchPosition) {
+      this.watchPositionId = watchPosition(
+        this.setUserLocation.bind(this),
+
+        err => console.error(err),
+
+        {
+          enableHighAccuracy: this.highAccuracyLocator
+        }
+      );
+    }
+  }
+
   componentDidLoad() {
     const elementVar = this.element.querySelector(".gxMap");
     const coords = parseCoords(this.center);
+
     this.maxZoom = this.checkForMaxZoom();
     this.zoom = this.getZoom();
     if (coords !== null) {
@@ -202,11 +247,34 @@ export class Map implements GxComponent {
   componentDidUpdate() {
     const maxZoom = this.checkForMaxZoom();
     this.setMapProvider();
+    this.fitBounds();
     this.map.setMaxZoom(maxZoom);
   }
 
+  componentDidUnload() {
+    navigator.geolocation.clearWatch(this.watchPositionId);
+  }
+
   render() {
-    return (
+    console.log(
+      "this.watchPosition > ",
+      this.watchPosition,
+      "|| this.userLocationCoords > ",
+      this.userLocationCoords
+    );
+    return this.watchPosition ? (
+      [
+        <gx-map-marker
+          marker-class="gx-default-user-location-icon"
+          icon-width="15"
+          icon-height="15"
+          coords={this.userLocationCoords}
+        ></gx-map-marker>,
+        <div class="gxMapContainer">
+          <div class="gxMap" />
+        </div>
+      ]
+    ) : (
       <div class="gxMapContainer">
         <div class="gxMap" />
       </div>

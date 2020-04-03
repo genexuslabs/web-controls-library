@@ -47,6 +47,20 @@ This element represents a marker inside a `<gx-map>` element.
 | `gxMapMarkerDidLoad` | Emmits when the element is added to a `<gx-map>`.     | `CustomEvent<any>` |
 | `gxMapMarkerUpdate`  | Emmits when the element update its data.              | `CustomEvent<any>` |
 
+## Dependencies
+
+### Used by
+
+- [gx-map](../map)
+
+### Graph
+
+```mermaid
+graph TD;
+  gx-map --> gx-map-marker
+  style gx-map-marker fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_

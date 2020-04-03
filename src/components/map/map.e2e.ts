@@ -1,5 +1,4 @@
 import { E2EElement, E2EPage, newE2EPage } from "@stencil/core/testing";
-
 describe("gx-map", () => {
   let element: E2EElement;
   let page: E2EPage;
@@ -13,6 +12,7 @@ describe("gx-map", () => {
     await page.waitForChanges();
     element = await page.find("gx-map");
     const innerContent = await element.find("div .leaflet-control-container");
+    await page.waitForChanges();
     expect(innerContent).not.toBeNull();
     expect(await element.getProperty("center")).toEqual("0, 0");
     expect(await element.getProperty("maxZoom")).toEqual(20);
@@ -53,7 +53,8 @@ describe("gx-map", () => {
     element = await page.find("gx-map");
     expect(await element.getProperty("mapType")).toEqual("standard");
   });
-  +it("should properly intereact with gx-map-marker components", async () => {
+
+  it("should properly intereact with gx-map-marker components", async () => {
     let childCounts: E2EElement[];
 
     await page.setContent(
