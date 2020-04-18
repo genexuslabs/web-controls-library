@@ -52,7 +52,7 @@ export class Map implements GxComponent {
 
   /**
    * Enable the High Accuracy in user location.
-   * _Note: Set this when ```watchPosition = true```._
+   * _Note: This property applies when ```watchPosition = true```._
    */
   @Prop() highAccuracyLocator = true;
 
