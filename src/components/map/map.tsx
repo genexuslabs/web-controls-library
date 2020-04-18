@@ -197,17 +197,13 @@ export class Map implements GxComponent {
   private setUserLocation({ coords }) {
     this.userLocationCoords = `${coords.latitude}, ${coords.longitude}`;
     this.userLocationChange.emit(this.userLocationCoords);
-    console.log("this.userLocationCoords", this.userLocationCoords);
   }
 
   componentWillLoad() {
-    console.log("WILL LOAD!");
     if (this.watchPosition) {
       this.watchPositionId = watchPosition(
         this.setUserLocation.bind(this),
-
         err => console.error(err),
-
         {
           enableHighAccuracy: this.highAccuracyLocator
         }
@@ -256,12 +252,6 @@ export class Map implements GxComponent {
   }
 
   render() {
-    console.log(
-      "this.watchPosition > ",
-      this.watchPosition,
-      "|| this.userLocationCoords > ",
-      this.userLocationCoords
-    );
     return this.watchPosition ? (
       [
         <gx-map-marker
