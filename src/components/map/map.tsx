@@ -6,7 +6,8 @@ import {
   Listen,
   Prop,
   State,
-  h
+  h,
+  Host
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 import {
@@ -252,22 +253,24 @@ export class Map implements GxComponent {
   }
 
   render() {
-    return this.watchPosition ? (
-      [
+    const mapContainer: HTMLElement = (
+      <div class="gxMapContainer">
+        <div class="gxMap"></div>
+      </div>
+    );
+    const elementsToReturn: Array<HTMLElement> = [mapContainer];
+
+    if (this.watchPosition) {
+      const userLocationMarker: HTMLElement = (
         <gx-map-marker
           marker-class="gx-default-user-location-icon"
           icon-width="15"
           icon-height="15"
           coords={this.userLocationCoords}
-        ></gx-map-marker>,
-        <div class="gxMapContainer">
-          <div class="gxMap" />
-        </div>
-      ]
-    ) : (
-      <div class="gxMapContainer">
-        <div class="gxMap" />
-      </div>
-    );
+        ></gx-map-marker>
+      );
+      elementsToReturn.push(userLocationMarker);
+    }
+    return <Host>{elementsToReturn}</Host>;
   }
 }
