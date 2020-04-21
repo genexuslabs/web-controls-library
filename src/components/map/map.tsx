@@ -253,24 +253,20 @@ export class Map implements GxComponent {
   }
 
   render() {
-    const mapContainer: HTMLElement = (
-      <div class="gxMapContainer">
-        <div class="gxMap"></div>
-      </div>
+    return (
+      <Host>
+        {this.watchPosition && (
+          <gx-map-marker
+            marker-class="gx-default-user-location-icon"
+            icon-width="15"
+            icon-height="15"
+            coords={this.userLocationCoords}
+          ></gx-map-marker>
+        )}
+        <div class="gxMapContainer">
+          <div class="gxMap"></div>
+        </div>
+      </Host>
     );
-    const elementsToReturn: Array<HTMLElement> = [mapContainer];
-
-    if (this.watchPosition) {
-      const userLocationMarker: HTMLElement = (
-        <gx-map-marker
-          marker-class="gx-default-user-location-icon"
-          icon-width="15"
-          icon-height="15"
-          coords={this.userLocationCoords}
-        ></gx-map-marker>
-      );
-      elementsToReturn.push(userLocationMarker);
-    }
-    return <Host>{elementsToReturn}</Host>;
   }
 }
