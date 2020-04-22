@@ -26,17 +26,15 @@ The `gx-rating` component allows displaying scores or rate items using stars.
 
 <!-- Auto Generated Below -->
 
-
 ## Properties
 
-| Property        | Attribute        | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Type                         | Default      |
-| --------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------ |
-| `disabled`      | `disabled`       | This attribute allows you specify if the element is disabled. If disabled, it will not trigger any user interaction related event (for example, click event).                                                                                                                                                                                                                                                                                                                      | `boolean`                    | `false`      |
-| `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden.  \| Value        \| Details                                                                     \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space.         \| \| `collapse`   \| The element is removed form the document flow, and it doesn't occupy space. \| | `"collapse" \| "keep-space"` | `"collapse"` |
-| `maxValue`      | `max-value`      | This porpoerty is required if you want to display a score. >E.g: In a score of 4/5 stars the `maxValue` is `5` and the `value` is `4`                                                                                                                                                                                                                                                                                                                                              | `number`                     | `undefined`  |
-| `readonly`      | `readonly`       | This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_                                                                                                                                                                                                                                              | `boolean`                    | `false`      |
-| `value`         | `value`          | The current value displayed by the component.                                                                                                                                                                                                                                                                                                                                                                                                                                      | `number`                     | `0`          |
-
+| Property        | Attribute        | Description                                                                                                                                                                                                                                                                                                                                                                                  | Type                         | Default      |
+| --------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------ |
+| `disabled`      | `disabled`       | This attribute allows you specify if the element is disabled. If disabled, it will not trigger any user interaction related event (for example, click event).                                                                                                                                                                                                                                | `boolean`                    | `false`      |
+| `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \| | `"collapse" \| "keep-space"` | `"collapse"` |
+| `maxValue`      | `max-value`      | This porpoerty is required if you want to display a score. >E.g: In a score of 4/5 stars the `maxValue` is `5` and the `value` is `4`                                                                                                                                                                                                                                                        | `number`                     | `undefined`  |
+| `readonly`      | `readonly`       | This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_                                                                                                                                                        | `boolean`                    | `false`      |
+| `value`         | `value`          | The current value displayed by the component.                                                                                                                                                                                                                                                                                                                                                | `number`                     | `0`          |
 
 ## Events
 
@@ -44,19 +42,15 @@ The `gx-rating` component allows displaying scores or rate items using stars.
 | ------- | ------------------------------------------------------------------------------------------- | ------------------ |
 | `input` | The 'input' event is emitted when a change to the element's value is committed by the user. | `CustomEvent<any>` |
 
-
 ## Methods
 
-### `getNativeInputId() => Promise<any>`
+### `getNativeInputId() => Promise<string>`
 
 Returns the id of the inner `input` element (if set).
 
 #### Returns
 
-Type: `Promise<any>`
-
-
-
+Type: `Promise<string>`
 
 ## CSS Custom Properties
 
@@ -70,7 +64,6 @@ Type: `Promise<any>`
 | `--star-separation This is for set the space between each star` |                                                                          |
 | `--star-width`                                                  | Set the width of each star.                                              |
 
+---
 
-----------------------------------------------
-
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_
