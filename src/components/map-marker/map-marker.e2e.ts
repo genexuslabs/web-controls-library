@@ -78,9 +78,16 @@ describe("gx-map-marker", () => {
   });
 
   it("should set the given sizes to the marker", async () => {
-    await page.setContent(
-      "<gx-map><gx-map-marker coords='-34.896589, -56.165579' tooltip-caption='Text Here' marker-class='myCustomClass' icon-size-height='45' icon-size-width='45'></gx-map-marker></gx-map>"
-    );
+    await page.setContent(`
+    <gx-map
+      ><gx-map-marker
+        coords="-34.896589, -56.165579"
+        tooltip-caption="Text Here"
+        marker-class="myCustomClass"
+        icon-height="45"
+        icon-width="45"
+      ></gx-map-marker
+    ></gx-map>`);
     await page.waitForChanges();
     parentElement = await page.find("gx-map");
     element = await parentElement.find("gx-map-marker");
