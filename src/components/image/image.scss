@@ -27,6 +27,7 @@ gx-image {
       left: 0;
       height: 100%;
       width: 100%;
+      object-position: left top;
     }
   }
 
@@ -112,12 +113,6 @@ gx-image {
   & > gx-image {
     justify-self: stretch;
     justify-content: flex-end;
-
-    &.gx-img-no-auto-grow {
-      img {
-        left: unset;
-      }
-    }
   }
 }
 
@@ -132,14 +127,31 @@ gx-image {
   & > gx-image {
     align-self: stretch;
     align-items: flex-end;
+  }
+}
 
-    &.gx-img-no-auto-grow {
-      img {
-        top: unset;
+@mixin cellAlignmentNoAutoGrow($halign, $valign) {
+  $valignValue: if($valign == middle, center, $valign);
+  [align="#{$halign}"][valign="#{$valign}"] {
+    & > gx-image {
+      &.gx-img-no-auto-grow {
+        img {
+          object-position: $halign $valignValue;
+        }
       }
     }
   }
 }
+
+@include cellAlignmentNoAutoGrow(left, top);
+@include cellAlignmentNoAutoGrow(left, middle);
+@include cellAlignmentNoAutoGrow(left, bottom);
+@include cellAlignmentNoAutoGrow(center, top);
+@include cellAlignmentNoAutoGrow(center, middle);
+@include cellAlignmentNoAutoGrow(center, bottom);
+@include cellAlignmentNoAutoGrow(right, top);
+@include cellAlignmentNoAutoGrow(right, middle);
+@include cellAlignmentNoAutoGrow(right, bottom);
 
 @keyframes gx-image-loading {
   0% {

@@ -19,7 +19,7 @@ export class TableCell implements GxComponent {
   /**
    * Defines the horizontal aligmnent of the content of the cell.
    */
-  @Prop() readonly align: "left" | "right" | "center" = "left";
+  @Prop({ reflect: true }) readonly align: "left" | "right" | "center" = "left";
 
   /**
    * This attribute defines how the control behaves when the content overflows.
@@ -48,7 +48,7 @@ export class TableCell implements GxComponent {
   /**
    * Defines the vertical aligmnent of the content of the cell.
    */
-  @Prop() readonly valign: "top" | "bottom" | "medium" = "top";
+  @Prop({ reflect: true }) readonly valign: "top" | "bottom" | "medium" = "top";
 
   private observer: MutationObserver;
 
