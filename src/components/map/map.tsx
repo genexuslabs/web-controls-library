@@ -7,7 +7,8 @@ import {
   Prop,
   State,
   h,
-  Host
+  Host,
+  Watch
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 import {
@@ -44,6 +45,11 @@ export class Map implements GxComponent {
   @Element() element: HTMLGxMapElement;
 
   @State() userLocationCoords: string;
+
+  @Watch("userLocationCoords")
+  watchHandler() {
+    this.userLocationChange.emit(this.userLocationCoords);
+  }
 
   /**
    * The coord of initial center of the map.
@@ -197,7 +203,6 @@ export class Map implements GxComponent {
 
   private setUserLocation({ coords }) {
     this.userLocationCoords = `${coords.latitude}, ${coords.longitude}`;
-    this.userLocationChange.emit(this.userLocationCoords);
   }
 
   componentWillLoad() {

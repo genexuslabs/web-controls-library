@@ -12,7 +12,6 @@ describe("gx-map", () => {
     await page.waitForChanges();
     element = await page.find("gx-map");
     const innerContent = await element.find("div .leaflet-control-container");
-    await page.waitForChanges();
     expect(innerContent).not.toBeNull();
     expect(await element.getProperty("center")).toEqual("0, 0");
     expect(await element.getProperty("maxZoom")).toEqual(20);
