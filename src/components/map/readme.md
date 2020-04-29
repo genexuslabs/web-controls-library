@@ -29,20 +29,37 @@ Example: `-34.87945241095968, -56.078210142066956`
 
 ## Properties
 
-| Property      | Attribute      | Description                                                                                                                                                                                                                  | Type                                    | Default                |
-| ------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- | ---------------------- |
-| `center`      | `center`       | The coord of initial center of the map.                                                                                                                                                                                      | `string`                                | `"0, 0"`               |
-| `mapProvider` | `map-provider` | The map provider. _Note: Currently, this property is for setting a custom map provider using an URL._                                                                                                                        | `string`                                | `undefined`            |
-| `mapType`     | `map-type`     | Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._                                                                                                                               | `"hybrid" \| "satellite" \| "standard"` | `"standard"`           |
-| `maxZoom`     | `max-zoom`     | The max zoom level available in the map. _Note: 20 is the best value to be used, only lower values are allowed. Is highly recommended to no change this value if you are not sure about the `maxZoom` supported by the map._ | `number`                                | `RECOMMENDED_MAX_ZOOM` |
-| `zoom`        | `zoom`         | The initial zoom level in the map.                                                                                                                                                                                           | `number`                                | `1`                    |
+| Property              | Attribute               | Description                                                                                                                                                                                                                  | Type                                    | Default                |
+| --------------------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- | ---------------------- |
+| `center`              | `center`                | The coord of initial center of the map.                                                                                                                                                                                      | `string`                                | `"0, 0"`               |
+| `highAccuracyLocator` | `high-accuracy-locator` | Enable the High Accuracy in user location. _Note: This property applies when `watchPosition = true`._                                                                                                                        | `boolean`                               | `true`                 |
+| `mapProvider`         | `map-provider`          | The map provider. _Note: Currently, this property is for setting a custom map provider using an URL._                                                                                                                        | `string`                                | `undefined`            |
+| `mapType`             | `map-type`              | Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._                                                                                                                               | `"hybrid" \| "satellite" \| "standard"` | `"standard"`           |
+| `maxZoom`             | `max-zoom`              | The max zoom level available in the map. _Note: 20 is the best value to be used, only lower values are allowed. Is highly recommended to no change this value if you are not sure about the `maxZoom` supported by the map._ | `number`                                | `RECOMMENDED_MAX_ZOOM` |
+| `watchPosition`       | `watch-position`        | Indicates if the current location of the device is displayed on the map.                                                                                                                                                     | `boolean`                               | `false`                |
+| `zoom`                | `zoom`                  | The initial zoom level in the map.                                                                                                                                                                                           | `number`                                | `1`                    |
 
 ## Events
 
-| Event          | Description                                             | Type               |
-| -------------- | ------------------------------------------------------- | ------------------ |
-| `gxMapDidLoad` | Emmits when the map is loaded.                          | `CustomEvent<any>` |
-| `mapClick`     | Emmits when the map is clicked and return click coords. | `CustomEvent<any>` |
+| Event                | Description                                             | Type               |
+| -------------------- | ------------------------------------------------------- | ------------------ |
+| `gxMapDidLoad`       | Emmits when the map is loaded.                          | `CustomEvent<any>` |
+| `mapClick`           | Emmits when the map is clicked and return click coords. | `CustomEvent<any>` |
+| `userLocationChange` | Emmits when user location coords have been changed.     | `CustomEvent<any>` |
+
+## Dependencies
+
+### Depends on
+
+- [gx-map-marker](../map-marker)
+
+### Graph
+
+```mermaid
+graph TD;
+  gx-map --> gx-map-marker
+  style gx-map fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ---
 
