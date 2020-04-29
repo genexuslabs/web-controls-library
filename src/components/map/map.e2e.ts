@@ -46,14 +46,14 @@ describe("gx-map", () => {
     expect(await element.getProperty("zoom")).toEqual(19);
   });
 
-  it("should set the default mapType if mapType is no defined by user", async () => {
+  it("should set the default mapType if mapType is not defined by user", async () => {
     await page.setContent("<gx-map></gx-map>");
     await page.waitForChanges();
     element = await page.find("gx-map");
     expect(await element.getProperty("mapType")).toEqual("standard");
   });
 
-  it("should properly intereact with gx-map-marker components", async () => {
+  it("should properly interact with gx-map-marker components", async () => {
     let childCounts: E2EElement[];
 
     await page.setContent(
