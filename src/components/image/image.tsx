@@ -36,6 +36,14 @@ export class Image
       {
         cssVariableName: "--image-scale-type",
         propertyName: "scaleType"
+      },
+      {
+        cssVariableName: "--height",
+        propertyName: "height"
+      },
+      {
+        cssVariableName: "--width",
+        propertyName: "width"
       }
     ]);
 
@@ -168,6 +176,8 @@ export class Image
         ]
       : [];
 
+    const isHeightSpecified = !!this.height;
+    const isWidthSpecified = !!this.width;
     return (
       <Host
         class={{
@@ -176,11 +186,13 @@ export class Image
         }}
         hidden={!this.src}
         style={{
-          width: this.width
-            ? `calc(${this.width} + var(--margin-left, 0px) + var(--margin-right, 0px))`
-            : null,
-          height: this.height
+          alignSelf: isHeightSpecified ? "unset" : null,
+          justifySelf: isWidthSpecified ? "unset" : null,
+          height: isHeightSpecified
             ? `calc(${this.height} + var(--margin-top, 0px) + var(--margin-bottom, 0px))`
+            : null,
+          width: isWidthSpecified
+            ? `calc(${this.width} + var(--margin-left, 0px) + var(--margin-right, 0px))`
             : null
         }}
       >

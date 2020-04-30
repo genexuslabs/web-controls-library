@@ -5,6 +5,7 @@ const testImage1 =
 
 describe("gx-image alignment", () => {
   let tableCellElement: E2EElement;
+  let imageElement: E2EElement;
   let page: E2EPage;
 
   beforeEach(async () => {
@@ -33,6 +34,7 @@ describe("gx-image alignment", () => {
   </gx-table>
 `);
     tableCellElement = await page.find("gx-table-cell");
+    imageElement = await page.find("gx-image");
   });
 
   it("default alignment", async () => {
@@ -40,7 +42,7 @@ describe("gx-image alignment", () => {
     expect(results).toMatchScreenshot();
   });
 
-  it("alignment combinations", async () => {
+  it("correctly aligns", async () => {
     const hAlignValues = ["left", "center", "right"];
     const vAlignValues = ["top", "middle", "bottom"];
 
@@ -56,5 +58,21 @@ describe("gx-image alignment", () => {
         expect(results).toMatchScreenshot();
       }
     }
+  });
+
+  it("unsets justify-self when width is specified", async () => {
+    tableCellElement.setAttribute("align", "center");
+    imageElement.setProperty("width", "40px");
+    await page.waitForChanges();
+    const computedStyle = await imageElement.getComputedStyle();
+    expect(computedStyle.justifySelf).toBe("auto");
+  });
+
+  it("unsets align-self when height is specified", async () => {
+    tableCellElement.setAttribute("valign", "middle");
+    imageElement.setProperty("height", "40px");
+    await page.waitForChanges();
+    const computedStyle = await imageElement.getComputedStyle();
+    expect(computedStyle.alignSelf).toBe("auto");
   });
 });
