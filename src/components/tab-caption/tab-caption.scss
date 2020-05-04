@@ -3,7 +3,14 @@
 @import "../renders/bootstrap/tab-caption/tab-caption-render";
 
 gx-tab-caption {
-  @include visibility(block);
+  @include visibility(flex);
 
   @include imagePosition("a", ".gx-tab-caption--unselected");
+
+  [slot="main-image"],
+  [slot="disabled-image"] {
+    max-height: 1em;
+    max-width: 1em;
+    object-fit: contain;
+  }
 }
