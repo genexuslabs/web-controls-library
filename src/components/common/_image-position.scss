@@ -40,8 +40,11 @@
     & > #{$imgParent} {
       flex-direction: column;
 
-      & > span {
+      & > img {
         position: absolute;
+      }
+      & > span {
+        z-index: 1;
       }
     }
   }
