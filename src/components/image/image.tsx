@@ -184,7 +184,6 @@ export class Image
           "gx-img-lazyloading": shouldLazyLoad,
           "gx-img-no-auto-grow": !this.autoGrow
         }}
-        hidden={!this.src}
         style={{
           alignSelf: isHeightSpecified ? "unset" : null,
           justifySelf: isWidthSpecified ? "unset" : null,
