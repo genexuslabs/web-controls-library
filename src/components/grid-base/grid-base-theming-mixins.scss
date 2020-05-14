@@ -47,3 +47,17 @@
     }
   }
 }
+
+/// Helper mixin to ease styling gx-grid-base's custom elements rows
+/// @param {string} $class Base class of the component
+/// @param {string} $highlighted Class to be used when the grid row is active
+@mixin gx-grid-base-row($class, $highlighted: null) {
+  @extend #{$class};
+
+  @if ($highlighted != null) {
+    &:active,
+    &[data-gx-grid-highlighted] {
+      @extend #{$highlighted} !optional;
+    }
+  }
+}
