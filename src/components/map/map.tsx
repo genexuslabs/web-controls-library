@@ -29,7 +29,7 @@ const RECOMMENDED_MAX_ZOOM = 20;
   tag: "gx-map"
 })
 export class Map implements GxComponent {
-  private watchPositionId: number;
+  private centerCoords: string;
   private map: LFMap;
   private markersList = [];
   private mapProviderApplied: string;
@@ -41,6 +41,7 @@ export class Map implements GxComponent {
     standard: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   };
   private tileLayerApplied: tileLayer;
+  private watchPositionId: number;
 
   @Element() element: HTMLGxMapElement;
 
@@ -89,6 +90,11 @@ export class Map implements GxComponent {
   @Prop() watchPosition = false;
 
   /**
+   * Enables the possibility to navigate the map and select a location point using the map center.
+   */
+  @Prop() selectionLayer = false;
+
+  /**
    * The initial zoom level in the map.
    *
    */
@@ -111,6 +117,18 @@ export class Map implements GxComponent {
    *
    */
   @Event() userLocationChange: EventEmitter;
+
+  /**
+   * Emmits when the map is being moving while selection layer is active.
+   *
+   */
+  @Event() selectionInput: EventEmitter;
+
+  /**
+   * Emmits when the map stoped from being moving while selection layer is active.
+   *
+   */
+  @Event() selectionChange: EventEmitter;
 
   @Listen("gxMapMarkerDidLoad")
   onMapMarkerDidLoad(event: CustomEvent) {
