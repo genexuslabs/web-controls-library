@@ -9,8 +9,106 @@
     <title>GeneXus Web Controls Library test page</title>
     <script type="module" src="/build/gx-web-controls.esm.js"></script>
     <script nomodule src="/build/gx-web-controls.js"></script>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+      }
+      h1 {
+        width: 100%;
+      }
+      .MkM_Button {
+        background: #013239;
+        border: none;
+        color: rgba(240, 240, 223, 0.75);
+        border-radius: 25px;
+        transition: 0.2s cubic-bezier(0.5, 0.5, 0.5, 1);
+        padding: 20px;
+        font-family: "Candara";
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        cursor: pointer;
+        box-shadow: 2px 2px 5px rgba(27, 46, 64, 0.5);
+      }
+      .MkM_Button:hover {
+        transform: translate(0px, -4px);
+        box-shadow: 2px 6px 5px rgba(27, 46, 64, 0.5);
+      }
+      .MkM_Button:active {
+        background: rgba(240, 240, 223, 1);
+        color: rgba(27, 46, 64, 0.75);
+        transform: translate(0px, 0px);
+        box-shadow: 0px 0px 0px rgba(27, 46, 64, 0);
+        transition: 0.02s cubic-bezier(0.5, 0.5, 0.5, 1);
+      }
+      .MkM_Button:focus {
+        outline: none;
+      }
+      gx-map {
+        width: 100%;
+        height: 50%;
+      }
+    </style>
   </head>
   <body>
     <h1>Test page</h1>
+    <button class="MkM_Button">Locate Me</button>
+    <gx-map
+      zoom="10"
+      center="-34.80682668989773, -56.16348266601563"
+      max-zoom="20"
+      map-type=""
+    >
+    </gx-map>
   </body>
+  <script>
+    let watchPositionId;
+    const highAccuracy = true;
+    function errorHandle(errorParam) {
+      console.error(errorParam);
+    }
+    function returnPosition({ coords }) {
+      let { latitude, longitude } = coords;
+      let marker = document.querySelector("gx-map-marker.userLocation");
+      let markerCoords = `${latitude}, ${longitude}`;
+      console.log(coords);
+      if (marker) {
+        marker.setAttribute("coords", markerCoords);
+      } else {
+        marker = document.createElement("gx-map-marker");
+        marker.setAttribute("class", "userLocation");
+        marker.setAttribute("coords", markerCoords);
+        document.getElementsByTagName("gx-map")[0].appendChild(marker);
+      }
+    }
+    function locateMe() {
+      if (navigator.geolocation) {
+        watchPositionId = navigator.geolocation.watchPosition(
+          returnPosition,
+          errorHandle,
+          { enableHighAccuracy: highAccuracy }
+        );
+      } else {
+        console.error("This browser does not support Geolocation API");
+      }
+      console.log("watchPositionId", watchPositionId);
+    }
+    document
+      .getElementsByClassName("MkM_Button")[0]
+      .addEventListener("click", locateMe);
+    window.addEventListener("mapClick", ev => {
+      console.log(ev.detail);
+    });
+    window.addEventListener("userLocationChange", ev => {
+      console.log("userLocationChange", ev.detail);
+    });
+  </script>
 </html>

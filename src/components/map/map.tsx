@@ -30,6 +30,7 @@ const RECOMMENDED_MAX_ZOOM = 20;
 })
 export class Map implements GxComponent {
   private centerCoords: string;
+  private selectionMarker: HTMLElement;
   private map: LFMap;
   private markersList = [];
   private mapProviderApplied: string;
@@ -128,7 +129,7 @@ export class Map implements GxComponent {
    * Emmits when the map stoped from being moving while selection layer is active.
    *
    */
-  @Event() selectionChange: EventEmitter;
+  @Event() selectionChange1: EventEmitter;
 
   @Listen("gxMapMarkerDidLoad")
   onMapMarkerDidLoad(event: CustomEvent) {
@@ -223,6 +224,25 @@ export class Map implements GxComponent {
     this.userLocationCoords = `${coords.latitude}, ${coords.longitude}`;
   }
 
+  private setSelectionLayerMarker() {
+    if (this.selectionLayer) {
+      const slot = this.element.querySelector(
+        "[slot='selection-layer-marker']"
+      );
+      this.selectionMarker =
+        slot === null ? (
+          slot
+        ) : (
+          <gx-map-marker
+            marker-class="gx-default-selection-layer-icon"
+            icon-width="15"
+            icon-height="15"
+          ></gx-map-marker>
+        );
+      this.selectionMarker.setAttribute("coords", this.centerCoords);
+    }
+  }
+
   componentWillLoad() {
     if (this.watchPosition) {
       this.watchPositionId = watchPosition(
@@ -254,6 +274,29 @@ export class Map implements GxComponent {
     this.map.setMaxZoom(this.maxZoom);
     this.fitBounds();
     this.gxMapDidLoad.emit(this);
+
+    const centerCoordss = this.map.getCenter();
+    console.log(
+      "Selection Layer On. Current center: ",
+      `${centerCoordss.lat},${centerCoordss.lng}`
+    );
+
+    this.map.on("move", () => {
+      const centerCoordss = this.map.getCenter();
+      console.log(
+        "Map moving. Current center: ",
+        `${centerCoordss.lat},${centerCoordss.lng}`
+      );
+    });
+
+    this.map.on("moveend", () => {
+      const centerCoordss = this.map.getCenter();
+      console.log(
+        "Map movement stopped. Current center: ",
+        `${centerCoordss.lat},${centerCoordss.lng}`
+      );
+    });
+
     this.map.on("popupopen", function(e) {
       const px = this.project(e.target._popup._latlng);
       px.y -= e.target._popup._container.clientHeight / 2;
@@ -276,6 +319,9 @@ export class Map implements GxComponent {
   }
 
   render() {
+    if (this.selectionLayer) {
+      this.setSelectionLayerMarker();
+    }
     return (
       <Host>
         {this.watchPosition && (
@@ -286,6 +332,7 @@ export class Map implements GxComponent {
             coords={this.userLocationCoords}
           ></gx-map-marker>
         )}
+        {this.selectionLayer && this.selectionMarker}
         <div class="gxMapContainer">
           <div class="gxMap"></div>
         </div>
