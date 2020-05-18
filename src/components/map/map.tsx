@@ -30,7 +30,7 @@ const RECOMMENDED_MAX_ZOOM = 20;
 })
 export class Map implements GxComponent {
   private centerCoords: string;
-  private selectionMarker: HTMLElement;
+  private selectionMarker: Element;
   private map: LFMap;
   private markersList = [];
   private mapProviderApplied: string;
@@ -143,10 +143,17 @@ export class Map implements GxComponent {
         markerV.addTo(this.map);
       });
     }
-    this.markersList.push(markerV);
+    if (markerElement !== this.selectionMarker) {
+      this.markersList.push(markerV);
+    }
+
     markerElement.addEventListener("gxMapMarkerDeleted", () => {
       this.onMapMarkerDeleted(markerV);
     });
+  }
+
+  private addMapListener(eventToListen, callbackFunction) {
+    this.map.on(eventToListen, callbackFunction);
   }
 
   private checkForMaxZoom() {
@@ -230,7 +237,7 @@ export class Map implements GxComponent {
         "[slot='selection-layer-marker']"
       );
       this.selectionMarker =
-        slot === null ? (
+        slot !== null ? (
           slot
         ) : (
           <gx-map-marker
@@ -239,6 +246,7 @@ export class Map implements GxComponent {
             icon-height="15"
           ></gx-map-marker>
         );
+      console.log(this.selectionMarker);
       this.selectionMarker.setAttribute("coords", this.centerCoords);
     }
   }
@@ -253,6 +261,7 @@ export class Map implements GxComponent {
         }
       );
     }
+    this.setSelectionLayerMarker();
   }
 
   componentDidLoad() {
@@ -275,34 +284,30 @@ export class Map implements GxComponent {
     this.fitBounds();
     this.gxMapDidLoad.emit(this);
 
+    /////////////////////Adding map listeners////////////////////////////////
     const centerCoordss = this.map.getCenter();
-    console.log(
-      "Selection Layer On. Current center: ",
-      `${centerCoordss.lat},${centerCoordss.lng}`
-    );
+    this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
+    console.log("Selection Layer On.Current center: ", this.centerCoords);
 
-    this.map.on("move", () => {
+    this.addMapListener("move", () => {
       const centerCoordss = this.map.getCenter();
-      console.log(
-        "Map moving. Current center: ",
-        `${centerCoordss.lat},${centerCoordss.lng}`
-      );
+      this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
+      console.log("Map moving. Current center: ", this.centerCoords);
     });
 
-    this.map.on("moveend", () => {
+    this.addMapListener("moveend", () => {
       const centerCoordss = this.map.getCenter();
-      console.log(
-        "Map movement stopped. Current center: ",
-        `${centerCoordss.lat},${centerCoordss.lng}`
-      );
+      this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
+      console.log("Map movement stopped. Current center: ", this.centerCoords);
     });
 
-    this.map.on("popupopen", function(e) {
+    this.addMapListener("popupopen", function(e) {
       const px = this.project(e.target._popup._latlng);
       px.y -= e.target._popup._container.clientHeight / 2;
       this.panTo(this.unproject(px), { animate: true });
     });
-    this.map.addEventListener("click", ev => {
+
+    this.addMapListener("click", ev => {
       this.mapClick.emit(ev.latlng);
     });
   }
@@ -319,9 +324,6 @@ export class Map implements GxComponent {
   }
 
   render() {
-    if (this.selectionLayer) {
-      this.setSelectionLayerMarker();
-    }
     return (
       <Host>
         {this.watchPosition && (
@@ -332,7 +334,7 @@ export class Map implements GxComponent {
             coords={this.userLocationCoords}
           ></gx-map-marker>
         )}
-        {this.selectionLayer && this.selectionMarker}
+        {this.selectionLayer && <slot name="selection-layer-marker" />}
         <div class="gxMapContainer">
           <div class="gxMap"></div>
         </div>
