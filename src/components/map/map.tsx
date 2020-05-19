@@ -29,8 +29,8 @@ const RECOMMENDED_MAX_ZOOM = 20;
   tag: "gx-map"
 })
 export class Map implements GxComponent {
-  private centerCoords: string;
   private selectionMarker: Element;
+  private isSelectionLayerSlot = false;
   private map: LFMap;
   private markersList = [];
   private mapProviderApplied: string;
@@ -46,10 +46,17 @@ export class Map implements GxComponent {
 
   @Element() element: HTMLGxMapElement;
 
+  @Prop() centerCoords: string;
+
   @State() userLocationCoords: string;
 
+  @Watch("centerCoords")
+  centerCoordsHandler() {
+    this.selectionMarker.setAttribute("coords", this.centerCoords);
+  }
+
   @Watch("userLocationCoords")
-  watchHandler() {
+  userLocationHandler() {
     this.userLocationChange.emit(this.userLocationCoords);
   }
 
@@ -135,7 +142,6 @@ export class Map implements GxComponent {
   onMapMarkerDidLoad(event: CustomEvent) {
     const markerElement = event.target;
     const markerV = event.detail;
-
     if (this.map) {
       markerV.addTo(this.map);
     } else {
@@ -143,8 +149,11 @@ export class Map implements GxComponent {
         markerV.addTo(this.map);
       });
     }
-    if (markerElement !== this.selectionMarker) {
-      this.markersList.push(markerV);
+    if (this.selectionLayer) {
+      this.setSelectionLayerMarker();
+      if (markerElement !== this.selectionMarker) {
+        this.markersList.push(markerV);
+      }
     }
 
     markerElement.addEventListener("gxMapMarkerDeleted", () => {
@@ -158,6 +167,15 @@ export class Map implements GxComponent {
 
   private checkForMaxZoom() {
     return this.maxZoom < 20 ? this.maxZoom : RECOMMENDED_MAX_ZOOM;
+  }
+
+  private isSelectionMarkerSlot(): { exist: boolean; elem: Element } {
+    const slot = this.element.querySelector("[slot='selection-layer-marker']");
+    if (slot !== null) {
+      return { exist: true, elem: slot };
+    } else {
+      return { exist: false, elem: null };
+    }
   }
 
   private fitBounds() {
@@ -232,22 +250,14 @@ export class Map implements GxComponent {
   }
 
   private setSelectionLayerMarker() {
-    if (this.selectionLayer) {
-      const slot = this.element.querySelector(
-        "[slot='selection-layer-marker']"
+    const slot = this.isSelectionMarkerSlot();
+    if (slot.exist) {
+      // slot.elem.setAttribute("coords", this.centerCoords);
+      this.selectionMarker = slot.elem;
+    } else {
+      this.selectionMarker = this.element.querySelector(
+        "[marker-class='gx-default-selection-layer-icon']"
       );
-      this.selectionMarker =
-        slot !== null ? (
-          slot
-        ) : (
-          <gx-map-marker
-            marker-class="gx-default-selection-layer-icon"
-            icon-width="15"
-            icon-height="15"
-          ></gx-map-marker>
-        );
-      console.log(this.selectionMarker);
-      this.selectionMarker.setAttribute("coords", this.centerCoords);
     }
   }
 
@@ -261,7 +271,9 @@ export class Map implements GxComponent {
         }
       );
     }
-    this.setSelectionLayerMarker();
+    if (this.selectionLayer && this.isSelectionMarkerSlot().exist) {
+      this.isSelectionLayerSlot = true;
+    }
   }
 
   componentDidLoad() {
@@ -285,20 +297,20 @@ export class Map implements GxComponent {
     this.gxMapDidLoad.emit(this);
 
     /////////////////////Adding map listeners////////////////////////////////
-    const centerCoordss = this.map.getCenter();
-    this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
-    console.log("Selection Layer On.Current center: ", this.centerCoords);
+
+    this.addMapListener("load", () => {
+      const centerCoordss = this.map.getCenter();
+      this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
+    });
 
     this.addMapListener("move", () => {
       const centerCoordss = this.map.getCenter();
       this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
-      console.log("Map moving. Current center: ", this.centerCoords);
     });
 
     this.addMapListener("moveend", () => {
       const centerCoordss = this.map.getCenter();
       this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
-      console.log("Map movement stopped. Current center: ", this.centerCoords);
     });
 
     this.addMapListener("popupopen", function(e) {
@@ -324,6 +336,7 @@ export class Map implements GxComponent {
   }
 
   render() {
+    console.log("actual this.centerCoord", this.centerCoords);
     return (
       <Host>
         {this.watchPosition && (
@@ -334,7 +347,16 @@ export class Map implements GxComponent {
             coords={this.userLocationCoords}
           ></gx-map-marker>
         )}
-        {this.selectionLayer && <slot name="selection-layer-marker" />}
+        {this.selectionLayer && this.isSelectionLayerSlot ? (
+          <slot name="selection-layer-marker" />
+        ) : (
+          <gx-map-marker
+            marker-class="gx-default-selection-layer-icon"
+            icon-width="30"
+            icon-height="30"
+            coords={this.centerCoords}
+          ></gx-map-marker>
+        )}
         <div class="gxMapContainer">
           <div class="gxMap"></div>
         </div>
