@@ -46,14 +46,14 @@ export class Map implements GxComponent {
 
   @Element() element: HTMLGxMapElement;
 
-  @Prop() centerCoords: string;
-
-  @State() userLocationCoords: string;
+  @State() centerCoords: string;
 
   @Watch("centerCoords")
   centerCoordsHandler() {
     this.selectionMarker.setAttribute("coords", this.centerCoords);
   }
+
+  @State() userLocationCoords: string;
 
   @Watch("userLocationCoords")
   userLocationHandler() {
@@ -102,6 +102,11 @@ export class Map implements GxComponent {
    */
   @Prop() selectionLayer = false;
 
+  @Watch("selectionLayer")
+  selectionLayerHandler() {
+    this.setSelectionLayerEvents();
+  }
+
   /**
    * The initial zoom level in the map.
    *
@@ -136,7 +141,7 @@ export class Map implements GxComponent {
    * Emmits when the map stoped from being moving while selection layer is active.
    *
    */
-  @Event() selectionChange1: EventEmitter;
+  @Event() selectionChange: EventEmitter;
 
   @Listen("gxMapMarkerDidLoad")
   onMapMarkerDidLoad(event: CustomEvent) {
@@ -165,17 +170,12 @@ export class Map implements GxComponent {
     this.map.on(eventToListen, callbackFunction);
   }
 
-  private checkForMaxZoom() {
-    return this.maxZoom < 20 ? this.maxZoom : RECOMMENDED_MAX_ZOOM;
+  private removeMapListener(eventToListen, callbackFunction) {
+    this.map.off(eventToListen, callbackFunction);
   }
 
-  private isSelectionMarkerSlot(): { exist: boolean; elem: Element } {
-    const slot = this.element.querySelector("[slot='selection-layer-marker']");
-    if (slot !== null) {
-      return { exist: true, elem: slot };
-    } else {
-      return { exist: false, elem: null };
-    }
+  private checkForMaxZoom() {
+    return this.maxZoom < 20 ? this.maxZoom : RECOMMENDED_MAX_ZOOM;
   }
 
   private fitBounds() {
@@ -197,6 +197,15 @@ export class Map implements GxComponent {
       : MIN_ZOOM;
   }
 
+  private isSelectionMarkerSlot(): { exist: boolean; elem: Element } {
+    const slot = this.element.querySelector("[slot='selection-layer-marker']");
+    if (slot !== null) {
+      return { exist: true, elem: slot };
+    } else {
+      return { exist: false, elem: null };
+    }
+  }
+
   private onMapMarkerDeleted(marker: Marker) {
     let i = 0;
     marker.remove();
@@ -210,6 +219,43 @@ export class Map implements GxComponent {
       this.markersList.splice(i, 1);
     } else {
       console.warn("There was an error in the markers list!");
+    }
+  }
+
+  private setSelectionLayerEvents() {
+    console.log("selectionLayer!");
+    if (this.selectionLayer) {
+      this.addMapListener("load", () => {
+        const centerCoordss = this.map.getCenter();
+        this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
+      });
+
+      this.addMapListener("move", () => {
+        const centerCoordss = this.map.getCenter();
+        this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
+        this.selectionInput.emit(this.centerCoords);
+      });
+
+      this.addMapListener("moveend", () => {
+        const centerCoordss = this.map.getCenter();
+        this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
+        this.selectionChange.emit(this.centerCoords);
+      });
+    } else {
+      this.removeMapListener("load", () => {
+        const centerCoordss = this.map.getCenter();
+        this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
+      });
+
+      this.removeMapListener("move", () => {
+        const centerCoordss = this.map.getCenter();
+        this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
+      });
+
+      this.removeMapListener("moveend", () => {
+        const centerCoordss = this.map.getCenter();
+        this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
+      });
     }
   }
 
@@ -252,7 +298,6 @@ export class Map implements GxComponent {
   private setSelectionLayerMarker() {
     const slot = this.isSelectionMarkerSlot();
     if (slot.exist) {
-      // slot.elem.setAttribute("coords", this.centerCoords);
       this.selectionMarker = slot.elem;
     } else {
       this.selectionMarker = this.element.querySelector(
@@ -262,6 +307,7 @@ export class Map implements GxComponent {
   }
 
   componentWillLoad() {
+    console.log("didLoad!");
     if (this.watchPosition) {
       this.watchPositionId = watchPosition(
         this.setUserLocation.bind(this),
@@ -298,20 +344,7 @@ export class Map implements GxComponent {
 
     /////////////////////Adding map listeners////////////////////////////////
 
-    this.addMapListener("load", () => {
-      const centerCoordss = this.map.getCenter();
-      this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
-    });
-
-    this.addMapListener("move", () => {
-      const centerCoordss = this.map.getCenter();
-      this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
-    });
-
-    this.addMapListener("moveend", () => {
-      const centerCoordss = this.map.getCenter();
-      this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
-    });
+    this.setSelectionLayerEvents();
 
     this.addMapListener("popupopen", function(e) {
       const px = this.project(e.target._popup._latlng);
@@ -329,6 +362,7 @@ export class Map implements GxComponent {
     this.setMapProvider();
     this.fitBounds();
     this.map.setMaxZoom(maxZoom);
+    this.userLocationChange.emit(this.userLocationCoords);
   }
 
   componentDidUnload() {
@@ -336,7 +370,7 @@ export class Map implements GxComponent {
   }
 
   render() {
-    console.log("actual this.centerCoord", this.centerCoords);
+    console.log("render!");
     return (
       <Host>
         {this.watchPosition && (
