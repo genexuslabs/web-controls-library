@@ -29,7 +29,7 @@ const RECOMMENDED_MAX_ZOOM = 20;
   tag: "gx-map"
 })
 export class Map implements GxComponent {
-  private selectionMarker: Element;
+  private centerCoords: string;
   private isSelectionLayerSlot = false;
   private map: LFMap;
   private markersList = [];
@@ -41,17 +41,11 @@ export class Map implements GxComponent {
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     standard: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   };
+  private selectionMarker: Element;
   private tileLayerApplied: tileLayer;
   private watchPositionId: number;
 
   @Element() element: HTMLGxMapElement;
-
-  private centerCoords: string;
-
-  //   @Watch("centerCoords")
-  //   centerCoordsHandler() {
-  //     this.selectionMarker.setAttribute("coords", this.centerCoords);
-  //   }
 
   @State() userLocationCoords: string;
 
@@ -93,14 +87,14 @@ export class Map implements GxComponent {
   @Prop({ mutable: true }) maxZoom: number = RECOMMENDED_MAX_ZOOM;
 
   /**
-   * Indicates if the current location of the device is displayed on the map.
-   */
-  @Prop() watchPosition = false;
-
-  /**
    * Enables the possibility to navigate the map and select a location point using the map center.
    */
   @Prop() selectionLayer = false;
+
+  /**
+   * Indicates if the current location of the device is displayed on the map.
+   */
+  @Prop() watchPosition = false;
 
   @Watch("selectionLayer")
   selectionLayerHandler() {
@@ -126,12 +120,6 @@ export class Map implements GxComponent {
   @Event() mapClick: EventEmitter;
 
   /**
-   * Emmits when user location coords have been changed.
-   *
-   */
-  @Event() userLocationChange: EventEmitter;
-
-  /**
    * Emmits when the map is being moving while selection layer is active.
    *
    */
@@ -142,6 +130,12 @@ export class Map implements GxComponent {
    *
    */
   @Event() selectionChange: EventEmitter;
+
+  /**
+   * Emmits when user location coords have been changed.
+   *
+   */
+  @Event() userLocationChange: EventEmitter;
 
   @Listen("gxMapMarkerDidLoad")
   onMapMarkerDidLoad(event: CustomEvent) {
@@ -164,7 +158,6 @@ export class Map implements GxComponent {
         );
       }
       if (markerElement !== this.selectionMarker) {
-        console.log("true!");
         this.markersList.push(markerV);
       }
     }
@@ -233,21 +226,11 @@ export class Map implements GxComponent {
   private updateSelectionMarkerPosition() {
     const centerCoords = this.map.getCenter();
     this.centerCoords = `${centerCoords.lat},${centerCoords.lng}`;
-    console.log(this.selectionMarker);
     this.selectionMarker.setAttribute("coords", this.centerCoords);
-    console.log("running marker! ");
   }
 
   private selectionLayerEvents() {
-    console.log("selectionLayer!");
-    console.log(this.selectionMarker);
     if (this.selectionLayer) {
-      console.log("selectionLayer true!");
-      //   this.addMapListener("load", () => {
-      //     console.log("running map load! ");
-      //     this.updateSelectionMarkerPosition();
-      //   });
-
       this.addMapListener("move", () => {
         this.updateSelectionMarkerPosition();
         this.selectionInput.emit(this.centerCoords);
@@ -258,10 +241,6 @@ export class Map implements GxComponent {
         this.selectionChange.emit(this.centerCoords);
       });
     } else {
-      //   this.removeMapListener("load", () => {
-      //     this.updateSelectionMarkerPosition();
-      //   });
-
       this.removeMapListener("move", () => {
         this.updateSelectionMarkerPosition();
         this.selectionInput.emit(this.centerCoords);
@@ -310,12 +289,7 @@ export class Map implements GxComponent {
     this.userLocationCoords = `${coords.latitude}, ${coords.longitude}`;
   }
 
-  //   private setSelectionLayerMarker() {
-
-  //   }
-
   componentWillLoad() {
-    console.log("didLoad!");
     if (this.watchPosition) {
       this.watchPositionId = watchPosition(
         this.setUserLocation.bind(this),
@@ -350,8 +324,6 @@ export class Map implements GxComponent {
     this.fitBounds();
     this.gxMapDidLoad.emit(this);
 
-    /////////////////////Adding map listeners////////////////////////////////
-    console.log("component Did load");
     this.updateSelectionMarkerPosition();
     this.selectionLayerEvents();
 
@@ -379,7 +351,6 @@ export class Map implements GxComponent {
   }
 
   render() {
-    console.log("render!");
     return (
       <Host>
         {this.watchPosition && (
