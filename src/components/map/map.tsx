@@ -46,12 +46,12 @@ export class Map implements GxComponent {
 
   @Element() element: HTMLGxMapElement;
 
-  @State() centerCoords: string;
+  private centerCoords: string;
 
-  @Watch("centerCoords")
-  centerCoordsHandler() {
-    this.selectionMarker.setAttribute("coords", this.centerCoords);
-  }
+  //   @Watch("centerCoords")
+  //   centerCoordsHandler() {
+  //     this.selectionMarker.setAttribute("coords", this.centerCoords);
+  //   }
 
   @State() userLocationCoords: string;
 
@@ -104,7 +104,7 @@ export class Map implements GxComponent {
 
   @Watch("selectionLayer")
   selectionLayerHandler() {
-    this.setSelectionLayerEvents();
+    this.selectionLayerEvents();
   }
 
   /**
@@ -155,8 +155,16 @@ export class Map implements GxComponent {
       });
     }
     if (this.selectionLayer) {
-      this.setSelectionLayerMarker();
+      const slot = this.isSelectionMarkerSlot();
+      if (slot.exist) {
+        this.selectionMarker = slot.elem;
+      } else {
+        this.selectionMarker = this.element.querySelector(
+          "[marker-class='gx-default-selection-layer-icon']"
+        );
+      }
       if (markerElement !== this.selectionMarker) {
+        console.log("true!");
         this.markersList.push(markerV);
       }
     }
@@ -222,39 +230,46 @@ export class Map implements GxComponent {
     }
   }
 
-  private setSelectionLayerEvents() {
+  private updateSelectionMarkerPosition() {
+    const centerCoords = this.map.getCenter();
+    this.centerCoords = `${centerCoords.lat},${centerCoords.lng}`;
+    console.log(this.selectionMarker);
+    this.selectionMarker.setAttribute("coords", this.centerCoords);
+    console.log("running marker! ");
+  }
+
+  private selectionLayerEvents() {
     console.log("selectionLayer!");
+    console.log(this.selectionMarker);
     if (this.selectionLayer) {
-      this.addMapListener("load", () => {
-        const centerCoordss = this.map.getCenter();
-        this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
-      });
+      console.log("selectionLayer true!");
+      //   this.addMapListener("load", () => {
+      //     console.log("running map load! ");
+      //     this.updateSelectionMarkerPosition();
+      //   });
 
       this.addMapListener("move", () => {
-        const centerCoordss = this.map.getCenter();
-        this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
+        this.updateSelectionMarkerPosition();
         this.selectionInput.emit(this.centerCoords);
       });
 
       this.addMapListener("moveend", () => {
-        const centerCoordss = this.map.getCenter();
-        this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
+        this.updateSelectionMarkerPosition();
         this.selectionChange.emit(this.centerCoords);
       });
     } else {
-      this.removeMapListener("load", () => {
-        const centerCoordss = this.map.getCenter();
-        this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
-      });
+      //   this.removeMapListener("load", () => {
+      //     this.updateSelectionMarkerPosition();
+      //   });
 
       this.removeMapListener("move", () => {
-        const centerCoordss = this.map.getCenter();
-        this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
+        this.updateSelectionMarkerPosition();
+        this.selectionInput.emit(this.centerCoords);
       });
 
       this.removeMapListener("moveend", () => {
-        const centerCoordss = this.map.getCenter();
-        this.centerCoords = `${centerCoordss.lat},${centerCoordss.lng}`;
+        this.updateSelectionMarkerPosition();
+        this.selectionChange.emit(this.centerCoords);
       });
     }
   }
@@ -295,16 +310,9 @@ export class Map implements GxComponent {
     this.userLocationCoords = `${coords.latitude}, ${coords.longitude}`;
   }
 
-  private setSelectionLayerMarker() {
-    const slot = this.isSelectionMarkerSlot();
-    if (slot.exist) {
-      this.selectionMarker = slot.elem;
-    } else {
-      this.selectionMarker = this.element.querySelector(
-        "[marker-class='gx-default-selection-layer-icon']"
-      );
-    }
-  }
+  //   private setSelectionLayerMarker() {
+
+  //   }
 
   componentWillLoad() {
     console.log("didLoad!");
@@ -343,8 +351,9 @@ export class Map implements GxComponent {
     this.gxMapDidLoad.emit(this);
 
     /////////////////////Adding map listeners////////////////////////////////
-
-    this.setSelectionLayerEvents();
+    console.log("component Did load");
+    this.updateSelectionMarkerPosition();
+    this.selectionLayerEvents();
 
     this.addMapListener("popupopen", function(e) {
       const px = this.project(e.target._popup._latlng);
