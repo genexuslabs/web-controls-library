@@ -231,25 +231,39 @@ export class Map implements GxComponent {
 
   private selectionLayerEvents() {
     if (this.selectionLayer) {
-      this.addMapListener("move", () => {
-        this.updateSelectionMarkerPosition();
-        this.selectionInput.emit(this.centerCoords);
-      });
-
-      this.addMapListener("moveend", () => {
-        this.updateSelectionMarkerPosition();
-        this.selectionChange.emit(this.centerCoords);
-      });
-    } else {
-      this.removeMapListener("move", () => {
-        this.updateSelectionMarkerPosition();
-        this.selectionInput.emit(this.centerCoords);
-      });
-
-      this.removeMapListener("moveend", () => {
-        this.updateSelectionMarkerPosition();
-        this.selectionChange.emit(this.centerCoords);
-      });
+      const moveBehaivor = {
+        eventTrigger: "move",
+        callbackFunction: () => {
+          this.updateSelectionMarkerPosition();
+          this.selectionInput.emit(this.centerCoords);
+        }
+      };
+      const moveEndBehaivor = {
+        eventTrigger: "move",
+        callbackFunction: () => {
+          this.updateSelectionMarkerPosition();
+          this.selectionChange.emit(this.centerCoords);
+        }
+      };
+      if (this.selectionLayer) {
+        this.addMapListener(
+          moveBehaivor.eventTrigger,
+          moveBehaivor.callbackFunction
+        );
+        this.addMapListener(
+          moveEndBehaivor.eventTrigger,
+          moveEndBehaivor.callbackFunction
+        );
+      } else {
+        this.removeMapListener(
+          moveBehaivor.eventTrigger,
+          moveBehaivor.callbackFunction
+        );
+        this.removeMapListener(
+          moveEndBehaivor.eventTrigger,
+          moveEndBehaivor.callbackFunction
+        );
+      }
     }
   }
 
