@@ -235,7 +235,7 @@ export class Map implements GxComponent {
         }
       };
       const moveEndBehaivor = {
-        eventTrigger: "move",
+        eventTrigger: "moveend",
         callbackFunction: () => {
           this.updateSelectionMarkerPosition();
           this.selectionChange.emit(this.centerCoords);
