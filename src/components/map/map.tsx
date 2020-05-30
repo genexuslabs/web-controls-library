@@ -149,7 +149,7 @@ export class Map implements GxComponent {
       });
     }
     if (this.selectionLayer) {
-      const slot = this.isSelectionMarkerSlot();
+      const slot = this.getSelectionMarkerSlot();
       if (slot.exist) {
         this.selectionMarker = slot.elem;
       } else {
@@ -198,13 +198,9 @@ export class Map implements GxComponent {
       : MIN_ZOOM;
   }
 
-  private isSelectionMarkerSlot(): { exist: boolean; elem: Element } {
+  private getSelectionMarkerSlot(): { exist: boolean; elem: Element } {
     const slot = this.element.querySelector("[slot='selection-layer-marker']");
-    if (slot !== null) {
-      return { exist: true, elem: slot };
-    } else {
-      return { exist: false, elem: null };
-    }
+    return { exist: slot !== null, elem: slot };
   }
 
   private onMapMarkerDeleted(marker: Marker) {
@@ -313,7 +309,7 @@ export class Map implements GxComponent {
         }
       );
     }
-    if (this.selectionLayer && this.isSelectionMarkerSlot().exist) {
+    if (this.selectionLayer && this.getSelectionMarkerSlot().exist) {
       this.isSelectionLayerSlot = true;
     }
   }
