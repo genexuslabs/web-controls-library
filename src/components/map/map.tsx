@@ -108,31 +108,31 @@ export class Map implements GxComponent {
   @Prop({ mutable: true }) zoom = 1;
 
   /**
-   * Emmits when the map is loaded.
+   * Emmited when the map is loaded.
    *
    */
   @Event() gxMapDidLoad: EventEmitter;
 
   /**
-   * Emmits when the map is clicked and return click coords.
+   * Emmited when the map is clicked and return click coords.
    *
    */
   @Event() mapClick: EventEmitter;
 
   /**
-   * Emmits when the map is being moving while selection layer is active.
+   * Emmited when the map is being moved, if selection layer is active.
    *
    */
   @Event() selectionInput: EventEmitter;
 
   /**
-   * Emmits when the map stoped from being moving while selection layer is active.
+   * Emmited when the map stops from being moved, if selection layer is active.
    *
    */
   @Event() selectionChange: EventEmitter;
 
   /**
-   * Emmits when user location coords have been changed.
+   * Emmited when the user location coords change.
    *
    */
   @Event() userLocationChange: EventEmitter;

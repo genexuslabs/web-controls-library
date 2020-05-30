@@ -1951,23 +1951,23 @@ declare namespace LocalJSX {
      */
     maxZoom?: number;
     /**
-     * Emmits when the map is loaded.
+     * Emmited when the map is loaded.
      */
     onGxMapDidLoad?: (event: CustomEvent<any>) => void;
     /**
-     * Emmits when the map is clicked and return click coords.
+     * Emmited when the map is clicked and return click coords.
      */
     onMapClick?: (event: CustomEvent<any>) => void;
     /**
-     * Emmits when the map stoped from being moving while selection layer is active.
+     * Emmited when the map stops from being moved, if selection layer is active.
      */
-    onSelectionChange1?: (event: CustomEvent<any>) => void;
+    onSelectionChange?: (event: CustomEvent<any>) => void;
     /**
-     * Emmits when the map is being moving while selection layer is active.
+     * Emmited when the map is being moved, if selection layer is active.
      */
     onSelectionInput?: (event: CustomEvent<any>) => void;
     /**
-     * Emmits when user location coords have been changed.
+     * Emmited when the user location coords change.
      */
     onUserLocationChange?: (event: CustomEvent<any>) => void;
     /**
