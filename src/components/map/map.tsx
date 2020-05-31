@@ -160,6 +160,8 @@ export class Map implements GxComponent {
       if (markerElement !== this.selectionMarker) {
         this.markersList.push(markerV);
       }
+    } else {
+      this.markersList.push(markerV);
     }
 
     markerElement.addEventListener("gxMapMarkerDeleted", () => {
