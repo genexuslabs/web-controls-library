@@ -98,7 +98,7 @@ export class Map implements GxComponent {
 
   @Watch("selectionLayer")
   selectionLayerHandler() {
-    this.selectionLayerEvents();
+    this.registerSelectionLayerEvents();
   }
 
   /**
@@ -227,7 +227,7 @@ export class Map implements GxComponent {
     this.selectionMarker.setAttribute("coords", this.centerCoords);
   }
 
-  private selectionLayerEvents() {
+  private registerSelectionLayerEvents() {
     if (this.selectionLayer) {
       const moveBehaivor = {
         eventTrigger: "move",
@@ -337,7 +337,7 @@ export class Map implements GxComponent {
     this.gxMapDidLoad.emit(this);
 
     this.updateSelectionMarkerPosition();
-    this.selectionLayerEvents();
+    this.registerSelectionLayerEvents();
 
     this.addMapListener("popupopen", function(e) {
       const px = this.project(e.target._popup._latlng);
