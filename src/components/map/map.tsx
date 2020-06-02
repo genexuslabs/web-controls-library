@@ -41,7 +41,7 @@ export class Map implements GxComponent {
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     standard: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   };
-  private selectionMarker: Element;
+  private selectionMarker: HTMLGxMapMarkerElement;
   private tileLayerApplied: tileLayer;
   private watchPositionId: number;
 
@@ -200,8 +200,13 @@ export class Map implements GxComponent {
       : MIN_ZOOM;
   }
 
-  private getSelectionMarkerSlot(): { exist: boolean; elem: Element } {
-    const slot = this.element.querySelector("[slot='selection-layer-marker']");
+  private getSelectionMarkerSlot(): {
+    exist: boolean;
+    elem: HTMLGxMapMarkerElement;
+  } {
+    const slot = this.element.querySelector<HTMLGxMapMarkerElement>(
+      "[slot='selection-layer-marker']"
+    );
     return { exist: slot !== null, elem: slot };
   }
 
