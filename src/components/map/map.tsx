@@ -341,8 +341,10 @@ export class Map implements GxComponent {
     this.fitBounds();
     this.gxMapDidLoad.emit(this);
 
-    this.updateSelectionMarkerPosition();
-    this.registerSelectionLayerEvents();
+    if (this.selectionLayer) {
+      this.updateSelectionMarkerPosition();
+      this.registerSelectionLayerEvents();
+    }
 
     this.addMapListener("popupopen", function(e) {
       const px = this.project(e.target._popup._latlng);
