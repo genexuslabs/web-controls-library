@@ -380,16 +380,17 @@ export class Map implements GxComponent {
             coords={this.userLocationCoords}
           ></gx-map-marker>
         )}
-        {this.selectionLayer && this.isSelectionLayerSlot ? (
-          <slot name="selection-layer-marker" />
-        ) : (
-          <gx-map-marker
-            marker-class="gx-default-selection-layer-icon"
-            icon-width="30"
-            icon-height="30"
-            coords={this.centerCoords}
-          ></gx-map-marker>
-        )}
+        {this.selectionLayer &&
+          (this.isSelectionLayerSlot ? (
+            <slot name="selection-layer-marker" />
+          ) : (
+            <gx-map-marker
+              marker-class="gx-default-selection-layer-icon"
+              icon-width="30"
+              icon-height="30"
+              coords={this.centerCoords}
+            ></gx-map-marker>
+          ))}
         <div class="gxMapContainer">
           <div class="gxMap"></div>
         </div>
