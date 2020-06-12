@@ -1,0 +1,5 @@
+@import "../common/_base";
+
+gx-interactive-image {
+  @include visibility(block);
+}
