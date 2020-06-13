@@ -1,4 +1,4 @@
-import { Component, Element, Prop } from "@stencil/core";
+import { Component, Element, Prop, h } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
@@ -8,6 +8,11 @@ import { Component as GxComponent } from "../common/interfaces";
 })
 export class InteractiveImage implements GxComponent {
   @Element() element: HTMLGxInteractiveImageElement;
+
+  /**
+   * If this property is true, the user can copy the image to the clipboard (Only for iOS, see image below).
+   */
+  @Prop() enableCopyToClipboard: false;
 
   /**
    * True/False. If this property is true, the user can zoom in/out on the image.
@@ -25,11 +30,11 @@ export class InteractiveImage implements GxComponent {
   @Prop() maxZoomRelativeTo: number;
 
   /**
-   * If this property is true, the user can copy the image to the clipboard (Only for iOS, see image below).
+   * Lets you specify the "src" of the img.
    */
-  @Prop() enableCopyToClipboard: false;
+  @Prop() readonly src = "";
 
   render() {
-    return "interactiveImage";
+    return <img class={"gx-default-interactive-image"} src={this.src}></img>;
   }
 }
