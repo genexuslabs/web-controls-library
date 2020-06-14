@@ -12,6 +12,14 @@ Images are very common in Smart Devices applications and the users of this apps 
 | `enableZoom`            | `enable-zoom`              | True/False. If this property is true, the user can zoom in/out on the image.                                                      | `boolean` | `false`     |
 | `maxZoom`               | `max-zoom`                 | Indicates how much you can enlarge an image. (Percentage).                                                                        | `number`  | `undefined` |
 | `maxZoomRelativeTo`     | `max-zoom-relative-to`     | Indicates how much you can enlarge an image with reference to the original size of it or the size of the controller. (Percentage) | `number`  | `undefined` |
+| `src`                   | `src`                      | Lets you specify the "src" of the img.                                                                                            | `""`      | `""`        |
+
+## CSS Custom Properties
+
+| Name               | Description                                                                              |
+| ------------------ | ---------------------------------------------------------------------------------------- |
+| `--control-height` | Set the height or the control. _Must be set before render the control_ (auto by default) |
+| `--control-width`  | Set the width or the control. _Must be set before render the control_ (100% by default)  |
 
 ---
 
