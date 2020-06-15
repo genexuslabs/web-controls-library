@@ -33,6 +33,14 @@ export interface GridBase {
    * If not specified, then grid empty and loading placeholders will not work correctly.
    */
   recordCount: number;
+
+  /**
+   * This attribute defines if the control size will grow automatically,
+   * to adjust to its content size.
+   * If set to `false`, it won't grow automatically and it will show scrollbars
+   * if the content overflows.
+   */
+  readonly autoGrow: boolean;
 }
 
 export class GridBaseHelper {
@@ -42,9 +50,15 @@ export class GridBaseHelper {
     return {
       class: {
         "gx-grid-base": true,
-        "gx-grid-empty": cmp.recordCount === 0,
+        "gx-grid-empty": this.isEmptyGrid(cmp),
+        "gx-grid-empty-loading":
+          cmp.loadingState === "loading" && cmp.recordCount <= 0,
         "gx-grid-loading": cmp.loadingState === "loading"
       }
     };
+  }
+
+  static isEmptyGrid(cmp: GridBase): boolean {
+    return cmp.recordCount === 0 && cmp.loadingState === "loaded";
   }
 }

@@ -6,25 +6,24 @@ http://www.idangero.us/swiper/
 
 <!-- Auto Generated Below -->
 
-
 ## Properties
 
-| Property        | Attribute         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Type                         | Default      |
-| --------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------- | ------------ |
-| `columns`       | `columns`         | Number of items per column (items visible at the same time on slider's container).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `"auto" \| number`           | `undefined`  |
-| `currentPage`   | `current-page`    | 0-Indexed number of currently active page                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `number`                     | `0`          |
-| `direction`     | `direction`       | Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `"horizontal" \| "vertical"` | `undefined`  |
-| `invisibleMode` | `invisible-mode`  | This attribute lets you specify how this element will behave when hidden.  \| Value        \| Details                                                                     \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space.         \| \| `collapse`   \| The element is removed form the document flow, and it doesn't occupy space. \|                                                                                                                                 | `"collapse" \| "keep-space"` | `"collapse"` |
-| `itemsPerGroup` | `items-per-group` | Set numbers of items to define and enable group sliding. Useful to use with rowsPerPage > 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `1`                          | `1`          |
-| `loadingState`  | `loading-state`   | Grid loading state. It's purpose is to know whether the grid loading animation or the grid empty placeholder should be shown.  \| Value        \| Details                                                                                        \| \| ------------ \| ---------------------------------------------------------------------------------------------- \| \| `loading` \| The grid is waiting the server for the grid data. Grid loading mask will be shown.                \| \| `loaded`   \| The grid data has been loaded. If the grid has no records, the empty place holder will be shown. \| | `"loaded" \| "loading"`      | `undefined`  |
-| `logLevel`      | `log-level`       | Logging level. For troubleshooting component update and initialization.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | `"debug" \| "off"`           | `"debug"`    |
-| `options`       | --                | Advanced options to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | `SwiperOptions`              | `{}`         |
-| `pager`         | `pager`           | If `true`, show the pagination buttons.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | `boolean`                    | `true`       |
-| `recordCount`   | `record-count`    | Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.                                                                                                                                                                                                                                                                                                                                                                                                      | `number`                     | `null`       |
-| `rows`          | `rows`            | Number of items per column, for multirow layout.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `number`                     | `undefined`  |
-| `scrollbar`     | `scrollbar`       | If `true`, show the scrollbar.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `boolean`                    | `false`      |
-| `snapToGrid`    | `snap-to-grid`    | Set to false to enable slides in free mode position.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | `boolean`                    | `true`       |
-
+| Property        | Attribute         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Type                         | Default      |
+| --------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------ |
+| `autoGrow`      | `auto-grow`       | This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.                                                                                                                                                                                                                                                                                            | `boolean`                    | `undefined`  |
+| `columns`       | `columns`         | Number of items per column (items visible at the same time on slider's container).                                                                                                                                                                                                                                                                                                                                                                                                                 | `"auto" \| number`           | `undefined`  |
+| `currentPage`   | `current-page`    | 0-Indexed number of currently active page                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `number`                     | `0`          |
+| `direction`     | `direction`       | Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).                                                                                                                                                                                                                                                                                                                                                                                                                 | `"horizontal" \| "vertical"` | `undefined`  |
+| `invisibleMode` | `invisible-mode`  | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \|                                                                                                       | `"collapse" \| "keep-space"` | `"collapse"` |
+| `itemsPerGroup` | `items-per-group` | Set numbers of items to define and enable group sliding. Useful to use with rowsPerPage > 1                                                                                                                                                                                                                                                                                                                                                                                                        | `1`                          | `1`          |
+| `loadingState`  | `loading-state`   | Grid loading state. It's purpose is to know whether the grid loading animation or the grid empty placeholder should be shown. \| Value \| Details \| \| ------------ \| ---------------------------------------------------------------------------------------------- \| \| `loading` \| The grid is waiting the server for the grid data. Grid loading mask will be shown. \| \| `loaded` \| The grid data has been loaded. If the grid has no records, the empty place holder will be shown. \| | `"loaded" \| "loading"`      | `undefined`  |
+| `logLevel`      | `log-level`       | Logging level. For troubleshooting component update and initialization.                                                                                                                                                                                                                                                                                                                                                                                                                            | `"debug" \| "off"`           | `"debug"`    |
+| `options`       | --                | Advanced options to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options                                                                                                                                                                                                                                                                                                                                                                                              | `SwiperOptions`              | `{}`         |
+| `pager`         | `pager`           | If `true`, show the pagination buttons.                                                                                                                                                                                                                                                                                                                                                                                                                                                            | `boolean`                    | `true`       |
+| `recordCount`   | `record-count`    | Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.                                                                                                                                                                                                                                                                                      | `number`                     | `null`       |
+| `rows`          | `rows`            | Number of items per column, for multirow layout.                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `number`                     | `undefined`  |
+| `scrollbar`     | `scrollbar`       | If `true`, show the scrollbar.                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `boolean`                    | `false`      |
+| `snapToGrid`    | `snap-to-grid`    | Set to false to enable slides in free mode position.                                                                                                                                                                                                                                                                                                                                                                                                                                               | `boolean`                    | `true`       |
 
 ## Events
 
@@ -48,7 +47,6 @@ http://www.idangero.us/swiper/
 | `gxGridWillChange`           | Emitted before the active slide has changed.                                                           | `CustomEvent<void>`   |
 | `gxInfiniteThresholdReached` | This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids. | `CustomEvent<void>`   |
 
-
 ## Methods
 
 ### `getActiveIndex() => Promise<number>`
@@ -59,8 +57,6 @@ Get the index of the current active slide.
 
 Type: `Promise<number>`
 
-
-
 ### `getPreviousIndex() => Promise<number>`
 
 Get the index of the previous slide.
@@ -68,8 +64,6 @@ Get the index of the previous slide.
 #### Returns
 
 Type: `Promise<number>`
-
-
 
 ### `isLast() => Promise<boolean>`
 
@@ -79,8 +73,6 @@ Get whether or not the current slide is the last slide.
 
 Type: `Promise<boolean>`
 
-
-
 ### `isStart() => Promise<boolean>`
 
 Get whether or not the current slide is the first slide.
@@ -88,8 +80,6 @@ Get whether or not the current slide is the first slide.
 #### Returns
 
 Type: `Promise<boolean>`
-
-
 
 ### `length() => Promise<number>`
 
@@ -99,8 +89,6 @@ Get the total number of slides.
 
 Type: `Promise<number>`
 
-
-
 ### `slideNext(speed?: number, runCallbacks?: boolean) => Promise<void>`
 
 Transition to the next slide.
@@ -108,8 +96,6 @@ Transition to the next slide.
 #### Returns
 
 Type: `Promise<void>`
-
-
 
 ### `slidePrev(speed?: number, runCallbacks?: boolean) => Promise<void>`
 
@@ -119,8 +105,6 @@ Transition to the previous slide.
 
 Type: `Promise<void>`
 
-
-
 ### `slideTo(index: number, speed?: number, runCallbacks?: boolean) => Promise<void>`
 
 Transition to the specified slide.
@@ -128,8 +112,6 @@ Transition to the specified slide.
 #### Returns
 
 Type: `Promise<void>`
-
-
 
 ### `startAutoplay() => Promise<void>`
 
@@ -139,8 +121,6 @@ Start auto play.
 
 Type: `Promise<void>`
 
-
-
 ### `stopAutoplay() => Promise<void>`
 
 Stop auto play.
@@ -148,8 +128,6 @@ Stop auto play.
 #### Returns
 
 Type: `Promise<void>`
-
-
 
 ### `toggleLockSwipeToNext(lock: boolean) => Promise<void>`
 
@@ -159,8 +137,6 @@ Lock or unlock the ability to slide to the next slide.
 
 Type: `Promise<void>`
 
-
-
 ### `toggleLockSwipeToPrev(lock: boolean) => Promise<void>`
 
 Lock or unlock the ability to slide to the previous slide.
@@ -169,8 +145,6 @@ Lock or unlock the ability to slide to the previous slide.
 
 Type: `Promise<void>`
 
-
-
 ### `toggleLockSwipes(lock: boolean) => Promise<void>`
 
 Lock or unlock the ability to slide to the next or previous slide.
@@ -178,8 +152,6 @@ Lock or unlock the ability to slide to the next or previous slide.
 #### Returns
 
 Type: `Promise<void>`
-
-
 
 ### `update() => Promise<void>`
 
@@ -190,8 +162,6 @@ child slides.
 
 Type: `Promise<void>`
 
-
-
 ### `updateAutoHeight(speed?: number) => Promise<void>`
 
 Force swiper to update its height (when autoHeight is enabled) for the duration
@@ -201,9 +171,6 @@ equal to 'speed' parameter.
 
 Type: `Promise<void>`
 
-
-
-
 ## Dependencies
 
 ### Depends on
@@ -212,6 +179,7 @@ Type: `Promise<void>`
 - [gx-grid-infinite-scroll-content](../grid-infinite-scroll-content)
 
 ### Graph
+
 ```mermaid
 graph TD;
   gx-grid-smart --> gx-grid-infinite-scroll
@@ -219,6 +187,6 @@ graph TD;
   style gx-grid-smart fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

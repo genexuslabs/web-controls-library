@@ -270,6 +270,10 @@ export namespace Components {
     labelPosition: "none" | "top" | "right" | "bottom" | "left" | "float";
   }
   interface GxGridFs {
+    /**
+     * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+     */
+    autoGrow: false;
     complete: () => Promise<void>;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
@@ -282,7 +286,7 @@ export namespace Components {
     /**
      * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
      */
-    recordCount: number;
+    recordCount: any;
     /**
      * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
      */
@@ -309,9 +313,17 @@ export namespace Components {
      * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
      */
     threshold: string;
+    /**
+     * View Port Element where the infinite component is attached.
+     */
+    viewportQuerySelector: String;
   }
   interface GxGridInfiniteScrollContent {}
   interface GxGridSmart {
+    /**
+     * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+     */
+    autoGrow: boolean;
     /**
      * Number of items per column (items visible at the same time on slider's container).
      */
@@ -563,6 +575,10 @@ export namespace Components {
      */
     center: string;
     /**
+     * Enable the High Accuracy in user location. _Note: This property applies when ```watchPosition = true```._
+     */
+    highAccuracyLocator: boolean;
+    /**
      * The map provider. _Note: Currently, this property is for setting a custom map provider using an URL._
      */
     mapProvider: string;
@@ -574,6 +590,10 @@ export namespace Components {
      * The max zoom level available in the map. _Note: 20 is the best value to be used, only lower values are allowed. Is highly recommended to no change this value if you are not sure about the `maxZoom` supported by the map._
      */
     maxZoom: number;
+    /**
+     * Indicates if the current location of the device is displayed on the map.
+     */
+    watchPosition: boolean;
     /**
      * The initial zoom level in the map.
      */
@@ -1597,6 +1617,10 @@ declare namespace LocalJSX {
   }
   interface GxGridFs {
     /**
+     * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+     */
+    autoGrow?: false;
+    /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode?: "collapse" | "keep-space";
@@ -1611,7 +1635,7 @@ declare namespace LocalJSX {
     /**
      * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
      */
-    recordCount?: number;
+    recordCount?: any;
     /**
      * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
      */
@@ -1638,9 +1662,17 @@ declare namespace LocalJSX {
      * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
      */
     threshold?: string;
+    /**
+     * View Port Element where the infinite component is attached.
+     */
+    viewportQuerySelector?: String;
   }
   interface GxGridInfiniteScrollContent {}
   interface GxGridSmart {
+    /**
+     * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+     */
+    autoGrow?: boolean;
     /**
      * Number of items per column (items visible at the same time on slider's container).
      */
@@ -1880,6 +1912,10 @@ declare namespace LocalJSX {
      */
     center?: string;
     /**
+     * Enable the High Accuracy in user location. _Note: This property applies when ```watchPosition = true```._
+     */
+    highAccuracyLocator?: boolean;
+    /**
      * The map provider. _Note: Currently, this property is for setting a custom map provider using an URL._
      */
     mapProvider?: string;
@@ -1899,6 +1935,14 @@ declare namespace LocalJSX {
      * Emmits when the map is clicked and return click coords.
      */
     onMapClick?: (event: CustomEvent<any>) => void;
+    /**
+     * Emmits when user location coords have been changed.
+     */
+    onUserLocationChange?: (event: CustomEvent<any>) => void;
+    /**
+     * Indicates if the current location of the device is displayed on the map.
+     */
+    watchPosition?: boolean;
     /**
      * The initial zoom level in the map.
      */

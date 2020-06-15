@@ -28,7 +28,7 @@ export class GridInfiniteScroll implements ComponentInterface {
   private thrPx = 0;
   private thrPc = 0;
   private scrollEl?: HTMLElement = null;
-  private scrollListenerEl?: HTMLElement | Window = null;
+  private scrollListenerEl?: HTMLElement;
   private didFire = false;
   private isBusy = false;
   private attachedToWindow = false;
@@ -75,6 +75,12 @@ export class GridInfiniteScroll implements ComponentInterface {
    * The value can be either `top` or `bottom`.
    */
   @Prop() readonly position: "top" | "bottom" = "bottom";
+
+  /**
+   * View Port Element where the infinite component is attached.
+   */
+  @Prop() readonly viewportQuerySelector: string =
+    "." + GridBaseHelper.GRID_BASE_CLASSNAME;
 
   /**
    * Emitted when the scroll reaches
@@ -127,7 +133,13 @@ export class GridInfiniteScroll implements ComponentInterface {
   private isVisibleInViewport(el: HTMLElement): boolean {
     const rect = el.getBoundingClientRect();
     const elemTop = rect.top;
-    return elemTop >= 0 && elemTop <= window.innerHeight;
+    const element = this.getScrollListener();
+
+    return (
+      el.style.display !== "none" &&
+      elemTop >= 0 &&
+      elemTop <= (element["clientHeight"] || element["innerHeight"])
+    );
   }
 
   private getScrollParent(node: any): HTMLElement {
@@ -138,14 +150,10 @@ export class GridInfiniteScroll implements ComponentInterface {
     if (node === window.document.documentElement) {
       return node;
     }
-    const classList = node.classList;
-    if (
-      classList !== undefined &&
-      classList.contains(GridBaseHelper.GRID_BASE_CLASSNAME)
-    ) {
-      return null;
-    }
-    if (node.scrollHeight > node.innerHeight) {
+    node =
+      node.closest("virtual-scroller" /*this.viewportQuerySelector*/) || node;
+
+    if (node.scrollHeight > node.clientHeight) {
       const overflow = window.getComputedStyle(node).overflow;
       if (overflow == "auto" || overflow == "scroll") {
         return node;
@@ -159,22 +167,15 @@ export class GridInfiniteScroll implements ComponentInterface {
       return;
     }
 
-    const gridContainer = this.el.closest(
-      "." + GridBaseHelper.GRID_BASE_CLASSNAME
-    );
-    if (gridContainer === null) {
-      return;
-    }
-    let contentEl = this.getScrollParent(gridContainer.parentNode);
+    let contentEl = this.getScrollParent(this.el);
 
     if (contentEl !== null) {
       if (contentEl === window.document.documentElement) {
-        this.scrollListenerEl = window;
+        this.scrollListenerEl = null;
         contentEl = window.document.body;
         this.attachedToWindow = true;
       } else {
         this.scrollListenerEl = contentEl;
-        contentEl = this.scrollListenerEl;
       }
 
       this.scrollEl = contentEl as HTMLElement;
@@ -308,8 +309,16 @@ export class GridInfiniteScroll implements ComponentInterface {
     );
   }
 
+  private getScrollListener() {
+    if (this.attachedToWindow) {
+      return window;
+    } else {
+      return this.scrollListenerEl;
+    }
+  }
+
   private enableScrollEvents(shouldListen: boolean) {
-    const scrollListener = this.scrollListenerEl;
+    const scrollListener = this.getScrollListener();
     if (scrollListener !== null) {
       if (shouldListen) {
         scrollListener.addEventListener("scroll", this.onScroll);

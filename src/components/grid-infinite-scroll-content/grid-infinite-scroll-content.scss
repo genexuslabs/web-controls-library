@@ -1,5 +1,7 @@
+@import "../common/_base";
+
 gx-grid-infinite-scroll {
-  display: flex;
+  @include visibility(flex);
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -8,11 +10,11 @@ gx-grid-infinite-scroll {
 
 gx-grid-infinite-scroll-content,
 .gx-grid-empty:not(.gx-grid-loading) gx-grid-infinite-scroll {
-  display: none;
+  @include visibility(none);
 }
 
 .infinite-scroll-loading gx-grid-infinite-scroll-content,
 .gx-grid-loading gx-grid-infinite-scroll-content {
-  display: block;
+  @include visibility(block);
   flex: 1;
 }
