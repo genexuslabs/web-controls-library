@@ -150,8 +150,7 @@ export class GridInfiniteScroll implements ComponentInterface {
     if (node === window.document.documentElement) {
       return node;
     }
-    node =
-      node.closest("virtual-scroller" /*this.viewportQuerySelector*/) || node;
+    node = node.closest(this.viewportQuerySelector) || node;
 
     if (node.scrollHeight > node.clientHeight) {
       const overflow = window.getComputedStyle(node).overflow;
