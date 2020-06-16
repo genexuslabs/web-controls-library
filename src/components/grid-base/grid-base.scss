@@ -36,11 +36,10 @@
     @include visibility(none);
   }
   & [slot="grid-empty-loading-placeholder"] {
-    flex: 1;
     @include visibility(flex);
+    flex: 1;
     align-items: center;
     justify-content: center;
     text-align: center;
-    flex: 1;
   }
 }
