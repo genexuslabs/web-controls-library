@@ -105,7 +105,6 @@ export class GridFreeStyle
 
   render() {
     this.ensureViewPort();
-    console.log("Grid Render Called", this.recordCount, this.loadingState);
     return (
       <Host {...GridBaseHelper.hostData(this)}>
         {[
