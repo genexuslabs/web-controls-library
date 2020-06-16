@@ -75,4 +75,36 @@ describe("gx-map", () => {
     childCounts = await page.findAll("gx-map .myCustomClass");
     expect(childCounts.length).toEqual(0);
   });
+
+  it("should set the selection marker with the center coords returned by the map", async () => {
+    const centerCoords = "-34.80682668989773,-56.16348266601563";
+    await page.setContent(
+      `<gx-map center="${centerCoords}" selection-layer="true"></gx-map>`
+    );
+    await page.waitForChanges();
+    element = await page.find("gx-map");
+    const selectionMarker = await element.find(
+      "[marker-class='gx-default-selection-layer-icon']"
+    );
+    const selectionMarkerCoords = selectionMarker.getAttribute("coords");
+
+    expect(selectionMarkerCoords).toEqual(centerCoords);
+  });
+
+  it("should get the slot selection marker and set the center coords returned by the map", async () => {
+    const centerCoords = "-34.80682668989773,-56.16348266601563";
+    await page.setContent(
+      `<gx-map center="${centerCoords}" selection-layer="true">
+		  <gx-map-marker slot="selection-layer-marker"></gx-map-marker>
+		</gx-map>`
+    );
+    await page.waitForChanges();
+    element = await page.find("gx-map");
+    const selectionMarker = await element.find(
+      "[slot='selection-layer-marker']"
+    );
+    const selectionMarkerCoords = selectionMarker.getAttribute("coords");
+
+    expect(selectionMarkerCoords).toEqual(centerCoords);
+  });
 });

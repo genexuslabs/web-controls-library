@@ -29,7 +29,8 @@ const RECOMMENDED_MAX_ZOOM = 20;
   tag: "gx-map"
 })
 export class Map implements GxComponent {
-  private watchPositionId: number;
+  private centerCoords: string;
+  private isSelectionLayerSlot = false;
   private map: LFMap;
   private markersList = [];
   private mapProviderApplied: string;
@@ -40,14 +41,16 @@ export class Map implements GxComponent {
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     standard: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   };
+  private selectionMarker: HTMLGxMapMarkerElement;
   private tileLayerApplied: tileLayer;
+  private watchPositionId: number;
 
   @Element() element: HTMLGxMapElement;
 
   @State() userLocationCoords: string;
 
   @Watch("userLocationCoords")
-  watchHandler() {
+  userLocationHandler() {
     this.userLocationChange.emit(this.userLocationCoords);
   }
 
@@ -84,9 +87,19 @@ export class Map implements GxComponent {
   @Prop({ mutable: true }) maxZoom: number = RECOMMENDED_MAX_ZOOM;
 
   /**
+   * Enables the possibility to navigate the map and select a location point using the map center.
+   */
+  @Prop() selectionLayer = false;
+
+  /**
    * Indicates if the current location of the device is displayed on the map.
    */
   @Prop() watchPosition = false;
+
+  @Watch("selectionLayer")
+  selectionLayerHandler() {
+    this.registerSelectionLayerEvents();
+  }
 
   /**
    * The initial zoom level in the map.
@@ -95,19 +108,31 @@ export class Map implements GxComponent {
   @Prop({ mutable: true }) zoom = 1;
 
   /**
-   * Emmits when the map is loaded.
+   * Emmited when the map is loaded.
    *
    */
   @Event() gxMapDidLoad: EventEmitter;
 
   /**
-   * Emmits when the map is clicked and return click coords.
+   * Emmited when the map is clicked and return click coords.
    *
    */
   @Event() mapClick: EventEmitter;
 
   /**
-   * Emmits when user location coords have been changed.
+   * Emmited when the map is being moved, if selection layer is active.
+   *
+   */
+  @Event() selectionInput: EventEmitter;
+
+  /**
+   * Emmited when the map stops from being moved, if selection layer is active.
+   *
+   */
+  @Event() selectionChange: EventEmitter;
+
+  /**
+   * Emmited when the user location coords change.
    *
    */
   @Event() userLocationChange: EventEmitter;
@@ -116,7 +141,6 @@ export class Map implements GxComponent {
   onMapMarkerDidLoad(event: CustomEvent) {
     const markerElement = event.target;
     const markerV = event.detail;
-
     if (this.map) {
       markerV.addTo(this.map);
     } else {
@@ -124,10 +148,33 @@ export class Map implements GxComponent {
         markerV.addTo(this.map);
       });
     }
-    this.markersList.push(markerV);
+    if (this.selectionLayer) {
+      const slot = this.getSelectionMarkerSlot();
+      if (slot.exist) {
+        this.selectionMarker = slot.elem;
+      } else {
+        this.selectionMarker = this.element.querySelector(
+          "[marker-class='gx-default-selection-layer-icon']"
+        );
+      }
+      if (markerElement !== this.selectionMarker) {
+        this.markersList.push(markerV);
+      }
+    } else {
+      this.markersList.push(markerV);
+    }
+
     markerElement.addEventListener("gxMapMarkerDeleted", () => {
       this.onMapMarkerDeleted(markerV);
     });
+  }
+
+  private addMapListener(eventToListen, callbackFunction) {
+    this.map.on(eventToListen, callbackFunction);
+  }
+
+  private removeMapListener(eventToListen, callbackFunction) {
+    this.map.off(eventToListen, callbackFunction);
   }
 
   private checkForMaxZoom() {
@@ -153,6 +200,16 @@ export class Map implements GxComponent {
       : MIN_ZOOM;
   }
 
+  private getSelectionMarkerSlot(): {
+    exist: boolean;
+    elem: HTMLGxMapMarkerElement;
+  } {
+    const slot = this.element.querySelector<HTMLGxMapMarkerElement>(
+      "[slot='selection-layer-marker']"
+    );
+    return { exist: slot !== null, elem: slot };
+  }
+
   private onMapMarkerDeleted(marker: Marker) {
     let i = 0;
     marker.remove();
@@ -166,6 +223,50 @@ export class Map implements GxComponent {
       this.markersList.splice(i, 1);
     } else {
       console.warn("There was an error in the markers list!");
+    }
+  }
+
+  private updateSelectionMarkerPosition() {
+    const centerCoords = this.map.getCenter();
+    this.centerCoords = `${centerCoords.lat},${centerCoords.lng}`;
+    this.selectionMarker.setAttribute("coords", this.centerCoords);
+  }
+
+  private registerSelectionLayerEvents() {
+    if (this.selectionLayer) {
+      const moveBehaivor = {
+        eventTrigger: "move",
+        callbackFunction: () => {
+          this.updateSelectionMarkerPosition();
+          this.selectionInput.emit(this.centerCoords);
+        }
+      };
+      const moveEndBehaivor = {
+        eventTrigger: "moveend",
+        callbackFunction: () => {
+          this.updateSelectionMarkerPosition();
+          this.selectionChange.emit(this.centerCoords);
+        }
+      };
+      if (this.selectionLayer) {
+        this.addMapListener(
+          moveBehaivor.eventTrigger,
+          moveBehaivor.callbackFunction
+        );
+        this.addMapListener(
+          moveEndBehaivor.eventTrigger,
+          moveEndBehaivor.callbackFunction
+        );
+      } else {
+        this.removeMapListener(
+          moveBehaivor.eventTrigger,
+          moveBehaivor.callbackFunction
+        );
+        this.removeMapListener(
+          moveEndBehaivor.eventTrigger,
+          moveEndBehaivor.callbackFunction
+        );
+      }
     }
   }
 
@@ -215,6 +316,9 @@ export class Map implements GxComponent {
         }
       );
     }
+    if (this.selectionLayer && this.getSelectionMarkerSlot().exist) {
+      this.isSelectionLayerSlot = true;
+    }
   }
 
   componentDidLoad() {
@@ -236,12 +340,19 @@ export class Map implements GxComponent {
     this.map.setMaxZoom(this.maxZoom);
     this.fitBounds();
     this.gxMapDidLoad.emit(this);
-    this.map.on("popupopen", function(e) {
+
+    if (this.selectionLayer) {
+      this.updateSelectionMarkerPosition();
+      this.registerSelectionLayerEvents();
+    }
+
+    this.addMapListener("popupopen", function(e) {
       const px = this.project(e.target._popup._latlng);
       px.y -= e.target._popup._container.clientHeight / 2;
       this.panTo(this.unproject(px), { animate: true });
     });
-    this.map.addEventListener("click", ev => {
+
+    this.addMapListener("click", ev => {
       this.mapClick.emit(ev.latlng);
     });
   }
@@ -251,6 +362,7 @@ export class Map implements GxComponent {
     this.setMapProvider();
     this.fitBounds();
     this.map.setMaxZoom(maxZoom);
+    this.userLocationChange.emit(this.userLocationCoords);
   }
 
   componentDidUnload() {
@@ -268,6 +380,17 @@ export class Map implements GxComponent {
             coords={this.userLocationCoords}
           ></gx-map-marker>
         )}
+        {this.selectionLayer &&
+          (this.isSelectionLayerSlot ? (
+            <slot name="selection-layer-marker" />
+          ) : (
+            <gx-map-marker
+              marker-class="gx-default-selection-layer-icon"
+              icon-width="30"
+              icon-height="30"
+              coords={this.centerCoords}
+            ></gx-map-marker>
+          ))}
         <div class="gxMapContainer">
           <div class="gxMap"></div>
         </div>
