@@ -286,7 +286,7 @@ export namespace Components {
     /**
      * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
      */
-    recordCount: any;
+    recordCount: number;
     /**
      * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
      */
@@ -316,7 +316,7 @@ export namespace Components {
     /**
      * View Port Element where the infinite component is attached.
      */
-    viewportQuerySelector: String;
+    viewportQuerySelector: string;
   }
   interface GxGridInfiniteScrollContent {}
   interface GxGridSmart {
@@ -1635,7 +1635,7 @@ declare namespace LocalJSX {
     /**
      * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
      */
-    recordCount?: any;
+    recordCount?: number;
     /**
      * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
      */
@@ -1665,7 +1665,7 @@ declare namespace LocalJSX {
     /**
      * View Port Element where the infinite component is attached.
      */
-    viewportQuerySelector?: String;
+    viewportQuerySelector?: string;
   }
   interface GxGridInfiniteScrollContent {}
   interface GxGridSmart {

@@ -61,7 +61,7 @@ export class GridFreeStyle
    * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes.
    * If not specified, then grid empty and loading placeholders will not work correctly.
    */
-  @Prop() readonly recordCount;
+  @Prop() readonly recordCount: number;
 
   /**
    * The threshold distance from the bottom
