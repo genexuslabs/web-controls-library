@@ -23,7 +23,6 @@ export class GridFreeStyle
     this.handleGxInfinite = this.handleGxInfinite.bind(this);
   }
 
-  loaded = false;
   viewPortInitialized = false;
 
   @Element() el!: HTMLGxGridFsElement;
@@ -85,10 +84,6 @@ export class GridFreeStyle
   @Method()
   async complete() {
     this.el.querySelector(":scope > gx-grid-infinite-scroll")["complete"]();
-  }
-
-  componentDidLoad() {
-    this.loaded = true;
   }
 
   private ensureViewPort() {
