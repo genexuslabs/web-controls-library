@@ -77,9 +77,10 @@ export class GridInfiniteScroll implements ComponentInterface {
   @Prop() readonly position: "top" | "bottom" = "bottom";
 
   /**
-   * View Port Element where the infinite component is attached.
+   * The View Port parent element selector where the infinite component is attached to
+   * and listening to Scroll Events.
    */
-  @Prop() readonly viewportQuerySelector: string =
+  @Prop() readonly viewportSelector: string =
     "." + GridBaseHelper.GRID_BASE_CLASSNAME;
 
   /**
@@ -150,7 +151,7 @@ export class GridInfiniteScroll implements ComponentInterface {
     if (node === window.document.documentElement) {
       return node;
     }
-    node = node.closest(this.viewportQuerySelector) || node;
+    node = node.closest(this.viewportSelector) || node;
 
     if (node.scrollHeight > node.clientHeight) {
       const overflow = window.getComputedStyle(node).overflow;
