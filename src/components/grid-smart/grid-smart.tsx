@@ -571,11 +571,7 @@ export class GridSmart
           this.scrollbar && (
             <div class="swiper-scrollbar" ref={el => (this.scrollbarEl = el)} />
           ),
-          <gx-grid-infinite-scroll disabled={true}>
-            <gx-grid-infinite-scroll-content>
-              <slot name="grid-loading-content" />
-            </gx-grid-infinite-scroll-content>
-          </gx-grid-infinite-scroll>,
+          <slot name="grid-empty-loading-placeholder" />,
           <div class="grid-empty-placeholder">
             <slot name="grid-content-empty" />
           </div>,
