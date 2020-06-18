@@ -20,9 +20,17 @@ gx-interactive-image {
 	*/
   --control-width: 100%;
 
-  @include visibility(block);
+  @include visibility(flex);
   @include size(var(--control-width), var(--control-height));
-  .gx-default-interactive-image {
+  background-position: center;
+  background-repeat: no-repeat;
+
+  img {
     @include size(100%, auto);
+  }
+  &.mouseOver {
+    img {
+      opacity: 0;
+    }
   }
 }

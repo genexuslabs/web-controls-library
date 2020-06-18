@@ -20,9 +20,9 @@ export class InteractiveImage implements GxComponent {
   @Prop() enableZoom = false;
 
   /**
-   * Indicates how much you can enlarge an image. (Percentage).
+   * Indicates how much you can enlarge an image. (Percentage) _Note: 100% = Normal size_.
    */
-  @Prop() maxZoom: number;
+  @Prop() zoom = 100;
 
   /**
    * Indicates how much you can enlarge an image with reference to the original size of it or the size of the controller. (Percentage)
@@ -34,7 +34,25 @@ export class InteractiveImage implements GxComponent {
    */
   @Prop() readonly src = "";
 
+  componentDidLoad() {
+    console.log("didLoad!");
+    this.element.addEventListener("mousemove", ev => {
+      console.log("over!");
+      this.element.setAttribute("class", "mouseOver");
+      this.element.style.backgroundPosition = `-${(ev.offsetX *
+        (this.zoom - 100)) /
+        100}px -${(ev.offsetY * (this.zoom - 100)) / 100}px`;
+    });
+    this.element.addEventListener("mouseout", () => {
+      console.log("out!");
+      this.element.setAttribute("class", "hydrated");
+      this.element.style.backgroundPosition = `0 0`;
+    });
+  }
   render() {
+    console.log("rendering!");
+    this.element.style.backgroundImage = `url(${this.src})`;
+    this.element.style.backgroundSize = `${this.zoom}%`;
     return <img class={"gx-default-interactive-image"} src={this.src}></img>;
   }
 }
