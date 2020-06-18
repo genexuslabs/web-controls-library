@@ -28,6 +28,14 @@ export class GridSmart
   private swiper: Swiper = null;
 
   /**
+   * This attribute defines if the control size will grow automatically,
+   * to adjust to its content size.
+   * If set to `false`, it won't grow automatically and it will show scrollbars
+   * if the content overflows.
+   */
+  @Prop() readonly autoGrow: boolean;
+
+  /**
    * Number of items per column (items visible at the same time on slider's container).
    */
   @Prop() readonly columns: number | "auto";
@@ -563,11 +571,7 @@ export class GridSmart
           this.scrollbar && (
             <div class="swiper-scrollbar" ref={el => (this.scrollbarEl = el)} />
           ),
-          <gx-grid-infinite-scroll disabled={true}>
-            <gx-grid-infinite-scroll-content>
-              <slot name="grid-loading-content" />
-            </gx-grid-infinite-scroll-content>
-          </gx-grid-infinite-scroll>,
+          <slot name="grid-empty-loading-placeholder" />,
           <div class="grid-empty-placeholder">
             <slot name="grid-content-empty" />
           </div>,

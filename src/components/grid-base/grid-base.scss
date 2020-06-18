@@ -5,23 +5,41 @@
   display: flex;
   flex: 1;
 
-  .grid-empty-placeholder {
-    display: none;
+  & > [slot="grid-content"] {
+    flex: 1;
+  }
+
+  & > .grid-empty-placeholder,
+  & > [slot="grid-empty-loading-placeholder"] {
+    @include visibility(none);
   }
 }
 
 .gx-grid-base.gx-grid-empty:not(.gx-grid-loading) {
   .grid-empty-placeholder {
+    @include visibility(flex);
     flex: 1;
-    display: flex;
     align-items: center;
     justify-content: center;
   }
 }
 
 .gx-grid-base.gx-grid-empty {
-  div[slot="grid-content"],
+  & > [slot="grid-content"],
   .gx-grid-paging {
-    display: none;
+    @include visibility(none);
+  }
+}
+
+.gx-grid-base.gx-grid-empty-loading {
+  & [slot="grid-content"] {
+    @include visibility(none);
+  }
+  & [slot="grid-empty-loading-placeholder"] {
+    @include visibility(flex);
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
 }

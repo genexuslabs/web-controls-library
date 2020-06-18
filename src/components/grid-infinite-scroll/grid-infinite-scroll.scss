@@ -1,8 +1,9 @@
+@import "../common/_base";
+
 gx-infinite-scroll {
-    display: none;  
-    width: 100%;
-  }
-  
+  @include visibility(none);
+}
+
 gx-infinite-scroll.infinite-scroll-enabled {
-    display: block;
+  @include visibility(block);
 }

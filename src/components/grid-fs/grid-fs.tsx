@@ -23,7 +23,17 @@ export class GridFreeStyle
     this.handleGxInfinite = this.handleGxInfinite.bind(this);
   }
 
+  viewPortInitialized = false;
+
   @Element() el!: HTMLGxGridFsElement;
+
+  /**
+   * This attribute defines if the control size will grow automatically,
+   * to adjust to its content size.
+   * If set to `false`, it won't grow automatically and it will show scrollbars
+   * if the content overflows.
+   */
+  @Prop() readonly autoGrow = false;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -61,7 +71,7 @@ export class GridFreeStyle
    * from the bottom of the page. Use the value `100px` when the
    * scroll is within 100 pixels from the bottom of the page.
    */
-  @Prop() readonly threshold: string = "15%";
+  @Prop() readonly threshold: string = "150px";
 
   /**
    * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
@@ -76,31 +86,36 @@ export class GridFreeStyle
     this.el.querySelector(":scope > gx-grid-infinite-scroll")["complete"]();
   }
 
+  private ensureViewPort() {
+    if (this.autoGrow || this.viewPortInitialized) {
+      return;
+    }
+    const height = this.el.parentElement.offsetHeight;
+
+    if (height > 0) {
+      this.el.style.maxHeight = height + "px";
+      this.viewPortInitialized = true;
+    }
+  }
+
   render() {
+    this.ensureViewPort();
     return (
       <Host {...GridBaseHelper.hostData(this)}>
         {[
           <slot name="grid-content" />,
-          <gx-grid-infinite-scroll
-            threshold={this.threshold}
-            itemCount={this.recordCount}
-            onGxInfinite={this.handleGxInfinite}
-          >
-            <gx-grid-infinite-scroll-content>
-              <slot name="grid-loading-content" />
-            </gx-grid-infinite-scroll-content>
-          </gx-grid-infinite-scroll>,
+          <slot name="grid-empty-loading-placeholder" />,
           <div class="grid-empty-placeholder">
             <slot name="grid-content-empty" />
-          </div>,
-          <slot />
+          </div>
         ]}
       </Host>
     );
   }
 
   private handleGxInfinite() {
-    this.loadingState !== "loading";
-    this.gxInfiniteThresholdReached.emit();
+    if (this.loadingState !== "loading") {
+      this.gxInfiniteThresholdReached.emit();
+    }
   }
 }
