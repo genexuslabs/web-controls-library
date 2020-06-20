@@ -66,7 +66,7 @@ export class InteractiveImage implements GxComponent {
   };
 
   private editingOverClass() {
-    if (this.mouseOver) {
+    if (this.enableZoom && this.mouseOver) {
       this.element.classList.add("mouse-over");
     } else {
       this.element.classList.remove("mouse-over");
@@ -81,9 +81,7 @@ export class InteractiveImage implements GxComponent {
     element.addEventListener(eventToListen, callbackFunction);
   }
 
-  componentDidLoad() {
-    console.log("didLoad!");
-
+  private checkZoomFeature() {
     const zooming = this.zoomFeature;
 
     this.addEvent(this.element, zooming.over.withMouse, zooming.over.behaivor);
@@ -93,6 +91,11 @@ export class InteractiveImage implements GxComponent {
     this.addEvent(this.element, zooming.out.withMouse, zooming.out.behaivor);
 
     this.addEvent(this.element, zooming.out.withTouch, zooming.out.behaivor);
+  }
+
+  componentDidLoad() {
+    console.log("didLoad!");
+    this.checkZoomFeature();
   }
 
   render() {
