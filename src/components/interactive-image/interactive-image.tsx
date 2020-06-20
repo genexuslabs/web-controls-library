@@ -65,14 +65,6 @@ export class InteractiveImage implements GxComponent {
     }
   };
 
-  private editingOverClass() {
-    if (this.enableZoom && this.mouseOver) {
-      this.element.classList.add("mouse-over");
-    } else {
-      this.element.classList.remove("mouse-over");
-    }
-  }
-
   private addEvent(
     element: HTMLElement,
     eventToListen: string,
@@ -81,16 +73,60 @@ export class InteractiveImage implements GxComponent {
     element.addEventListener(eventToListen, callbackFunction);
   }
 
+  private removeEvent(
+    element: HTMLElement,
+    eventToListen: string,
+    callbackFunction
+  ) {
+    element.removeEventListener(eventToListen, callbackFunction);
+  }
+
+  private editingOverClass() {
+    if (this.enableZoom && this.mouseOver) {
+      this.element.classList.add("mouse-over");
+    } else {
+      this.element.classList.remove("mouse-over");
+    }
+  }
+
   private checkZoomFeature() {
+    this.editingOverClass();
     const zooming = this.zoomFeature;
-
-    this.addEvent(this.element, zooming.over.withMouse, zooming.over.behaivor);
-
-    this.addEvent(this.element, zooming.over.withTouch, zooming.out.behaivor);
-
-    this.addEvent(this.element, zooming.out.withMouse, zooming.out.behaivor);
-
-    this.addEvent(this.element, zooming.out.withTouch, zooming.out.behaivor);
+    if (this.enableZoom) {
+      this.addEvent(
+        this.element,
+        zooming.over.withMouse,
+        zooming.over.behaivor
+      );
+      this.addEvent(
+        this.element,
+        zooming.over.withTouch,
+        zooming.over.behaivor
+      );
+      this.addEvent(this.element, zooming.out.withMouse, zooming.out.behaivor);
+      this.addEvent(this.element, zooming.out.withTouch, zooming.out.behaivor);
+    } else {
+      this.removeEvent(
+        this.element,
+        zooming.over.withMouse,
+        zooming.over.behaivor
+      );
+      this.removeEvent(
+        this.element,
+        zooming.over.withTouch,
+        zooming.over.behaivor
+      );
+      this.removeEvent(
+        this.element,
+        zooming.out.withMouse,
+        zooming.out.behaivor
+      );
+      this.removeEvent(
+        this.element,
+        zooming.out.withTouch,
+        zooming.out.behaivor
+      );
+    }
   }
 
   componentDidLoad() {
@@ -98,8 +134,12 @@ export class InteractiveImage implements GxComponent {
     this.checkZoomFeature();
   }
 
+  componentDidUpdate() {
+    this.checkZoomFeature();
+  }
+
   render() {
-    this.editingOverClass();
+    this.checkZoomFeature();
     console.log("rendering!");
     this.element.style.backgroundImage = `url(${this.src})`;
     this.element.style.backgroundSize = `${this.zoom}%`;
