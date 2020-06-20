@@ -1,4 +1,4 @@
-import { Component, Element, Prop, h } from "@stencil/core";
+import { Component, Element, Prop, h, State, Watch } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
@@ -34,22 +34,39 @@ export class InteractiveImage implements GxComponent {
    */
   @Prop() readonly src = "";
 
+  @State() mouseOver = false;
+
+  @Watch("mouseOver")
+  mouseOverHandler() {
+    this.editingMouseOverClass();
+  }
+
+  private editingMouseOverClass() {
+    if (this.mouseOver) {
+      this.element.classList.add("mouse-over");
+    } else {
+      this.element.classList.remove("mouse-over");
+    }
+  }
+
   componentDidLoad() {
     console.log("didLoad!");
     this.element.addEventListener("mousemove", ev => {
+      this.mouseOver = true;
       console.log("over!");
-      this.element.setAttribute("class", "mouseOver");
       this.element.style.backgroundPosition = `-${(ev.offsetX *
         (this.zoom - 100)) /
         100}px -${(ev.offsetY * (this.zoom - 100)) / 100}px`;
     });
     this.element.addEventListener("mouseout", () => {
+      this.mouseOver = false;
       console.log("out!");
       this.element.setAttribute("class", "hydrated");
       this.element.style.backgroundPosition = `0 0`;
     });
   }
   render() {
+    this.editingMouseOverClass();
     console.log("rendering!");
     this.element.style.backgroundImage = `url(${this.src})`;
     this.element.style.backgroundSize = `${this.zoom}%`;
