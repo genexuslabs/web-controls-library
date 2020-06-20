@@ -41,6 +41,30 @@ export class InteractiveImage implements GxComponent {
     this.editingOverClass();
   }
 
+  private zoomFeature = {
+    over: {
+      withMouse: "mousemove",
+      withTouch: "touchmove",
+      behaivor: ev => {
+        this.mouseOver = true;
+        console.log("over!");
+        this.element.style.backgroundPosition = `-${(ev.offsetX *
+          (this.zoom - 100)) /
+          100}px -${(ev.offsetY * (this.zoom - 100)) / 100}px`;
+      }
+    },
+    out: {
+      withMouse: "mouseout",
+      withTouch: "touchend",
+      behaivor: () => {
+        this.mouseOver = false;
+        console.log("out!");
+        this.element.setAttribute("class", "hydrated");
+        this.element.style.backgroundPosition = `0 0`;
+      }
+    }
+  };
+
   private editingOverClass() {
     if (this.mouseOver) {
       this.element.classList.add("mouse-over");
@@ -60,29 +84,7 @@ export class InteractiveImage implements GxComponent {
   componentDidLoad() {
     console.log("didLoad!");
 
-    const zooming = {
-      over: {
-        withMouse: "mousemove",
-        withTouch: "touchmove",
-        behaivor: ev => {
-          this.mouseOver = true;
-          console.log("over!");
-          this.element.style.backgroundPosition = `-${(ev.offsetX *
-            (this.zoom - 100)) /
-            100}px -${(ev.offsetY * (this.zoom - 100)) / 100}px`;
-        }
-      },
-      out: {
-        withMouse: "mouseout",
-        withTouch: "touchend",
-        behaivor: () => {
-          this.mouseOver = false;
-          console.log("out!");
-          this.element.setAttribute("class", "hydrated");
-          this.element.style.backgroundPosition = `0 0`;
-        }
-      }
-    };
+    const zooming = this.zoomFeature;
 
     this.addEvent(this.element, zooming.over.withMouse, zooming.over.behaivor);
 
