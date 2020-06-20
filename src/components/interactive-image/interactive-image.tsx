@@ -38,10 +38,10 @@ export class InteractiveImage implements GxComponent {
 
   @Watch("mouseOver")
   mouseOverHandler() {
-    this.editingMouseOverClass();
+    this.editingOverClass();
   }
 
-  private editingMouseOverClass() {
+  private editingOverClass() {
     if (this.mouseOver) {
       this.element.classList.add("mouse-over");
     } else {
@@ -49,24 +49,67 @@ export class InteractiveImage implements GxComponent {
     }
   }
 
+  private addEvent(
+    element: HTMLElement,
+    eventToListen: string,
+    callbackFunction
+  ) {
+    element.addEventListener(eventToListen, callbackFunction);
+  }
+
   componentDidLoad() {
     console.log("didLoad!");
-    this.element.addEventListener("mousemove", ev => {
-      this.mouseOver = true;
-      console.log("over!");
-      this.element.style.backgroundPosition = `-${(ev.offsetX *
-        (this.zoom - 100)) /
-        100}px -${(ev.offsetY * (this.zoom - 100)) / 100}px`;
-    });
-    this.element.addEventListener("mouseout", () => {
-      this.mouseOver = false;
-      console.log("out!");
-      this.element.setAttribute("class", "hydrated");
-      this.element.style.backgroundPosition = `0 0`;
-    });
+
+    const mouseOverEvent = {
+      eventWithMouse: "mousemove",
+      eventWithTouch: "touchmove",
+      behaivor: ev => {
+        this.mouseOver = true;
+        console.log("over!");
+        this.element.style.backgroundPosition = `-${(ev.offsetX *
+          (this.zoom - 100)) /
+          100}px -${(ev.offsetY * (this.zoom - 100)) / 100}px`;
+      }
+    };
+
+    const mouseOutEvent = {
+      eventWithMouse: "mouseout",
+      eventWithTouch: "touchend",
+      behaivor: () => {
+        this.mouseOver = false;
+        console.log("out!");
+        this.element.setAttribute("class", "hydrated");
+        this.element.style.backgroundPosition = `0 0`;
+      }
+    };
+
+    this.addEvent(
+      this.element,
+      mouseOverEvent.eventWithMouse,
+      mouseOverEvent.behaivor
+    );
+
+    this.addEvent(
+      this.element,
+      mouseOutEvent.eventWithMouse,
+      mouseOutEvent.behaivor
+    );
+
+    this.addEvent(
+      this.element,
+      mouseOverEvent.eventWithTouch,
+      mouseOverEvent.behaivor
+    );
+
+    this.addEvent(
+      this.element,
+      mouseOutEvent.eventWithTouch,
+      mouseOutEvent.behaivor
+    );
   }
+
   render() {
-    this.editingMouseOverClass();
+    this.editingOverClass();
     console.log("rendering!");
     this.element.style.backgroundImage = `url(${this.src})`;
     this.element.style.backgroundSize = `${this.zoom}%`;
