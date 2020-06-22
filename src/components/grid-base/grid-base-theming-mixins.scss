@@ -27,23 +27,28 @@
     }
   }
 
-  @if ($odd-row != null) {
-    & > [slot="grid-content"] > .gx-grid-row:nth-child(odd) {
-      @extend #{$odd-row} !optional;
+  & > [slot="grid-content"] > {
+    @if ($odd-row != null) {
+      .gx-grid-row:nth-child(odd),
+      * > .gx-grid-row:nth-child(odd) {
+        @extend #{$odd-row} !optional;
+      }
     }
-  }
 
-  @if ($even-row != null) {
-    & > [slot="grid-content"] > .gx-grid-row:nth-child(even) {
-      @extend #{$even-row} !optional;
+    @if ($even-row != null) {
+      .gx-grid-row:nth-child(even),
+      * > .gx-grid-row:nth-child(even) {
+        @extend #{$even-row} !optional;
+      }
     }
-  }
 
-  @if ($horizontal-line != null) {
-    & > [slot="grid-content"] > .gx-grid-row:after {
-      @extend #{$horizontal-line} !optional;
-      content: "";
-      height: var(--height);
+    @if ($horizontal-line != null) {
+      .gx-grid-row:after,
+      * > .gx-grid-row:after {
+        @extend #{$horizontal-line} !optional;
+        content: "";
+        height: var(--height);
+      }
     }
   }
 }
