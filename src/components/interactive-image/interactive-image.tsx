@@ -83,9 +83,9 @@ export class InteractiveImage implements GxComponent {
 
   private editingOverClass() {
     if (this.enableZoom && this.mouseOver) {
-      this.element.classList.add("mouse-over");
+      this.element.classList.add("zoom-over");
     } else {
-      this.element.classList.remove("mouse-over");
+      this.element.classList.remove("zoom-over");
     }
   }
 

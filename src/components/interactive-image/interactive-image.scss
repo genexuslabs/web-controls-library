@@ -28,7 +28,7 @@ gx-interactive-image {
   img {
     @include size(100%, auto);
   }
-  &.mouse-over {
+  &.zoom-over {
     img {
       opacity: 0;
     }
