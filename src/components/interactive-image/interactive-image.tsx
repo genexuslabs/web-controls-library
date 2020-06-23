@@ -129,6 +129,17 @@ export class InteractiveImage implements GxComponent {
     }
   }
 
+  private correctZoomValue() {
+    if (this.zoom < 100) {
+      console.warn("Zoom value cannot be lower than 100");
+      this.zoom = 100;
+    }
+  }
+
+  componentWillLoad() {
+    this.correctZoomValue();
+  }
+
   componentDidLoad() {
     console.log("didLoad!");
     this.checkZoomFeature();
