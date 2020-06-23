@@ -46,6 +46,7 @@ export class InteractiveImage implements GxComponent {
       withMouse: "mousemove",
       withTouch: "touchmove",
       behaivor: ev => {
+        ev.preventDefault();
         this.mouseOver = true;
         console.log("over!");
         this.element.style.backgroundPosition = `-${(ev.offsetX *
@@ -68,9 +69,11 @@ export class InteractiveImage implements GxComponent {
   private addEvent(
     element: HTMLElement,
     eventToListen: string,
-    callbackFunction
+    callbackFunction,
+    passive: boolean
   ) {
-    element.addEventListener(eventToListen, callbackFunction);
+    element.addEventListener(eventToListen, callbackFunction),
+      passive && { passive: true };
   }
 
   private removeEvent(
@@ -96,15 +99,27 @@ export class InteractiveImage implements GxComponent {
       this.addEvent(
         this.element,
         zooming.over.withMouse,
-        zooming.over.behaivor
+        zooming.over.behaivor,
+        true
       );
       this.addEvent(
         this.element,
         zooming.over.withTouch,
-        zooming.over.behaivor
+        zooming.over.behaivor,
+        true
       );
-      this.addEvent(this.element, zooming.out.withMouse, zooming.out.behaivor);
-      this.addEvent(this.element, zooming.out.withTouch, zooming.out.behaivor);
+      this.addEvent(
+        this.element,
+        zooming.out.withMouse,
+        zooming.out.behaivor,
+        true
+      );
+      this.addEvent(
+        this.element,
+        zooming.out.withTouch,
+        zooming.out.behaivor,
+        true
+      );
     } else {
       this.removeEvent(
         this.element,
