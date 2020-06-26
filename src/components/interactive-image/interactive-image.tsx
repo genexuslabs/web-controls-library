@@ -36,35 +36,14 @@ export class InteractiveImage implements GxComponent {
 
   @State() mouseOver = false;
 
+  @State() zoomedPositionX: number;
+
+  @State() zoomedPositionY: number;
+
   @Watch("mouseOver")
   mouseOverHandler() {
     this.editingOverClass();
   }
-
-  private zoomFeature = {
-    over: {
-      withMouse: "mousemove",
-      withTouch: "touchmove",
-      behaivor: ev => {
-        ev.preventDefault();
-        this.mouseOver = true;
-        console.log("over!");
-        this.element.style.backgroundPosition = `-${(ev.offsetX *
-          (this.zoom - 100)) /
-          100}px -${(ev.offsetY * (this.zoom - 100)) / 100}px`;
-      }
-    },
-    out: {
-      withMouse: "mouseout",
-      withTouch: "touchend",
-      behaivor: () => {
-        this.mouseOver = false;
-        console.log("out!");
-        this.element.setAttribute("class", "hydrated");
-        this.element.style.backgroundPosition = `0 0`;
-      }
-    }
-  };
 
   private addEvent(
     element: HTMLElement,
@@ -76,71 +55,27 @@ export class InteractiveImage implements GxComponent {
       passive && { passive: true };
   }
 
-  private removeEvent(
-    element: HTMLElement,
-    eventToListen: string,
-    callbackFunction
-  ) {
-    element.removeEventListener(eventToListen, callbackFunction);
-  }
-
-  private editingOverClass() {
-    if (this.enableZoom && this.mouseOver) {
-      this.element.classList.add("zoom-over");
-    } else {
-      this.element.classList.remove("zoom-over");
-    }
+  private calculateZoomedPosition(overPosition, elementSize) {
+    const SCALE = this.zoom / 100;
+    const HALF_SIZE_PERCENTAGE = 50;
+    const HALF_SIZE_PIXELS = (elementSize * HALF_SIZE_PERCENTAGE) / 100;
+    return -(overPosition - HALF_SIZE_PIXELS) * (SCALE - 1);
   }
 
   private checkZoomFeature() {
-    this.editingOverClass();
     const zooming = this.zoomFeature;
     if (this.enableZoom) {
-      this.addEvent(
-        this.element,
-        zooming.over.withMouse,
-        zooming.over.behaivor,
-        true
-      );
-      this.addEvent(
-        this.element,
-        zooming.over.withTouch,
-        zooming.over.behaivor,
-        true
-      );
-      this.addEvent(
-        this.element,
-        zooming.out.withMouse,
-        zooming.out.behaivor,
-        true
-      );
-      this.addEvent(
-        this.element,
-        zooming.out.withTouch,
-        zooming.out.behaivor,
-        true
-      );
+      const img = this.element.querySelector("img");
+      this.addEvent(img, zooming.over.withMouse, zooming.over.behaivor, true);
+      this.addEvent(img, zooming.over.withTouch, zooming.over.behaivor, true);
+      this.addEvent(img, zooming.out.withMouse, zooming.out.behaivor, true);
+      this.addEvent(img, zooming.out.withTouch, zooming.out.behaivor, true);
     } else {
-      this.removeEvent(
-        this.element,
-        zooming.over.withMouse,
-        zooming.over.behaivor
-      );
-      this.removeEvent(
-        this.element,
-        zooming.over.withTouch,
-        zooming.over.behaivor
-      );
-      this.removeEvent(
-        this.element,
-        zooming.out.withMouse,
-        zooming.out.behaivor
-      );
-      this.removeEvent(
-        this.element,
-        zooming.out.withTouch,
-        zooming.out.behaivor
-      );
+      const img = this.element.querySelector("img");
+      this.removeEvent(img, zooming.over.withMouse, zooming.over.behaivor);
+      this.removeEvent(img, zooming.over.withTouch, zooming.over.behaivor);
+      this.removeEvent(img, zooming.out.withMouse, zooming.out.behaivor);
+      this.removeEvent(img, zooming.out.withTouch, zooming.out.behaivor);
     }
   }
 
@@ -151,12 +86,55 @@ export class InteractiveImage implements GxComponent {
     }
   }
 
+  private editingOverClass() {
+    if (this.enableZoom && this.mouseOver) {
+      this.element.classList.add("zoom-over");
+    } else {
+      this.element.classList.remove("zoom-over");
+    }
+  }
+
+  private removeEvent(
+    element: HTMLElement,
+    eventToListen: string,
+    callbackFunction
+  ) {
+    element.removeEventListener(eventToListen, callbackFunction);
+  }
+
+  private zoomFeature = {
+    over: {
+      withMouse: "mousemove",
+      withTouch: "touchmove",
+      behaivor: ev => {
+        ev.preventDefault();
+        this.mouseOver = true;
+        this.zoomedPositionX = this.calculateZoomedPosition(
+          ev.offsetX,
+          ev.target.offsetWidth
+        );
+        this.zoomedPositionY = this.calculateZoomedPosition(
+          ev.offsetY,
+          ev.target.offsetHeight
+        );
+      }
+    },
+    out: {
+      withMouse: "mouseout",
+      withTouch: "touchend",
+      behaivor: () => {
+        this.mouseOver = false;
+        this.element.setAttribute("class", "hydrated");
+        this.element.style.backgroundPosition = `0 0`;
+      }
+    }
+  };
+
   componentWillLoad() {
     this.correctZoomValue();
   }
 
   componentDidLoad() {
-    console.log("didLoad!");
     this.checkZoomFeature();
   }
 
@@ -165,10 +143,24 @@ export class InteractiveImage implements GxComponent {
   }
 
   render() {
-    this.checkZoomFeature();
-    console.log("rendering!");
-    this.element.style.backgroundImage = `url(${this.src})`;
-    this.element.style.backgroundSize = `${this.zoom}%`;
-    return <img class={"gx-default-interactive-image"} src={this.src}></img>;
+    this.correctZoomValue();
+    return (
+      <img
+        style={
+          this.mouseOver
+            ? {
+                "object-position": this.mouseOver
+                  ? `${this.zoomedPositionX}px ${this.zoomedPositionY}px`
+                  : "0px 0px",
+                transform: this.mouseOver
+                  ? `scale(${this.zoom / 100})`
+                  : `scale(1)`
+              }
+            : {}
+        }
+        class={"gx-default-interactive-image"}
+        src={this.src}
+      />
+    );
   }
 }
