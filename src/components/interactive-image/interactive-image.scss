@@ -11,14 +11,14 @@ gx-interactive-image {
    * Set the height or the control. *Must be set before render the control*
    * (auto by default)
   */
-  --control-height: auto;
+  --control-height: false;
 
   /**
 	* @prop --control-width:
 	 * Set the width or the control. *Must be set before render the control*
 	 * (100% by default)
 	*/
-  --control-width: auto;
+  --control-width: false;
 
   @include visibility(flex);
   @include size(var(--control-width), var(--control-height));
@@ -26,8 +26,8 @@ gx-interactive-image {
   background-repeat: no-repeat;
   overflow: hidden;
 
+  background-color: rgba(250, 0, 0, 0.2);
   img {
-    @include size(100%, auto);
-    object-fit: cover;
+    @include size(100%, 100%);
   }
 }
