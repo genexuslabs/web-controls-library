@@ -55,25 +55,40 @@ export class InteractiveImage implements GxComponent {
       passive && { passive: true };
   }
 
-  private calculateZoomedPosition(overPosition, elementSize) {
+  private calculateZoomedPosition(overPosition: number, elementSize: number) {
     const SCALE = this.zoom / 100;
     const HALF_SIZE_PERCENTAGE = 50;
     const HALF_SIZE_PIXELS = (elementSize * HALF_SIZE_PERCENTAGE) / 100;
     return -(overPosition - HALF_SIZE_PIXELS) * (SCALE - 1);
   }
 
+  private calculateZoomTouch(preCalculateValue: number, zoom: number) {
+    const SCALE = zoom / 100;
+    return preCalculateValue / SCALE;
+  }
+
   private checkZoomFeature() {
     const zooming = this.zoomFeature;
     if (this.enableZoom) {
       const img = this.element.querySelector("img");
-      this.addEvent(img, zooming.over.withMouse, zooming.over.behaivor, true);
-      this.addEvent(img, zooming.over.withTouch, zooming.over.behaivor, true);
+      this.addEvent(
+        img,
+        zooming.over.withMouse,
+        zooming.over.mouseBehaivor,
+        true
+      );
+      this.addEvent(
+        img,
+        zooming.over.withTouch,
+        zooming.over.touchBehaivor,
+        true
+      );
       this.addEvent(img, zooming.out.withMouse, zooming.out.behaivor, true);
       this.addEvent(img, zooming.out.withTouch, zooming.out.behaivor, true);
     } else {
       const img = this.element.querySelector("img");
-      this.removeEvent(img, zooming.over.withMouse, zooming.over.behaivor);
-      this.removeEvent(img, zooming.over.withTouch, zooming.over.behaivor);
+      this.removeEvent(img, zooming.over.withMouse, zooming.over.mouseBehaivor);
+      this.removeEvent(img, zooming.over.withTouch, zooming.over.touchBehaivor);
       this.removeEvent(img, zooming.out.withMouse, zooming.out.behaivor);
       this.removeEvent(img, zooming.out.withTouch, zooming.out.behaivor);
     }
@@ -106,7 +121,7 @@ export class InteractiveImage implements GxComponent {
     over: {
       withMouse: "mousemove",
       withTouch: "touchmove",
-      behaivor: ev => {
+      mouseBehaivor: ev => {
         ev.preventDefault();
         this.mouseOver = true;
         this.zoomedPositionX = this.calculateZoomedPosition(
@@ -117,6 +132,49 @@ export class InteractiveImage implements GxComponent {
           ev.offsetY,
           ev.target.offsetHeight
         );
+      },
+      touchBehaivor: ev => {
+        ev.preventDefault();
+        this.mouseOver = true;
+        ev.preventDefault();
+        const imgSize = {
+          height: ev.target.offsetHeight,
+          width: ev.target.offsetWidth
+        };
+        const touch = {
+          X: ev.changedTouches[0].clientX - ev.target.x,
+          Y:
+            ev.changedTouches[0].clientY -
+            (ev.target.getBoundingClientRect().top + 100)
+        };
+        if (touch.X <= 0) {
+          touch.X = 0;
+        } else if (touch.X >= imgSize.width) {
+          touch.X = imgSize.width;
+        }
+        if (touch.Y <= 0) {
+          touch.Y = 0;
+        } else if (touch.Y >= imgSize.height) {
+          touch.Y = imgSize.height;
+        }
+        document.getElementById("textHere2").innerHTML = `target.Y > ${
+          ev.target.y
+        } vs offset > ${
+          ev.target.offsetTop
+        } vs calculated > ${ev.target.getBoundingClientRect().top + 100}`;
+
+        const moveImgPostion = {
+          X: this.calculateZoomTouch(
+            this.calculateZoomedPosition(touch.X, ev.target.offsetWidth),
+            this.zoom
+          ),
+          Y: this.calculateZoomTouch(
+            this.calculateZoomedPosition(touch.Y, imgSize.height),
+            this.zoom
+          )
+        };
+        this.zoomedPositionX = moveImgPostion.X;
+        this.zoomedPositionY = moveImgPostion.Y;
       }
     },
     out: {
