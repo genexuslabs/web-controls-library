@@ -75,12 +75,22 @@ gx-form-field {
   }
 
   .label-top,
-  .label-bottom .field-label-top,
+  .label-bottom,
+  .field-label-top,
   .field-label-bottom {
     position: relative;
     width: 100%;
-    flex: 0 0 100%;
     max-width: 100%;
+  }
+
+  .label-top,
+  .label-bottom {
+    flex: 0;
+  }
+
+  .field-label-top,
+  .field-label-bottom {
+    flex: 1;
   }
 
   .field-label-left,
@@ -101,7 +111,7 @@ gx-form-field {
     max-height: 100%;
     display: flex;
     flex: 1;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     & > div {
       flex: 1;
       max-height: 100%;
@@ -142,8 +152,10 @@ gx-table-cell {
   &[align="center"],
   &[align="right"] {
     & > gx-form-field {
-      label,
-      label + div {
+      .label-left,
+      .label-right,
+      .field-label-left,
+      .field-label-right {
         -ms-flex-preferred-size: 0;
         flex-basis: 0;
         -webkit-box-flex: 1;

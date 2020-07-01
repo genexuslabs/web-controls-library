@@ -128,7 +128,16 @@ export class FormFieldRender implements Renderer {
             {label}
           </div>
         ) : (
-          <div class="form-group no-gutters mb-0">
+          <div
+            class={{
+              "form-group": true,
+              "no-gutters": true,
+              "mb-0": true,
+              "flex-column":
+                formField.labelPosition === "top" ||
+                formField.labelPosition === "bottom"
+            }}
+          >
             {renderLabel && renderLabelBefore ? label : null}
             <div class={this.getInnerControlContainerClass()}>
               {slots.default}
