@@ -45,9 +45,14 @@
     @if ($horizontal-line != null) {
       .gx-grid-row:after,
       * > .gx-grid-row:after {
+        --grid--horizontal-line-separator-default: block;
         @extend #{$horizontal-line} !optional;
         content: "";
         height: var(--height);
+        display: var(
+          --grid--horizontal-line-separator,
+          var(--grid--horizontal-line-separator-default)
+        );
       }
     }
   }
