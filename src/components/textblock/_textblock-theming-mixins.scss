@@ -33,4 +33,6 @@
       }
     }
   }
+
+  @include gx-form-field($class);
 }
