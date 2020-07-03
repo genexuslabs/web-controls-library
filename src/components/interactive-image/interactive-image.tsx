@@ -133,20 +133,23 @@ export class InteractiveImage implements GxComponent {
           ev.target.offsetHeight
         );
       },
+
       touchBehaivor: ev => {
         ev.preventDefault();
         this.mouseOver = true;
-        ev.preventDefault();
+
         const imgSize = {
           height: ev.target.offsetHeight,
           width: ev.target.offsetWidth
         };
+
         const touch = {
           X: ev.changedTouches[0].clientX - ev.target.x,
           Y:
             ev.changedTouches[0].clientY -
-            (ev.target.getBoundingClientRect().top + 100)
+            ev.target.parentNode.getBoundingClientRect().top
         };
+
         if (touch.X <= 0) {
           touch.X = 0;
         } else if (touch.X >= imgSize.width) {
@@ -157,11 +160,6 @@ export class InteractiveImage implements GxComponent {
         } else if (touch.Y >= imgSize.height) {
           touch.Y = imgSize.height;
         }
-        document.getElementById("textHere2").innerHTML = `target.Y > ${
-          ev.target.y
-        } vs offset > ${
-          ev.target.offsetTop
-        } vs calculated > ${ev.target.getBoundingClientRect().top + 100}`;
 
         const moveImgPostion = {
           X: this.calculateZoomTouch(
