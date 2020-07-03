@@ -3,4 +3,47 @@
 
 gx-form-field {
   @include visibility(flex);
+
+  justify-self: stretch;
+  align-self: stretch;
+  flex: 1;
+}
+
+[align="center"] {
+  & > gx-form-field {
+    [data-part="field"],
+    [data-readonly] {
+      text-align: center;
+    }
+  }
+}
+
+[align="right"] {
+  & > gx-form-field {
+    [data-part="field"],
+    [data-readonly] {
+      text-align: right;
+    }
+  }
+}
+
+[valign="middle"] {
+  & > gx-form-field {
+    [data-readonly],
+    [data-part="label"] {
+      align-self: center;
+    }
+  }
+}
+
+[valign="bottom"] {
+  & > gx-form-field {
+    [data-readonly] {
+      align-self: flex-end;
+      line-height: 1.25; // WA: Increase line-height minimally to avoid vertical scrollbars
+    }
+    [data-part="label"] {
+      align-self: flex-end;
+    }
+  }
 }
