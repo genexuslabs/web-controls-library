@@ -30,7 +30,7 @@ export class InteractiveImage implements GxComponent {
   @Prop() maxZoomRelativeTo: number;
 
   /**
-   * Lets you specify the "src" of the img.
+   * Lets you specify the image URL. *Requiered*
    */
   @Prop() readonly src = "";
 
