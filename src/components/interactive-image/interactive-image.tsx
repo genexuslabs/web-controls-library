@@ -74,27 +74,27 @@ export class InteractiveImage implements GxComponent {
       this.addEvent(
         img,
         zooming.over.withMouse,
-        zooming.over.mouseBehaivor,
+        zooming.over.mouseBehavior,
         true
       );
       this.addEvent(
         img,
         zooming.over.withTouch,
-        zooming.over.touchBehaivor,
+        zooming.over.touchBehavior,
         true
       );
-      this.addEvent(img, zooming.out.withMouse, zooming.out.behaivor, true);
-      this.addEvent(img, zooming.out.withTouch, zooming.out.behaivor, true);
+      this.addEvent(img, zooming.out.withMouse, zooming.out.Behavior, true);
+      this.addEvent(img, zooming.out.withTouch, zooming.out.Behavior, true);
     } else {
       const img = this.element.querySelector("img");
-      this.removeEvent(img, zooming.over.withMouse, zooming.over.mouseBehaivor);
-      this.removeEvent(img, zooming.over.withTouch, zooming.over.touchBehaivor);
-      this.removeEvent(img, zooming.out.withMouse, zooming.out.behaivor);
-      this.removeEvent(img, zooming.out.withTouch, zooming.out.behaivor);
+      this.removeEvent(img, zooming.over.withMouse, zooming.over.mouseBehavior);
+      this.removeEvent(img, zooming.over.withTouch, zooming.over.touchBehavior);
+      this.removeEvent(img, zooming.out.withMouse, zooming.out.Behavior);
+      this.removeEvent(img, zooming.out.withTouch, zooming.out.Behavior);
     }
   }
 
-  private correctZoomValue() {
+  private fixZoomValue() {
     if (this.zoom < 100) {
       console.warn("Zoom value cannot be lower than 100");
       this.zoom = 100;
@@ -121,7 +121,7 @@ export class InteractiveImage implements GxComponent {
     over: {
       withMouse: "mousemove",
       withTouch: "touchmove",
-      mouseBehaivor: ev => {
+      mouseBehavior: ev => {
         ev.preventDefault();
         this.mouseOver = true;
         this.zoomedPositionX = this.calculateZoomedPosition(
@@ -134,7 +134,7 @@ export class InteractiveImage implements GxComponent {
         );
       },
 
-      touchBehaivor: ev => {
+      touchBehavior: ev => {
         ev.preventDefault();
         this.mouseOver = true;
 
@@ -178,7 +178,7 @@ export class InteractiveImage implements GxComponent {
     out: {
       withMouse: "mouseout",
       withTouch: "touchend",
-      behaivor: () => {
+      Behavior: () => {
         this.mouseOver = false;
         this.element.setAttribute("class", "hydrated");
         this.element.style.backgroundPosition = `0 0`;
@@ -187,7 +187,7 @@ export class InteractiveImage implements GxComponent {
   };
 
   componentWillLoad() {
-    this.correctZoomValue();
+    this.fixZoomValue();
   }
 
   componentDidLoad() {
@@ -199,7 +199,7 @@ export class InteractiveImage implements GxComponent {
   }
 
   render() {
-    this.correctZoomValue();
+    this.fixZoomValue();
     return (
       <img
         style={
