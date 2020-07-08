@@ -1,4 +1,4 @@
-import { Component, Element, Prop, h, State, Watch } from "@stencil/core";
+import { Component, Element, Prop, h, State } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
@@ -39,11 +39,6 @@ export class InteractiveImage implements GxComponent {
   @State() zoomedPositionX: number;
 
   @State() zoomedPositionY: number;
-
-  @Watch("mouseOver")
-  mouseOverHandler() {
-    this.editingOverClass();
-  }
 
   private addEvent(
     element: HTMLElement,
@@ -98,14 +93,6 @@ export class InteractiveImage implements GxComponent {
     if (this.zoom < 100) {
       console.warn("Zoom value cannot be lower than 100");
       this.zoom = 100;
-    }
-  }
-
-  private editingOverClass() {
-    if (this.enableZoom && this.mouseOver) {
-      this.element.classList.add("zoom-over");
-    } else {
-      this.element.classList.remove("zoom-over");
     }
   }
 
@@ -180,8 +167,6 @@ export class InteractiveImage implements GxComponent {
       withTouch: "touchend",
       Behavior: () => {
         this.mouseOver = false;
-        this.element.setAttribute("class", "hydrated");
-        this.element.style.backgroundPosition = `0 0`;
       }
     }
   };
@@ -210,7 +195,6 @@ export class InteractiveImage implements GxComponent {
               }
             : {}
         }
-        class={"gx-default-interactive-image"}
         src={this.src}
       />
     );
