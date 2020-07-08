@@ -10,11 +10,6 @@ export class InteractiveImage implements GxComponent {
   @Element() element: HTMLGxInteractiveImageElement;
 
   /**
-   * If this property is true, the user can copy the image to the clipboard (Only for iOS, see image below).
-   */
-  @Prop() enableCopyToClipboard: false;
-
-  /**
    * True/False. If this property is true, the user can zoom in/out on the image.
    */
   @Prop() enableZoom = false;
@@ -23,11 +18,6 @@ export class InteractiveImage implements GxComponent {
    * Indicates how much you can enlarge an image. (Percentage) _Note: 100% = Normal size_.
    */
   @Prop() zoom = 100;
-
-  /**
-   * Indicates how much you can enlarge an image with reference to the original size of it or the size of the controller. (Percentage)
-   */
-  @Prop() maxZoomRelativeTo: number;
 
   /**
    * Lets you specify the image URL. *Requiered*
