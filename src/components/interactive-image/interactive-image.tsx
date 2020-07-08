@@ -205,12 +205,8 @@ export class InteractiveImage implements GxComponent {
         style={
           this.mouseOver
             ? {
-                "object-position": this.mouseOver
-                  ? `${this.zoomedPositionX}px ${this.zoomedPositionY}px`
-                  : "0px 0px",
-                transform: this.mouseOver
-                  ? `scale(${this.zoom / 100})`
-                  : `scale(1)`
+                "object-position": `${this.zoomedPositionX}px ${this.zoomedPositionY}px`,
+                transform: `scale(${this.zoom / 100})`
               }
             : {}
         }
