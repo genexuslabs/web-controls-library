@@ -33,11 +33,11 @@ export class InteractiveImage implements GxComponent {
   private addEvent(
     element: HTMLElement,
     eventToListen: string,
-    callbackFunction,
-    passive: boolean
+    callbackFunction
   ) {
-    element.addEventListener(eventToListen, callbackFunction),
-      passive && { passive: true };
+    element.addEventListener(eventToListen, callbackFunction, {
+      passive: true
+    });
   }
 
   private calculateZoomedPosition(overPosition: number, elementSize: number) {
@@ -55,16 +55,16 @@ export class InteractiveImage implements GxComponent {
   private checkZoomFeature() {
     if (this.enableZoom) {
       const img = this.element.querySelector("img");
-      this.addEvent(img, "mousemove", this.handlerMouseMove, true);
-      this.addEvent(img, "touchmove", this.handlerTouchMove, true);
-      this.addEvent(img, "mouseout", this.zoomingOut, true);
-      this.addEvent(img, "touchend", this.zoomingOut, true);
+      this.addEvent(img, "mousemove", this.handleMouseMove);
+      this.addEvent(img, "touchmove", this.handleTouchMove);
+      this.addEvent(img, "mouseout", this.handleOverEnd);
+      this.addEvent(img, "touchend", this.handleOverEnd);
     } else {
       const img = this.element.querySelector("img");
-      this.removeEvent(img, "mousemove", this.handlerMouseMove);
-      this.removeEvent(img, "touchmove", this.handlerTouchMove);
-      this.removeEvent(img, "mouseout", this.zoomingOut);
-      this.removeEvent(img, "touchend", this.zoomingOut);
+      this.removeEvent(img, "mousemove", this.handleMouseMove);
+      this.removeEvent(img, "touchmove", this.handleTouchMove);
+      this.removeEvent(img, "mouseout", this.handleOverEnd);
+      this.removeEvent(img, "touchend", this.handleOverEnd);
     }
   }
 
@@ -74,7 +74,7 @@ export class InteractiveImage implements GxComponent {
       this.zoom = 100;
     }
   }
-  private handlerMouseMove = ev => {
+  private handleMouseMove = ev => {
     ev.preventDefault();
     this.mouseOver = true;
     this.zoomedPositionX = this.calculateZoomedPosition(
@@ -87,7 +87,7 @@ export class InteractiveImage implements GxComponent {
     );
   };
 
-  private handlerTouchMove = ev => {
+  private handleTouchMove = ev => {
     ev.preventDefault();
     this.mouseOver = true;
 
@@ -128,7 +128,7 @@ export class InteractiveImage implements GxComponent {
     this.zoomedPositionY = moveImgPostion.Y;
   };
 
-  private zoomingOut = () => {
+  private handleOverEnd = () => {
     this.mouseOver = false;
   };
 
