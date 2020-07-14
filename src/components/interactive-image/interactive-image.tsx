@@ -53,29 +53,18 @@ export class InteractiveImage implements GxComponent {
   }
 
   private checkZoomFeature() {
-    const zooming = this.zoomFeature;
     if (this.enableZoom) {
       const img = this.element.querySelector("img");
-      this.addEvent(
-        img,
-        zooming.over.withMouse,
-        zooming.over.mouseBehavior,
-        true
-      );
-      this.addEvent(
-        img,
-        zooming.over.withTouch,
-        zooming.over.touchBehavior,
-        true
-      );
-      this.addEvent(img, zooming.out.withMouse, zooming.out.Behavior, true);
-      this.addEvent(img, zooming.out.withTouch, zooming.out.Behavior, true);
+      this.addEvent(img, "mousemove", this.handlerMouseMove, true);
+      this.addEvent(img, "touchmove", this.handlerTouchMove, true);
+      this.addEvent(img, "mouseout", this.zoomingOut, true);
+      this.addEvent(img, "touchend", this.zoomingOut, true);
     } else {
       const img = this.element.querySelector("img");
-      this.removeEvent(img, zooming.over.withMouse, zooming.over.mouseBehavior);
-      this.removeEvent(img, zooming.over.withTouch, zooming.over.touchBehavior);
-      this.removeEvent(img, zooming.out.withMouse, zooming.out.Behavior);
-      this.removeEvent(img, zooming.out.withTouch, zooming.out.Behavior);
+      this.removeEvent(img, "mousemove", this.handlerMouseMove);
+      this.removeEvent(img, "touchmove", this.handlerTouchMove);
+      this.removeEvent(img, "mouseout", this.zoomingOut);
+      this.removeEvent(img, "touchend", this.zoomingOut);
     }
   }
 
@@ -85,6 +74,63 @@ export class InteractiveImage implements GxComponent {
       this.zoom = 100;
     }
   }
+  private handlerMouseMove = ev => {
+    ev.preventDefault();
+    this.mouseOver = true;
+    this.zoomedPositionX = this.calculateZoomedPosition(
+      ev.offsetX,
+      ev.target.offsetWidth
+    );
+    this.zoomedPositionY = this.calculateZoomedPosition(
+      ev.offsetY,
+      ev.target.offsetHeight
+    );
+  };
+
+  private handlerTouchMove = ev => {
+    ev.preventDefault();
+    this.mouseOver = true;
+
+    const imgSize = {
+      height: ev.target.offsetHeight,
+      width: ev.target.offsetWidth
+    };
+
+    const touch = {
+      X: ev.changedTouches[0].clientX - ev.target.x,
+      Y:
+        ev.changedTouches[0].clientY -
+        ev.target.parentNode.getBoundingClientRect().top
+    };
+
+    if (touch.X <= 0) {
+      touch.X = 0;
+    } else if (touch.X >= imgSize.width) {
+      touch.X = imgSize.width;
+    }
+    if (touch.Y <= 0) {
+      touch.Y = 0;
+    } else if (touch.Y >= imgSize.height) {
+      touch.Y = imgSize.height;
+    }
+
+    const moveImgPostion = {
+      X: this.calculateZoomTouch(
+        this.calculateZoomedPosition(touch.X, ev.target.offsetWidth),
+        this.zoom
+      ),
+      Y: this.calculateZoomTouch(
+        this.calculateZoomedPosition(touch.Y, imgSize.height),
+        this.zoom
+      )
+    };
+    this.zoomedPositionX = moveImgPostion.X;
+    this.zoomedPositionY = moveImgPostion.Y;
+  };
+
+  private zoomingOut = () => {
+    this.mouseOver = false;
+  };
 
   private removeEvent(
     element: HTMLElement,
@@ -93,73 +139,6 @@ export class InteractiveImage implements GxComponent {
   ) {
     element.removeEventListener(eventToListen, callbackFunction);
   }
-
-  private zoomFeature = {
-    over: {
-      withMouse: "mousemove",
-      withTouch: "touchmove",
-      mouseBehavior: ev => {
-        ev.preventDefault();
-        this.mouseOver = true;
-        this.zoomedPositionX = this.calculateZoomedPosition(
-          ev.offsetX,
-          ev.target.offsetWidth
-        );
-        this.zoomedPositionY = this.calculateZoomedPosition(
-          ev.offsetY,
-          ev.target.offsetHeight
-        );
-      },
-
-      touchBehavior: ev => {
-        ev.preventDefault();
-        this.mouseOver = true;
-
-        const imgSize = {
-          height: ev.target.offsetHeight,
-          width: ev.target.offsetWidth
-        };
-
-        const touch = {
-          X: ev.changedTouches[0].clientX - ev.target.x,
-          Y:
-            ev.changedTouches[0].clientY -
-            ev.target.parentNode.getBoundingClientRect().top
-        };
-
-        if (touch.X <= 0) {
-          touch.X = 0;
-        } else if (touch.X >= imgSize.width) {
-          touch.X = imgSize.width;
-        }
-        if (touch.Y <= 0) {
-          touch.Y = 0;
-        } else if (touch.Y >= imgSize.height) {
-          touch.Y = imgSize.height;
-        }
-
-        const moveImgPostion = {
-          X: this.calculateZoomTouch(
-            this.calculateZoomedPosition(touch.X, ev.target.offsetWidth),
-            this.zoom
-          ),
-          Y: this.calculateZoomTouch(
-            this.calculateZoomedPosition(touch.Y, imgSize.height),
-            this.zoom
-          )
-        };
-        this.zoomedPositionX = moveImgPostion.X;
-        this.zoomedPositionY = moveImgPostion.Y;
-      }
-    },
-    out: {
-      withMouse: "mouseout",
-      withTouch: "touchend",
-      Behavior: () => {
-        this.mouseOver = false;
-      }
-    }
-  };
 
   componentWillLoad() {
     this.fixZoomValue();
