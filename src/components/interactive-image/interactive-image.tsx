@@ -30,16 +30,6 @@ export class InteractiveImage implements GxComponent {
 
   @State() zoomedPositionY: number;
 
-  private addEvent(
-    element: HTMLElement,
-    eventToListen: string,
-    callbackFunction
-  ) {
-    element.addEventListener(eventToListen, callbackFunction, {
-      passive: true
-    });
-  }
-
   private calculateZoomedPosition(overPosition: number, elementSize: number) {
     const SCALE = this.zoom / 100;
     const HALF_SIZE_PERCENTAGE = 50;
@@ -55,16 +45,16 @@ export class InteractiveImage implements GxComponent {
   private checkZoomFeature() {
     if (this.enableZoom) {
       const img = this.element.querySelector("img");
-      this.addEvent(img, "mousemove", this.handleMouseMove);
-      this.addEvent(img, "touchmove", this.handleTouchMove);
-      this.addEvent(img, "mouseout", this.handleOverEnd);
-      this.addEvent(img, "touchend", this.handleOverEnd);
+      img.addEventListener("mousemove", this.handleMouseMove);
+      img.addEventListener("touchmove", this.handleTouchMove);
+      img.addEventListener("mouseout", this.handleOverEnd);
+      img.addEventListener("touchend", this.handleOverEnd);
     } else {
       const img = this.element.querySelector("img");
-      this.removeEvent(img, "mousemove", this.handleMouseMove);
-      this.removeEvent(img, "touchmove", this.handleTouchMove);
-      this.removeEvent(img, "mouseout", this.handleOverEnd);
-      this.removeEvent(img, "touchend", this.handleOverEnd);
+      img.removeEventListener("mousemove", this.handleMouseMove);
+      img.removeEventListener("touchmove", this.handleTouchMove);
+      img.removeEventListener("mouseout", this.handleOverEnd);
+      img.removeEventListener("touchend", this.handleOverEnd);
     }
   }
 
@@ -131,14 +121,6 @@ export class InteractiveImage implements GxComponent {
   private handleOverEnd = () => {
     this.mouseOver = false;
   };
-
-  private removeEvent(
-    element: HTMLElement,
-    eventToListen: string,
-    callbackFunction
-  ) {
-    element.removeEventListener(eventToListen, callbackFunction);
-  }
 
   componentWillLoad() {
     this.fixZoomValue();
