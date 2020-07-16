@@ -504,6 +504,24 @@ export namespace Components {
      */
     width: string;
   }
+  interface GxLayout {
+    /**
+     * True to hide the bottom target
+     */
+    bottomHidden: false;
+    /**
+     * True to hide the left target
+     */
+    leftHidden: boolean;
+    /**
+     * True to hide the right target
+     */
+    rightHidden: boolean;
+    /**
+     * True to hide the top target
+     */
+    topHidden: false;
+  }
   interface GxLoading {
     /**
      * Sets the caption text.
@@ -1115,6 +1133,13 @@ declare global {
     prototype: HTMLGxImageElement;
     new (): HTMLGxImageElement;
   };
+  interface HTMLGxLayoutElement
+    extends Components.GxLayout,
+      HTMLStencilElement {}
+  var HTMLGxLayoutElement: {
+    prototype: HTMLGxLayoutElement;
+    new (): HTMLGxLayoutElement;
+  };
   interface HTMLGxLoadingElement
     extends Components.GxLoading,
       HTMLStencilElement {}
@@ -1284,6 +1309,7 @@ declare global {
     "gx-grid-smart": HTMLGxGridSmartElement;
     "gx-group": HTMLGxGroupElement;
     "gx-image": HTMLGxImageElement;
+    "gx-layout": HTMLGxLayoutElement;
     "gx-loading": HTMLGxLoadingElement;
     "gx-lottie": HTMLGxLottieElement;
     "gx-map": HTMLGxMapElement;
@@ -1853,6 +1879,24 @@ declare namespace LocalJSX {
      * This attribute lets you specify the width.
      */
     width?: string;
+  }
+  interface GxLayout {
+    /**
+     * True to hide the bottom target
+     */
+    bottomHidden?: false;
+    /**
+     * True to hide the left target
+     */
+    leftHidden?: boolean;
+    /**
+     * True to hide the right target
+     */
+    rightHidden?: boolean;
+    /**
+     * True to hide the top target
+     */
+    topHidden?: false;
   }
   interface GxLoading {
     /**
@@ -2485,6 +2529,7 @@ declare namespace LocalJSX {
     "gx-grid-smart": GxGridSmart;
     "gx-group": GxGroup;
     "gx-image": GxImage;
+    "gx-layout": GxLayout;
     "gx-loading": GxLoading;
     "gx-lottie": GxLottie;
     "gx-map": GxMap;
@@ -2544,6 +2589,8 @@ declare module "@stencil/core" {
         JSXBase.HTMLAttributes<HTMLGxGridSmartElement>;
       "gx-group": LocalJSX.GxGroup & JSXBase.HTMLAttributes<HTMLGxGroupElement>;
       "gx-image": LocalJSX.GxImage & JSXBase.HTMLAttributes<HTMLGxImageElement>;
+      "gx-layout": LocalJSX.GxLayout &
+        JSXBase.HTMLAttributes<HTMLGxLayoutElement>;
       "gx-loading": LocalJSX.GxLoading &
         JSXBase.HTMLAttributes<HTMLGxLoadingElement>;
       "gx-lottie": LocalJSX.GxLottie &
