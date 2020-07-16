@@ -79,16 +79,28 @@ export class SelectRender implements Renderer {
         }
       };
 
-      return [
-        <gx-bootstrap />,
-        <select {...attris}>
-          {this.options.map(({ disabled, innerText, selected, value }) => (
-            <option disabled={disabled} selected={selected} value={value}>
-              {innerText}
-            </option>
-          ))}
-        </select>
-      ];
+      return this.component.suggest
+        ? [
+            <input list="wea"></input>,
+
+            <datalist id="wea">
+              {this.options.map(({ disabled, innerText, selected, value }) => (
+                <option disabled={disabled} selected={selected} value={value}>
+                  {innerText}
+                </option>
+              ))}
+            </datalist>
+          ]
+        : [
+            <gx-bootstrap />,
+            <select {...attris}>
+              {this.options.map(({ disabled, innerText, selected, value }) => (
+                <option disabled={disabled} selected={selected} value={value}>
+                  {innerText}
+                </option>
+              ))}
+            </select>
+          ];
     }
   }
 }

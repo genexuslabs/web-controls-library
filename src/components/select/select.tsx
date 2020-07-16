@@ -58,6 +58,11 @@ export class Select implements FormComponent {
   @Prop() readonly readonly: boolean;
 
   /**
+   * Enable a text imput with suggest values.
+   */
+  @Prop() suggest: boolean;
+
+  /**
    * The initial value of the control. Setting the value automatically selects
    * the corresponding option.
    */
