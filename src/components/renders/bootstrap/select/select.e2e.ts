@@ -39,4 +39,11 @@ describe("gx-select", () => {
     await page.waitForChanges();
     expect(await page.find("select")).toHaveClass("foo-class");
   });
+
+  it("should set the input with suggest list if suggest attr is enabled", async () => {
+    const input = await element.find("input[list='gx-select-auto-id-0']");
+    const dataList = await element.find("datalist#gx-select-auto-id-0");
+    expect(input).toBeTruthy();
+    expect(dataList).toBeTruthy();
+  });
 });
