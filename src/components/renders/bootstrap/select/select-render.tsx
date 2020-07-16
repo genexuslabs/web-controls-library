@@ -81,9 +81,9 @@ export class SelectRender implements Renderer {
 
       return this.component.suggest
         ? [
-            <input list="wea"></input>,
+            <input list={this.selectId}></input>,
 
-            <datalist id="wea">
+            <datalist id={this.selectId}>
               {this.options.map(({ disabled, innerText, selected, value }) => (
                 <option disabled={disabled} selected={selected} value={value}>
                   {innerText}
