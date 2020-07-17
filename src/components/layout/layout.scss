@@ -25,6 +25,10 @@ gx-layout {
    * @prop --gx-layout-target-transition-timing-function: Vertical target's transition timing function
    */
   --gx-layout-target-transition-timing-function: ease-in-out;
+  /**
+   * @prop --gx-layout-base-z-index: Base z-index for absolute positioned elements
+   */
+  --gx-layout-base-z-index: 100;
 
   display: grid;
   margin: 0 auto;
@@ -88,6 +92,7 @@ gx-layout {
       left: 0;
       background-color: var(--gx-layout-mask-background-color);
       opacity: var(--gx-layout-mask-opacity);
+      z-index: calc(var(--gx-layout-base-z-index) + 1);
 
       @media screen and (max-width: $gx-layout-vertical-targets-breakpoint) {
         &--active {
@@ -113,7 +118,7 @@ gx-layout {
 
     @media screen and (max-width: $gx-layout-vertical-targets-breakpoint) {
       position: absolute;
-      z-index: 1;
+      z-index: calc(var(--gx-layout-base-z-index) + 2);
       bottom: 0;
       top: 0;
       transition-property: transform;
