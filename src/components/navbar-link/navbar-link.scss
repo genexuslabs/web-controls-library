@@ -1,6 +1,30 @@
 @import "../common/_base";
-@import "../renders/bootstrap/navbar-link/navbar-link-render";
 
-gx-navbar-link {
+:host {
   @include visibility(inline);
+  --gx-navbar-link-icon-size: 18px;
+
+  font-size: inherit;
+  font-weight: inherit;
+
+  & > a {
+    cursor: pointer;
+    display: inline-flex;
+    color: inherit;
+    text-decoration: none;
+    padding: 3px 15px;
+    margin: 0 2px;
+
+    &.link--active {
+      background-color: #888;
+    }
+
+    & > .link-icon {
+      display: inline-block;
+      height: var(--gx-navbar-link-icon-size);
+      width: var(--gx-navbar-link-icon-size);
+      object-fit: contain;
+      margin-right: 12px;
+    }
+  }
 }

@@ -1,23 +1,31 @@
-import { Component, Element, Prop, h, Host } from "@stencil/core";
-import { NavBarRender } from "../renders/bootstrap/navbar/navbar-render";
 import {
-  Component as GxComponent,
-  VisibilityComponent
-} from "../common/interfaces";
+  Component,
+  Element,
+  Prop,
+  h,
+  Host,
+  Event,
+  EventEmitter
+} from "@stencil/core";
+import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "navbar.scss",
   tag: "gx-navbar"
 })
-export class NavBar implements GxComponent, VisibilityComponent {
-  constructor() {
-    this.renderer = new NavBarRender(this);
-  }
-
-  private renderer: NavBarRender;
-
+export class NavBar implements GxComponent {
   @Element() element: HTMLGxNavbarElement;
+
+  /**
+   * This attribute lets you specify the label for the low priority actions toggle button. Important for accessibility.
+   */
+  @Prop() readonly actionToggleButtonLabel: string;
+
+  /**
+   * This attribute lets you specify the label for the back button.
+   */
+  @Prop() readonly backButtonLabel: string;
 
   /**
    * This attribute lets you specify an optional title for the navigation bar
@@ -30,33 +38,95 @@ export class NavBar implements GxComponent, VisibilityComponent {
   @Prop() readonly caption: string;
 
   /**
-   * This attribute lets you specify the label for the toggle button. Important for accessibility.
+   * This attribute lets you specify if one or two lines will be used to render the navigation bar.
+   * Useful when there are links and also actions, to have links in the first line, and actions in the second
+   */
+  @Prop() readonly singleLine = true;
+
+  /**
+   * True to show the back button
+   */
+  @Prop() readonly showBackButton: false;
+
+  /**
+   * True to show the left target toggle button (a burger icon)
+   */
+  @Prop() readonly showToggleButton: false;
+
+  /**
+   * This attribute lets you specify the label for the left target toggle button. Important for accessibility.
    */
   @Prop() readonly toggleButtonLabel: string;
 
   /**
-   * A CSS class to set as the inner element class.
+   * Fired when the toggle button is clicked
    */
-  @Prop() readonly cssClass: string;
+  @Event() toggleButtonClick: EventEmitter;
 
-  /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
+  private handleToggleButtonClick = (e: MouseEvent) => {
+    this.toggleButtonClick.emit(e);
+  };
 
   render() {
+    const hasLowPriorityActions =
+      document.querySelector("[slot='low-priority-action']") !== null;
+
     return (
       <Host>
-        {this.renderer.render({
-          default: <slot />,
-          header: <slot name="header" />
-        })}
+        <nav class="nav">
+          <div class="navbar-line navbar-line-1">
+            {this.showToggleButton && (
+              <button
+                type="button"
+                class="navbar-target-toggle"
+                aria-label={this.toggleButtonLabel}
+                onClick={this.handleToggleButtonClick}
+              >
+                <gx-icon type="burger" color="white"></gx-icon>
+              </button>
+            )}
+            <a class="navbar-header" tabindex="-1">
+              <slot name="header" />
+              {this.caption}
+            </a>
+            <div class="navbar-links">
+              <slot />
+            </div>
+            {this.singleLine && this.renderActions()}
+            {hasLowPriorityActions && (
+              <button
+                type="button"
+                aria-label={this.actionToggleButtonLabel}
+                class="navbar-actions-toggle"
+              ></button>
+            )}
+          </div>
+          {!this.singleLine && (
+            <div class="navbar-line navbar-line-2">
+              {this.showBackButton && (
+                <button type="button" class="navbar-back-button">
+                  {this.backButtonLabel}
+                </button>
+              )}
+              {this.renderActions()}
+            </div>
+          )}
+        </nav>
       </Host>
     );
+  }
+
+  private renderActions() {
+    return [
+      <div class="navbar-actions-high">
+        <slot name="high-priority-action" />
+      </div>,
+      <div class="navbar-actions-normal">
+        <slot name="normal-priority-action" />
+      </div>,
+      <div class="navbar-actions-low">
+        <slot name="low-priority-action" />
+      </div>
+    ];
   }
 }

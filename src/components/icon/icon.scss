@@ -1,0 +1,17 @@
+:host {
+  --gx-icon-size: 24px;
+  width: var(--gx-icon-size);
+  height: var(--gx-icon-size);
+  display: inline-flex;
+
+  svg {
+    width: var(--gx-icon-size);
+    height: var(--gx-icon-size);
+    * {
+      fill: var(--gx-icon-color);
+    }
+  }
+  .svg-icon-native {
+    line-height: 0;
+  }
+}
