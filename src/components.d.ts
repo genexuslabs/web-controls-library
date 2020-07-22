@@ -462,6 +462,24 @@ export namespace Components {
      */
     caption: string;
   }
+  interface GxIcon {
+    /**
+     * The color of the icon.
+     */
+    color: string;
+    /**
+     * A label for the icon, for screen readers to use.
+     */
+    label: string;
+    /**
+     * If enabled, the icon will be loaded lazily when it's visible in the viewport.
+     */
+    lazy: boolean;
+    /**
+     * The type of icon. Possible values: the name each of the icons in /assets.
+     */
+    type: string;
+  }
   interface GxImage {
     /**
      * This attribute lets you specify the alternative text.
@@ -681,19 +699,31 @@ export namespace Components {
   }
   interface GxNavbar {
     /**
+     * This attribute lets you specify the label for the low priority actions toggle button. Important for accessibility.
+     */
+    actionToggleButtonLabel: string;
+    /**
+     * This attribute lets you specify the label for the back button.
+     */
+    backButtonLabel: string;
+    /**
      * This attribute lets you specify an optional title for the navigation bar  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     caption: string;
     /**
-     * A CSS class to set as the inner element class.
+     * True to show the back button
      */
-    cssClass: string;
+    showBackButton: false;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     * True to show the left target toggle button (a burger icon)
      */
-    invisibleMode: "collapse" | "keep-space";
+    showToggleButton: false;
     /**
-     * This attribute lets you specify the label for the toggle button. Important for accessibility.
+     * This attribute lets you specify if one or two lines will be used to render the navigation bar. Useful when there are links and also actions, to have links in the first line, and actions in the second
+     */
+    singleLine: true;
+    /**
+     * This attribute lets you specify the label for the left target toggle button. Important for accessibility.
      */
     toggleButtonLabel: string;
   }
@@ -1128,6 +1158,11 @@ declare global {
     prototype: HTMLGxGroupElement;
     new (): HTMLGxGroupElement;
   };
+  interface HTMLGxIconElement extends Components.GxIcon, HTMLStencilElement {}
+  var HTMLGxIconElement: {
+    prototype: HTMLGxIconElement;
+    new (): HTMLGxIconElement;
+  };
   interface HTMLGxImageElement extends Components.GxImage, HTMLStencilElement {}
   var HTMLGxImageElement: {
     prototype: HTMLGxImageElement;
@@ -1308,6 +1343,7 @@ declare global {
     "gx-grid-infinite-scroll-content": HTMLGxGridInfiniteScrollContentElement;
     "gx-grid-smart": HTMLGxGridSmartElement;
     "gx-group": HTMLGxGroupElement;
+    "gx-icon": HTMLGxIconElement;
     "gx-image": HTMLGxImageElement;
     "gx-layout": HTMLGxLayoutElement;
     "gx-loading": HTMLGxLoadingElement;
@@ -1834,6 +1870,24 @@ declare namespace LocalJSX {
      */
     caption?: string;
   }
+  interface GxIcon {
+    /**
+     * The color of the icon.
+     */
+    color?: string;
+    /**
+     * A label for the icon, for screen readers to use.
+     */
+    label?: string;
+    /**
+     * If enabled, the icon will be loaded lazily when it's visible in the viewport.
+     */
+    lazy?: boolean;
+    /**
+     * The type of icon. Possible values: the name each of the icons in /assets.
+     */
+    type?: string;
+  }
   interface GxImage {
     /**
      * This attribute lets you specify the alternative text.
@@ -2088,19 +2142,31 @@ declare namespace LocalJSX {
   }
   interface GxNavbar {
     /**
+     * This attribute lets you specify the label for the low priority actions toggle button. Important for accessibility.
+     */
+    actionToggleButtonLabel?: string;
+    /**
+     * This attribute lets you specify the label for the back button.
+     */
+    backButtonLabel?: string;
+    /**
      * This attribute lets you specify an optional title for the navigation bar  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     caption?: string;
     /**
-     * A CSS class to set as the inner element class.
+     * True to show the back button
      */
-    cssClass?: string;
+    showBackButton?: false;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     * True to show the left target toggle button (a burger icon)
      */
-    invisibleMode?: "collapse" | "keep-space";
+    showToggleButton?: false;
     /**
-     * This attribute lets you specify the label for the toggle button. Important for accessibility.
+     * This attribute lets you specify if one or two lines will be used to render the navigation bar. Useful when there are links and also actions, to have links in the first line, and actions in the second
+     */
+    singleLine?: true;
+    /**
+     * This attribute lets you specify the label for the left target toggle button. Important for accessibility.
      */
     toggleButtonLabel?: string;
   }
@@ -2528,6 +2594,7 @@ declare namespace LocalJSX {
     "gx-grid-infinite-scroll-content": GxGridInfiniteScrollContent;
     "gx-grid-smart": GxGridSmart;
     "gx-group": GxGroup;
+    "gx-icon": GxIcon;
     "gx-image": GxImage;
     "gx-layout": GxLayout;
     "gx-loading": GxLoading;
@@ -2588,6 +2655,7 @@ declare module "@stencil/core" {
       "gx-grid-smart": LocalJSX.GxGridSmart &
         JSXBase.HTMLAttributes<HTMLGxGridSmartElement>;
       "gx-group": LocalJSX.GxGroup & JSXBase.HTMLAttributes<HTMLGxGroupElement>;
+      "gx-icon": LocalJSX.GxIcon & JSXBase.HTMLAttributes<HTMLGxIconElement>;
       "gx-image": LocalJSX.GxImage & JSXBase.HTMLAttributes<HTMLGxImageElement>;
       "gx-layout": LocalJSX.GxLayout &
         JSXBase.HTMLAttributes<HTMLGxLayoutElement>;

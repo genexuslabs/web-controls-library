@@ -1,6 +1,70 @@
 @import "../common/_base";
-@import "../renders/bootstrap/navbar/navbar-render";
 
-gx-navbar {
+:host {
   @include visibility(block);
+
+  --gx-navbar-main-background-color: rgb(87, 89, 101);
+  --gx-navbar-sub-background-color: trasnparent;
+  --gx-navbar-main-color: white;
+  --gx-navbar-sub-color: black;
+  --gx-navbar-main-height: 60px;
+  --gx-navbar-sub-height: 48px;
+  --gx-navbar-icon-size: 24px;
+  --gx-navbar-sub-separator: 1px solid rgb(195, 196, 200);
+
+  gx-icon {
+    --gx-icon-size: var(--gx-navbar-icon-size);
+  }
+
+  .nav {
+    display: flex;
+    flex-direction: column;
+
+    button {
+      height: var(--gx-navbar-icon-size);
+      width: var(--gx-navbar-icon-size);
+
+      &,
+      &:focus,
+      &:active {
+        appearance: none;
+        background: none;
+        padding: 0;
+        border: 0;
+        outline: none;
+      }
+    }
+
+    .navbar-target-toggle {
+      margin-right: 24px;
+    }
+
+    .navbar-line {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 0 16px;
+    }
+
+    .navbar-line-1 {
+      height: var(--gx-navbar-main-height);
+      color: var(--gx-navbar-main-color);
+      background-color: var(--gx-navbar-main-background-color);
+    }
+
+    .navbar-line-2 {
+      height: var(--gx-navbar-sub-height);
+      color: var(--gx-navbar-sub-color);
+      background-color: var(--gx-navbar-sub-background-color);
+      border-bottom: var(--gx-navbar-sub-separator);
+    }
+
+    .navbar-links {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 }
