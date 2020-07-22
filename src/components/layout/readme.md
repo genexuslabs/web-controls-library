@@ -64,6 +64,7 @@ When the left or right target is visible and floating, the center target is mask
 | `--gx-layout-target-transition-duration`        | Vertical target's transition duration          |
 | `--gx-layout-target-transition-timing-function` | Vertical target's transition timing function   |
 | `--gx-layout-vertical-target-width`             | Width for vertical targets (left and right)    |
+| `--gx-layout-vertical-targets-breakpoint`       | Vertical targets breakpoint                    |
 
 ---
 
