@@ -12,6 +12,9 @@
   --gx-navbar-icon-size: 24px;
   --gx-navbar-sub-separator: 1px solid rgb(195, 196, 200);
 
+  font-size: 14px;
+  font-weight: bold;
+
   gx-icon {
     --gx-icon-size: var(--gx-navbar-icon-size);
   }
