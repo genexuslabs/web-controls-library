@@ -1,4 +1,12 @@
-import { Component, Element, Prop, h, Host } from "@stencil/core";
+import {
+  Component,
+  Element,
+  Prop,
+  h,
+  Host,
+  Event,
+  EventEmitter
+} from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
@@ -50,6 +58,15 @@ export class NavBar implements GxComponent {
    */
   @Prop() readonly toggleButtonLabel: string;
 
+  /**
+   * Fired when the toggle button is clicked
+   */
+  @Event() toggleButtonClick: EventEmitter;
+
+  private handleToggleButtonClick = (e: MouseEvent) => {
+    this.toggleButtonClick.emit(e);
+  };
+
   render() {
     const hasLowPriorityActions =
       document.querySelector("[slot='low-priority-action']") !== null;
@@ -63,6 +80,7 @@ export class NavBar implements GxComponent {
                 type="button"
                 class="navbar-target-toggle"
                 aria-label={this.toggleButtonLabel}
+                onClick={this.handleToggleButtonClick}
               >
                 <gx-icon type="burger" color="white"></gx-icon>
               </button>

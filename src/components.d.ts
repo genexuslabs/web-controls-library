@@ -733,14 +733,6 @@ export namespace Components {
      */
     active: false;
     /**
-     * A CSS class to set as the inner element class.
-     */
-    cssClass: string;
-    /**
-     * This attribute lets you specify if the navbar item is disabled.
-     */
-    disabled: false;
-    /**
      * This attribute lets you specify the URL of the navbar item.
      */
     href: "";
@@ -748,10 +740,6 @@ export namespace Components {
      * This attribute lets you specify the URL of an icon for the navbar item.
      */
     iconSrc: "";
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
   }
   interface GxPasswordEdit {
     /**
@@ -2154,6 +2142,10 @@ declare namespace LocalJSX {
      */
     caption?: string;
     /**
+     * Fired when the toggle button is clicked
+     */
+    onToggleButtonClick?: (event: CustomEvent<any>) => void;
+    /**
      * True to show the back button
      */
     showBackButton?: false;
@@ -2176,14 +2168,6 @@ declare namespace LocalJSX {
      */
     active?: false;
     /**
-     * A CSS class to set as the inner element class.
-     */
-    cssClass?: string;
-    /**
-     * This attribute lets you specify if the navbar item is disabled.
-     */
-    disabled?: false;
-    /**
      * This attribute lets you specify the URL of the navbar item.
      */
     href?: "";
@@ -2191,14 +2175,6 @@ declare namespace LocalJSX {
      * This attribute lets you specify the URL of an icon for the navbar item.
      */
     iconSrc?: "";
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
-    /**
-     * Emitted when the element is clicked.
-     */
-    onGxClick?: (event: CustomEvent<any>) => void;
   }
   interface GxPasswordEdit {
     /**
