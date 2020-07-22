@@ -20,26 +20,14 @@ Represents an item with a link inside a `<gx-navbar>`.
 
 <!-- Auto Generated Below -->
 
-
 ## Properties
 
-| Property        | Attribute        | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Type                         | Default      |
-| --------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------ |
-| `active`        | `active`         | Indicates if the navbar item is the active one (for example, when the item represents the current page)                                                                                                                                                                                                                                                                                                                                                                            | `boolean`                    | `false`      |
-| `cssClass`      | `css-class`      | A CSS class to set as the inner element class.                                                                                                                                                                                                                                                                                                                                                                                                                                     | `string`                     | `undefined`  |
-| `disabled`      | `disabled`       | This attribute lets you specify if the navbar item is disabled.                                                                                                                                                                                                                                                                                                                                                                                                                    | `boolean`                    | `false`      |
-| `href`          | `href`           | This attribute lets you specify the URL of the navbar item.                                                                                                                                                                                                                                                                                                                                                                                                                        | `""`                         | `""`         |
-| `iconSrc`       | `icon-src`       | This attribute lets you specify the URL of an icon for the navbar item.                                                                                                                                                                                                                                                                                                                                                                                                            | `""`                         | `""`         |
-| `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden.  \| Value        \| Details                                                                     \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space.         \| \| `collapse`   \| The element is removed form the document flow, and it doesn't occupy space. \| | `"collapse" \| "keep-space"` | `"collapse"` |
+| Property  | Attribute  | Description                                                                                             | Type      | Default |
+| --------- | ---------- | ------------------------------------------------------------------------------------------------------- | --------- | ------- |
+| `active`  | `active`   | Indicates if the navbar item is the active one (for example, when the item represents the current page) | `boolean` | `false` |
+| `href`    | `href`     | This attribute lets you specify the URL of the navbar item.                                             | `""`      | `""`    |
+| `iconSrc` | `icon-src` | This attribute lets you specify the URL of an icon for the navbar item.                                 | `""`      | `""`    |
 
+---
 
-## Events
-
-| Event     | Description                          | Type               |
-| --------- | ------------------------------------ | ------------------ |
-| `gxClick` | Emitted when the element is clicked. | `CustomEvent<any>` |
-
-
-----------------------------------------------
-
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_
