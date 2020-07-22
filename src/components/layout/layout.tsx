@@ -9,6 +9,7 @@ import { Component as GxComponent } from "../common/interfaces";
 export class Layout implements GxComponent {
   constructor() {
     this.handleBodyClick = this.handleBodyClick.bind(this);
+    this.handleMediaQueryChange = this.handleMediaQueryChange.bind(this);
   }
 
   @Element() element: HTMLGxLayoutElement;
@@ -35,6 +36,9 @@ export class Layout implements GxComponent {
 
   @State() isMaskVisible = !this.rightHidden || !this.leftHidden;
 
+  private mediaQueryList: MediaQueryList;
+  private isVerticalTargetsBreakpoint = false;
+
   @Watch("rightHidden")
   handleRightHiddenChange() {
     this.updateMaskVisibility();
@@ -50,9 +54,8 @@ export class Layout implements GxComponent {
   }
 
   private handleBodyClick(e: MouseEvent) {
-    if (this.isMaskVisible) {
+    if (this.isMaskVisible && this.isVerticalTargetsBreakpoint) {
       const target = e.target as HTMLElement;
-      console.log(`gx-layout .vertical ${target.tagName}`);
       if (!target.matches(`gx-layout .vertical ${target.tagName}`)) {
         this.rightHidden = true;
         this.leftHidden = true;
@@ -62,10 +65,27 @@ export class Layout implements GxComponent {
 
   componentDidLoad() {
     document.body.addEventListener("click", this.handleBodyClick);
+
+    const targetsBreakpoint = getComputedStyle(this.element).getPropertyValue(
+      "--gx-layout-vertical-targets-breakpoint"
+    );
+    this.mediaQueryList = window.matchMedia(
+      `(max-width: ${targetsBreakpoint})`
+    );
+    this.isVerticalTargetsBreakpoint = this.mediaQueryList.matches;
+    this.mediaQueryList.addEventListener("change", this.handleMediaQueryChange);
+  }
+
+  private handleMediaQueryChange(e: MediaQueryListEvent) {
+    this.isVerticalTargetsBreakpoint = e.matches;
   }
 
   disconnectedCallback() {
     document.body.removeEventListener("click", this.handleBodyClick);
+    this.mediaQueryList.removeEventListener(
+      "change",
+      this.handleMediaQueryChange
+    );
   }
 
   render() {

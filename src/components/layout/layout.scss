@@ -29,6 +29,10 @@ gx-layout {
    * @prop --gx-layout-base-z-index: Base z-index for absolute positioned elements
    */
   --gx-layout-base-z-index: 100;
+  /**
+   * @prop --gx-layout-vertical-targets-breakpoint: Vertical targets breakpoint
+  */
+  --gx-layout-vertical-targets-breakpoint: #{$gx-layout-vertical-targets-breakpoint};
 
   display: grid;
   margin: 0 auto;
