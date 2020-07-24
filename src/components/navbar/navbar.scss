@@ -5,6 +5,8 @@
 
   --gx-navbar-main-background-color: rgb(87, 89, 101);
   --gx-navbar-sub-background-color: trasnparent;
+  --gx-navbar-links-background-color: rgb(224, 224, 224);
+  --gx-navbar-links-color: rgb(147, 148, 152);
   --gx-navbar-main-color: white;
   --gx-navbar-sub-color: black;
   --gx-navbar-main-height: 60px;
@@ -14,6 +16,7 @@
 
   font-size: 14px;
   font-weight: bold;
+  width: 100%;
 
   gx-icon {
     --gx-icon-size: var(--gx-navbar-icon-size);
@@ -68,6 +71,18 @@
       flex-direction: row;
       justify-content: center;
       align-items: center;
+
+      @media screen and (max-width: $gx-xsmall-breakpoint) {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        height: 60px;
+        background-color: var(--gx-navbar-links-background-color);
+        color: var(--gx-navbar-links-color);
+        justify-content: stretch;
+      }
     }
   }
 }

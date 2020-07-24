@@ -1,11 +1,16 @@
 @import "../common/_base";
 
 :host {
-  @include visibility(inline);
+  @include visibility(inline-flex);
   --gx-navbar-link-icon-size: 18px;
 
   font-size: inherit;
   font-weight: inherit;
+
+  @media screen and (max-width: $gx-xsmall-breakpoint) {
+    flex: 1;
+    justify-content: center;
+  }
 
   & > a {
     cursor: pointer;
@@ -25,6 +30,17 @@
       width: var(--gx-navbar-link-icon-size);
       object-fit: contain;
       margin-right: 12px;
+    }
+
+    @media screen and (max-width: $gx-xsmall-breakpoint) {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      & > .link-icon {
+        margin-bottom: 5px;
+        margin-right: 0;
+      }
     }
   }
 }
