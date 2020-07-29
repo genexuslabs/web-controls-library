@@ -13,8 +13,6 @@ import {
   h
 } from "@stencil/core";
 
-import { GridBaseHelper } from "../grid-base/grid-base";
-
 @Component({
   shadow: false,
   styleUrl: "grid-infinite-scroll.scss",
@@ -77,11 +75,10 @@ export class GridInfiniteScroll implements ComponentInterface {
   @Prop() readonly position: "top" | "bottom" = "bottom";
 
   /**
-   * The View Port parent element selector where the infinite component is attached to
+   * The View Port parent element selector where the infinite component would be attached to
    * and listening to Scroll Events.
    */
-  @Prop() readonly viewportSelector: string =
-    "." + GridBaseHelper.GRID_BASE_CLASSNAME;
+  @Prop() readonly viewportSelector: string;
 
   /**
    * Emitted when the scroll reaches
@@ -151,14 +148,21 @@ export class GridInfiniteScroll implements ComponentInterface {
     if (node === window.document.documentElement) {
       return node;
     }
-    node = node.closest(this.viewportSelector) || node;
 
-    if (node.scrollHeight > node.clientHeight) {
-      const overflow = window.getComputedStyle(node).overflow;
-      if (overflow == "auto" || overflow == "scroll") {
-        return node;
+    if (this.viewportSelector) {
+      const scrollParent = node.closest(this.viewportSelector);
+      if (scrollParent != null) {
+        //When parent scroller is known before hand.
+        return scrollParent;
       }
     }
+
+    //We try to search for first scrollable parent element.
+    const overflow = window.getComputedStyle(node).overflowY;
+    if (node.scrollHeight > node.clientHeight || overflow === "scroll") {
+      return node;
+    }
+
     return this.getScrollParent(node.parentNode);
   }
 
