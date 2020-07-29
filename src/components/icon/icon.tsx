@@ -129,9 +129,11 @@ export class Icon {
           class={{
             "svg-icon-native": true
           }}
-          style={{
-            "--gx-icon-color": this.color
-          }}
+          style={
+            this.color && {
+              "--gx-icon-color": this.color
+            }
+          }
           innerHTML={this.svgContent}
         />
       </Host>
