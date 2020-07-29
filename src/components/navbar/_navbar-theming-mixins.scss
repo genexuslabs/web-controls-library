@@ -1,0 +1,23 @@
+////
+/// @group theming-mixins
+////
+
+/// Helper mixin to ease styling gx-navbar custom elements
+/// @param {string} $class Base class of the component
+/// @param {string} $action Class for styling the actions of the navigation bar
+/// @param {string} $back-button Class for styling the back button of the navigation bar
+@mixin gx-navbar($class, $action: null, $back-button: null) {
+  @extend #{$class} !optional;
+
+  @if ($action != null) {
+    ::slotted(gx-navbar-item) {
+      @extend #{$action} !optional;
+    }
+  }
+
+  @if ($back-button != null) {
+    .navbar-back-button {
+      @extend #{$back-button} !optional;
+    }
+  }
+}
