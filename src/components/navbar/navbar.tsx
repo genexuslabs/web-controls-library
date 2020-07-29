@@ -90,7 +90,11 @@ export class NavBar implements GxComponent {
 
   render() {
     return (
-      <Host>
+      <Host
+        class={{
+          "navbar-single-line": this.singleLine
+        }}
+      >
         <nav class="navbar">
           <div class="navbar-line navbar-line-1">
             {this.showToggleButton && (

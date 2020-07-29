@@ -4,7 +4,7 @@
   @include visibility(block);
 
   --gx-navbar-main-background-color: rgb(87, 89, 101);
-  --gx-navbar-sub-background-color: trasnparent;
+  --gx-navbar-sub-background-color: white;
   --gx-navbar-items-background-color: rgb(224, 224, 224);
   --gx-navbar-items-color: rgb(147, 148, 152);
   --gx-navbar-main-color: white;
@@ -20,6 +20,7 @@
   font-size: 14px;
   font-weight: 600;
   width: 100%;
+  height: calc(var(--gx-navbar-main-height) + var(--gx-navbar-sub-height));
 
   gx-icon {
     --gx-icon-size: var(--gx-navbar-icon-size);
@@ -41,6 +42,11 @@
   }
 
   .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
     display: flex;
     flex-direction: column;
 
@@ -187,4 +193,8 @@
       }
     }
   }
+}
+
+:host(.navbar-single-line) {
+  height: var(--gx-navbar-main-height);
 }
