@@ -7,7 +7,7 @@ export const config: Config = {
       components: [
         "gx-bootstrap",
         "gx-navbar",
-        "gx-navbar-link",
+        "gx-navbar-item",
         "gx-message",
         "gx-progress-bar",
         "gx-modal",
@@ -18,7 +18,6 @@ export const config: Config = {
       ]
     }
   ],
-  copy: [],
   namespace: "gx-web-controls",
   outputTargets: [
     {
