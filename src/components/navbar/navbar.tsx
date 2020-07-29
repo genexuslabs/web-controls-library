@@ -6,7 +6,8 @@ import {
   Host,
   Event,
   EventEmitter,
-  State
+  State,
+  Listen
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
@@ -56,6 +57,12 @@ export class NavBar implements GxComponent {
    */
   @Prop() readonly toggleButtonLabel: string;
 
+  @State() hasHighPriorityActions = false;
+
+  @State() hasNormalPriorityActions = false;
+
+  @State() hasLowPriorityActions = false;
+
   /**
    * Fired when the toggle button is clicked
    */
@@ -88,11 +95,30 @@ export class NavBar implements GxComponent {
     document.body.removeEventListener("click", this.handleBodyClick);
   }
 
+  @Listen("navBarItemLoaded")
+  handleNavBarItemLoaded() {
+    this.checkChildActions();
+  }
+
+  @Listen("navBarItemUnloaded")
+  handleNavBarItemUnloaded() {
+    this.checkChildActions();
+  }
+
+  private checkChildActions() {
+    this.hasHighPriorityActions = this.hasActionsByType("high");
+    this.hasNormalPriorityActions = this.hasActionsByType("normal");
+    this.hasLowPriorityActions = this.hasActionsByType("low");
+  }
+
   render() {
+    const navOnly = !this.showToggleButton && !this.hasActions();
+
     return (
       <Host
         class={{
-          "navbar-single-line": this.singleLine
+          "navbar-single-line": this.singleLine,
+          "navbar-nav-only": navOnly
         }}
       >
         <nav class="navbar">
@@ -133,9 +159,6 @@ export class NavBar implements GxComponent {
   }
 
   private renderActions() {
-    const hasHighPriorityActions = this.hasActionsByType("high");
-    const hasLowPriorityActions = this.hasActionsByType("low");
-
     return [
       <div class="navbar-actions">
         <div class="navbar-actions-high">
@@ -144,7 +167,8 @@ export class NavBar implements GxComponent {
         <div
           class={{
             "navbar-actions-normal": true,
-            "navbar-actions-normal--separator": hasHighPriorityActions
+            "navbar-actions-normal--separator":
+              this.hasHighPriorityActions && this.hasNormalPriorityActions
           }}
         >
           <slot name="normal-priority-action" />
@@ -158,7 +182,7 @@ export class NavBar implements GxComponent {
           <slot name="low-priority-action" />
         </div>
       </div>,
-      hasLowPriorityActions && (
+      this.hasLowPriorityActions && (
         <button
           type="button"
           aria-label={this.actionToggleButtonLabel}
@@ -178,6 +202,14 @@ export class NavBar implements GxComponent {
   private hasActionsByType(type: string): boolean {
     return (
       this.element.querySelector(`[slot='${type}-priority-action']`) !== null
+    );
+  }
+
+  private hasActions(): boolean {
+    return (
+      this.hasHighPriorityActions ||
+      this.hasNormalPriorityActions ||
+      this.hasLowPriorityActions
     );
   }
 }

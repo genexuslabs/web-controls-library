@@ -2219,6 +2219,14 @@ declare namespace LocalJSX {
      * This attribute lets you specify the URL of an icon for the navbar item.
      */
     iconSrc?: "";
+    /**
+     * Fired after the component has been rendered in the page for the first time
+     */
+    onNavBarItemLoaded?: (event: CustomEvent<any>) => void;
+    /**
+     * Fired after the component has been removed from the page
+     */
+    onNavBarItemUnloaded?: (event: CustomEvent<any>) => void;
   }
   interface GxPasswordEdit {
     /**

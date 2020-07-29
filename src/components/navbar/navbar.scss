@@ -198,3 +198,15 @@
 :host(.navbar-single-line) {
   height: var(--gx-navbar-main-height);
 }
+
+:host(.navbar-nav-only) {
+  @media screen and (max-width: $gx-xsmall-breakpoint) {
+    height: 0;
+
+    .navbar-line-1,
+    .navbar-line-2 {
+      height: 0;
+      overflow: hidden;
+    }
+  }
+}
