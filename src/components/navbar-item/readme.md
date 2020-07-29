@@ -29,6 +29,13 @@ Represents an item with a link inside a `<gx-navbar>`.
 | `iconAltText` | `icon-alt-text` | This attribute lets you specify the alternate text for the image specified in iconSrc.                  | `""`      | `""`    |
 | `iconSrc`     | `icon-src`      | This attribute lets you specify the URL of an icon for the navbar item.                                 | `""`      | `""`    |
 
+## Events
+
+| Event                | Description                                                                | Type               |
+| -------------------- | -------------------------------------------------------------------------- | ------------------ |
+| `navBarItemLoaded`   | Fired after the component has been rendered in the page for the first time | `CustomEvent<any>` |
+| `navBarItemUnloaded` | Fired after the component has been removed from the page                   | `CustomEvent<any>` |
+
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_
