@@ -522,6 +522,20 @@ export namespace Components {
      */
     width: string;
   }
+  interface GxInteractiveImage {
+    /**
+     * True/False. If this property is true, the user can zoom in/out on the image.
+     */
+    enableZoom: boolean;
+    /**
+     * Lets you specify the image URL. *Requiered*
+     */
+    src: "";
+    /**
+     * Indicates how much you can enlarge an image. (Percentage) _Note: 100% = Normal size_.
+     */
+    zoom: number;
+  }
   interface GxLayout {
     /**
      * True to hide the bottom target
@@ -707,7 +721,7 @@ export namespace Components {
      */
     backButtonLabel: string;
     /**
-     * This attribute lets you specify an optional title for the navigation bar  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     * This attribute lets you specify an optional title for the navigation bar
      */
     caption: string;
     /**
@@ -727,7 +741,7 @@ export namespace Components {
      */
     toggleButtonLabel: string;
   }
-  interface GxNavbarLink {
+  interface GxNavbarItem {
     /**
      * Indicates if the navbar item is the active one (for example, when the item represents the current page)
      */
@@ -736,6 +750,10 @@ export namespace Components {
      * This attribute lets you specify the URL of the navbar item.
      */
     href: "";
+    /**
+     * This attribute lets you specify the alternate text for the image specified in iconSrc.
+     */
+    iconAltText: "";
     /**
      * This attribute lets you specify the URL of an icon for the navbar item.
      */
@@ -1156,6 +1174,13 @@ declare global {
     prototype: HTMLGxImageElement;
     new (): HTMLGxImageElement;
   };
+  interface HTMLGxInteractiveImageElement
+    extends Components.GxInteractiveImage,
+      HTMLStencilElement {}
+  var HTMLGxInteractiveImageElement: {
+    prototype: HTMLGxInteractiveImageElement;
+    new (): HTMLGxInteractiveImageElement;
+  };
   interface HTMLGxLayoutElement
     extends Components.GxLayout,
       HTMLStencilElement {}
@@ -1208,12 +1233,12 @@ declare global {
     prototype: HTMLGxNavbarElement;
     new (): HTMLGxNavbarElement;
   };
-  interface HTMLGxNavbarLinkElement
-    extends Components.GxNavbarLink,
+  interface HTMLGxNavbarItemElement
+    extends Components.GxNavbarItem,
       HTMLStencilElement {}
-  var HTMLGxNavbarLinkElement: {
-    prototype: HTMLGxNavbarLinkElement;
-    new (): HTMLGxNavbarLinkElement;
+  var HTMLGxNavbarItemElement: {
+    prototype: HTMLGxNavbarItemElement;
+    new (): HTMLGxNavbarItemElement;
   };
   interface HTMLGxPasswordEditElement
     extends Components.GxPasswordEdit,
@@ -1333,6 +1358,7 @@ declare global {
     "gx-group": HTMLGxGroupElement;
     "gx-icon": HTMLGxIconElement;
     "gx-image": HTMLGxImageElement;
+    "gx-interactive-image": HTMLGxInteractiveImageElement;
     "gx-layout": HTMLGxLayoutElement;
     "gx-loading": HTMLGxLoadingElement;
     "gx-lottie": HTMLGxLottieElement;
@@ -1341,7 +1367,7 @@ declare global {
     "gx-message": HTMLGxMessageElement;
     "gx-modal": HTMLGxModalElement;
     "gx-navbar": HTMLGxNavbarElement;
-    "gx-navbar-link": HTMLGxNavbarLinkElement;
+    "gx-navbar-item": HTMLGxNavbarItemElement;
     "gx-password-edit": HTMLGxPasswordEditElement;
     "gx-progress-bar": HTMLGxProgressBarElement;
     "gx-radio-group": HTMLGxRadioGroupElement;
@@ -1922,6 +1948,20 @@ declare namespace LocalJSX {
      */
     width?: string;
   }
+  interface GxInteractiveImage {
+    /**
+     * True/False. If this property is true, the user can zoom in/out on the image.
+     */
+    enableZoom?: boolean;
+    /**
+     * Lets you specify the image URL. *Requiered*
+     */
+    src?: "";
+    /**
+     * Indicates how much you can enlarge an image. (Percentage) _Note: 100% = Normal size_.
+     */
+    zoom?: number;
+  }
   interface GxLayout {
     /**
      * True to hide the bottom target
@@ -2138,7 +2178,7 @@ declare namespace LocalJSX {
      */
     backButtonLabel?: string;
     /**
-     * This attribute lets you specify an optional title for the navigation bar  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     * This attribute lets you specify an optional title for the navigation bar
      */
     caption?: string;
     /**
@@ -2162,7 +2202,7 @@ declare namespace LocalJSX {
      */
     toggleButtonLabel?: string;
   }
-  interface GxNavbarLink {
+  interface GxNavbarItem {
     /**
      * Indicates if the navbar item is the active one (for example, when the item represents the current page)
      */
@@ -2171,6 +2211,10 @@ declare namespace LocalJSX {
      * This attribute lets you specify the URL of the navbar item.
      */
     href?: "";
+    /**
+     * This attribute lets you specify the alternate text for the image specified in iconSrc.
+     */
+    iconAltText?: "";
     /**
      * This attribute lets you specify the URL of an icon for the navbar item.
      */
@@ -2572,6 +2616,7 @@ declare namespace LocalJSX {
     "gx-group": GxGroup;
     "gx-icon": GxIcon;
     "gx-image": GxImage;
+    "gx-interactive-image": GxInteractiveImage;
     "gx-layout": GxLayout;
     "gx-loading": GxLoading;
     "gx-lottie": GxLottie;
@@ -2580,7 +2625,7 @@ declare namespace LocalJSX {
     "gx-message": GxMessage;
     "gx-modal": GxModal;
     "gx-navbar": GxNavbar;
-    "gx-navbar-link": GxNavbarLink;
+    "gx-navbar-item": GxNavbarItem;
     "gx-password-edit": GxPasswordEdit;
     "gx-progress-bar": GxProgressBar;
     "gx-radio-group": GxRadioGroup;
@@ -2633,6 +2678,8 @@ declare module "@stencil/core" {
       "gx-group": LocalJSX.GxGroup & JSXBase.HTMLAttributes<HTMLGxGroupElement>;
       "gx-icon": LocalJSX.GxIcon & JSXBase.HTMLAttributes<HTMLGxIconElement>;
       "gx-image": LocalJSX.GxImage & JSXBase.HTMLAttributes<HTMLGxImageElement>;
+      "gx-interactive-image": LocalJSX.GxInteractiveImage &
+        JSXBase.HTMLAttributes<HTMLGxInteractiveImageElement>;
       "gx-layout": LocalJSX.GxLayout &
         JSXBase.HTMLAttributes<HTMLGxLayoutElement>;
       "gx-loading": LocalJSX.GxLoading &
@@ -2647,8 +2694,8 @@ declare module "@stencil/core" {
       "gx-modal": LocalJSX.GxModal & JSXBase.HTMLAttributes<HTMLGxModalElement>;
       "gx-navbar": LocalJSX.GxNavbar &
         JSXBase.HTMLAttributes<HTMLGxNavbarElement>;
-      "gx-navbar-link": LocalJSX.GxNavbarLink &
-        JSXBase.HTMLAttributes<HTMLGxNavbarLinkElement>;
+      "gx-navbar-item": LocalJSX.GxNavbarItem &
+        JSXBase.HTMLAttributes<HTMLGxNavbarItemElement>;
       "gx-password-edit": LocalJSX.GxPasswordEdit &
         JSXBase.HTMLAttributes<HTMLGxPasswordEditElement>;
       "gx-progress-bar": LocalJSX.GxProgressBar &
