@@ -5,7 +5,9 @@ import {
   h,
   Host,
   Event,
-  EventEmitter
+  EventEmitter,
+  State,
+  Listen
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
@@ -29,11 +31,6 @@ export class NavBar implements GxComponent {
 
   /**
    * This attribute lets you specify an optional title for the navigation bar
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
   @Prop() readonly caption: string;
 
@@ -48,6 +45,8 @@ export class NavBar implements GxComponent {
    */
   @Prop() readonly showBackButton: false;
 
+  @State() showLowActions = false;
+
   /**
    * True to show the left target toggle button (a burger icon)
    */
@@ -58,6 +57,12 @@ export class NavBar implements GxComponent {
    */
   @Prop() readonly toggleButtonLabel: string;
 
+  @State() hasHighPriorityActions = false;
+
+  @State() hasNormalPriorityActions = false;
+
+  @State() hasLowPriorityActions = false;
+
   /**
    * Fired when the toggle button is clicked
    */
@@ -67,22 +72,65 @@ export class NavBar implements GxComponent {
     this.toggleButtonClick.emit(e);
   };
 
+  private handleActionToggleButtonClick = () => {
+    this.showLowActions = !this.showLowActions;
+  };
+
+  private handleBodyClick = (e: MouseEvent) => {
+    if (this.showLowActions) {
+      const navbarToggleBtn = this.element.shadowRoot.querySelector(
+        ".navbar-actions-toggle"
+      );
+      if (e.composedPath().find(el => el === navbarToggleBtn) === undefined) {
+        this.showLowActions = false;
+      }
+    }
+  };
+
+  componentDidLoad() {
+    document.body.addEventListener("click", this.handleBodyClick);
+  }
+
+  disconnectedCallback() {
+    document.body.removeEventListener("click", this.handleBodyClick);
+  }
+
+  @Listen("navBarItemLoaded")
+  handleNavBarItemLoaded() {
+    this.checkChildActions();
+  }
+
+  @Listen("navBarItemUnloaded")
+  handleNavBarItemUnloaded() {
+    this.checkChildActions();
+  }
+
+  private checkChildActions() {
+    this.hasHighPriorityActions = this.hasActionsByType("high");
+    this.hasNormalPriorityActions = this.hasActionsByType("normal");
+    this.hasLowPriorityActions = this.hasActionsByType("low");
+  }
+
   render() {
-    const hasLowPriorityActions =
-      document.querySelector("[slot='low-priority-action']") !== null;
+    const navOnly = !this.showToggleButton && !this.hasActions();
 
     return (
-      <Host>
-        <nav class="nav">
+      <Host
+        class={{
+          "navbar-single-line": this.singleLine,
+          "navbar-nav-only": navOnly
+        }}
+      >
+        <nav class="navbar">
           <div class="navbar-line navbar-line-1">
             {this.showToggleButton && (
               <button
                 type="button"
-                class="navbar-target-toggle"
+                class="navbar-target-toggle navbar-icon-button"
                 aria-label={this.toggleButtonLabel}
                 onClick={this.handleToggleButtonClick}
               >
-                <gx-icon type="burger" color="white"></gx-icon>
+                <gx-icon type="burger"></gx-icon>
               </button>
             )}
             <a class="navbar-header" tabindex="-1">
@@ -93,18 +141,12 @@ export class NavBar implements GxComponent {
               <slot />
             </div>
             {this.singleLine && this.renderActions()}
-            {hasLowPriorityActions && (
-              <button
-                type="button"
-                aria-label={this.actionToggleButtonLabel}
-                class="navbar-actions-toggle"
-              ></button>
-            )}
           </div>
           {!this.singleLine && (
             <div class="navbar-line navbar-line-2">
               {this.showBackButton && (
                 <button type="button" class="navbar-back-button">
+                  <gx-icon type="arrow-left"></gx-icon>
                   {this.backButtonLabel}
                 </button>
               )}
@@ -118,15 +160,56 @@ export class NavBar implements GxComponent {
 
   private renderActions() {
     return [
-      <div class="navbar-actions-high">
-        <slot name="high-priority-action" />
+      <div class="navbar-actions">
+        <div class="navbar-actions-high">
+          <slot name="high-priority-action" />
+        </div>
+        <div
+          class={{
+            "navbar-actions-normal": true,
+            "navbar-actions-normal--separator":
+              this.hasHighPriorityActions && this.hasNormalPriorityActions
+          }}
+        >
+          <slot name="normal-priority-action" />
+        </div>
+        <div
+          class={{
+            "navbar-actions-low": true,
+            "navbar-actions-low--active": this.showLowActions
+          }}
+        >
+          <slot name="low-priority-action" />
+        </div>
       </div>,
-      <div class="navbar-actions-normal">
-        <slot name="normal-priority-action" />
-      </div>,
-      <div class="navbar-actions-low">
-        <slot name="low-priority-action" />
-      </div>
+      this.hasLowPriorityActions && (
+        <button
+          type="button"
+          aria-label={this.actionToggleButtonLabel}
+          class={{
+            "navbar-icon-button": true,
+            "navbar-actions-toggle": true,
+            "navbar-actions-toggle--active": this.showLowActions
+          }}
+          onClick={this.handleActionToggleButtonClick}
+        >
+          <gx-icon type="show-more"></gx-icon>
+        </button>
+      )
     ];
+  }
+
+  private hasActionsByType(type: string): boolean {
+    return (
+      this.element.querySelector(`[slot='${type}-priority-action']`) !== null
+    );
+  }
+
+  private hasActions(): boolean {
+    return (
+      this.hasHighPriorityActions ||
+      this.hasNormalPriorityActions ||
+      this.hasLowPriorityActions
+    );
   }
 }
