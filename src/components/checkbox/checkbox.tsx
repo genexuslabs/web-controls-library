@@ -103,6 +103,7 @@ export class CheckBox implements FormComponent {
   }
 
   private handleChange(event: UIEvent) {
+    event.stopPropagation();
     this.checked = this.renderer.getValueFromEvent(event);
     this.updateValue();
     this.input.emit(event);
