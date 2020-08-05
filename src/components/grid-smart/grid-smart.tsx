@@ -41,9 +41,9 @@ export class GridSmart
   @Prop() readonly columns: number | "auto";
 
   /**
-   * 0-Indexed number of currently active page
+   * 1-Indexed number of currently active page
    */
-  @Prop({ mutable: true }) currentPage = 0;
+  @Prop({ mutable: true }) currentPage = 1;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -197,10 +197,15 @@ export class GridSmart
    */
   @Event() gxGridTouchEnd!: EventEmitter<void>;
 
+  getSwiperCurrentPage() {
+    return this.currentPage - 1;
+  }
   @Watch("currentPage")
   pageChanged() {
     if (this.isInitialized()) {
-      this.swiper.slideTo(Math.floor(this.currentPage * this.itemsPerGroup));
+      this.swiper.slideTo(
+        Math.floor(this.getSwiperCurrentPage() * this.itemsPerGroup)
+      );
     }
   }
 
@@ -424,7 +429,7 @@ export class GridSmart
       freeModeMomentumVelocityRatio: 1,
       freeModeSticky: false,
       freeModeMinimumVelocity: 0.02,
-      initialSlide: this.currentPage * this.itemsPerGroup,
+      initialSlide: this.getSwiperCurrentPage() * this.itemsPerGroup,
       loop: false,
       parallax: false,
       setWrapperSize: false,
@@ -521,9 +526,11 @@ export class GridSmart
         },
         slideChangeTransitionEnd: () => {
           if (this.swiper !== null) {
-            this.gxGridDidChange.emit(
-              Math.ceil(this.swiper.activeIndex / this.itemsPerGroup)
+            this.log("pageChanged");
+            const currentPage = Math.ceil(
+              this.swiper.activeIndex / this.itemsPerGroup
             );
+            this.gxGridDidChange.emit(currentPage + 1);
           }
         },
         slideChangeTransitionStart: this.gxGridWillChange.emit,
