@@ -556,7 +556,20 @@ export class GridSmart
     return { ...swiperOptions, ...this.options, ...mergedEventOptions };
   }
 
+  private ensureViewPort() {
+    if (this.autoGrow) {
+      return;
+    }
+    const height = this.el.parentElement.offsetHeight;
+
+    if (height > 0) {
+      this.el.style.maxHeight = height + "px";
+      //this.viewPortInitialized = true;
+    }
+  }
+
   render() {
+    this.ensureViewPort();
     const hostData = GridBaseHelper.hostData(this);
     hostData.class = {
       ...hostData.class,
