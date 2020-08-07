@@ -58,7 +58,8 @@ export class Select implements FormComponent {
   @Prop() readonly readonly: boolean;
 
   /**
-   * Enable a text imput with suggest values.
+   * Render a text input showing a list of suggested elements.
+
    */
   @Prop() suggest: boolean;
 
