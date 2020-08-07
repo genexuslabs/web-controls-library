@@ -562,7 +562,6 @@ export class GridSmart
       return;
     }
     //When 'column' it uses flex-direction: column layout which requires specified height on swiper-container.
-
     const height = this.el.parentElement.offsetHeight;
     if (height > 0) {
       this.el.style.maxHeight = height + "px";

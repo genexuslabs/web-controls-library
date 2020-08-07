@@ -2,7 +2,6 @@
 @import "../../../node_modules/swiper/css/swiper.min.css";
 
 .swiper-slide {
-  @include visibility(flex);
   flex-basis: auto;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
