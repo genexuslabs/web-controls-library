@@ -81,9 +81,10 @@ export class SelectRender implements Renderer {
 
       return this.component.suggest
         ? [
-            <input list={this.selectId}></input>,
+            <gx-bootstrap />,
+            <input list={`${this.selectId}__datalist`}></input>,
 
-            <datalist id={this.selectId}>
+            <datalist id={`${this.selectId}__datalist`}>
               {this.options.map(({ disabled, innerText, selected, value }) => (
                 <option disabled={disabled} selected={selected} value={value}>
                   {innerText}
