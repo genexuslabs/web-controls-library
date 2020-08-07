@@ -1,9 +1,9 @@
 @import "../grid-base/grid-base.scss";
 
 gx-grid-fs {
+  @include visibility(flex);
   flex-direction: column;
   min-height: 100%;
-  @include visibility(flex);
   > div {
     flex: 1;
   }

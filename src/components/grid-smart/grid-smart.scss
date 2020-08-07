@@ -2,7 +2,6 @@
 @import "../../../node_modules/swiper/css/swiper.min.css";
 
 .swiper-slide {
-  flex-basis: auto;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   -webkit-justify-content: center;
@@ -11,4 +10,7 @@
   -ms-flex-align: center;
   -webkit-align-items: center;
   align-items: center;
+  //Reset CSS required properties.
+  flex-grow: 0;
+  flex-basis: auto;
 }
