@@ -1,5 +1,5 @@
 @import "../grid-base/grid-base.scss";
-@import "../../../node_modules/swiper/swiper.scss";
+@import "../../../node_modules/swiper/css/swiper.min.css";
 
 .swiper-slide {
   @include visibility(flex);

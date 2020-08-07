@@ -26,6 +26,7 @@ export class GridSmart
   private scrollbarEl?: HTMLElement;
   private paginationEl?: HTMLElement;
   private swiper: Swiper = null;
+  private fillMode: "column" | "row" = "column";
 
   /**
    * This attribute defines if the control size will grow automatically,
@@ -436,7 +437,7 @@ export class GridSmart
       slidesOffsetAfter: 0,
       slidesOffsetBefore: 0,
       slidesPerColumn: this.optionValueDefault(this.rows, 1),
-      slidesPerColumnFill: "column",
+      slidesPerColumnFill: this.fillMode,
       slidesPerGroup: this.optionValueDefault(this.itemsPerGroup, 1),
       slidesPerView: this.optionValueDefault(this.columns, 1),
       spaceBetween: 0,
@@ -557,14 +558,14 @@ export class GridSmart
   }
 
   private ensureViewPort() {
-    if (this.autoGrow) {
+    if (this.autoGrow || this.fillMode === "row") {
       return;
     }
-    const height = this.el.parentElement.offsetHeight;
+    //When 'column' it uses flex-direction: column layout which requires specified height on swiper-container.
 
+    const height = this.el.parentElement.offsetHeight;
     if (height > 0) {
       this.el.style.maxHeight = height + "px";
-      //this.viewPortInitialized = true;
     }
   }
 
