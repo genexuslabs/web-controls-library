@@ -26,6 +26,7 @@ export class GridSmart
   private scrollbarEl?: HTMLElement;
   private paginationEl?: HTMLElement;
   private swiper: Swiper = null;
+  private fillMode: "column" | "row" = "column";
 
   /**
    * This attribute defines if the control size will grow automatically,
@@ -41,9 +42,9 @@ export class GridSmart
   @Prop() readonly columns: number | "auto";
 
   /**
-   * 0-Indexed number of currently active page
+   * 1-Indexed number of currently active page
    */
-  @Prop({ mutable: true }) currentPage = 0;
+  @Prop({ mutable: true }) currentPage = 1;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -197,10 +198,15 @@ export class GridSmart
    */
   @Event() gxGridTouchEnd!: EventEmitter<void>;
 
+  getSwiperCurrentPage() {
+    return this.currentPage - 1;
+  }
   @Watch("currentPage")
   pageChanged() {
     if (this.isInitialized()) {
-      this.swiper.slideTo(Math.floor(this.currentPage * this.itemsPerGroup));
+      this.swiper.slideTo(
+        Math.floor(this.getSwiperCurrentPage() * this.itemsPerGroup)
+      );
     }
   }
 
@@ -424,14 +430,14 @@ export class GridSmart
       freeModeMomentumVelocityRatio: 1,
       freeModeSticky: false,
       freeModeMinimumVelocity: 0.02,
-      initialSlide: this.currentPage * this.itemsPerGroup,
+      initialSlide: this.getSwiperCurrentPage() * this.itemsPerGroup,
       loop: false,
       parallax: false,
       setWrapperSize: false,
       slidesOffsetAfter: 0,
       slidesOffsetBefore: 0,
       slidesPerColumn: this.optionValueDefault(this.rows, 1),
-      slidesPerColumnFill: "column",
+      slidesPerColumnFill: this.fillMode,
       slidesPerGroup: this.optionValueDefault(this.itemsPerGroup, 1),
       slidesPerView: this.optionValueDefault(this.columns, 1),
       spaceBetween: 0,
@@ -521,9 +527,11 @@ export class GridSmart
         },
         slideChangeTransitionEnd: () => {
           if (this.swiper !== null) {
-            this.gxGridDidChange.emit(
-              Math.ceil(this.swiper.activeIndex / this.itemsPerGroup)
+            this.log("pageChanged");
+            const currentPage = Math.ceil(
+              this.swiper.activeIndex / this.itemsPerGroup
             );
+            this.gxGridDidChange.emit(currentPage + 1);
           }
         },
         slideChangeTransitionStart: this.gxGridWillChange.emit,
@@ -549,7 +557,19 @@ export class GridSmart
     return { ...swiperOptions, ...this.options, ...mergedEventOptions };
   }
 
+  private ensureViewPort() {
+    if (this.autoGrow || this.fillMode === "row") {
+      return;
+    }
+    //When 'column' it uses flex-direction: column layout which requires specified height on swiper-container.
+    const height = this.el.parentElement.offsetHeight;
+    if (height > 0) {
+      this.el.style.maxHeight = height + "px";
+    }
+  }
+
   render() {
+    this.ensureViewPort();
     const hostData = GridBaseHelper.hostData(this);
     hostData.class = {
       ...hostData.class,

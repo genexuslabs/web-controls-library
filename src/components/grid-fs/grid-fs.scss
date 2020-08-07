@@ -3,6 +3,7 @@
 gx-grid-fs {
   flex-direction: column;
   min-height: 100%;
+  @include visibility(flex);
   > div {
     flex: 1;
   }

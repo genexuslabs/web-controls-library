@@ -1,10 +1,7 @@
 @import "../common/_base";
 
 .gx-grid-base {
-  @include visibility(block);
-  display: flex;
   flex: 1;
-
   & > [slot="grid-content"] {
     flex: 1;
   }
@@ -19,6 +16,7 @@
   .grid-empty-placeholder {
     @include visibility(flex);
     flex: 1;
+    height: 100%;
     align-items: center;
     justify-content: center;
   }
