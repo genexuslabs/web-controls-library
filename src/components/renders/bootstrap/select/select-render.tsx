@@ -16,6 +16,7 @@ export class SelectRender implements Renderer {
   protected options: any[] = [];
   protected element: HTMLElement;
   private selectId: string;
+  private datalistId: string;
 
   updateOptions(options) {
     this.options = options;
@@ -78,13 +79,16 @@ export class SelectRender implements Renderer {
           select.value = this.component.value;
         }
       };
+      if (this.component.suggest) {
+        this.datalistId = `${this.selectId}__datalist`;
+      }
 
       return this.component.suggest
         ? [
             <gx-bootstrap />,
-            <input list={`${this.selectId}__datalist`}></input>,
+            <input list={this.datalistId}></input>,
 
-            <datalist id={`${this.selectId}__datalist`}>
+            <datalist id={this.datalistId}>
               {this.options.map(({ disabled, innerText, selected, value }) => (
                 <option disabled={disabled} selected={selected} value={value}>
                   {innerText}
