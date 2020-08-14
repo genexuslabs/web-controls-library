@@ -54,6 +54,7 @@ export class ButtonRender implements Renderer {
             "gx-button": true,
             [button.cssClass]: !!button.cssClass
           }}
+          disabled={this.component.disabled}
           onClick={this.handleClick}
           tabindex="0"
         >
