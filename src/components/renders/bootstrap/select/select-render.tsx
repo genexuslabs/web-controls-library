@@ -16,7 +16,6 @@ export class SelectRender implements Renderer {
   protected options: any[] = [];
   protected element: HTMLElement;
   private selectId: string;
-  private datalistId: string;
 
   updateOptions(options) {
     this.options = options;
@@ -69,6 +68,7 @@ export class SelectRender implements Renderer {
         </span>
       );
     } else {
+      let datalistId: string;
       const attris = {
         "aria-disabled": this.component.disabled ? "true" : undefined,
         class: this.getCssClasses(),
@@ -80,15 +80,15 @@ export class SelectRender implements Renderer {
         }
       };
       if (this.component.suggest) {
-        this.datalistId = `${this.selectId}__datalist`;
+        datalistId = `${this.selectId}__datalist`;
       }
 
       return this.component.suggest
         ? [
             <gx-bootstrap />,
-            <input list={this.datalistId}></input>,
+            <input list={datalistId}></input>,
 
-            <datalist id={this.datalistId}>
+            <datalist id={datalistId}>
               {this.options.map(({ disabled, innerText, selected, value }) => (
                 <option disabled={disabled} selected={selected} value={value}>
                   {innerText}
