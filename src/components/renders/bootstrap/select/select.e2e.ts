@@ -39,4 +39,24 @@ describe("gx-select", () => {
     await page.waitForChanges();
     expect(await page.find("select")).toHaveClass("foo-class");
   });
+
+  it("should set the input with suggest list if suggest attr is enabled", async () => {
+    page = await newE2EPage();
+    await page.setContent(
+      `<gx-select suggest="true">
+          <gx-select-option value="1">One</gx-select-option>
+          <gx-select-option value="2">Two</gx-select-option>
+          <gx-select-option value="3">Three</gx-select-option>
+          <gx-select-option value="4">Four</gx-select-option>
+          <gx-select-option value="5" disabled>Five</gx-select-option>
+        </gx-select>`
+    );
+    element = await page.find("gx-select");
+    await page.waitForChanges();
+    const input = await element.find("input");
+    const dataList = await element.find("datalist");
+    expect(input).toBeTruthy();
+    expect(dataList).toBeTruthy();
+    expect(input.getAttribute("list")).toEqual(dataList.getAttribute("id"));
+  });
 });

@@ -58,6 +58,12 @@ export class Select implements FormComponent {
   @Prop() readonly readonly: boolean;
 
   /**
+   * Render a text input showing a list of suggested elements.
+
+   */
+  @Prop() suggest: boolean;
+
+  /**
    * The initial value of the control. Setting the value automatically selects
    * the corresponding option.
    */

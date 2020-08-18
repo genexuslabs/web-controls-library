@@ -10,24 +10,22 @@ The one option whose value matches the value of the select will be automatically
 
 <!-- Auto Generated Below -->
 
-
 ## Properties
 
-| Property        | Attribute        | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Type                         | Default      |
-| --------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------ |
-| `cssClass`      | `css-class`      | A CSS class to set as the inner `input` element class.                                                                                                                                                                                                                                                                                                                                                                                                                             | `string`                     | `undefined`  |
-| `disabled`      | `disabled`       | This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).                                                                                                                                                                                                                                                                                                                           | `boolean`                    | `false`      |
-| `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden.  \| Value        \| Details                                                                     \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space.         \| \| `collapse`   \| The element is removed form the document flow, and it doesn't occupy space. \| | `"collapse" \| "keep-space"` | `"collapse"` |
-| `readonly`      | `readonly`       | This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.                                                                                                                                                                                                                                                                   | `boolean`                    | `undefined`  |
-| `value`         | `value`          | The initial value of the control. Setting the value automatically selects the corresponding option.                                                                                                                                                                                                                                                                                                                                                                                | `string`                     | `undefined`  |
-
+| Property        | Attribute        | Description                                                                                                                                                                                                                                                                                                                                                                                  | Type                         | Default      |
+| --------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------ |
+| `cssClass`      | `css-class`      | A CSS class to set as the inner `input` element class.                                                                                                                                                                                                                                                                                                                                       | `string`                     | `undefined`  |
+| `disabled`      | `disabled`       | This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).                                                                                                                                                                                                                                     | `boolean`                    | `false`      |
+| `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \| | `"collapse" \| "keep-space"` | `"collapse"` |
+| `readonly`      | `readonly`       | This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.                                                                                                                                                                             | `boolean`                    | `undefined`  |
+| `suggest`       | `suggest`        | Render a text input showing a list of suggested elements.                                                                                                                                                                                                                                                                                                                                    | `boolean`                    | `undefined`  |
+| `value`         | `value`          | The initial value of the control. Setting the value automatically selects the corresponding option.                                                                                                                                                                                                                                                                                          | `string`                     | `undefined`  |
 
 ## Events
 
 | Event   | Description                                                                                 | Type               |
 | ------- | ------------------------------------------------------------------------------------------- | ------------------ |
 | `input` | The `input` event is emitted when a change to the element's value is committed by the user. | `CustomEvent<any>` |
-
 
 ## Methods
 
@@ -39,9 +37,6 @@ Returns the id of the inner `input` element (if set).
 
 Type: `Promise<string>`
 
+---
 
-
-
-----------------------------------------------
-
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

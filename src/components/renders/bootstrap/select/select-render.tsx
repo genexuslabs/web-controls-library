@@ -68,6 +68,7 @@ export class SelectRender implements Renderer {
         </span>
       );
     } else {
+      let datalistId: string;
       const attris = {
         "aria-disabled": this.component.disabled ? "true" : undefined,
         class: this.getCssClasses(),
@@ -78,17 +79,33 @@ export class SelectRender implements Renderer {
           select.value = this.component.value;
         }
       };
+      if (this.component.suggest) {
+        datalistId = `${this.selectId}__datalist`;
+      }
 
-      return [
-        <gx-bootstrap />,
-        <select {...attris}>
-          {this.options.map(({ disabled, innerText, selected, value }) => (
-            <option disabled={disabled} selected={selected} value={value}>
-              {innerText}
-            </option>
-          ))}
-        </select>
-      ];
+      return this.component.suggest
+        ? [
+            <gx-bootstrap />,
+            <input list={datalistId}></input>,
+
+            <datalist id={datalistId}>
+              {this.options.map(({ disabled, innerText, selected, value }) => (
+                <option disabled={disabled} selected={selected} value={value}>
+                  {innerText}
+                </option>
+              ))}
+            </datalist>
+          ]
+        : [
+            <gx-bootstrap />,
+            <select {...attris}>
+              {this.options.map(({ disabled, innerText, selected, value }) => (
+                <option disabled={disabled} selected={selected} value={value}>
+                  {innerText}
+                </option>
+              ))}
+            </select>
+          ];
     }
   }
 }
