@@ -53,6 +53,13 @@ When the left or right target is visible and floating, the center target is mask
 | `rightHidden`  | `right-hidden`  | True to hide the right target  | `boolean` | `false` |
 | `topHidden`    | `top-hidden`    | True to hide the top target    | `boolean` | `false` |
 
+## Events
+
+| Event               | Description                                    | Type               |
+| ------------------- | ---------------------------------------------- | ------------------ |
+| `leftHiddenChange`  | Fired when the leftHidden property is changed  | `CustomEvent<any>` |
+| `rightHiddenChange` | Fired when the rightHidden property is changed | `CustomEvent<any>` |
+
 ## CSS Custom Properties
 
 | Name                                            | Description                                    |

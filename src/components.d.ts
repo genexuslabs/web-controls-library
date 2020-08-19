@@ -314,7 +314,7 @@ export namespace Components {
      */
     threshold: string;
     /**
-     * The View Port parent element selector where the infinite component is attached to and listening to Scroll Events.
+     * The View Port parent element selector where the infinite component would be attached to and listening to Scroll Events.
      */
     viewportSelector: string;
   }
@@ -1743,7 +1743,7 @@ declare namespace LocalJSX {
      */
     threshold?: string;
     /**
-     * The View Port parent element selector where the infinite component is attached to and listening to Scroll Events.
+     * The View Port parent element selector where the infinite component would be attached to and listening to Scroll Events.
      */
     viewportSelector?: string;
   }
@@ -1971,6 +1971,14 @@ declare namespace LocalJSX {
      * True to hide the left target
      */
     leftHidden?: boolean;
+    /**
+     * Fired when the leftHidden property is changed
+     */
+    onLeftHiddenChange?: (event: CustomEvent<any>) => void;
+    /**
+     * Fired when the rightHidden property is changed
+     */
+    onRightHiddenChange?: (event: CustomEvent<any>) => void;
     /**
      * True to hide the right target
      */
