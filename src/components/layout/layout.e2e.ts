@@ -39,4 +39,15 @@ describe("gx-layout", () => {
       expect(await targetElement.getProperty("hidden")).toBe(true);
     }
   });
+
+  it("should emit left and right hidden change event", async () => {
+    const leftHiddenChangeSpy = await element.spyOnEvent("leftHiddenChange");
+    const rightHiddenChangeSpy = await element.spyOnEvent("rightHiddenChange");
+    element.setProperty("leftHidden", true);
+    element.setProperty("rightHidden", true);
+    await page.waitForChanges();
+
+    expect(leftHiddenChangeSpy).toHaveReceivedEventDetail(true);
+    expect(rightHiddenChangeSpy).toHaveReceivedEventDetail(true);
+  });
 });
