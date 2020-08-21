@@ -10,7 +10,7 @@
   @extend #{$class} !optional;
 
   @if ($action != null) {
-    ::slotted(gx-navbar-item) {
+    gx-navbar-item {
       @extend #{$action} !optional;
     }
   }

@@ -1,6 +1,6 @@
 @import "../common/_base";
 
-:host {
+gx-navbar {
   @include visibility(block);
 
   --gx-navbar-main-background-color: rgb(87, 89, 101);
@@ -41,7 +41,7 @@
     }
   }
 
-  .navbar {
+  .gx-navbar {
     position: fixed;
     top: 0;
     left: 0;
@@ -52,6 +52,7 @@
 
     &-header {
       outline: none;
+      color: inherit;
     }
 
     &-icon-button {
@@ -96,12 +97,12 @@
       border-top: var(--gx-navbar-sub-separator-top);
       border-bottom: var(--gx-navbar-sub-separator-bottom);
 
-      .navbar-actions {
+      .gx-navbar-actions {
         flex: 1;
         justify-content: flex-end;
       }
 
-      .navbar-actions-toggle {
+      .gx-navbar-actions-toggle {
         gx-icon {
           --gx-icon-color: var(--gx-navbar-sub-color);
         }
@@ -193,20 +194,20 @@
       }
     }
   }
-}
 
-:host(.navbar-single-line) {
-  height: var(--gx-navbar-main-height);
-}
+  &.navbar-single-line {
+    height: var(--gx-navbar-main-height);
+  }
 
-:host(.navbar-nav-only) {
-  @media screen and (max-width: $gx-xsmall-breakpoint) {
-    height: 0;
-
-    .navbar-line-1,
-    .navbar-line-2 {
+  &.navbar-nav-only {
+    @media screen and (max-width: $gx-xsmall-breakpoint) {
       height: 0;
-      overflow: hidden;
+
+      .gx-navbar-line-1,
+      .gx-navbar-line-2 {
+        height: 0;
+        overflow: hidden;
+      }
     }
   }
 }
