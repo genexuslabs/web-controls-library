@@ -5,6 +5,7 @@ import {
   Event,
   EventEmitter,
   Prop,
+  Listen,
   h
 } from "@stencil/core";
 import {
@@ -87,18 +88,20 @@ export class Button
    */
   @Prop() readonly size: "large" | "normal" | "small" = "normal";
 
-  /**
-   * Emitted when the element is clicked.
-   */
-  @Event() gxClick: EventEmitter;
-
+  @Listen("click", { capture: true })
   private handleClick(event: UIEvent) {
     if (this.disabled) {
+      event.stopPropagation();
       return;
     }
 
     this.gxClick.emit(event);
   }
+
+  /**
+   * Emitted when the element is clicked.
+   */
+  @Event() gxClick: EventEmitter;
 
   componentWillLoad() {
     this.renderer.componentWillLoad();
