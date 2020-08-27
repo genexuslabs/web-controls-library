@@ -26,6 +26,7 @@ gx-card {
   & > .card {
     display: flex;
     flex: 1;
+    background-color: transparent;
     & > [slot="body"] {
       flex: 1;
       display: flex;
