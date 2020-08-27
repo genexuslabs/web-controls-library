@@ -2,6 +2,7 @@
 
 gx-navbar {
   @include visibility(block);
+  @include elevation();
 
   --gx-navbar-main-background-color: rgb(87, 89, 101);
   --gx-navbar-sub-background-color: white;
@@ -88,6 +89,7 @@ gx-navbar {
       height: var(--gx-navbar-main-height);
       color: var(--gx-navbar-main-color);
       background-color: var(--gx-navbar-main-background-color);
+      background-image: var(--gx-navbar-main-background-image);
     }
 
     &-line-2 {
