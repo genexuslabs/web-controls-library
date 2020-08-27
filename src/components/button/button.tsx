@@ -90,8 +90,8 @@ export class Button
 
   @Listen("click", { capture: true })
   private handleClick(event: UIEvent) {
+    event.stopPropagation();
     if (this.disabled) {
-      event.stopPropagation();
       return;
     }
 
