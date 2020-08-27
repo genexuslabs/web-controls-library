@@ -6,7 +6,13 @@
 /// @param {string} $class Base class of the component
 /// @param {string} $action Class for styling the actions of the navigation bar
 /// @param {string} $back-button Class for styling the back button of the navigation bar
-@mixin gx-navbar($class, $action: null, $back-button: null) {
+/// @param {string} $default-button Class for styling buttons of the navigation bar
+@mixin gx-navbar(
+  $class,
+  $action: null,
+  $back-button: null,
+  $default-button: null
+) {
   @extend #{$class} !optional;
 
   @if ($action != null) {
@@ -15,8 +21,14 @@
     }
   }
 
+  @if ($default-button != null) {
+    button {
+      @extend #{$default-button} !optional;
+    }
+  }
+
   @if ($back-button != null) {
-    .navbar-back-button {
+    .gx-navbar-back-button {
       @extend #{$back-button} !optional;
     }
   }
