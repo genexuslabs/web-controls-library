@@ -165,6 +165,7 @@ export class CardRender implements Renderer {
       <div
         class={{
           "border-0": !card.showBorder,
+          "rounded-0": !card.showBorder,
           card: true
         }}
       >
