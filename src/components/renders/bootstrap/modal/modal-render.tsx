@@ -88,21 +88,23 @@ export class ModalRender implements Renderer {
         aria-labelledby={this.headerId}
         aria-hidden="true"
       >
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id={this.headerId}>
-                {slots.header}
-              </h5>
-              <button
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label={modal.closeButtonLabel}
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+            {modal.showHeader && (
+              <div class="modal-header">
+                <h5 class="modal-title" id={this.headerId}>
+                  {slots.header}
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label={modal.closeButtonLabel}
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            )}
             <div class="modal-body">{slots.body}</div>
             {hasFooterActions ? (
               <div class="modal-footer">

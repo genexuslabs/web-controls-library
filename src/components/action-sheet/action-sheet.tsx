@@ -3,13 +3,11 @@ import {
   Element,
   Event,
   EventEmitter,
-  Listen,
   Prop,
   h,
   Host
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
-import { ActionSheetRender } from "../renders/bootstrap/action-sheet/action-sheet-render";
 
 @Component({
   shadow: false,
@@ -18,10 +16,9 @@ import { ActionSheetRender } from "../renders/bootstrap/action-sheet/action-shee
 })
 export class ActionSheet implements GxComponent {
   constructor() {
-    this.renderer = new ActionSheetRender(this);
+    this.handleOnClose = this.handleOnClose.bind(this);
+    this.handleOnOpen = this.handleOnOpen.bind(this);
   }
-
-  private renderer: ActionSheetRender;
 
   @Element() element: HTMLGxActionSheetElement;
 
@@ -45,12 +42,41 @@ export class ActionSheet implements GxComponent {
    */
   @Event() open: EventEmitter;
 
-  @Listen("gxClick")
-  handleItemClick() {
+  private handleItemClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (target.matches("gx-action-sheet-item")) {
+      this.opened = false;
+    }
+  }
+
+  private handleOnClose(e: CustomEvent) {
     this.opened = false;
+    this.close.emit(e);
+  }
+
+  private handleOnOpen(e: CustomEvent) {
+    this.opened = true;
+    this.open.emit(e);
   }
 
   render() {
-    return <Host>{this.renderer.render({ default: <slot /> })}</Host>;
+    return (
+      <Host>
+        <gx-modal
+          showHeader={false}
+          opened={this.opened}
+          onClose={this.handleOnClose}
+          onOpen={this.handleOnOpen}
+          onClick={this.handleItemClick}
+        >
+          <div class="gx-action-sheet" slot="body">
+            <slot />
+          </div>
+          <gx-action-sheet-item class="gx-action-sheet-close-item" slot="body">
+            {this.closeButtonLabel}
+          </gx-action-sheet-item>
+        </gx-modal>
+      </Host>
+    );
   }
 }
