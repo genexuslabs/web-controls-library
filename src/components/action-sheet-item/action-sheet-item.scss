@@ -3,7 +3,7 @@
 gx-action-sheet-item {
   @include visibility(block);
 
-  border-bottom: 1px solid rgb(224, 224, 224);
+  border-bottom: 1px solid var(--gx-action-sheet-item-border-color);
   padding: 10px 0;
   font-size: 12px;
   font-weight: 600;
@@ -19,11 +19,11 @@ gx-action-sheet-item {
 
   &.gx-as-item {
     &--danger {
-      color: #f9464e;
+      color: var(--gx-action-sheet-color-danger);
     }
 
     &--disabled {
-      color: #939498;
+      color: var(--gx-action-sheet-color-disabled);
       cursor: default;
     }
   }
