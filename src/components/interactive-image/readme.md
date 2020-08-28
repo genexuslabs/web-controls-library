@@ -18,13 +18,6 @@ Images are very common in Smart Devices applications and the users of this apps 
 | `src`        | `src`         | Lets you specify the image URL. _Requiered_                                           | `""`      | `""`    |
 | `zoom`       | `zoom`        | Indicates how much you can enlarge an image. (Percentage) _Note: 100% = Normal size_. | `number`  | `100`   |
 
-## CSS Custom Properties
-
-| Name               | Description                                                                              |
-| ------------------ | ---------------------------------------------------------------------------------------- |
-| `--control-height` | Set the height or the control. _Must be set before render the control_ (auto by default) |
-| `--control-width`  | Set the width or the control. _Must be set before render the control_ (100% by default)  |
-
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_

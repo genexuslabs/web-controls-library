@@ -5,20 +5,6 @@ This component will be shown automatically every time the Grid Infinite Scroll i
 
 <!-- Auto Generated Below -->
 
-## Dependencies
-
-### Used by
-
-- [gx-grid-smart](../grid-smart)
-
-### Graph
-
-```mermaid
-graph TD;
-  gx-grid-smart --> gx-grid-infinite-scroll-content
-  style gx-grid-infinite-scroll-content fill:#f9f,stroke:#333,stroke-width:4px
-```
-
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_

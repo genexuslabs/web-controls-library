@@ -32,7 +32,6 @@ predefined slots:
 
 <!-- Auto Generated Below -->
 
-
 ## Properties
 
 | Property           | Attribute            | Description                                                                                            | Type      | Default     |
@@ -40,7 +39,7 @@ predefined slots:
 | `autoClose`        | `auto-close`         | This attribute lets you specify if the modal dialog is automatically closed when an action is clicked. | `boolean` | `undefined` |
 | `closeButtonLabel` | `close-button-label` | This attribute lets you specify the label for the close button. Important for accessibility.           | `string`  | `undefined` |
 | `opened`           | `opened`             | This attribute lets you specify if the modal dialog is opened or closed.                               | `boolean` | `false`     |
-
+| `showHeader`       | `show-header`        | This attribute lets you specify if a header is renderd on top of the modal dialog.                     | `boolean` | `true`      |
 
 ## Events
 
@@ -49,7 +48,20 @@ predefined slots:
 | `close` | Fired when the modal dialog is closed | `CustomEvent<any>` |
 | `open`  | Fired when the modal dialog is opened | `CustomEvent<any>` |
 
+## Dependencies
 
-----------------------------------------------
+### Used by
 
-*Built with [StencilJS](https://stenciljs.com/)*
+- [gx-action-sheet](../action-sheet)
+
+### Graph
+
+```mermaid
+graph TD;
+  gx-action-sheet --> gx-modal
+  style gx-modal fill:#f9f,stroke:#333,stroke-width:4px
+```
+
+---
+
+_Built with [StencilJS](https://stenciljs.com/)_
