@@ -36,6 +36,20 @@ A SASS mixin called `gx-action-sheet` is provided in `theming/theming-mixins.scs
 | `close` | Fired when the action sheet is closed | `CustomEvent<any>` |
 | `open`  | Fired when the action sheet is opened | `CustomEvent<any>` |
 
+## CSS Custom Properties
+
+| Name                                  | Description                                      |
+| ------------------------------------- | ------------------------------------------------ |
+| `--gx-action-sheet-background-color`  | Background color                                 |
+| `--gx-action-sheet-border-radius`     | Borders radius                                   |
+| `--gx-action-sheet-color`             | Text color                                       |
+| `--gx-action-sheet-color-close`       | Close button text color                          |
+| `--gx-action-sheet-color-danger`      | Text color for items where `actionType="danger"` |
+| `--gx-action-sheet-color-disabled`    | Text color for disabled items                    |
+| `--gx-action-sheet-item-border-color` | Color for the bottom border of items             |
+| `--gx-action-sheet-padding`           | Padding                                          |
+| `--gx-action-sheet-shadow`            | Box shadow                                       |
+
 ## Dependencies
 
 ### Depends on

@@ -1,28 +1,65 @@
 @import "../common/_base";
 
 @mixin box-properties() {
-  background-color: white;
-  border-radius: 6px;
-  box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.14),
-    0px 3px 3px -2px rgba(0, 0, 0, 0.12), 0px 1px 8px 0px rgba(0, 0, 0, 0.2);
+  background-color: var(--gx-action-sheet-background-color);
+  border-radius: var(--gx-action-sheet-border-radius);
+  box-shadow: var(--gx-action-sheet-shadow);
 }
 
 gx-action-sheet {
   @include visibility(block);
+  /**
+   * @prop --gx-action-sheet-shadow:Box shadow
+   */
+  --gx-action-sheet-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.14),
+    0px 3px 3px -2px rgba(0, 0, 0, 0.12), 0px 1px 8px 0px rgba(0, 0, 0, 0.2);
+  /**
+   * @prop --gx-action-sheet-background-color: Background color
+   */
+  --gx-action-sheet-background-color: white;
+  /**
+   * @prop --gx-action-sheet-border-radius: Borders radius
+   */
+  --gx-action-sheet-border-radius: 6px;
+  /**
+   * @prop --gx-action-sheet-padding: Padding
+   */
+  --gx-action-sheet-padding: 0 20px;
+  /**
+   * @prop --gx-action-sheet-color: Text color
+   */
+  --gx-action-sheet-color: black;
+  /**
+   * @prop --gx-action-sheet-color-close: Close button text color
+   */
+  --gx-action-sheet-color-close: rgb(105, 110, 242);
+  /**
+   * @prop --gx-action-sheet-color-danger: Text color for items where `actionType="danger"`
+   */
+  --gx-action-sheet-color-danger: #f9464e;
+  /**
+   * @prop --gx-action-sheet-color-disabled: Text color for disabled items
+   */
+  --gx-action-sheet-color-disabled: #939498;
+  /**
+   * @prop --gx-action-sheet-item-border-color: Color for the bottom border of items
+   */
+  --gx-action-sheet-item-border-color: rgb(224, 224, 224);
 
   .gx-action-sheet {
     @include box-properties();
 
     display: flex;
     flex-direction: column;
-    padding: 0 20px;
+    padding: var(--gx-action-sheet-padding);
+    color: var(--gx-action-sheet-color);
 
     &-close-item {
       @include box-properties();
 
       margin-top: 8px;
       text-transform: uppercase;
-      color: rgb(105, 110, 242);
+      color: var(--gx-action-sheet-color-close);
       font-size: 11px;
       padding: 13px 0;
     }
