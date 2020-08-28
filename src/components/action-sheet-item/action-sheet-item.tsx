@@ -1,37 +1,21 @@
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Prop,
-  h,
-  Host
-} from "@stencil/core";
-import {
-  ClickableComponent,
-  Component as GxComponent
-} from "../common/interfaces";
-import { ActionSheetItemRender } from "../renders/bootstrap/action-sheet-item/action-sheet-item-render";
+import { Component, Element, Prop, h, Host, Listen } from "@stencil/core";
+import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
   styleUrl: "action-sheet-item.scss",
   tag: "gx-action-sheet-item"
 })
-export class ActionSheetItem implements ClickableComponent, GxComponent {
+export class ActionSheetItem implements GxComponent {
   constructor() {
-    this.renderer = new ActionSheetItemRender(this, {
-      handleClick: this.handleClick
-    });
+    this.handleClick = this.handleClick.bind(this);
   }
-
-  private renderer: ActionSheetItemRender;
   @Element() element: HTMLGxActionSheetItemElement;
 
   /**
-   * This attribute lets you specify the type of action. `"cancel"` and `"destructive"` are style differently
+   * This attribute lets you specify the type of action. `"cancel"` and `"destructive"` are styled differently
    */
-  @Prop() readonly actionType: "cancel" | "default" | "destructive" = "default";
+  @Prop() readonly actionType: "default" | "destructive" = "default";
 
   /**
    * This attribute lets you specify if the element is disabled.
@@ -40,25 +24,26 @@ export class ActionSheetItem implements ClickableComponent, GxComponent {
    */
   @Prop() readonly disabled = false;
 
-  /**
-   * Fired when the action sheet item is clicked
-   */
-  @Event() gxClick: EventEmitter;
-
+  @Listen("click", { capture: true })
   private handleClick(event: UIEvent) {
     if (this.disabled) {
-      return;
+      event.stopPropagation();
     }
 
-    this.gxClick.emit(event);
     event.preventDefault();
   }
 
-  componentDidLoad() {
-    this.renderer.componentDidLoad();
-  }
-
   render() {
-    return <Host>{this.renderer.render({ default: <slot /> })}</Host>;
+    return (
+      <Host
+        class={{
+          "gx-as-item": true,
+          "gx-as-item--danger": this.actionType === "destructive",
+          "gx-as-item--disabled": this.disabled
+        }}
+      >
+        <slot />
+      </Host>
+    );
   }
 }

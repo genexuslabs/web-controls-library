@@ -14,22 +14,27 @@ This component allows showing an action in a `gx-action-sheet` component.
 
 <!-- Auto Generated Below -->
 
-
 ## Properties
 
-| Property     | Attribute     | Description                                                                                                                                                | Type                                     | Default     |
-| ------------ | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- | ----------- |
-| `actionType` | `action-type` | This attribute lets you specify the type of action. `"cancel"` and `"destructive"` are style differently                                                   | `"cancel" \| "default" \| "destructive"` | `"default"` |
-| `disabled`   | `disabled`    | This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, gxClick event). | `boolean`                                | `false`     |
+| Property     | Attribute     | Description                                                                                                                                                | Type                         | Default     |
+| ------------ | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ----------- |
+| `actionType` | `action-type` | This attribute lets you specify the type of action. `"cancel"` and `"destructive"` are styled differently                                                  | `"default" \| "destructive"` | `"default"` |
+| `disabled`   | `disabled`    | This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, gxClick event). | `boolean`                    | `false`     |
 
+## Dependencies
 
-## Events
+### Used by
 
-| Event     | Description                                 | Type               |
-| --------- | ------------------------------------------- | ------------------ |
-| `gxClick` | Fired when the action sheet item is clicked | `CustomEvent<any>` |
+- [gx-action-sheet](../action-sheet)
 
+### Graph
 
-----------------------------------------------
+```mermaid
+graph TD;
+  gx-action-sheet --> gx-action-sheet-item
+  style gx-action-sheet-item fill:#f9f,stroke:#333,stroke-width:4px
+```
 
-*Built with [StencilJS](https://stenciljs.com/)*
+---
+
+_Built with [StencilJS](https://stenciljs.com/)_

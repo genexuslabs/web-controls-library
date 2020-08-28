@@ -20,9 +20,9 @@ export namespace Components {
   }
   interface GxActionSheetItem {
     /**
-     * This attribute lets you specify the type of action. `"cancel"` and `"destructive"` are style differently
+     * This attribute lets you specify the type of action. `"cancel"` and `"destructive"` are styled differently
      */
-    actionType: "cancel" | "default" | "destructive";
+    actionType: "default" | "destructive";
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, gxClick event).
      */
@@ -329,7 +329,7 @@ export namespace Components {
      */
     columns: number | "auto";
     /**
-     * 0-Indexed number of currently active page
+     * 1-Indexed number of currently active page
      */
     currentPage: number;
     /**
@@ -710,6 +710,10 @@ export namespace Components {
      * This attribute lets you specify if the modal dialog is opened or closed.
      */
     opened: boolean;
+    /**
+     * This attribute lets you specify if a header is renderd on top of the modal dialog.
+     */
+    showHeader: boolean;
   }
   interface GxNavbar {
     /**
@@ -910,6 +914,10 @@ export namespace Components {
      * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
      */
     readonly: boolean;
+    /**
+     * Render a text input showing a list of suggested elements.
+     */
+    suggest: boolean;
     /**
      * The initial value of the control. Setting the value automatically selects the corresponding option.
      */
@@ -1406,17 +1414,13 @@ declare namespace LocalJSX {
   }
   interface GxActionSheetItem {
     /**
-     * This attribute lets you specify the type of action. `"cancel"` and `"destructive"` are style differently
+     * This attribute lets you specify the type of action. `"cancel"` and `"destructive"` are styled differently
      */
-    actionType?: "cancel" | "default" | "destructive";
+    actionType?: "default" | "destructive";
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, gxClick event).
      */
     disabled?: false;
-    /**
-     * Fired when the action sheet item is clicked
-     */
-    onGxClick?: (event: CustomEvent<any>) => void;
   }
   interface GxBootstrap {}
   interface GxButton {
@@ -1758,7 +1762,7 @@ declare namespace LocalJSX {
      */
     columns?: number | "auto";
     /**
-     * 0-Indexed number of currently active page
+     * 1-Indexed number of currently active page
      */
     currentPage?: number;
     /**
@@ -2175,6 +2179,10 @@ declare namespace LocalJSX {
      * This attribute lets you specify if the modal dialog is opened or closed.
      */
     opened?: boolean;
+    /**
+     * This attribute lets you specify if a header is renderd on top of the modal dialog.
+     */
+    showHeader?: boolean;
   }
   interface GxNavbar {
     /**
@@ -2411,6 +2419,10 @@ declare namespace LocalJSX {
      * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
      */
     readonly?: boolean;
+    /**
+     * Render a text input showing a list of suggested elements.
+     */
+    suggest?: boolean;
     /**
      * The initial value of the control. Setting the value automatically selects the corresponding option.
      */

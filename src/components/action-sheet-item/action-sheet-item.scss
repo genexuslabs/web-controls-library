@@ -1,6 +1,30 @@
 @import "../common/_base";
-@import "../renders/bootstrap/action-sheet-item/action-sheet-item-render";
 
 gx-action-sheet-item {
   @include visibility(block);
+
+  border-bottom: 1px solid rgb(224, 224, 224);
+  padding: 10px 0;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &:last-child {
+    border-bottom-width: 0;
+  }
+
+  &.gx-as-item {
+    &--danger {
+      color: #f9464e;
+    }
+
+    &--disabled {
+      color: #939498;
+      cursor: default;
+    }
+  }
 }

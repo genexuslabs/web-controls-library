@@ -14,7 +14,6 @@ describe("gx-action-sheet", () => {
       <gx-action-sheet-item>Share</gx-action-sheet-item>
       <gx-action-sheet-item disabled>Play</gx-action-sheet-item>
       <gx-action-sheet-item>Favorite</gx-action-sheet-item>
-      <gx-action-sheet-item action-type="cancel">Cancel</gx-action-sheet-item>
     </gx-action-sheet>
     `);
     element = await page.find("gx-action-sheet");
@@ -28,20 +27,11 @@ describe("gx-action-sheet", () => {
     expect(actions[1].textContent).toBe("Share");
     expect(actions[2].textContent).toBe("Play");
     expect(actions[3].textContent).toBe("Favorite");
-    expect(actions[4].textContent).toBe("Cancel");
   });
 
   it("should set the close action label", async () => {
-    const modal = await element.find("gx-modal");
-    expect(await modal.getProperty("closeButtonLabel")).toBe(
-      CLOSE_BUTTON_LABEL
-    );
-  });
-
-  it("should use list group classes", async () => {
-    const listGroup = await element.find(".list-group");
-    expect(listGroup).toBeDefined();
-    expect(listGroup.classList.contains("list-group-flush")).toBe(true);
+    const closeItem = await element.find(".gx-action-sheet-close-item");
+    expect(closeItem.textContent).toBe(CLOSE_BUTTON_LABEL);
   });
 
   it("should fire the onClose and onOpen events", async () => {
