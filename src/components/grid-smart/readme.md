@@ -12,7 +12,7 @@ http://www.idangero.us/swiper/
 | --------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------ |
 | `autoGrow`      | `auto-grow`       | This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.                                                                                                                                                                                                                                                                                            | `boolean`                    | `undefined`  |
 | `columns`       | `columns`         | Number of items per column (items visible at the same time on slider's container).                                                                                                                                                                                                                                                                                                                                                                                                                 | `"auto" \| number`           | `undefined`  |
-| `currentPage`   | `current-page`    | 0-Indexed number of currently active page                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `number`                     | `0`          |
+| `currentPage`   | `current-page`    | 1-Indexed number of currently active page                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `number`                     | `1`          |
 | `direction`     | `direction`       | Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).                                                                                                                                                                                                                                                                                                                                                                                                                 | `"horizontal" \| "vertical"` | `undefined`  |
 | `invisibleMode` | `invisible-mode`  | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \|                                                                                                       | `"collapse" \| "keep-space"` | `"collapse"` |
 | `itemsPerGroup` | `items-per-group` | Set numbers of items to define and enable group sliding. Useful to use with rowsPerPage > 1                                                                                                                                                                                                                                                                                                                                                                                                        | `1`                          | `1`          |
@@ -170,22 +170,6 @@ equal to 'speed' parameter.
 #### Returns
 
 Type: `Promise<void>`
-
-## Dependencies
-
-### Depends on
-
-- [gx-grid-infinite-scroll](../grid-infinite-scroll)
-- [gx-grid-infinite-scroll-content](../grid-infinite-scroll-content)
-
-### Graph
-
-```mermaid
-graph TD;
-  gx-grid-smart --> gx-grid-infinite-scroll
-  gx-grid-smart --> gx-grid-infinite-scroll-content
-  style gx-grid-smart fill:#f9f,stroke:#333,stroke-width:4px
-```
 
 ---
 
