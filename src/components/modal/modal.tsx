@@ -41,6 +41,11 @@ export class Modal implements GxComponent {
   @Prop({ mutable: true }) opened = false;
 
   /**
+   * This attribute lets you specify if a header is renderd on top of the modal dialog.
+   */
+  @Prop() showHeader = true;
+
+  /**
    * Fired when the modal dialog is closed
    */
   @Event() close: EventEmitter;
