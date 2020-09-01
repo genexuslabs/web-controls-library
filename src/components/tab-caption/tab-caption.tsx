@@ -5,13 +5,18 @@ import {
   EventEmitter,
   Prop,
   Watch,
-  h
+  h,
+  Host
 } from "@stencil/core";
 import {
   Component as GxComponent,
   DisableableComponent
 } from "../common/interfaces";
-import { TabCaptionRender } from "../renders/bootstrap/tab-caption/tab-caption-render";
+import {
+  imagePositionRender,
+  imagePositionClass,
+  hideMainImageWhenDisabledClass
+} from "../common/image-position";
 
 let autoTabId = 0;
 
@@ -22,10 +27,10 @@ let autoTabId = 0;
 })
 export class TabCaption implements GxComponent, DisableableComponent {
   constructor() {
-    this.renderer = new TabCaptionRender(this);
+    this.clickHandler = this.clickHandler.bind(this);
   }
 
-  private renderer: TabCaptionRender;
+  private hasDisabledImage = false;
 
   @Element() element: HTMLGxTabCaptionElement;
 
@@ -76,14 +81,44 @@ export class TabCaption implements GxComponent, DisableableComponent {
     if (!this.element.id) {
       this.element.id = `gx-tab-caption-auto-id-${autoTabId++}`;
     }
-    this.renderer.componentWillLoad();
+    this.hasDisabledImage =
+      this.element.querySelector("[slot='disabled-image']") !== null;
   }
 
   render() {
-    return this.renderer.render({
-      default: <slot />,
-      disabledImage: <slot name="disabled-image" />,
-      mainImage: <slot name="main-image" />
-    });
+    this.element.setAttribute("aria-selected", (!!this.selected).toString());
+
+    return (
+      <Host
+        role="tab"
+        class={{
+          "gx-tab-caption--unselected": !this.selected,
+          [imagePositionClass(this.imagePosition)]: true,
+          [hideMainImageWhenDisabledClass]:
+            !this.selected && this.hasDisabledImage
+        }}
+      >
+        <a
+          class={{
+            active: this.selected,
+            disabled: this.disabled,
+            "nav-link": true
+          }}
+          href="#"
+          onClick={!this.disabled ? this.clickHandler : null}
+        >
+          {imagePositionRender({
+            default: <slot />,
+            disabledImage: <slot name="disabled-image" />,
+            mainImage: <slot name="main-image" />
+          })}
+        </a>
+      </Host>
+    );
+  }
+
+  private clickHandler(event: UIEvent) {
+    event.preventDefault();
+    this.selected = true;
   }
 }

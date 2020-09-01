@@ -1,6 +1,17 @@
 @import "../common/_base";
-@import "../renders/bootstrap/tab/tab-render";
 
 gx-tab {
   @include visibility(block);
+
+  --elevation: 0;
+  --tab-strip-elevation: 0;
+
+  & > div {
+    @include elevation();
+
+    & > .nav-tabs {
+      --elevation: var(--tab-strip-elevation);
+      @include elevation();
+    }
+  }
 }

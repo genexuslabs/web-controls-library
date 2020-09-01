@@ -1,6 +1,5 @@
 @import "../common/_base";
 @import "../common/_image-position";
-@import "../renders/bootstrap/tab-caption/tab-caption-render";
 
 gx-tab-caption {
   @include visibility(flex);
@@ -12,5 +11,9 @@ gx-tab-caption {
     max-height: 1em;
     max-width: 1em;
     object-fit: contain;
+  }
+
+  .nav-link {
+    display: flex;
   }
 }
