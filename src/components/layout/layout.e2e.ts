@@ -50,4 +50,32 @@ describe("gx-layout", () => {
     expect(leftHiddenChangeSpy).toHaveReceivedEventDetail(true);
     expect(rightHiddenChangeSpy).toHaveReceivedEventDetail(true);
   });
+
+  it("should emit verticalTargetsBreakpointMatchChange event", async () => {
+    await page.setViewport({
+      width: 1201,
+      height: 768
+    });
+    await page.waitForChanges();
+
+    const spy = await element.spyOnEvent(
+      "verticalTargetsBreakpointMatchChange"
+    );
+
+    await page.setViewport({
+      width: 768,
+      height: 768
+    });
+    await page.waitForChanges();
+
+    expect(spy).toHaveReceivedEventDetail({ matches: true });
+
+    await page.setViewport({
+      width: 1201,
+      height: 768
+    });
+    await page.waitForChanges();
+
+    expect(spy).toHaveReceivedEventDetail({ matches: false });
+  });
 });
