@@ -1,5 +1,7 @@
 import { E2EElement, E2EPage, newE2EPage } from "@stencil/core/testing";
 
+const VERTICAL_TARGETS_BREAKPOINT = 1200;
+
 describe("gx-layout", () => {
   let element: E2EElement;
   let page: E2EPage;
@@ -53,7 +55,7 @@ describe("gx-layout", () => {
 
   it("should emit verticalTargetsBreakpointMatchChange event", async () => {
     await page.setViewport({
-      width: 1201,
+      width: VERTICAL_TARGETS_BREAKPOINT + 1,
       height: 768
     });
     await page.waitForChanges();
@@ -63,7 +65,7 @@ describe("gx-layout", () => {
     );
 
     await page.setViewport({
-      width: 768,
+      width: VERTICAL_TARGETS_BREAKPOINT - 1,
       height: 768
     });
     await page.waitForChanges();
@@ -71,7 +73,7 @@ describe("gx-layout", () => {
     expect(spy).toHaveReceivedEventDetail({ matches: true });
 
     await page.setViewport({
-      width: 1201,
+      width: VERTICAL_TARGETS_BREAKPOINT + 1,
       height: 768
     });
     await page.waitForChanges();
