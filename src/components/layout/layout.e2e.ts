@@ -1,5 +1,7 @@
 import { E2EElement, E2EPage, newE2EPage } from "@stencil/core/testing";
 
+const VERTICAL_TARGETS_BREAKPOINT = 1200;
+
 describe("gx-layout", () => {
   let element: E2EElement;
   let page: E2EPage;
@@ -49,5 +51,33 @@ describe("gx-layout", () => {
 
     expect(leftHiddenChangeSpy).toHaveReceivedEventDetail(true);
     expect(rightHiddenChangeSpy).toHaveReceivedEventDetail(true);
+  });
+
+  it("should emit verticalTargetsBreakpointMatchChange event", async () => {
+    await page.setViewport({
+      width: VERTICAL_TARGETS_BREAKPOINT + 1,
+      height: 768
+    });
+    await page.waitForChanges();
+
+    const spy = await element.spyOnEvent(
+      "verticalTargetsBreakpointMatchChange"
+    );
+
+    await page.setViewport({
+      width: VERTICAL_TARGETS_BREAKPOINT - 1,
+      height: 768
+    });
+    await page.waitForChanges();
+
+    expect(spy).toHaveReceivedEventDetail({ matches: true });
+
+    await page.setViewport({
+      width: VERTICAL_TARGETS_BREAKPOINT + 1,
+      height: 768
+    });
+    await page.waitForChanges();
+
+    expect(spy).toHaveReceivedEventDetail({ matches: false });
   });
 });

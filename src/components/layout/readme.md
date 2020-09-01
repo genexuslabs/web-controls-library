@@ -55,10 +55,11 @@ When the left or right target is visible and floating, the center target is mask
 
 ## Events
 
-| Event               | Description                                    | Type               |
-| ------------------- | ---------------------------------------------- | ------------------ |
-| `leftHiddenChange`  | Fired when the leftHidden property is changed  | `CustomEvent<any>` |
-| `rightHiddenChange` | Fired when the rightHidden property is changed | `CustomEvent<any>` |
+| Event                                  | Description                                                                | Type               |
+| -------------------------------------- | -------------------------------------------------------------------------- | ------------------ |
+| `leftHiddenChange`                     | Fired when the leftHidden property is changed                              | `CustomEvent<any>` |
+| `rightHiddenChange`                    | Fired when the rightHidden property is changed                             | `CustomEvent<any>` |
+| `verticalTargetsBreakpointMatchChange` | Fired when the viewport size is less than the vertical targets breakpoint. | `CustomEvent<any>` |
 
 ## CSS Custom Properties
 

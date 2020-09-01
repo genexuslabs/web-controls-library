@@ -56,6 +56,11 @@ export class Layout implements GxComponent {
    */
   @Event() rightHiddenChange: EventEmitter;
 
+  /**
+   * Fired when the viewport size is less than the vertical targets breakpoint.
+   */
+  @Event() verticalTargetsBreakpointMatchChange: EventEmitter;
+
   private mediaQueryList: MediaQueryList;
   private isVerticalTargetsBreakpoint = false;
 
@@ -104,12 +109,19 @@ export class Layout implements GxComponent {
     this.mediaQueryList = window.matchMedia(
       `(max-width: ${targetsBreakpoint})`
     );
-    this.isVerticalTargetsBreakpoint = this.mediaQueryList.matches;
+    this.updateVerticalTargetsBreakpointStatus(this.mediaQueryList.matches);
     this.mediaQueryList.addEventListener("change", this.handleMediaQueryChange);
   }
 
-  private handleMediaQueryChange(e: MediaQueryListEvent) {
-    this.isVerticalTargetsBreakpoint = e.matches;
+  private handleMediaQueryChange(event: MediaQueryListEvent) {
+    this.updateVerticalTargetsBreakpointStatus(event.matches);
+  }
+
+  private updateVerticalTargetsBreakpointStatus(matches: boolean) {
+    this.isVerticalTargetsBreakpoint = matches;
+    this.verticalTargetsBreakpointMatchChange.emit({
+      matches
+    });
   }
 
   private endMediaQueryMonitoring() {

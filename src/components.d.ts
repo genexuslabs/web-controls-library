@@ -1984,6 +1984,10 @@ declare namespace LocalJSX {
      */
     onRightHiddenChange?: (event: CustomEvent<any>) => void;
     /**
+     * Fired when the viewport size is less than the vertical targets breakpoint.
+     */
+    onVerticalTargetsBreakpointMatchChange?: (event: CustomEvent<any>) => void;
+    /**
      * True to hide the right target
      */
     rightHidden?: boolean;
