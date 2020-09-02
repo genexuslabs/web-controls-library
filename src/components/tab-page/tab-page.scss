@@ -1,5 +1,9 @@
 @import "../common/_base";
 
 gx-tab-page {
-  @include visibility(block);
+  flex: 1;
+
+  > * {
+    height: 100%; //Cannot use flexbox, due to bootstrap forcing display block
+  }
 }

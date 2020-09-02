@@ -1,13 +1,26 @@
+@import "../../../common/_base";
+
 gx-tab {
+  @include visibility(flex);
+
   --elevation: 0;
   --tab-strip-elevation: 0;
 
   & > div {
+    @include visibility(flex);
     @include elevation();
+
+    flex-direction: column;
+    flex: 1;
 
     & > .nav-tabs {
       --elevation: var(--tab-strip-elevation);
       @include elevation();
+    }
+
+    & > .tab-content {
+      @include visibility(flex);
+      flex: 1;
     }
   }
 }
