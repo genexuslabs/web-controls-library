@@ -15,7 +15,8 @@ import {
   FeatureGroup,
   Marker,
   map as LFMap,
-  tileLayer
+  tileLayer,
+  polyline
 } from "leaflet/dist/leaflet-src.esm";
 import { parseCoords } from "../common/coordsValidate";
 import { watchPosition } from "./geolocation";
@@ -169,6 +170,23 @@ export class Map implements GxComponent {
     });
   }
 
+  @Listen("gxMapLineDidLoad")
+  onMapLineDidLoad(event: CustomEvent) {
+    const lineElement = event.target;
+    const lineV = event.detail;
+    if (this.map) {
+      lineV.addTo(this.map);
+    } else {
+      this.element.addEventListener("gxMapDidLoad", () => {
+        lineV.addTo(this.map);
+      });
+    }
+
+    lineElement.addEventListener("gxMapLineDeleted", () => {
+      this.onMapLineDeleted(lineV);
+    });
+  }
+
   private addMapListener(eventToListen, callbackFunction) {
     this.map.on(eventToListen, callbackFunction);
   }
@@ -224,6 +242,24 @@ export class Map implements GxComponent {
     } else {
       console.warn("There was an error in the markers list!");
     }
+  }
+
+  private onMapLineDeleted(line: polyline) {
+    //const i = 0;
+    line.remove();
+    /*
+    while (
+      i <= this.markersList.length &&
+      this.markersList[i]._leaflet_id !== marker._leaflet_id
+    ) {
+      i++;
+    }
+    if (i <= this.markersList.length) {
+      this.markersList.splice(i, 1);
+    } else {
+      console.warn("There was an error in the line list!");
+    }
+    */
   }
 
   private updateSelectionMarkerPosition() {
