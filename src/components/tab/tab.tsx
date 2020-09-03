@@ -62,7 +62,7 @@ export class Tab implements GxComponent, VisibilityComponent {
       const nthChild = i + 1;
       const pageElement = this.element.querySelector(
         `:scope > gx-tab-page:nth-child(${nthChild}), 
-        ${BASE_TABLIST_SELECTOR} > .tab-content > gx-tab-page:nth-child(${nthChild})`
+        ${BASE_TABLIST_SELECTOR} > .gx-tab-content > gx-tab-page:nth-child(${nthChild})`
       ) as HTMLElement;
       this.mapPageToCaptionSelection(slotElement, pageElement);
     });
@@ -72,7 +72,7 @@ export class Tab implements GxComponent, VisibilityComponent {
     return Array.from(
       this.element.querySelectorAll(
         `:scope > [slot='caption'], 
-         ${BASE_TABLIST_SELECTOR} > .nav > [slot='caption']`
+         ${BASE_TABLIST_SELECTOR} > .gx-nav-tabs > [slot='caption']`
       )
     );
   }
@@ -81,7 +81,10 @@ export class Tab implements GxComponent, VisibilityComponent {
     captionElement: any,
     pageElement: HTMLElement
   ) {
-    pageElement.classList.toggle("active", !!captionElement.selected);
+    pageElement.classList.toggle(
+      "gx-tab-page--active",
+      !!captionElement.selected
+    );
   }
 
   componentDidLoad() {
@@ -121,10 +124,11 @@ export class Tab implements GxComponent, VisibilityComponent {
     return (
       <Host>
         <div role="tablist">
-          <div class="nav nav-tabs">
+          <div class="gx-nav-tabs">
             <slot name="caption" />
+            <div aria-hidden="true" class="gx-nav-tabs-filler"></div>
           </div>
-          <div class="tab-content">
+          <div class="gx-tab-content">
             <slot name="page" />
           </div>
         </div>
@@ -134,16 +138,16 @@ export class Tab implements GxComponent, VisibilityComponent {
 
   private setCaptionSlotsClass() {
     this.getCaptionSlots().forEach(captionElement => {
-      if (!captionElement.classList.contains("nav-item")) {
-        captionElement.classList.add("nav-item");
+      if (!captionElement.classList.contains("gx-nav-item")) {
+        captionElement.classList.add("gx-nav-item");
       }
     });
   }
 
   private setPageSlotsClass() {
     this.getPageSlots().forEach(pageElement => {
-      if (!pageElement.classList.contains("tab-pane")) {
-        pageElement.classList.add("tab-pane");
+      if (!pageElement.classList.contains("gx-tab-page")) {
+        pageElement.classList.add("gx-tab-page");
       }
     });
   }
@@ -152,7 +156,7 @@ export class Tab implements GxComponent, VisibilityComponent {
     return Array.from(
       this.element.querySelectorAll(
         `:scope > [slot='page'], 
-         ${BASE_TABLIST_SELECTOR} > .tab-content > [slot='page']`
+         ${BASE_TABLIST_SELECTOR} > .gx-tab-content > [slot='page']`
       )
     );
   }

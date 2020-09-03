@@ -92,7 +92,9 @@ export class TabCaption implements GxComponent, DisableableComponent {
       <Host
         role="tab"
         class={{
-          "gx-tab-caption--unselected": !this.selected,
+          "gx-tab-caption": true,
+          "gx-tab-caption--active": this.selected,
+          "gx-tab-caption--disabled": this.disabled,
           [imagePositionClass(this.imagePosition)]: true,
           [hideMainImageWhenDisabledClass]:
             !this.selected && this.hasDisabledImage
@@ -100,9 +102,7 @@ export class TabCaption implements GxComponent, DisableableComponent {
       >
         <a
           class={{
-            active: this.selected,
-            disabled: this.disabled,
-            "nav-link": true
+            "gx-nav-link": true
           }}
           href="#"
           onClick={!this.disabled ? this.clickHandler : null}

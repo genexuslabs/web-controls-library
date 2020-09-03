@@ -1,17 +1,69 @@
 @import "../common/_base";
 
 gx-tab {
-  @include visibility(block);
+  @include visibility(flex);
+  flex: 1;
 
   --elevation: 0;
   --tab-strip-elevation: 0;
 
+  --tab-caption-border-color: #c3c4c8;
+  --tab-caption-disabled-color: #c3c4c8;
+  --tab-caption-active-border-color: #2d31b4;
+  --tab-caption-focus-border-color: #2d31b4;
+  --tab-caption-hover-border-color: #5a5edc;
+  --tab-caption-vertical-padding: 8px;
+  --tab-caption-horizontal-padding: 23px;
+
   & > div {
     @include elevation();
+    display: flex;
+    flex: 1;
+    flex-direction: column;
 
-    & > .nav-tabs {
+    --tab-scrollbar-background-color: var(
+      --gx-scrollbar-background-color,
+      #f5f5f5
+    );
+    --tab-scrollbar-thumb-color: var(--gx-scrollbar-thumb-color, #555);
+
+    .gx-nav-tabs {
       --elevation: var(--tab-strip-elevation);
       @include elevation();
+
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      overflow-y: auto;
+
+      &-filler {
+        flex: 1;
+        border-bottom: 1px solid var(--tab-caption-border-color);
+      }
+
+      scrollbar-width: thin;
+      scrollbar-color: var(--tab-scrollbar-thumb-color)
+        var(--tab-scrollbar-background-color);
+
+      &::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: var(--tab-scrollbar-background-color);
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: var(--tab-scrollbar-thumb-color);
+        border-radius: 6px;
+        border: 1px solid var(--tab-scrollbar-background-color);
+      }
+    }
+
+    .gx-tab-content {
+      display: flex;
+      flex: 1;
     }
   }
 }
