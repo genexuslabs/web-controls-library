@@ -38,7 +38,7 @@ describe("gx-tab", () => {
       "gx-tab-caption[selected='true']"
     );
 
-    expect(await selectedTabCaption.find("a")).toHaveClass("active");
+    expect(selectedTabCaption).toHaveClass("gx-tab-caption--active");
   });
 
   it("should show the selected tab page as visible", async () => {
@@ -49,7 +49,7 @@ describe("gx-tab", () => {
       `#${selectedTabCaption.getAttribute("aria-controls")}`
     );
 
-    expect(selectedTabPage).toHaveClass("active");
+    expect(selectedTabPage).toHaveClass("gx-tab-page--active");
   });
 
   it("should render aria-selected=true for selected tab caption", async () => {

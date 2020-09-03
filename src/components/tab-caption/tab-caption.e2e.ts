@@ -55,35 +55,4 @@ describe("gx-tab-page", () => {
       );
     });
   }
-
-  it("limits the size of the main and disabled images to 1em", async () => {
-    const tabCaptionStyle = await tabCaptionElement.getComputedStyle();
-    const fontSize = tabCaptionStyle.getPropertyValue("font-size");
-
-    const mainImageSize = await getImageSize(
-      "gx-tab-caption img[slot='main-image']"
-    );
-    expect(mainImageSize.height).toBe(fontSize);
-    expect(mainImageSize.width).toBe(fontSize);
-
-    tabCaptionElement.setAttribute("selected", false);
-    await page.waitForChanges();
-
-    const disabledImageSize = await getImageSize(
-      "gx-tab-caption img[slot='disabled-image']"
-    );
-    expect(disabledImageSize.height).toBe(fontSize);
-    expect(disabledImageSize.width).toBe(fontSize);
-  });
-
-  async function getImageSize(
-    selector: string
-  ): Promise<{ height: string; width: string }> {
-    const element = await page.find(selector);
-    const style = await element.getComputedStyle();
-    return {
-      height: style.getPropertyValue("height"),
-      width: style.getPropertyValue("width")
-    };
-  }
 });

@@ -1,17 +1,35 @@
 @import "../common/_base";
 @import "../common/_image-position";
 
+@mixin imageMargin($position, $value) {
+  &.gx-image-position--#{$position} {
+    [slot="main-image"],
+    [slot="disabled-image"] {
+      @if ($position == "before" or $position == "after") {
+        margin: 0 $value;
+      }
+      @if ($position == "above" or $position == "below") {
+        margin: $value 0;
+      }
+    }
+  }
+}
+
 gx-tab-caption {
   @include visibility(flex);
 
-  @include imagePosition("a", ".gx-tab-caption--unselected");
+  @include imagePosition("a", ":not(.gx-tab-caption--active)");
 
   [slot="main-image"],
   [slot="disabled-image"] {
-    max-height: 1em;
-    max-width: 1em;
+    max-height: 18px;
+    max-width: 18px;
     object-fit: contain;
   }
+  @include imageMargin("before", var(--tab-caption-image-vertical-margin));
+  @include imageMargin("after", var(--tab-caption-image-vertical-margin));
+  @include imageMargin("above", var(--tab-caption-image-horizontal-margin));
+  @include imageMargin("below", var(--tab-caption-image-horizontal-margin));
 
   font-size: 12px;
   font-weight: 600;

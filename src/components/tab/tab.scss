@@ -14,6 +14,8 @@ gx-tab {
   --tab-caption-hover-border-color: #5a5edc;
   --tab-caption-vertical-padding: 8px;
   --tab-caption-horizontal-padding: 23px;
+  --tab-caption-image-vertical-margin: 6px;
+  --tab-caption-image-horizontal-margin: 2px;
 
   & > div {
     @include elevation();
