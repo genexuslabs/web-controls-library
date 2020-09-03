@@ -2,19 +2,52 @@
 
 gx-tab {
   @include visibility(flex);
+  flex-direction: column;
   flex: 1;
 
+  /**
+   * @prop --elevation: The size of the shadow for the tab component
+   */
   --elevation: 0;
+  /**
+   * @prop --tab-strip-elevation: The size of the shadow for the tab strip
+   */
   --tab-strip-elevation: 0;
-
+  /**
+   * @prop --tab-caption-border-color: Tab captions border color
+   */
   --tab-caption-border-color: #c3c4c8;
+  /**
+   * @prop --tab-caption-disabled-color: Disabled tab caption text color
+   */
   --tab-caption-disabled-color: #c3c4c8;
+  /**
+   * @prop --tab-caption-active-border-color: Active tab caption border color
+   */
   --tab-caption-active-border-color: #2d31b4;
+  /**
+   * @prop --tab-caption-fous-border-color: Focused tab caption border color
+   */
   --tab-caption-focus-border-color: #2d31b4;
+  /**
+   * @prop --tab-caption-hover-border-color: Hovered tab caption border color
+   */
   --tab-caption-hover-border-color: #5a5edc;
+  /**
+   * @prop --tab-caption-vertical-padding: Tab caption vertical padding
+   */
   --tab-caption-vertical-padding: 8px;
+  /**
+   * @prop --tab-caption-horizontal-padding: Tab caption horizontal padding
+   */
   --tab-caption-horizontal-padding: 23px;
+  /**
+   * @prop --tab-caption-image-vertical-margin: Tab caption image vertical margin
+   */
   --tab-caption-image-vertical-margin: 6px;
+  /**
+   * @prop --tab-caption-image-horizontal-margin: Tab caption image horizontal margin
+   */
   --tab-caption-image-horizontal-margin: 2px;
 
   & > div {
