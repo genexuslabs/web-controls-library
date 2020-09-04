@@ -1,4 +1,5 @@
 @import "../common/_base";
+@import "./_navbar-button-states";
 
 gx-navbar {
   @include visibility(block);
@@ -6,8 +7,8 @@ gx-navbar {
 
   --gx-navbar-main-background-color: rgb(87, 89, 101);
   --gx-navbar-sub-background-color: white;
-  --gx-navbar-items-background-color: rgb(224, 224, 224);
-  --gx-navbar-items-color: rgb(147, 148, 152);
+  --gx-navbar-items-background-color: #e0e0e0;
+  --gx-navbar-items-color: #575965;
   --gx-navbar-main-color: white;
   --gx-navbar-sub-color: black;
   --gx-navbar-main-height: 60px;
@@ -15,8 +16,17 @@ gx-navbar {
   --gx-navbar-icon-size: 24px;
   --gx-navbar-sub-separator-top: none;
   --gx-navbar-sub-separator-bottom: 1px solid rgb(195, 196, 200);
-  --gx-navbar-actions-separator: 1px solid rgb(224, 224, 224);
-  --gx-navbar-actions-low-background-color: rgb(224, 224, 224);
+  --gx-navbar-actions-separator: 1px solid #e0e0e0;
+  --gx-navbar-main-focus-border-color: #e0e0e0;
+  --gx-navbar-main-hover-background-color: #939498;
+  --gx-navbar-main-active-background-color: #c3c4c8;
+  --gx-navbar-main-active-color: #111111;
+  --gx-navbar-sub-focus-border-color: #e0e0e0;
+  --gx-navbar-sub-hover-color: #575965;
+  --gx-navbar-sub-active-background-color: rgba(195, 196, 200, 0.2);
+  --gx-navbar-sub-active-color: #000;
+  --gx-navbar-low-background-color: #e0e0e0;
+  --gx-navbar-low-hover-background-color: #939498;
 
   font-size: 14px;
   font-weight: 600;
@@ -31,13 +41,13 @@ gx-navbar {
   button {
     background: none;
     cursor: pointer;
+    padding: 0;
+    border: 0;
 
     &,
     &:focus,
     &:active {
       appearance: none;
-      padding: 0;
-      border: 0;
       outline: none;
     }
   }
@@ -53,12 +63,20 @@ gx-navbar {
 
     &-header {
       outline: none;
-      color: inherit;
+
+      &,
+      &:hover,
+      &:active,
+      &:focus {
+        color: inherit;
+        text-decoration: none;
+      }
     }
 
     &-icon-button {
-      height: var(--gx-navbar-icon-size);
-      width: var(--gx-navbar-icon-size);
+      line-height: 0;
+
+      @include button-default-states();
     }
 
     &-back-button {
@@ -72,6 +90,9 @@ gx-navbar {
       gx-icon {
         --gx-icon-color: var(--gx-navbar-sub-color);
       }
+
+      @include button-default-states();
+      @include button-line-2-states();
     }
 
     &-target-toggle {
@@ -102,18 +123,22 @@ gx-navbar {
       .gx-navbar-actions {
         flex: 1;
         justify-content: flex-end;
-      }
 
-      .gx-navbar-actions-toggle {
-        gx-icon {
-          --gx-icon-color: var(--gx-navbar-sub-color);
-        }
-
-        &--active {
+        &-toggle {
           gx-icon {
-            --gx-icon-color: var(--gx-navbar-main-color);
+            --gx-icon-color: var(--gx-navbar-sub-color);
+          }
+
+          &--active {
+            gx-icon {
+              --gx-icon-color: var(--gx-navbar-main-color);
+            }
           }
         }
+      }
+
+      .gx-navbar-icon-button {
+        @include button-line-2-states();
       }
     }
 
@@ -164,7 +189,7 @@ gx-navbar {
       &-low {
         display: none;
         width: 160px;
-        background-color: var(--gx-navbar-actions-low-background-color);
+        background-color: var(--gx-navbar-low-background-color);
         color: var(--gx-navbar-sub-color);
         font-weight: 400;
         font-size: 12px;
@@ -175,6 +200,9 @@ gx-navbar {
         flex-direction: column;
         border-radius: 2px;
         padding: 5px 0;
+        box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.14),
+          0px 3px 3px -2px rgba(0, 0, 0, 0.12),
+          0px 1px 8px 0px rgba(0, 0, 0, 0.2);
 
         &--active {
           display: flex;
@@ -186,9 +214,13 @@ gx-navbar {
       border-radius: 100%;
       height: 32px;
       width: 32px;
+      min-width: 32px;
+      display: inline-flex;
+      place-content: center;
+      place-items: center;
 
       &--active {
-        background-color: var(--gx-navbar-actions-low-background-color);
+        background-color: var(--gx-navbar-low-background-color);
 
         gx-icon {
           --gx-icon-color: var(--gx-navbar-sub-color);
