@@ -8,11 +8,12 @@ import {
   h,
   Host
 } from "@stencil/core";
-import { TabRender } from "../renders/bootstrap/tab/tab-render";
 import {
   Component as GxComponent,
   VisibilityComponent
 } from "../common/interfaces";
+
+const BASE_TABLIST_SELECTOR = ":scope > [role='tablist']";
 
 @Component({
   shadow: false,
@@ -20,12 +21,6 @@ import {
   tag: "gx-tab"
 })
 export class Tab implements GxComponent, VisibilityComponent {
-  constructor() {
-    this.renderer = new TabRender(this);
-  }
-
-  private renderer: TabRender;
-
   @Element() element: HTMLGxTabElement;
 
   private lastSelectedTab: HTMLElement;
@@ -62,7 +57,34 @@ export class Tab implements GxComponent, VisibilityComponent {
 
   private setSelectedTab(captionElement: HTMLElement) {
     this.lastSelectedTab = captionElement;
-    this.renderer.setSelectedTab(captionElement);
+    this.getCaptionSlots().forEach((slotElement: any, i) => {
+      slotElement.selected = slotElement === captionElement;
+      const nthChild = i + 1;
+      const pageElement = this.element.querySelector(
+        `:scope > gx-tab-page:nth-child(${nthChild}), 
+        ${BASE_TABLIST_SELECTOR} > .gx-tab-content > gx-tab-page:nth-child(${nthChild})`
+      ) as HTMLElement;
+      this.mapPageToCaptionSelection(slotElement, pageElement);
+    });
+  }
+
+  private getCaptionSlots(): HTMLElement[] {
+    return Array.from(
+      this.element.querySelectorAll(
+        `:scope > [slot='caption'], 
+         ${BASE_TABLIST_SELECTOR} > .gx-nav-tabs > [slot='caption']`
+      )
+    );
+  }
+
+  private mapPageToCaptionSelection(
+    captionElement: any,
+    pageElement: HTMLElement
+  ) {
+    pageElement.classList.toggle(
+      "gx-tab-page--active",
+      !!captionElement.selected
+    );
   }
 
   componentDidLoad() {
@@ -73,13 +95,13 @@ export class Tab implements GxComponent, VisibilityComponent {
     this.linkTabs();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.lastSelectedTab = null;
   }
 
   private linkTabs(resolveSelected = false) {
-    const captionSlots = this.renderer.getCaptionSlots();
-    const pageSlots = this.renderer.getPageSlots();
+    const captionSlots = this.getCaptionSlots();
+    const pageSlots = this.getPageSlots();
 
     if (captionSlots.length === pageSlots.length) {
       captionSlots.forEach((captionElement: any, i) => {
@@ -87,7 +109,7 @@ export class Tab implements GxComponent, VisibilityComponent {
         captionElement.setAttribute("aria-controls", pageElement.id);
         pageElement.setAttribute("aria-labelledby", captionElement.id);
         if (resolveSelected) {
-          this.renderer.mapPageToCaptionSelection(captionElement, pageElement);
+          this.mapPageToCaptionSelection(captionElement, pageElement);
           if (captionElement.selected) {
             this.lastSelectedTab = captionElement;
           }
@@ -97,13 +119,45 @@ export class Tab implements GxComponent, VisibilityComponent {
   }
 
   render() {
+    this.setCaptionSlotsClass();
+    this.setPageSlotsClass();
     return (
       <Host>
-        {this.renderer.render({
-          caption: <slot name="caption" />,
-          page: <slot name="page" />
-        })}
+        <div role="tablist">
+          <div class="gx-nav-tabs">
+            <slot name="caption" />
+            <div aria-hidden="true" class="gx-nav-tabs-filler"></div>
+          </div>
+          <div class="gx-tab-content">
+            <slot name="page" />
+          </div>
+        </div>
       </Host>
+    );
+  }
+
+  private setCaptionSlotsClass() {
+    this.getCaptionSlots().forEach(captionElement => {
+      if (!captionElement.classList.contains("gx-nav-item")) {
+        captionElement.classList.add("gx-nav-item");
+      }
+    });
+  }
+
+  private setPageSlotsClass() {
+    this.getPageSlots().forEach(pageElement => {
+      if (!pageElement.classList.contains("gx-tab-page")) {
+        pageElement.classList.add("gx-tab-page");
+      }
+    });
+  }
+
+  private getPageSlots(): HTMLElement[] {
+    return Array.from(
+      this.element.querySelectorAll(
+        `:scope > [slot='page'], 
+         ${BASE_TABLIST_SELECTOR} > .gx-tab-content > [slot='page']`
+      )
     );
   }
 }

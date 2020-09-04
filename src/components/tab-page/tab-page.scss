@@ -2,4 +2,13 @@
 
 gx-tab-page {
   @include visibility(block);
+  flex: 1;
+
+  &.gx-tab-page {
+    display: none;
+
+    &--active {
+      display: block;
+    }
+  }
 }

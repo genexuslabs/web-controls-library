@@ -1,16 +1,87 @@
 @import "../common/_base";
 @import "../common/_image-position";
-@import "../renders/bootstrap/tab-caption/tab-caption-render";
+
+@mixin imageMargin($position, $value) {
+  &.gx-image-position--#{$position} {
+    [slot="main-image"],
+    [slot="disabled-image"] {
+      @if ($position == "before" or $position == "after") {
+        margin: 0 $value;
+      }
+      @if ($position == "above" or $position == "below") {
+        margin: $value 0;
+      }
+    }
+  }
+}
 
 gx-tab-caption {
   @include visibility(flex);
 
-  @include imagePosition("a", ".gx-tab-caption--unselected");
+  @include imagePosition("a", ":not(.gx-tab-caption--active)");
 
   [slot="main-image"],
   [slot="disabled-image"] {
-    max-height: 1em;
-    max-width: 1em;
+    max-height: 18px;
+    max-width: 18px;
     object-fit: contain;
+  }
+  @include imageMargin("before", var(--tab-caption-image-vertical-margin));
+  @include imageMargin("after", var(--tab-caption-image-vertical-margin));
+  @include imageMargin("above", var(--tab-caption-image-horizontal-margin));
+  @include imageMargin("below", var(--tab-caption-image-horizontal-margin));
+
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+
+  &.gx-tab-caption {
+    .gx-nav-link {
+      display: flex;
+      padding: var(--tab-caption-vertical-padding)
+        var(--tab-caption-horizontal-padding);
+      white-space: nowrap;
+      border-color: transparent;
+      border-style: solid;
+      border-bottom-color: var(--tab-caption-border-color);
+      border-width: 1px;
+
+      &,
+      &:active,
+      &:focus,
+      &:hover,
+      &:visited {
+        color: inherit;
+        text-decoration: none;
+        outline: 0;
+      }
+
+      &:focus {
+        border: 1px solid var(--tab-caption-focus-border-color);
+      }
+
+      &:hover {
+        border-bottom: 2px solid var(--tab-caption-hover-border-color);
+        padding-bottom: calc(var(--tab-caption-vertical-padding) - 1px);
+      }
+
+      &:active {
+        border-bottom: 2px solid var(--tab-caption-active-border-color);
+        padding-bottom: calc(var(--tab-caption-vertical-padding) - 1px);
+      }
+    }
+
+    &--active {
+      .gx-nav-link {
+        border-top-color: var(--tab-caption-border-color);
+        border-right-color: var(--tab-caption-border-color);
+        border-bottom-color: transparent;
+        border-left-color: var(--tab-caption-border-color);
+      }
+    }
+
+    &--disabled {
+      color: var(--tab-caption-disabled-color);
+    }
   }
 }
