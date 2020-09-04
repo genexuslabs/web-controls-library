@@ -189,6 +189,9 @@ gx-navbar {
       border-radius: 100%;
       height: 32px;
       width: 32px;
+      display: inline-flex;
+      place-content: center;
+      place-items: center;
 
       &--active {
         background-color: var(--gx-navbar-actions-low-background-color);
