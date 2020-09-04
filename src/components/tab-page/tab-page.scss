@@ -1,14 +1,15 @@
 @import "../common/_base";
 
 gx-tab-page {
-  @include visibility(block);
+  @include visibility(flex);
   flex: 1;
+  flex-direction: column;
 
   &.gx-tab-page {
     display: none;
 
     &--active {
-      display: block;
+      display: flex;
     }
   }
 }
