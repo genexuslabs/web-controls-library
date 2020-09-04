@@ -1,0 +1,44 @@
+@mixin button-default-states(
+  $vertical-padding: 4,
+  $horizontal-padding: 4,
+  $border: 2
+) {
+  padding: #{$vertical-padding}px #{$horizontal-padding}px;
+
+  &:focus {
+    padding: #{$vertical-padding - $border}px #{$horizontal-padding - $border}px;
+    border: #{$border}px solid var(--gx-navbar-main-focus-border-color);
+  }
+
+  &:hover {
+    background-color: var(--gx-navbar-main-hover-background-color);
+  }
+
+  &:active {
+    background-color: var(--gx-navbar-main-active-background-color);
+    color: var(--gx-navbar-main-active-color);
+    gx-icon {
+      --gx-icon-color: var(--gx-navbar-main-active-color);
+    }
+  }
+}
+
+@mixin button-line-2-states() {
+  &:hover {
+    background-color: transparent;
+    color: var(--gx-navbar-sub-hover-color);
+
+    gx-icon {
+      --gx-icon-color: var(--gx-navbar-sub-hover-color);
+    }
+  }
+
+  &:active {
+    background-color: var(--gx-navbar-sub-active-background-color);
+    color: var(--gx-navbar-sub-active-color);
+
+    gx-icon {
+      --gx-icon-color: var(--gx-navbar-sub-active-color);
+    }
+  }
+}
