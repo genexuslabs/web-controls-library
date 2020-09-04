@@ -4,6 +4,8 @@
   @include visibility(inline-flex);
   --gx-navbar-item-icon-size-big: 24px;
   --gx-navbar-item-icon-size-small: 18px;
+  --gx-navbar-item-active-color: inherit;
+  --gx-navbar-item-active-color-xs: #000;
 
   font-size: inherit;
   font-weight: inherit;
@@ -34,6 +36,12 @@
 
     &--active {
       background-color: #888;
+      color: var(--gx-navbar-item-active-color);
+
+      @media screen and (max-width: $gx-xsmall-breakpoint) {
+        background-color: transparent;
+        color: var(--gx-navbar-item-active-color-xs);
+      }
     }
 
     &-icon {
@@ -42,12 +50,17 @@
       width: var(--gx-navbar-item-icon-size-small);
       object-fit: contain;
       margin-right: 12px;
+
+      @media screen and (max-width: $gx-xsmall-breakpoint) {
+        --gx-icon-color: var(--gx-navbar-item-active-color-xs);
+      }
     }
 
     @media screen and (max-width: $gx-xsmall-breakpoint) {
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      text-align: center;
 
       &-icon {
         margin-bottom: 5px;
@@ -61,6 +74,8 @@
   .item {
     padding: 8px 16px;
     margin: 0;
+    justify-content: start;
+    align-items: start;
 
     &:hover,
     &:focus {
