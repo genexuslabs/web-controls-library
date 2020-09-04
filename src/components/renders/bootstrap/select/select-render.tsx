@@ -86,11 +86,14 @@ export class SelectRender implements Renderer {
       return this.component.suggest
         ? [
             <gx-bootstrap />,
-            <input list={datalistId}></input>,
+            <input
+              list={datalistId}
+              disabled={this.component.disabled}
+            ></input>,
 
             <datalist id={datalistId}>
-              {this.options.map(({ disabled, innerText, selected, value }) => (
-                <option disabled={disabled} selected={selected} value={value}>
+              {this.options.map(({ innerText, selected, value }) => (
+                <option selected={selected} value={value}>
                   {innerText}
                 </option>
               ))}
@@ -99,8 +102,8 @@ export class SelectRender implements Renderer {
         : [
             <gx-bootstrap />,
             <select {...attris}>
-              {this.options.map(({ disabled, innerText, selected, value }) => (
-                <option disabled={disabled} selected={selected} value={value}>
+              {this.options.map(({ innerText, selected, value }) => (
+                <option selected={selected} value={value}>
                   {innerText}
                 </option>
               ))}
