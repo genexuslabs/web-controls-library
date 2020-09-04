@@ -6,6 +6,7 @@ export const config: Config = {
     {
       components: [
         "gx-bootstrap",
+        "gx-layout",
         "gx-navbar",
         "gx-navbar-item",
         "gx-message",
@@ -16,6 +17,9 @@ export const config: Config = {
         "gx-table",
         "gx-table-cell"
       ]
+    },
+    {
+      components: ["gx-tab", "gx-tab-caption", "gx-tab-page"]
     }
   ],
   namespace: "gx-web-controls",
