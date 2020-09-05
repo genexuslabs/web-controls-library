@@ -48,11 +48,15 @@
         --grid--horizontal-line-separator-default: block;
         @extend #{$horizontal-line} !optional;
         content: "";
-        height: var(--height);
+        height: var(--height, 1px);
         display: var(
           --grid--horizontal-line-separator,
           var(--grid--horizontal-line-separator-default)
         );
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
       }
     }
   }
