@@ -56,3 +56,11 @@ $gx-xsmall-breakpoint: 768px;
     calc(var(--elevation) * 0.25rem)
     rgba(0, 0, 0, calc(var(--elevation) * 0.075));
 }
+
+@function overflow-gradient($color, $stop: 90%, $direction: to right) {
+  @return linear-gradient(
+    $direction,
+    #{"rgba("} $color #{", 0 )"},
+    #{"rgba("} $color #{", 1 )"} $stop
+  );
+}

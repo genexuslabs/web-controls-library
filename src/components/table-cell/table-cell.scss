@@ -5,4 +5,42 @@ gx-table-cell {
   @include containerCell();
 
   flex-direction: row;
+
+  &.gx-long-content-fade {
+    position: relative;
+
+    &::before,
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      pointer-events: none;
+      $color: 255, 255, 255;
+
+      background: overflow-gradient($color);
+    }
+
+    &::before {
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: auto;
+      width: 20%;
+      height: auto;
+    }
+
+    &::after {
+      top: 80%;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: auto;
+    }
+  }
 }
