@@ -1032,7 +1032,7 @@ export namespace Components {
      */
     overflowMode: "scroll" | "clip";
     /**
-     * True to add a fading overlay on the right and bottom area of the cell to signify that the content is longer thant the space allows.
+     * True to add a fading overlay on the right and bottom area of the cell to signify that the content is longer than the space allows.
      */
     showContentFade: false;
     /**
@@ -2593,7 +2593,7 @@ declare namespace LocalJSX {
      */
     overflowMode?: "scroll" | "clip";
     /**
-     * True to add a fading overlay on the right and bottom area of the cell to signify that the content is longer thant the space allows.
+     * True to add a fading overlay on the right and bottom area of the cell to signify that the content is longer than the space allows.
      */
     showContentFade?: false;
     /**

@@ -47,7 +47,7 @@ export class TableCell implements GxComponent {
 
   /**
    * True to add a fading overlay on the right and bottom area of the cell to signify
-   * that the content is longer thant the space allows.
+   * that the content is longer than the space allows.
    */
   @Prop() readonly showContentFade = false;
 
