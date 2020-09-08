@@ -160,6 +160,10 @@ gx-navbar {
         background-color: var(--gx-navbar-items-background-color);
         color: var(--gx-navbar-items-color);
         justify-content: stretch;
+
+        &:empty {
+          display: none;
+        }
       }
     }
 
