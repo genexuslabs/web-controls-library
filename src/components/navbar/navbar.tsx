@@ -138,7 +138,7 @@ export class NavBar implements GxComponent {
               {this.caption}
             </a>
             <div class="gx-navbar-links">
-              <slot />
+              <slot name="navigation" />
             </div>
             {this.singleLine && this.renderActions()}
           </div>

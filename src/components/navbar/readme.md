@@ -27,11 +27,15 @@ It also supports a set of items that will be rendered according to their priorit
 
 ```html
 <gx-navbar caption="Sample">
-  <gx-navbar-item href="#">First navigation item</gx-navbar-item>
-  <gx-navbar-item href="#" active=""
+  <gx-navbar-item slot="navigation" href="#"
+    >First navigation item</gx-navbar-item
+  >
+  <gx-navbar-item slot="navigation" href="#" active=""
     >Second navigation item (active)</gx-navbar-item
   >
-  <gx-navbar-item href="#">Third navigation item</gx-navbar-item>
+  <gx-navbar-item slot="navigation" href="#"
+    >Third navigation item</gx-navbar-item
+  >
   <gx-navbar-item slot="high-priority-action">High priority</gx-navbar-item>
   <gx-navbar-item slot="normal-priority-action">Normal priority</gx-navbar-item>
   <gx-navbar-item slot="low-priority-action">Low priority</gx-navbar-item>

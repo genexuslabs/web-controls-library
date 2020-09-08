@@ -6,13 +6,17 @@ Represents an item with a link inside a `<gx-navbar>`.
 
 ```html
 <gx-navbar caption="Sample">
-  <gx-navbar-item href="#">First item</gx-navbar-item>
-  <gx-navbar-item href="#" active="">Second item (active)</gx-navbar-item>
-  <gx-navbar-item href="#" disabled="">Third item (disabled)</gx-navbar-item>
-  <gx-navbar-item href="#"
+  <gx-navbar-item slot="navigation" href="#">First item</gx-navbar-item>
+  <gx-navbar-item slot="navigation" href="#" active=""
+    >Second item (active)</gx-navbar-item
+  >
+  <gx-navbar-item slot="navigation" href="#" disabled=""
+    >Third item (disabled)</gx-navbar-item
+  >
+  <gx-navbar-item slot="navigation" href="#"
     ><img src="image1.png" />Forth item (with image)</gx-navbar-item
   >
-  <gx-navbar-item href="#"
+  <gx-navbar-item slot="navigation" href="#"
     ><img src="image2.png" /><!-- just an image --></gx-navbar-item
   >
 </gx-navbar>
