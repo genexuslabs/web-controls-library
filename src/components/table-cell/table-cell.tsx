@@ -46,6 +46,12 @@ export class TableCell implements GxComponent {
   @Prop() readonly minHeight: string;
 
   /**
+   * True to add a fading overlay on the right and bottom area of the cell to signify
+   * that the content is longer thant the space allows.
+   */
+  @Prop() readonly showContentFade = false;
+
+  /**
    * Defines the vertical aligmnent of the content of the cell.
    */
   @Prop({ reflect: true }) readonly valign: "top" | "bottom" | "medium" = "top";
@@ -97,7 +103,7 @@ export class TableCell implements GxComponent {
     this.element.style.maxHeight = this.maxHeight;
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     if (this.observer !== undefined) {
       this.observer.disconnect();
     }
@@ -109,7 +115,11 @@ export class TableCell implements GxComponent {
     }
 
     return (
-      <Host>
+      <Host
+        class={{
+          "gx-long-content-fade": this.showContentFade
+        }}
+      >
         <slot />
       </Host>
     );

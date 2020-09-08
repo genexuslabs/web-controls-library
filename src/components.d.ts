@@ -1032,6 +1032,10 @@ export namespace Components {
      */
     overflowMode: "scroll" | "clip";
     /**
+     * True to add a fading overlay on the right and bottom area of the cell to signify that the content is longer thant the space allows.
+     */
+    showContentFade: false;
+    /**
      * Defines the vertical aligmnent of the content of the cell.
      */
     valign: "top" | "bottom" | "medium";
@@ -2588,6 +2592,10 @@ declare namespace LocalJSX {
      * This attribute defines how the control behaves when the content overflows.  | Value    | Details                                                     | | -------- | ----------------------------------------------------------- | | `scroll` | The overflowin content is hidden, but scrollbars are shown  | | `clip`   | The overflowing content is hidden, without scrollbars       |
      */
     overflowMode?: "scroll" | "clip";
+    /**
+     * True to add a fading overlay on the right and bottom area of the cell to signify that the content is longer thant the space allows.
+     */
+    showContentFade?: false;
     /**
      * Defines the vertical aligmnent of the content of the cell.
      */
