@@ -23,10 +23,6 @@ export function parseCoords(coord): string[] {
           return geoObject.coordinates;
         case "FeatureCollection":
           return geoObject.features;
-        /*
-        default:
-          throw new Error('Invalid GeoJSON object.');
-          */
       }
     } else {
       const hasGeography = geoObject.hasOwnProperty("Geography");

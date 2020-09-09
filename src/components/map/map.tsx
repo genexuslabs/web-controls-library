@@ -34,6 +34,7 @@ export class Map implements GxComponent {
   private isSelectionLayerSlot = false;
   private map: LFMap;
   private markersList = [];
+  private linesList = [];
   private mapProviderApplied: string;
   private mapTypesProviders = {
     hybrid:
@@ -245,21 +246,19 @@ export class Map implements GxComponent {
   }
 
   private onMapLineDeleted(line: polyline) {
-    //const i = 0;
+    let i = 0;
     line.remove();
-    /*
     while (
-      i <= this.markersList.length &&
-      this.markersList[i]._leaflet_id !== marker._leaflet_id
+      i <= this.linesList.length &&
+      this.linesList[i]._leaflet_id !== line._leaflet_id
     ) {
       i++;
     }
-    if (i <= this.markersList.length) {
-      this.markersList.splice(i, 1);
+    if (i <= this.linesList.length) {
+      this.linesList.splice(i, 1);
     } else {
       console.warn("There was an error in the line list!");
     }
-    */
   }
 
   private updateSelectionMarkerPosition() {
