@@ -7,6 +7,7 @@ export const config: Config = {
       components: [
         "gx-bootstrap",
         "gx-layout",
+        "gx-icon",
         "gx-navbar",
         "gx-navbar-item",
         "gx-message",
@@ -15,11 +16,30 @@ export const config: Config = {
         "gx-button",
         "gx-card",
         "gx-table",
-        "gx-table-cell"
+        "gx-table-cell",
+        "gx-image",
+        "gx-textblock"
       ]
     },
     {
       components: ["gx-tab", "gx-tab-caption", "gx-tab-page"]
+    },
+    {
+      components: ["gx-canvas", "gx-canvas-cell"]
+    },
+    {
+      components: ["gx-map", "gx-map-marker"]
+    },
+    {
+      components: ["gx-form-field", "gx-edit"]
+    },
+    {
+      components: [
+        "gx-grid-fs",
+        "gx-grid-smart",
+        "gx-grid-infinite-scroll",
+        "gx-grid-infinite-scroll-content"
+      ]
     }
   ],
   namespace: "gx-web-controls",
