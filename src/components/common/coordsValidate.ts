@@ -9,7 +9,7 @@ export function parseCoords(coord): string[] {
     try {
       geoObject = JSON.parse(coord);
     } catch (e) {
-      throw new Error("Invalid GeoJSON object.");
+      throw new Error(e);
     }
     const hasType = geoObject.hasOwnProperty("type");
     if (hasType) {
@@ -33,10 +33,10 @@ export function parseCoords(coord): string[] {
       if (hasGeography) {
         return geoObject;
       } else {
-        const isSDTArray =
+        const isArray =
           geoObject[0].hasOwnProperty("Geography") && Array.isArray(geoObject);
-        if (isSDTArray) {
-          geoObject["IsLayersArray"] = true;
+        if (isArray) {
+          geoObject.IsLayersArray = true;
           return geoObject;
         }
       }

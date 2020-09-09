@@ -12,7 +12,6 @@ import { parseCoords } from "../common/coordsValidate";
 
 @Component({
   shadow: false,
-  //styleUrl: "map-line.scss",
   tag: "gx-map-line"
 })
 export class MapLine implements GxComponent {
@@ -20,7 +19,7 @@ export class MapLine implements GxComponent {
   private lineInstance: any;
 
   /**
-   * The coordinates where the polyline will appear in the map.
+   * The coordinates where the line/polyline will appear in the map.
    *
    */
   @Prop({ mutable: true }) coords = "0, 0";
@@ -55,13 +54,6 @@ export class MapLine implements GxComponent {
       );
       this.setupLine([0, 0]);
     }
-    /*
-        this.setPopup();
-        if (this.tooltipCaption) {
-          this.markerInstance.bindTooltip(this.tooltipCaption, {
-            direction: "top"
-          });
-        }*/
     this.gxMapLineDidLoad.emit(this.lineInstance);
   }
 
@@ -71,7 +63,7 @@ export class MapLine implements GxComponent {
 
   render() {
     return (
-      <div class="popup-data-container">
+      <div>
         <slot />
       </div>
     );

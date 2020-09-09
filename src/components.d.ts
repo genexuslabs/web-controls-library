@@ -655,7 +655,7 @@ export namespace Components {
   }
   interface GxMapLine {
     /**
-     * The coordinates where the polyline will appear in the map.
+     * The coordinates where the line/polyline will appear in the map.
      */
     coords: string;
   }
@@ -2122,7 +2122,7 @@ declare namespace LocalJSX {
   }
   interface GxMapLine {
     /**
-     * The coordinates where the polyline will appear in the map.
+     * The coordinates where the line/polyline will appear in the map.
      */
     coords?: string;
     /**
