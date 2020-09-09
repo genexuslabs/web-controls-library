@@ -20,6 +20,8 @@ const LAZY_LOAD_CLASS = "gx-lazyload";
 const LAZY_LOADING_CLASS = "gx-lazyloading";
 const LAZY_LOADED_CLASS = "gx-lazyloaded";
 
+const lazyLoadedImages = new Set<string>();
+
 @Component({
   shadow: false,
   styleUrl: "image.scss",
@@ -147,7 +149,7 @@ export class Image
     }
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     document.removeEventListener("lazyloaded", this.handleLazyLoaded);
   }
 
@@ -205,6 +207,10 @@ export class Image
       return false;
     }
 
+    if (lazyLoadedImages.has(this.src)) {
+      return false;
+    }
+
     const img: HTMLImageElement = this.element.querySelector("img");
     return img === null || img.classList.contains(LAZY_LOAD_CLASS);
   }
@@ -213,6 +219,7 @@ export class Image
     const img: HTMLImageElement = this.element.querySelector("img");
     if (event.target === img) {
       this.element.classList.remove("gx-img-lazyloading");
+      lazyLoadedImages.add(this.src);
     }
   }
 }
