@@ -33,12 +33,6 @@ If the main image is the only image specified, it will be displayed both when th
 | `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \|                                                                                                           | `"collapse" \| "keep-space"`                            | `"collapse"` |
 | `size`          | `size`           | This attribute lets you specify the size of the button. \| Value \| Details \| \| -------- \| ------------------------------------------------------- \| \| `large` \| Large sized button. \| \| `normal` \| Standard sized button. \| \| `small` \| Small sized button. \|                                                                                                                                                                                                                            | `"large" \| "normal" \| "small"`                        | `"normal"`   |
 
-## Events
-
-| Event     | Description                          | Type               |
-| --------- | ------------------------------------ | ------------------ |
-| `gxClick` | Emitted when the element is clicked. | `CustomEvent<any>` |
-
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_

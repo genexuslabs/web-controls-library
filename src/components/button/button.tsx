@@ -1,15 +1,6 @@
 import { ButtonRender } from "../renders/bootstrap/button/button-render";
+import { Component, Element, Prop, Listen, h } from "@stencil/core";
 import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Prop,
-  Listen,
-  h
-} from "@stencil/core";
-import {
-  ClickableComponent,
   Component as GxComponent,
   DisableableComponent,
   VisibilityComponent
@@ -21,11 +12,7 @@ import {
   tag: "gx-button"
 })
 export class Button
-  implements
-    GxComponent,
-    ClickableComponent,
-    DisableableComponent,
-    VisibilityComponent {
+  implements GxComponent, DisableableComponent, VisibilityComponent {
   constructor() {
     this.renderer = new ButtonRender(this, {
       handleClick: this.handleClick.bind(this)
@@ -90,18 +77,11 @@ export class Button
 
   @Listen("click", { capture: true })
   private handleClick(event: UIEvent) {
-    event.stopPropagation();
     if (this.disabled) {
+      event.stopPropagation();
       return;
     }
-
-    this.gxClick.emit(event);
   }
-
-  /**
-   * Emitted when the element is clicked.
-   */
-  @Event() gxClick: EventEmitter;
 
   componentWillLoad() {
     this.renderer.componentWillLoad();
