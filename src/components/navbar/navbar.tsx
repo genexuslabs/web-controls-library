@@ -68,8 +68,17 @@ export class NavBar implements GxComponent {
    */
   @Event() toggleButtonClick: EventEmitter;
 
+  /**
+   * Fired when the back button is clicked
+   */
+  @Event() backButtonClick: EventEmitter;
+
   private handleToggleButtonClick = (e: MouseEvent) => {
     this.toggleButtonClick.emit(e);
+  };
+
+  private handleBackButtonClick = (e: MouseEvent) => {
+    this.backButtonClick.emit(e);
   };
 
   private handleActionToggleButtonClick = () => {
@@ -145,7 +154,11 @@ export class NavBar implements GxComponent {
           {!this.singleLine && (
             <div class="gx-navbar-line gx-navbar-line-2">
               {this.showBackButton && (
-                <button type="button" class="gx-navbar-back-button">
+                <button
+                  type="button"
+                  class="gx-navbar-back-button"
+                  onClick={this.handleBackButtonClick}
+                >
                   <gx-icon type="arrow-left"></gx-icon>
                   {this.backButtonLabel}
                 </button>

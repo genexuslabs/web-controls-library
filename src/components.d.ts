@@ -2206,6 +2206,10 @@ declare namespace LocalJSX {
      */
     caption?: string;
     /**
+     * Fired when the back button is clicked
+     */
+    onBackButtonClick?: (event: CustomEvent<any>) => void;
+    /**
      * Fired when the toggle button is clicked
      */
     onToggleButtonClick?: (event: CustomEvent<any>) => void;
