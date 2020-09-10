@@ -27,6 +27,7 @@ gx-navbar {
   --gx-navbar-sub-active-color: #000;
   --gx-navbar-low-background-color: #e0e0e0;
   --gx-navbar-low-hover-background-color: #939498;
+  --gx-navbar-base-z-index: 100;
 
   font-size: 14px;
   font-weight: 600;
@@ -57,7 +58,7 @@ gx-navbar {
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1;
+    z-index: calc(var(--gx-navbar-base-z-index) + 1);
     display: flex;
     flex-direction: column;
 
@@ -155,7 +156,7 @@ gx-navbar {
         left: 0;
         right: 0;
         bottom: 0;
-        z-index: 1;
+        z-index: calc(var(--gx-navbar-base-z-index) + 1);
         height: 60px;
         background-color: var(--gx-navbar-items-background-color);
         color: var(--gx-navbar-items-color);
@@ -200,7 +201,7 @@ gx-navbar {
         position: absolute;
         top: 34px;
         right: -32px;
-        z-index: 1;
+        z-index: calc(var(--gx-navbar-base-z-index) + 1);
         flex-direction: column;
         border-radius: 2px;
         padding: 5px 0;
