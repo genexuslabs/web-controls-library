@@ -60,6 +60,7 @@ It also supports a set of items that will be rendered according to their priorit
 
 | Event               | Description                             | Type               |
 | ------------------- | --------------------------------------- | ------------------ |
+| `backButtonClick`   | Fired when the back button is clicked   | `CustomEvent<any>` |
 | `toggleButtonClick` | Fired when the toggle button is clicked | `CustomEvent<any>` |
 
 ## Dependencies
