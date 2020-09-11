@@ -55,7 +55,7 @@ export class MapCircle implements GxComponent {
       this.setupCircle(coords);
     } else {
       console.warn(
-        "GX warning: Can not read 'coords' attribute, default coords set (gx-map-circle)",
+        "GX warning: Cannot read 'coords' attribute, default coords set (gx-map-circle)",
         this.element
       );
       this.setupCircle([0, 0]);
