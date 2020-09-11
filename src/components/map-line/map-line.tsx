@@ -49,7 +49,7 @@ export class MapLine implements GxComponent {
       this.setupLine(coords);
     } else {
       console.warn(
-        "GX warning: Can not read 'coords' attribute, default coords set (gx-map-line)",
+        "GX warning: Cannot read 'coords' attribute, default coords set (gx-map-line)",
         this.element
       );
       this.setupLine([0, 0]);
