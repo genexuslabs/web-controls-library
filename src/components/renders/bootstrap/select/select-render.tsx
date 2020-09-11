@@ -89,6 +89,7 @@ export class SelectRender implements Renderer {
             <input
               list={datalistId}
               disabled={this.component.disabled}
+              placeholder={this.component.placeholder}
             ></input>,
 
             <datalist id={datalistId}>

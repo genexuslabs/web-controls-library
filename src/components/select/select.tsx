@@ -59,9 +59,13 @@ export class Select implements FormComponent {
 
   /**
    * Render a text input showing a list of suggested elements.
-
    */
   @Prop() suggest: boolean;
+
+  /**
+   * Specifies a short hint that describes the expected value of the field.
+   */
+  @Prop() placeholder: string;
 
   /**
    * The initial value of the control. Setting the value automatically selects
@@ -140,7 +144,6 @@ export class Select implements FormComponent {
   onSelectOptionDidLoad(ev: HTMLSelectOptionElementEvent) {
     const option = ev.target;
     this.updateOptions(this.getChildOptions());
-
     if (this.value !== undefined && option.value === this.value) {
       // this select has a value and this
       // option equals the correct select value
