@@ -15,6 +15,7 @@ import {
   FeatureGroup,
   Marker,
   map as LFMap,
+  polygon,
   tileLayer
 } from "leaflet/dist/leaflet-src.esm";
 import { parseCoords } from "../common/coordsValidate";
@@ -33,6 +34,7 @@ export class Map implements GxComponent {
   private isSelectionLayerSlot = false;
   private map: LFMap;
   private markersList = [];
+  private polygonsList = [];
   private mapProviderApplied: string;
   private mapTypesProviders = {
     hybrid:
@@ -169,6 +171,23 @@ export class Map implements GxComponent {
     });
   }
 
+  @Listen("gxMapPolygonDidLoad")
+  onMapPolygonDidLoad(event: CustomEvent) {
+    const polygonElement = event.target;
+    const polygonV = event.detail;
+    if (this.map) {
+      polygonV.addTo(this.map);
+    } else {
+      this.element.addEventListener("gxMapDidLoad", () => {
+        polygonV.addTo(this.map);
+      });
+    }
+
+    polygonElement.addEventListener("gxMapPolygonDeleted", () => {
+      this.onMapPolygonDeleted(polygonV);
+    });
+  }
+
   private addMapListener(eventToListen, callbackFunction) {
     this.map.on(eventToListen, callbackFunction);
   }
@@ -223,6 +242,22 @@ export class Map implements GxComponent {
       this.markersList.splice(i, 1);
     } else {
       console.warn("There was an error in the markers list!");
+    }
+  }
+
+  private onMapPolygonDeleted(pPolygon: polygon) {
+    let i = 0;
+    pPolygon.remove();
+    while (
+      i <= this.polygonsList.length &&
+      this.polygonsList[i]._leaflet_id !== pPolygon._leaflet_id
+    ) {
+      i++;
+    }
+    if (i <= this.polygonsList.length) {
+      this.polygonsList.splice(i, 1);
+    } else {
+      console.warn("There was an error in the polygon list!");
     }
   }
 
