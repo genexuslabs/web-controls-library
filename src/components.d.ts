@@ -653,6 +653,12 @@ export namespace Components {
      */
     zoom: number;
   }
+  interface GxMapLine {
+    /**
+     * The coordinates where the line/polyline will appear in the map.
+     */
+    coords: string;
+  }
   interface GxMapMarker {
     /**
      * The coordinates where the marker will appear in the map.
@@ -1219,6 +1225,13 @@ declare global {
     prototype: HTMLGxMapElement;
     new (): HTMLGxMapElement;
   };
+  interface HTMLGxMapLineElement
+    extends Components.GxMapLine,
+      HTMLStencilElement {}
+  var HTMLGxMapLineElement: {
+    prototype: HTMLGxMapLineElement;
+    new (): HTMLGxMapLineElement;
+  };
   interface HTMLGxMapMarkerElement
     extends Components.GxMapMarker,
       HTMLStencilElement {}
@@ -1375,6 +1388,7 @@ declare global {
     "gx-loading": HTMLGxLoadingElement;
     "gx-lottie": HTMLGxLottieElement;
     "gx-map": HTMLGxMapElement;
+    "gx-map-line": HTMLGxMapLineElement;
     "gx-map-marker": HTMLGxMapMarkerElement;
     "gx-message": HTMLGxMessageElement;
     "gx-modal": HTMLGxModalElement;
@@ -2110,6 +2124,20 @@ declare namespace LocalJSX {
      */
     zoom?: number;
   }
+  interface GxMapLine {
+    /**
+     * The coordinates where the line/polyline will appear in the map.
+     */
+    coords?: string;
+    /**
+     * Emmits when the element is deleted from a `<gx-map>`.
+     */
+    onGxMapLineDeleted?: (event: CustomEvent<any>) => void;
+    /**
+     * Emmits when the element is added to a `<gx-map>`.
+     */
+    onGxMapLineDidLoad?: (event: CustomEvent<any>) => void;
+  }
   interface GxMapMarker {
     /**
      * The coordinates where the marker will appear in the map.
@@ -2665,6 +2693,7 @@ declare namespace LocalJSX {
     "gx-loading": GxLoading;
     "gx-lottie": GxLottie;
     "gx-map": GxMap;
+    "gx-map-line": GxMapLine;
     "gx-map-marker": GxMapMarker;
     "gx-message": GxMessage;
     "gx-modal": GxModal;
@@ -2731,6 +2760,8 @@ declare module "@stencil/core" {
       "gx-lottie": LocalJSX.GxLottie &
         JSXBase.HTMLAttributes<HTMLGxLottieElement>;
       "gx-map": LocalJSX.GxMap & JSXBase.HTMLAttributes<HTMLGxMapElement>;
+      "gx-map-line": LocalJSX.GxMapLine &
+        JSXBase.HTMLAttributes<HTMLGxMapLineElement>;
       "gx-map-marker": LocalJSX.GxMapMarker &
         JSXBase.HTMLAttributes<HTMLGxMapMarkerElement>;
       "gx-message": LocalJSX.GxMessage &

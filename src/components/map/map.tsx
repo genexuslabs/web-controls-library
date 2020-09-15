@@ -15,7 +15,8 @@ import {
   FeatureGroup,
   Marker,
   map as LFMap,
-  tileLayer
+  tileLayer,
+  polyline
 } from "leaflet/dist/leaflet-src.esm";
 import { parseCoords } from "../common/coordsValidate";
 import { watchPosition } from "./geolocation";
@@ -33,6 +34,7 @@ export class Map implements GxComponent {
   private isSelectionLayerSlot = false;
   private map: LFMap;
   private markersList = [];
+  private linesList = [];
   private mapProviderApplied: string;
   private mapTypesProviders = {
     hybrid:
@@ -169,6 +171,23 @@ export class Map implements GxComponent {
     });
   }
 
+  @Listen("gxMapLineDidLoad")
+  onMapLineDidLoad(event: CustomEvent) {
+    const lineElement = event.target;
+    const lineV = event.detail;
+    if (this.map) {
+      lineV.addTo(this.map);
+    } else {
+      this.element.addEventListener("gxMapDidLoad", () => {
+        lineV.addTo(this.map);
+      });
+    }
+
+    lineElement.addEventListener("gxMapLineDeleted", () => {
+      this.onMapLineDeleted(lineV);
+    });
+  }
+
   private addMapListener(eventToListen, callbackFunction) {
     this.map.on(eventToListen, callbackFunction);
   }
@@ -223,6 +242,22 @@ export class Map implements GxComponent {
       this.markersList.splice(i, 1);
     } else {
       console.warn("There was an error in the markers list!");
+    }
+  }
+
+  private onMapLineDeleted(line: polyline) {
+    let i = 0;
+    line.remove();
+    while (
+      i <= this.linesList.length &&
+      this.linesList[i]._leaflet_id !== line._leaflet_id
+    ) {
+      i++;
+    }
+    if (i <= this.linesList.length) {
+      this.linesList.splice(i, 1);
+    } else {
+      console.warn("There was an error in the line list!");
     }
   }
 
