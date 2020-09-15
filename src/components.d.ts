@@ -653,6 +653,16 @@ export namespace Components {
      */
     zoom: number;
   }
+  interface GxMapCircle {
+    /**
+     * The coordinates where the circle will appear in the map.
+     */
+    coords: string;
+    /**
+     * The radius that the circle will have in the map. It's expressed in meters.
+     */
+    radius: number;
+  }
   interface GxMapMarker {
     /**
      * The coordinates where the marker will appear in the map.
@@ -1219,6 +1229,13 @@ declare global {
     prototype: HTMLGxMapElement;
     new (): HTMLGxMapElement;
   };
+  interface HTMLGxMapCircleElement
+    extends Components.GxMapCircle,
+      HTMLStencilElement {}
+  var HTMLGxMapCircleElement: {
+    prototype: HTMLGxMapCircleElement;
+    new (): HTMLGxMapCircleElement;
+  };
   interface HTMLGxMapMarkerElement
     extends Components.GxMapMarker,
       HTMLStencilElement {}
@@ -1375,6 +1392,7 @@ declare global {
     "gx-loading": HTMLGxLoadingElement;
     "gx-lottie": HTMLGxLottieElement;
     "gx-map": HTMLGxMapElement;
+    "gx-map-circle": HTMLGxMapCircleElement;
     "gx-map-marker": HTMLGxMapMarkerElement;
     "gx-message": HTMLGxMessageElement;
     "gx-modal": HTMLGxModalElement;
@@ -2110,6 +2128,24 @@ declare namespace LocalJSX {
      */
     zoom?: number;
   }
+  interface GxMapCircle {
+    /**
+     * The coordinates where the circle will appear in the map.
+     */
+    coords?: string;
+    /**
+     * Emmits when the element is deleted from a `<gx-map>`.
+     */
+    onGxMapCircleDeleted?: (event: CustomEvent<any>) => void;
+    /**
+     * Emmits when the element is added to a `<gx-map>`.
+     */
+    onGxMapCircleDidLoad?: (event: CustomEvent<any>) => void;
+    /**
+     * The radius that the circle will have in the map. It's expressed in meters.
+     */
+    radius?: number;
+  }
   interface GxMapMarker {
     /**
      * The coordinates where the marker will appear in the map.
@@ -2665,6 +2701,7 @@ declare namespace LocalJSX {
     "gx-loading": GxLoading;
     "gx-lottie": GxLottie;
     "gx-map": GxMap;
+    "gx-map-circle": GxMapCircle;
     "gx-map-marker": GxMapMarker;
     "gx-message": GxMessage;
     "gx-modal": GxModal;
@@ -2731,6 +2768,8 @@ declare module "@stencil/core" {
       "gx-lottie": LocalJSX.GxLottie &
         JSXBase.HTMLAttributes<HTMLGxLottieElement>;
       "gx-map": LocalJSX.GxMap & JSXBase.HTMLAttributes<HTMLGxMapElement>;
+      "gx-map-circle": LocalJSX.GxMapCircle &
+        JSXBase.HTMLAttributes<HTMLGxMapCircleElement>;
       "gx-map-marker": LocalJSX.GxMapMarker &
         JSXBase.HTMLAttributes<HTMLGxMapMarkerElement>;
       "gx-message": LocalJSX.GxMessage &
