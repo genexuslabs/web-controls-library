@@ -69,7 +69,7 @@ export class MapCircle implements GxComponent {
 
   render() {
     return (
-      <div class="popup-data-container">
+      <div>
         <slot />
       </div>
     );
