@@ -81,12 +81,14 @@ export class Select implements FormComponent {
 
   private getChildOptions() {
     return Array.from(this.element.querySelectorAll("gx-select-option")).map(
-      (option: any) => ({
-        disabled: option.getAttribute("disabled") !== null,
-        innerText: option.innerText,
-        selected: option.getAttribute("selected") !== null,
-        value: option.value
-      })
+      (option: any) => {
+        return {
+          disabled: option.getAttribute("disabled") === "true" ? true : false,
+          innerText: option.innerText,
+          selected: option.getAttribute("selected") === "true" ? true : false,
+          value: option.value
+        };
+      }
     );
   }
 
