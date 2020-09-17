@@ -64,6 +64,7 @@ gx-navbar {
 
     &-header {
       outline: none;
+      margin-left: 24px;
 
       &,
       &:hover,
@@ -89,15 +90,10 @@ gx-navbar {
       align-items: center;
 
       gx-icon {
-        --gx-icon-color: var(--gx-navbar-sub-color);
+        --gx-icon-color: var(--gx-navbar-main-color);
       }
 
       @include button-default-states();
-      @include button-line-2-states();
-    }
-
-    &-target-toggle {
-      margin-right: 24px;
     }
 
     &-line {
@@ -136,6 +132,14 @@ gx-navbar {
             }
           }
         }
+      }
+
+      .gx-navbar-back-button {
+        gx-icon {
+          --gx-icon-color: var(--gx-navbar-sub-color);
+        }
+
+        @include button-line-2-states();
       }
 
       .gx-navbar-icon-button {
