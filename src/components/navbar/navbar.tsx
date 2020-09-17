@@ -132,6 +132,16 @@ export class NavBar implements GxComponent {
       >
         <nav class="gx-navbar">
           <div class="gx-navbar-line gx-navbar-line-1">
+            {this.showBackButton && this.singleLine && (
+              <button
+                type="button"
+                class="gx-navbar-back-button gx-navbar-icon-button"
+                aria-label={this.backButtonLabel}
+                onClick={this.handleBackButtonClick}
+              >
+                <gx-icon type="arrow-left"></gx-icon>
+              </button>
+            )}
             {this.showToggleButton && (
               <button
                 type="button"
