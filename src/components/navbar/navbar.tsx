@@ -123,11 +123,6 @@ export class NavBar implements GxComponent {
 
   render() {
     const navOnly = !this.showToggleButton && !this.hasActions();
-    console.log(
-      this.hasHighPriorityActions,
-      this.hasNormalPriorityActions,
-      this.hasLowPriorityActions
-    );
     return (
       <Host
         class={{
@@ -228,7 +223,6 @@ export class NavBar implements GxComponent {
   }
 
   private hasActionsByType(type: string): boolean {
-    console.log(this.element.querySelector(`[slot='${type}-priority-action']`));
     return (
       this.element.querySelector(`[slot='${type}-priority-action']`) !== null
     );
