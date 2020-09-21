@@ -6,10 +6,10 @@ import {
   Host,
   Event,
   EventEmitter,
-  State,
-  Listen
+  State
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
+import { watchForItems } from "../common/watch-items";
 
 @Component({
   shadow: false,
@@ -73,6 +73,8 @@ export class NavBar implements GxComponent {
    */
   @Event() backButtonClick: EventEmitter;
 
+  private watchForItemsObserver: MutationObserver;
+
   private handleToggleButtonClick = (e: MouseEvent) => {
     this.toggleButtonClick.emit(e);
   };
@@ -98,20 +100,19 @@ export class NavBar implements GxComponent {
 
   componentDidLoad() {
     document.body.addEventListener("click", this.handleBodyClick);
+    this.watchForItemsObserver = watchForItems(
+      this.element,
+      "gx-navbar-item",
+      () => this.checkChildActions()
+    );
   }
 
   disconnectedCallback() {
     document.body.removeEventListener("click", this.handleBodyClick);
-  }
-
-  @Listen("navBarItemLoaded")
-  handleNavBarItemLoaded() {
-    this.checkChildActions();
-  }
-
-  @Listen("navBarItemUnloaded")
-  handleNavBarItemUnloaded() {
-    this.checkChildActions();
+    if (this.watchForItemsObserver !== undefined) {
+      this.watchForItemsObserver.disconnect();
+      this.watchForItemsObserver = undefined;
+    }
   }
 
   private checkChildActions() {
@@ -122,7 +123,11 @@ export class NavBar implements GxComponent {
 
   render() {
     const navOnly = !this.showToggleButton && !this.hasActions();
-
+    console.log(
+      this.hasHighPriorityActions,
+      this.hasNormalPriorityActions,
+      this.hasLowPriorityActions
+    );
     return (
       <Host
         class={{
@@ -223,6 +228,7 @@ export class NavBar implements GxComponent {
   }
 
   private hasActionsByType(type: string): boolean {
+    console.log(this.element.querySelector(`[slot='${type}-priority-action']`));
     return (
       this.element.querySelector(`[slot='${type}-priority-action']`) !== null
     );
