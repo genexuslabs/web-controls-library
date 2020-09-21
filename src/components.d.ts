@@ -1459,10 +1459,6 @@ declare namespace LocalJSX {
      */
     invisibleMode?: "collapse" | "keep-space";
     /**
-     * Emitted when the element is clicked.
-     */
-    onGxClick?: (event: CustomEvent<any>) => void;
-    /**
      * This attribute lets you specify the size of the button.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `large`  | Large sized button.                                     | | `normal` | Standard sized button.                                  | | `small`  | Small sized button.                                     |
      */
     size?: "large" | "normal" | "small";
@@ -2275,14 +2271,6 @@ declare namespace LocalJSX {
      * This attribute lets you specify the URL of an icon for the navbar item.
      */
     iconSrc?: "";
-    /**
-     * Fired after the component has been rendered in the page for the first time
-     */
-    onNavBarItemLoaded?: (event: CustomEvent<any>) => void;
-    /**
-     * Fired after the component has been removed from the page
-     */
-    onNavBarItemUnloaded?: (event: CustomEvent<any>) => void;
   }
   interface GxPasswordEdit {
     /**

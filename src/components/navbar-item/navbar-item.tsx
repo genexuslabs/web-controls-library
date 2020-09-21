@@ -1,12 +1,4 @@
-import {
-  Component,
-  Element,
-  Host,
-  Prop,
-  h,
-  Event,
-  EventEmitter
-} from "@stencil/core";
+import { Component, Element, Host, Prop, h } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
@@ -36,24 +28,6 @@ export class NavBarItem implements GxComponent {
    * This attribute lets you specify the URL of an icon for the navbar item.
    */
   @Prop() readonly iconSrc = "";
-
-  /**
-   * Fired after the component has been rendered in the page for the first time
-   */
-  @Event() navBarItemLoaded: EventEmitter;
-
-  /**
-   * Fired after the component has been removed from the page
-   */
-  @Event() navBarItemUnloaded: EventEmitter;
-
-  componentDidLoad() {
-    this.navBarItemLoaded.emit(this.element);
-  }
-
-  disconnectedCallback() {
-    this.navBarItemUnloaded.emit(this.element);
-  }
 
   render() {
     const TagName = this.href ? "a" : "button";
