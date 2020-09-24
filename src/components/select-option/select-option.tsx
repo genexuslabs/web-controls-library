@@ -18,6 +18,7 @@ import {
   tag: "gx-select-option"
 })
 export class SelectOption implements GxComponent, DisableableComponent {
+  private isSelected: string;
   @Element() element: HTMLGxSelectOptionElement;
 
   /**
@@ -87,6 +88,17 @@ export class SelectOption implements GxComponent, DisableableComponent {
     this.change.emit({ select: this });
   }
 
+  componentWillLoad() {
+    const gxSelectValue = this.element.parentElement.getAttribute("value");
+    if ((gxSelectValue && gxSelectValue === this.value) || this.selected) {
+      this.isSelected = "true";
+      this.selected = true;
+    } else {
+      this.isSelected = "false";
+      this.selected = false;
+    }
+  }
+
   componentDidLoad() {
     this.gxSelectDidLoad.emit({ select: this });
   }
@@ -97,15 +109,7 @@ export class SelectOption implements GxComponent, DisableableComponent {
 
   render() {
     return (
-      <Host
-        aria-hidden="true"
-        hidden={true}
-        selected={
-          this.element.parentElement.getAttribute("value") === this.value
-            ? "true"
-            : "false"
-        }
-      >
+      <Host aria-hidden="true" hidden={true} selected={this.isSelected}>
         <slot />
       </Host>
     );
