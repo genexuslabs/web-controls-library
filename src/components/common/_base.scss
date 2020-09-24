@@ -64,3 +64,16 @@ $gx-xsmall-breakpoint: 768px;
     #{"rgba("} $color #{", 1 )"} $stop
   );
 }
+
+.gx-line-clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--max-lines);
+  overflow: hidden;
+  max-height: var(--max-height);
+}
+
+.line-measuring {
+  visibility: hidden;
+  position: absolute;
+}
