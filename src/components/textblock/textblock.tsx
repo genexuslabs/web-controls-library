@@ -4,6 +4,7 @@ import {
   Event,
   EventEmitter,
   Prop,
+  State,
   h
 } from "@stencil/core";
 import {
@@ -12,6 +13,7 @@ import {
   DisableableComponent,
   VisibilityComponent
 } from "../common/interfaces";
+import { makeLinesClampable, LineClampComponent } from "../common/line-clamp";
 
 @Component({
   shadow: false,
@@ -23,9 +25,11 @@ export class TextBlock
     ClickableComponent,
     GxComponent,
     DisableableComponent,
-    VisibilityComponent {
+    VisibilityComponent,
+    LineClampComponent {
   constructor() {
     this.handleClick = this.handleClick.bind(this);
+    makeLinesClampable(this, ".content", ".line-measuring");
   }
 
   @Element() element: HTMLGxTextblockElement;
@@ -54,6 +58,14 @@ export class TextBlock
   @Prop() readonly disabled = false;
 
   /**
+   * True to cut text when it overflows, showing an ellipsis.
+   */
+  @Prop() readonly lineClamp = false;
+
+  @State() maxLines = 0;
+  @State() maxHeight = 0;
+
+  /**
    * Emitted when the element is clicked.
    */
   @Event() gxClick: EventEmitter;
@@ -65,7 +77,24 @@ export class TextBlock
 
   render() {
     const body = (
-      <div class="content" onClick={!this.disabled ? this.handleClick : null}>
+      <div
+        class={{
+          content: true,
+          "gx-line-clamp": this.shouldClampLines()
+        }}
+        onClick={!this.disabled ? this.handleClick : null}
+        style={
+          this.shouldClampLines() && {
+            "--max-lines": this.maxLines.toString(),
+            "--max-height": `${this.maxHeight}px`
+          }
+        }
+      >
+        {this.lineClamp && (
+          <div class="line-measuring" aria-hidden>
+            {"A"}
+          </div>
+        )}
         <slot />
       </div>
     );
@@ -75,5 +104,9 @@ export class TextBlock
     }
 
     return body;
+  }
+
+  private shouldClampLines() {
+    return this.lineClamp && this.maxLines > 0;
   }
 }

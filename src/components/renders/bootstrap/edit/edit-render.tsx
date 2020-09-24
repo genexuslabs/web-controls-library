@@ -132,7 +132,25 @@ export class EditRender implements Renderer {
 
     return [
       <gx-bootstrap />,
-      <ReadonlyTag key="readonly" hidden={!edit.readonly} data-readonly="">
+      <ReadonlyTag
+        key="readonly"
+        hidden={!edit.readonly}
+        data-readonly=""
+        class={{
+          "gx-line-clamp": this.shouldClampLines()
+        }}
+        style={
+          this.shouldClampLines() && {
+            "--max-lines": edit.maxLines.toString(),
+            "--max-height": `${edit.maxHeight}px`
+          }
+        }
+      >
+        {edit.lineClamp && (
+          <div class="line-measuring" aria-hidden>
+            {"A"}
+          </div>
+        )}
         {edit.value}
       </ReadonlyTag>,
       editableElement
@@ -145,5 +163,9 @@ export class EditRender implements Renderer {
       return "span";
     }
     return tag;
+  }
+
+  private shouldClampLines() {
+    return this.component.lineClamp && this.component.maxLines > 0;
   }
 }

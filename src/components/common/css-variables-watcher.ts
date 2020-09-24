@@ -1,4 +1,5 @@
 import { Component } from "./interfaces";
+import { overrideMethod } from "./utils";
 
 export function cssVariablesWatcher(
   component: Component,
@@ -54,27 +55,6 @@ export function cssVariablesWatcher(
   overrideMethod(component, "componentDidUnload", {
     before: () => classObserver.disconnect()
   });
-}
-
-function overrideMethod(
-  component: Component,
-  methodName: string,
-  { before, after }: { before?: () => void; after?: () => void }
-) {
-  const oldMethod = component[methodName];
-  component[methodName] = () => {
-    if (before !== undefined) {
-      before();
-    }
-
-    if (oldMethod !== undefined) {
-      oldMethod.call(component);
-    }
-
-    if (after !== undefined) {
-      after();
-    }
-  };
 }
 
 export interface CssVariableWatcherProperty {
