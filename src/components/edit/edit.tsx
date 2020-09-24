@@ -5,6 +5,7 @@ import {
   EventEmitter,
   Method,
   Prop,
+  State,
   Watch,
   h,
   Host
@@ -12,6 +13,7 @@ import {
 import { EditRender } from "../renders/bootstrap/edit/edit-render";
 import { FormComponent } from "../common/interfaces";
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
+import { makeLinesClampable } from "../common/line-clamp";
 
 @Component({
   shadow: false,
@@ -32,6 +34,8 @@ export class Edit implements FormComponent {
         propertyName: "fontCategory"
       }
     ]);
+
+    makeLinesClampable(this, "[data-readonly]", ".line-measuring");
   }
 
   private renderer: EditRender;
@@ -101,6 +105,11 @@ export class Edit implements FormComponent {
   @Prop() readonly disabled = false;
 
   /**
+   * True to cut text when it overflows, showing an ellipsis (only applies when readonly)
+   */
+  @Prop() readonly lineClamp = false;
+
+  /**
    * Controls if the element accepts multiline text.
    */
   @Prop() readonly multiline: boolean;
@@ -163,6 +172,9 @@ export class Edit implements FormComponent {
    * The initial value of the control.
    */
   @Prop({ mutable: true }) value: string;
+
+  @State() maxLines = 0;
+  @State() maxHeight = 0;
 
   /**
    * The `change` event is emitted when a change to the element's value is

@@ -217,6 +217,10 @@ export namespace Components {
      */
     invisibleMode: "collapse" | "keep-space";
     /**
+     * True to cut text when it overflows, showing an ellipsis (only applies when readonly)
+     */
+    lineClamp: false;
+    /**
      * Controls if the element accepts multiline text.
      */
     multiline: boolean;
@@ -1652,6 +1656,10 @@ declare namespace LocalJSX {
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode?: "collapse" | "keep-space";
+    /**
+     * True to cut text when it overflows, showing an ellipsis (only applies when readonly)
+     */
+    lineClamp?: false;
     /**
      * Controls if the element accepts multiline text.
      */
