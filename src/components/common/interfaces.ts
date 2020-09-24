@@ -13,7 +13,7 @@ export interface DisableableComponent {
 }
 
 export interface Component extends ComponentInterface {
-  element: HTMLElement;
+  element: any;
   render: () => void;
 }
 
