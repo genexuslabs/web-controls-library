@@ -83,9 +83,9 @@ export class Select implements FormComponent {
     return Array.from(this.element.querySelectorAll("gx-select-option")).map(
       (option: any) => {
         return {
-          disabled: option.getAttribute("disabled") === "true" ? true : false,
+          disabled: option.disabled,
           innerText: option.innerText,
-          selected: option.getAttribute("selected") === "true" ? true : false,
+          selected: option.selected,
           value: option.value
         };
       }
