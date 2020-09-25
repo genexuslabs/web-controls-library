@@ -9,7 +9,7 @@ export function makeLinesClampable(
   lineMeasuringElementSelector: string
 ) {
   const applyLineClamp = debounce(function() {
-    requestAnimationFrame(() => {
+    requestAnimationFrame(function applyLineClampImpl() {
       const contentElement = component.element.querySelector(
         contentElementSelect
       ) as HTMLElement;
@@ -31,7 +31,7 @@ export function makeLinesClampable(
     });
   }, 100);
 
-  const resetLineClamp = function() {
+  const resetLineClamp = function resetLineClampImpl() {
     component.maxLines = 0;
   };
 
