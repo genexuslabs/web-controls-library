@@ -1,10 +1,21 @@
 import { Component } from "./interfaces";
-import { overrideMethod } from "./utils";
+import { overrideMethod, debounce } from "./utils";
 
 export function cssVariablesWatcher(
   component: Component,
   properties: CssVariableWatcherProperty[]
 ): void {
+  const updatePropertiesFromCss = debounce(function(): void {
+    for (const prop of properties) {
+      const propCssValue = getComputedStyle(component.element)
+        .getPropertyValue(prop.cssVariableName)
+        .trim();
+      if (propCssValue && component[prop.propertyName] !== propCssValue) {
+        component[prop.propertyName] = propCssValue;
+      }
+    }
+  }, 100);
+
   // Set up a MutationObserver to monitor changes on style and class attributes.
   // When a change occurs on this attributes, the properties listed in
   // properties are updated with their corresponding CSS variables values.
@@ -23,17 +34,6 @@ export function cssVariablesWatcher(
       }
     }
   );
-
-  function updatePropertiesFromCss(): void {
-    for (const prop of properties) {
-      const propCssValue = getComputedStyle(component.element)
-        .getPropertyValue(prop.cssVariableName)
-        .trim();
-      if (propCssValue && component[prop.propertyName] !== propCssValue) {
-        component[prop.propertyName] = propCssValue;
-      }
-    }
-  }
 
   // componentDidLoad, componentDidUpdate and componentDidUnload are overriden
   // to start and end observing the mutations, and to update the properties values.
