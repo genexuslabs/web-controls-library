@@ -9,31 +9,26 @@ const EMPTY_TEXT_CLASS = "empty-text";
   tag: "gx-grid-empty-indicator"
 })
 export class GridEmptyIndicator implements ComponentInterface {
-  @Prop() readonly emptyGridText: string;
-  @Prop() readonly emptyGridTextClass: string;
-  @Prop() readonly emptyGridBackgroundImage: string;
-  @Prop() readonly emptyGridBackgroundClass: string;
+  @Prop() readonly text = "";
+  @Prop() readonly textClass = "";
+  @Prop() readonly image = "";
+  @Prop() readonly imageClass = "";
 
   render() {
     return (
       <Host>
         <gx-canvas>
-          {this.emptyGridText ? (
+          {this.image ? (
             <gx-canvas-cell class={EMPTY_IMAGE_CLASS}>
               {/* 
               // @ts-ignore */}
-              <gx-image
-                src={this.emptyGridBackgroundImage}
-                class={this.emptyGridBackgroundClass}
-              ></gx-image>
+              <gx-image src={this.image} class={this.imageClass}></gx-image>
             </gx-canvas-cell>
           ) : null}
 
-          {this.emptyGridBackgroundImage ? (
+          {this.text ? (
             <gx-canvas-cell class={EMPTY_TEXT_CLASS}>
-              <gx-textblock class={this.emptyGridTextClass}>
-                {this.emptyGridText}
-              </gx-textblock>
+              <gx-textblock class={this.textClass}>{this.text}</gx-textblock>
             </gx-canvas-cell>
           ) : null}
         </gx-canvas>

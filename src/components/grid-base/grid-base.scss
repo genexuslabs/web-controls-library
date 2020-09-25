@@ -10,6 +10,10 @@
   & > [slot="grid-empty-loading-placeholder"] {
     @include visibility(none);
   }
+
+  & > .grid-empty-placeholder > [slot="grid-content-empty"] {
+    flex: 1;
+  }
 }
 
 .gx-grid-base.gx-grid-empty:not(.gx-grid-loading) {
