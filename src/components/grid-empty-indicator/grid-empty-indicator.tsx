@@ -9,9 +9,24 @@ const EMPTY_TEXT_CLASS = "empty-text";
   tag: "gx-grid-empty-indicator"
 })
 export class GridEmptyIndicator implements ComponentInterface {
+  /**
+   * Text to be displayed
+   */
   @Prop() readonly text = "";
+
+  /**
+   * A CSS class to set as the inner `text` element class.
+   */
   @Prop() readonly textClass = "";
+
+  /**
+   * Image url to be shown
+   */
   @Prop() readonly image = "";
+
+  /**
+   * A CSS class to set as the inner `image` element class.
+   */
   @Prop() readonly imageClass = "";
 
   render() {
