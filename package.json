@@ -18,7 +18,7 @@
   "scripts": {
     "build": "stencil build --docs",
     "build:dev": "stencil build --dev && npm run scss-bundle",
-    "postbuild": "npm run scss-bundle",
+    "postbuild": "npm run scss-bundle && npm run pretty-quick",
     "docs": "stencil build --dev --docs",
     "eslint": "eslint . --ext .tsx,.ts,.jsx,.js",
     "lint": "npm run eslint",
