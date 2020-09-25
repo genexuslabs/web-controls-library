@@ -63,7 +63,7 @@ export class Select implements FormComponent {
   @Prop() suggest: boolean;
 
   /**
-   * Specifies a short hint that describes the expected value of the field.
+   * Text that appears in the form control when it has no value set
    */
   @Prop() placeholder: string;
 
