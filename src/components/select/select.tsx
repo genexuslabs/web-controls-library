@@ -153,7 +153,7 @@ export class Select implements FormComponent {
       }
     } else {
       if (option.selected) {
-        this.value = option.selected;
+        this.value = option.value;
       }
     }
     this.updateOptions(this.getChildOptions());
