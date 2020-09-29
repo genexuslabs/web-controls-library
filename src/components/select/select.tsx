@@ -146,11 +146,14 @@ export class Select implements FormComponent {
   onSelectOptionDidLoad(ev: HTMLSelectOptionElementEvent) {
     const option = ev.target;
     if (this.value) {
-      console.log("gxSelect has value > ", this.value);
       if (this.value === option.value) {
         option.selected = true;
       } else {
         option.selected = false;
+      }
+    } else {
+      if (option.selected) {
+        this.value = option.selected;
       }
     }
     this.updateOptions(this.getChildOptions());
