@@ -231,6 +231,9 @@ export class Edit implements FormComponent {
   }
 
   private handleTriggerClick(event: UIEvent) {
+    if (!this.disabled) {
+      event.stopPropagation();
+    }
     this.gxTriggerClick.emit(event);
   }
 

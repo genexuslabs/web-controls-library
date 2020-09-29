@@ -65,6 +65,10 @@ export class EditRender implements Renderer {
     return event.target && (event.target as HTMLInputElement).value;
   }
 
+  stopPropagation(event: UIEvent) {
+    event.stopPropagation();
+  }
+
   /**
    * Update the native input element when the value changes
    */
@@ -97,6 +101,7 @@ export class EditRender implements Renderer {
       id: this.inputId,
       onChange: this.handleChange,
       onInput: valueChangingHandler,
+      onClick: edit.disabled ? null : this.stopPropagation,
       placeholder: edit.placeholder
     };
 
