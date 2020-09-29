@@ -145,22 +145,15 @@ export class Select implements FormComponent {
   @Listen("gxSelectDidLoad")
   onSelectOptionDidLoad(ev: HTMLSelectOptionElementEvent) {
     const option = ev.target;
-    this.updateOptions(this.getChildOptions());
-    if (this.value !== undefined && option.value === this.value) {
-      // this select has a value and this
-      // option equals the correct select value
-      // so let's check this option
-      option.selected = true;
-    } else if (this.value === undefined && option.selected) {
-      // this select does not have a value
-      // but this option is checked, so let's set the
-      // select's value from the checked option
-      this.value = option.value;
-    } else if (option.selected) {
-      // if it doesn't match one of the above cases, but the
-      // option is still checked, then we need to uncheck it
-      option.selected = false;
+    if (this.value) {
+      console.log("gxSelect has value > ", this.value);
+      if (this.value === option.value) {
+        option.selected = true;
+      } else {
+        option.selected = false;
+      }
     }
+    this.updateOptions(this.getChildOptions());
   }
 
   @Listen("gxSelectDidUnload")
