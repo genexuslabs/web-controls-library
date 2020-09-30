@@ -99,43 +99,26 @@ export class Select implements FormComponent {
 
   @Watch("value")
   valueChanged() {
-    // this select's value just changed
-    // double check the option with this value is selected
-    if (this.value === undefined) {
-      // set to undefined
-      // ensure all that are checked become unchecked
-      this.options
-        .filter(o => o.selected)
-        .forEach(option => {
-          option.selected = false;
-        });
-    } else {
-      let hasSelected = false;
-
-      this.options.forEach(option => {
-        if (option.value === this.value) {
-          if (!option.selected && !hasSelected) {
-            // correct value for this option
-            // but this option isn't selected yet
-            // and we haven't found a selected yet
-            // so SELECT IT!
-            option.selected = true;
-          } else if (hasSelected && option.selected) {
-            // somehow we've got multiple options
-            // with the same value, but only one can be selected
-            option.selected = false;
-          }
-
-          // remember we've got a selected option now
-          hasSelected = true;
-        } else if (option.selected) {
-          // this option doesn't have the correct value
-          // and it's also selected, so let's unselect it
-          option.selected = false;
-        }
-      });
-    }
-
+    const optionsElement = Array.from(
+      this.element.querySelectorAll("gx-select-option")
+    );
+    optionsElement.forEach(option => {
+      if (option.value === this.value) {
+        option.selected = true;
+      } else {
+        option.selected = false;
+      }
+    });
+    this.updateOptions(
+      optionsElement.map((option: any) => {
+        return {
+          disabled: option.disabled,
+          innerText: option.innerText,
+          selected: option.selected,
+          value: option.value
+        };
+      })
+    );
     if (this.didLoad) {
       // emit the new value
       this.input.emit({ value: this.value });
