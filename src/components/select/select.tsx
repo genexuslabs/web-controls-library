@@ -99,16 +99,30 @@ export class Select implements FormComponent {
 
   @Watch("value")
   valueChanged() {
+    // the select value just changed
+
     const optionsElement = Array.from(
       this.element.querySelectorAll("gx-select-option")
     );
+    // let's set the new check state to all options
+    // regardless if it is checked or not
     optionsElement.forEach(option => {
       if (option.value === this.value) {
+        // the option value matches with the new select value
+        // let's check this option
         option.selected = true;
       } else {
+        // the option value doesn't match
+        // with the new select value
+        // let's uncheck this option
         option.selected = false;
       }
+      // if the new select value doesn't
+      // match with any option, all options
+      // will be unchecked
     });
+    // after set the new check state to all options
+    // let's update the options list
     this.updateOptions(
       optionsElement.map((option: any) => {
         return {
@@ -129,15 +143,32 @@ export class Select implements FormComponent {
   onSelectOptionDidLoad(ev: HTMLSelectOptionElementEvent) {
     const option = ev.target;
     if (this.value) {
+      // check if the select has a setted value
       if (this.value === option.value) {
+        // this select has a value and this
+        // option equals the correct select value
+        // so let's set this option as checked
         option.selected = true;
       } else {
+        // if the option value does not match
+        // with the select value,
+        // the option will be unchecked
+        // regardless if the option was
+        // initialized as checked
         option.selected = false;
       }
     } else {
+      // if the select does not have a value
+      // let's look for options initialized as checked
       if (option.selected) {
+        // this option was initialized as checked,
+        // so let's set the select's value
+        // equals to the checked option value
         this.value = option.value;
       }
+      // if no option is checked,
+      // all is unchecked and the select value
+      // still be undefined until a change
     }
     this.updateOptions(this.getChildOptions());
   }
