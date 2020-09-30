@@ -180,6 +180,12 @@ export class Image
 
     const isHeightSpecified = !!this.height;
     const isWidthSpecified = !!this.width;
+    const height = isHeightSpecified
+      ? `calc(${this.height} + var(--margin-top, 0px) + var(--margin-bottom, 0px))`
+      : null;
+    const width = isWidthSpecified
+      ? `calc(${this.width} + var(--margin-left, 0px) + var(--margin-right, 0px))`
+      : null;
     return (
       <Host
         class={{
@@ -189,12 +195,9 @@ export class Image
         style={{
           alignSelf: isHeightSpecified ? "unset" : null,
           justifySelf: isWidthSpecified ? "unset" : null,
-          height: isHeightSpecified
-            ? `calc(${this.height} + var(--margin-top, 0px) + var(--margin-bottom, 0px))`
-            : null,
-          width: isWidthSpecified
-            ? `calc(${this.width} + var(--margin-left, 0px) + var(--margin-right, 0px))`
-            : null
+          height: height,
+          width: width,
+          maxWidth: width
         }}
       >
         {body}
