@@ -166,9 +166,10 @@ export class Select implements FormComponent {
         // equals to the checked option value
         this.value = option.value;
       }
-      // if no option is checked,
-      // all is unchecked and the select value
-      // still be undefined until a change
+      // If there is no option checked
+      // and no value was set in the select,
+      // it will keep undefined until any
+      // change or checked option
     }
     this.updateOptions(this.getChildOptions());
   }
