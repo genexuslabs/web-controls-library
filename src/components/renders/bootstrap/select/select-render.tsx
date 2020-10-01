@@ -94,8 +94,8 @@ export class SelectRender implements Renderer {
             ></input>,
 
             <datalist id={datalistId}>
-              {this.options.map(({ innerText, selected, value }) => (
-                <option selected={selected} value={value}>
+              {this.options.map(({ innerText, selected, value, disabled }) => (
+                <option disabled={disabled} selected={selected} value={value}>
                   {innerText}
                 </option>
               ))}
@@ -104,8 +104,8 @@ export class SelectRender implements Renderer {
         : [
             <gx-bootstrap />,
             <select {...attris}>
-              {this.options.map(({ innerText, selected, value }) => (
-                <option selected={selected} value={value}>
+              {this.options.map(({ innerText, selected, value, disabled }) => (
+                <option disabled={disabled} selected={selected} value={value}>
                   {innerText}
                 </option>
               ))}
