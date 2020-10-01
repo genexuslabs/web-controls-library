@@ -112,6 +112,9 @@ export class EditRender implements Renderer {
       const input = <input {...attris} type={edit.type} value={edit.value} />;
 
       if (edit.showTrigger) {
+        const existSlotContent = edit.element.querySelector(
+          "[slot='trigger-content']"
+        );
         editableElement = (
           <div class="input-group" hidden={edit.readonly}>
             {input}
@@ -123,7 +126,9 @@ export class EditRender implements Renderer {
                 disabled={edit.disabled}
                 aria-label={edit.triggerText}
               >
-                {slots.triggerContent}
+                {existSlotContent !== null
+                  ? slots.triggerContent
+                  : edit.triggerText}
               </button>
             </div>
           </div>
