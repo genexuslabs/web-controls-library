@@ -10,6 +10,7 @@ gx-navbar {
   --gx-navbar-items-background-color: #e0e0e0;
   --gx-navbar-items-color: #575965;
   --gx-navbar-main-color: white;
+  --gx-navbar-icon-color: var(--gx-navbar-main-color);
   --gx-navbar-sub-color: black;
   --gx-navbar-main-height: 60px;
   --gx-navbar-sub-height: 48px;
@@ -36,7 +37,7 @@ gx-navbar {
 
   gx-icon {
     --gx-icon-size: var(--gx-navbar-icon-size);
-    --gx-icon-color: var(--gx-navbar-main-color);
+    --gx-icon-color: var(--gx-navbar-icon-color);
   }
 
   button {
@@ -90,7 +91,7 @@ gx-navbar {
       align-items: center;
 
       gx-icon {
-        --gx-icon-color: var(--gx-navbar-main-color);
+        --gx-icon-color: var(--gx-navbar-icon-color);
       }
 
       @include button-default-states();
@@ -128,7 +129,7 @@ gx-navbar {
 
           &--active {
             gx-icon {
-              --gx-icon-color: var(--gx-navbar-main-color);
+              --gx-icon-color: var(--gx-navbar-icon-color);
             }
           }
         }
