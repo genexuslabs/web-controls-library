@@ -144,10 +144,11 @@ export class Image
       const img = event.target as HTMLImageElement;
       // Some image formats do not specify intrinsic dimensions. The naturalWidth property returns 0 in those cases.
       if (img.naturalWidth !== 0) {
-        this.width = `${Math.min(
-          img.naturalWidth,
-          this.element.clientWidth
-        )}px`;
+        this.width = `${
+          this.element.clientWidth > 0
+            ? Math.min(img.naturalWidth, this.element.clientWidth)
+            : img.naturalWidth
+        }px`;
       }
     }
   }
