@@ -69,6 +69,35 @@ export class EditRender implements Renderer {
     event.stopPropagation();
   }
 
+  setReadonlyContent(component, initialContent) {
+    let content = initialContent;
+    console.log(content);
+    if (
+      content &&
+      (component.type === "datetime-local" || component.type === "date")
+    ) {
+      const dateTime = new Date(component.value);
+      if (component.type === "date") {
+        dateTime.setDate(dateTime.getDate() + 1);
+      }
+      const dayMonthYear = new Intl.DateTimeFormat("default", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric"
+      }).format(dateTime);
+      if (component.type === "date") {
+        content = `${dayMonthYear}`;
+      } else {
+        const hourMins = new Intl.DateTimeFormat("default", {
+          hour: "numeric",
+          minute: "numeric"
+        }).format(dateTime);
+        content = `${dayMonthYear} ${hourMins}`;
+      }
+    }
+    return content;
+  }
+
   /**
    * Update the native input element when the value changes
    */
@@ -161,7 +190,7 @@ export class EditRender implements Renderer {
             {"A"}
           </div>
         )}
-        {edit.value}
+        {this.setReadonlyContent(edit, edit.value)}
       </ReadonlyTag>,
       editableElement
     ];
