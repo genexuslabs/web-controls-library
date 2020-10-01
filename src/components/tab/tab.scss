@@ -49,6 +49,14 @@ gx-tab {
    * @prop --tab-caption-image-horizontal-margin: Tab caption image horizontal margin
    */
   --tab-caption-image-horizontal-margin: 2px;
+  /**
+   * @prop --tab-strip-background-color: Tab strip background color
+   */
+  --tab-strip-background-color: transparent;
+  /**
+   * @prop --tab-strip-height: Tab strip height
+   */
+  --tab-strip-height: auto;
 
   & > div {
     @include elevation();
@@ -65,6 +73,8 @@ gx-tab {
     .gx-nav-tabs {
       --elevation: var(--tab-strip-elevation);
       @include elevation();
+      background-color: var(--tab-strip-background-color);
+      height: var(--tab-strip-height);
 
       display: flex;
       flex-direction: row;

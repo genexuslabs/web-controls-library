@@ -60,7 +60,9 @@ tab content, using the `gx-tab-page` element.
 | `--tab-caption-image-horizontal-margin` | Tab caption image horizontal margin          |
 | `--tab-caption-image-vertical-margin`   | Tab caption image vertical margin            |
 | `--tab-caption-vertical-padding`        | Tab caption vertical padding                 |
+| `--tab-strip-background-color`          | Tab strip background color                   |
 | `--tab-strip-elevation`                 | The size of the shadow for the tab strip     |
+| `--tab-strip-height`                    | Tab strip height                             |
 
 ---
 

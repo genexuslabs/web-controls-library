@@ -28,6 +28,16 @@ export namespace Components {
      */
     disabled: false;
   }
+  interface GxAudio {
+    /**
+     * This attribute lets you specify if the element is disabled.
+     */
+    disabled: false;
+    /**
+     * This attribute is for specifies the src of the audio.
+     */
+    src: string;
+  }
   interface GxBootstrap {}
   interface GxButton {
     /**
@@ -1098,6 +1108,11 @@ declare global {
     prototype: HTMLGxActionSheetItemElement;
     new (): HTMLGxActionSheetItemElement;
   };
+  interface HTMLGxAudioElement extends Components.GxAudio, HTMLStencilElement {}
+  var HTMLGxAudioElement: {
+    prototype: HTMLGxAudioElement;
+    new (): HTMLGxAudioElement;
+  };
   interface HTMLGxBootstrapElement
     extends Components.GxBootstrap,
       HTMLStencilElement {}
@@ -1375,6 +1390,7 @@ declare global {
   interface HTMLElementTagNameMap {
     "gx-action-sheet": HTMLGxActionSheetElement;
     "gx-action-sheet-item": HTMLGxActionSheetItemElement;
+    "gx-audio": HTMLGxAudioElement;
     "gx-bootstrap": HTMLGxBootstrapElement;
     "gx-button": HTMLGxButtonElement;
     "gx-canvas": HTMLGxCanvasElement;
@@ -1447,6 +1463,16 @@ declare namespace LocalJSX {
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, gxClick event).
      */
     disabled?: false;
+  }
+  interface GxAudio {
+    /**
+     * This attribute lets you specify if the element is disabled.
+     */
+    disabled?: false;
+    /**
+     * This attribute is for specifies the src of the audio.
+     */
+    src?: string;
   }
   interface GxBootstrap {}
   interface GxButton {
@@ -2676,6 +2702,7 @@ declare namespace LocalJSX {
   interface IntrinsicElements {
     "gx-action-sheet": GxActionSheet;
     "gx-action-sheet-item": GxActionSheetItem;
+    "gx-audio": GxAudio;
     "gx-bootstrap": GxBootstrap;
     "gx-button": GxButton;
     "gx-canvas": GxCanvas;
@@ -2728,6 +2755,7 @@ declare module "@stencil/core" {
         JSXBase.HTMLAttributes<HTMLGxActionSheetElement>;
       "gx-action-sheet-item": LocalJSX.GxActionSheetItem &
         JSXBase.HTMLAttributes<HTMLGxActionSheetItemElement>;
+      "gx-audio": LocalJSX.GxAudio & JSXBase.HTMLAttributes<HTMLGxAudioElement>;
       "gx-bootstrap": LocalJSX.GxBootstrap &
         JSXBase.HTMLAttributes<HTMLGxBootstrapElement>;
       "gx-button": LocalJSX.GxButton &
