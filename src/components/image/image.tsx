@@ -144,7 +144,10 @@ export class Image
       const img = event.target as HTMLImageElement;
       // Some image formats do not specify intrinsic dimensions. The naturalWidth property returns 0 in those cases.
       if (img.naturalWidth !== 0) {
-        this.width = `${img.naturalWidth}px`;
+        this.width = `${Math.min(
+          img.naturalWidth,
+          this.element.clientWidth
+        )}px`;
       }
     }
   }
@@ -155,6 +158,8 @@ export class Image
 
   render() {
     const shouldLazyLoad = this.shouldLazyLoad();
+    const isHeightSpecified = !!this.height;
+    const isWidthSpecified = !!this.width;
 
     const body = this.src
       ? [
@@ -163,11 +168,7 @@ export class Image
               [LAZY_LOAD_CLASS]: shouldLazyLoad,
               "gx-image-tile": this.scaleType === "tile"
             }}
-            style={
-              this.scaleType === "tile"
-                ? { backgroundImage: `url(${this.src})` }
-                : { objectFit: this.scaleType }
-            }
+            style={this.getInnerImageStyle(isWidthSpecified, isHeightSpecified)}
             onClick={this.handleClick}
             onLoad={this.handleImageLoad}
             data-src={shouldLazyLoad ? this.src : undefined}
@@ -178,8 +179,6 @@ export class Image
         ]
       : [];
 
-    const isHeightSpecified = !!this.height;
-    const isWidthSpecified = !!this.width;
     return (
       <Host
         class={{
@@ -200,6 +199,34 @@ export class Image
         {body}
       </Host>
     );
+  }
+
+  private getInnerImageStyle(
+    isWidthSpecified: boolean,
+    isHeightSpecified: boolean
+  ) {
+    const scaleType =
+      this.scaleType === "tile"
+        ? { backgroundImage: `url(${this.src})` }
+        : { objectFit: this.scaleType };
+
+    const dimensions = this.autoGrow
+      ? {}
+      : {
+          width: isWidthSpecified ? this.width : undefined,
+          height: isHeightSpecified ? this.height : undefined,
+          left: isWidthSpecified
+            ? `calc(50% - ${parseInt(this.width, 10) / 2}px)`
+            : undefined,
+          top: isHeightSpecified
+            ? `calc(50% - ${parseInt(this.height, 10) / 2}px)`
+            : undefined
+        };
+
+    return {
+      ...scaleType,
+      ...dimensions
+    };
   }
 
   private shouldLazyLoad(): boolean {
