@@ -4,16 +4,17 @@ export function parseCoords(coord): string[] {
   if (result !== null) {
     return result.slice(1);
   } else {
-    return parseGeoJson(coord);
+    return tryParseGeoJson(coord);
   }
 }
 
-function parseGeoJson(coord) {
+function tryParseGeoJson(coord) {
   let geoObject;
+
   try {
     geoObject = JSON.parse(coord);
   } catch (e) {
-    throw new Error(e);
+    return null;
   }
   const hasType = geoObject.hasOwnProperty("type");
   if (hasType) {
