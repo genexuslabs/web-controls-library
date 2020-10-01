@@ -20,6 +20,9 @@ gx-button {
     position: relative;
     align-items: center;
     justify-content: center;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
 
     & > img {
       height: var(--gx-button-image-size);

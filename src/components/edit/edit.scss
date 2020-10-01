@@ -5,4 +5,14 @@ gx-edit {
   @include visibility(flex);
   align-items: stretch;
   flex: 1;
+
+  &.gx-edit {
+    &--single-line {
+      [data-readonly] {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
 }
