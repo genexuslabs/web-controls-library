@@ -210,14 +210,7 @@ export class Select implements FormComponent {
     return this.renderer.getNativeInputId();
   }
 
-  //   private setDisabled() {
-  //     this.options.forEach(option => {
-  //       option.disabled = this.disabled;
-  //     });
-  //   }
-
   componentDidLoad() {
-    // this.setDisabled();
     this.didLoad = true;
   }
 
