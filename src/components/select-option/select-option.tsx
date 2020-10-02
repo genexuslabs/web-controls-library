@@ -23,7 +23,7 @@ export class SelectOption implements GxComponent, DisableableComponent {
   /**
    * Indicates that the control is selected by default.
    */
-  @Prop({ mutable: true }) selected: boolean;
+  @Prop({ mutable: true }) selected = false;
 
   /**
    * A CSS class to set as the inner `input` element class.
