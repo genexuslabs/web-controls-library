@@ -4,5 +4,5 @@ gx-canvas {
   @include visibility(block);
 
   position: relative;
-  overflow: hidden;
+  overflow: auto;
 }
