@@ -71,7 +71,6 @@ export class EditRender implements Renderer {
 
   setReadonlyContent(component, initialContent) {
     let content = initialContent;
-    console.log(content);
     if (
       content &&
       (component.type === "datetime-local" || component.type === "date")
