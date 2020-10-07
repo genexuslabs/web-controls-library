@@ -233,7 +233,7 @@ export class Map implements GxComponent {
     let i = 0;
     marker.remove();
     while (
-      i <= this.markersList.length &&
+      i < this.markersList.length &&
       this.markersList[i]._leaflet_id !== marker._leaflet_id
     ) {
       i++;
@@ -395,7 +395,9 @@ export class Map implements GxComponent {
   componentDidUpdate() {
     const maxZoom = this.checkForMaxZoom();
     this.setMapProvider();
-    this.fitBounds();
+    if (this.selectionLayer) {
+      this.fitBounds();
+    }
     this.map.setMaxZoom(maxZoom);
     this.userLocationChange.emit(this.userLocationCoords);
   }
