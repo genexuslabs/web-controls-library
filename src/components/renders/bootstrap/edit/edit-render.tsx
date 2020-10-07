@@ -69,7 +69,7 @@ export class EditRender implements Renderer {
     event.stopPropagation();
   }
 
-  setReadonlyContent(component, initialContent) {
+  getReadonlyContent(component, initialContent) {
     let content = initialContent;
     if (
       content &&
@@ -189,7 +189,7 @@ export class EditRender implements Renderer {
             {"A"}
           </div>
         )}
-        {this.setReadonlyContent(edit, edit.value)}
+        {this.getReadonlyContent(edit, edit.value)}
       </ReadonlyTag>,
       editableElement
     ];
