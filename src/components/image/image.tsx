@@ -146,7 +146,9 @@ export class Image
       if (img.naturalWidth !== 0) {
         this.width = `${
           this.element.clientWidth > 0
-            ? Math.min(img.naturalWidth, this.element.clientWidth)
+            ? img.naturalWidth > this.element.clientWidth
+              ? this.element.clientWidth
+              : null
             : img.naturalWidth
         }px`;
       }
@@ -217,10 +219,10 @@ export class Image
           width: isWidthSpecified ? this.width : undefined,
           height: isHeightSpecified ? this.height : undefined,
           left: isWidthSpecified
-            ? `calc(50% - ${parseInt(this.width, 10) / 2}px)`
+            ? `calc(50% - ((${this.width} - var(--margin-left, 0px) - var(--margin-right, 0px)) / 2))`
             : undefined,
           top: isHeightSpecified
-            ? `calc(50% - ${parseInt(this.height, 10) / 2}px)`
+            ? `calc(50% - ((${this.height} - var(--margin-top, 0px) - var(--margin-bottom, 0px)) / 2))`
             : undefined
         };
 
