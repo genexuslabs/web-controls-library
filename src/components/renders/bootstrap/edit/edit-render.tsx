@@ -69,6 +69,34 @@ export class EditRender implements Renderer {
     event.stopPropagation();
   }
 
+  getReadonlyContent(component, initialContent) {
+    let content = initialContent;
+    if (
+      content &&
+      (component.type === "datetime-local" || component.type === "date")
+    ) {
+      const dateTime = new Date(component.value);
+      if (component.type === "date") {
+        dateTime.setDate(dateTime.getDate() + 1);
+      }
+      const dayMonthYear = new Intl.DateTimeFormat("default", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric"
+      }).format(dateTime);
+      if (component.type === "date") {
+        content = `${dayMonthYear}`;
+      } else {
+        const hourMins = new Intl.DateTimeFormat("default", {
+          hour: "numeric",
+          minute: "numeric"
+        }).format(dateTime);
+        content = `${dayMonthYear} ${hourMins}`;
+      }
+    }
+    return content;
+  }
+
   /**
    * Update the native input element when the value changes
    */
@@ -112,6 +140,9 @@ export class EditRender implements Renderer {
       const input = <input {...attris} type={edit.type} value={edit.value} />;
 
       if (edit.showTrigger) {
+        const existSlotContent = edit.element.querySelector(
+          "[slot='trigger-content']"
+        );
         editableElement = (
           <div class="input-group" hidden={edit.readonly}>
             {input}
@@ -123,7 +154,9 @@ export class EditRender implements Renderer {
                 disabled={edit.disabled}
                 aria-label={edit.triggerText}
               >
-                {slots.triggerContent}
+                {existSlotContent !== null
+                  ? slots.triggerContent
+                  : edit.triggerText}
               </button>
             </div>
           </div>
@@ -156,7 +189,7 @@ export class EditRender implements Renderer {
             {"A"}
           </div>
         )}
-        {edit.value}
+        {this.getReadonlyContent(edit, edit.value)}
       </ReadonlyTag>,
       editableElement
     ];
