@@ -159,7 +159,7 @@ export class Image
   }
 
   componentDidLoad() {
-    makeHighlightable(this.element.querySelector("img"));
+    makeHighlightable(this.element);
   }
 
   disconnectedCallback() {

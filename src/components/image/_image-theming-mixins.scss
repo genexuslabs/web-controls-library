@@ -15,9 +15,11 @@
 ) {
   img {
     @extend #{$class} !optional;
+  }
 
-    @if ($highlighted != null) {
-      &.gx-highlighted {
+  @if ($highlighted != null) {
+    &.gx-highlighted {
+      img {
         @extend #{$highlighted} !optional;
       }
     }
