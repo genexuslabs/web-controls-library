@@ -17,7 +17,7 @@
     @extend #{$class} !optional;
 
     @if ($highlighted != null) {
-      &:active {
+      &.gx-highlighted {
         @extend #{$highlighted} !optional;
       }
     }

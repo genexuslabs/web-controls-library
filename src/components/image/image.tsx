@@ -15,6 +15,7 @@ import {
   VisibilityComponent
 } from "../common/interfaces";
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
+import { makeHighlightable } from "../common/highlightable";
 
 const LAZY_LOAD_CLASS = "gx-lazyload";
 const LAZY_LOADING_CLASS = "gx-lazyloading";
@@ -144,15 +145,21 @@ export class Image
       const img = event.target as HTMLImageElement;
       // Some image formats do not specify intrinsic dimensions. The naturalWidth property returns 0 in those cases.
       if (img.naturalWidth !== 0) {
-        this.width = `${
-          this.element.clientWidth > 0
-            ? img.naturalWidth > this.element.clientWidth
-              ? this.element.clientWidth
-              : null
-            : img.naturalWidth
-        }px`;
+        if (this.element.clientWidth > 0) {
+          if (img.naturalWidth > this.element.clientWidth) {
+            this.width = `${this.element.clientWidth}px`;
+          } else {
+            this.width = null;
+          }
+        } else {
+          this.width = `${img.naturalWidth}px`;
+        }
       }
     }
+  }
+
+  componentDidLoad() {
+    makeHighlightable(this.element.querySelector("img"));
   }
 
   disconnectedCallback() {
