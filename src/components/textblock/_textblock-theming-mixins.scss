@@ -26,9 +26,12 @@
   .content,
   .label-content {
     @extend #{$class} !optional;
+  }
 
-    @if ($highlighted != null) {
-      &:active {
+  @if ($highlighted != null) {
+    &.gx-highlighted {
+      .content,
+      .label-content {
         @extend #{$highlighted} !optional;
       }
     }
