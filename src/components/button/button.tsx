@@ -5,6 +5,7 @@ import {
   DisableableComponent,
   VisibilityComponent
 } from "../common/interfaces";
+import { makeHighlightable } from "../common/highlightable";
 
 @Component({
   shadow: false,
@@ -85,6 +86,10 @@ export class Button
 
   componentWillLoad() {
     this.renderer.componentWillLoad();
+  }
+
+  componentDidLoad() {
+    makeHighlightable(this.element);
   }
 
   render() {
