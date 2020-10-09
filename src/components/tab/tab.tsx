@@ -8,6 +8,7 @@ import {
   h,
   Host
 } from "@stencil/core";
+import { makeHighlightable } from "../common/highlightable";
 import {
   Component as GxComponent,
   VisibilityComponent
@@ -88,6 +89,7 @@ export class Tab implements GxComponent, VisibilityComponent {
   }
 
   componentDidLoad() {
+    makeHighlightable(this.element);
     this.linkTabs(true);
   }
 
