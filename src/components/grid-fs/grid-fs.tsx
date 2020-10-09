@@ -98,6 +98,10 @@ export class GridFreeStyle
     }
   }
 
+  componentDidLoad() {
+    GridBaseHelper.init(this.el);
+  }
+
   render() {
     this.ensureViewPort();
     return (

@@ -219,6 +219,7 @@ export class GridSmart
 
   componentDidLoad() {
     window.requestAnimationFrame(() => this.ensureSwiper());
+    GridBaseHelper.init(this.el);
   }
 
   componentDidUpdate() {
