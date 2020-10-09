@@ -7,6 +7,7 @@ import {
   h,
   Host
 } from "@stencil/core";
+import { makeHighlightable } from "../common/highlightable";
 import {
   Component as GxComponent,
   DisableableComponent,
@@ -88,6 +89,7 @@ export class Table
 
   componentDidLoad() {
     makeSwipeable(this);
+    makeHighlightable(this.element);
   }
 
   render() {

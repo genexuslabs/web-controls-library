@@ -1,4 +1,5 @@
 import { EventEmitter } from "@stencil/core";
+import { makeHighlightable } from "../common/highlightable";
 
 export interface GridBase {
   el: HTMLElement;
@@ -45,6 +46,10 @@ export interface GridBase {
 
 export class GridBaseHelper {
   static GRID_BASE_CLASSNAME = "gx-grid-base";
+
+  static init(element: HTMLElement) {
+    makeHighlightable(element);
+  }
 
   static hostData(cmp: GridBase) {
     return {

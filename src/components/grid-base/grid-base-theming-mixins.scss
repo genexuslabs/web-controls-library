@@ -22,7 +22,7 @@
   @extend #{$class};
 
   @if ($highlighted != null) {
-    &:active {
+    &.gx-highlighted {
       @extend #{$highlighted} !optional;
     }
   }
@@ -69,7 +69,7 @@
   @extend #{$class};
 
   @if ($highlighted != null) {
-    &:active,
+    &.gx-highlighted,
     &[data-gx-grid-highlighted] {
       @extend #{$highlighted} !optional;
     }

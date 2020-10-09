@@ -8,9 +8,11 @@
 @mixin gx-tab-caption($class, $highlighted: null) {
   a.gx-nav-link {
     @extend #{$class} !optional;
+  }
 
-    @if ($highlighted != null) {
-      &:active {
+  @if ($highlighted != null) {
+    &.gx-highlighted {
+      a.gx-nav-link {
         @extend #{$highlighted} !optional;
       }
     }

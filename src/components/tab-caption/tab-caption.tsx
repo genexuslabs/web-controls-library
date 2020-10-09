@@ -17,6 +17,7 @@ import {
   imagePositionClass,
   hideMainImageWhenDisabledClass
 } from "../common/image-position";
+import { makeHighlightable } from "../common/highlightable";
 
 let autoTabId = 0;
 
@@ -83,6 +84,10 @@ export class TabCaption implements GxComponent, DisableableComponent {
     }
     this.hasDisabledImage =
       this.element.querySelector("[slot='disabled-image']") !== null;
+  }
+
+  componentDidLoad() {
+    makeHighlightable(this.element);
   }
 
   render() {

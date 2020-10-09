@@ -7,6 +7,7 @@ import {
   State,
   h
 } from "@stencil/core";
+import { makeHighlightable } from "../common/highlightable";
 import {
   ClickableComponent,
   Component as GxComponent,
@@ -73,6 +74,10 @@ export class TextBlock
   private handleClick(event: UIEvent) {
     this.gxClick.emit(event);
     event.preventDefault();
+  }
+
+  componentDidLoad() {
+    makeHighlightable(this.element);
   }
 
   render() {
