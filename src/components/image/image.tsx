@@ -114,7 +114,7 @@ export class Image
   @Prop({ mutable: true }) width: string;
 
   @Listen("click", { capture: true })
-  private handleClick(event: UIEvent) {
+  handleClick(event: UIEvent) {
     event.preventDefault();
     if (this.disabled) {
       event.stopPropagation();
