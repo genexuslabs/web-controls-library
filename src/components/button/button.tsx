@@ -16,7 +16,7 @@ export class Button
   implements GxComponent, DisableableComponent, VisibilityComponent {
   constructor() {
     this.renderer = new ButtonRender(this, {
-      handleClick: this.handleClick.bind(this)
+      handleClick: !this.disabled ? this.handleClick.bind(this) : null
     });
   }
 
@@ -77,7 +77,8 @@ export class Button
   @Prop() readonly size: "large" | "normal" | "small" = "normal";
 
   @Listen("click", { capture: true })
-  private handleClick(event: UIEvent) {
+  handleClick(event: UIEvent) {
+    event.preventDefault();
     if (this.disabled) {
       event.stopPropagation();
       return;
