@@ -50,7 +50,6 @@ export class ButtonRender implements Renderer {
             btn: true,
             "p-0": true,
             "btn-lg": button.size === "large",
-            "btn-outline-secondary": true,
             "btn-sm": button.size === "small",
             "gx-button": true,
             [button.cssClass]: !!button.cssClass
