@@ -17,6 +17,14 @@ export class FormFieldRender implements Renderer {
     right: "label-right",
     top: "label-top"
   };
+  private flexDirection = {
+    bottom: "column-reverse",
+    float: "",
+    left: "row",
+    none: "",
+    right: "row-reverse",
+    top: "column"
+  };
 
   private INNER_CONTROL_WIDTH_BY_LABEL_POSITION = {
     bottom: "field-label-bottom",
@@ -55,6 +63,8 @@ export class FormFieldRender implements Renderer {
     return (
       !formField.labelPosition ||
       formField.labelPosition === "top" ||
+      formField.labelPosition === "right" ||
+      formField.labelPosition === "bottom" ||
       formField.labelPosition === "left" ||
       formField.labelPosition === "none"
     );
@@ -90,7 +100,12 @@ export class FormFieldRender implements Renderer {
     );
     return (
       <div class="form-group mb-0" aria-labelledby={labelId} role="group">
-        <div class="radio-group no-gutters">
+        <div
+          class="radio-group no-gutters"
+          style={{
+            "flex-direction": this.flexDirection[this.component.labelPosition]
+          }}
+        >
           {renderLabel && renderLabelBefore ? label : null}
           <div class={this.getInnerControlContainerClass()}>{slot}</div>
           {renderLabel && !renderLabelBefore ? label : null}
