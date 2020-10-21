@@ -77,7 +77,7 @@ export class Button
   @Prop() readonly size: "large" | "normal" | "small" = "normal";
 
   @Listen("click", { capture: true })
-  private handleClick(event: UIEvent) {
+  handleClick(event: UIEvent) {
     if (this.disabled) {
       event.stopPropagation();
       return;

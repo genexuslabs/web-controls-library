@@ -1,15 +1,6 @@
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Prop,
-  h,
-  Host
-} from "@stencil/core";
+import { Component, Element, Prop, h, Listen, Host } from "@stencil/core";
 import lazySizes from "lazysizes";
 import {
-  ClickableComponent,
   Component as GxComponent,
   DisableableComponent,
   VisibilityComponent
@@ -29,11 +20,7 @@ const lazyLoadedImages = new Set<string>();
   tag: "gx-image"
 })
 export class Image
-  implements
-    GxComponent,
-    DisableableComponent,
-    VisibilityComponent,
-    ClickableComponent {
+  implements GxComponent, DisableableComponent, VisibilityComponent {
   constructor() {
     cssVariablesWatcher(this, [
       {
@@ -126,18 +113,12 @@ export class Image
    */
   @Prop({ mutable: true }) width: string;
 
-  /**
-   * Emitted when the element is clicked.
-   */
-  @Event() gxClick: EventEmitter;
-
-  private handleClick(event: UIEvent) {
+  @Listen("click", { capture: true })
+  handleClick(event: UIEvent) {
     if (this.disabled) {
       event.stopPropagation();
       return;
     }
-    this.gxClick.emit(event);
-    event.preventDefault();
   }
 
   private handleImageLoad(event: UIEvent) {

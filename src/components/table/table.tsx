@@ -5,6 +5,7 @@ import {
   EventEmitter,
   Prop,
   h,
+  Listen,
   Host
 } from "@stencil/core";
 import { makeHighlightable } from "../common/highlightable";
@@ -86,6 +87,14 @@ export class Table
    * Emitted when the element is swiped left direction..
    */
   @Event() swipeLeft: EventEmitter;
+
+  @Listen("click", { capture: true })
+  handleClick(event: UIEvent) {
+    if (this.disabled) {
+      event.stopPropagation();
+      return;
+    }
+  }
 
   componentDidLoad() {
     makeSwipeable(this);
