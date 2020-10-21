@@ -90,7 +90,6 @@ export class Table
 
   @Listen("click", { capture: true })
   handleClick(event: UIEvent) {
-    event.preventDefault();
     if (this.disabled) {
       event.stopPropagation();
       return;
