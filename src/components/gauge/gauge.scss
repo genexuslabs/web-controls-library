@@ -1,0 +1,291 @@
+@import "../common/_base";
+
+gx-gauge {
+  /**
+  * @prop --component-height:
+   * Set the height or the control. *Must be set before render the control*
+   * (400px by default)
+  */
+  --component-height: 400px;
+
+  /**
+  * @prop --gauge-border-color:
+   * Define the border color of the gauge.
+  */
+  --gauge-border-color: rgb(0, 92, 129);
+
+  /**
+  * @prop --gauge-border-width:
+   * Define the border width of the gauge.
+   * (0 by default)
+  */
+  --gauge-border-width: 0px;
+
+  /**
+  * @prop --gauge-box-shadow:
+   * Set the box-shadow of gauge.
+   * (0px 0px 5px 0px rgba(0, 0, 0, 0.5) inset by default)
+  */
+  --gauge-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5) inset;
+
+  /**
+  * @prop --gauge-ranges-box-shadow:
+   * Set shadows of each range.
+   * (2px 0px 10px 0px rgba(0, 0, 0, 0.4) by default)
+  */
+  --gauge-ranges-box-shadow: 2px 0px 10px 0px rgba(0, 0, 0, 0.4);
+
+  /**
+  * @prop --circular-gauge-container-box-shadow:
+   * Set the box-shadow of circular gauge container.
+   * (0px 0px 9px 0px rgba(0, 0, 0, 0.5) inset by default)
+  */
+  --circular-gauge-container-box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.5)
+    inset;
+
+  /**
+  * @prop --center-circle-background-color:
+   * Define the backgorund color of the center in `circle` gauge type.
+   * (transparent by default)
+  */
+  --center-circle-background-color: rgba(0, 0, 0, 0);
+
+  /**
+  * @prop --center-circle-text-color:
+   * Define the color of the center text in `circle` gauge type.
+   * (gray by default)
+  */
+  --center-circle-text-color: gray;
+
+  /**
+  * @prop --marker-border:
+   * Define the border width, type, and color of the marker.
+   * (1px by default)
+  */
+  --marker-border: 1px solid #616161;
+
+  /**
+  * @prop --marker-backgorund:
+   * Define the background color of the marker.
+   * (1px by default)
+  */
+  --marker-backgorund: #616161;
+
+  /**
+  * @prop --marker-box-shadow:
+   * Set the box-shadow of marker.
+   * (1px 3px 3px 0px rgba(0, 0, 0, 0.8) by default)
+  */
+  --marker-box-shadow: 1px 3px 3px 0px rgba(0, 0, 0, 0.8);
+
+  /**
+  * @prop --max-value-display-background:
+   * Set the color of maximum value display background.
+   * (rgba(44, 44, 44, 1) by default)
+  */
+  --max-value-display-background: rgba(44, 44, 44, 1);
+
+  /**
+  * @prop --max-value-display-color:
+   * Set the color of maximum value display text.
+   * (rgba(255, 255, 255, 0.8) by default)
+  */
+  --max-value-display-color: rgba(255, 255, 255, 0.8);
+
+  /**
+  * @prop --max-value-display-box-shadow:
+   * Set the box-shadow of maximum value display.
+   * (2px 1px 3px 0px rgba(0, 0, 0, 0.5) by default)
+  */
+  --max-value-display-box-shadow: 2px 1px 3px 0px rgba(0, 0, 0, 0.5);
+
+  /**
+  * @prop --min-value-display-background:
+   * Set the color of minimum value display background.
+   * (rgba(44, 44, 44, 1) by default)
+  */
+  --min-value-display-background: rgba(44, 44, 44, 1);
+
+  /**
+  * @prop --min-value-display-color:
+   * Set the color of minimum value display text.
+   * (rgba(255, 255, 255, 0.8) by default)
+  */
+  --min-value-display-color: rgba(255, 255, 255, 0.8);
+
+  /**
+  * @prop --min-value-display-box-shadow:
+   * Set the box-shadow of minimum value display.
+   * (0px 0px 5px 0px rgba(0, 0, 0, 0.5) by default)
+  */
+  --min-value-display-box-shadow: -2px 1px 3px 0px rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--component-height);
+
+  .gaugeContainerLine {
+    width: 98%;
+    height: auto;
+    display: flex;
+    position: absolute;
+    align-items: center;
+    border-width: var(--gauge-border-width);
+    border-style: solid;
+    border-color: var(--gauge-border-color);
+    border-radius: 26px;
+    .gauge {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0);
+      box-shadow: var(--gauge-box-shadow);
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      z-index: 1;
+      align-items: flex-end;
+      .marker {
+        border: var(--marker-border);
+        background-color: var(--marker-backgorund);
+        width: 1px;
+        height: 66%;
+        border-radius: 100% 100% 0 0;
+        transition: 0.6s;
+        z-index: 0;
+        box-shadow: var(--marker-box-shadow);
+      }
+    }
+
+    .minMaxDisplay {
+      position: absolute;
+      display: flex;
+      justify-content: space-between;
+      align-content: center;
+      width: 100%;
+      height: auto;
+      .maxValue {
+        box-shadow: var(--max-value-display-box-shadow);
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        background-color: var(--max-value-display-background);
+        color: var(--max-value-display-color);
+        border-radius: 10px;
+        padding: 5px 10px;
+        float: right;
+        & span {
+          box-shadow: var(--max-value-display-box-shadow);
+          width: 10px;
+          height: 10px;
+          transform: translate(110%, -90%) rotate(45deg);
+          z-index: -1;
+          background-color: var(--max-value-display-background);
+          position: absolute;
+          border-radius: 0% 200% 120% 100%;
+        }
+      }
+      .minValue {
+        box-shadow: var(--min-value-display-box-shadow);
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        background-color: var(--min-value-display-background);
+        color: var(--min-value-display-color);
+        border-radius: 10px;
+        padding: 5px 10px;
+        & span {
+          box-shadow: var(--min-value-display-box-shadow);
+          width: 10px;
+          height: 10px;
+          border-radius: 0% 100% 120% 200%;
+          transform: translate(calc(-100%), calc(-100%)) rotate(45deg);
+          z-index: -1;
+          background-color: var(--min-value-display-background);
+          position: absolute;
+        }
+      }
+    }
+    .rangesContainer {
+      overflow: hidden;
+      border-radius: 20px;
+      position: absolute;
+      width: calc(100%);
+      height: 100%;
+      .range {
+        height: 100%;
+        position: absolute;
+        box-shadow: var(--gauge-ranges-box-shadow);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: -1;
+      }
+    }
+    .namesContainer {
+      position: absolute;
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
+      .rangeName {
+        height: 100%;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        transform: translateY(-100%);
+      }
+    }
+  }
+  .svgContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .gaugeContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 188px;
+      height: 188px;
+      border-width: var(--gauge-border-width);
+      border-style: solid;
+      border-color: var(--gauge-border-color);
+      border-radius: 50%;
+      box-shadow: var(--circular-gauge-container-box-shadow);
+      z-index: 0;
+      position: absolute;
+    }
+    svg {
+      transform: rotate(-90deg);
+      z-index: -1;
+    }
+    .gauge {
+      background-color: var(--center-circle-background-color);
+      border-radius: 50%;
+      font-size: 1.1rem;
+      z-index: 1;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--gauge-box-shadow);
+      div {
+        color: var(--center-circle-text-color);
+      }
+    }
+    span.marker {
+      transition: 0.4s ease;
+      position: absolute;
+      width: 2px;
+      .indicator {
+        transition: 0.4s ease;
+        content: "";
+        border-radius: 50%;
+        box-shadow: var(--marker-box-shadow);
+        display: block;
+        border: var(--marker-border);
+        background-color: var(--marker-backgorund);
+      }
+    }
+  }
+}
