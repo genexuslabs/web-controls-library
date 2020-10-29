@@ -124,6 +124,22 @@ gx-form-field {
     flex-wrap: wrap;
   }
 
+  .label-position-top {
+    flex-direction: column;
+  }
+
+  .label-position-right {
+    flex-direction: row-reverse;
+  }
+
+  .label-position-bottom {
+    flex-direction: column-reverse;
+  }
+
+  .label-position-left {
+    flex-direction: row;
+  }
+
   gx-checkbox {
     .custom-checkbox {
       padding-top: calc(1.375rem + 1px);

@@ -98,12 +98,19 @@ export class FormFieldRender implements Renderer {
         <div class="label-content">{this.component.labelCaption}</div>
       </div>
     );
+    const labelPositionClassName = `label-position-${this.component.labelPosition}`;
+    const isValidLabelPosition =
+      this.component.labelPosition === "top" ||
+      this.component.labelPosition === "right" ||
+      this.component.labelPosition === "bottom" ||
+      this.component.labelPosition === "left";
     return (
       <div class="form-group mb-0" aria-labelledby={labelId} role="group">
         <div
-          class="radio-group no-gutters"
-          style={{
-            "flex-direction": this.flexDirection[this.component.labelPosition]
+          class={{
+            "radio-group": true,
+            "no-gutters": true,
+            [labelPositionClassName]: isValidLabelPosition
           }}
         >
           {renderLabel && renderLabelBefore ? label : null}
