@@ -66,6 +66,22 @@ gx-form-field {
     }
   }
 
+  .label-position-top {
+    flex-direction: column;
+  }
+
+  .label-position-right {
+    flex-direction: row-reverse;
+  }
+
+  .label-position-bottom {
+    flex-direction: column-reverse;
+  }
+
+  .label-position-left {
+    flex-direction: row;
+  }
+
   .label-left,
   .label-right {
     position: relative;
@@ -122,22 +138,6 @@ gx-form-field {
     display: flex;
     flex: 1;
     flex-wrap: wrap;
-  }
-
-  .label-position-top {
-    flex-direction: column;
-  }
-
-  .label-position-right {
-    flex-direction: row-reverse;
-  }
-
-  .label-position-bottom {
-    flex-direction: column-reverse;
-  }
-
-  .label-position-left {
-    flex-direction: row;
   }
 
   gx-checkbox {

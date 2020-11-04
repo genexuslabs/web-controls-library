@@ -17,14 +17,6 @@ export class FormFieldRender implements Renderer {
     right: "label-right",
     top: "label-top"
   };
-  private flexDirection = {
-    bottom: "column-reverse",
-    float: "",
-    left: "row",
-    none: "",
-    right: "row-reverse",
-    top: "column"
-  };
 
   private INNER_CONTROL_WIDTH_BY_LABEL_POSITION = {
     bottom: "field-label-bottom",
