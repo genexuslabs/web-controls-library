@@ -55,6 +55,8 @@ export class FormFieldRender implements Renderer {
     return (
       !formField.labelPosition ||
       formField.labelPosition === "top" ||
+      formField.labelPosition === "right" ||
+      formField.labelPosition === "bottom" ||
       formField.labelPosition === "left" ||
       formField.labelPosition === "none"
     );
@@ -88,9 +90,21 @@ export class FormFieldRender implements Renderer {
         <div class="label-content">{this.component.labelCaption}</div>
       </div>
     );
+    const labelPositionClassName = `label-position-${this.component.labelPosition}`;
+    const isValidLabelPosition =
+      this.component.labelPosition === "top" ||
+      this.component.labelPosition === "right" ||
+      this.component.labelPosition === "bottom" ||
+      this.component.labelPosition === "left";
     return (
       <div class="form-group mb-0" aria-labelledby={labelId} role="group">
-        <div class="radio-group no-gutters">
+        <div
+          class={{
+            "radio-group": true,
+            "no-gutters": true,
+            [labelPositionClassName]: isValidLabelPosition
+          }}
+        >
           {renderLabel && renderLabelBefore ? label : null}
           <div class={this.getInnerControlContainerClass()}>{slot}</div>
           {renderLabel && !renderLabelBefore ? label : null}
