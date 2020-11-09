@@ -51,7 +51,7 @@ export class Gauge implements GxComponent {
    * The current value of the gauge
    *
    */
-  @Prop() value: number = this.minValue;
+  @Prop() value: number;
 
   /**
    * This allows specifying the width of the circumference _(When gauge is circle type)_ and the width of the bar _(When gauge is Line type)_ in % relative the component size.
@@ -61,7 +61,7 @@ export class Gauge implements GxComponent {
 
   @State() maxValue: number;
 
-  @State() totalValues = this.minValue;
+  @State() totalValues = 0;
 
   private children = [];
 
@@ -86,9 +86,6 @@ export class Gauge implements GxComponent {
     });
   }
 
-  componentWillLoad() {
-    this.totalValues = 0;
-  }
   componentDidLoad() {
     this.element.setAttribute(
       "style",
@@ -97,7 +94,7 @@ export class Gauge implements GxComponent {
     );
   }
 
-  private calcThickness() {
+  private calcThickness(): number {
     return typeof this.thickness === "number" &&
       this.thickness > 0 &&
       this.thickness <= 100
@@ -113,6 +110,14 @@ export class Gauge implements GxComponent {
 
   private renderCircle(childRanges) {
     const svgRanges = [];
+    const GAUGE_CONTAINER_SIZE_THICKNESS_RATIO = 0.806;
+    const GAUGE_EXPONENT_RATIO = 0.9985;
+    const MARKER_SIZE_THICKNESS_RATIO = 0.74;
+    const GAUGE_CENTER_SIZE_THICKNESS_RATIO = 0.7935;
+    const CIRCLE_GAUGE_TEXT_SIZE_THICKNESS_RATIO = 0.75;
+    const ONE_PERCENT_OF_CIRCLE_DREGREE = 3.6;
+    const ONE_PERCENT_OF_MINIMUM_SIZE = this.minimumSize / 100;
+    const TWO_THIRDS_OF_ONE_PERCENT_OF_MINIMUM_SIZE = this.minimumSize / 150;
     let acumulation = 0;
 
     function calcPositionRange(preValue, valueParam) {
@@ -120,7 +125,7 @@ export class Gauge implements GxComponent {
       return valueParam + acumulation;
     }
 
-    function renderSvgCircle(currentChild, nextChild, component) {
+    function renderSvgCircle(currentChild, nextChild, component): HTMLElement {
       return (
         <circle
           r="39.59%"
@@ -139,6 +144,14 @@ export class Gauge implements GxComponent {
       );
     }
 
+    function calcSize(minSize: number, thickness: number): number {
+      return (
+        Math.pow(minSize, GAUGE_EXPONENT_RATIO) *
+          GAUGE_CONTAINER_SIZE_THICKNESS_RATIO +
+        (thickness * ONE_PERCENT_OF_MINIMUM_SIZE - ONE_PERCENT_OF_MINIMUM_SIZE)
+      );
+    }
+
     for (let i = childRanges.length - 1; i >= 0; i--) {
       svgRanges.splice(
         0,
@@ -146,15 +159,6 @@ export class Gauge implements GxComponent {
         renderSvgCircle(childRanges[i], childRanges[i + 1], this)
       );
     }
-
-    const GAUGE_CONTAINER_SIZE_THICKNESS_RATIO = 0.806;
-    const GAUGE_EXPONENT_RATIO = 0.9985;
-    const MARKER_SIZE_THICKNESS_RATIO = 0.74;
-    const GAUGE_CENTER_SIZE_THICKNESS_RATIO = 0.7935;
-    const CIRCLE_GAUGE_TEXT_SIZE_THICKNESS_RATIO = 0.75;
-    const ONE_PERCENT_OF_CIRCLE_DREGREE = 3.6;
-    const ONE_PERCENT_OF_MINIMUM_SIZE = this.minimumSize / 100;
-    const TWO_THIRDS_OF_ONE_PERCENT_OF_MINIMUM_SIZE = this.minimumSize / 150;
 
     return (
       <div
@@ -175,14 +179,8 @@ export class Gauge implements GxComponent {
               !this.styleShadow
                 ? "none"
                 : "",
-            height: `${Math.pow(this.minimumSize, GAUGE_EXPONENT_RATIO) *
-              GAUGE_CONTAINER_SIZE_THICKNESS_RATIO +
-              (this.calcThickness() * ONE_PERCENT_OF_MINIMUM_SIZE -
-                ONE_PERCENT_OF_MINIMUM_SIZE)}px`,
-            width: `${Math.pow(this.minimumSize, GAUGE_EXPONENT_RATIO) *
-              GAUGE_CONTAINER_SIZE_THICKNESS_RATIO +
-              (this.calcThickness() * ONE_PERCENT_OF_MINIMUM_SIZE -
-                ONE_PERCENT_OF_MINIMUM_SIZE)}px`
+            height: `${calcSize(this.minimumSize, this.calcThickness())}px`,
+            width: `${calcSize(this.minimumSize, this.calcThickness())}px`
           }}
         />
         {this.showValue ? (

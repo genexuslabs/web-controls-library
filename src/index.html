@@ -7,10 +7,196 @@
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
     />
     <title>GeneXus Web Controls Library test page</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.bundle.min.js"></script>
     <script type="module" src="/build/gx-web-controls.esm.js"></script>
     <script nomodule src="/build/gx-web-controls.js"></script>
+    <style>
+      #chartContainer {
+        width: 600px;
+        height: auto;
+      }
+    </style>
   </head>
   <body>
     <h1>Test page</h1>
+
+    <section class="actionsSection">
+      <div class="action">
+        <h3>Add range</h3>
+        <div class="buttonContainer">
+          <button class="MkM_Button">Add</button>
+          <span>+</span>
+        </div>
+      </div>
+      <div class="action">
+        <h3>Remove range</h3>
+        <div class="buttonContainer">
+          <button class="MkM_Button">Remove First Added</button>
+          <span>-</span>
+        </div>
+        <div class="buttonContainer">
+          <button class="MkM_Button">Remove Last Added</button>
+          <span>-</span>
+        </div>
+        <div class="buttonContainer">
+          <button class="MkM_Button">Remove Middle</button>
+          <span>-</span>
+        </div>
+      </div>
+    </section>
+    <main>
+      <gx-gauge
+        id="gxGauge"
+        type="circle"
+        min-value="0"
+        value="2"
+        show-value="true"
+        style-shadow="true"
+        thickness="50"
+        style="--component-height: 200px;--marker-border: 2px solid rgba(70, 70, 70, 0.8);--marker-color: rgba(250, 210, 250, 0);--circle-text-color: rgba(250, 250, 250, 0.5);"
+      >
+        <gx-gauge-range amount="2" color="red"></gx-gauge-range>
+        <gx-gauge-range amount="1" color="orange"></gx-gauge-range>
+        <gx-gauge-range amount="3" color="yellow"></gx-gauge-range>
+      </gx-gauge>
+      <gx-gauge
+        id="gxGauge2"
+        type="line"
+        min-value="0"
+        value="3"
+        show-value="true"
+        style-shadow="true"
+        thickness="20"
+        style="--component-height: 50px;--gauge-border-width: 3px;--center-circle-background-color: rgb(0, 92, 129);--marker-border: 2px solid rgba(70, 70, 70, 0.8);--marker-color: rgba(250, 210, 250, 0);--circle-text-color: rgba(250, 250, 250, 0.5);"
+      >
+        <gx-gauge-range amount="2" color="red"></gx-gauge-range>
+        <gx-gauge-range amount="1" color="orange"></gx-gauge-range>
+        <gx-gauge-range amount="3" color="yellow"></gx-gauge-range>
+      </gx-gauge>
+    </main>
+    <section id="chartContainer">
+      <canvas id="myChart"></canvas>
+      <script>
+        var ctx = document.getElementById("myChart").getContext("2d");
+        var myChart = new Chart(ctx, {
+          type: "doughnut",
+          data: {
+            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+            datasets: [
+              {
+                label: "# of Votes",
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                  "rgba(255, 99, 132, 0.2)",
+                  "rgba(54, 162, 235, 0.2)",
+                  "rgba(255, 206, 86, 0.2)",
+                  "rgba(75, 192, 192, 0.2)",
+                  "rgba(153, 102, 255, 0.2)",
+                  "rgba(255, 159, 64, 0.2)"
+                ],
+                borderColor: [
+                  "rgba(255, 99, 132, 1)",
+                  "rgba(54, 162, 235, 1)",
+                  "rgba(255, 206, 86, 1)",
+                  "rgba(75, 192, 192, 1)",
+                  "rgba(153, 102, 255, 1)",
+                  "rgba(255, 159, 64, 1)"
+                ],
+                borderWidth: 2
+              }
+            ]
+          },
+          options: {}
+        });
+      </script>
+    </section>
+
+    <!---->
   </body>
+  <script>
+    (() => {
+      const gauge1 = document.getElementById("gxGauge");
+      const gauge2 = document.getElementById("gxGauge2");
+      function addRange2(randomColor, randomRangeAmount) {
+        const gaugeRangeList2 = gauge2.querySelectorAll("gx-gauge-range");
+        const newGaugeRange = document.createElement("gx-gauge-range");
+        console.log(randomColor);
+
+        newGaugeRange.setAttribute("amount", randomRangeAmount);
+        newGaugeRange.setAttribute("color", randomColor);
+        gauge2.appendChild(newGaugeRange);
+      }
+      function addRange1() {
+        const gaugeRangeList1 = gauge1.querySelectorAll("gx-gauge-range");
+        const newGaugeRange = document.createElement("gx-gauge-range");
+        const randomColor = `rgba(${Math.round(
+          Math.random() * 255
+        )}, ${Math.round(Math.random() * 255)}, ${Math.round(
+          Math.random() * 255
+        )}, ${Math.random() * 1 + 0.2})`;
+        const randomRangeAmount = Math.round(Math.random() * 4) + 1;
+
+        newGaugeRange.setAttribute("amount", randomRangeAmount);
+        newGaugeRange.setAttribute("color", randomColor);
+        gauge1.appendChild(newGaugeRange);
+        addRange2(randomColor, randomRangeAmount);
+      }
+      function removeFirstRange() {
+        const gaugeRangeList1 = gauge1.querySelectorAll("gx-gauge-range");
+        const gaugeRangeList2 = gauge2.querySelectorAll("gx-gauge-range");
+        gauge1.removeChild(gaugeRangeList1[0]);
+        gauge2.removeChild(gaugeRangeList2[0]);
+      }
+      function removeLastRange() {
+        const gaugeRangeList1 = gauge1.querySelectorAll("gx-gauge-range");
+        const gaugeRangeList2 = gauge2.querySelectorAll("gx-gauge-range");
+        gauge1.removeChild(gaugeRangeList1[gaugeRangeList1.length - 1]);
+        gauge2.removeChild(gaugeRangeList2[gaugeRangeList2.length - 1]);
+      }
+      // var ctx = document.getElementById('myChart').getContext('2d');
+      // var myChart = new Chart(ctx, {
+      // 	type: 'doughnut',
+      // 	data: {
+      // 		labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      // 		datasets: [{
+      // 			label: '# of Votes',
+      // 			data: [12, 19, 3, 5, 2, 3],
+      // 			backgroundColor: [
+      // 				'rgba(255, 99, 132, 0.2)',
+      // 				'rgba(54, 162, 235, 0.2)',
+      // 				'rgba(255, 206, 86, 0.2)',
+      // 				'rgba(75, 192, 192, 0.2)',
+      // 				'rgba(153, 102, 255, 0.2)',
+      // 				'rgba(255, 159, 64, 0.2)'
+      // 			],
+      // 			borderColor: [
+      // 				'rgba(255, 99, 132, 1)',
+      // 				'rgba(54, 162, 235, 1)',
+      // 				'rgba(255, 206, 86, 1)',
+      // 				'rgba(75, 192, 192, 1)',
+      // 				'rgba(153, 102, 255, 1)',
+      // 				'rgba(255, 159, 64, 1)'
+      // 			],
+      // 			borderWidth: 2
+      // 		}]
+      // 	},
+      // 	options: {
+
+      // 	}
+      // });
+
+      document
+        .getElementsByClassName("MkM_Button")[0]
+        .addEventListener("click", addRange1);
+      document
+        .getElementsByClassName("MkM_Button")[1]
+        .addEventListener("click", removeFirstRange);
+      document
+        .getElementsByClassName("MkM_Button")[2]
+        .addEventListener("click", removeLastRange);
+      document
+        .getElementsByClassName("MkM_Button")[3]
+        .addEventListener("click", removeFirstRange);
+    })();
+  </script>
 </html>
