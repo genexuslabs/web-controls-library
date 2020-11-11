@@ -174,11 +174,6 @@ export class Gauge implements GxComponent {
         <div
           class="gaugeContainer"
           style={{
-            "box-shadow":
-              (this.minimumSize <= 300 && this.thickness <= 25) ||
-              !this.styleShadow
-                ? "none"
-                : "",
             height: `${calcSize(this.minimumSize, this.calcThickness())}px`,
             width: `${calcSize(this.minimumSize, this.calcThickness())}px`
           }}
@@ -203,15 +198,11 @@ export class Gauge implements GxComponent {
             <div
               class="indicator"
               style={{
-                "box-shadow":
-                  (this.minimumSize <= 300 && this.thickness <= 25) ||
-                  !this.styleShadow
-                    ? "none"
-                    : "",
                 height:
                   ONE_PERCENT_OF_MINIMUM_SIZE +
                   this.calcThickness() *
                     TWO_THIRDS_OF_ONE_PERCENT_OF_MINIMUM_SIZE +
+                  2 +
                   "px",
                 transform:
                   "translateY(-" +
@@ -228,11 +219,6 @@ export class Gauge implements GxComponent {
         <div
           class="gauge"
           style={{
-            "box-shadow":
-              (this.minimumSize <= 300 && this.thickness <= 25) ||
-              !this.styleShadow
-                ? "none"
-                : "",
             height: `${this.minimumSize * GAUGE_CENTER_SIZE_THICKNESS_RATIO -
               this.calcThickness() * ONE_PERCENT_OF_MINIMUM_SIZE}px`,
             width: `${this.minimumSize * GAUGE_CENTER_SIZE_THICKNESS_RATIO -

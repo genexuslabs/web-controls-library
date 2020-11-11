@@ -68,13 +68,22 @@
         min-value="0"
         value="2"
         show-value="true"
-        style-shadow="true"
-        thickness="50"
-        style="--component-height: 200px;--marker-border: 2px solid rgba(70, 70, 70, 0.8);--marker-color: rgba(250, 210, 250, 0);--circle-text-color: rgba(250, 250, 250, 0.5);"
+        thickness="20"
+        show
+        style="--component-height: 300px;--circle-text-color: rgba(250, 250, 250, 0.5);"
       >
-        <gx-gauge-range amount="2" color="red"></gx-gauge-range>
-        <gx-gauge-range amount="1" color="orange"></gx-gauge-range>
-        <gx-gauge-range amount="3" color="yellow"></gx-gauge-range>
+        <gx-gauge-range
+          amount="2"
+          color="rgba(256, 116, 86, 1)"
+        ></gx-gauge-range>
+        <gx-gauge-range
+          amount="1"
+          color="rgba(256, 216, 106, 1)"
+        ></gx-gauge-range>
+        <gx-gauge-range
+          amount="3"
+          color="rgba(166, 216, 116, 1)"
+        ></gx-gauge-range>
       </gx-gauge>
       <gx-gauge
         id="gxGauge2"
@@ -82,13 +91,21 @@
         min-value="0"
         value="2"
         show-value="true"
-        style-shadow="true"
-        thickness="20"
-        style="--component-height: 50px;--gauge-border-width: 3px;--center-circle-background-color: rgb(0, 92, 129);--marker-border: 2px solid rgba(70, 70, 70, 0.8);--marker-color: rgba(250, 210, 250, 0);--circle-text-color: rgba(250, 250, 250, 0.5);"
+        thickness="10"
+        style="--component-height: 50px;--circle-text-color: rgba(250, 250, 250, 0.5);"
       >
-        <gx-gauge-range amount="2" color="red"></gx-gauge-range>
-        <gx-gauge-range amount="1" color="orange"></gx-gauge-range>
-        <gx-gauge-range amount="3" color="yellow"></gx-gauge-range>
+        <gx-gauge-range
+          amount="2"
+          color="rgba(256, 116, 86, 1)"
+        ></gx-gauge-range>
+        <gx-gauge-range
+          amount="1"
+          color="rgba(256, 216, 106, 1)"
+        ></gx-gauge-range>
+        <gx-gauge-range
+          amount="3"
+          color="rgba(166, 216, 116, 1)"
+        ></gx-gauge-range>
       </gx-gauge>
     </main>
     <hr />
@@ -135,7 +152,7 @@
             stroke="black"
             stroke-width="0.2"
           />
-          <rect r="1" fill="rgba(0, 0, 0, 0.7)" width="100%" height="100%" />
+          <rect r="1" fill="rgba(0, 0, 0, 0.5)" width="100%" height="100%" />
           <circle id="circleTest0"></circle>
           <circle id="circleTest01"></circle>
           <circle id="circleTest1"></circle>
@@ -299,7 +316,7 @@
             stroke-width="0.5"
           />
 
-          <rect r="1" fill="rgba(0, 0, 0, 0.7)" width="100%" height="100%" />
+          <rect r="1" fill="rgba(0, 0, 0, 0.5)" width="100%" height="100%" />
           <line id="lineTest0" />
           <line id="lineTest01" />
 
