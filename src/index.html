@@ -23,7 +23,6 @@
       .svgContainer {
         width: 100%;
         height: 600px;
-        background-color: rgba(0, 0, 0, 0.659);
         margin-bottom: 20px;
         display: flex;
         justify-content: center;
@@ -104,94 +103,107 @@
           xmlns="http://www.w3.org/2000/svg"
           xlink="http://www.w3.org/1999/xlink"
         >
+          <line
+            x1="50"
+            y1="0"
+            x2="50"
+            y2="100"
+            stroke="black"
+            stroke-width="0.2"
+          />
+          <line
+            x1="0"
+            y1="50"
+            x2="100"
+            y2="50"
+            stroke="black"
+            stroke-width="0.2"
+          />
+          <line
+            x1="0"
+            y1="0"
+            x2="100"
+            y2="100"
+            stroke="black"
+            stroke-width="0.2"
+          />
+          <line
+            x1="100"
+            y1="0"
+            x2="0"
+            y2="100"
+            stroke="black"
+            stroke-width="0.2"
+          />
+          <rect r="1" fill="rgba(0, 0, 0, 0.7)" width="100%" height="100%" />
+          <circle id="circleTest0"></circle>
+          <circle id="circleTest01"></circle>
           <circle id="circleTest1"></circle>
-          <circle id="circleTest2" stroke-dasharray="138, 276"></circle>
-          <circle
-            r="34%"
-            cx="50%"
-            cy="50%"
-            stroke="rgba(216, 150, 116, 0.6)"
-            stroke-width="10%"
-            fill="none"
-          ></circle>
-          <circle
-            r="34%"
-            cx="50%"
-            cy="50%"
-            stroke="rgba(216, 150, 116, 1)"
-            stroke-linecap="round"
-            stroke-width="3%"
-            stroke-dasharray="138, 276"
-            fill="none"
-            transform="rotate(-90 50,50)"
-          ></circle>
-          <circle
-            r="24%"
-            cx="50%"
-            cy="50%"
-            stroke="rgba(216, 116, 116, 0.6)"
-            stroke-width="10%"
-            fill="none"
-          ></circle>
-          <circle
-            r="24%"
-            cx="50%"
-            cy="50%"
-            stroke="rgba(216, 116, 116, 1)"
-            stroke-linecap="round"
-            stroke-width="3%"
-            stroke-dasharray="138, 276"
-            fill="none"
-            transform="rotate(-90 50,50)"
-          ></circle>
+          <circle id="circleTest11"></circle>
+          <circle id="circleTest2"></circle>
+          <circle id="circleTest21"></circle>
+          <circle id="circleTest3"></circle>
+          <circle id="circleTest31"></circle>
+          <circle id="circleTest4"></circle>
+          <circle id="circleTest41"></circle>
         </svg>
         <script>
           (() => {
-            const circleRange = [
-              document.getElementById("circleTest1"),
-              document.getElementById("circleTest2")
+            const thickness = 20;
+            const data = [
+              { label: "data0", value: 50, color: "rgba(166, 216, 116, 1)" },
+              { label: "data1", value: 33, color: "rgba(256, 216, 106, 1)" },
+              { label: "data2", value: 66, color: "rgba(256, 156, 116, 1)" },
+              { label: "data3", value: 90, color: "rgba(256, 116, 86, 1)" },
+              { label: "data4", value: 95, color: "rgba(256, 46, 86, 1)" } /**/
             ];
+            const thicknessToUse = thickness / data.length;
             const setRangeProps = (
               elements,
               radius,
-              centerX,
-              centerY,
               lineColor,
               lineWidth,
               percentage
             ) => {
-              function setGlobalProps(
-                element,
-                radius,
-                centerX,
-                centerY,
-                lineColor
-              ) {
+              const circleLength = 2 * Math.PI * radius;
+              function setGlobalProps(element, radius, lineColor) {
                 element.setAttribute("r", radius);
-                element.setAttribute("cx", centerX);
-                element.setAttribute("cy", centerY);
+                element.setAttribute("cx", 50);
+                element.setAttribute("cy", 50);
                 element.setAttribute("stroke", lineColor);
                 element.setAttribute("fill", "none");
                 element.setAttribute("stroke-linecap", "round");
               }
 
-              setGlobalProps(elements[0], 44, 50, 50, "rgba(216, 216, 116, 1)");
+              setGlobalProps(elements[0], radius, lineColor);
               elements[0].setAttribute("style", "opacity: 0.5");
               elements[0].setAttribute("stroke-width", lineWidth);
 
-              setGlobalProps(elements[1], 44, 50, 50, "rgba(216, 216, 116, 1)");
+              setGlobalProps(elements[1], radius, lineColor);
               elements[1].setAttribute("stroke-width", lineWidth / 2.5);
               elements[1].setAttribute("transform", "rotate(-90 50,50)");
+              elements[1].setAttribute(
+                "stroke-dasharray",
+                `${circleLength * (percentage / 100)}, ${circleLength}`
+              );
             };
 
-            setRangeProps(
-              circleRange,
-              44,
-              50,
-              50,
-              "rgba(216, 216, 116, 1)",
-              10
-            );
+            for (let [indX, dataItem] of data.entries()) {
+              console.log(dataItem, indX);
+              const circleRange = [
+                document.getElementById(`circleTest${indX}`),
+                document.getElementById(`circleTest${indX}1`)
+              ];
+              const rangeRadius =
+                100 / 2 - thicknessToUse / 2 - thicknessToUse * indX;
+              setRangeProps(
+                circleRange,
+                rangeRadius,
+                dataItem.color,
+                thicknessToUse,
+                dataItem.value
+              );
+            }
           })();
         </script>
       </div>
@@ -205,7 +217,89 @@
           xmlns="http://www.w3.org/2000/svg"
           xlink="http://www.w3.org/1999/xlink"
         >
-          <rect r="1" fill="black" width="100%" height="100%" />
+          <line
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="100"
+            stroke="black"
+            stroke-width="0.5"
+          />
+          <line
+            x1="25"
+            y1="0"
+            x2="25"
+            y2="100"
+            stroke="black"
+            stroke-width="0.5"
+          />
+          <line
+            x1="50"
+            y1="0"
+            x2="50"
+            y2="100"
+            stroke="black"
+            stroke-width="0.5"
+          />
+          <line
+            x1="100"
+            y1="0"
+            x2="100"
+            y2="100"
+            stroke="black"
+            stroke-width="0.5"
+          />
+          <line
+            x1="75"
+            y1="0"
+            x2="75"
+            y2="100"
+            stroke="black"
+            stroke-width="0.5"
+          />
+
+          <line
+            y1="0"
+            x1="0"
+            y2="0"
+            x2="100"
+            stroke="black"
+            stroke-width="0.5"
+          />
+          <line
+            y1="25"
+            x1="0"
+            y2="25"
+            x2="100"
+            stroke="black"
+            stroke-width="0.5"
+          />
+          <line
+            y1="50"
+            x1="0"
+            y2="50"
+            x2="100"
+            stroke="black"
+            stroke-width="0.5"
+          />
+          <line
+            y1="100"
+            x1="0"
+            y2="100"
+            x2="100"
+            stroke="black"
+            stroke-width="0.5"
+          />
+          <line
+            y1="75"
+            x1="0"
+            y2="75"
+            x2="100"
+            stroke="black"
+            stroke-width="0.5"
+          />
+
+          <rect r="1" fill="rgba(0, 0, 0, 0.7)" width="100%" height="100%" />
           <line id="lineTest0" />
           <line id="lineTest01" />
 
@@ -215,11 +309,12 @@
           <line id="lineTest2" />
           <line id="lineTest21" />
 
-          <!--<line id="lineTest3"/>
-			<line id="lineTest31"/>
+          <line id="lineTest3" />
+          <line id="lineTest31" />
 
-			<line id="lineTest4"/>
-			<line id="lineTest41"/> -->
+          <line id="lineTest4" />
+          <line id="lineTest41" />
+          <!---->
         </svg>
 
         <script>
@@ -227,9 +322,9 @@
             const data = [
               { label: "data0", value: 50, color: "rgba(166, 216, 116, 1)" },
               { label: "data1", value: 33, color: "rgba(256, 216, 106, 1)" },
-              { label: "data2", value: 66, color: "rgba(256, 156, 116, 1)" } //,
-              // {"label": "data3", "value": 90, "color": "rgba(256, 116, 86, 1)"},
-              // {"label": "data4", "value": 100, "color": "rgba(256, 46, 86, 1)"}
+              { label: "data2", value: 66, color: "rgba(256, 156, 116, 1)" },
+              { label: "data3", value: 90, color: "rgba(256, 116, 86, 1)" },
+              { label: "data4", value: 95, color: "rgba(256, 46, 86, 1)" }
             ];
 
             const setRangeProps = (
@@ -265,7 +360,6 @@
             };
 
             for (let [indX, dataItem] of data.entries()) {
-              console.log(dataItem, indX);
               const lineRange = [
                 document.getElementById(`lineTest${indX}`),
                 document.getElementById(`lineTest${indX}1`)
