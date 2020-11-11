@@ -12,13 +12,27 @@
     <script nomodule src="/build/gx-web-controls.js"></script>
     <style>
       #chartContainer {
-        width: 600px;
+        width: 100%;
         height: auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-wrap: wrap;
       }
-      .svgContainer1 {
-        width: 200px;
-        height: 200px;
+      .svgContainer {
+        width: 100%;
+        height: 600px;
+        background-color: rgba(0, 0, 0, 0.659);
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
       }
+      /* .svgContainer svg{
+        background-color: rgb(47, 0, 255);
+      } */
     </style>
   </head>
   <body>
@@ -80,41 +94,23 @@
     </main>
     <hr />
     <section id="chartContainer">
-      <div class="svgContainer1">
+      <div class="svgContainer">
+        Circles
         <svg
+          id="circleGauge"
           width="100%"
           height="100%"
           viewBox="0 0 100 100"
           xmlns="http://www.w3.org/2000/svg"
           xlink="http://www.w3.org/1999/xlink"
         >
-          <!-- <g>
-                    
-                </g> -->
-          <circle
-            r="44%"
-            cx="50%"
-            cy="50%"
-            stroke="rgba(216, 216, 116, 0.5)"
-            stroke-width="10%"
-            fill="none"
-          ></circle>
-          <circle
-            r="44%"
-            cx="50%"
-            cy="50%"
-            stroke="rgba(216, 216, 116, 1)"
-            stroke-linecap="round"
-            stroke-width="5%"
-            stroke-dasharray="138, 276"
-            fill="none"
-            transform="rotate(-90 50,50)"
-          ></circle>
+          <circle id="circleTest1"></circle>
+          <circle id="circleTest2" stroke-dasharray="138, 276"></circle>
           <circle
             r="34%"
             cx="50%"
             cy="50%"
-            stroke="rgba(216, 150, 116, 0.5)"
+            stroke="rgba(216, 150, 116, 0.6)"
             stroke-width="10%"
             fill="none"
           ></circle>
@@ -124,7 +120,7 @@
             cy="50%"
             stroke="rgba(216, 150, 116, 1)"
             stroke-linecap="round"
-            stroke-width="5%"
+            stroke-width="3%"
             stroke-dasharray="138, 276"
             fill="none"
             transform="rotate(-90 50,50)"
@@ -133,7 +129,7 @@
             r="24%"
             cx="50%"
             cy="50%"
-            stroke="rgba(216, 116, 116, 0.5)"
+            stroke="rgba(216, 116, 116, 0.6)"
             stroke-width="10%"
             fill="none"
           ></circle>
@@ -143,12 +139,264 @@
             cy="50%"
             stroke="rgba(216, 116, 116, 1)"
             stroke-linecap="round"
-            stroke-width="5%"
+            stroke-width="3%"
             stroke-dasharray="138, 276"
             fill="none"
             transform="rotate(-90 50,50)"
           ></circle>
         </svg>
+        <script>
+          (() => {
+            const circleRange = [
+              document.getElementById("circleTest1"),
+              document.getElementById("circleTest2")
+            ];
+            const setRangeProps = (
+              elements,
+              radius,
+              centerX,
+              centerY,
+              lineColor,
+              lineWidth,
+              percentage
+            ) => {
+              function setGlobalProps(
+                element,
+                radius,
+                centerX,
+                centerY,
+                lineColor
+              ) {
+                element.setAttribute("r", radius);
+                element.setAttribute("cx", centerX);
+                element.setAttribute("cy", centerY);
+                element.setAttribute("stroke", lineColor);
+                element.setAttribute("fill", "none");
+                element.setAttribute("stroke-linecap", "round");
+              }
+
+              setGlobalProps(elements[0], 44, 50, 50, "rgba(216, 216, 116, 1)");
+              elements[0].setAttribute("style", "opacity: 0.5");
+              elements[0].setAttribute("stroke-width", lineWidth);
+
+              setGlobalProps(elements[1], 44, 50, 50, "rgba(216, 216, 116, 1)");
+              elements[1].setAttribute("stroke-width", lineWidth / 2.5);
+              elements[1].setAttribute("transform", "rotate(-90 50,50)");
+            };
+
+            setRangeProps(
+              circleRange,
+              44,
+              50,
+              50,
+              "rgba(216, 216, 116, 1)",
+              10
+            );
+          })();
+        </script>
+      </div>
+
+      <div class="svgContainer">
+        Line
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+          xlink="http://www.w3.org/1999/xlink"
+        >
+          <rect r="1" fill="black" width="100%" height="100%" />
+          <line id="lineTest0" />
+          <line id="lineTest01" />
+
+          <line id="lineTest1" />
+          <line id="lineTest11" />
+
+          <line id="lineTest2" />
+          <line id="lineTest21" />
+
+          <!--<line id="lineTest3"/>
+			<line id="lineTest31"/>
+
+			<line id="lineTest4"/>
+			<line id="lineTest41"/> -->
+        </svg>
+
+        <script>
+          (() => {
+            const data = [
+              { label: "data0", value: 50, color: "rgba(166, 216, 116, 1)" },
+              { label: "data1", value: 33, color: "rgba(256, 216, 106, 1)" },
+              { label: "data2", value: 66, color: "rgba(256, 156, 116, 1)" } //,
+              // {"label": "data3", "value": 90, "color": "rgba(256, 116, 86, 1)"},
+              // {"label": "data4", "value": 100, "color": "rgba(256, 46, 86, 1)"}
+            ];
+
+            const setRangeProps = (
+              elements,
+              startX,
+              startY,
+              lineColor,
+              lineWidth,
+              percentage
+            ) => {
+              const validPercentage =
+                percentage >= 100 ? 100 : percentage <= 0 ? 0 : percentage;
+              const sizeFix = {
+                x: lineWidth / (lineWidth / 4.5),
+                y: lineWidth / 2
+              };
+              function setGlobalProps(element, startX, startY, lineColor) {
+                element.setAttribute("x1", startX + sizeFix.x); // 15 > 3.333333333333333333
+                element.setAttribute("y1", startY); //+ sizeFix.y);
+                element.setAttribute("y2", startY); //+ sizeFix.y);
+                element.setAttribute("stroke", lineColor);
+                element.setAttribute("stroke-linecap", "round");
+              }
+
+              setGlobalProps(elements[0], startX, startY, lineColor);
+              elements[0].setAttribute("style", "opacity: 0.5");
+              elements[0].setAttribute("stroke-width", lineWidth);
+              elements[0].setAttribute("x2", 100 - sizeFix.x);
+
+              setGlobalProps(elements[1], startX, startY, lineColor);
+              elements[1].setAttribute("stroke-width", lineWidth / 3);
+              elements[1].setAttribute("x2", validPercentage - sizeFix.x);
+            };
+
+            for (let [indX, dataItem] of data.entries()) {
+              console.log(dataItem, indX);
+              const lineRange = [
+                document.getElementById(`lineTest${indX}`),
+                document.getElementById(`lineTest${indX}1`)
+              ];
+              setRangeProps(
+                lineRange,
+                0,
+                (100 / (data.length + 1)) * (indX + 1),
+                dataItem.color,
+                5,
+                dataItem.value
+              );
+            }
+          })();
+        </script>
+      </div>
+
+      <div class="svgContainer">
+        Path
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+          xlink="http://www.w3.org/1999/xlink"
+        >
+          <path
+            id="arc1"
+            fill="none"
+            stroke="rgba(216, 216, 116, 0.6)"
+            stroke-width="10"
+          />
+          <path
+            id="arc2"
+            fill="none"
+            stroke="rgba(216, 216, 116, 1)"
+            stroke-width="5"
+            stroke-linecap="round"
+          />
+
+          <path
+            id="arc21"
+            fill="none"
+            stroke="rgba(216, 150, 116, 0.6)"
+            stroke-width="10"
+          />
+          <path
+            id="arc22"
+            fill="none"
+            stroke="rgba(216, 150, 116, 1)"
+            stroke-width="5"
+            stroke-linecap="round"
+          />
+
+          <path
+            id="arc31"
+            fill="none"
+            stroke="rgba(216, 116, 116, 0.6)"
+            stroke-width="10"
+          />
+          <path
+            id="arc32"
+            fill="none"
+            stroke="rgba(216, 116, 116, 1)"
+            stroke-width="5"
+            stroke-linecap="round"
+          />
+        </svg>
+
+        <script>
+          (() => {
+            function polarToCartesian(
+              centerX,
+              centerY,
+              radius,
+              angleInDegrees
+            ) {
+              const validAngle =
+                angleInDegrees >= 360
+                  ? 359.999
+                  : angleInDegrees <= 0
+                  ? 0
+                  : angleInDegrees;
+              var angleInRadians = ((validAngle - 90) * Math.PI) / 180.0;
+
+              return {
+                x: centerX + radius * Math.cos(angleInRadians),
+                y: centerY + radius * Math.sin(angleInRadians)
+              };
+            }
+
+            function describeArc(x, y, radius, startAngle, endAngle) {
+              var start = polarToCartesian(x, y, radius, endAngle);
+              var end = polarToCartesian(x, y, radius, startAngle);
+              var largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+              var d = [
+                "M",
+                start.x,
+                start.y,
+                "A",
+                radius,
+                radius,
+                0,
+                largeArcFlag,
+                0,
+                end.x,
+                end.y
+              ].join(" ");
+
+              return d;
+            }
+            document
+              .getElementById("arc1")
+              .setAttribute("d", describeArc(50, 50, 40, 0, 360));
+            document
+              .getElementById("arc2")
+              .setAttribute("d", describeArc(50, 50, 40, 0, 180));
+            document
+              .getElementById("arc21")
+              .setAttribute("d", describeArc(50, 50, 30, 0, 360));
+            document
+              .getElementById("arc22")
+              .setAttribute("d", describeArc(50, 50, 30, 0, 240));
+            document
+              .getElementById("arc31")
+              .setAttribute("d", describeArc(50, 50, 20, 0, 360));
+            document
+              .getElementById("arc32")
+              .setAttribute("d", describeArc(50, 50, 20, 0, 180));
+          })();
+        </script>
       </div>
     </section>
 
