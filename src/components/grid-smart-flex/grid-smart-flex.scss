@@ -1,0 +1,103 @@
+@import "../grid-base/grid-base.scss";
+@import "_grid-smart-flex-mixins.scss";
+
+gx-grid-smart-flex {
+  /**
+   * @prop --gx-grid-flex-items: Number of Columns or Rows to be shown in the Main axis direction.
+   */
+  --gx-grid-flex-items: 1;
+
+  /**
+   * @prop --gx-grid-flex-min-size: This attribute value is used to determine the number of columns
+    in a Smart Grid with Multiple by Size in Items Layout Mode.
+    The grid will fit as many columns as possible with at least this width, 0 means to use all width.
+   */
+  --gx-grid-flex-min-size: 0;
+  /**
+   * @prop --gx-grid-flex-max-size: This attribute value is used to determine the number of columns in a 
+    Smart Grid with Multiple by Size in Items Layout Mode and Vertical scroll direction. 
+    The width of the grid items cannot be greater than this maximum. 0 means no maximum.
+   */
+  --gx-grid-flex-max-size: 0;
+
+  min-height: 100%;
+
+  @include visibility(flex);
+
+  & > [slot="grid-content"] {
+    & > gx-grid-smart-flex-item {
+      box-sizing: border-box;
+    }
+  }
+
+  &[snap-to-grid][direction="vertical"] > [slot="grid-content"] {
+    scroll-snap-type: y mandatory;
+    & > gx-grid-smart-flex-item {
+      scroll-snap-align: start;
+    }
+  }
+
+  &[snap-to-grid][direction="horizontal"] > [slot="grid-content"] {
+    scroll-snap-type: x mandatory;
+    & > gx-grid-smart-flex-item {
+      scroll-snap-align: start;
+    }
+  }
+}
+
+/*
+  Vertical Orientation
+*/
+gx-grid-smart-flex[direction="vertical"][item-layout-mode="single"] {
+  & > [slot="grid-content"] {
+    @include gx-grid-smart-flex-item(column, nowrap, 0, 0, auto);
+  }
+}
+
+gx-grid-smart-flex[direction="vertical"][item-layout-mode="mbyq"] {
+  & > [slot="grid-content"] {
+    @include gx-grid-smart-flex-item(row, wrap, 0, 0);
+  }
+}
+
+gx-grid-smart-flex[direction="vertical"][item-layout-mode="mbys"] {
+  justify-content: space-evenly;
+
+  & > [slot="grid-content"] {
+    @include gx-grid-smart-flex-item(row, wrap, 1, 1, --gx-grid-flex-min-size);
+    max-width: --gx-grid-flex-max-size;
+  }
+}
+
+/*
+  Horizontal Orientation
+*/
+
+gx-grid-smart-flex[direction="horizontal"] > [slot="grid-content"] {
+  overflow-x: scroll;
+}
+
+gx-grid-smart-flex[direction="horizontal"][item-layout-mode="single"] {
+  & > [slot="grid-content"] {
+    @include gx-grid-smart-flex-item(row, nowrap, 0, 0, auto);
+  }
+}
+
+gx-grid-smart-flex[direction="horizontal"][item-layout-mode="mbyq"] {
+  & > [slot="grid-content"] {
+    @include gx-grid-smart-flex-item(column, wrap, 0, 0);
+  }
+}
+
+gx-grid-smart-flex[direction="horizontal"][item-layout-mode="mbys"] {
+  justify-content: space-evenly;
+
+  & > [slot="grid-content"] {
+    @include gx-grid-smart-flex-item(row, wrap, 1, 0);
+    max-height: --gx-grid-flex-max-size;
+  }
+}
+
+gx-grid-smart-flex-item {
+  display: inherit;
+}

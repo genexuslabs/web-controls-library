@@ -37,6 +37,7 @@ export const config: Config = {
       components: [
         "gx-grid-fs",
         "gx-grid-smart",
+        "gx-grid-smart-flex",
         "gx-grid-infinite-scroll",
         "gx-grid-infinite-scroll-content",
         "gx-grid-empty-indicator"
