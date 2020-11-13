@@ -5,7 +5,7 @@ import {
   EventEmitter,
   Listen,
   Prop,
-  State,
+  // State,
   h
 } from "@stencil/core";
 
@@ -59,9 +59,11 @@ export class Gauge implements GxComponent {
    */
   @Prop() thickness = 10;
 
-  @State() maxValue: number;
+  @Prop() maxValue = 100;
 
-  @State() totalValues = 0;
+  // private totalValues = 0;
+
+  private rangesValuesAcumul = 0;
 
   private children = [];
 
@@ -70,19 +72,13 @@ export class Gauge implements GxComponent {
   @Listen("gxGaugeRangeDidLoad")
   onGaugeRangeDidLoad({ detail: childRange }) {
     this.children = [...this.children, childRange];
-    this.totalValues += childRange.amount;
     childRange.element.addEventListener("gxGaugeRangeDidUnload", () => {
       const index = this.children.findIndex(x => x === childRange);
       this.children.splice(index, 1);
-      this.totalValues -= childRange.amount;
     });
     childRange.element.addEventListener("gxGaugeRangeDidUpdate", () => {
       const index = this.children.findIndex(x => x === childRange);
       this.children.splice(index, 1, childRange);
-      this.totalValues = 0;
-      for (const childInstance of this.children) {
-        this.totalValues += childInstance.amount;
-      }
     });
   }
 
@@ -112,34 +108,30 @@ export class Gauge implements GxComponent {
     const svgRanges = [];
     const GAUGE_CONTAINER_SIZE_THICKNESS_RATIO = 0.806;
     const GAUGE_EXPONENT_RATIO = 0.9985;
-    const MARKER_SIZE_THICKNESS_RATIO = 0.74;
     const GAUGE_CENTER_SIZE_THICKNESS_RATIO = 0.7935;
     const CIRCLE_GAUGE_TEXT_SIZE_THICKNESS_RATIO = 0.75;
     const ONE_PERCENT_OF_CIRCLE_DREGREE = 3.6;
     const ONE_PERCENT_OF_MINIMUM_SIZE = this.minimumSize / 100;
-    const TWO_THIRDS_OF_ONE_PERCENT_OF_MINIMUM_SIZE = this.minimumSize / 150;
-    let acumulation = 0;
 
-    function calcPositionRange(preValue, valueParam) {
-      acumulation += preValue;
-      return valueParam + acumulation;
-    }
-
-    function renderSvgCircle(currentChild, nextChild, component): HTMLElement {
+    function renderSvgCircle(currentChild, position, component): HTMLElement {
+      const FULL_CIRCLE_RADIO = 100 / 2;
+      const FULL_CIRCLE_RADIANS = 2 * Math.PI;
+      const ROTATION_FIX = -90;
+      const radius = FULL_CIRCLE_RADIO - component.thickness / 2;
+      const circleLength = FULL_CIRCLE_RADIANS * radius;
+      const valuePercentage = (100 * currentChild.amount) / component.maxValue;
       return (
         <circle
-          r="39.59%"
+          r={radius} //"39.59%"
           cx="50%"
           cy="50%"
           stroke={currentChild.color}
-          stroke-dasharray={`${(2.488 / (component.totalValues / 100)) *
-            calcPositionRange(
-              nextChild ? parseInt(nextChild.getAttribute("amount"), 10) : 0,
-              parseInt(currentChild.getAttribute("amount"), 10)
-            )}, 248.16`}
+          stroke-dasharray={`${circleLength *
+            (valuePercentage / 100)}, ${circleLength}`}
           fill="none"
+          transform={`rotate(${position + ROTATION_FIX} 50,50)`}
           data-amount={currentChild.amount}
-          stroke-width={`${component.calcThickness()}%`}
+          stroke-width={`${component.thickness}%`}
         />
       );
     }
@@ -153,10 +145,15 @@ export class Gauge implements GxComponent {
     }
 
     for (let i = childRanges.length - 1; i >= 0; i--) {
+      const rangeValuePercentage =
+        (100 * childRanges[i].amount) / this.maxValue;
+      const positionInGauge = 360 * (this.rangesValuesAcumul / 100);
+      console.log(positionInGauge, this.rangesValuesAcumul);
+      this.rangesValuesAcumul += rangeValuePercentage;
       svgRanges.splice(
         0,
         0,
-        renderSvgCircle(childRanges[i], childRanges[i + 1], this)
+        renderSvgCircle(childRanges[i], positionInGauge, this)
       );
     }
 
@@ -169,6 +166,39 @@ export class Gauge implements GxComponent {
         }}
       >
         <svg width="100%" height="100%" viewBox="0 0 100 100">
+          {/* <line
+            x1="50"
+            y1="0"
+            x2="50"
+            y2="100"
+            stroke="black"
+            stroke-width="0.2"
+          />
+          <line
+            x1="0"
+            y1="50"
+            x2="100"
+            y2="50"
+            stroke="black"
+            stroke-width="0.2"
+          />
+          <line
+            x1="0"
+            y1="0"
+            x2="100"
+            y2="100"
+            stroke="black"
+            stroke-width="0.2"
+          />
+          <line
+            x1="100"
+            y1="0"
+            x2="0"
+            y2="100"
+            stroke="black"
+            stroke-width="0.2"
+          />
+          <rect r="1" fill="rgba(0, 0, 0, 0.5)" width="100%" height="100%" /> */}
           {svgRanges}
         </svg>
         <div
@@ -183,9 +213,8 @@ export class Gauge implements GxComponent {
             class="marker"
             style={{
               display: this.showValue ? "" : "none",
-              height: `${Math.pow(this.minimumSize, GAUGE_EXPONENT_RATIO) *
-                MARKER_SIZE_THICKNESS_RATIO -
-                this.calcThickness() * ONE_PERCENT_OF_MINIMUM_SIZE}px`,
+              height: `${this.minimumSize}px`,
+              width: `${this.thickness / 8}px`,
               transform:
                 this.calcPercentage() >= 100
                   ? "rotate(359deg)"
@@ -198,18 +227,7 @@ export class Gauge implements GxComponent {
             <div
               class="indicator"
               style={{
-                height:
-                  ONE_PERCENT_OF_MINIMUM_SIZE +
-                  this.calcThickness() *
-                    TWO_THIRDS_OF_ONE_PERCENT_OF_MINIMUM_SIZE +
-                  2 +
-                  "px",
-                transform:
-                  "translateY(-" +
-                  (ONE_PERCENT_OF_MINIMUM_SIZE +
-                    this.calcThickness() *
-                      TWO_THIRDS_OF_ONE_PERCENT_OF_MINIMUM_SIZE) +
-                  "px)"
+                height: `${this.thickness * 1.5}px`
               }}
             />
           </span>
@@ -234,10 +252,7 @@ export class Gauge implements GxComponent {
                   8}px`
               }}
             >
-              {`${Math.min(
-                Math.max(Math.round(this.calcPercentage()), 0),
-                100
-              )}%`}
+              {this.value}
             </div>
           ) : (
             ""
@@ -376,8 +391,8 @@ export class Gauge implements GxComponent {
     const childRanges = Array.from(
       this.element.querySelectorAll("gx-gauge-range")
     );
-    this.maxValue = this.totalValues + this.minValue;
-    this.totalValues = this.maxValue - this.minValue;
+    // this.maxValue = this.totalValues + this.minValue;
+    // this.totalValues = this.maxValue - this.minValue;
     if (this.type === "circle") {
       return this.renderCircle(childRanges);
     } else if (this.type === "line") {

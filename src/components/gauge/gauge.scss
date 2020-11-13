@@ -170,7 +170,6 @@ gx-gauge {
       position: absolute;
     }
     svg {
-      transform: rotate(-90deg);
       z-index: -1;
     }
     .gauge {
@@ -188,11 +187,12 @@ gx-gauge {
     span.marker {
       transition: 0.4s ease;
       position: absolute;
-      width: 2px;
       .indicator {
         transition: 0.4s ease;
         content: "";
-        border-radius: 50%;
+        border: 2px solid var(--marker-backgorund);
+        transform: translateX(-1px);
+        border-radius: 20px 20px 1000% 1000%;
         display: block;
         background-color: var(--marker-backgorund);
       }
