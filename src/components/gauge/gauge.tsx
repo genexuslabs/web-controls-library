@@ -5,7 +5,7 @@ import {
   EventEmitter,
   Listen,
   Prop,
-  // State,
+  State,
   h
 } from "@stencil/core";
 
@@ -65,20 +65,28 @@ export class Gauge implements GxComponent {
 
   private rangesValuesAcumul = 0;
 
-  private children = [];
+  @State() rangesChildren = [];
 
   private minimumSize: number;
 
   @Listen("gxGaugeRangeDidLoad")
   onGaugeRangeDidLoad({ detail: childRange }) {
-    this.children = [...this.children, childRange];
+    this.rangesChildren = [...this.rangesChildren, childRange];
+    // this.rangesValuesAcumul += childRange.amount;
     childRange.element.addEventListener("gxGaugeRangeDidUnload", () => {
-      const index = this.children.findIndex(x => x === childRange);
-      this.children.splice(index, 1);
+      const index = this.rangesChildren.findIndex(x => x === childRange);
+      console.log("removed");
+      this.rangesChildren.splice(index, 1);
+      console.log(this.rangesChildren);
+      //  this.rangesValuesAcumul -= childRange.amount;
     });
     childRange.element.addEventListener("gxGaugeRangeDidUpdate", () => {
-      const index = this.children.findIndex(x => x === childRange);
-      this.children.splice(index, 1, childRange);
+      const index = this.rangesChildren.findIndex(x => x === childRange);
+      this.rangesChildren.splice(index, 1, childRange);
+      // this.rangesValuesAcumul = 0
+      //   for (const childInstance of this.rangesChildren) {
+      //     this.rangesValuesAcumul += childInstance.amount;
+      //   }
     });
   }
 
@@ -105,6 +113,8 @@ export class Gauge implements GxComponent {
   }
 
   private renderCircle(childRanges) {
+    console.log("rendering circle gauge");
+    console.log(this.rangesChildren);
     const FULL_CIRCLE_RADIO = 100 / 2;
     const svgRanges = [];
     const ONE_PERCENT_OF_CIRCLE_DREGREE = 3.6;
@@ -130,7 +140,7 @@ export class Gauge implements GxComponent {
         />
       );
     }
-
+    this.rangesValuesAcumul = 0;
     for (let i = childRanges.length - 1; i >= 0; i--) {
       const rangeValuePercentage =
         (100 * childRanges[i].amount) / this.maxValue;
@@ -242,7 +252,7 @@ export class Gauge implements GxComponent {
                 "font-size": `${this.minimumSize / 8}px`
               }}
             >
-              {this.value}
+              {`${this.value} / ${this.maxValue}`}
             </div>
           ) : (
             ""
