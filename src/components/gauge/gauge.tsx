@@ -105,19 +105,14 @@ export class Gauge implements GxComponent {
   }
 
   private renderCircle(childRanges) {
+    const FULL_CIRCLE_RADIO = 100 / 2;
     const svgRanges = [];
-    const GAUGE_CONTAINER_SIZE_THICKNESS_RATIO = 0.806;
-    const GAUGE_EXPONENT_RATIO = 0.9985;
-    const GAUGE_CENTER_SIZE_THICKNESS_RATIO = 0.7935;
-    const CIRCLE_GAUGE_TEXT_SIZE_THICKNESS_RATIO = 0.75;
     const ONE_PERCENT_OF_CIRCLE_DREGREE = 3.6;
-    const ONE_PERCENT_OF_MINIMUM_SIZE = this.minimumSize / 100;
+    const radius = FULL_CIRCLE_RADIO - this.thickness / 2;
 
     function renderSvgCircle(currentChild, position, component): HTMLElement {
-      const FULL_CIRCLE_RADIO = 100 / 2;
       const FULL_CIRCLE_RADIANS = 2 * Math.PI;
       const ROTATION_FIX = -90;
-      const radius = FULL_CIRCLE_RADIO - component.thickness / 2;
       const circleLength = FULL_CIRCLE_RADIANS * radius;
       const valuePercentage = (100 * currentChild.amount) / component.maxValue;
       return (
@@ -133,14 +128,6 @@ export class Gauge implements GxComponent {
           data-amount={currentChild.amount}
           stroke-width={`${component.thickness}%`}
         />
-      );
-    }
-
-    function calcSize(minSize: number, thickness: number): number {
-      return (
-        Math.pow(minSize, GAUGE_EXPONENT_RATIO) *
-          GAUGE_CONTAINER_SIZE_THICKNESS_RATIO +
-        (thickness * ONE_PERCENT_OF_MINIMUM_SIZE - ONE_PERCENT_OF_MINIMUM_SIZE)
       );
     }
 
@@ -199,13 +186,21 @@ export class Gauge implements GxComponent {
             stroke-width="0.2"
           />
           <rect r="1" fill="rgba(0, 0, 0, 0.5)" width="100%" height="100%" /> */}
+          <circle
+            r={radius}
+            cx="50%"
+            cy="50%"
+            stroke={"rgba(0, 0, 0, 0.2)"}
+            fill="none"
+            stroke-width={`${this.thickness / 2}%`}
+          />
           {svgRanges}
         </svg>
         <div
           class="gaugeContainer"
           style={{
-            height: `${calcSize(this.minimumSize, this.calcThickness())}px`,
-            width: `${calcSize(this.minimumSize, this.calcThickness())}px`
+            height: `${this.minimumSize}px`,
+            width: `${this.minimumSize}px`
           }}
         />
         {this.showValue ? (
@@ -217,7 +212,7 @@ export class Gauge implements GxComponent {
               width: `${this.thickness / 8}px`,
               transform:
                 this.calcPercentage() >= 100
-                  ? "rotate(359deg)"
+                  ? "rotate(359.9deg)"
                   : this.calcPercentage() > 0
                   ? `rotate(${ONE_PERCENT_OF_CIRCLE_DREGREE *
                       this.calcPercentage()}deg)`
@@ -227,7 +222,7 @@ export class Gauge implements GxComponent {
             <div
               class="indicator"
               style={{
-                height: `${this.thickness * 1.5}px`
+                height: `${(this.minimumSize * this.thickness) / 100}px`
               }}
             />
           </span>
@@ -237,19 +232,14 @@ export class Gauge implements GxComponent {
         <div
           class="gauge"
           style={{
-            height: `${this.minimumSize * GAUGE_CENTER_SIZE_THICKNESS_RATIO -
-              this.calcThickness() * ONE_PERCENT_OF_MINIMUM_SIZE}px`,
-            width: `${this.minimumSize * GAUGE_CENTER_SIZE_THICKNESS_RATIO -
-              this.calcThickness() * ONE_PERCENT_OF_MINIMUM_SIZE}px`
+            height: `${this.minimumSize}px`,
+            width: `${this.minimumSize}px`
           }}
         >
           {this.showValue ? (
             <div
               style={{
-                "font-size": `${(this.minimumSize *
-                  CIRCLE_GAUGE_TEXT_SIZE_THICKNESS_RATIO -
-                  (this.calcThickness() / 2) * ONE_PERCENT_OF_MINIMUM_SIZE) /
-                  8}px`
+                "font-size": `${this.minimumSize / 8}px`
               }}
             >
               {this.value}
