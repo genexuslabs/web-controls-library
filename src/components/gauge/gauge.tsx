@@ -54,39 +54,46 @@ export class Gauge implements GxComponent {
   @Prop() value: number;
 
   /**
-   * This allows specifying the width of the circumference _(When gauge is circle type)_ and the width of the bar _(When gauge is Line type)_ in % relative the component size.
+   * Allows specify the width of the circumference _(When gauge is circle type)_ or the width of the bar _(When gauge is Line type)_ in % relative the component size.
    *
    */
   @Prop() thickness = 10;
 
-  @Prop() maxValue = 100;
+  /**
+   * The maximum value of the gauge. _Calculated by Default_
+   */
+  @Prop() maxValue: number;
+
+  @State() rangesChildren = [];
 
   // private totalValues = 0;
 
   private rangesValuesAcumul = 0;
 
-  @State() rangesChildren = [];
+  private maxValueAux = 0;
 
   private minimumSize: number;
 
   @Listen("gxGaugeRangeDidLoad")
   onGaugeRangeDidLoad({ detail: childRange }) {
     this.rangesChildren = [...this.rangesChildren, childRange];
-    // this.rangesValuesAcumul += childRange.amount;
+    this.maxValueAux += childRange.amount;
     childRange.element.addEventListener("gxGaugeRangeDidUnload", () => {
-      const index = this.rangesChildren.findIndex(x => x === childRange);
-      console.log("removed");
-      this.rangesChildren.splice(index, 1);
+      this.rangesChildren = this.rangesChildren.filter(
+        elementToSave => elementToSave != childRange
+      );
       console.log(this.rangesChildren);
-      //  this.rangesValuesAcumul -= childRange.amount;
+      this.maxValueAux -= childRange.amount;
     });
     childRange.element.addEventListener("gxGaugeRangeDidUpdate", () => {
-      const index = this.rangesChildren.findIndex(x => x === childRange);
+      const index = this.rangesChildren.findIndex(
+        elementFinding => elementFinding === childRange
+      );
       this.rangesChildren.splice(index, 1, childRange);
-      // this.rangesValuesAcumul = 0
-      //   for (const childInstance of this.rangesChildren) {
-      //     this.rangesValuesAcumul += childInstance.amount;
-      //   }
+      this.maxValueAux = 0;
+      for (const childInstance of this.rangesChildren) {
+        this.maxValueAux += childInstance.amount;
+      }
     });
   }
 
@@ -139,6 +146,14 @@ export class Gauge implements GxComponent {
           stroke-width={`${component.thickness}%`}
         />
       );
+    }
+
+    this.maxValueAux = 0;
+    for (let i = childRanges.length - 1; i >= 0; i--) {
+      this.maxValueAux += childRanges[i].amount;
+    }
+    if (this.maxValue == undefined) {
+      this.maxValue = this.maxValueAux;
     }
     this.rangesValuesAcumul = 0;
     for (let i = childRanges.length - 1; i >= 0; i--) {
@@ -384,6 +399,7 @@ export class Gauge implements GxComponent {
   }
 
   render() {
+    console.log("this.maxValue", this.maxValue);
     this.minimumSize =
       this.element.offsetHeight > this.element.offsetWidth
         ? this.element.offsetWidth
