@@ -23,7 +23,7 @@
       .svgContainer {
         width: 100%;
         height: 600px;
-        margin-bottom: 20px;
+        /* margin-bottom: 20px;*/
         display: flex;
         justify-content: center;
         align-items: center;
@@ -87,6 +87,32 @@
         ></gx-gauge-range
         ><!-- -->
       </gx-gauge>
+      <br />
+      <gx-gauge
+        id="gxGauge"
+        type="circle"
+        min-value="0"
+        value="50"
+        show-value="true"
+        thickness="5"
+        show
+        style="--component-height: 200px;--circle-text-color: rgba(250, 250, 250, 0.5);"
+      >
+        <gx-gauge-range
+          amount="50"
+          color="rgba(256, 116, 86, 1)"
+        ></gx-gauge-range>
+        <gx-gauge-range
+          amount="25"
+          color="rgba(256, 216, 106, 1)"
+        ></gx-gauge-range>
+        <gx-gauge-range
+          amount="25"
+          color="rgba(166, 216, 116, 1)"
+        ></gx-gauge-range
+        ><!-- -->
+      </gx-gauge>
+
       <gx-gauge
         id="gxGauge2"
         type="line"
@@ -663,7 +689,7 @@
         )}, ${Math.round(Math.random() * 255)}, ${Math.round(
           Math.random() * 255
         )}, ${Math.random() * 1 + 0.2})`;
-        const randomRangeAmount = Math.round(Math.random() * 4) + 1;
+        const randomRangeAmount = Math.round(Math.random() * 4) + 10;
 
         newGaugeRange.setAttribute("amount", randomRangeAmount);
         newGaugeRange.setAttribute("color", randomColor);
