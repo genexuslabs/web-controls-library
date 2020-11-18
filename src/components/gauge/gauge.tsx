@@ -160,7 +160,7 @@ export class Gauge implements GxComponent {
       const rangeValuePercentage =
         (100 * childRanges[i].amount) / this.maxValue;
       const positionInGauge = 360 * (this.rangesValuesAcumul / 100);
-      console.log(positionInGauge, this.rangesValuesAcumul);
+
       this.rangesValuesAcumul += rangeValuePercentage;
       svgRanges.splice(
         0,
@@ -280,34 +280,21 @@ export class Gauge implements GxComponent {
   private renderLine(childRanges) {
     const divRanges = [];
     const divRangesName = [];
-    let currentMargin = 0;
 
-    function calcPositionRange(preValue) {
-      return (currentMargin += preValue);
-    }
-
-    function addLineRanges(currentChild, nextChild, component) {
+    function addLineRanges(currentChild, position, component): HTMLElement {
       return (
         <div
           class="range"
           style={{
             "background-color": currentChild.color,
-            "box-shadow": !component.styleShadow ? "none" : "",
-            "margin-left": `${calcPositionRange(
-              !!nextChild
-                ? (parseInt(nextChild.getAttribute("amount"), 10) * 100) /
-                    component.totalValues
-                : 0
-            )}%`,
-            width: `${(parseInt(currentChild.getAttribute("amount"), 10) *
-              100) /
-              component.totalValues}%`
+            "margin-left": `${position}%`,
+            width: `${(currentChild.amount * 100) / component.maxValue}%`
           }}
         />
       );
     }
 
-    function addRangeCaption(currentChild, component) {
+    /*function addRangeCaption(currentChild, component) {
       return (
         <span
           class="rangeName"
@@ -321,15 +308,28 @@ export class Gauge implements GxComponent {
           {currentChild.name}
         </span>
       );
-    }
+    }*/
 
+    this.maxValueAux = 0;
     for (let i = childRanges.length - 1; i >= 0; i--) {
+      this.maxValueAux += childRanges[i].amount;
+    }
+    if (this.maxValue == undefined) {
+      this.maxValue = this.maxValueAux;
+    }
+    this.rangesValuesAcumul = 0;
+    for (let i = childRanges.length - 1; i >= 0; i--) {
+      const rangeValuePercentage =
+        (100 * childRanges[i].amount) / this.maxValue;
+      const positionInGauge = this.rangesValuesAcumul;
+
+      this.rangesValuesAcumul += rangeValuePercentage;
       divRanges.splice(
         0,
         0,
-        addLineRanges(childRanges[i], childRanges[i + 1], this)
+        addLineRanges(childRanges[i], positionInGauge, this)
       );
-      divRangesName.splice(0, 0, addRangeCaption(childRanges[i], this));
+      // divRangesName.splice(0, 0, addRangeCaption(childRanges[i], this));
     }
 
     const DISPLAYERS_THICKNESS_RATIO = 8;
