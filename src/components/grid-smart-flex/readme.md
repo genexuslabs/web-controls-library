@@ -1,14 +1,34 @@
-# gx-grid-fs
+# gx-grid-smart-flex
 
 A container for including a repetitive elements list.
 It provides 3 slots:
 
-- `'grid-content'` slot: This slot holds the grid's content
+- 'grid-content' slot: This slot holds the grid's content
 - 'grid-content-empty' slot: This slot will be shown only when the grid is empty.
 - 'grid-loading-content': This slot will be shown while the grid is being loaded. Include the loading indicator markup here.
 
 When the grid is empty, a CSS Class named 'gx-grid-empty' is added to the host element.
 When the grid is loading, a CSS Class named 'gx-grid-loading' is added to the host element.
+
+## Example
+
+### Vertical Single
+
+<gx-grid-smart-flex id="verticalSingle">
+    <div slot="grid-content">
+        <div class="item">ROW1</div>
+        <div class="item">ROW2</div>
+    </div>
+</gx-grid-smart-flex>
+
+### Horizontal Single
+
+<gx-grid-smart-flex id="horizontal Single" direction="horizontal" snap-to-grid="true">
+    <div slot="grid-content">
+        <div class="item">ROW1</div>
+        <div class="item">ROW2</div>
+    </div>
+</gx-grid-smart-flex>
 
 <!-- Auto Generated Below -->
 

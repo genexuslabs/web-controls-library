@@ -88,7 +88,7 @@ export class GridSmartFlex
   /**
     Scroll snapping allows to lock the viewport to certain elements or locations after a user has finished scrolling
    */
-  @Prop({ reflect: true }) readonly snapToGrid = true;
+  @Prop({ reflect: true }) readonly snapToGrid = false;
 
   /**
    * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.

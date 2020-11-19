@@ -1,8 +1,10 @@
 @import "../common/_base";
 
+$gridContentSelector: "& > [slot='grid-content'], & > * > [slot='grid-content']";
+
 .gx-grid-base {
   flex: 1;
-  & > [slot="grid-content"] {
+  & [slot="grid-content"] {
     flex: 1;
   }
 
@@ -27,14 +29,14 @@
 }
 
 .gx-grid-base.gx-grid-empty {
-  & > [slot="grid-content"],
+  #{$gridContentSelector},
   .gx-grid-paging {
     @include visibility(none);
   }
 }
 
 .gx-grid-base.gx-grid-empty-loading {
-  & [slot="grid-content"] {
+  #{$gridContentSelector} {
     @include visibility(none);
   }
   & [slot="grid-empty-loading-placeholder"] {

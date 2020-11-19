@@ -20,27 +20,35 @@ gx-grid-smart-flex {
    */
   --gx-grid-flex-max-size: 0;
 
-  min-height: 100%;
-
   @include visibility(flex);
+  flex-direction: column;
+  min-height: 100%;
+  > div {
+    flex: 1;
+  }
 
   & > [slot="grid-content"] {
+    @include visibility(flex);
     & > gx-grid-smart-flex-item {
       box-sizing: border-box;
     }
   }
 
-  &[snap-to-grid][direction="vertical"] > [slot="grid-content"] {
-    scroll-snap-type: y mandatory;
-    & > gx-grid-smart-flex-item {
-      scroll-snap-align: start;
+  &[snap-to-grid][direction="vertical"] {
+    #{$gridContentSelector} {
+      scroll-snap-type: y mandatory;
+      & > gx-grid-smart-flex-item {
+        scroll-snap-align: start;
+      }
     }
   }
 
-  &[snap-to-grid][direction="horizontal"] > [slot="grid-content"] {
-    scroll-snap-type: x mandatory;
-    & > gx-grid-smart-flex-item {
-      scroll-snap-align: start;
+  &[snap-to-grid][direction="horizontal"] {
+    #{$gridContentSelector} {
+      scroll-snap-type: x mandatory;
+      & > gx-grid-smart-flex-item {
+        scroll-snap-align: start;
+      }
     }
   }
 }
@@ -49,13 +57,13 @@ gx-grid-smart-flex {
   Vertical Orientation
 */
 gx-grid-smart-flex[direction="vertical"][item-layout-mode="single"] {
-  & > [slot="grid-content"] {
+  #{$gridContentSelector} {
     @include gx-grid-smart-flex-item(column, nowrap, 0, 0, auto);
   }
 }
 
 gx-grid-smart-flex[direction="vertical"][item-layout-mode="mbyq"] {
-  & > [slot="grid-content"] {
+  #{$gridContentSelector} {
     @include gx-grid-smart-flex-item(row, wrap, 0, 0);
   }
 }
@@ -63,9 +71,17 @@ gx-grid-smart-flex[direction="vertical"][item-layout-mode="mbyq"] {
 gx-grid-smart-flex[direction="vertical"][item-layout-mode="mbys"] {
   justify-content: space-evenly;
 
-  & > [slot="grid-content"] {
-    @include gx-grid-smart-flex-item(row, wrap, 1, 1, --gx-grid-flex-min-size);
-    max-width: --gx-grid-flex-max-size;
+  #{$gridContentSelector} {
+    @include gx-grid-smart-flex-item(
+      row,
+      wrap,
+      1,
+      1,
+      var(--gx-grid-flex-min-size)
+    );
+    & > gx-grid-smart-flex-item {
+      max-width: var(--gx-grid-flex-max-size);
+    }
   }
 }
 
@@ -73,18 +89,20 @@ gx-grid-smart-flex[direction="vertical"][item-layout-mode="mbys"] {
   Horizontal Orientation
 */
 
-gx-grid-smart-flex[direction="horizontal"] > [slot="grid-content"] {
-  overflow-x: scroll;
+gx-grid-smart-flex[direction="horizontal"] {
+  #{$gridContentSelector} {
+    overflow-x: scroll;
+  }
 }
 
 gx-grid-smart-flex[direction="horizontal"][item-layout-mode="single"] {
-  & > [slot="grid-content"] {
+  #{$gridContentSelector} {
     @include gx-grid-smart-flex-item(row, nowrap, 0, 0, auto);
   }
 }
 
 gx-grid-smart-flex[direction="horizontal"][item-layout-mode="mbyq"] {
-  & > [slot="grid-content"] {
+  #{$gridContentSelector} {
     @include gx-grid-smart-flex-item(column, wrap, 0, 0);
   }
 }
@@ -92,9 +110,16 @@ gx-grid-smart-flex[direction="horizontal"][item-layout-mode="mbyq"] {
 gx-grid-smart-flex[direction="horizontal"][item-layout-mode="mbys"] {
   justify-content: space-evenly;
 
-  & > [slot="grid-content"] {
-    @include gx-grid-smart-flex-item(row, wrap, 1, 0);
-    max-height: --gx-grid-flex-max-size;
+  #{$gridContentSelector} {
+    @include gx-grid-smart-flex-item(
+      row,
+      wrap,
+      1,
+      var(--gx-grid-flex-min-size)
+    );
+    & > gx-grid-smart-flex-item {
+      max-height: var(--gx-grid-flex-max-size);
+    }
   }
 }
 
