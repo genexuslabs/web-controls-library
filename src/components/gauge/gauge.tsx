@@ -178,39 +178,6 @@ export class Gauge implements GxComponent {
         }}
       >
         <svg width="100%" height="100%" viewBox="0 0 100 100">
-          {/* <line
-            x1="50"
-            y1="0"
-            x2="50"
-            y2="100"
-            stroke="black"
-            stroke-width="0.2"
-          />
-          <line
-            x1="0"
-            y1="50"
-            x2="100"
-            y2="50"
-            stroke="black"
-            stroke-width="0.2"
-          />
-          <line
-            x1="0"
-            y1="0"
-            x2="100"
-            y2="100"
-            stroke="black"
-            stroke-width="0.2"
-          />
-          <line
-            x1="100"
-            y1="0"
-            x2="0"
-            y2="100"
-            stroke="black"
-            stroke-width="0.2"
-          />
-          <rect r="1" fill="rgba(0, 0, 0, 0.5)" width="100%" height="100%" /> */}
           <circle
             r={radius}
             cx="50%"
@@ -294,21 +261,20 @@ export class Gauge implements GxComponent {
       );
     }
 
-    /*function addRangeCaption(currentChild, component) {
+    function addRangeCaption(currentChild, position, component) {
       return (
         <span
           class="rangeName"
           style={{
-            "margin-left": `${currentMargin}%`,
-            width: `${(parseInt(currentChild.getAttribute("amount"), 10) *
-              100) /
-              component.totalValues}%`
+            "margin-left": `${position}%`,
+            color: currentChild.color,
+            width: `${(currentChild.amount * 100) / component.maxValue}%`
           }}
         >
           {currentChild.name}
         </span>
       );
-    }*/
+    }
 
     this.maxValueAux = 0;
     for (let i = childRanges.length - 1; i >= 0; i--) {
@@ -329,10 +295,13 @@ export class Gauge implements GxComponent {
         0,
         addLineRanges(childRanges[i], positionInGauge, this)
       );
-      // divRangesName.splice(0, 0, addRangeCaption(childRanges[i], this));
+      divRangesName.splice(
+        0,
+        0,
+        addRangeCaption(childRanges[i], positionInGauge, this)
+      );
     }
 
-    const DISPLAYERS_THICKNESS_RATIO = 8;
     return (
       <div
         class="gaugeContainerLine"
@@ -342,51 +311,31 @@ export class Gauge implements GxComponent {
       >
         <div class="rangesContainer">{divRanges}</div>
         <div class="namesContainer">{divRangesName}</div>
-        <div
-          class="gauge"
-          style={{
-            "box-shadow": !this.styleShadow ? "none" : ""
-          }}
-        >
+        <div class="gauge">
           {this.showValue ? (
             <span
               class="marker"
               style={{
-                "box-shadow": !this.styleShadow ? "none" : "",
                 "margin-left": `${Math.min(
                   Math.max(this.calcPercentage(), 0.2),
                   99.5
                 )}%`
               }}
-            />
+            >
+              {this.value}
+              <span />
+            </span>
           ) : (
             ""
           )}
         </div>
         {this.showValue ? (
-          <div
-            class="minMaxDisplay"
-            style={{
-              transform: `translateY(${DISPLAYERS_THICKNESS_RATIO *
-                this.calcThickness() +
-                100}%)`
-            }}
-          >
-            <span
-              class="minValue"
-              style={{
-                "box-shadow": !this.styleShadow ? "none" : ""
-              }}
-            >
+          <div class="minMaxDisplay">
+            <span class="minValue">
               {this.minValue}
               <span />
             </span>
-            <span
-              class="maxValue"
-              style={{
-                "box-shadow": !this.styleShadow ? "none" : ""
-              }}
-            >
+            <span class="maxValue">
               {this.maxValue}
               <span />
             </span>
