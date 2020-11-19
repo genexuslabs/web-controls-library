@@ -52,33 +52,49 @@ gx-gauge {
 
   display: flex;
   align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  /* justify-content: center;*/
   height: var(--component-height);
 
   .gaugeContainerLine {
+    // margin-bottom: 20px;
     width: 98%;
     height: auto;
-    display: flex;
+    // display: flex;
+    // align-items: center;
     position: absolute;
-    align-items: center;
     border-radius: 26px;
     .gauge {
       width: 100%;
       height: 100%;
       position: absolute;
-      box-shadow: var(--gauge-box-shadow);
       border-radius: 20px;
-      overflow: hidden;
+      // overflow: hidden;
       display: flex;
+      align-items: flex-start;
       z-index: 1;
-      align-items: flex-end;
       .marker {
-        background-color: var(--marker-backgorund);
-        width: 3px;
-        height: 66%;
-        border-radius: 100% 100% 0 0;
-        transition: 0.6s;
-        z-index: 0;
+        // position: absolute;
+        transform: translateX(-50%);
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        transition: 0.3s ease;
+        background-color: var(--max-value-display-background);
+        color: var(--max-value-display-color);
+        border-radius: 10px;
+        padding: 5px;
+        width: auto;
+        height: auto;
+        & span {
+          width: 8px;
+          height: 8px;
+          transform: translateY(-90%) rotate(45deg) skew(12deg, 12deg);
+          z-index: 1;
+          background-color: var(--max-value-display-background);
+          position: absolute;
+        }
       }
     }
 
@@ -96,16 +112,16 @@ gx-gauge {
         background-color: var(--max-value-display-background);
         color: var(--max-value-display-color);
         border-radius: 10px;
-        padding: 5px 10px;
+        padding: 5px;
         float: right;
         & span {
-          width: 10px;
-          height: 10px;
-          transform: translate(110%, -90%) rotate(45deg);
+          width: 8px;
+          height: 8px;
+          transform: translate(200%, -100%) rotate(45deg) skew(12deg, 12deg);
           z-index: -1;
           background-color: var(--max-value-display-background);
           position: absolute;
-          border-radius: 0% 200% 120% 100%;
+          border-radius: 0% 200% 0% 10%;
         }
       }
       .minValue {
@@ -115,12 +131,13 @@ gx-gauge {
         background-color: var(--min-value-display-background);
         color: var(--min-value-display-color);
         border-radius: 10px;
-        padding: 5px 10px;
+        padding: 5px;
         & span {
-          width: 10px;
-          height: 10px;
-          border-radius: 0% 100% 120% 200%;
-          transform: translate(calc(-100%), calc(-100%)) rotate(45deg);
+          width: 8px;
+          height: 8px;
+          border-radius: 0% 10% 0% 200%;
+          transform: translate(calc(-100%), calc(-100%)) rotate(45deg)
+            skew(12deg, 12deg);
           z-index: -1;
           background-color: var(--min-value-display-background);
           position: absolute;
@@ -144,16 +161,20 @@ gx-gauge {
       }
     }
     .namesContainer {
-      position: absolute;
+      // position: absolute;
       width: calc(100% + 4px);
       height: calc(100% + 4px);
+      display: flex;
+      // justify-content: center;
+      align-items: center;
       .rangeName {
         height: 100%;
         position: absolute;
         display: flex;
         justify-content: center;
-        align-items: flex-end;
-        transform: translateY(-100%);
+        align-items: center;
+        filter: brightness(0.5);
+        // transform: translateY(100%);
       }
     }
   }
