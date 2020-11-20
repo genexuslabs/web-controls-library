@@ -31,6 +31,7 @@ export class GridInfiniteScroll implements ComponentInterface {
   private isBusy = false;
   private attachedToWindow = false;
   private attached = false;
+  private supported = true;
 
   @Element() el!: HTMLGxGridInfiniteScrollElement;
   @State() isLoading = false;
@@ -100,10 +101,11 @@ export class GridInfiniteScroll implements ComponentInterface {
 
     setTimeout(() => {
       let emitInfinite = false;
-      this.ensure();
-      emitInfinite = this.isVisibleInViewport(this.el);
-      if (emitInfinite) {
-        this.gxInfinite.emit();
+      if (this.ensure()) {
+        emitInfinite = this.isVisibleInViewport(this.el);
+        if (emitInfinite) {
+          this.gxInfinite.emit();
+        }
       }
     }, 100);
   }
@@ -166,9 +168,19 @@ export class GridInfiniteScroll implements ComponentInterface {
     return this.getScrollParent(node.parentNode);
   }
 
-  private ensure() {
+  private ensure(): boolean {
     if (this.disabled || this.attached || this.itemCount === 0) {
-      return;
+      return this.supported;
+    }
+
+    //Horizontal Orientation not supported
+    const gridComponent = this.el.closest(".gx-grid-base");
+    if (
+      gridComponent &&
+      gridComponent.getAttribute("direction") === "horizontal"
+    ) {
+      this.supported = false;
+      return this.supported;
     }
 
     let contentEl = this.getScrollParent(this.el);
@@ -195,6 +207,7 @@ export class GridInfiniteScroll implements ComponentInterface {
         });
       }
     }
+    return this.supported;
   }
 
   async componentDidLoad() {
@@ -309,7 +322,8 @@ export class GridInfiniteScroll implements ComponentInterface {
       !this.disabled &&
       !this.isBusy &&
       this.scrollEl !== null &&
-      !this.isLoading
+      !this.isLoading &&
+      this.supported
     );
   }
 
