@@ -108,9 +108,6 @@ export class GridSmartFlex
   }
 
   private ensureViewPort() {
-    if (this.viewPortInitialized) {
-      return;
-    }
     const directionSize =
       this.direction === "horizontal"
         ? this.el.parentElement.offsetWidth

@@ -35,12 +35,12 @@ gx-grid-smart-flex {
   }
 
   &[direction="vertical"]:not([auto-grow]) {
-    max-height: var(--direction-viewport-size);
+    max-height: var(--gx-grid-flex-viewport-size);
     overflow-y: auto;
   }
 
   &[direction="horizontal"] {
-    max-width: var(--direction-viewport-size);
+    max-width: var(--gx-grid-flex-viewport-size);
     overflow-x: auto;
   }
 

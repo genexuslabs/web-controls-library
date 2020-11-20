@@ -1,6 +1,6 @@
 @import "../common/_base";
 
-$gridContentSelector: "& > [slot='grid-content'], & > * > [slot='grid-content'], & > * > .scrollable-content";
+$gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller), & > * > .scrollable-content";
 
 .gx-grid-base {
   flex: 1;
