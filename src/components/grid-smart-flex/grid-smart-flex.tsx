@@ -119,7 +119,7 @@ export class GridSmartFlex
     if (directionSize > 0) {
       const elementStyle = this.el.style;
       elementStyle.setProperty(
-        "--direction-viewport-size",
+        "--gx-grid-flex-viewport-size",
         directionSize + "px"
       );
       this.viewPortInitialized = true;

@@ -36,10 +36,12 @@ gx-grid-smart-flex {
 
   &[direction="vertical"]:not([auto-grow]) {
     max-height: var(--direction-viewport-size);
+    overflow-y: auto;
   }
 
   &[direction="horizontal"] {
     max-width: var(--direction-viewport-size);
+    overflow-x: auto;
   }
 
   &[snap-to-grid][direction="vertical"] {
@@ -67,6 +69,13 @@ gx-grid-smart-flex {
 gx-grid-smart-flex[direction="vertical"][item-layout-mode="single"] {
   #{$gridContentSelector} {
     @include gx-grid-smart-flex-item(column, nowrap, 0, 0, auto);
+
+    & > gx-grid-smart-flex-item[relative-size] {
+      min-height: calc(
+        var(--gx-grid-flex-viewport-size) *
+          var(--gx-grid-flex-item-relative-size)
+      );
+    }
   }
 }
 
@@ -106,6 +115,13 @@ gx-grid-smart-flex[direction="horizontal"] {
 gx-grid-smart-flex[direction="horizontal"][item-layout-mode="single"] {
   #{$gridContentSelector} {
     @include gx-grid-smart-flex-item(row, nowrap, 0, 0, auto);
+
+    & > gx-grid-smart-flex-item[relative-size] {
+      min-width: calc(
+        var(--gx-grid-flex-viewport-size) *
+          var(--gx-grid-flex-item-relative-size)
+      );
+    }
   }
 }
 
