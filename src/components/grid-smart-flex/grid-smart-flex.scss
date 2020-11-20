@@ -27,11 +27,19 @@ gx-grid-smart-flex {
     flex: 1;
   }
 
-  & > [slot="grid-content"] {
+  #{$gridContentSelector} {
     @include visibility(flex);
     & > gx-grid-smart-flex-item {
       box-sizing: border-box;
     }
+  }
+
+  &[direction="vertical"]:not([auto-grow]) {
+    max-height: var(--direction-viewport-size);
+  }
+
+  &[direction="horizontal"] {
+    max-width: var(--direction-viewport-size);
   }
 
   &[snap-to-grid][direction="vertical"] {

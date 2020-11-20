@@ -108,13 +108,20 @@ export class GridSmartFlex
   }
 
   private ensureViewPort() {
-    if (this.autoGrow || this.viewPortInitialized) {
+    if (this.viewPortInitialized) {
       return;
     }
-    const height = this.el.parentElement.offsetHeight;
+    const directionSize =
+      this.direction === "horizontal"
+        ? this.el.parentElement.offsetWidth
+        : this.el.parentElement.offsetHeight;
 
-    if (height > 0) {
-      this.el.style.maxHeight = height + "px";
+    if (directionSize > 0) {
+      const elementStyle = this.el.style;
+      elementStyle.setProperty(
+        "--direction-viewport-size",
+        directionSize + "px"
+      );
       this.viewPortInitialized = true;
     }
   }

@@ -1,10 +1,10 @@
 @import "../common/_base";
 
-$gridContentSelector: "& > [slot='grid-content'], & > * > [slot='grid-content']";
+$gridContentSelector: "& > [slot='grid-content'], & > * > [slot='grid-content'], & > * > .scrollable-content";
 
 .gx-grid-base {
   flex: 1;
-  & [slot="grid-content"] {
+  #{$gridContentSelector} {
     flex: 1;
   }
 
