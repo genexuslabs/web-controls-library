@@ -1,0 +1,141 @@
+@import "../grid-base/grid-base.scss";
+
+gx-grid-smart-css {
+  /**
+   * @prop --gx-grid-css-items: Number of Columns or Rows to be shown in the Main axis direction.
+   */
+  --gx-grid-css-items: 1;
+
+  /**
+   * @prop --gx-grid-css-min-size: This attribute value is used to determine the number of columns
+    in a Smart Grid with Multiple by Size in Items Layout Mode.
+    The grid will fit as many columns as possible with at least this width, 0 means to use all width.
+   */
+  --gx-grid-css-min-size: 0;
+  /**
+   * @prop --gx-grid-css-max-size: This attribute value is used to determine the number of columns in a 
+    Smart Grid with Multiple by Size in Items Layout Mode and Vertical scroll direction. 
+    The width of the grid items cannot be greater than this maximum. 0 means no maximum.
+   */
+  --gx-grid-css-max-size: 0;
+
+  @include visibility(flex);
+
+  min-height: 100%;
+  > div {
+    flex: 1;
+  }
+
+  #{$gridContentSelector} {
+    @include visibility(grid);
+
+    gx-grid-smart-item {
+      @include visibility(flex);
+      & > * {
+        flex: 1;
+      }
+    }
+  }
+
+  &[direction="vertical"]:not([auto-grow]) {
+    max-height: var(--gx-grid-css-viewport-size);
+    overflow-y: auto;
+  }
+
+  &[direction="horizontal"] {
+    max-width: var(--gx-grid-css-viewport-size);
+    overflow-x: auto;
+  }
+
+  &[snap-to-grid][direction="vertical"] {
+    #{$gridContentSelector} {
+      scroll-snap-type: y mandatory;
+      & > gx-grid-smart-item {
+        scroll-snap-align: start;
+      }
+    }
+  }
+
+  &[snap-to-grid][direction="horizontal"] {
+    #{$gridContentSelector} {
+      scroll-snap-type: x mandatory;
+      & > gx-grid-smart-item {
+        scroll-snap-align: start;
+      }
+    }
+  }
+}
+
+/*
+  Vertical Orientation
+*/
+gx-grid-smart-css[direction="vertical"] {
+  gx-grid-smart-item[relative-size] {
+    min-height: calc(
+      var(--gx-grid-css-viewport-size) * var(--gx-grid-item-relative-size)
+    );
+  }
+}
+
+gx-grid-smart-css[direction="vertical"][item-layout-mode="single"] {
+  #{$gridContentSelector} {
+    grid-template-columns: 1fr;
+  }
+}
+
+gx-grid-smart-css[direction="vertical"][item-layout-mode="mbyq"] {
+  #{$gridContentSelector} {
+    grid-template-columns: repeat(var(--gx-grid-css-items), 1fr);
+  }
+}
+
+gx-grid-smart-css[direction="vertical"][item-layout-mode="mbys"] {
+  #{$gridContentSelector} {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(var(--gx-grid-css-min-size), 1fr)
+    );
+  }
+}
+
+/*
+  Horizontal Orientation
+*/
+
+gx-grid-smart-css[direction="horizontal"] {
+  gx-grid-smart-item[relative-size] {
+    min-width: calc(
+      var(--gx-grid-css-viewport-size) * var(--gx-grid-item-relative-size)
+    );
+  }
+}
+
+gx-grid-smart-css[direction="horizontal"] {
+  #{$gridContentSelector} {
+    overflow-x: scroll;
+  }
+}
+
+gx-grid-smart-css[direction="horizontal"][item-layout-mode="single"] {
+  #{$gridContentSelector} {
+    grid-template-rows: 1fr;
+    grid-auto-flow: column;
+  }
+}
+
+gx-grid-smart-css[direction="horizontal"][item-layout-mode="mbyq"] {
+  #{$gridContentSelector} {
+    grid-template-rows: repeat(var(--gx-grid-css-items), 1fr);
+    grid-auto-flow: column;
+  }
+}
+
+gx-grid-smart-css[direction="horizontal"][item-layout-mode="mbys"] {
+  #{$gridContentSelector} {
+    grid-auto-flow: column;
+    grid-template-rows: repeat(
+      auto-fill,
+      minmax(var(--gx-grid-css-min-size), 1fr)
+    );
+  }
+}

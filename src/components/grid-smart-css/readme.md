@@ -1,6 +1,6 @@
 # gx-grid-smart-flex
 
-A container for including a repetitive elements list based on Flexbox Layout
+A container for including a repetitive elements list based on CSS Grid Layout
 It provides 3 slots:
 
 - 'grid-content' slot: This slot holds the grid's content
@@ -61,11 +61,11 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                      | Description                                                                                                                                                                                                                                    |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--gx-grid-flex-items`    | Number of Columns or Rows to be shown in the Main axis direction.                                                                                                                                                                              |
-| `--gx-grid-flex-max-size` | This attribute value is used to determine the number of columns in a Smart Grid with Multiple by Size in Items Layout Mode and Vertical scroll direction. The width of the grid items cannot be greater than this maximum. 0 means no maximum. |
-| `--gx-grid-flex-min-size` | This attribute value is used to determine the number of columns in a Smart Grid with Multiple by Size in Items Layout Mode. The grid will fit as many columns as possible with at least this width, 0 means to use all width.                  |
+| Name                     | Description                                                                                                                                                                                                                                    |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--gx-grid-css-items`    | Number of Columns or Rows to be shown in the Main axis direction.                                                                                                                                                                              |
+| `--gx-grid-css-max-size` | This attribute value is used to determine the number of columns in a Smart Grid with Multiple by Size in Items Layout Mode and Vertical scroll direction. The width of the grid items cannot be greater than this maximum. 0 means no maximum. |
+| `--gx-grid-css-min-size` | This attribute value is used to determine the number of columns in a Smart Grid with Multiple by Size in Items Layout Mode. The grid will fit as many columns as possible with at least this width, 0 means to use all width.                  |
 
 ---
 
