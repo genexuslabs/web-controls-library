@@ -42,11 +42,6 @@ gx-grid-smart-css {
     overflow-y: auto;
   }
 
-  &[direction="horizontal"] {
-    max-width: var(--gx-grid-css-viewport-size);
-    overflow-x: auto;
-  }
-
   &[snap-to-grid][direction="vertical"] {
     #{$gridContentSelector} {
       scroll-snap-type: y mandatory;
@@ -112,6 +107,7 @@ gx-grid-smart-css[direction="horizontal"] {
 
 gx-grid-smart-css[direction="horizontal"] {
   #{$gridContentSelector} {
+    max-width: var(--gx-grid-css-viewport-size);
     overflow-x: scroll;
   }
 }
