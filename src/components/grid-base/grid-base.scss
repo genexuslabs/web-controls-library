@@ -36,7 +36,7 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller), & > * >
 }
 
 .gx-grid-base.gx-grid-empty-loading {
-  #{$gridContentSelector} {
+  & > :first-child {
     @include visibility(none);
   }
   & [slot="grid-empty-loading-placeholder"] {
