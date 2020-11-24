@@ -82,7 +82,6 @@ export class Gauge implements GxComponent {
       this.rangesChildren = this.rangesChildren.filter(
         elementToSave => elementToSave != childRange
       );
-      console.log(this.rangesChildren);
       this.maxValueAux -= childRange.amount;
     });
     childRange.element.addEventListener("gxGaugeRangeDidUpdate", () => {
@@ -120,8 +119,6 @@ export class Gauge implements GxComponent {
   }
 
   private renderCircle(childRanges) {
-    console.log("rendering circle gauge");
-    console.log(this.rangesChildren);
     const FULL_CIRCLE_RADIO = 100 / 2;
     const svgRanges = [];
     const ONE_PERCENT_OF_CIRCLE_DREGREE = 3.6;
@@ -348,7 +345,6 @@ export class Gauge implements GxComponent {
   }
 
   render() {
-    console.log("this.maxValue", this.maxValue);
     this.minimumSize =
       this.element.offsetHeight > this.element.offsetWidth
         ? this.element.offsetWidth
