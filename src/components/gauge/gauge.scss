@@ -11,9 +11,9 @@ gx-gauge {
   /**
   * @prop --center-circle-text-color:
    * Define the color of the center text in `circle` gauge type.
-   * (gray by default)
+   * (rgba(44, 44, 44, 1) by default)
   */
-  --center-circle-text-color: rgba(0, 0, 0, 0.7);
+  --center-circle-text-color: rgba(44, 44, 44, 1);
 
   /**
   * @prop --gauge-border-radius:
@@ -23,39 +23,39 @@ gx-gauge {
   --gauge-border-radius: 25px;
 
   /**
-  * @prop --marker-backgorund:
-   * Define the background color of the marker.
-   * (1px by default)
+  * @prop --marker-color:
+   * Define the background color and border color of the marker.
+   * (rgba(44, 44, 44, 1) by default)
   */
-  --marker-backgorund: rgba(0, 0, 0, 0.7);
+  --marker-color: rgba(44, 44, 44, 1);
 
   /**
-  * @prop --max-value-display-background:
+  * @prop --max-value-background-color:
    * Set the color of maximum value display background.
    * (rgba(44, 44, 44, 1) by default)
   */
-  --max-value-display-background: rgba(44, 44, 44, 1);
+  --max-value-background-color: rgba(44, 44, 44, 1);
 
   /**
-  * @prop --max-value-display-color:
+  * @prop --max-value-text-color:
    * Set the color of maximum value display text.
    * (rgba(255, 255, 255, 0.8) by default)
   */
-  --max-value-display-color: rgba(255, 255, 255, 0.8);
+  --max-value-text-color: rgba(255, 255, 255, 0.8);
 
   /**
-  * @prop --min-value-display-background:
+  * @prop --min-value-background-color:
    * Set the color of minimum value display background.
    * (rgba(44, 44, 44, 1) by default)
   */
-  --min-value-display-background: rgba(44, 44, 44, 1);
+  --min-value-background-color: rgba(44, 44, 44, 1);
 
   /**
-  * @prop --min-value-display-color:
+  * @prop --min-value-text-color:
    * Set the color of minimum value display text.
    * (rgba(255, 255, 255, 0.8) by default)
   */
-  --min-value-display-color: rgba(255, 255, 255, 0.8);
+  --min-value-text-color: rgba(255, 255, 255, 0.8);
 
   display: flex;
   align-items: center;
@@ -82,8 +82,8 @@ gx-gauge {
         justify-content: center;
         align-content: center;
         transition: 0.3s ease;
-        background-color: var(--max-value-display-background);
-        color: var(--max-value-display-color);
+        background-color: var(--marker-color);
+        color: var(--max-value-text-color);
         border-radius: 10px;
         padding: 5px;
         width: auto;
@@ -93,7 +93,7 @@ gx-gauge {
           height: 8px;
           transform: translateY(-90%) rotate(45deg) skew(12deg, 12deg);
           z-index: 1;
-          background-color: var(--max-value-display-background);
+          background-color: var(--marker-color);
           position: absolute;
         }
       }
@@ -110,8 +110,8 @@ gx-gauge {
         display: flex;
         justify-content: center;
         align-content: center;
-        background-color: var(--max-value-display-background);
-        color: var(--max-value-display-color);
+        background-color: var(--max-value-background-color);
+        color: var(--max-value-text-color);
         border-radius: 10px;
         padding: 5px;
         float: right;
@@ -120,7 +120,7 @@ gx-gauge {
           height: 8px;
           transform: translate(200%, -100%) rotate(45deg) skew(12deg, 12deg);
           z-index: -1;
-          background-color: var(--max-value-display-background);
+          background-color: var(--max-value-background-color);
           position: absolute;
           border-radius: 0% 200% 0% 10%;
         }
@@ -129,8 +129,8 @@ gx-gauge {
         display: flex;
         justify-content: center;
         align-content: center;
-        background-color: var(--min-value-display-background);
-        color: var(--min-value-display-color);
+        background-color: var(--min-value-background-color);
+        color: var(--min-value-text-color);
         border-radius: 10px;
         padding: 5px;
         & span {
@@ -140,7 +140,7 @@ gx-gauge {
           transform: translate(calc(-100%), calc(-100%)) rotate(45deg)
             skew(12deg, 12deg);
           z-index: -1;
-          background-color: var(--min-value-display-background);
+          background-color: var(--min-value-background-color);
           position: absolute;
         }
       }
@@ -209,11 +209,11 @@ gx-gauge {
       .indicator {
         transition: 0.4s ease;
         content: "";
-        border: 2px solid var(--marker-backgorund);
+        border: 2px solid var(--marker-color);
         transform: translateX(-1px);
         border-radius: 20px 20px 1000% 1000%;
         display: block;
-        background-color: var(--marker-backgorund);
+        background-color: var(--marker-color);
       }
     }
   }
