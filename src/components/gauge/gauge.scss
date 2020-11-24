@@ -16,6 +16,13 @@ gx-gauge {
   --center-circle-text-color: rgba(0, 0, 0, 0.7);
 
   /**
+  * @prop --gauge-border-radius:
+   * Define the border radius of gauge in `line` gauge type.
+   * (25px by default)
+  */
+  --gauge-border-radius: 25px;
+
+  /**
   * @prop --marker-backgorund:
    * Define the background color of the marker.
    * (1px by default)
@@ -54,28 +61,22 @@ gx-gauge {
   align-items: center;
   flex-direction: column;
   flex-wrap: wrap;
-  /* justify-content: center;*/
   height: var(--component-height);
 
   .gaugeContainerLine {
-    // margin-bottom: 20px;
     width: 98%;
     height: auto;
-    // display: flex;
-    // align-items: center;
     position: absolute;
-    border-radius: 26px;
+    border-radius: var(--gauge-border-radius);
     .gauge {
       width: 100%;
       height: 100%;
       position: absolute;
-      border-radius: 20px;
-      // overflow: hidden;
+      border-radius: var(--gauge-border-radius);
       display: flex;
       align-items: flex-start;
       z-index: 1;
       .marker {
-        // position: absolute;
         transform: translateX(-50%);
         display: flex;
         justify-content: center;
@@ -161,11 +162,9 @@ gx-gauge {
       }
     }
     .namesContainer {
-      // position: absolute;
       width: calc(100% + 4px);
       height: calc(100% + 4px);
       display: flex;
-      // justify-content: center;
       align-items: center;
       .rangeName {
         height: 100%;
@@ -174,7 +173,6 @@ gx-gauge {
         justify-content: center;
         align-items: center;
         filter: brightness(0.5);
-        // transform: translateY(100%);
       }
     }
   }
