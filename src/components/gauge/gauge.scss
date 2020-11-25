@@ -2,13 +2,6 @@
 
 gx-gauge {
   /**
-  * @prop --component-height:
-   * Set the height or the control. *Must be set before render the control*
-   * (400px by default)
-  */
-  --component-height: 400px;
-
-  /**
   * @prop --center-circle-text-color:
    * Define the color of the center text in `circle` gauge type.
    * (rgba(44, 44, 44, 1) by default)
@@ -61,7 +54,7 @@ gx-gauge {
   align-items: center;
   flex-direction: column;
   flex-wrap: wrap;
-  height: var(--component-height);
+  height: 400px;
 
   .gaugeContainerLine {
     width: 98%;
