@@ -32,6 +32,9 @@
       gx-gauge {
         background-color: rgba(20, 20, 190, 0.3);
       }
+      gx-gauge.smallGauge {
+        height: 200px;
+      }
       /* .svgContainer svg{
         background-color: rgb(47, 0, 255);
       } */
@@ -73,8 +76,8 @@
         max-value="150"
         show-value="true"
         thickness="5"
-        show
-        style="--component-height: 200px;--circle-text-color: rgba(250, 250, 250, 0.5);"
+        class="smallGauge"
+        style="--circle-text-color: rgba(250, 250, 250, 0.5);"
       >
         <gx-gauge-range
           amount="50"
@@ -98,8 +101,7 @@
         value="50"
         show-value="true"
         thickness="5"
-        show
-        style="--component-height: 200px;--circle-text-color: rgba(250, 250, 250, 0.5);"
+        style="--circle-text-color: rgba(250, 250, 250, 0.5);"
       >
         <gx-gauge-range
           amount="50"
