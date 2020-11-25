@@ -54,13 +54,12 @@ export class Gauge implements GxComponent {
   @Prop() thickness = 10;
 
   /**
-   * The maximum value of the gauge. _Calculated by Default_
+   * The maximum value of the gauge.
+   * This prop allows specify the maximum value that the gauge will handle. If there is no value specified it will be calculated by the sum of all gx-ranges values
    */
   @Prop() maxValue: number;
 
   @State() rangesChildren = [];
-
-  // private totalValues = 0;
 
   private rangesValuesAcumul = 0;
 
@@ -125,7 +124,7 @@ export class Gauge implements GxComponent {
       const valuePercentage = (100 * currentChild.amount) / component.maxValue;
       return (
         <circle
-          r={radius} //"39.59%"
+          r={radius}
           cx="50%"
           cy="50%"
           stroke={currentChild.color}
@@ -340,8 +339,6 @@ export class Gauge implements GxComponent {
     const childRanges = Array.from(
       this.element.querySelectorAll("gx-gauge-range")
     );
-    // this.maxValue = this.totalValues + this.minValue;
-    // this.totalValues = this.maxValue - this.minValue;
     if (this.type === "circle") {
       return this.renderCircle(childRanges);
     } else if (this.type === "line") {
