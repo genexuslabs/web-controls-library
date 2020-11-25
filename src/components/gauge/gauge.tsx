@@ -20,7 +20,7 @@ export class Gauge implements GxComponent {
   @Element() element: HTMLGxGaugeElement;
 
   /**
-   * The `gxGaugeDidLoad` event is triggered when component has been rendered completely.
+   * The `gxGaugeDidLoad` event is triggered when the component has been rendered completely.
    */
   @Event() gxGaugeDidLoad: EventEmitter;
 
