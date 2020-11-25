@@ -25,12 +25,6 @@ export class Gauge implements GxComponent {
   @Event() gxGaugeDidLoad: EventEmitter;
 
   /**
-   * Property of type Style.
-   * Define if shadow will display or not. Default is disabled.
-   */
-  @Prop() styleShadow = false;
-
-  /**
    * This property allows selecting the gauge type. The allowed values are `circle` or `line` (defautl).
    */
   @Prop() type: "line" | "circle" = "line";
