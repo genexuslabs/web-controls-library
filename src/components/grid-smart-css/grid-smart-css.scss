@@ -29,8 +29,9 @@ gx-grid-smart-css {
   #{$gridContentSelector} {
     @include visibility(grid);
 
-    gx-grid-smart-item {
+    gx-grid-smart-cell {
       @include visibility(flex);
+      box-sizing: content-box;
       & > * {
         flex: 1;
       }
@@ -45,7 +46,7 @@ gx-grid-smart-css {
   &[snap-to-grid][direction="vertical"] {
     #{$gridContentSelector} {
       scroll-snap-type: y mandatory;
-      & > gx-grid-smart-item {
+      & > gx-grid-smart-cell {
         scroll-snap-align: start;
       }
     }
@@ -54,7 +55,7 @@ gx-grid-smart-css {
   &[snap-to-grid][direction="horizontal"] {
     #{$gridContentSelector} {
       scroll-snap-type: x mandatory;
-      & > gx-grid-smart-item {
+      & > gx-grid-smart-cell {
         scroll-snap-align: start;
       }
     }
@@ -65,7 +66,7 @@ gx-grid-smart-css {
   Vertical Orientation
 */
 gx-grid-smart-css[direction="vertical"] {
-  gx-grid-smart-item[relative-size] {
+  gx-grid-smart-cell[relative-size] {
     min-height: calc(
       var(--gx-grid-css-viewport-size) * var(--gx-grid-item-relative-size)
     );
@@ -98,7 +99,7 @@ gx-grid-smart-css[direction="vertical"][item-layout-mode="mbys"] {
 */
 
 gx-grid-smart-css[direction="horizontal"] {
-  gx-grid-smart-item[relative-size] {
+  gx-grid-smart-cell[relative-size] {
     min-width: calc(
       var(--gx-grid-css-viewport-size) * var(--gx-grid-item-relative-size)
     );
