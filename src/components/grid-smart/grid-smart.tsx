@@ -198,9 +198,10 @@ export class GridSmart
    */
   @Event() gxGridTouchEnd!: EventEmitter<void>;
 
-  getSwiperCurrentPage() {
+  private getSwiperCurrentPage() {
     return this.currentPage - 1;
   }
+
   @Watch("currentPage")
   pageChanged() {
     if (this.isInitialized()) {

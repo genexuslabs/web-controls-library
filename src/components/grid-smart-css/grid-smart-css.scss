@@ -51,12 +51,27 @@ gx-grid-smart-css {
     }
   }
 
+  &[direction="horizontal"] {
+    #{$gridContentSelector} {
+      max-width: var(--gx-grid-css-viewport-size);
+      overflow-x: hidden;
+    }
+    @media (pointer: coarse) {
+      #{$gridContentSelector} {
+        overflow-x: auto;
+      }
+    }
+  }
+
   &[snap-to-grid][direction="horizontal"] {
     #{$gridContentSelector} {
       scroll-snap-type: x mandatory;
       & > gx-grid-smart-cell {
         scroll-snap-align: start;
       }
+    }
+    .gx-smart-cell-drag-active {
+      scroll-snap-type: unset !important;
     }
   }
 }
@@ -102,13 +117,6 @@ gx-grid-smart-css[direction="horizontal"] {
     min-width: calc(
       var(--gx-grid-css-viewport-size) * var(--gx-grid-item-relative-size)
     );
-  }
-}
-
-gx-grid-smart-css[direction="horizontal"] {
-  #{$gridContentSelector} {
-    max-width: var(--gx-grid-css-viewport-size);
-    overflow-x: scroll;
   }
 }
 
