@@ -2,6 +2,8 @@
 /// @group theming-mixins
 ////
 
+$gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller) >, & > * > .scrollable-content >";
+
 /// Helper mixin to ease styling gx-grid-base custom elements
 /// @param {string} $class Base class of the component
 /// @param {string} $highlighted Class to be used when the grid is active
@@ -27,22 +29,23 @@
     }
   }
 
-  & > [slot="grid-content"] > {
+  #{$gridContentSelector} {
     @if ($odd-row != null) {
-      .gx-grid-row:nth-child(odd),
-      * > .gx-grid-row:nth-child(odd) {
+      .gx-grid-row:not([is-row-even]),
+      * > .gx-grid-row:not([is-row-even]) {
         @extend #{$odd-row} !optional;
       }
     }
 
     @if ($even-row != null) {
-      .gx-grid-row:nth-child(even),
-      * > .gx-grid-row:nth-child(even) {
+      .gx-grid-row[is-row-even],
+      * > .gx-grid-row[is-row-even] {
         @extend #{$even-row} !optional;
       }
     }
 
     @if ($horizontal-line != null) {
+      /// Legacy Vertical Grid (deprecated)
       .gx-grid-row:after,
       * > .gx-grid-row:after {
         --grid--horizontal-line-separator-default: block;
@@ -58,6 +61,24 @@
         left: 0;
         right: 0;
       }
+    }
+  }
+
+  /// CSS Grid Smart. row-gap css property does not support color.
+  @if ($horizontal-line != null) {
+    #{$gridContentSelector} > gx-grid-smart-cell > *::after {
+      --grid--horizontal-line-separator-default: block;
+      @extend #{$horizontal-line} !optional;
+      content: "";
+      height: var(--height, 1px);
+      display: var(
+        --grid--horizontal-line-separator,
+        var(--grid--horizontal-line-separator-default)
+      );
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
     }
   }
 }

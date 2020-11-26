@@ -28,13 +28,12 @@ gx-grid-smart-css {
 
   #{$gridContentSelector} {
     @include visibility(grid);
-
-    gx-grid-smart-cell {
-      @include visibility(flex);
-      box-sizing: content-box;
-      & > * {
-        flex: 1;
-      }
+  }
+  gx-grid-smart-cell {
+    @include visibility(flex);
+    box-sizing: content-box !important; // Virtual Scroll overrides this setting.
+    & > * {
+      flex: 1;
     }
   }
 
