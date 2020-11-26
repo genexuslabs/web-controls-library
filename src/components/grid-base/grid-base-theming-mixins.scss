@@ -31,6 +31,8 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller) >, & > *
 
   #{$gridContentSelector} {
     @if ($odd-row != null) {
+      .gx-grid-row:nth-child(odd),
+      * > .gx-grid-row:nth-child(odd),
       .gx-grid-row:not([is-row-even]),
       * > .gx-grid-row:not([is-row-even]) {
         @extend #{$odd-row} !optional;
@@ -38,6 +40,8 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller) >, & > *
     }
 
     @if ($even-row != null) {
+      .gx-grid-row:nth-child(even),
+      * > .gx-grid-row:nth-child(even),
       .gx-grid-row[is-row-even],
       * > .gx-grid-row[is-row-even] {
         @extend #{$even-row} !optional;

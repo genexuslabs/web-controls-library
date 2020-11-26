@@ -39,6 +39,7 @@ export const config: Config = {
         "gx-grid-smart",
         "gx-grid-smart-flex",
         "gx-grid-smart-css",
+        "gx-grid-smart-cell",
         "gx-grid-infinite-scroll",
         "gx-grid-infinite-scroll-content",
         "gx-grid-empty-indicator"
