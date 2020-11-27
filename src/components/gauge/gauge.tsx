@@ -37,9 +37,9 @@ export class Gauge implements GxComponent {
 
   /**
    * The minimum value of the gauge
-   *
+   * 0 by Default
    */
-  @Prop() minValue: number;
+  @Prop() minValue = 0;
 
   /**
    * The current value of the gauge
@@ -63,7 +63,7 @@ export class Gauge implements GxComponent {
 
   private rangesValuesAcumul = 0;
 
-  private maxValueAux = 0;
+  private maxValueAux = this.minValue;
 
   private minimumSize: number;
 
@@ -265,7 +265,7 @@ export class Gauge implements GxComponent {
       this.maxValueAux += childRanges[i].amount;
     }
     if (this.maxValue == undefined) {
-      this.maxValue = this.maxValueAux;
+      this.maxValue = this.maxValueAux - this.minValue;
     }
     this.rangesValuesAcumul = 0;
     for (let i = childRanges.length - 1; i >= 0; i--) {
@@ -290,11 +290,9 @@ export class Gauge implements GxComponent {
       <div
         class="gaugeContainerLine"
         style={{
-          height: `${5 * this.calcThickness()}px`
+          height: `${10 * this.calcThickness()}px`
         }}
       >
-        <div class="rangesContainer">{divRanges}</div>
-        <div class="namesContainer">{divRangesName}</div>
         <div class="gauge">
           {this.showValue ? (
             <span
@@ -313,6 +311,13 @@ export class Gauge implements GxComponent {
             ""
           )}
         </div>
+        <div
+          class="rangesContainer"
+          style={{ height: `${2 * this.thickness}px` }}
+        >
+          {divRanges}
+        </div>
+        <div class="namesContainer">{divRangesName}</div>
         {this.showValue ? (
           <div class="minMaxDisplay">
             <span class="minValue">

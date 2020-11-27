@@ -62,10 +62,7 @@ gx-gauge {
     position: absolute;
     border-radius: var(--gauge-border-radius);
     .gauge {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      border-radius: var(--gauge-border-radius);
+      min-height: 30px;
       display: flex;
       align-items: flex-start;
       z-index: 1;
@@ -79,21 +76,19 @@ gx-gauge {
         color: var(--max-value-text-color);
         border-radius: 10px;
         padding: 5px;
-        width: auto;
-        height: auto;
+        z-index: 99;
         & span {
-          width: 8px;
-          height: 8px;
-          transform: translateY(-90%) rotate(45deg) skew(12deg, 12deg);
-          z-index: 1;
+          width: 13px;
+          height: 13px;
+          transform: translateY(95%) rotate(45deg) skew(12deg, 12deg);
           background-color: var(--marker-color);
           position: absolute;
+          z-index: -1;
         }
       }
     }
 
     .minMaxDisplay {
-      position: absolute;
       display: flex;
       justify-content: space-between;
       align-content: center;
@@ -111,7 +106,8 @@ gx-gauge {
         & span {
           width: 8px;
           height: 8px;
-          transform: translate(200%, -100%) rotate(45deg) skew(12deg, 12deg);
+          transform: translateY(calc(-100%)) rotate(45deg) skew(12deg, 12deg);
+          right: 0;
           z-index: -1;
           background-color: var(--max-value-background-color);
           position: absolute;
@@ -130,8 +126,8 @@ gx-gauge {
           width: 8px;
           height: 8px;
           border-radius: 0% 10% 0% 200%;
-          transform: translate(calc(-100%), calc(-100%)) rotate(45deg)
-            skew(12deg, 12deg);
+          transform: translateY(calc(-100%)) rotate(45deg) skew(12deg, 12deg);
+          left: 0;
           z-index: -1;
           background-color: var(--min-value-background-color);
           position: absolute;
@@ -143,7 +139,6 @@ gx-gauge {
       border-radius: 20px;
       position: absolute;
       width: calc(100%);
-      height: 100%;
       background-color: rgba(0, 0, 0, 0.1);
       .range {
         height: 100%;
