@@ -120,7 +120,6 @@ export class GridSmartCss
         "--gx-grid-css-viewport-size",
         directionSize + "px"
       );
-      this.viewPortInitialized = true;
     }
   }
 
@@ -186,7 +185,7 @@ export class GridSmartCss
       }
       e.preventDefault();
       const x = e.pageX - slider.offsetLeft;
-      const SCROLL_SPEED = 2;
+      const SCROLL_SPEED = 1;
       const walk = (x - startX) * SCROLL_SPEED;
       slider.scrollLeft = scrollLeft - walk;
     });
