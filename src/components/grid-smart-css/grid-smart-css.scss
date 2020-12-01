@@ -116,7 +116,7 @@ gx-grid-smart-css[direction="vertical"][item-layout-mode="mbys"] {
 gx-grid-smart-css[direction="horizontal"] {
   #{$gridContentSelector} {
     & > gx-grid-smart-cell[relative-size] {
-      min-width: calc(
+      width: calc(
         var(--gx-grid-css-viewport-size) * var(--gx-grid-item-relative-size)
       );
     }
