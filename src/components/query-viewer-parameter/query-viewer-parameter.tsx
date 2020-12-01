@@ -1,13 +1,16 @@
-import { Component, Prop, h, Element, State } from '@stencil/core';
-// import { Component as GxComponent } from "../common/interfaces";
-
+import { Component, Prop } from "@stencil/core";
 
 @Component({
-  tag: 'gx-query-viewer-parameter',
-  shadow: false,
+  tag: "gx-query-viewer-parameter",
+  shadow: false
 })
-export class QueryViewerParameter {//implements GxComponent {
-
-    @Prop() Name: string;
-    @Prop() Value: string;
+export class QueryViewerParameter {
+  /**
+   * Name of the parameter
+   */
+  @Prop() Name: string;
+  /**
+   * Value of the parameter
+   */
+  @Prop() Value: string;
 }
