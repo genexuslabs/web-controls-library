@@ -468,6 +468,7 @@ export class GridSmart
       roundLengths: true,
       watchSlidesProgress: false,
       watchSlidesVisibility: false,
+      watchOverflow: this.pager,
       preventClicks: true,
       preventClicksPropagation: true,
       slideToClickedSlide: false,
