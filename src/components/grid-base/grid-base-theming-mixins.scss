@@ -49,40 +49,23 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller) >, & > *
     }
 
     @if ($horizontal-line != null) {
-      /// Legacy Vertical Grid (deprecated)
-      .gx-grid-row:after,
-      * > .gx-grid-row:after {
-        --grid--horizontal-line-separator-default: block;
-        @extend #{$horizontal-line} !optional;
-        content: "";
-        height: var(--height, 1px);
-        display: var(
-          --grid--horizontal-line-separator,
-          var(--grid--horizontal-line-separator-default)
-        );
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
+      /// CSS Grid Smart. row-gap css property does not support color.
+      gx-grid-smart-cell {
+        & > *::after {
+          --grid--horizontal-line-separator-default: block;
+          @extend #{$horizontal-line} !optional;
+          content: "";
+          height: var(--grid--horizontal-line-size, 1px);
+          display: var(
+            --grid--horizontal-line-separator,
+            --grid--horizontal-line-separator-default
+          );
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+        }
       }
-    }
-  }
-
-  /// CSS Grid Smart. row-gap css property does not support color.
-  @if ($horizontal-line != null) {
-    #{$gridContentSelector} > gx-grid-smart-cell > *::after {
-      --grid--horizontal-line-separator-default: block;
-      @extend #{$horizontal-line} !optional;
-      content: "";
-      height: var(--height, 1px);
-      display: var(
-        --grid--horizontal-line-separator,
-        var(--grid--horizontal-line-separator-default)
-      );
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
     }
   }
 }

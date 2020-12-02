@@ -24,7 +24,6 @@ export class GridSmartCss
   }
 
   private CSS_NAME_MOUSE_DRAG_ACTIVE = "gx-smart-cell-drag-active";
-  private viewPortInitialized = false;
 
   @Element() el!: HTMLGxGridSmartCssElement;
 
@@ -111,9 +110,6 @@ export class GridSmartCss
   }
 
   private ensureViewPort() {
-    if (this.viewPortInitialized) {
-      return;
-    }
     const directionSize = this.isHorizontal()
       ? this.el.parentElement.offsetWidth
       : this.el.parentElement.offsetHeight;
@@ -125,7 +121,6 @@ export class GridSmartCss
         directionSize + "px"
       );
     }
-    this.viewPortInitialized = true;
   }
 
   componentDidRender() {
