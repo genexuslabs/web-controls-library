@@ -16,12 +16,12 @@ import { VisibilityComponent } from "../common/interfaces";
 import Swiper, { SwiperOptions } from "swiper";
 
 @Component({
-  styleUrl: "grid-smart.scss",
-  tag: "gx-grid-smart"
+  styleUrl: "grid-horizontal.scss",
+  tag: "gx-grid-horizontal"
 })
-export class GridSmart
+export class GridHorizontal
   implements GridBase, ComponentInterface, VisibilityComponent {
-  @Element() el!: HTMLGxGridSmartElement;
+  @Element() el!: HTMLGxGridHorizontalElement;
 
   private scrollbarEl?: HTMLElement;
   private paginationEl?: HTMLElement;
