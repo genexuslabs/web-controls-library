@@ -66,6 +66,22 @@ gx-form-field {
     }
   }
 
+  .label-position-top {
+    flex-direction: column;
+  }
+
+  .label-position-right {
+    flex-direction: row-reverse;
+  }
+
+  .label-position-bottom {
+    flex-direction: column-reverse;
+  }
+
+  .label-position-left {
+    flex-direction: row;
+  }
+
   .label-left,
   .label-right {
     position: relative;

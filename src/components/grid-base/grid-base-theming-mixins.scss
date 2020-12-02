@@ -24,7 +24,7 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller) >, & > *
   @extend #{$class};
 
   @if ($highlighted != null) {
-    &:active {
+    &.gx-highlighted {
       @extend #{$highlighted} !optional;
     }
   }
@@ -77,7 +77,7 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller) >, & > *
   @extend #{$class};
 
   @if ($highlighted != null) {
-    &:active,
+    &.gx-highlighted,
     &[data-gx-grid-highlighted] {
       @extend #{$highlighted} !optional;
     }

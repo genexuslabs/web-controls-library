@@ -1,20 +1,12 @@
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Prop,
-  h,
-  Host
-} from "@stencil/core";
+import { Component, Element, Prop, h, Listen, Host } from "@stencil/core";
 import lazySizes from "lazysizes";
 import {
-  ClickableComponent,
   Component as GxComponent,
   DisableableComponent,
   VisibilityComponent
 } from "../common/interfaces";
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
+import { makeHighlightable } from "../common/highlightable";
 
 const LAZY_LOAD_CLASS = "gx-lazyload";
 const LAZY_LOADING_CLASS = "gx-lazyloading";
@@ -28,11 +20,7 @@ const lazyLoadedImages = new Set<string>();
   tag: "gx-image"
 })
 export class Image
-  implements
-    GxComponent,
-    DisableableComponent,
-    VisibilityComponent,
-    ClickableComponent {
+  implements GxComponent, DisableableComponent, VisibilityComponent {
   constructor() {
     cssVariablesWatcher(this, [
       {
@@ -125,18 +113,12 @@ export class Image
    */
   @Prop({ mutable: true }) width: string;
 
-  /**
-   * Emitted when the element is clicked.
-   */
-  @Event() gxClick: EventEmitter;
-
-  private handleClick(event: UIEvent) {
+  @Listen("click", { capture: true })
+  handleClick(event: UIEvent) {
     if (this.disabled) {
       event.stopPropagation();
       return;
     }
-    this.gxClick.emit(event);
-    event.preventDefault();
   }
 
   private handleImageLoad(event: UIEvent) {
@@ -144,9 +126,21 @@ export class Image
       const img = event.target as HTMLImageElement;
       // Some image formats do not specify intrinsic dimensions. The naturalWidth property returns 0 in those cases.
       if (img.naturalWidth !== 0) {
-        this.width = `${img.naturalWidth}px`;
+        if (this.element.clientWidth > 0) {
+          if (img.naturalWidth > this.element.clientWidth) {
+            this.width = `${this.element.clientWidth}px`;
+          } else {
+            this.width = null;
+          }
+        } else {
+          this.width = `${img.naturalWidth}px`;
+        }
       }
     }
+  }
+
+  componentDidLoad() {
+    makeHighlightable(this.element);
   }
 
   disconnectedCallback() {
@@ -155,6 +149,8 @@ export class Image
 
   render() {
     const shouldLazyLoad = this.shouldLazyLoad();
+    const isHeightSpecified = !!this.height;
+    const isWidthSpecified = !!this.width;
 
     const body = this.src
       ? [
@@ -163,11 +159,7 @@ export class Image
               [LAZY_LOAD_CLASS]: shouldLazyLoad,
               "gx-image-tile": this.scaleType === "tile"
             }}
-            style={
-              this.scaleType === "tile"
-                ? { backgroundImage: `url(${this.src})` }
-                : { objectFit: this.scaleType }
-            }
+            style={this.getInnerImageStyle(isWidthSpecified, isHeightSpecified)}
             onClick={this.handleClick}
             onLoad={this.handleImageLoad}
             data-src={shouldLazyLoad ? this.src : undefined}
@@ -178,8 +170,6 @@ export class Image
         ]
       : [];
 
-    const isHeightSpecified = !!this.height;
-    const isWidthSpecified = !!this.width;
     return (
       <Host
         class={{
@@ -200,6 +190,34 @@ export class Image
         {body}
       </Host>
     );
+  }
+
+  private getInnerImageStyle(
+    isWidthSpecified: boolean,
+    isHeightSpecified: boolean
+  ) {
+    const scaleType =
+      this.scaleType === "tile"
+        ? { backgroundImage: `url(${this.src})` }
+        : { objectFit: this.scaleType };
+
+    const dimensions = this.autoGrow
+      ? {}
+      : {
+          width: isWidthSpecified ? this.width : undefined,
+          height: isHeightSpecified ? this.height : undefined,
+          left: isWidthSpecified
+            ? `calc(50% - ((${this.width} - var(--margin-left, 0px) - var(--margin-right, 0px)) / 2))`
+            : undefined,
+          top: isHeightSpecified
+            ? `calc(50% - ((${this.height} - var(--margin-top, 0px) - var(--margin-bottom, 0px)) / 2))`
+            : undefined
+        };
+
+    return {
+      ...scaleType,
+      ...dimensions
+    };
   }
 
   private shouldLazyLoad(): boolean {

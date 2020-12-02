@@ -1,14 +1,6 @@
+import { Component, Element, Prop, State, Listen, h } from "@stencil/core";
+import { makeHighlightable } from "../common/highlightable";
 import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Prop,
-  State,
-  h
-} from "@stencil/core";
-import {
-  ClickableComponent,
   Component as GxComponent,
   DisableableComponent,
   VisibilityComponent
@@ -22,13 +14,11 @@ import { makeLinesClampable, LineClampComponent } from "../common/line-clamp";
 })
 export class TextBlock
   implements
-    ClickableComponent,
     GxComponent,
     DisableableComponent,
     VisibilityComponent,
     LineClampComponent {
   constructor() {
-    this.handleClick = this.handleClick.bind(this);
     makeLinesClampable(this, ".content", ".line-measuring");
   }
 
@@ -65,14 +55,17 @@ export class TextBlock
   @State() maxLines = 0;
   @State() maxHeight = 0;
 
-  /**
-   * Emitted when the element is clicked.
-   */
-  @Event() gxClick: EventEmitter;
-
-  private handleClick(event: UIEvent) {
-    this.gxClick.emit(event);
+  @Listen("click", { capture: true })
+  handleClick(event: UIEvent) {
     event.preventDefault();
+    if (this.disabled) {
+      event.stopPropagation();
+      return;
+    }
+  }
+
+  componentDidLoad() {
+    makeHighlightable(this.element);
   }
 
   render() {
@@ -82,7 +75,6 @@ export class TextBlock
           content: true,
           "gx-line-clamp": this.shouldClampLines()
         }}
-        onClick={!this.disabled ? this.handleClick : null}
         style={
           this.shouldClampLines() && {
             "--max-lines": this.maxLines.toString(),

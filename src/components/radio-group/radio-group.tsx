@@ -59,6 +59,13 @@ export class RadioGroup
   @Prop() readonly name: string;
 
   /**
+   * This attribute indicates that the user cannot modify the value of the control.
+   * Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly)
+   * attribute for `input` elements.
+   */
+  @Prop() readonly readonly: boolean;
+
+  /**
    * The initial value of the control. Setting the value automatically selects
    * the corresponding radio option.
    */
@@ -166,7 +173,7 @@ export class RadioGroup
 
   setDisabled() {
     this.radios.forEach(radio => {
-      radio.disabled = this.disabled;
+      radio.disabled = this.disabled || this.readonly;
     });
   }
 

@@ -5,6 +5,7 @@ import {
   DisableableComponent,
   VisibilityComponent
 } from "../common/interfaces";
+import { makeHighlightable } from "../common/highlightable";
 
 @Component({
   shadow: false,
@@ -76,7 +77,7 @@ export class Button
   @Prop() readonly size: "large" | "normal" | "small" = "normal";
 
   @Listen("click", { capture: true })
-  private handleClick(event: UIEvent) {
+  handleClick(event: UIEvent) {
     if (this.disabled) {
       event.stopPropagation();
       return;
@@ -85,6 +86,10 @@ export class Button
 
   componentWillLoad() {
     this.renderer.componentWillLoad();
+  }
+
+  componentDidLoad() {
+    makeHighlightable(this.element);
   }
 
   render() {

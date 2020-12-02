@@ -10,16 +10,16 @@
   & > fieldset {
     @extend #{$class} !optional;
 
-    @if ($highlighted != null) {
-      &:active {
-        @extend #{$highlighted} !optional;
-      }
-    }
-
     @if ($caption != null) {
       & > legend {
         @extend #{$caption} !optional;
       }
+    }
+  }
+
+  @if ($highlighted != null) {
+    &.gx-highlighted > fieldset {
+      @extend #{$highlighted} !optional;
     }
   }
 }

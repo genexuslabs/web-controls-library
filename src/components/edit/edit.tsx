@@ -239,7 +239,12 @@ export class Edit implements FormComponent {
 
   render() {
     return (
-      <Host>
+      <Host
+        class={{
+          "gx-edit--single-line":
+            this.type === "date" || this.type === "datetime-local"
+        }}
+      >
         {this.renderer.render({
           triggerContent: <slot name="trigger-content" />
         })}

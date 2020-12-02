@@ -1,4 +1,5 @@
 import { Component, Element, Prop, h } from "@stencil/core";
+import { makeHighlightable } from "../common/highlightable";
 import { Component as GxComponent } from "../common/interfaces";
 @Component({
   shadow: false,
@@ -19,6 +20,10 @@ export class Group implements GxComponent {
    * if the content overflows.
    */
   @Prop() readonly autoGrow: boolean;
+
+  componentDidLoad() {
+    makeHighlightable(this.element);
+  }
 
   render() {
     return (

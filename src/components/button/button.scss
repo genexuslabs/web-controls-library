@@ -20,11 +20,23 @@ gx-button {
     position: relative;
     align-items: center;
     justify-content: center;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    max-width: 100%;
 
     & > img {
       height: var(--gx-button-image-size);
       width: var(--gx-button-image-size);
       object-fit: contain;
+    }
+
+    & > span {
+      display: block;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     &:not(:disabled):not(.disabled) {

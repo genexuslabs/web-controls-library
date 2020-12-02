@@ -220,6 +220,7 @@ export class GridHorizontal
 
   componentDidLoad() {
     window.requestAnimationFrame(() => this.ensureSwiper());
+    GridBaseHelper.init(this.el);
   }
 
   componentDidUpdate() {

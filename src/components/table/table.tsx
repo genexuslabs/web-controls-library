@@ -5,8 +5,10 @@ import {
   EventEmitter,
   Prop,
   h,
+  Listen,
   Host
 } from "@stencil/core";
+import { makeHighlightable } from "../common/highlightable";
 import {
   Component as GxComponent,
   DisableableComponent,
@@ -86,8 +88,17 @@ export class Table
    */
   @Event() swipeLeft: EventEmitter;
 
+  @Listen("click", { capture: true })
+  handleClick(event: UIEvent) {
+    if (this.disabled) {
+      event.stopPropagation();
+      return;
+    }
+  }
+
   componentDidLoad() {
     makeSwipeable(this);
+    makeHighlightable(this.element);
   }
 
   render() {
