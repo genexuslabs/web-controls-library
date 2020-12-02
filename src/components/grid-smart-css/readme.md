@@ -1,4 +1,4 @@
-# gx-grid-smart-flex
+# gx-grid-smart-css
 
 A container for including a repetitive elements list based on CSS Grid Layout
 It provides 3 slots:
@@ -14,21 +14,21 @@ When the grid is loading, a CSS Class named 'gx-grid-loading' is added to the ho
 
 ### Vertical Single
 
-<gx-grid-smart-flex id="verticalSingle">
+<gx-grid-smart-css id="verticalSingle">
     <div slot="grid-content">
         <div class="item">ROW1</div>
         <div class="item">ROW2</div>
     </div>
-</gx-grid-smart-flex>
+</gx-grid-smart-css>
 
 ### Horizontal Single
 
-<gx-grid-smart-flex id="horizontal Single" direction="horizontal" snap-to-grid="true">
+<gx-grid-smart-css id="horizontal Single" direction="horizontal" snap-to-grid="true">
     <div slot="grid-content">
         <div class="item">ROW1</div>
         <div class="item">ROW2</div>
     </div>
-</gx-grid-smart-flex>
+</gx-grid-smart-css>
 
 <!-- Auto Generated Below -->
 
