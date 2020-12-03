@@ -90,11 +90,7 @@ export class Gauge implements GxComponent {
   }
 
   componentDidLoad() {
-    this.element.setAttribute(
-      "style",
-      this.element.getAttribute("style") +
-        `--minimum-size: ${this.minimumSize}px`
-    );
+    // sodf
   }
 
   private calcThickness(): number {
@@ -285,7 +281,7 @@ export class Gauge implements GxComponent {
         addRangeCaption(childRanges[i], positionInGauge, this)
       );
     }
-
+    console.log("this.calcPercentage()", this.calcPercentage());
     return (
       <div
         class="gaugeContainerLine"
@@ -304,8 +300,16 @@ export class Gauge implements GxComponent {
                 )}%`
               }}
             >
-              {this.value}
-              <span />
+              <span
+                class="marker-value"
+                style={{
+                  "margin-left": `${(this.calcPercentage() / 100 - 0.5) *
+                    -32}px`
+                }}
+              >
+                {this.value}
+              </span>
+              <span class="pin" />
             </span>
           ) : (
             ""

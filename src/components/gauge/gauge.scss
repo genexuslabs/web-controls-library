@@ -51,6 +51,13 @@ gx-gauge {
   --min-value-text-color: rgba(255, 255, 255, 0.8);
 
   $transitionConfig: 0.3s ease;
+  $min-width-value-displayers: 24px;
+
+  @mixin flex-centered {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  }
 
   display: flex;
   align-items: center;
@@ -69,20 +76,24 @@ gx-gauge {
       align-items: flex-start;
       z-index: 1;
       .marker {
+        @include flex-centered;
         transform: translateX(-50%);
-        display: flex;
-        justify-content: center;
-        align-content: center;
         transition: $transitionConfig;
-        background-color: var(--marker-color);
-        color: var(--max-value-text-color);
-        border-radius: 10px;
-        padding: 5px;
         z-index: 99;
-        & span {
+        & span.marker-value {
+          min-width: $min-width-value-displayers;
+          display: flex;
+          justify-content: center;
+          align-content: center;
+          background-color: var(--marker-color);
+          color: var(--max-value-text-color);
+          border-radius: 10px;
+          padding: 5px;
+        }
+        & span.pin {
           width: 13px;
           height: 13px;
-          transform: translateY(95%) rotate(45deg) skew(12deg, 12deg);
+          transform: translateY(18px) rotate(45deg) skew(12deg, 12deg);
           background-color: var(--marker-color);
           position: absolute;
           z-index: -1;
@@ -97,14 +108,13 @@ gx-gauge {
       width: 100%;
       height: auto;
       .maxValue {
-        display: flex;
-        justify-content: center;
-        align-content: center;
+        @include flex-centered;
         background-color: var(--max-value-background-color);
         color: var(--max-value-text-color);
         border-radius: 10px;
         padding: 5px;
         float: right;
+        min-width: $min-width-value-displayers;
         & span {
           width: 8px;
           height: 8px;
@@ -117,13 +127,12 @@ gx-gauge {
         }
       }
       .minValue {
-        display: flex;
-        justify-content: center;
-        align-content: center;
+        @include flex-centered;
         background-color: var(--min-value-background-color);
         color: var(--min-value-text-color);
         border-radius: 10px;
         padding: 5px;
+        min-width: $min-width-value-displayers;
         & span {
           width: 8px;
           height: 8px;
@@ -146,9 +155,7 @@ gx-gauge {
         height: 100%;
         position: absolute;
         box-shadow: var(--gauge-ranges-box-shadow);
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @include flex-centered;
       }
     }
     .namesContainer {
@@ -159,21 +166,15 @@ gx-gauge {
       .rangeName {
         height: 100%;
         position: absolute;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @include flex-centered;
         filter: brightness(0.5);
       }
     }
   }
   .svgContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-centered;
     .gaugeContainer {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      @include flex-centered;
       border-radius: 50%;
       z-index: 0;
       position: absolute;
@@ -185,9 +186,7 @@ gx-gauge {
       border-radius: 50%;
       z-index: 1;
       position: absolute;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      @include flex-centered;
       div {
         color: var(--center-circle-text-color);
       }
