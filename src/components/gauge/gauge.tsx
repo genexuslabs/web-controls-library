@@ -207,13 +207,7 @@ export class Gauge implements GxComponent {
         ) : (
           ""
         )}
-        <div
-          class="gauge"
-          style={{
-            height: `${this.minimumSize}px`,
-            width: `${this.minimumSize}px`
-          }}
-        >
+        <div class="gauge">
           {this.showValue ? (
             <div>{`${this.value} / ${this.maxValue}`}</div>
           ) : (
