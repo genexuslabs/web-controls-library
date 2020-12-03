@@ -50,6 +50,8 @@ gx-gauge {
   */
   --min-value-text-color: rgba(255, 255, 255, 0.8);
 
+  $transitionConfig: 0.3s ease;
+
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -71,7 +73,7 @@ gx-gauge {
         display: flex;
         justify-content: center;
         align-content: center;
-        transition: 0.3s ease;
+        transition: $transitionConfig;
         background-color: var(--marker-color);
         color: var(--max-value-text-color);
         border-radius: 10px;
@@ -191,10 +193,10 @@ gx-gauge {
       }
     }
     span.marker {
-      transition: 0.4s ease;
+      transition: $transitionConfig;
       position: absolute;
       .indicator {
-        transition: 0.4s ease;
+        transition: $transitionConfig;
         content: "";
         border: 2px solid var(--marker-color);
         transform: translateX(-1px);
