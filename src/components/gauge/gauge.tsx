@@ -93,6 +93,10 @@ export class Gauge implements GxComponent {
     // sodf
   }
 
+  private calcTotalValues(): number {
+    return this.maxValue - this.minValue;
+  }
+
   private calcThickness(): number {
     return typeof this.thickness === "number" &&
       this.thickness > 0 &&
@@ -101,10 +105,8 @@ export class Gauge implements GxComponent {
       : 10;
   }
 
-  private calcPercentage() {
-    return (
-      ((this.value - this.minValue) * 100) / (this.maxValue - this.minValue)
-    );
+  private calcPercentage(): number {
+    return ((this.value - this.minValue) * 100) / this.calcTotalValues();
   }
 
   private renderCircle(childRanges) {
@@ -144,7 +146,7 @@ export class Gauge implements GxComponent {
     this.rangesValuesAcumul = 0;
     for (let i = childRanges.length - 1; i >= 0; i--) {
       const rangeValuePercentage =
-        (100 * childRanges[i].amount) / this.maxValue;
+        (100 * childRanges[i].amount) / this.calcTotalValues();
       const positionInGauge = 360 * (this.rangesValuesAcumul / 100);
 
       this.rangesValuesAcumul += rangeValuePercentage;
@@ -209,7 +211,12 @@ export class Gauge implements GxComponent {
         )}
         <div class="gauge">
           {this.showValue ? (
-            <div>{`${this.value} / ${this.maxValue}`}</div>
+            <div>
+              <span class="current-value">{`${this.value}`}</span>
+              <span>{`${this.minValue}`}</span>
+              <span>{`>`}</span>
+              <span>{`${this.maxValue}`}</span>
+            </div>
           ) : (
             ""
           )}

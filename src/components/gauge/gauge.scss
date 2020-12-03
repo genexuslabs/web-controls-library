@@ -50,6 +50,20 @@ gx-gauge {
   */
   --min-value-text-color: rgba(255, 255, 255, 0.8);
 
+  /**
+  * @prop --min-max-text-size:
+   * Set the size of min and max values display text.
+   * (1.5em by default)
+  */
+  --min-max-values-text-size: 1.5em;
+
+  /**
+  * @prop --min-max-text-size:
+   * Set the size of min and max values display text.
+   * (2.7em by default)
+  */
+  --current-value-text-size: 2.7em;
+
   $transitionConfig: 0.3s ease;
   $min-width-value-displayers: 24px;
 
@@ -188,7 +202,20 @@ gx-gauge {
       position: absolute;
       @include flex-centered;
       div {
+        max-width: 80%;
+        @include flex-centered;
+        flex-direction: row;
+        flex-wrap: wrap;
         color: var(--center-circle-text-color);
+        & span {
+          margin: 10px;
+          font-size: var(--min-max-values-text-size);
+        }
+        & span.current-value {
+          font-size: var(--current-value-text-size);
+          font-weight: 900;
+          margin: 5px 50%;
+        }
       }
     }
     span.marker {
