@@ -119,7 +119,8 @@ export class Gauge implements GxComponent {
       const FULL_CIRCLE_RADIANS = 2 * Math.PI;
       const ROTATION_FIX = -90;
       const circleLength = FULL_CIRCLE_RADIANS * radius;
-      const valuePercentage = (100 * currentChild.amount) / component.maxValue;
+      const valuePercentage =
+        (100 * currentChild.amount) / component.calcTotalValues();
       return (
         <circle
           r={radius}
@@ -148,6 +149,11 @@ export class Gauge implements GxComponent {
       const rangeValuePercentage =
         (100 * childRanges[i].amount) / this.calcTotalValues();
       const positionInGauge = 360 * (this.rangesValuesAcumul / 100);
+      console.log(
+        childRanges[i].amount,
+        rangeValuePercentage + "%",
+        positionInGauge
+      );
 
       this.rangesValuesAcumul += rangeValuePercentage;
       svgRanges.splice(
@@ -214,7 +220,7 @@ export class Gauge implements GxComponent {
             <div>
               <span class="current-value">{`${this.value}`}</span>
               <span>{`${this.minValue}`}</span>
-              <span>{`>`}</span>
+              <span>{`-`}</span>
               <span>{`${this.maxValue}`}</span>
             </div>
           ) : (

@@ -202,12 +202,12 @@ gx-gauge {
       position: absolute;
       @include flex-centered;
       div {
-        max-width: 80%;
         @include flex-centered;
         flex-direction: row;
         flex-wrap: wrap;
         color: var(--center-circle-text-color);
         & span {
+          @include flex-centered;
           margin: 10px;
           font-size: var(--min-max-values-text-size);
         }
