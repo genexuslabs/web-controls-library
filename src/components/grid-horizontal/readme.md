@@ -1,4 +1,4 @@
-# gx-grid-smart
+# gx-grid-paged
 
 This component is a multi-section container. Each section can be horizontal or vertically swiped.
 It uses the Swiper.js as The most modern mobile touch slider and framework with hardware accelerated transitions.

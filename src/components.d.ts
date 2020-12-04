@@ -283,6 +283,24 @@ export namespace Components {
      */
     labelPosition: "none" | "top" | "right" | "bottom" | "left" | "float";
   }
+  interface GxGridEmptyIndicator {
+    /**
+     * Image url to be shown
+     */
+    image: "";
+    /**
+     * A CSS class to set as the inner `image` element class.
+     */
+    imageClass: "";
+    /**
+     * Text to be displayed
+     */
+    text: "";
+    /**
+     * A CSS class to set as the inner `text` element class.
+     */
+    textClass: "";
+  }
   interface GxGridFs {
     /**
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
@@ -306,34 +324,7 @@ export namespace Components {
      */
     threshold: string;
   }
-  interface GxGridInfiniteScroll {
-    /**
-     * Call `complete()` within the `gxInfinite` output event handler when your async operation has completed. For example, the `loading` state is while the app is performing an asynchronous operation, such as receiving more data from an AJAX request to add more items to a data list. Once the data has been received and UI updated, you then call this method to signify that the loading has completed. This method will change the infinite scroll's state from `loading` to `enabled`.
-     */
-    complete: () => Promise<void>;
-    /**
-     * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
-     */
-    disabled: boolean;
-    /**
-     * This property must be bounded to grid item count property. It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the intial batch does not overflow the main container
-     */
-    itemCount: number;
-    /**
-     * The position of the infinite scroll element. The value can be either `top` or `bottom`.
-     */
-    position: "top" | "bottom";
-    /**
-     * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
-     */
-    threshold: string;
-    /**
-     * The View Port parent element selector where the infinite component would be attached to and listening to Scroll Events.
-     */
-    viewportSelector: string;
-  }
-  interface GxGridInfiniteScrollContent {}
-  interface GxGridSmart {
+  interface GxGridHorizontal {
     /**
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
      */
@@ -465,6 +456,74 @@ export namespace Components {
      * @param speed The transition duration (in ms).
      */
     updateAutoHeight: (speed?: number) => Promise<void>;
+  }
+  interface GxGridInfiniteScroll {
+    /**
+     * Call `complete()` within the `gxInfinite` output event handler when your async operation has completed. For example, the `loading` state is while the app is performing an asynchronous operation, such as receiving more data from an AJAX request to add more items to a data list. Once the data has been received and UI updated, you then call this method to signify that the loading has completed. This method will change the infinite scroll's state from `loading` to `enabled`.
+     */
+    complete: () => Promise<void>;
+    /**
+     * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
+     */
+    disabled: boolean;
+    /**
+     * This property must be bounded to grid item count property. It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the intial batch does not overflow the main container
+     */
+    itemCount: number;
+    /**
+     * The position of the infinite scroll element. The value can be either `top` or `bottom`.
+     */
+    position: "top" | "bottom";
+    /**
+     * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
+     */
+    threshold: string;
+    /**
+     * The View Port parent element selector where the infinite component would be attached to and listening to Scroll Events.
+     */
+    viewportSelector: string;
+  }
+  interface GxGridInfiniteScrollContent {}
+  interface GxGridSmartCell {
+    /**
+     * Whether this row is even position or not. This is specially required in Virtual scroll scenarios where the position in the DOM is not the real position in the collection.
+     */
+    isRowEven: false;
+  }
+  interface GxGridSmartCss {
+    /**
+     * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+     */
+    autoGrow: false;
+    complete: () => Promise<void>;
+    /**
+     * Specifies the direction of the flexible items.
+     */
+    direction: "vertical" | "horizontal";
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode: "collapse" | "keep-space";
+    /**
+     * Grid Item Layout Mode: Single, Multiple by quantity, multiple by size.
+     */
+    itemLayoutMode: "single" | "mbyq" | "mbys";
+    /**
+     * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
+     */
+    loadingState: "loading" | "loaded";
+    /**
+     * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders may not work correctly.
+     */
+    recordCount: number;
+    /**
+     * Scroll snapping allows to lock the viewport to certain elements or locations after a user has finished scrolling
+     */
+    snapToGrid: false;
+    /**
+     * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
+     */
+    threshold: string;
   }
   interface GxGroup {
     /**
@@ -853,6 +912,10 @@ export namespace Components {
      */
     name: string;
     /**
+     * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
+     */
+    readonly: boolean;
+    /**
      * The initial value of the control. Setting the value automatically selects the corresponding radio option.
      */
     value: string;
@@ -930,6 +993,10 @@ export namespace Components {
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode: "collapse" | "keep-space";
+    /**
+     * Text that appears in the form control when it has no value set
+     */
+    placeholder: string;
     /**
      * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
      */
@@ -1172,12 +1239,26 @@ declare global {
     prototype: HTMLGxFormFieldElement;
     new (): HTMLGxFormFieldElement;
   };
+  interface HTMLGxGridEmptyIndicatorElement
+    extends Components.GxGridEmptyIndicator,
+      HTMLStencilElement {}
+  var HTMLGxGridEmptyIndicatorElement: {
+    prototype: HTMLGxGridEmptyIndicatorElement;
+    new (): HTMLGxGridEmptyIndicatorElement;
+  };
   interface HTMLGxGridFsElement
     extends Components.GxGridFs,
       HTMLStencilElement {}
   var HTMLGxGridFsElement: {
     prototype: HTMLGxGridFsElement;
     new (): HTMLGxGridFsElement;
+  };
+  interface HTMLGxGridHorizontalElement
+    extends Components.GxGridHorizontal,
+      HTMLStencilElement {}
+  var HTMLGxGridHorizontalElement: {
+    prototype: HTMLGxGridHorizontalElement;
+    new (): HTMLGxGridHorizontalElement;
   };
   interface HTMLGxGridInfiniteScrollElement
     extends Components.GxGridInfiniteScroll,
@@ -1193,12 +1274,19 @@ declare global {
     prototype: HTMLGxGridInfiniteScrollContentElement;
     new (): HTMLGxGridInfiniteScrollContentElement;
   };
-  interface HTMLGxGridSmartElement
-    extends Components.GxGridSmart,
+  interface HTMLGxGridSmartCellElement
+    extends Components.GxGridSmartCell,
       HTMLStencilElement {}
-  var HTMLGxGridSmartElement: {
-    prototype: HTMLGxGridSmartElement;
-    new (): HTMLGxGridSmartElement;
+  var HTMLGxGridSmartCellElement: {
+    prototype: HTMLGxGridSmartCellElement;
+    new (): HTMLGxGridSmartCellElement;
+  };
+  interface HTMLGxGridSmartCssElement
+    extends Components.GxGridSmartCss,
+      HTMLStencilElement {}
+  var HTMLGxGridSmartCssElement: {
+    prototype: HTMLGxGridSmartCssElement;
+    new (): HTMLGxGridSmartCssElement;
   };
   interface HTMLGxGroupElement extends Components.GxGroup, HTMLStencilElement {}
   var HTMLGxGroupElement: {
@@ -1400,10 +1488,13 @@ declare global {
     "gx-chronometer": HTMLGxChronometerElement;
     "gx-edit": HTMLGxEditElement;
     "gx-form-field": HTMLGxFormFieldElement;
+    "gx-grid-empty-indicator": HTMLGxGridEmptyIndicatorElement;
     "gx-grid-fs": HTMLGxGridFsElement;
+    "gx-grid-horizontal": HTMLGxGridHorizontalElement;
     "gx-grid-infinite-scroll": HTMLGxGridInfiniteScrollElement;
     "gx-grid-infinite-scroll-content": HTMLGxGridInfiniteScrollContentElement;
-    "gx-grid-smart": HTMLGxGridSmartElement;
+    "gx-grid-smart-cell": HTMLGxGridSmartCellElement;
+    "gx-grid-smart-css": HTMLGxGridSmartCssElement;
     "gx-group": HTMLGxGroupElement;
     "gx-icon": HTMLGxIconElement;
     "gx-image": HTMLGxImageElement;
@@ -1751,6 +1842,24 @@ declare namespace LocalJSX {
      */
     labelPosition?: "none" | "top" | "right" | "bottom" | "left" | "float";
   }
+  interface GxGridEmptyIndicator {
+    /**
+     * Image url to be shown
+     */
+    image?: "";
+    /**
+     * A CSS class to set as the inner `image` element class.
+     */
+    imageClass?: "";
+    /**
+     * Text to be displayed
+     */
+    text?: "";
+    /**
+     * A CSS class to set as the inner `text` element class.
+     */
+    textClass?: "";
+  }
   interface GxGridFs {
     /**
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
@@ -1777,34 +1886,7 @@ declare namespace LocalJSX {
      */
     threshold?: string;
   }
-  interface GxGridInfiniteScroll {
-    /**
-     * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
-     */
-    disabled?: boolean;
-    /**
-     * This property must be bounded to grid item count property. It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the intial batch does not overflow the main container
-     */
-    itemCount?: number;
-    /**
-     * Emitted when the scroll reaches the threshold distance. From within your infinite handler, you must call the infinite scroll's `complete()` method when your async operation has completed.
-     */
-    onGxInfinite?: (event: CustomEvent<void>) => void;
-    /**
-     * The position of the infinite scroll element. The value can be either `top` or `bottom`.
-     */
-    position?: "top" | "bottom";
-    /**
-     * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
-     */
-    threshold?: string;
-    /**
-     * The View Port parent element selector where the infinite component would be attached to and listening to Scroll Events.
-     */
-    viewportSelector?: string;
-  }
-  interface GxGridInfiniteScrollContent {}
-  interface GxGridSmart {
+  interface GxGridHorizontal {
     /**
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
      */
@@ -1930,6 +2012,77 @@ declare namespace LocalJSX {
      */
     snapToGrid?: true;
   }
+  interface GxGridInfiniteScroll {
+    /**
+     * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
+     */
+    disabled?: boolean;
+    /**
+     * This property must be bounded to grid item count property. It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the intial batch does not overflow the main container
+     */
+    itemCount?: number;
+    /**
+     * Emitted when the scroll reaches the threshold distance. From within your infinite handler, you must call the infinite scroll's `complete()` method when your async operation has completed.
+     */
+    onGxInfinite?: (event: CustomEvent<void>) => void;
+    /**
+     * The position of the infinite scroll element. The value can be either `top` or `bottom`.
+     */
+    position?: "top" | "bottom";
+    /**
+     * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
+     */
+    threshold?: string;
+    /**
+     * The View Port parent element selector where the infinite component would be attached to and listening to Scroll Events.
+     */
+    viewportSelector?: string;
+  }
+  interface GxGridInfiniteScrollContent {}
+  interface GxGridSmartCell {
+    /**
+     * Whether this row is even position or not. This is specially required in Virtual scroll scenarios where the position in the DOM is not the real position in the collection.
+     */
+    isRowEven?: false;
+  }
+  interface GxGridSmartCss {
+    /**
+     * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+     */
+    autoGrow?: false;
+    /**
+     * Specifies the direction of the flexible items.
+     */
+    direction?: "vertical" | "horizontal";
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode?: "collapse" | "keep-space";
+    /**
+     * Grid Item Layout Mode: Single, Multiple by quantity, multiple by size.
+     */
+    itemLayoutMode?: "single" | "mbyq" | "mbys";
+    /**
+     * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
+     */
+    loadingState?: "loading" | "loaded";
+    /**
+     * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
+     */
+    onGxInfiniteThresholdReached?: (event: CustomEvent<void>) => void;
+    /**
+     * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders may not work correctly.
+     */
+    recordCount?: number;
+    /**
+     * Scroll snapping allows to lock the viewport to certain elements or locations after a user has finished scrolling
+     */
+    snapToGrid?: false;
+    /**
+     * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
+     */
+    threshold?: string;
+  }
   interface GxGroup {
     /**
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
@@ -1987,10 +2140,6 @@ declare namespace LocalJSX {
      * This attribute lets you specify the low resolution image SRC.
      */
     lowResolutionSrc?: "";
-    /**
-     * Emitted when the element is clicked.
-     */
-    onGxClick?: (event: CustomEvent<any>) => void;
     /**
      * This attribute allows specifing how the image is sized according to its container. `contain`, `cover`, `fill` and `none` map directly to the values of the CSS `object-fit` property. The `tile` value repeats the image, both vertically and horizontally, creating a tile effect.
      */
@@ -2388,6 +2537,10 @@ declare namespace LocalJSX {
      */
     onChange?: (event: CustomEvent<any>) => void;
     /**
+     * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
+     */
+    readonly?: boolean;
+    /**
      * The initial value of the control. Setting the value automatically selects the corresponding radio option.
      */
     value?: string;
@@ -2481,6 +2634,10 @@ declare namespace LocalJSX {
      * The `input` event is emitted when a change to the element's value is committed by the user.
      */
     onInput?: (event: CustomEvent<any>) => void;
+    /**
+     * Text that appears in the form control when it has no value set
+     */
+    placeholder?: string;
     /**
      * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
      */
@@ -2676,10 +2833,6 @@ declare namespace LocalJSX {
      * True to cut text when it overflows, showing an ellipsis.
      */
     lineClamp?: false;
-    /**
-     * Emitted when the element is clicked.
-     */
-    onGxClick?: (event: CustomEvent<any>) => void;
   }
   interface GxVideo {
     /**
@@ -2712,10 +2865,13 @@ declare namespace LocalJSX {
     "gx-chronometer": GxChronometer;
     "gx-edit": GxEdit;
     "gx-form-field": GxFormField;
+    "gx-grid-empty-indicator": GxGridEmptyIndicator;
     "gx-grid-fs": GxGridFs;
+    "gx-grid-horizontal": GxGridHorizontal;
     "gx-grid-infinite-scroll": GxGridInfiniteScroll;
     "gx-grid-infinite-scroll-content": GxGridInfiniteScrollContent;
-    "gx-grid-smart": GxGridSmart;
+    "gx-grid-smart-cell": GxGridSmartCell;
+    "gx-grid-smart-css": GxGridSmartCss;
     "gx-group": GxGroup;
     "gx-icon": GxIcon;
     "gx-image": GxImage;
@@ -2772,14 +2928,20 @@ declare module "@stencil/core" {
       "gx-edit": LocalJSX.GxEdit & JSXBase.HTMLAttributes<HTMLGxEditElement>;
       "gx-form-field": LocalJSX.GxFormField &
         JSXBase.HTMLAttributes<HTMLGxFormFieldElement>;
+      "gx-grid-empty-indicator": LocalJSX.GxGridEmptyIndicator &
+        JSXBase.HTMLAttributes<HTMLGxGridEmptyIndicatorElement>;
       "gx-grid-fs": LocalJSX.GxGridFs &
         JSXBase.HTMLAttributes<HTMLGxGridFsElement>;
+      "gx-grid-horizontal": LocalJSX.GxGridHorizontal &
+        JSXBase.HTMLAttributes<HTMLGxGridHorizontalElement>;
       "gx-grid-infinite-scroll": LocalJSX.GxGridInfiniteScroll &
         JSXBase.HTMLAttributes<HTMLGxGridInfiniteScrollElement>;
       "gx-grid-infinite-scroll-content": LocalJSX.GxGridInfiniteScrollContent &
         JSXBase.HTMLAttributes<HTMLGxGridInfiniteScrollContentElement>;
-      "gx-grid-smart": LocalJSX.GxGridSmart &
-        JSXBase.HTMLAttributes<HTMLGxGridSmartElement>;
+      "gx-grid-smart-cell": LocalJSX.GxGridSmartCell &
+        JSXBase.HTMLAttributes<HTMLGxGridSmartCellElement>;
+      "gx-grid-smart-css": LocalJSX.GxGridSmartCss &
+        JSXBase.HTMLAttributes<HTMLGxGridSmartCssElement>;
       "gx-group": LocalJSX.GxGroup & JSXBase.HTMLAttributes<HTMLGxGroupElement>;
       "gx-icon": LocalJSX.GxIcon & JSXBase.HTMLAttributes<HTMLGxIconElement>;
       "gx-image": LocalJSX.GxImage & JSXBase.HTMLAttributes<HTMLGxImageElement>;

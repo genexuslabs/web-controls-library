@@ -1,7 +1,7 @@
 @import "../grid-base/grid-base.scss";
 @import "../../../node_modules/swiper/css/swiper.min.css";
 
-gx-grid-smart {
+gx-grid-horizontal {
   & > [slot="grid-empty-loading-placeholder"] {
     height: 100%;
   }
