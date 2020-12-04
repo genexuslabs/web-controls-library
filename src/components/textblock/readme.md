@@ -21,11 +21,19 @@ A SASS mixin called `gx-textblock` is provided in `theming/theming-mixins.scss` 
 | `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \| | `"collapse" \| "keep-space"` | `"collapse"` |
 | `lineClamp`     | `line-clamp`     | True to cut text when it overflows, showing an ellipsis.                                                                                                                                                                                                                                                                                                                                     | `boolean`                    | `false`      |
 
-## Events
+## Dependencies
 
-| Event     | Description                          | Type               |
-| --------- | ------------------------------------ | ------------------ |
-| `gxClick` | Emitted when the element is clicked. | `CustomEvent<any>` |
+### Used by
+
+- [gx-grid-empty-indicator](../grid-empty-indicator)
+
+### Graph
+
+```mermaid
+graph TD;
+  gx-grid-empty-indicator --> gx-textblock
+  style gx-textblock fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ---
 

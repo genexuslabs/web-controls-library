@@ -21,11 +21,19 @@ The loading indicator can be disabled by setting the `--image-loading-indicator`
 | `src`              | `src`                | This attribute lets you specify the SRC.                                                                                                                                                                                                                                                                                                                                                     | `""`                                                 | `""`         |
 | `width`            | `width`              | This attribute lets you specify the width.                                                                                                                                                                                                                                                                                                                                                   | `string`                                             | `undefined`  |
 
-## Events
+## Dependencies
 
-| Event     | Description                          | Type               |
-| --------- | ------------------------------------ | ------------------ |
-| `gxClick` | Emitted when the element is clicked. | `CustomEvent<any>` |
+### Used by
+
+- [gx-grid-empty-indicator](../grid-empty-indicator)
+
+### Graph
+
+```mermaid
+graph TD;
+  gx-grid-empty-indicator --> gx-image
+  style gx-image fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ---
 
