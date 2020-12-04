@@ -242,7 +242,8 @@ export class Gauge implements GxComponent {
           style={{
             "background-color": currentChild.color,
             "margin-left": `${position}%`,
-            width: `${(currentChild.amount * 100) / component.maxValue}%`
+            width: `${(currentChild.amount * 100) /
+              component.calcTotalValues()}%`
           }}
         />
       );
@@ -255,7 +256,8 @@ export class Gauge implements GxComponent {
           style={{
             "margin-left": `${position}%`,
             color: currentChild.color,
-            width: `${(currentChild.amount * 100) / component.maxValue}%`
+            width: `${(currentChild.amount * 100) /
+              component.calcTotalValues()}%`
           }}
         >
           {currentChild.name}
@@ -273,7 +275,7 @@ export class Gauge implements GxComponent {
     this.rangesValuesAcumul = 0;
     for (let i = childRanges.length - 1; i >= 0; i--) {
       const rangeValuePercentage =
-        (100 * childRanges[i].amount) / this.maxValue;
+        (100 * childRanges[i].amount) / this.calcTotalValues();
       const positionInGauge = this.rangesValuesAcumul;
 
       this.rangesValuesAcumul += rangeValuePercentage;
