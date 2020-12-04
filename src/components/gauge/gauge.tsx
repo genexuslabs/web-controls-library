@@ -94,7 +94,9 @@ export class Gauge implements GxComponent {
   }
 
   private calcTotalValues(): number {
-    return this.maxValue - this.minValue;
+    return this.maxValue == undefined
+      ? this.maxValueAux
+      : this.maxValue - this.minValue;
   }
 
   private calcThickness(): number {
@@ -140,9 +142,6 @@ export class Gauge implements GxComponent {
     this.maxValueAux = 0;
     for (let i = childRanges.length - 1; i >= 0; i--) {
       this.maxValueAux += childRanges[i].amount;
-    }
-    if (this.maxValue == undefined) {
-      this.maxValue = this.maxValueAux;
     }
     this.rangesValuesAcumul = 0;
     for (let i = childRanges.length - 1; i >= 0; i--) {
@@ -221,7 +220,9 @@ export class Gauge implements GxComponent {
               <span class="current-value">{`${this.value}`}</span>
               <span>{`${this.minValue}`}</span>
               <span>{`-`}</span>
-              <span>{`${this.maxValue}`}</span>
+              <span>{`${
+                this.maxValue == undefined ? this.maxValueAux : this.maxValue
+              }`}</span>
             </div>
           ) : (
             ""
@@ -268,9 +269,6 @@ export class Gauge implements GxComponent {
     this.maxValueAux = 0;
     for (let i = childRanges.length - 1; i >= 0; i--) {
       this.maxValueAux += childRanges[i].amount;
-    }
-    if (this.maxValue == undefined) {
-      this.maxValue = this.maxValueAux - this.minValue;
     }
     this.rangesValuesAcumul = 0;
     for (let i = childRanges.length - 1; i >= 0; i--) {
@@ -338,7 +336,7 @@ export class Gauge implements GxComponent {
               <span />
             </span>
             <span class="maxValue">
-              {this.maxValue}
+              {this.maxValue == undefined ? this.maxValueAux : this.maxValue}
               <span />
             </span>
           </div>
