@@ -6,7 +6,8 @@ import {
   Listen,
   Prop,
   State,
-  h
+  h,
+  Host
 } from "@stencil/core";
 
 import { Component as GxComponent } from "../common/interfaces";
@@ -111,9 +112,12 @@ export class Gauge implements GxComponent {
     return ((this.value - this.minValue) * 100) / this.calcTotalValues();
   }
 
-  private renderCircle(childRanges) {
+  private renderCircle(
+    childRanges: Array<HTMLGxGaugeRangeElement>
+  ): HTMLElement {
     const FULL_CIRCLE_RADIO = 100 / 2;
     const svgRanges = [];
+    const labelsRanges = [];
     const ONE_PERCENT_OF_CIRCLE_DREGREE = 3.6;
     const radius = FULL_CIRCLE_RADIO - this.thickness / 2;
 
@@ -139,6 +143,17 @@ export class Gauge implements GxComponent {
       );
     }
 
+    function renderRangeLabels({ name, amount, color }): HTMLElement {
+      return (
+        <div class="range-label">
+          <div style={{ "border-color": color }}></div>
+          <span>
+            {amount} - {name}
+          </span>
+        </div>
+      );
+    }
+
     this.maxValueAux = 0;
     for (let i = childRanges.length - 1; i >= 0; i--) {
       this.maxValueAux += childRanges[i].amount;
@@ -148,87 +163,84 @@ export class Gauge implements GxComponent {
       const rangeValuePercentage =
         (100 * childRanges[i].amount) / this.calcTotalValues();
       const positionInGauge = 360 * (this.rangesValuesAcumul / 100);
-      console.log(
-        childRanges[i].amount,
-        rangeValuePercentage + "%",
-        positionInGauge
-      );
-
       this.rangesValuesAcumul += rangeValuePercentage;
-      svgRanges.splice(
-        0,
-        0,
-        renderSvgCircle(childRanges[i], positionInGauge, this)
-      );
+      svgRanges.push(renderSvgCircle(childRanges[i], positionInGauge, this));
+      labelsRanges.push(renderRangeLabels(childRanges[i]));
     }
+    console.log(labelsRanges);
+    svgRanges.reverse();
+    labelsRanges.reverse();
 
     return (
-      <div
-        class="svgContainer"
-        style={{
-          height: `${this.minimumSize}px`,
-          width: `${this.minimumSize}px`
-        }}
-      >
-        <svg width="100%" height="100%" viewBox="0 0 100 100">
-          <circle
-            r={radius}
-            cx="50%"
-            cy="50%"
-            stroke={"rgba(0, 0, 0, 0.2)"}
-            fill="none"
-            stroke-width={`${this.thickness / 2}%`}
-          />
-          {svgRanges}
-        </svg>
+      <Host>
         <div
-          class="gaugeContainer"
+          class="svgContainer"
           style={{
             height: `${this.minimumSize}px`,
             width: `${this.minimumSize}px`
           }}
-        />
-        {this.showValue ? (
-          <span
-            class="marker"
-            style={{
-              display: this.showValue ? "" : "none",
-              height: `${this.minimumSize}px`,
-              width: `${this.thickness / 8}px`,
-              transform:
-                this.calcPercentage() >= 100
-                  ? "rotate(359.9deg)"
-                  : this.calcPercentage() > 0
-                  ? `rotate(${ONE_PERCENT_OF_CIRCLE_DREGREE *
-                      this.calcPercentage()}deg)`
-                  : "rotate(0.5deg)"
-            }}
-          >
-            <div
-              class="indicator"
-              style={{
-                height: `${(this.minimumSize * this.thickness) / 100}px`
-              }}
+        >
+          <svg width="100%" height="100%" viewBox="0 0 100 100">
+            <circle
+              r={radius}
+              cx="50%"
+              cy="50%"
+              stroke={"rgba(0, 0, 0, 0.2)"}
+              fill="none"
+              stroke-width={`${this.thickness / 2}%`}
             />
-          </span>
-        ) : (
-          ""
-        )}
-        <div class="gauge">
+            {svgRanges}
+          </svg>
+          <div
+            class="gaugeContainer"
+            style={{
+              height: `${this.minimumSize}px`,
+              width: `${this.minimumSize}px`
+            }}
+          />
           {this.showValue ? (
-            <div>
-              <span class="current-value">{`${this.value}`}</span>
-              <span>{`${this.minValue}`}</span>
-              <span>{`-`}</span>
-              <span>{`${
-                this.maxValue == undefined ? this.maxValueAux : this.maxValue
-              }`}</span>
-            </div>
+            <span
+              class="marker"
+              style={{
+                display: this.showValue ? "" : "none",
+                height: `${this.minimumSize}px`,
+                width: `${this.thickness / 8}px`,
+                transform:
+                  this.calcPercentage() >= 100
+                    ? "rotate(359.9deg)"
+                    : this.calcPercentage() > 0
+                    ? `rotate(${ONE_PERCENT_OF_CIRCLE_DREGREE *
+                        this.calcPercentage()}deg)`
+                    : "rotate(0.5deg)"
+              }}
+            >
+              <div
+                class="indicator"
+                style={{
+                  height: `${(this.minimumSize * this.thickness) / 100}px`
+                }}
+              />
+            </span>
           ) : (
             ""
           )}
+          <div class="gauge">
+            {this.showValue ? (
+              <div>
+                <span class="current-value">{`${this.value}`}</span>
+                <span>{`${this.minValue}`}</span>
+                <span>{`-`}</span>
+                <span>{`${
+                  this.maxValue == undefined ? this.maxValueAux : this.maxValue
+                }`}</span>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
         </div>
-      </div>
+        <div class="labelsContainerCircle">{labelsRanges}</div>
+      </Host>
     );
   }
 
@@ -328,7 +340,7 @@ export class Gauge implements GxComponent {
         >
           {divRanges}
         </div>
-        <div class="namesContainer">{divRangesName}</div>
+        <div class="labelsContainerLine">{divRangesName}</div>
         {this.showValue ? (
           <div class="minMaxDisplay">
             <span class="minValue">
