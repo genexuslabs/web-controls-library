@@ -72,6 +72,7 @@ export class Gauge implements GxComponent {
   onGaugeRangeDidLoad({ detail: childRange }) {
     this.rangesChildren = [...this.rangesChildren, childRange];
     this.maxValueAux += childRange.amount;
+    // Possible improvement here. Check the approach applied in navbar.jsx line 103
     childRange.element.addEventListener("gxGaugeRangeDidUnload", () => {
       this.rangesChildren = this.rangesChildren.filter(
         elementToSave => elementToSave != childRange
@@ -88,10 +89,6 @@ export class Gauge implements GxComponent {
         this.maxValueAux += childInstance.amount;
       }
     });
-  }
-
-  componentDidLoad() {
-    // sodf
   }
 
   private calcTotalValues(): number {
@@ -121,7 +118,7 @@ export class Gauge implements GxComponent {
     const ONE_PERCENT_OF_CIRCLE_DREGREE = 3.6;
     const radius = FULL_CIRCLE_RADIO - this.thickness / 2;
 
-    function renderSvgCircle(currentChild, position, component): HTMLElement {
+    function renderSvgCircle(currentChild, position, component): SVGElement {
       const FULL_CIRCLE_RADIANS = 2 * Math.PI;
       const ROTATION_FIX = -90;
       const circleLength = FULL_CIRCLE_RADIANS * radius;
@@ -289,18 +286,14 @@ export class Gauge implements GxComponent {
       const positionInGauge = this.rangesValuesAcumul;
 
       this.rangesValuesAcumul += rangeValuePercentage;
-      divRanges.splice(
-        0,
-        0,
-        addLineRanges(childRanges[i], positionInGauge, this)
-      );
-      divRangesName.splice(
-        0,
-        0,
+      divRanges.push(addLineRanges(childRanges[i], positionInGauge, this));
+      divRangesName.push(
         addRangeCaption(childRanges[i], positionInGauge, this)
       );
     }
-    console.log("this.calcPercentage()", this.calcPercentage());
+    divRanges.reverse();
+    divRangesName.reverse();
+
     return (
       <div
         class="gaugeContainerLine"

@@ -79,7 +79,8 @@ gx-gauge {
   height: 400px;
 
   .gaugeContainerLine {
-    width: 98%;
+    left: 0;
+    right: 4px;
     height: auto;
     position: absolute;
     border-radius: var(--gauge-border-radius);
@@ -172,7 +173,7 @@ gx-gauge {
       }
     }
     .labelsContainerLine {
-      width: calc(100% + 4px);
+      width: calc(100%);
       height: calc(100% + 4px);
       display: flex;
       align-items: center;
