@@ -109,6 +109,70 @@ export class Gauge implements GxComponent {
     return ((this.value - this.minValue) * 100) / this.calcTotalValues();
   }
 
+  private addCircleRanges(
+    { amount, color },
+    position: number,
+    radius: number
+  ): any {
+    const FULL_CIRCLE_RADIANS = 2 * Math.PI;
+    const ROTATION_FIX = -90;
+    const circleLength = FULL_CIRCLE_RADIANS * radius;
+    const valuePercentage = (100 * amount) / this.calcTotalValues();
+    return (
+      <circle
+        r={radius}
+        cx="50%"
+        cy="50%"
+        stroke={color}
+        stroke-dasharray={`${circleLength *
+          (valuePercentage / 100)}, ${circleLength}`}
+        fill="none"
+        transform={`rotate(${position + ROTATION_FIX} 50,50)`}
+        data-amount={amount}
+        stroke-width={`${this.thickness}%`}
+      />
+    );
+  }
+
+  private addLineRanges({ amount, color }, position: number): any {
+    return (
+      <div
+        class="range"
+        style={{
+          "background-color": color,
+          "margin-left": `${position}%`,
+          width: `${(amount * 100) / this.calcTotalValues()}%`
+        }}
+      />
+    );
+  }
+
+  private addCircleRangesLabels({ amount, color, name }): any {
+    return (
+      <div class="range-label">
+        <div style={{ "border-color": color }}></div>
+        <span>
+          {amount} - {name}
+        </span>
+      </div>
+    );
+  }
+
+  private addLineRangesLabels({ amount, color, name }, position: number): any {
+    return (
+      <span
+        class="rangeName"
+        style={{
+          "margin-left": `${position}%`,
+          color: color,
+          width: `${(amount * 100) / this.calcTotalValues()}%`
+        }}
+      >
+        {name}
+      </span>
+    );
+  }
+
   private renderCircle(
     childRanges: Array<HTMLGxGaugeRangeElement>
   ): HTMLElement {
@@ -117,39 +181,6 @@ export class Gauge implements GxComponent {
     const labelsRanges = [];
     const ONE_PERCENT_OF_CIRCLE_DREGREE = 3.6;
     const radius = FULL_CIRCLE_RADIO - this.thickness / 2;
-
-    function renderSvgCircle(currentChild, position, component): SVGElement {
-      const FULL_CIRCLE_RADIANS = 2 * Math.PI;
-      const ROTATION_FIX = -90;
-      const circleLength = FULL_CIRCLE_RADIANS * radius;
-      const valuePercentage =
-        (100 * currentChild.amount) / component.calcTotalValues();
-      return (
-        <circle
-          r={radius}
-          cx="50%"
-          cy="50%"
-          stroke={currentChild.color}
-          stroke-dasharray={`${circleLength *
-            (valuePercentage / 100)}, ${circleLength}`}
-          fill="none"
-          transform={`rotate(${position + ROTATION_FIX} 50,50)`}
-          data-amount={currentChild.amount}
-          stroke-width={`${component.thickness}%`}
-        />
-      );
-    }
-
-    function renderRangeLabels({ name, amount, color }): HTMLElement {
-      return (
-        <div class="range-label">
-          <div style={{ "border-color": color }}></div>
-          <span>
-            {amount} - {name}
-          </span>
-        </div>
-      );
-    }
 
     this.maxValueAux = 0;
     for (let i = childRanges.length - 1; i >= 0; i--) {
@@ -161,10 +192,11 @@ export class Gauge implements GxComponent {
         (100 * childRanges[i].amount) / this.calcTotalValues();
       const positionInGauge = 360 * (this.rangesValuesAcumul / 100);
       this.rangesValuesAcumul += rangeValuePercentage;
-      svgRanges.push(renderSvgCircle(childRanges[i], positionInGauge, this));
-      labelsRanges.push(renderRangeLabels(childRanges[i]));
+      svgRanges.push(
+        this.addCircleRanges(childRanges[i], positionInGauge, radius)
+      );
+      labelsRanges.push(this.addCircleRangesLabels(childRanges[i]));
     }
-    console.log(labelsRanges);
     svgRanges.reverse();
     labelsRanges.reverse();
 
@@ -228,7 +260,7 @@ export class Gauge implements GxComponent {
                 <span>{`${this.minValue}`}</span>
                 <span>{`-`}</span>
                 <span>{`${
-                  this.maxValue == undefined ? this.maxValueAux : this.maxValue
+                  this.maxValue === undefined ? this.maxValueAux : this.maxValue
                 }`}</span>
               </div>
             ) : (
@@ -245,36 +277,6 @@ export class Gauge implements GxComponent {
     const divRanges = [];
     const divRangesName = [];
 
-    function addLineRanges(currentChild, position, component): HTMLElement {
-      return (
-        <div
-          class="range"
-          style={{
-            "background-color": currentChild.color,
-            "margin-left": `${position}%`,
-            width: `${(currentChild.amount * 100) /
-              component.calcTotalValues()}%`
-          }}
-        />
-      );
-    }
-
-    function addRangeCaption(currentChild, position, component) {
-      return (
-        <span
-          class="rangeName"
-          style={{
-            "margin-left": `${position}%`,
-            color: currentChild.color,
-            width: `${(currentChild.amount * 100) /
-              component.calcTotalValues()}%`
-          }}
-        >
-          {currentChild.name}
-        </span>
-      );
-    }
-
     this.maxValueAux = 0;
     for (let i = childRanges.length - 1; i >= 0; i--) {
       this.maxValueAux += childRanges[i].amount;
@@ -286,9 +288,9 @@ export class Gauge implements GxComponent {
       const positionInGauge = this.rangesValuesAcumul;
 
       this.rangesValuesAcumul += rangeValuePercentage;
-      divRanges.push(addLineRanges(childRanges[i], positionInGauge, this));
+      divRanges.push(this.addLineRanges(childRanges[i], positionInGauge));
       divRangesName.push(
-        addRangeCaption(childRanges[i], positionInGauge, this)
+        this.addLineRangesLabels(childRanges[i], positionInGauge)
       );
     }
     divRanges.reverse();
