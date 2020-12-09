@@ -26,7 +26,7 @@ export class GridHorizontal
   private scrollbarEl?: HTMLElement;
   private paginationEl?: HTMLElement;
   private swiper: Swiper = null;
-  private fillMode: "column" | "row" = "column";
+  private fillMode: "column" | "row" = "row";
 
   /**
    * This attribute defines if the control size will grow automatically,
@@ -567,7 +567,7 @@ export class GridHorizontal
     //When 'column' it uses flex-direction: column layout which requires specified height on swiper-container.
     const height = this.el.parentElement.offsetHeight;
     if (height > 0) {
-      this.el.style.maxHeight = height + "px";
+      this.el.style.minHeight = height + "px";
     }
   }
 
