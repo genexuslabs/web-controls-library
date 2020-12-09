@@ -12,7 +12,7 @@ export class QueryViewerElementFormat {
   /**
    * How to show subtotals
    */
-  @Prop() subtotals: string;
+  @Prop() subtotals: "Yes" | "Hidden" | "No";
   /**
    * If true cand drag to pages
    */

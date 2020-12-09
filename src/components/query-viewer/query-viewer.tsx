@@ -42,11 +42,46 @@ export class QueryViewer implements GxComponent {
   /**
    * Type of the QueryViewer: Table, PivotTable, Chart, Card
    */
-  @Prop() type: string;
+  @Prop() type: "Card" | "Chart" | "PivotTable" | "Table" | "Default";
   /**
    * If type == Chart, this is the chart type: Bar, Pie, Timeline, etc...
    */
-  @Prop() chartType: string;
+  @Prop() chartType:
+    | "Column"
+    | "Column3D"
+    | "StackedColumn"
+    | "StackedColumn3D"
+    | "StackedColumn100"
+    | "Bar"
+    | "StackedBar"
+    | "StackedBar100"
+    | "Area"
+    | "StackedArea"
+    | "StackedArea100"
+    | "SmoothArea"
+    | "StepArea"
+    | "Line"
+    | "StackedLine"
+    | "StackedLine100"
+    | "SmoothLine"
+    | "StepLine"
+    | "Pie"
+    | "Pie3D"
+    | "Doughnut"
+    | "Doughnut3D"
+    | "LinearGauge"
+    | "CircularGauge"
+    | "Radar"
+    | "FilledRadar"
+    | "PolarArea"
+    | "Funnel"
+    | "Pyramid"
+    | "ColumnLine"
+    | "Column3DLine"
+    | "Timeline"
+    | "SmoothTimeline"
+    | "StepTimeline"
+    | "Sparkline";
   /**
    * If type == PivotTable or Table, if true there is paging, else everything in one table
    */
@@ -62,11 +97,16 @@ export class QueryViewer implements GxComponent {
   /**
    * Timeline
    */
-  @Prop() plotSeries: string;
+  @Prop() plotSeries: "InTheSameChart" | "InSeparateCharts";
   /**
    * Labels for XAxis
    */
-  @Prop() xAxisLabels: string;
+  @Prop() xAxisLabels:
+    | "Horizontally"
+    | "Rotated30"
+    | "Rotated45"
+    | "Rotated60"
+    | "Vertically";
   /**
    * if true the x Axes intersect at zero
    */
@@ -86,7 +126,7 @@ export class QueryViewer implements GxComponent {
   /**
    * Type of data to show
    */
-  @Prop() showDataAs: string;
+  @Prop() showDataAs: "Values" | "Percentages" | "ValuesAndPercentages";
   /**
    * If true includes trend on the graph
    */
@@ -94,7 +134,17 @@ export class QueryViewer implements GxComponent {
   /**
    * If includeTrend, defines the period of the trend
    */
-  @Prop() trendPeriod: string;
+  @Prop() trendPeriod:
+    | "SinceTheBeginning"
+    | "LastYear"
+    | "LastSemester"
+    | "LastQuarter"
+    | "LastMonth"
+    | "LastWeek"
+    | "LastDay"
+    | "LastHour"
+    | "LastMinute"
+    | "LastSecond";
   /**
    * For timeline for remembering layout
    */
@@ -102,7 +152,7 @@ export class QueryViewer implements GxComponent {
   /**
    * Orientation of the graph
    */
-  @Prop() orientation: string;
+  @Prop() orientation: "Horizontal" | "Vertical";
   /**
    * Include spark line
    */
@@ -134,7 +184,7 @@ export class QueryViewer implements GxComponent {
   /**
    * If autoResize, in here select the type, Width, height, or both
    */
-  @Prop() autoResizeType: string;
+  @Prop() autoResizeType: "Both" | "Vertical" | "Horizontal";
   /**
    * Type of font
    */

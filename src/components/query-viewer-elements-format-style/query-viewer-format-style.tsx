@@ -1,10 +1,10 @@
 import { Component, Prop } from "@stencil/core";
 
 @Component({
-  tag: "gx-query-viewer-element-format-style",
+  tag: "gx-query-viewer-format-style",
   shadow: false
 })
-export class QueryViewerElementFormatStyle {
+export class QueryViewerFormatStyle {
   /**
    * Type of the element Conditional or Format
    */
@@ -24,7 +24,7 @@ export class QueryViewerElementFormatStyle {
   /**
    * If Format the operator of the element
    */
-  @Prop() operator: string;
+  @Prop() operator: "EQ" | "LT" | "GT" | "LE" | "GE" | "NE" | "IN";
   /**
    * If format first value
    */

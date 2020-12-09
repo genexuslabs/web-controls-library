@@ -16,19 +16,19 @@ export class QueryViewerElement {
   /**
    * How to show it
    */
-  @Prop() visible: string;
+  @Prop() visible: "Always" | "Yes" | "No" | "Never";
   /**
    * Type of the element
    */
-  @Prop() type: string;
+  @Prop() type: "Axis" | "Datum";
   /**
    * Which axis, row or column
    */
-  @Prop() axis: string;
+  @Prop() axis: "Rows" | "Columns" | "Pages";
   /**
    * Aggregation fucntion
    */
-  @Prop() aggregation: string;
+  @Prop() aggregation: "Sum" | "Average" | "Count" | "Max" | "Min";
   /**
    * Data field
    */
@@ -36,7 +36,7 @@ export class QueryViewerElement {
   /**
    * Type of the filter
    */
-  @Prop() filterType: string;
+  @Prop() filterType: "ShowAllValues" | "HideAllValues" | "ShowSomeValues";
   /**
    * Filter values comma separated
    */
@@ -44,7 +44,10 @@ export class QueryViewerElement {
   /**
    * Expand collapse type
    */
-  @Prop() expandCollapseType: string;
+  @Prop() expandCollapseType:
+    | "ExpandAllValues"
+    | "CollapseAllValues"
+    | "ExpandSomeValues";
   /**
    * Expand collapse values comma separated
    */
@@ -52,7 +55,7 @@ export class QueryViewerElement {
   /**
    * Axis Order type
    */
-  @Prop() axisOrderType: string;
+  @Prop() axisOrderType: "None" | "Ascending" | "Descending" | "Custom";
   /**
    * Axis order values comma separated
    */
