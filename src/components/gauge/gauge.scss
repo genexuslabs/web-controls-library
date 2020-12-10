@@ -232,7 +232,8 @@ gx-gauge {
     }
   }
   .labelsContainerCircle {
-    width: 300px;
+    width: auto;
+    padding-left: 20px;
     height: 100%;
     display: flex;
     justify-content: center;
