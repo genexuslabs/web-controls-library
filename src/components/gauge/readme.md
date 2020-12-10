@@ -26,34 +26,33 @@ Use `gx-gauge-range` element to set the number of ranges.
 
 ## Properties
 
-| Property      | Attribute      | Description                                                                                                                                                                | Type                 | Default     |
-| ------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ----------- |
-| `minValue`    | `min-value`    | The minimum value of the gauge                                                                                                                                             | `number`             | `undefined` |
-| `showValue`   | `show-value`   | Set `true` to display the current value. Default is `false`.                                                                                                               | `boolean`            | `false`     |
-| `styleShadow` | `style-shadow` | Property of type Style. Define if shadow will display or not. Default is disabled.                                                                                         | `boolean`            | `false`     |
-| `thickness`   | `thickness`    | This allows specifying the width of the circumference _(When gauge is circle type)_ and the width of the bar _(When gauge is Line type)_ in % relative the component size. | `number`             | `10`        |
-| `type`        | `type`         | This property allows selecting the gauge type. The allowed values are `circle` or `line` (defautl).                                                                        | `"circle" \| "line"` | `"line"`    |
-| `value`       | `value`        | The current value of the gauge                                                                                                                                             | `number`             | `undefined` |
+| Property    | Attribute    | Description                                                                                                                                                                                    | Type                 | Default     |
+| ----------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ----------- |
+| `maxValue`  | `max-value`  | The maximum value of the gauge. This prop allows specify the maximum value that the gauge will handle. If there is no value specified it will be calculated by the sum of all gx-ranges values | `number`             | `undefined` |
+| `minValue`  | `min-value`  | The minimum value of the gauge 0 by Default                                                                                                                                                    | `number`             | `0`         |
+| `showValue` | `show-value` | Set `true` to display the current value. Default is `false`.                                                                                                                                   | `boolean`            | `false`     |
+| `thickness` | `thickness`  | Allows specify the width of the circumference _(When gauge is circle type)_ or the width of the bar _(When gauge is Line type)_ in % relative the component size.                              | `number`             | `10`        |
+| `type`      | `type`       | This property allows selecting the gauge type. The allowed values are `circle` or `line` (defautl).                                                                                            | `"circle" \| "line"` | `"line"`    |
+| `value`     | `value`      | The current value of the gauge                                                                                                                                                                 | `number`             | `undefined` |
 
 ## Events
 
-| Event            | Description                                                                          | Type               |
-| ---------------- | ------------------------------------------------------------------------------------ | ------------------ |
-| `gxGaugeDidLoad` | The `gxGaugeDidLoad` event is triggered when component has been rendered completely. | `CustomEvent<any>` |
+| Event            | Description                                                                              | Type               |
+| ---------------- | ---------------------------------------------------------------------------------------- | ------------------ |
+| `gxGaugeDidLoad` | The `gxGaugeDidLoad` event is triggered when the component has been rendered completely. | `CustomEvent<any>` |
 
 ## CSS Custom Properties
 
-| Name                             | Description                                                                                  |
-| -------------------------------- | -------------------------------------------------------------------------------------------- |
-| `--center-circle-text-color`     | Define the color of the center text in `circle` gauge type. (gray by default)                |
-| `--component-height`             | Set the height or the control. _Must be set before render the control_ (400px by default)    |
-| `--marker-backgorund`            | Define the background color of the marker. (1px by default)                                  |
-| `--max-value-display-background` | Set the color of maximum value display background. (rgba(44, 44, 44, 1) by default)          |
-| `--max-value-display-box-shadow` | Set the box-shadow of maximum value display. (2px 1px 3px 0px rgba(0, 0, 0, 0.5) by default) |
-| `--max-value-display-color`      | Set the color of maximum value display text. (rgba(255, 255, 255, 0.8) by default)           |
-| `--min-value-display-background` | Set the color of minimum value display background. (rgba(44, 44, 44, 1) by default)          |
-| `--min-value-display-box-shadow` | Set the box-shadow of minimum value display. (0px 0px 5px 0px rgba(0, 0, 0, 0.5) by default) |
-| `--min-value-display-color`      | Set the color of minimum value display text. (rgba(255, 255, 255, 0.8) by default)           |
+| Name                           | Description                                                                                  |
+| ------------------------------ | -------------------------------------------------------------------------------------------- |
+| `--center-circle-text-color`   | Define the color of the center text in `circle` gauge type. (rgba(44, 44, 44, 1) by default) |
+| `--gauge-border-radius`        | Define the border radius of gauge in `line` gauge type. (25px by default)                    |
+| `--marker-color`               | Define the background color and border color of the marker. (rgba(44, 44, 44, 1) by default) |
+| `--max-value-background-color` | Set the color of maximum value display background. (rgba(44, 44, 44, 1) by default)          |
+| `--max-value-text-color`       | Set the color of maximum value display text. (rgba(255, 255, 255, 0.8) by default)           |
+| `--min-max-text-size`          | Set the size of min and max values display text. (1.5em by default)                          |
+| `--min-value-background-color` | Set the color of minimum value display background. (rgba(44, 44, 44, 1) by default)          |
+| `--min-value-text-color`       | Set the color of minimum value display text. (rgba(255, 255, 255, 0.8) by default)           |
 
 ---
 
