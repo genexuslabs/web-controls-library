@@ -3,7 +3,7 @@ import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
   tag: "gx-query-viewer",
-  styleUrl: "query-viewer.css",
+  styleUrl: "query-viewer.scss",
   shadow: false
 })
 export class QueryViewer implements GxComponent {
@@ -236,24 +236,15 @@ export class QueryViewer implements GxComponent {
   @Prop() queryTitle: string;
 
   private postData() {
-    const postBody = [];
-    for (const key in Object(this)) {
-      if (this[key] != undefined && !this.propsNotToPost.includes(key)) {
-        postBody.push(<input type="hidden" name={key} value={this[key]} />);
-      }
-    }
-    postBody.push(<input type="hidden" name="Width" value={this.getWidth()} />);
-    postBody.push(
-      <input type="hidden" name="Height" value={this.getHeight()} />
-    );
-    postBody.push(
-      <input type="hidden" name="Elements" value={this.getElements()} />
-    );
-    postBody.push(
+    return [
+      ...Object.keys(QueryViewer.prototype)
+        .filter(key => !this.propsNotToPost.includes(key))
+        .map(key => <input type="hidden" name={key} value={this[key]} />),
+      <input type="hidden" name="Width" value={this.getWidth()} />,
+      <input type="hidden" name="Height" value={this.getHeight()} />,
+      <input type="hidden" name="Elements" value={this.getElements()} />,
       <input type="hidden" name="Parameters" value={this.getParameters()} />
-    );
-
-    return postBody;
+    ];
   }
 
   private getParameters(): string {
