@@ -120,6 +120,7 @@ export class Gauge implements GxComponent {
     const valuePercentage = (100 * amount) / this.calcTotalValues();
     return (
       <circle
+        class="circle-range"
         r={radius}
         cx="50%"
         cy="50%"
