@@ -16,7 +16,8 @@ export class QueryViewer implements GxComponent {
   @Element() element: HTMLGxQueryViewerElement;
 
   componentDidRender() {
-    this.generateForm();
+    const form = this.element.querySelector("form");
+    form.submit();
   }
 
   /**
@@ -234,105 +235,83 @@ export class QueryViewer implements GxComponent {
    */
   @Prop() queryTitle: string;
 
-  private generateForm() {
-    const form = document.createElement("form");
-    form.action = this.baseUrl + this.mapServices[this.env];
-    form.method = "POST";
-    form.target = "query_viewer";
-    form.innerHTML = this.postData();
-
-    document.body.append(form);
-    form.submit();
-  }
-
-  private postData(): string {
-    let postBody = "";
+  private postData() {
+    const postBody = [];
     for (const key in Object(this)) {
       if (
         Object(this)[key] != undefined &&
         !this.propsNotToPost.includes(key)
       ) {
-        postBody +=
-          '<input type="hidden" name="' +
-          key +
-          '" value="' +
-          Object(this)[key] +
-          '" />';
+        postBody.push(
+          <input type="hidden" name={key} value={Object(this)[key]} />
+        );
       }
     }
-    postBody +=
-      '<input type="hidden" name="Width" value="' + this.getWidth() + '" />';
-    postBody +=
-      '<input type="hidden" name="Height" value="' + this.getHeight() + '" />';
-    postBody +=
-      '<input type="hidden" name="Elements" value="' +
-      this.getElements() +
-      '" />';
-    postBody +=
-      '<input type="hidden" name="Parameters" value="' +
-      this.getParameters() +
-      '" />';
+    postBody.push(<input type="hidden" name="Width" value={this.getWidth()} />);
+    postBody.push(
+      <input type="hidden" name="Height" value={this.getHeight()} />
+    );
+    postBody.push(
+      <input type="hidden" name="Elements" value={this.getElements()} />
+    );
+    postBody.push(
+      <input type="hidden" name="Parameters" value={this.getParameters()} />
+    );
+
     return postBody;
   }
 
   private getParameters(): string {
-    let parametersValue = "";
+    const parametersValue = [];
+
     const parameters = Array.from(
       document.getElementsByTagName("gx-query-viewer-parameter")
     );
     parameters.forEach(parameter => {
-      parametersValue += parametersValue != "" ? "," : "";
-      parametersValue +=
-        "{Value:" +
-        encodeURIComponent(parameter.Value) +
-        ",Name:" +
-        parameter.Name +
-        "}";
+      const parameterObject = {};
+      parameterObject["Value"] = encodeURIComponent(parameter.Value);
+      parameterObject["Name"] = parameter.Name;
+      parametersValue.push(parameterObject);
     });
-    parametersValue = "[" + parametersValue + "]";
 
-    return parametersValue;
+    return JSON.stringify(parametersValue);
   }
 
   private getElements(): string {
-    let elementsValue = "";
+    const elementsValue = [];
     const elements = Array.from(
       document.getElementsByTagName("gx-query-viewer-element")
     );
     elements.forEach(ax => {
-      let elementValue = "{";
-      elementValue += ' "Name": "' + ax.name + '"';
-      elementValue += ' ,"Title": "' + ax.elementTitle + '"';
-      elementValue += ' ,"Visible": "' + ax.visible + '"';
-      elementValue += ' ,"Type": ' + ax.type + '"';
-      elementValue += ' ,"Axis": "' + ax.axis + '"';
-      elementValue += ' ,"Aggregation": "' + ax.aggregation + '"';
-      elementValue += ' ,"DataField": ' + ax.dataField + '"';
+      const elementObjectValue = {};
+      elementObjectValue["Name"] = ax.name;
+      elementObjectValue["Title"] = ax.title;
+      elementObjectValue["Visible"] = ax.visible;
+      elementObjectValue["Type"] = ax.type;
+      elementObjectValue["Axis"] = ax.axis;
+      elementObjectValue["Aggregation"] = ax.aggregation;
+      elementObjectValue["DataField"] = ax.dataField;
       if (ax.axisOrderType) {
-        elementValue += ', "AxisOrder": { "Type": "' + ax.axisOrderType + '"';
-        elementValue +=
-          ax.axisOrderValues != null
-            ? ', "Values": [' + ax.axisOrderValues + "]"
-            : "";
-        elementValue += "}";
+        elementObjectValue["AxisOrder"] = { Type: ax.axisOrderType };
+        if (ax.axisOrderValues) {
+          elementObjectValue["AxisOrder"]["Values"] = ax.axisOrderValues.split(
+            ","
+          );
+        }
       }
       if (ax.filterType) {
-        elementValue += ', "Filter": { "Type": ' + ax.filterType + '"';
-        elementValue +=
-          ax.filterValues != null
-            ? ', "Values": [' + ax.filterValues + "]"
-            : "";
-        elementValue += "}";
+        elementObjectValue["Filter"] = { Type: ax.filterType };
+        if (ax.axisOrderValues) {
+          elementObjectValue["Filter"]["Values"] = ax.filterValues.split(",");
+        }
       }
       if (ax.expandCollapseType) {
-        elementValue +=
-          ', "ExpandCollapse": { "Type": "' + ax.expandCollapseType + '"';
-        elementValue +=
-          ax.expandCollapseValues != null
-            ? ' "Values": [' + ax.expandCollapseValues + "]"
-            : "";
-
-        elementValue += "}";
+        elementObjectValue["ExpandCollapse"] = { Type: ax.expandCollapseType };
+        if (ax.axisOrderValues) {
+          elementObjectValue["ExpandCollapse"][
+            "Values"
+          ] = ax.expandCollapseValues.split(",");
+        }
       }
       //TODO add grouping values
       const formats = Array.from(
@@ -340,22 +319,22 @@ export class QueryViewer implements GxComponent {
       );
 
       formats.forEach(format => {
-        elementValue += ' ,"Format":  {';
-        elementValue += ' "Picture": "' + format.picture + '"';
-        elementValue += ' ,"Subtotals": "' + format.subtotals + '"';
-        elementValue += ' ,"CanDragToPages": "' + format.canDragToPages + '"';
-        elementValue += ' ,"Style": "' + format.formatStyle + '"';
-        elementValue += ' ,"TargetValue": "' + format.targetValue + '"';
-        elementValue += ' ,"MaximumValue": "' + format.maximumValue + '"';
-        elementValue += " }";
+        const formatObject = {};
+
+        formatObject["Picture"] = format.picture;
+        formatObject["Subtotals"] = format.subtotals;
+        formatObject["CanDragToPages"] = format.canDragToPages;
+        formatObject["Style"] = format.formatStyle;
+        formatObject["TargetValue"] = format.targetValue;
+        formatObject["MaximumValue"] = format.maximumValue;
+
         //TODO add fromat styles
+
+        elementObjectValue["Format"] = formatObject;
       });
-      elementValue += "}";
-      elementsValue += elementsValue != "" ? "," : "";
-      elementsValue += elementValue;
+      elementsValue.push(elementObjectValue);
     });
-    elementsValue = "[" + elementsValue + "]";
-    return elementsValue;
+    return JSON.stringify(elementsValue);
   }
 
   private getWidth(): string {
@@ -376,6 +355,14 @@ export class QueryViewer implements GxComponent {
           width={this.getWidth()}
           height={this.getHeight()}
         ></iframe>
+        <form
+          hidden
+          target="query_viewer"
+          action={this.baseUrl + this.mapServices[this.env]}
+          method="POST"
+        >
+          {this.postData()}
+        </form>
       </div>
     );
   }
