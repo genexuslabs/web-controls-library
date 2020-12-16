@@ -1,5 +1,6 @@
 import { Config } from "@stencil/core";
 import { sass } from "@stencil/sass";
+import { reactOutputTarget } from "@stencil/react-output-target";
 
 export const config: Config = {
   bundles: [
@@ -57,7 +58,11 @@ export const config: Config = {
     {
       type: "www",
       serviceWorker: null
-    }
+    },
+    reactOutputTarget({
+      componentCorePackage: "@genexus/web-controls-library",
+      proxiesFile: "../react-web-controls-library/src/components.ts"
+    })
   ],
   plugins: [sass()]
 };
