@@ -61,7 +61,7 @@ export const config: Config = {
     },
     reactOutputTarget({
       componentCorePackage: "@genexus/web-controls-library",
-      proxiesFile: "../react-web-controls-library/src/components.ts"
+      proxiesFile: "../web-controls-library-react/src/components.ts"
     })
   ],
   plugins: [sass()]
