@@ -1,0 +1,259 @@
+@import "../common/_base";
+
+gx-gauge {
+  /**
+  * @prop --center-circle-text-color:
+   * Define the color of the center text in `circle` gauge type.
+   * (rgba(44, 44, 44, 1) by default)
+  */
+  --center-circle-text-color: rgba(44, 44, 44, 1);
+
+  /**
+  * @prop --gauge-border-radius:
+   * Define the border radius of gauge in `line` gauge type.
+   * (25px by default)
+  */
+  --gauge-border-radius: 25px;
+
+  /**
+  * @prop --marker-color:
+   * Define the background color and border color of the marker.
+   * (rgba(44, 44, 44, 1) by default)
+  */
+  --marker-color: rgba(44, 44, 44, 1);
+
+  /**
+  * @prop --max-value-background-color:
+   * Set the color of maximum value display background.
+   * (rgba(44, 44, 44, 1) by default)
+  */
+  --max-value-background-color: rgba(44, 44, 44, 1);
+
+  /**
+  * @prop --max-value-text-color:
+   * Set the color of maximum value display text.
+   * (rgba(255, 255, 255, 0.8) by default)
+  */
+  --max-value-text-color: rgba(255, 255, 255, 0.8);
+
+  /**
+  * @prop --min-value-background-color:
+   * Set the color of minimum value display background.
+   * (rgba(44, 44, 44, 1) by default)
+  */
+  --min-value-background-color: rgba(44, 44, 44, 1);
+
+  /**
+  * @prop --min-value-text-color:
+   * Set the color of minimum value display text.
+   * (rgba(255, 255, 255, 0.8) by default)
+  */
+  --min-value-text-color: rgba(255, 255, 255, 0.8);
+
+  /**
+  * @prop --min-max-text-size:
+   * Set the size of min and max values display text.
+   * (1.5em by default)
+  */
+  --min-max-values-text-size: 1.5em;
+
+  /**
+  * @prop --min-max-text-size:
+   * Set the size of min and max values display text.
+   * (2.7em by default)
+  */
+  --current-value-text-size: 2.7em;
+
+  $transitionConfig: 0.3s ease;
+  $min-width-value-displayers: 24px;
+
+  @mixin flex-centered {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  }
+
+  @include flex-centered;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 400px;
+
+  .gaugeContainerLine {
+    left: 0;
+    right: 4px;
+    height: auto;
+    position: absolute;
+    border-radius: var(--gauge-border-radius);
+    .gauge {
+      min-height: 30px;
+      display: flex;
+      align-items: flex-start;
+      z-index: 1;
+      .marker {
+        @include flex-centered;
+        transform: translateX(-50%);
+        transition: $transitionConfig;
+        z-index: 99;
+        & span.marker-value {
+          min-width: $min-width-value-displayers;
+          display: flex;
+          justify-content: center;
+          align-content: center;
+          background-color: var(--marker-color);
+          color: var(--max-value-text-color);
+          border-radius: 10px;
+          padding: 5px;
+        }
+        & span.pin {
+          width: 13px;
+          height: 13px;
+          transform: translateY(18px) rotate(45deg) skew(12deg, 12deg);
+          background-color: var(--marker-color);
+          position: absolute;
+          z-index: -1;
+        }
+      }
+    }
+
+    .minMaxDisplay {
+      display: flex;
+      justify-content: space-between;
+      align-content: center;
+      width: 100%;
+      height: auto;
+      .maxValue {
+        @include flex-centered;
+        background-color: var(--max-value-background-color);
+        color: var(--max-value-text-color);
+        border-radius: 10px;
+        padding: 5px;
+        float: right;
+        min-width: $min-width-value-displayers;
+        & span {
+          width: 8px;
+          height: 8px;
+          transform: translateY(calc(-100%)) rotate(45deg) skew(12deg, 12deg);
+          right: 0;
+          z-index: -1;
+          background-color: var(--max-value-background-color);
+          position: absolute;
+          border-radius: 0% 200% 0% 10%;
+        }
+      }
+      .minValue {
+        @include flex-centered;
+        background-color: var(--min-value-background-color);
+        color: var(--min-value-text-color);
+        border-radius: 10px;
+        padding: 5px;
+        min-width: $min-width-value-displayers;
+        & span {
+          width: 8px;
+          height: 8px;
+          border-radius: 0% 10% 0% 200%;
+          transform: translateY(calc(-100%)) rotate(45deg) skew(12deg, 12deg);
+          left: 0;
+          z-index: -1;
+          background-color: var(--min-value-background-color);
+          position: absolute;
+        }
+      }
+    }
+    .rangesContainer {
+      overflow: hidden;
+      border-radius: 20px;
+      position: absolute;
+      width: calc(100%);
+      background-color: rgba(0, 0, 0, 0.1);
+      .range {
+        height: 100%;
+        position: absolute;
+        box-shadow: var(--gauge-ranges-box-shadow);
+        @include flex-centered;
+      }
+    }
+    .labelsContainerLine {
+      width: calc(100%);
+      height: calc(100% + 4px);
+      display: flex;
+      align-items: center;
+      .rangeName {
+        position: absolute;
+        @include flex-centered;
+        filter: brightness(0.5);
+      }
+    }
+  }
+  .svgContainer {
+    @include flex-centered;
+    .gaugeContainer {
+      @include flex-centered;
+      border-radius: 50%;
+      z-index: 0;
+      position: absolute;
+    }
+    svg {
+      z-index: -1;
+    }
+    .gauge {
+      border-radius: 50%;
+      z-index: 1;
+      position: absolute;
+      @include flex-centered;
+      div {
+        @include flex-centered;
+        flex-direction: row;
+        flex-wrap: wrap;
+        color: var(--center-circle-text-color);
+        & span {
+          @include flex-centered;
+          margin: 10px;
+          font-size: var(--min-max-values-text-size);
+        }
+        & span.current-value {
+          font-size: var(--current-value-text-size);
+          font-weight: 900;
+          margin: 5px 50%;
+        }
+      }
+    }
+    span.marker {
+      transition: $transitionConfig;
+      position: absolute;
+      .indicator {
+        transition: $transitionConfig;
+        content: "";
+        border: 2px solid var(--marker-color);
+        transform: translateX(-1px);
+        border-radius: 20px 20px 1000% 1000%;
+        display: block;
+        background-color: var(--marker-color);
+      }
+    }
+  }
+  .labelsContainerCircle {
+    width: auto;
+    padding-left: 20px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: space-evenly;
+    flex-direction: column;
+    flex-wrap: wrap;
+    .range-label {
+      flex-grow: 1;
+      min-height: 16px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      flex-direction: row;
+      & div {
+        border: 3px solid black;
+        border-radius: 100%;
+        width: 10px;
+        height: 10px;
+        margin-right: 10px;
+      }
+    }
+  }
+}
