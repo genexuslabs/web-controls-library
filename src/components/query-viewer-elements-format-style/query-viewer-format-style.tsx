@@ -8,7 +8,7 @@ export class QueryViewerFormatStyle {
   /**
    * Type of the element Conditional or Format
    */
-  @Prop() type: string;
+  @Prop() type: "Values" | "Conditional";
   /**
    * If Conditional Value to format
    */

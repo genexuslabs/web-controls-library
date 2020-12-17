@@ -299,7 +299,16 @@ export class QueryViewer implements GxComponent {
           ] = ax.expandCollapseValues.split(",");
         }
       }
-      //TODO add grouping values
+
+      const grouping = this.getGrouping(ax);
+      if (Object.keys(grouping).length > 0) {
+        elementObjectValue["Grouping"] = grouping;
+      }
+      if (ax.raiseItemClick) {
+        const action = { RaiseItemClick: ax.raiseItemClick };
+        elementObjectValue["Action"] = action;
+      }
+
       const formats = Array.from(
         ax.getElementsByTagName("gx-query-viewer-element-format")
       );
@@ -314,13 +323,73 @@ export class QueryViewer implements GxComponent {
         formatObject["TargetValue"] = format.targetValue;
         formatObject["MaximumValue"] = format.maximumValue;
 
-        //TODO add fromat styles
+        const styles = Array.from(
+          ax.getElementsByTagName("gx-query-viewer-format-style")
+        );
+
+        const valuesStyles = [];
+        const conditionalStyles = [];
+        styles.forEach(style => {
+          if (style.type === "Values") {
+            const valueStyle = {
+              Value: style.value,
+              ApplyToRowOrColumn: style.applyToRowOrColumn,
+              StyleOrClass: style.styleOrClass
+            };
+            valuesStyles.push(valueStyle);
+          } else {
+            const conditionalStyle = {
+              Value1: style.value1,
+              Value2: style.value2,
+              Operator: style.operator,
+              StyleOrClass: style.styleOrClass
+            };
+            conditionalStyles.push(conditionalStyle);
+          }
+        });
+        if (valuesStyles.length > 0) {
+          formatObject["ValuesStyle"] = valuesStyles;
+        }
+        if (conditionalStyles.length > 0) {
+          formatObject["ConditionalStyles"] = conditionalStyles;
+        }
 
         elementObjectValue["Format"] = formatObject;
       });
       elementsValue.push(elementObjectValue);
     });
     return JSON.stringify(elementsValue);
+  }
+
+  private getGrouping(
+    ax: HTMLGxQueryViewerElementElement
+  ): Record<string, any> {
+    const grouping = () => ({
+      ...(ax.groupingGroupByYear && { GroupByYear: ax.groupingGroupByYear }),
+      ...(ax.groupingYearTitle && {
+        YearTitle: ax.groupingYearTitle
+      }),
+      ...(ax.groupingGroupBySemester && {
+        GroupBySemester: ax.groupingGroupBySemester
+      }),
+      ...(ax.groupingSemesterTitle && {
+        SemesterTitle: ax.groupingSemesterTitle
+      }),
+      ...(ax.groupingGroupByQuarter && {
+        GroupByQuarter: ax.groupingGroupByQuarter
+      }),
+      ...(ax.groupingQuarterTitle && { QuarterTitle: ax.groupingQuarterTitle }),
+      ...(ax.groupingGroupByMonth && { GroupByMonth: ax.groupingGroupByMonth }),
+      ...(ax.groupingMonthTitle && { MonthTitle: ax.groupingMonthTitle }),
+      ...(ax.groupingGroupByDayOfWeek && {
+        GroupByDayOfWeek: ax.groupingGroupByDayOfWeek
+      }),
+      ...(ax.groupingDayOfWeekTitle && {
+        DayOfWeekTitle: ax.groupingDayOfWeekTitle
+      }),
+      ...(ax.groupingHideValue && { HideValue: ax.groupingHideValue })
+    });
+    return grouping;
   }
 
   private getWidth(): string {
