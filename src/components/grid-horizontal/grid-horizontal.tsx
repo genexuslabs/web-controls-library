@@ -26,7 +26,7 @@ export class GridHorizontal
   private scrollbarEl?: HTMLElement;
   private paginationEl?: HTMLElement;
   private swiper: Swiper = null;
-  private fillMode: "column" | "row" = "column";
+  private fillMode: "column" | "row" = "row";
 
   /**
    * This attribute defines if the control size will grow automatically,
@@ -560,19 +560,18 @@ export class GridHorizontal
     return { ...swiperOptions, ...this.options, ...mergedEventOptions };
   }
 
-  private ensureViewPort() {
+  private getViewPortHeightIfColumnFill() {
+    let height = null;
+
     if (this.autoGrow || this.fillMode === "row") {
-      return;
+      return height;
     }
     //When 'column' it uses flex-direction: column layout which requires specified height on swiper-container.
-    const height = this.el.parentElement.offsetHeight;
-    if (height > 0) {
-      this.el.style.maxHeight = height + "px";
-    }
+    height = this.el.parentElement.offsetHeight;
   }
 
   render() {
-    this.ensureViewPort();
+    const height = this.getViewPortHeightIfColumnFill();
     const hostData = GridBaseHelper.hostData(this);
     hostData.class = {
       ...hostData.class,
@@ -582,7 +581,12 @@ export class GridHorizontal
     };
 
     return (
-      <Host {...hostData}>
+      <Host
+        {...hostData}
+        style={{
+          height: height
+        }}
+      >
         {[
           <slot name="grid-content" />,
           this.pager && (
