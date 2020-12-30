@@ -3,11 +3,11 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Listen,
   Prop,
   State,
-  h,
-  Host
+  h
 } from "@stencil/core";
 
 import { Component as GxComponent } from "../common/interfaces";
@@ -187,19 +187,17 @@ export class Gauge implements GxComponent {
     for (let i = childRanges.length - 1; i >= 0; i--) {
       this.maxValueAux += childRanges[i].amount;
     }
-    this.rangesValuesAcumul = 0;
-    for (let i = childRanges.length - 1; i >= 0; i--) {
-      const rangeValuePercentage =
-        (100 * childRanges[i].amount) / this.calcTotalValues();
-      const positionInGauge = 360 * (this.rangesValuesAcumul / 100);
-      this.rangesValuesAcumul += rangeValuePercentage;
+
+    let positionInGauge = 0;
+    const totalAmount = this.calcTotalValues();
+    for (let i = 0; i < childRanges.length; i++) {
       svgRanges.push(
         this.addCircleRanges(childRanges[i], positionInGauge, radius)
       );
       labelsRanges.push(this.addCircleRangesLabels(childRanges[i]));
+
+      positionInGauge += (360 * childRanges[i].amount) / totalAmount;
     }
-    svgRanges.reverse();
-    labelsRanges.reverse();
 
     return (
       <Host>
@@ -282,20 +280,17 @@ export class Gauge implements GxComponent {
     for (let i = childRanges.length - 1; i >= 0; i--) {
       this.maxValueAux += childRanges[i].amount;
     }
-    this.rangesValuesAcumul = 0;
-    for (let i = childRanges.length - 1; i >= 0; i--) {
-      const rangeValuePercentage =
-        (100 * childRanges[i].amount) / this.calcTotalValues();
-      const positionInGauge = this.rangesValuesAcumul;
 
-      this.rangesValuesAcumul += rangeValuePercentage;
+    let positionInGauge = 0;
+    const totalAmount = this.calcTotalValues();
+    for (let i = 0; i < childRanges.length; i++) {
       divRanges.push(this.addLineRanges(childRanges[i], positionInGauge));
       divRangesName.push(
         this.addLineRangesLabels(childRanges[i], positionInGauge)
       );
+
+      positionInGauge += (100 * childRanges[i].amount) / totalAmount;
     }
-    divRanges.reverse();
-    divRangesName.reverse();
 
     return (
       <div
