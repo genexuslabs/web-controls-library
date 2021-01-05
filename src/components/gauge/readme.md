@@ -26,14 +26,15 @@ Use `gx-gauge-range` element to set the number of ranges.
 
 ## Properties
 
-| Property    | Attribute    | Description                                                                                                                                                                                    | Type                 | Default     |
-| ----------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ----------- |
-| `maxValue`  | `max-value`  | The maximum value of the gauge. This prop allows specify the maximum value that the gauge will handle. If there is no value specified it will be calculated by the sum of all gx-ranges values | `number`             | `undefined` |
-| `minValue`  | `min-value`  | The minimum value of the gauge 0 by Default                                                                                                                                                    | `number`             | `0`         |
-| `showValue` | `show-value` | Set `true` to display the current value. Default is `false`.                                                                                                                                   | `boolean`            | `false`     |
-| `thickness` | `thickness`  | Allows specify the width of the circumference _(When gauge is circle type)_ or the width of the bar _(When gauge is Line type)_ in % relative the component size.                              | `number`             | `10`        |
-| `type`      | `type`       | This property allows selecting the gauge type. The allowed values are `circle` or `line` (defautl).                                                                                            | `"circle" \| "line"` | `"line"`    |
-| `value`     | `value`      | The current value of the gauge                                                                                                                                                                 | `number`             | `undefined` |
+| Property     | Attribute      | Description                                                                                                                                                                                    | Type                 | Default     |
+| ------------ | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ----------- |
+| `maxValue`   | `max-value`    | The maximum value of the gauge. This prop allows specify the maximum value that the gauge will handle. If there is no value specified it will be calculated by the sum of all gx-ranges values | `number`             | `undefined` |
+| `minValue`   | `min-value`    | The minimum value of the gauge 0 by Default                                                                                                                                                    | `number`             | `0`         |
+| `showMinMax` | `show-min-max` | Set `true` to display the minimum and maximum value. Default is `false`.                                                                                                                       | `boolean`            | `false`     |
+| `showValue`  | `show-value`   | Set `true` to display the current value. Default is `false`.                                                                                                                                   | `boolean`            | `false`     |
+| `thickness`  | `thickness`    | Allows specify the width of the circumference _(When gauge is circle type)_ or the width of the bar _(When gauge is Line type)_ in % relative the component size.                              | `number`             | `10`        |
+| `type`       | `type`         | This property allows selecting the gauge type. The allowed values are `circle` or `line` (defautl).                                                                                            | `"circle" \| "line"` | `"line"`    |
+| `value`      | `value`        | The current value of the gauge                                                                                                                                                                 | `number`             | `undefined` |
 
 ## Events
 
