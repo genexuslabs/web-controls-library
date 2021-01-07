@@ -192,12 +192,8 @@ gx-gauge {
       z-index: 0;
       position: absolute;
     }
-    svg {
-      z-index: -1;
-    }
     .gauge {
       border-radius: 50%;
-      z-index: 1;
       position: absolute;
       @include flex-centered;
       div {
