@@ -37,6 +37,12 @@ export class Gauge implements GxComponent {
   @Prop() showValue = false;
 
   /**
+   *  Set `true` to display the minimum and maximum value. Default is `false`.
+   *
+   */
+  @Prop() showMinMax = false;
+
+  /**
    * The minimum value of the gauge
    * 0 by Default
    */
@@ -61,8 +67,6 @@ export class Gauge implements GxComponent {
   @Prop() maxValue: number;
 
   @State() rangesChildren = [];
-
-  private rangesValuesAcumul = 0;
 
   private maxValueAux = this.minValue;
 
@@ -252,20 +256,24 @@ export class Gauge implements GxComponent {
           ) : (
             ""
           )}
-          <div class="gauge">
-            {this.showValue ? (
+          {(this.showValue || this.showMinMax) && (
+            <div class="gauge">
               <div>
-                <span class="current-value">{`${this.value}`}</span>
-                <span>{`${this.minValue}`}</span>
-                <span>{`-`}</span>
-                <span>{`${
-                  this.maxValue === undefined ? this.maxValueAux : this.maxValue
-                }`}</span>
+                {this.showValue && (
+                  <span class="current-value">{`${this.value}`}</span>
+                )}
+                {this.showMinMax && [
+                  <span>{`${this.minValue}`}</span>,
+                  <span>{`-`}</span>,
+                  <span>{`${
+                    this.maxValue === undefined
+                      ? this.maxValueAux
+                      : this.maxValue
+                  }`}</span>
+                ]}
               </div>
-            ) : (
-              ""
-            )}
-          </div>
+            </div>
+          )}
         </div>
         <div class="labelsContainerCircle">{labelsRanges}</div>
       </Host>
@@ -291,7 +299,6 @@ export class Gauge implements GxComponent {
 
       positionInGauge += (100 * childRanges[i].amount) / totalAmount;
     }
-
     return (
       <div
         class="gaugeContainerLine"
@@ -332,7 +339,7 @@ export class Gauge implements GxComponent {
           {divRanges}
         </div>
         <div class="labelsContainerLine">{divRangesName}</div>
-        {this.showValue ? (
+        {this.showMinMax ? (
           <div class="minMaxDisplay">
             <span class="minValue">
               {this.minValue}
