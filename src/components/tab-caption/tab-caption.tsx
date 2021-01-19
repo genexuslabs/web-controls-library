@@ -3,20 +3,21 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Prop,
   Watch,
-  h,
-  Host
+  h
 } from "@stencil/core";
 import {
-  Component as GxComponent,
-  DisableableComponent
+  DisableableComponent,
+  Component as GxComponent
 } from "../common/interfaces";
 import {
-  imagePositionRender,
+  hideMainImageWhenDisabledClass,
   imagePositionClass,
-  hideMainImageWhenDisabledClass
+  imagePositionRender
 } from "../common/image-position";
+
 import { makeHighlightable } from "../common/highlightable";
 
 let autoTabId = 0;
@@ -110,7 +111,7 @@ export class TabCaption implements GxComponent, DisableableComponent {
             "gx-nav-link": true
           }}
           href="#"
-          onClick={!this.disabled ? this.clickHandler : null}
+          onClick={this.clickHandler}
         >
           {imagePositionRender({
             default: <slot />,
@@ -124,6 +125,6 @@ export class TabCaption implements GxComponent, DisableableComponent {
 
   private clickHandler(event: UIEvent) {
     event.preventDefault();
-    this.selected = true;
+    this.selected = !this.disabled;
   }
 }
