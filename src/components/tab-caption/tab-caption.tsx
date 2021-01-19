@@ -125,6 +125,8 @@ export class TabCaption implements GxComponent, DisableableComponent {
 
   private clickHandler(event: UIEvent) {
     event.preventDefault();
-    this.selected = !this.disabled;
+    if (!this.disabled) {
+      this.selected = true;
+    }
   }
 }
