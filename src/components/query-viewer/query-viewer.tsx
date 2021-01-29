@@ -279,23 +279,20 @@ export class QueryViewer implements GxComponent {
       if (ax.axisOrderType) {
         elementObjectValue["AxisOrder"] = { Type: ax.axisOrderType };
         if (ax.axisOrderValues) {
-          elementObjectValue["AxisOrder"]["Values"] = ax.axisOrderValues.split(
-            ","
-          );
+          elementObjectValue["AxisOrder"]["Values"] = ax.axisOrderValues;
         }
       }
       if (ax.filterType) {
         elementObjectValue["Filter"] = { Type: ax.filterType };
         if (ax.axisOrderValues) {
-          elementObjectValue["Filter"]["Values"] = ax.filterValues.split(",");
+          elementObjectValue["Filter"]["Values"] = ax.filterValues;
         }
       }
       if (ax.expandCollapseType) {
         elementObjectValue["ExpandCollapse"] = { Type: ax.expandCollapseType };
         if (ax.axisOrderValues) {
-          elementObjectValue["ExpandCollapse"][
-            "Values"
-          ] = ax.expandCollapseValues.split(",");
+          elementObjectValue["ExpandCollapse"]["Values"] =
+            ax.expandCollapseValues;
         }
       }
 
