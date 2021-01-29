@@ -1,4 +1,5 @@
-import { Component, Prop, h, Element } from "@stencil/core";
+import { Component, Element, Host, Prop, h } from "@stencil/core";
+
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
@@ -240,8 +241,6 @@ export class QueryViewer implements GxComponent {
       ...Object.keys(QueryViewer.prototype)
         .filter(key => !this.propsNotToPost.includes(key))
         .map(key => <input type="hidden" name={key} value={this[key]} />),
-      <input type="hidden" name="Width" value={this.getWidth()} />,
-      <input type="hidden" name="Height" value={this.getHeight()} />,
       <input type="hidden" name="Elements" value={this.getElements()} />,
       <input type="hidden" name="Parameters" value={this.getParameters()} />
     ];
@@ -392,24 +391,10 @@ export class QueryViewer implements GxComponent {
     return grouping;
   }
 
-  private getWidth(): string {
-    const computedStyle = getComputedStyle(this.element);
-    return computedStyle.width;
-  }
-
-  private getHeight(): string {
-    const computedStyle = getComputedStyle(this.element);
-    return computedStyle.height;
-  }
-
   render() {
     return (
-      <div>
-        <iframe
-          name="query_viewer"
-          width={this.getWidth()}
-          height={this.getHeight()}
-        ></iframe>
+      <Host>
+        <iframe name="query_viewer"></iframe>
         <form
           hidden
           target="query_viewer"
@@ -418,7 +403,7 @@ export class QueryViewer implements GxComponent {
         >
           {this.postData()}
         </form>
-      </div>
+      </Host>
     );
   }
 }
