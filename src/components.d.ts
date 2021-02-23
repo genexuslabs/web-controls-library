@@ -7,6 +7,7 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { TimerState } from "./components/chronometer/chronometer-timer-state";
 import { SwiperOptions } from "swiper";
+import { QueryViewerParameterChangedEvent } from "./components/query-viewer-parameter/query-viewer-parameter";
 export namespace Components {
   interface GxActionSheet {
     /**
@@ -283,6 +284,50 @@ export namespace Components {
      */
     labelPosition: "none" | "top" | "right" | "bottom" | "left" | "float";
   }
+  interface GxGauge {
+    /**
+     * The maximum value of the gauge. This prop allows specify the maximum value that the gauge will handle. If there is no value specified it will be calculated by the sum of all gx-ranges values
+     */
+    maxValue: number;
+    /**
+     * The minimum value of the gauge 0 by Default
+     */
+    minValue: number;
+    /**
+     * Set `true` to display the minimum and maximum value. Default is `false`.
+     */
+    showMinMax: boolean;
+    /**
+     * Set `true` to display the current value. Default is `false`.
+     */
+    showValue: boolean;
+    /**
+     * Allows specify the width of the circumference _(When gauge is circle type)_ or the width of the bar _(When gauge is Line type)_ in % relative the component size.
+     */
+    thickness: number;
+    /**
+     * This property allows selecting the gauge type. The allowed values are `circle` or `line` (defautl).
+     */
+    type: "line" | "circle";
+    /**
+     * The current value of the gauge
+     */
+    value: number;
+  }
+  interface GxGaugeRange {
+    /**
+     * The range length.
+     */
+    amount: number;
+    /**
+     * Color property defines the color of range background. Color value can be any valid CSS color.
+     */
+    color: string;
+    /**
+     * The name of the range.
+     */
+    name: string;
+  }
   interface GxGridEmptyIndicator {
     /**
      * Image url to be shown
@@ -300,6 +345,33 @@ export namespace Components {
      * A CSS class to set as the inner `text` element class.
      */
     textClass: "";
+  }
+  interface GxGridFlex {
+    /**
+     * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+     */
+    autoGrow: false;
+    complete: () => Promise<void>;
+    /**
+     * This establishes the main-axis, thus defining the direction flex items are placed in the flex container.  Flexbox is (aside from optional wrapping) a single-direction layout concept.  Think of flex items as primarily laying out either in horizontal rows or vertical columns.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `row` | The flex container's main-axis is defined to be the same as the text direction. The main-start and main-end points are the same as the content direction.                | | `column`   | The flex container's main-axis is the same as the block-axis. The main-start and main-end points are the same as the before and after points of the writing-mode. |
+     */
+    flexDirection: "row" | "column";
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode: "collapse" | "keep-space";
+    /**
+     * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
+     */
+    loadingState: "loading" | "loaded";
+    /**
+     * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders may not work correctly.
+     */
+    recordCount: number;
+    /**
+     * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
+     */
+    threshold: string;
   }
   interface GxGridFs {
     /**
@@ -894,6 +966,393 @@ export namespace Components {
      */
     value: number;
   }
+  interface GxQueryViewer {
+    /**
+     * Allowing elements order to change
+     */
+    allowElementsOrderChange: boolean;
+    /**
+     * Allow selection
+     */
+    allowSelection: boolean;
+    /**
+     * Auto refresh group
+     */
+    autoRefreshGroup: string;
+    /**
+     * If type== PivotTable or Table, if true will shrink the table
+     */
+    autoResize: boolean;
+    /**
+     * If autoResize, in here select the type, Width, height, or both
+     */
+    autoResizeType: "Both" | "Vertical" | "Horizontal";
+    /**
+     * Base URL of the server
+     */
+    baseUrl: any;
+    /**
+     * If type == Chart, this is the chart type: Bar, Pie, Timeline, etc...
+     */
+    chartType:
+      | "Column"
+      | "Column3D"
+      | "StackedColumn"
+      | "StackedColumn3D"
+      | "StackedColumn100"
+      | "Bar"
+      | "StackedBar"
+      | "StackedBar100"
+      | "Area"
+      | "StackedArea"
+      | "StackedArea100"
+      | "SmoothArea"
+      | "StepArea"
+      | "Line"
+      | "StackedLine"
+      | "StackedLine100"
+      | "SmoothLine"
+      | "StepLine"
+      | "Pie"
+      | "Pie3D"
+      | "Doughnut"
+      | "Doughnut3D"
+      | "LinearGauge"
+      | "CircularGauge"
+      | "Radar"
+      | "FilledRadar"
+      | "PolarArea"
+      | "Funnel"
+      | "Pyramid"
+      | "ColumnLine"
+      | "Column3DLine"
+      | "Timeline"
+      | "SmoothTimeline"
+      | "StepTimeline"
+      | "Sparkline";
+    /**
+     * Allowing or not Comlumn sort
+     */
+    disableColumnSort: boolean;
+    /**
+     * Environmet of the project: JAVA. .Net, NetCore
+     */
+    env: string;
+    /**
+     * If type== PivotTable or Table allow to export to HTML
+     */
+    exportToHTML: boolean;
+    /**
+     * If type== PivotTable or Table allow to export to PDF
+     */
+    exportToPDF: boolean;
+    /**
+     * If type== PivotTable or Table allow to export to XLS
+     */
+    exportToXLS: boolean;
+    /**
+     * If type== PivotTable or Table allow to export to XLSX
+     */
+    exportToXLSX: boolean;
+    /**
+     * If type== PivotTable or Table allow to export to XML
+     */
+    exportToXML: boolean;
+    /**
+     * Font Color
+     */
+    fontColor: string;
+    /**
+     * Type of font
+     */
+    fontFamily: string;
+    /**
+     * Font size
+     */
+    fontSize: number;
+    /**
+     * Include max and min
+     */
+    includeMaxMin: boolean;
+    /**
+     * Include spark line
+     */
+    includeSparkline: boolean;
+    /**
+     * If true includes trend on the graph
+     */
+    includeTrend: boolean;
+    /**
+     * True if it is external query
+     */
+    isExternalQuery: boolean;
+    /**
+     * Language of the QueryViewer
+     */
+    language: string;
+    /**
+     * Object of QueryViewer
+     */
+    object: string;
+    /**
+     * Name of the Query or Data provider assigned
+     */
+    objectName: string;
+    /**
+     * Object type -> Query or DataProvider
+     */
+    objectType: string;
+    /**
+     * Orientation of the graph
+     */
+    orientation: "Horizontal" | "Vertical";
+    /**
+     * If paging true, number of items for a single page
+     */
+    pageSize: number;
+    /**
+     * If type == PivotTable or Table, if true there is paging, else everything in one table
+     */
+    paging: boolean;
+    /**
+     * Timeline
+     */
+    plotSeries: "InTheSameChart" | "InSeparateCharts";
+    /**
+     * Title of the QueryViewer
+     */
+    queryTitle: string;
+    /**
+     * For timeline for remembering layout
+     */
+    rememberLayout: boolean;
+    /**
+     * Type of data to show
+     */
+    showDataAs: "Values" | "Percentages" | "ValuesAndPercentages";
+    /**
+     * Ax to show data labels
+     */
+    showDataLabelsIn: string;
+    /**
+     * if true show values on the graph
+     */
+    showValues: boolean;
+    /**
+     * Theme for showing the graph
+     */
+    theme: string;
+    /**
+     * If includeTrend, defines the period of the trend
+     */
+    trendPeriod:
+      | "SinceTheBeginning"
+      | "LastYear"
+      | "LastSemester"
+      | "LastQuarter"
+      | "LastMonth"
+      | "LastWeek"
+      | "LastDay"
+      | "LastHour"
+      | "LastMinute"
+      | "LastSecond";
+    /**
+     * Type of the QueryViewer: Table, PivotTable, Chart, Card
+     */
+    type: "Card" | "Chart" | "PivotTable" | "Table" | "Default";
+    /**
+     * if true the x Axes intersect at zero
+     */
+    xAxisIntersectionAtZero: boolean;
+    /**
+     * Labels for XAxis
+     */
+    xAxisLabels:
+      | "Horizontally"
+      | "Rotated30"
+      | "Rotated45"
+      | "Rotated60"
+      | "Vertically";
+    /**
+     * X Axis title
+     */
+    xAxisTitle: string;
+    /**
+     * Y Axis title
+     */
+    yAxisTitle: string;
+  }
+  interface GxQueryViewerElement {
+    /**
+     * Aggregation fucntion
+     */
+    aggregation: "Sum" | "Average" | "Count" | "Max" | "Min";
+    /**
+     * Which axis, row or column
+     */
+    axis: "Rows" | "Columns" | "Pages";
+    /**
+     * Axis Order type
+     */
+    axisOrderType: "None" | "Ascending" | "Descending" | "Custom";
+    /**
+     * Axis order values comma separated
+     */
+    axisOrderValues: string;
+    /**
+     * Data field
+     */
+    dataField: string;
+    /**
+     * Title to show
+     */
+    elementTitle: string;
+    /**
+     * Expand collapse type
+     */
+    expandCollapseType:
+      | "ExpandAllValues"
+      | "CollapseAllValues"
+      | "ExpandSomeValues";
+    /**
+     * Expand collapse values comma separated
+     */
+    expandCollapseValues: string;
+    /**
+     * Type of the filter
+     */
+    filterType: "ShowAllValues" | "HideAllValues" | "ShowSomeValues";
+    /**
+     * Filter values comma separated
+     */
+    filterValues: string;
+    /**
+     * Grouping by day of week title
+     */
+    groupingDayOfWeekTitle: string;
+    /**
+     * Grouping by day of week
+     */
+    groupingGroupByDayOfWeek: boolean;
+    /**
+     * Grouping by month
+     */
+    groupingGroupByMonth: boolean;
+    /**
+     * Grouping by Quarter
+     */
+    groupingGroupByQuarter: boolean;
+    /**
+     * Grouping by semester
+     */
+    groupingGroupBySemester: boolean;
+    /**
+     * Grouping by year
+     */
+    groupingGroupByYear: boolean;
+    /**
+     * Grouping hide vale
+     */
+    groupingHideValue: boolean;
+    /**
+     * Grouping by month title
+     */
+    groupingMonthTitle: string;
+    /**
+     * Grouping by Quarter title
+     */
+    groupingQuarterTitle: string;
+    /**
+     * Grouping by Semster title
+     */
+    groupingSemesterTitle: string;
+    /**
+     * Gouping by Year title
+     */
+    groupingYearTitle: string;
+    /**
+     * Name of the element
+     */
+    name: string;
+    /**
+     * Raise item click
+     */
+    raiseItemClick: boolean;
+    /**
+     * Type of the element
+     */
+    type: "Axis" | "Datum";
+    /**
+     * How to show it
+     */
+    visible: "Always" | "Yes" | "No" | "Never";
+  }
+  interface GxQueryViewerElementFormat {
+    /**
+     * If true cand drag to pages
+     */
+    canDragToPages: boolean;
+    /**
+     * Format style
+     */
+    formatStyle: string;
+    /**
+     * Max value
+     */
+    maximumValue: string;
+    /**
+     * Format on values
+     */
+    picture: string;
+    /**
+     * How to show subtotals
+     */
+    subtotals: "Yes" | "Hidden" | "No";
+    /**
+     * Target value
+     */
+    targetValue: string;
+  }
+  interface GxQueryViewerFormatStyle {
+    /**
+     * If Conditional true for applying to row or column
+     */
+    applyToRowOrColumn: boolean;
+    /**
+     * If Format the operator of the element
+     */
+    operator: "EQ" | "LT" | "GT" | "LE" | "GE" | "NE" | "IN";
+    /**
+     * Style or Css class
+     */
+    styleOrClass: string;
+    /**
+     * Type of the element Conditional or Format
+     */
+    type: "Values" | "Conditional";
+    /**
+     * If Conditional Value to format
+     */
+    value: string;
+    /**
+     * If format first value
+     */
+    value1: string;
+    /**
+     * If format second value
+     */
+    value2: string;
+  }
+  interface GxQueryViewerParameter {
+    /**
+     * Name of the parameter
+     */
+    Name: string;
+    /**
+     * Value of the parameter
+     */
+    Value: string;
+  }
   interface GxRadioGroup {
     /**
      * Specifies how the child `gx-radio-option` will be layed out. It supports two values:  * `horizontal` * `vertical` (default)
@@ -1239,12 +1698,31 @@ declare global {
     prototype: HTMLGxFormFieldElement;
     new (): HTMLGxFormFieldElement;
   };
+  interface HTMLGxGaugeElement extends Components.GxGauge, HTMLStencilElement {}
+  var HTMLGxGaugeElement: {
+    prototype: HTMLGxGaugeElement;
+    new (): HTMLGxGaugeElement;
+  };
+  interface HTMLGxGaugeRangeElement
+    extends Components.GxGaugeRange,
+      HTMLStencilElement {}
+  var HTMLGxGaugeRangeElement: {
+    prototype: HTMLGxGaugeRangeElement;
+    new (): HTMLGxGaugeRangeElement;
+  };
   interface HTMLGxGridEmptyIndicatorElement
     extends Components.GxGridEmptyIndicator,
       HTMLStencilElement {}
   var HTMLGxGridEmptyIndicatorElement: {
     prototype: HTMLGxGridEmptyIndicatorElement;
     new (): HTMLGxGridEmptyIndicatorElement;
+  };
+  interface HTMLGxGridFlexElement
+    extends Components.GxGridFlex,
+      HTMLStencilElement {}
+  var HTMLGxGridFlexElement: {
+    prototype: HTMLGxGridFlexElement;
+    new (): HTMLGxGridFlexElement;
   };
   interface HTMLGxGridFsElement
     extends Components.GxGridFs,
@@ -1390,6 +1868,41 @@ declare global {
     prototype: HTMLGxProgressBarElement;
     new (): HTMLGxProgressBarElement;
   };
+  interface HTMLGxQueryViewerElement
+    extends Components.GxQueryViewer,
+      HTMLStencilElement {}
+  var HTMLGxQueryViewerElement: {
+    prototype: HTMLGxQueryViewerElement;
+    new (): HTMLGxQueryViewerElement;
+  };
+  interface HTMLGxQueryViewerElementElement
+    extends Components.GxQueryViewerElement,
+      HTMLStencilElement {}
+  var HTMLGxQueryViewerElementElement: {
+    prototype: HTMLGxQueryViewerElementElement;
+    new (): HTMLGxQueryViewerElementElement;
+  };
+  interface HTMLGxQueryViewerElementFormatElement
+    extends Components.GxQueryViewerElementFormat,
+      HTMLStencilElement {}
+  var HTMLGxQueryViewerElementFormatElement: {
+    prototype: HTMLGxQueryViewerElementFormatElement;
+    new (): HTMLGxQueryViewerElementFormatElement;
+  };
+  interface HTMLGxQueryViewerFormatStyleElement
+    extends Components.GxQueryViewerFormatStyle,
+      HTMLStencilElement {}
+  var HTMLGxQueryViewerFormatStyleElement: {
+    prototype: HTMLGxQueryViewerFormatStyleElement;
+    new (): HTMLGxQueryViewerFormatStyleElement;
+  };
+  interface HTMLGxQueryViewerParameterElement
+    extends Components.GxQueryViewerParameter,
+      HTMLStencilElement {}
+  var HTMLGxQueryViewerParameterElement: {
+    prototype: HTMLGxQueryViewerParameterElement;
+    new (): HTMLGxQueryViewerParameterElement;
+  };
   interface HTMLGxRadioGroupElement
     extends Components.GxRadioGroup,
       HTMLStencilElement {}
@@ -1488,7 +2001,10 @@ declare global {
     "gx-chronometer": HTMLGxChronometerElement;
     "gx-edit": HTMLGxEditElement;
     "gx-form-field": HTMLGxFormFieldElement;
+    "gx-gauge": HTMLGxGaugeElement;
+    "gx-gauge-range": HTMLGxGaugeRangeElement;
     "gx-grid-empty-indicator": HTMLGxGridEmptyIndicatorElement;
+    "gx-grid-flex": HTMLGxGridFlexElement;
     "gx-grid-fs": HTMLGxGridFsElement;
     "gx-grid-horizontal": HTMLGxGridHorizontalElement;
     "gx-grid-infinite-scroll": HTMLGxGridInfiniteScrollElement;
@@ -1511,6 +2027,11 @@ declare global {
     "gx-navbar-item": HTMLGxNavbarItemElement;
     "gx-password-edit": HTMLGxPasswordEditElement;
     "gx-progress-bar": HTMLGxProgressBarElement;
+    "gx-query-viewer": HTMLGxQueryViewerElement;
+    "gx-query-viewer-element": HTMLGxQueryViewerElementElement;
+    "gx-query-viewer-element-format": HTMLGxQueryViewerElementFormatElement;
+    "gx-query-viewer-format-style": HTMLGxQueryViewerFormatStyleElement;
+    "gx-query-viewer-parameter": HTMLGxQueryViewerParameterElement;
     "gx-radio-group": HTMLGxRadioGroupElement;
     "gx-radio-option": HTMLGxRadioOptionElement;
     "gx-rating": HTMLGxRatingElement;
@@ -1842,6 +2363,66 @@ declare namespace LocalJSX {
      */
     labelPosition?: "none" | "top" | "right" | "bottom" | "left" | "float";
   }
+  interface GxGauge {
+    /**
+     * The maximum value of the gauge. This prop allows specify the maximum value that the gauge will handle. If there is no value specified it will be calculated by the sum of all gx-ranges values
+     */
+    maxValue?: number;
+    /**
+     * The minimum value of the gauge 0 by Default
+     */
+    minValue?: number;
+    /**
+     * The `gxGaugeDidLoad` event is triggered when the component has been rendered completely.
+     */
+    onGxGaugeDidLoad?: (event: CustomEvent<any>) => void;
+    /**
+     * Set `true` to display the minimum and maximum value. Default is `false`.
+     */
+    showMinMax?: boolean;
+    /**
+     * Set `true` to display the current value. Default is `false`.
+     */
+    showValue?: boolean;
+    /**
+     * Allows specify the width of the circumference _(When gauge is circle type)_ or the width of the bar _(When gauge is Line type)_ in % relative the component size.
+     */
+    thickness?: number;
+    /**
+     * This property allows selecting the gauge type. The allowed values are `circle` or `line` (defautl).
+     */
+    type?: "line" | "circle";
+    /**
+     * The current value of the gauge
+     */
+    value?: number;
+  }
+  interface GxGaugeRange {
+    /**
+     * The range length.
+     */
+    amount?: number;
+    /**
+     * Color property defines the color of range background. Color value can be any valid CSS color.
+     */
+    color?: string;
+    /**
+     * The name of the range.
+     */
+    name?: string;
+    /**
+     * The gxGaugeRangeDidLoad is triggered when the component has been added and its render completely ran.
+     */
+    onGxGaugeRangeDidLoad?: (event: CustomEvent<any>) => void;
+    /**
+     * The gxGaugeRangeDidUnload is triggered when the component has been deleted
+     */
+    onGxGaugeRangeDidUnload?: (event: CustomEvent<any>) => void;
+    /**
+     * The gxGaugeRangeDidUpdate is triggered when a property of the component has been changed.
+     */
+    onGxGaugeRangeDidUpdate?: (event: CustomEvent<any>) => void;
+  }
   interface GxGridEmptyIndicator {
     /**
      * Image url to be shown
@@ -1859,6 +2440,36 @@ declare namespace LocalJSX {
      * A CSS class to set as the inner `text` element class.
      */
     textClass?: "";
+  }
+  interface GxGridFlex {
+    /**
+     * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
+     */
+    autoGrow?: false;
+    /**
+     * This establishes the main-axis, thus defining the direction flex items are placed in the flex container.  Flexbox is (aside from optional wrapping) a single-direction layout concept.  Think of flex items as primarily laying out either in horizontal rows or vertical columns.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `row` | The flex container's main-axis is defined to be the same as the text direction. The main-start and main-end points are the same as the content direction.                | | `column`   | The flex container's main-axis is the same as the block-axis. The main-start and main-end points are the same as the before and after points of the writing-mode. |
+     */
+    flexDirection?: "row" | "column";
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode?: "collapse" | "keep-space";
+    /**
+     * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
+     */
+    loadingState?: "loading" | "loaded";
+    /**
+     * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
+     */
+    onGxInfiniteThresholdReached?: (event: CustomEvent<void>) => void;
+    /**
+     * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders may not work correctly.
+     */
+    recordCount?: number;
+    /**
+     * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
+     */
+    threshold?: string;
   }
   interface GxGridFs {
     /**
@@ -2515,6 +3126,396 @@ declare namespace LocalJSX {
      */
     value?: number;
   }
+  interface GxQueryViewer {
+    /**
+     * Allowing elements order to change
+     */
+    allowElementsOrderChange?: boolean;
+    /**
+     * Allow selection
+     */
+    allowSelection?: boolean;
+    /**
+     * Auto refresh group
+     */
+    autoRefreshGroup?: string;
+    /**
+     * If type== PivotTable or Table, if true will shrink the table
+     */
+    autoResize?: boolean;
+    /**
+     * If autoResize, in here select the type, Width, height, or both
+     */
+    autoResizeType?: "Both" | "Vertical" | "Horizontal";
+    /**
+     * Base URL of the server
+     */
+    baseUrl?: any;
+    /**
+     * If type == Chart, this is the chart type: Bar, Pie, Timeline, etc...
+     */
+    chartType?:
+      | "Column"
+      | "Column3D"
+      | "StackedColumn"
+      | "StackedColumn3D"
+      | "StackedColumn100"
+      | "Bar"
+      | "StackedBar"
+      | "StackedBar100"
+      | "Area"
+      | "StackedArea"
+      | "StackedArea100"
+      | "SmoothArea"
+      | "StepArea"
+      | "Line"
+      | "StackedLine"
+      | "StackedLine100"
+      | "SmoothLine"
+      | "StepLine"
+      | "Pie"
+      | "Pie3D"
+      | "Doughnut"
+      | "Doughnut3D"
+      | "LinearGauge"
+      | "CircularGauge"
+      | "Radar"
+      | "FilledRadar"
+      | "PolarArea"
+      | "Funnel"
+      | "Pyramid"
+      | "ColumnLine"
+      | "Column3DLine"
+      | "Timeline"
+      | "SmoothTimeline"
+      | "StepTimeline"
+      | "Sparkline";
+    /**
+     * Allowing or not Comlumn sort
+     */
+    disableColumnSort?: boolean;
+    /**
+     * Environmet of the project: JAVA. .Net, NetCore
+     */
+    env?: string;
+    /**
+     * If type== PivotTable or Table allow to export to HTML
+     */
+    exportToHTML?: boolean;
+    /**
+     * If type== PivotTable or Table allow to export to PDF
+     */
+    exportToPDF?: boolean;
+    /**
+     * If type== PivotTable or Table allow to export to XLS
+     */
+    exportToXLS?: boolean;
+    /**
+     * If type== PivotTable or Table allow to export to XLSX
+     */
+    exportToXLSX?: boolean;
+    /**
+     * If type== PivotTable or Table allow to export to XML
+     */
+    exportToXML?: boolean;
+    /**
+     * Font Color
+     */
+    fontColor?: string;
+    /**
+     * Type of font
+     */
+    fontFamily?: string;
+    /**
+     * Font size
+     */
+    fontSize?: number;
+    /**
+     * Include max and min
+     */
+    includeMaxMin?: boolean;
+    /**
+     * Include spark line
+     */
+    includeSparkline?: boolean;
+    /**
+     * If true includes trend on the graph
+     */
+    includeTrend?: boolean;
+    /**
+     * True if it is external query
+     */
+    isExternalQuery?: boolean;
+    /**
+     * Language of the QueryViewer
+     */
+    language?: string;
+    /**
+     * Object of QueryViewer
+     */
+    object?: string;
+    /**
+     * Name of the Query or Data provider assigned
+     */
+    objectName?: string;
+    /**
+     * Object type -> Query or DataProvider
+     */
+    objectType?: string;
+    /**
+     * Orientation of the graph
+     */
+    orientation?: "Horizontal" | "Vertical";
+    /**
+     * If paging true, number of items for a single page
+     */
+    pageSize?: number;
+    /**
+     * If type == PivotTable or Table, if true there is paging, else everything in one table
+     */
+    paging?: boolean;
+    /**
+     * Timeline
+     */
+    plotSeries?: "InTheSameChart" | "InSeparateCharts";
+    /**
+     * Title of the QueryViewer
+     */
+    queryTitle?: string;
+    /**
+     * For timeline for remembering layout
+     */
+    rememberLayout?: boolean;
+    /**
+     * Type of data to show
+     */
+    showDataAs?: "Values" | "Percentages" | "ValuesAndPercentages";
+    /**
+     * Ax to show data labels
+     */
+    showDataLabelsIn?: string;
+    /**
+     * if true show values on the graph
+     */
+    showValues?: boolean;
+    /**
+     * Theme for showing the graph
+     */
+    theme?: string;
+    /**
+     * If includeTrend, defines the period of the trend
+     */
+    trendPeriod?:
+      | "SinceTheBeginning"
+      | "LastYear"
+      | "LastSemester"
+      | "LastQuarter"
+      | "LastMonth"
+      | "LastWeek"
+      | "LastDay"
+      | "LastHour"
+      | "LastMinute"
+      | "LastSecond";
+    /**
+     * Type of the QueryViewer: Table, PivotTable, Chart, Card
+     */
+    type?: "Card" | "Chart" | "PivotTable" | "Table" | "Default";
+    /**
+     * if true the x Axes intersect at zero
+     */
+    xAxisIntersectionAtZero?: boolean;
+    /**
+     * Labels for XAxis
+     */
+    xAxisLabels?:
+      | "Horizontally"
+      | "Rotated30"
+      | "Rotated45"
+      | "Rotated60"
+      | "Vertically";
+    /**
+     * X Axis title
+     */
+    xAxisTitle?: string;
+    /**
+     * Y Axis title
+     */
+    yAxisTitle?: string;
+  }
+  interface GxQueryViewerElement {
+    /**
+     * Aggregation fucntion
+     */
+    aggregation?: "Sum" | "Average" | "Count" | "Max" | "Min";
+    /**
+     * Which axis, row or column
+     */
+    axis?: "Rows" | "Columns" | "Pages";
+    /**
+     * Axis Order type
+     */
+    axisOrderType?: "None" | "Ascending" | "Descending" | "Custom";
+    /**
+     * Axis order values comma separated
+     */
+    axisOrderValues?: string;
+    /**
+     * Data field
+     */
+    dataField?: string;
+    /**
+     * Title to show
+     */
+    elementTitle?: string;
+    /**
+     * Expand collapse type
+     */
+    expandCollapseType?:
+      | "ExpandAllValues"
+      | "CollapseAllValues"
+      | "ExpandSomeValues";
+    /**
+     * Expand collapse values comma separated
+     */
+    expandCollapseValues?: string;
+    /**
+     * Type of the filter
+     */
+    filterType?: "ShowAllValues" | "HideAllValues" | "ShowSomeValues";
+    /**
+     * Filter values comma separated
+     */
+    filterValues?: string;
+    /**
+     * Grouping by day of week title
+     */
+    groupingDayOfWeekTitle?: string;
+    /**
+     * Grouping by day of week
+     */
+    groupingGroupByDayOfWeek?: boolean;
+    /**
+     * Grouping by month
+     */
+    groupingGroupByMonth?: boolean;
+    /**
+     * Grouping by Quarter
+     */
+    groupingGroupByQuarter?: boolean;
+    /**
+     * Grouping by semester
+     */
+    groupingGroupBySemester?: boolean;
+    /**
+     * Grouping by year
+     */
+    groupingGroupByYear?: boolean;
+    /**
+     * Grouping hide vale
+     */
+    groupingHideValue?: boolean;
+    /**
+     * Grouping by month title
+     */
+    groupingMonthTitle?: string;
+    /**
+     * Grouping by Quarter title
+     */
+    groupingQuarterTitle?: string;
+    /**
+     * Grouping by Semster title
+     */
+    groupingSemesterTitle?: string;
+    /**
+     * Gouping by Year title
+     */
+    groupingYearTitle?: string;
+    /**
+     * Name of the element
+     */
+    name?: string;
+    /**
+     * Raise item click
+     */
+    raiseItemClick?: boolean;
+    /**
+     * Type of the element
+     */
+    type?: "Axis" | "Datum";
+    /**
+     * How to show it
+     */
+    visible?: "Always" | "Yes" | "No" | "Never";
+  }
+  interface GxQueryViewerElementFormat {
+    /**
+     * If true cand drag to pages
+     */
+    canDragToPages?: boolean;
+    /**
+     * Format style
+     */
+    formatStyle?: string;
+    /**
+     * Max value
+     */
+    maximumValue?: string;
+    /**
+     * Format on values
+     */
+    picture?: string;
+    /**
+     * How to show subtotals
+     */
+    subtotals?: "Yes" | "Hidden" | "No";
+    /**
+     * Target value
+     */
+    targetValue?: string;
+  }
+  interface GxQueryViewerFormatStyle {
+    /**
+     * If Conditional true for applying to row or column
+     */
+    applyToRowOrColumn?: boolean;
+    /**
+     * If Format the operator of the element
+     */
+    operator?: "EQ" | "LT" | "GT" | "LE" | "GE" | "NE" | "IN";
+    /**
+     * Style or Css class
+     */
+    styleOrClass?: string;
+    /**
+     * Type of the element Conditional or Format
+     */
+    type?: "Values" | "Conditional";
+    /**
+     * If Conditional Value to format
+     */
+    value?: string;
+    /**
+     * If format first value
+     */
+    value1?: string;
+    /**
+     * If format second value
+     */
+    value2?: string;
+  }
+  interface GxQueryViewerParameter {
+    /**
+     * Name of the parameter
+     */
+    Name?: string;
+    /**
+     * Value of the parameter
+     */
+    Value?: string;
+    onParameterValueChanged?: (
+      event: CustomEvent<QueryViewerParameterChangedEvent>
+    ) => void;
+  }
   interface GxRadioGroup {
     /**
      * Specifies how the child `gx-radio-option` will be layed out. It supports two values:  * `horizontal` * `vertical` (default)
@@ -2865,7 +3866,10 @@ declare namespace LocalJSX {
     "gx-chronometer": GxChronometer;
     "gx-edit": GxEdit;
     "gx-form-field": GxFormField;
+    "gx-gauge": GxGauge;
+    "gx-gauge-range": GxGaugeRange;
     "gx-grid-empty-indicator": GxGridEmptyIndicator;
+    "gx-grid-flex": GxGridFlex;
     "gx-grid-fs": GxGridFs;
     "gx-grid-horizontal": GxGridHorizontal;
     "gx-grid-infinite-scroll": GxGridInfiniteScroll;
@@ -2888,6 +3892,11 @@ declare namespace LocalJSX {
     "gx-navbar-item": GxNavbarItem;
     "gx-password-edit": GxPasswordEdit;
     "gx-progress-bar": GxProgressBar;
+    "gx-query-viewer": GxQueryViewer;
+    "gx-query-viewer-element": GxQueryViewerElement;
+    "gx-query-viewer-element-format": GxQueryViewerElementFormat;
+    "gx-query-viewer-format-style": GxQueryViewerFormatStyle;
+    "gx-query-viewer-parameter": GxQueryViewerParameter;
     "gx-radio-group": GxRadioGroup;
     "gx-radio-option": GxRadioOption;
     "gx-rating": GxRating;
@@ -2928,8 +3937,13 @@ declare module "@stencil/core" {
       "gx-edit": LocalJSX.GxEdit & JSXBase.HTMLAttributes<HTMLGxEditElement>;
       "gx-form-field": LocalJSX.GxFormField &
         JSXBase.HTMLAttributes<HTMLGxFormFieldElement>;
+      "gx-gauge": LocalJSX.GxGauge & JSXBase.HTMLAttributes<HTMLGxGaugeElement>;
+      "gx-gauge-range": LocalJSX.GxGaugeRange &
+        JSXBase.HTMLAttributes<HTMLGxGaugeRangeElement>;
       "gx-grid-empty-indicator": LocalJSX.GxGridEmptyIndicator &
         JSXBase.HTMLAttributes<HTMLGxGridEmptyIndicatorElement>;
+      "gx-grid-flex": LocalJSX.GxGridFlex &
+        JSXBase.HTMLAttributes<HTMLGxGridFlexElement>;
       "gx-grid-fs": LocalJSX.GxGridFs &
         JSXBase.HTMLAttributes<HTMLGxGridFsElement>;
       "gx-grid-horizontal": LocalJSX.GxGridHorizontal &
@@ -2969,6 +3983,16 @@ declare module "@stencil/core" {
         JSXBase.HTMLAttributes<HTMLGxPasswordEditElement>;
       "gx-progress-bar": LocalJSX.GxProgressBar &
         JSXBase.HTMLAttributes<HTMLGxProgressBarElement>;
+      "gx-query-viewer": LocalJSX.GxQueryViewer &
+        JSXBase.HTMLAttributes<HTMLGxQueryViewerElement>;
+      "gx-query-viewer-element": LocalJSX.GxQueryViewerElement &
+        JSXBase.HTMLAttributes<HTMLGxQueryViewerElementElement>;
+      "gx-query-viewer-element-format": LocalJSX.GxQueryViewerElementFormat &
+        JSXBase.HTMLAttributes<HTMLGxQueryViewerElementFormatElement>;
+      "gx-query-viewer-format-style": LocalJSX.GxQueryViewerFormatStyle &
+        JSXBase.HTMLAttributes<HTMLGxQueryViewerFormatStyleElement>;
+      "gx-query-viewer-parameter": LocalJSX.GxQueryViewerParameter &
+        JSXBase.HTMLAttributes<HTMLGxQueryViewerParameterElement>;
       "gx-radio-group": LocalJSX.GxRadioGroup &
         JSXBase.HTMLAttributes<HTMLGxRadioGroupElement>;
       "gx-radio-option": LocalJSX.GxRadioOption &

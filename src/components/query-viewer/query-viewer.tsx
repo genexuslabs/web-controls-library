@@ -1,4 +1,12 @@
-import { Component, Element, Host, Prop, h } from "@stencil/core";
+import {
+  Component,
+  Element,
+  Host,
+  Listen,
+  Prop,
+  State,
+  h
+} from "@stencil/core";
 
 import { Component as GxComponent } from "../common/interfaces";
 
@@ -24,10 +32,7 @@ export class QueryViewer implements GxComponent {
 
   @Element() element: HTMLGxQueryViewerElement;
 
-  componentDidRender() {
-    const form = this.element.querySelector("form");
-    form.submit();
-  }
+  @State() parameters: string;
 
   /**
    * Base URL of the server
@@ -244,6 +249,21 @@ export class QueryViewer implements GxComponent {
    */
   @Prop() queryTitle: string;
 
+  @Listen("parameterValueChanged")
+  parameterValueChangedHandler(eventInfo: CustomEvent) {
+    eventInfo.stopPropagation();
+    this.getParameters();
+  }
+
+  componentWillLoad() {
+    this.getParameters();
+  }
+
+  componentDidRender() {
+    const form = this.element.querySelector("form");
+    form.submit();
+  }
+
   private parseObjectToObjectcall() {
     try {
       this.objectCall = JSON.parse(this.object);
@@ -271,11 +291,11 @@ export class QueryViewer implements GxComponent {
         .filter(key => !this.propsNotToPost.includes(key))
         .map(key => <input type="hidden" name={key} value={this[key]} />),
       <input type="hidden" name="Elements" value={this.getElements()} />,
-      <input type="hidden" name="Parameters" value={this.getParameters()} />
+      <input type="hidden" name="Parameters" value={this.parameters} />
     ];
   }
 
-  private getParameters(): string {
+  private getParameters() {
     const parametersValue = [];
 
     if (this.hasObjectCall()) {
@@ -297,7 +317,7 @@ export class QueryViewer implements GxComponent {
       });
     }
 
-    return JSON.stringify(parametersValue);
+    this.parameters = JSON.stringify(parametersValue);
   }
 
   private getElements(): string {
