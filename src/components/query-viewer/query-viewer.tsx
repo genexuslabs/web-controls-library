@@ -12,7 +12,15 @@ export class QueryViewer implements GxComponent {
     net: "gxqueryviewerforsd.aspx",
     java: "qviewer.services.gxqueryviewerforsd"
   };
-  private propsNotToPost = ["baseUrl", "env", "mapServices", "propsNotToPost"];
+  private propsNotToPost = [
+    "baseUrl",
+    "env",
+    "mapServices",
+    "object",
+    "objectCall",
+    "propsNotToPost"
+  ];
+  private objectCall: Array<string>;
 
   @Element() element: HTMLGxQueryViewerElement;
 
@@ -236,7 +244,28 @@ export class QueryViewer implements GxComponent {
    */
   @Prop() queryTitle: string;
 
+  private parseObjectToObjectcall() {
+    try {
+      this.objectCall = JSON.parse(this.object);
+    } catch (e) {
+      this.objectCall = null;
+    }
+  }
+
+  private hasObjectCall() {
+    return Array.isArray(this.objectCall) && this.objectCall.length >= 2;
+  }
+
+  private loadObjectNameFromObjectCall() {
+    if (this.hasObjectCall()) {
+      this.objectName = this.objectCall[1];
+    }
+  }
+
   private postData() {
+    this.parseObjectToObjectcall();
+    this.loadObjectNameFromObjectCall();
+
     return [
       ...Object.keys(QueryViewer.prototype)
         .filter(key => !this.propsNotToPost.includes(key))
@@ -249,15 +278,24 @@ export class QueryViewer implements GxComponent {
   private getParameters(): string {
     const parametersValue = [];
 
-    const parameters = Array.from(
-      document.getElementsByTagName("gx-query-viewer-parameter")
-    );
-    parameters.forEach(parameter => {
-      const parameterObject = {};
-      parameterObject["Value"] = encodeURIComponent(parameter.Value);
-      parameterObject["Name"] = parameter.Name;
-      parametersValue.push(parameterObject);
-    });
+    if (this.hasObjectCall()) {
+      this.objectCall.slice(2).forEach(value => {
+        const parameterObject = {};
+        parameterObject["Value"] = encodeURIComponent(value);
+        parameterObject["Name"] = "";
+        parametersValue.push(parameterObject);
+      });
+    } else {
+      const parameters = Array.from(
+        document.getElementsByTagName("gx-query-viewer-parameter")
+      );
+      parameters.forEach(parameter => {
+        const parameterObject = {};
+        parameterObject["Value"] = encodeURIComponent(parameter.Value);
+        parameterObject["Name"] = parameter.Name;
+        parametersValue.push(parameterObject);
+      });
+    }
 
     return JSON.stringify(parametersValue);
   }
