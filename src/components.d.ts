@@ -3512,7 +3512,7 @@ declare namespace LocalJSX {
      * Value of the parameter
      */
     Value?: string;
-    onParameterValueChanged?: (
+    onParameterChanged?: (
       event: CustomEvent<QueryViewerParameterChangedEvent>
     ) => void;
   }

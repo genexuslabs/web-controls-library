@@ -29,6 +29,9 @@ export class QueryViewer implements GxComponent {
     "propsNotToPost"
   ];
   private objectCall: Array<string>;
+  private configurationObserver = new MutationObserver(() => {
+    this.configurationChangedHandler();
+  });
 
   @Element() element: HTMLGxQueryViewerElement;
 
@@ -255,13 +258,27 @@ export class QueryViewer implements GxComponent {
     this.getParameters();
   }
 
+  configurationChangedHandler() {
+    this.getParameters();
+  }
+
   componentWillLoad() {
     this.getParameters();
+  }
+
+  componentDidLoad() {
+    this.configurationObserver.observe(this.element, {
+      childList: true
+    });
   }
 
   componentDidRender() {
     const form = this.element.querySelector("form");
     form.submit();
+  }
+
+  disconnectedCallback() {
+    this.configurationObserver.disconnect();
   }
 
   private parseObjectToObjectcall() {
