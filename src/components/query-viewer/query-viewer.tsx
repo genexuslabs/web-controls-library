@@ -357,7 +357,7 @@ export class QueryViewer implements GxComponent {
     elements.forEach(ax => {
       const elementObjectValue = {};
       elementObjectValue["Name"] = ax.name;
-      elementObjectValue["Title"] = ax.title;
+      elementObjectValue["Title"] = ax.elementTitle;
       elementObjectValue["Visible"] = ax.visible;
       elementObjectValue["Type"] = ax.type;
       elementObjectValue["Axis"] = ax.axis;
