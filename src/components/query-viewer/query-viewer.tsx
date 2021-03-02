@@ -26,7 +26,9 @@ export class QueryViewer implements GxComponent {
     "mapServices",
     "object",
     "objectCall",
-    "propsNotToPost"
+    "propsNotToPost",
+    "parameters",
+    "elements"
   ];
   private objectCall: Array<string>;
   private configurationObserver = new MutationObserver(() => {
