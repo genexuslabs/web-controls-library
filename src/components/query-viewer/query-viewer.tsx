@@ -36,6 +36,7 @@ export class QueryViewer implements GxComponent {
   @Element() element: HTMLGxQueryViewerElement;
 
   @State() parameters: string;
+  @State() elements: string;
 
   /**
    * Base URL of the server
@@ -258,17 +259,26 @@ export class QueryViewer implements GxComponent {
     this.getParameters();
   }
 
+  @Listen("elementChanged")
+  elementChangedHandler(eventInfo: CustomEvent) {
+    eventInfo.stopPropagation();
+    this.getElements();
+  }
+
   configurationChangedHandler() {
     this.getParameters();
+    this.getElements();
   }
 
   componentWillLoad() {
     this.getParameters();
+    this.getElements();
   }
 
   componentDidLoad() {
     this.configurationObserver.observe(this.element, {
-      childList: true
+      childList: true,
+      subtree: true
     });
   }
 
@@ -307,7 +317,7 @@ export class QueryViewer implements GxComponent {
       ...Object.keys(QueryViewer.prototype)
         .filter(key => !this.propsNotToPost.includes(key))
         .map(key => <input type="hidden" name={key} value={this[key]} />),
-      <input type="hidden" name="Elements" value={this.getElements()} />,
+      <input type="hidden" name="Elements" value={this.elements} />,
       <input type="hidden" name="Parameters" value={this.parameters} />
     ];
   }
@@ -337,7 +347,7 @@ export class QueryViewer implements GxComponent {
     this.parameters = JSON.stringify(parametersValue);
   }
 
-  private getElements(): string {
+  private getElements() {
     const elementsValue = [];
     const elements = Array.from(
       document.getElementsByTagName("gx-query-viewer-element")
@@ -429,7 +439,8 @@ export class QueryViewer implements GxComponent {
       });
       elementsValue.push(elementObjectValue);
     });
-    return JSON.stringify(elementsValue);
+
+    this.elements = JSON.stringify(elementsValue);
   }
 
   private getGrouping(

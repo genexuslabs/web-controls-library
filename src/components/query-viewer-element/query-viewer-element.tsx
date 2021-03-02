@@ -1,10 +1,12 @@
-import { Component, Prop } from "@stencil/core";
+import { Component, Event, EventEmitter, Prop } from "@stencil/core";
 
 @Component({
   tag: "gx-query-viewer-element",
   shadow: false
 })
 export class QueryViewerElement {
+  @Event() elementChanged: EventEmitter;
+
   /**
    * Name of the element
    */
@@ -108,4 +110,8 @@ export class QueryViewerElement {
    * Raise item click
    */
   @Prop() raiseItemClick: boolean;
+
+  componentDidUpdate() {
+    this.elementChanged.emit();
+  }
 }

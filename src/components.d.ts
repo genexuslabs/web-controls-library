@@ -3434,6 +3434,7 @@ declare namespace LocalJSX {
      * Name of the element
      */
     name?: string;
+    onElementChanged?: (event: CustomEvent<any>) => void;
     /**
      * Raise item click
      */
@@ -3460,6 +3461,7 @@ declare namespace LocalJSX {
      * Max value
      */
     maximumValue?: string;
+    onElementChanged?: (event: CustomEvent<any>) => void;
     /**
      * Format on values
      */
@@ -3478,6 +3480,7 @@ declare namespace LocalJSX {
      * If Conditional true for applying to row or column
      */
     applyToRowOrColumn?: boolean;
+    onElementChanged?: (event: CustomEvent<any>) => void;
     /**
      * If Format the operator of the element
      */
@@ -3512,7 +3515,7 @@ declare namespace LocalJSX {
      * Value of the parameter
      */
     Value?: string;
-    onParameterChanged?: (
+    onParameterValueChanged?: (
       event: CustomEvent<QueryViewerParameterChangedEvent>
     ) => void;
   }
