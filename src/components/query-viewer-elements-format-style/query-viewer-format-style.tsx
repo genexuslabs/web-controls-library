@@ -1,10 +1,12 @@
-import { Component, Prop } from "@stencil/core";
+import { Component, Event, EventEmitter, Prop } from "@stencil/core";
 
 @Component({
   tag: "gx-query-viewer-format-style",
   shadow: false
 })
 export class QueryViewerFormatStyle {
+  @Event() elementChanged: EventEmitter;
+
   /**
    * Type of the element Conditional or Format
    */
@@ -33,4 +35,8 @@ export class QueryViewerFormatStyle {
    * If format second value
    */
   @Prop() value2: string;
+
+  componentDidUpdate() {
+    this.elementChanged.emit();
+  }
 }
