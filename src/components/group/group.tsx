@@ -1,12 +1,17 @@
 import { Component, Element, Prop, h } from "@stencil/core";
-import { makeHighlightable } from "../common/highlightable";
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+
 import { Component as GxComponent } from "../common/interfaces";
+
 @Component({
   shadow: false,
   styleUrl: "group.scss",
   tag: "gx-group"
 })
-export class Group implements GxComponent {
+export class Group implements GxComponent, HighlightableComponent {
   @Element() element: HTMLGxGroupElement;
 
   /**
@@ -21,8 +26,13 @@ export class Group implements GxComponent {
    */
   @Prop() readonly autoGrow: boolean;
 
+  /**
+   * True to highlight control when fire actions.
+   */
+  @Prop() readonly highlightable = false;
+
   componentDidLoad() {
-    makeHighlightable(this.element);
+    makeHighlightable(this);
   }
 
   render() {

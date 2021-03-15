@@ -4,12 +4,13 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Method,
   Prop,
-  h,
-  Host
+  h
 } from "@stencil/core";
-import { GridBaseHelper, GridBase } from "../grid-base/grid-base";
+import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
+
 import { VisibilityComponent } from "../common/interfaces";
 
 @Component({
@@ -19,7 +20,7 @@ import { VisibilityComponent } from "../common/interfaces";
 })
 export class GridFlex
   implements GridBase, ComponentInterface, VisibilityComponent {
-  @Element() el!: HTMLGxGridFlexElement;
+  @Element() element!: HTMLGxGridFlexElement;
 
   /**
    * This attribute defines if the control size will grow automatically,
@@ -90,20 +91,20 @@ export class GridFlex
    */
   @Method()
   async complete() {
-    this.el
+    this.element
       .querySelector(':scope > [slot="grid-content"] gx-grid-infinite-scroll"')
       ["complete"]();
   }
 
   private ensureViewPort() {
-    const elementStyle = this.el.style;
+    const elementStyle = this.element.style;
     elementStyle.setProperty(
       "--gx-grid-css-viewport-width",
-      this.el.parentElement.offsetWidth + "px"
+      this.element.parentElement.offsetWidth + "px"
     );
     elementStyle.setProperty(
       "--gx-grid-css-viewport-height",
-      this.el.parentElement.offsetHeight + "px"
+      this.element.parentElement.offsetHeight + "px"
     );
   }
 
