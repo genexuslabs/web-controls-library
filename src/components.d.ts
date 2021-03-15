@@ -50,6 +50,10 @@ export namespace Components {
      */
     disabled: false;
     /**
+     * True to highlight control when fire actions.
+     */
+    highlightable: false;
+    /**
      * This attribute lets you specify the relative location of the image to the text.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `above`  | The image is located above the text.                    | | `before` | The image is located before the text, in the same line. | | `after`  | The image is located after the text, in the same line.  | | `below`  | The image is located below the text.                    | | `behind` | The image is located behind the text.                   |
      */
     imagePosition: "above" | "before" | "after" | "below" | "behind";
@@ -380,6 +384,10 @@ export namespace Components {
     autoGrow: false;
     complete: () => Promise<void>;
     /**
+     * True to highlight control when fire actions.
+     */
+    highlightable: false;
+    /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode: "collapse" | "keep-space";
@@ -421,6 +429,10 @@ export namespace Components {
      * Get the index of the previous slide.
      */
     getPreviousIndex: () => Promise<number>;
+    /**
+     * True to highlight control when fire actions.
+     */
+    highlightable: false;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -606,6 +618,10 @@ export namespace Components {
      * Attribute that provides the caption to the <legend> tag
      */
     caption: string;
+    /**
+     * True to highlight control when fire actions.
+     */
+    highlightable: false;
   }
   interface GxIcon {
     /**
@@ -642,6 +658,10 @@ export namespace Components {
      * This attribute lets you specify the height.
      */
     height: string;
+    /**
+     * True to highlight control when fire actions.
+     */
+    highlightable: false;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -1515,6 +1535,10 @@ export namespace Components {
   }
   interface GxTab {
     /**
+     * True to highlight control when fire actions.
+     */
+    highlightable: false;
+    /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode: "collapse" | "keep-space";
@@ -1524,6 +1548,10 @@ export namespace Components {
      * This attribute lets you specify if the tab page is disabled
      */
     disabled: boolean;
+    /**
+     * True to highlight control when fire actions.
+     */
+    highlightable: false;
     /**
      * This attribute lets you specify the relative location of the image to the text.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `above`  | The image is located above the text.                    | | `before` | The image is located before the text, in the same line. | | `after`  | The image is located after the text, in the same line.  | | `below`  | The image is located below the text.                    | | `behind` | The image is located behind the text.                   |
      */
@@ -1547,6 +1575,10 @@ export namespace Components {
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled: false;
+    /**
+     * True to highlight control when fire actions.
+     */
+    highlightable: false;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -1591,6 +1623,10 @@ export namespace Components {
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled: false;
+    /**
+     * True to highlight control when fire actions.
+     */
+    highlightable: false;
     /**
      * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
      */
@@ -2097,6 +2133,10 @@ declare namespace LocalJSX {
      */
     disabled?: false;
     /**
+     * True to highlight control when fire actions.
+     */
+    highlightable?: false;
+    /**
      * This attribute lets you specify the relative location of the image to the text.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `above`  | The image is located above the text.                    | | `before` | The image is located before the text, in the same line. | | `after`  | The image is located after the text, in the same line.  | | `below`  | The image is located below the text.                    | | `behind` | The image is located behind the text.                   |
      */
     imagePosition?: "above" | "before" | "after" | "below" | "behind";
@@ -2477,6 +2517,10 @@ declare namespace LocalJSX {
      */
     autoGrow?: false;
     /**
+     * True to highlight control when fire actions.
+     */
+    highlightable?: false;
+    /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode?: "collapse" | "keep-space";
@@ -2514,6 +2558,10 @@ declare namespace LocalJSX {
      * Items layout direction: Could be 'horizontal' or 'vertical' (for vertical slider).
      */
     direction?: "horizontal" | "vertical";
+    /**
+     * True to highlight control when fire actions.
+     */
+    highlightable?: false;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -2703,6 +2751,10 @@ declare namespace LocalJSX {
      * Attribute that provides the caption to the <legend> tag
      */
     caption?: string;
+    /**
+     * True to highlight control when fire actions.
+     */
+    highlightable?: false;
   }
   interface GxIcon {
     /**
@@ -2739,6 +2791,10 @@ declare namespace LocalJSX {
      * This attribute lets you specify the height.
      */
     height?: string;
+    /**
+     * True to highlight control when fire actions.
+     */
+    highlightable?: false;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -3721,6 +3777,10 @@ declare namespace LocalJSX {
   }
   interface GxTab {
     /**
+     * True to highlight control when fire actions.
+     */
+    highlightable?: false;
+    /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode?: "collapse" | "keep-space";
@@ -3734,6 +3794,10 @@ declare namespace LocalJSX {
      * This attribute lets you specify if the tab page is disabled
      */
     disabled?: boolean;
+    /**
+     * True to highlight control when fire actions.
+     */
+    highlightable?: false;
     /**
      * This attribute lets you specify the relative location of the image to the text.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `above`  | The image is located above the text.                    | | `before` | The image is located before the text, in the same line. | | `after`  | The image is located after the text, in the same line.  | | `below`  | The image is located below the text.                    | | `behind` | The image is located behind the text.                   |
      */
@@ -3761,6 +3825,10 @@ declare namespace LocalJSX {
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled?: false;
+    /**
+     * True to highlight control when fire actions.
+     */
+    highlightable?: false;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -3825,6 +3893,10 @@ declare namespace LocalJSX {
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled?: false;
+    /**
+     * True to highlight control when fire actions.
+     */
+    highlightable?: false;
     /**
      * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
      */
