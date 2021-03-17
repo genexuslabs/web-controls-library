@@ -122,7 +122,7 @@ export class Image
   @Prop({ mutable: true }) width: string;
 
   /**
-   * True to highlight control when fire actions.
+   * True to highlight control when an action is fired.
    */
   @Prop() readonly highlightable = false;
 

@@ -80,7 +80,7 @@ export class GridFreeStyle
   @Prop() readonly threshold: string = "150px";
 
   /**
-   * True to highlight control when fire actions.
+   * True to highlight control when an action is fired.
    */
   @Prop() readonly highlightable = false;
 

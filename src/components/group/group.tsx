@@ -27,7 +27,7 @@ export class Group implements GxComponent, HighlightableComponent {
   @Prop() readonly autoGrow: boolean;
 
   /**
-   * True to highlight control when fire actions.
+   * True to highlight control when an action is fired.
    */
   @Prop() readonly highlightable = false;
 

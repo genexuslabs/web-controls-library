@@ -41,7 +41,7 @@ export class Tab
   @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
-   * True to highlight control when fire actions.
+   * True to highlight control when an action is fired.
    */
   @Prop() readonly highlightable = false;
 

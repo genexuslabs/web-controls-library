@@ -50,7 +50,7 @@ export namespace Components {
      */
     disabled: false;
     /**
-     * True to highlight control when fire actions.
+     * True to highlight control when an action is fired.
      */
     highlightable: false;
     /**
@@ -384,7 +384,7 @@ export namespace Components {
     autoGrow: false;
     complete: () => Promise<void>;
     /**
-     * True to highlight control when fire actions.
+     * True to highlight control when an action is fired.
      */
     highlightable: false;
     /**
@@ -430,7 +430,7 @@ export namespace Components {
      */
     getPreviousIndex: () => Promise<number>;
     /**
-     * True to highlight control when fire actions.
+     * True to highlight control when an action is fired.
      */
     highlightable: false;
     /**
@@ -619,7 +619,7 @@ export namespace Components {
      */
     caption: string;
     /**
-     * True to highlight control when fire actions.
+     * True to highlight control when an action is fired.
      */
     highlightable: false;
   }
@@ -659,7 +659,7 @@ export namespace Components {
      */
     height: string;
     /**
-     * True to highlight control when fire actions.
+     * True to highlight control when an action is fired.
      */
     highlightable: false;
     /**
@@ -1535,7 +1535,7 @@ export namespace Components {
   }
   interface GxTab {
     /**
-     * True to highlight control when fire actions.
+     * True to highlight control when an action is fired.
      */
     highlightable: false;
     /**
@@ -1549,7 +1549,7 @@ export namespace Components {
      */
     disabled: boolean;
     /**
-     * True to highlight control when fire actions.
+     * True to highlight control when an action is fired.
      */
     highlightable: false;
     /**
@@ -1576,7 +1576,7 @@ export namespace Components {
      */
     disabled: false;
     /**
-     * True to highlight control when fire actions.
+     * True to highlight control when an action is fired.
      */
     highlightable: false;
     /**
@@ -1624,7 +1624,7 @@ export namespace Components {
      */
     disabled: false;
     /**
-     * True to highlight control when fire actions.
+     * True to highlight control when an action is fired.
      */
     highlightable: false;
     /**
@@ -2133,7 +2133,7 @@ declare namespace LocalJSX {
      */
     disabled?: false;
     /**
-     * True to highlight control when fire actions.
+     * True to highlight control when an action is fired.
      */
     highlightable?: false;
     /**
@@ -2517,7 +2517,7 @@ declare namespace LocalJSX {
      */
     autoGrow?: false;
     /**
-     * True to highlight control when fire actions.
+     * True to highlight control when an action is fired.
      */
     highlightable?: false;
     /**
@@ -2559,7 +2559,7 @@ declare namespace LocalJSX {
      */
     direction?: "horizontal" | "vertical";
     /**
-     * True to highlight control when fire actions.
+     * True to highlight control when an action is fired.
      */
     highlightable?: false;
     /**
@@ -2752,7 +2752,7 @@ declare namespace LocalJSX {
      */
     caption?: string;
     /**
-     * True to highlight control when fire actions.
+     * True to highlight control when an action is fired.
      */
     highlightable?: false;
   }
@@ -2792,7 +2792,7 @@ declare namespace LocalJSX {
      */
     height?: string;
     /**
-     * True to highlight control when fire actions.
+     * True to highlight control when an action is fired.
      */
     highlightable?: false;
     /**
@@ -3777,7 +3777,7 @@ declare namespace LocalJSX {
   }
   interface GxTab {
     /**
-     * True to highlight control when fire actions.
+     * True to highlight control when an action is fired.
      */
     highlightable?: false;
     /**
@@ -3795,7 +3795,7 @@ declare namespace LocalJSX {
      */
     disabled?: boolean;
     /**
-     * True to highlight control when fire actions.
+     * True to highlight control when an action is fired.
      */
     highlightable?: false;
     /**
@@ -3826,7 +3826,7 @@ declare namespace LocalJSX {
      */
     disabled?: false;
     /**
-     * True to highlight control when fire actions.
+     * True to highlight control when an action is fired.
      */
     highlightable?: false;
     /**
@@ -3894,7 +3894,7 @@ declare namespace LocalJSX {
      */
     disabled?: false;
     /**
-     * True to highlight control when fire actions.
+     * True to highlight control when an action is fired.
      */
     highlightable?: false;
     /**

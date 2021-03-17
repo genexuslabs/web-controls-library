@@ -57,7 +57,7 @@ export class TextBlock
   @Prop() readonly lineClamp = false;
 
   /**
-   * True to highlight control when fire actions.
+   * True to highlight control when an action is fired.
    */
   @Prop() readonly highlightable = false;
 

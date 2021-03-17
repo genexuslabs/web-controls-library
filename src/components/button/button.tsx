@@ -85,7 +85,7 @@ export class Button
   @Prop() readonly size: "large" | "normal" | "small" = "normal";
 
   /**
-   * True to highlight control when fire actions.
+   * True to highlight control when an action is fired.
    */
   @Prop() readonly highlightable = false;
 
