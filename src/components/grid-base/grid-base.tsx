@@ -1,8 +1,12 @@
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+
 import { EventEmitter } from "@stencil/core";
-import { makeHighlightable } from "../common/highlightable";
 
 export interface GridBase {
-  el: HTMLElement;
+  element: HTMLElement;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -47,8 +51,8 @@ export interface GridBase {
 export class GridBaseHelper {
   static GRID_BASE_CLASSNAME = "gx-grid-base";
 
-  static init(element: HTMLElement) {
-    makeHighlightable(element);
+  static init(component: HighlightableComponent) {
+    makeHighlightable(component);
   }
 
   static hostData(cmp: GridBase) {

@@ -3,17 +3,20 @@ import {
   Element,
   Event,
   EventEmitter,
-  Prop,
-  h,
+  Host,
   Listen,
-  Host
+  Prop,
+  h
 } from "@stencil/core";
-import { makeHighlightable } from "../common/highlightable";
 import {
-  Component as GxComponent,
   DisableableComponent,
+  Component as GxComponent,
   VisibilityComponent
 } from "../common/interfaces";
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
 import { Swipeable, makeSwipeable } from "../common/swipeable";
 
 @Component({
@@ -22,7 +25,12 @@ import { Swipeable, makeSwipeable } from "../common/swipeable";
   tag: "gx-table"
 })
 export class Table
-  implements GxComponent, DisableableComponent, Swipeable, VisibilityComponent {
+  implements
+    GxComponent,
+    DisableableComponent,
+    Swipeable,
+    VisibilityComponent,
+    HighlightableComponent {
   @Element() element: HTMLGxTableElement;
 
   /**
@@ -68,6 +76,11 @@ export class Table
   @Prop() readonly rowsTemplate: string;
 
   /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
+
+  /**
    * Emitted when the element is swiped.
    */
   @Event() swipe: EventEmitter;
@@ -98,7 +111,7 @@ export class Table
 
   componentDidLoad() {
     makeSwipeable(this);
-    makeHighlightable(this.element);
+    makeHighlightable(this);
   }
 
   render() {

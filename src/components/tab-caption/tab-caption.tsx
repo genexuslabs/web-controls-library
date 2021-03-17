@@ -13,12 +13,14 @@ import {
   Component as GxComponent
 } from "../common/interfaces";
 import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+import {
   hideMainImageWhenDisabledClass,
   imagePositionClass,
   imagePositionRender
 } from "../common/image-position";
-
-import { makeHighlightable } from "../common/highlightable";
 
 let autoTabId = 0;
 
@@ -27,7 +29,8 @@ let autoTabId = 0;
   styleUrl: "tab-caption.scss",
   tag: "gx-tab-caption"
 })
-export class TabCaption implements GxComponent, DisableableComponent {
+export class TabCaption
+  implements GxComponent, DisableableComponent, HighlightableComponent {
   constructor() {
     this.clickHandler = this.clickHandler.bind(this);
   }
@@ -66,6 +69,11 @@ export class TabCaption implements GxComponent, DisableableComponent {
    */
   @Prop() selected = false;
 
+  /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
+
   @Watch("selected")
   selectedHandler() {
     if (this.selected) {
@@ -88,7 +96,7 @@ export class TabCaption implements GxComponent, DisableableComponent {
   }
 
   componentDidLoad() {
-    makeHighlightable(this.element);
+    makeHighlightable(this);
   }
 
   render() {

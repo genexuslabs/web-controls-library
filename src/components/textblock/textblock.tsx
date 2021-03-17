@@ -1,11 +1,14 @@
-import { Component, Element, Prop, State, Listen, h } from "@stencil/core";
-import { makeHighlightable } from "../common/highlightable";
+import { Component, Element, Listen, Prop, State, h } from "@stencil/core";
 import {
-  Component as GxComponent,
   DisableableComponent,
+  Component as GxComponent,
   VisibilityComponent
 } from "../common/interfaces";
-import { makeLinesClampable, LineClampComponent } from "../common/line-clamp";
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+import { LineClampComponent, makeLinesClampable } from "../common/line-clamp";
 
 @Component({
   shadow: false,
@@ -17,7 +20,8 @@ export class TextBlock
     GxComponent,
     DisableableComponent,
     VisibilityComponent,
-    LineClampComponent {
+    LineClampComponent,
+    HighlightableComponent {
   constructor() {
     makeLinesClampable(this, ".content", ".line-measuring");
   }
@@ -52,6 +56,11 @@ export class TextBlock
    */
   @Prop() readonly lineClamp = false;
 
+  /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
+
   @State() maxLines = 0;
   @State() maxHeight = 0;
 
@@ -65,7 +74,7 @@ export class TextBlock
   }
 
   componentDidLoad() {
-    makeHighlightable(this.element);
+    makeHighlightable(this);
   }
 
   render() {

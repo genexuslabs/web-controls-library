@@ -1,12 +1,16 @@
-import { Component, Element, Prop, h, Listen, Host } from "@stencil/core";
-import lazySizes from "lazysizes";
+import { Component, Element, Host, Listen, Prop, h } from "@stencil/core";
 import {
-  Component as GxComponent,
   DisableableComponent,
+  Component as GxComponent,
   VisibilityComponent
 } from "../common/interfaces";
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
-import { makeHighlightable } from "../common/highlightable";
+import lazySizes from "lazysizes";
 
 const LAZY_LOAD_CLASS = "gx-lazyload";
 const LAZY_LOADING_CLASS = "gx-lazyloading";
@@ -20,7 +24,11 @@ const lazyLoadedImages = new Set<string>();
   tag: "gx-image"
 })
 export class Image
-  implements GxComponent, DisableableComponent, VisibilityComponent {
+  implements
+    GxComponent,
+    DisableableComponent,
+    VisibilityComponent,
+    HighlightableComponent {
   constructor() {
     cssVariablesWatcher(this, [
       {
@@ -113,6 +121,11 @@ export class Image
    */
   @Prop({ mutable: true }) width: string;
 
+  /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
+
   @Listen("click", { capture: true })
   handleClick(event: UIEvent) {
     if (this.disabled) {
@@ -140,7 +153,7 @@ export class Image
   }
 
   componentDidLoad() {
-    makeHighlightable(this.element);
+    makeHighlightable(this);
   }
 
   disconnectedCallback() {

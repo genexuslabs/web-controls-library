@@ -3,16 +3,19 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Listen,
   Prop,
-  h,
-  Host
+  h
 } from "@stencil/core";
-import { makeHighlightable } from "../common/highlightable";
 import {
   Component as GxComponent,
   VisibilityComponent
 } from "../common/interfaces";
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
 
 const BASE_TABLIST_SELECTOR = ":scope > [role='tablist']";
 
@@ -21,7 +24,8 @@ const BASE_TABLIST_SELECTOR = ":scope > [role='tablist']";
   styleUrl: "tab.scss",
   tag: "gx-tab"
 })
-export class Tab implements GxComponent, VisibilityComponent {
+export class Tab
+  implements GxComponent, VisibilityComponent, HighlightableComponent {
   @Element() element: HTMLGxTabElement;
 
   private lastSelectedTab: HTMLElement;
@@ -35,6 +39,11 @@ export class Tab implements GxComponent, VisibilityComponent {
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
   @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
+
+  /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
 
   /**
    * Fired when the active tab is changed
@@ -89,7 +98,7 @@ export class Tab implements GxComponent, VisibilityComponent {
   }
 
   componentDidLoad() {
-    makeHighlightable(this.element);
+    makeHighlightable(this);
     this.linkTabs(true);
   }
 
