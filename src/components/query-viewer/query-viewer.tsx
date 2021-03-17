@@ -1,4 +1,13 @@
-import { Component, Prop, h, Element } from "@stencil/core";
+import {
+  Component,
+  Element,
+  Host,
+  Listen,
+  Prop,
+  State,
+  h
+} from "@stencil/core";
+
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
@@ -11,14 +20,25 @@ export class QueryViewer implements GxComponent {
     net: "gxqueryviewerforsd.aspx",
     java: "qviewer.services.gxqueryviewerforsd"
   };
-  private propsNotToPost = ["baseUrl", "env", "mapServices", "propsNotToPost"];
+  private propsNotToPost = [
+    "baseUrl",
+    "env",
+    "mapServices",
+    "object",
+    "objectCall",
+    "propsNotToPost",
+    "parameters",
+    "elements"
+  ];
+  private objectCall: Array<string>;
+  private configurationObserver = new MutationObserver(() => {
+    this.configurationChangedHandler();
+  });
 
   @Element() element: HTMLGxQueryViewerElement;
 
-  componentDidRender() {
-    const form = this.element.querySelector("form");
-    form.submit();
-  }
+  @State() parameters: string;
+  @State() elements: string;
 
   /**
    * Base URL of the server
@@ -235,35 +255,101 @@ export class QueryViewer implements GxComponent {
    */
   @Prop() queryTitle: string;
 
+  @Listen("parameterValueChanged")
+  parameterValueChangedHandler(eventInfo: CustomEvent) {
+    eventInfo.stopPropagation();
+    this.getParameters();
+  }
+
+  @Listen("elementChanged")
+  elementChangedHandler(eventInfo: CustomEvent) {
+    eventInfo.stopPropagation();
+    this.getElements();
+  }
+
+  configurationChangedHandler() {
+    this.getParameters();
+    this.getElements();
+  }
+
+  componentWillLoad() {
+    this.getParameters();
+    this.getElements();
+  }
+
+  componentDidLoad() {
+    this.configurationObserver.observe(this.element, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  componentDidRender() {
+    const form = this.element.querySelector("form");
+    form.submit();
+  }
+
+  disconnectedCallback() {
+    this.configurationObserver.disconnect();
+  }
+
+  private parseObjectToObjectcall() {
+    try {
+      this.objectCall = JSON.parse(this.object);
+    } catch (e) {
+      this.objectCall = null;
+    }
+  }
+
+  private hasObjectCall() {
+    return Array.isArray(this.objectCall) && this.objectCall.length >= 2;
+  }
+
+  private loadObjectNameFromObjectCall() {
+    if (this.hasObjectCall()) {
+      this.objectName = this.objectCall[1];
+    }
+  }
+
   private postData() {
+    this.parseObjectToObjectcall();
+    this.loadObjectNameFromObjectCall();
+
     return [
       ...Object.keys(QueryViewer.prototype)
         .filter(key => !this.propsNotToPost.includes(key))
         .map(key => <input type="hidden" name={key} value={this[key]} />),
-      <input type="hidden" name="Width" value={this.getWidth()} />,
-      <input type="hidden" name="Height" value={this.getHeight()} />,
-      <input type="hidden" name="Elements" value={this.getElements()} />,
-      <input type="hidden" name="Parameters" value={this.getParameters()} />
+      <input type="hidden" name="Elements" value={this.elements} />,
+      <input type="hidden" name="Parameters" value={this.parameters} />
     ];
   }
 
-  private getParameters(): string {
+  private getParameters() {
     const parametersValue = [];
 
-    const parameters = Array.from(
-      document.getElementsByTagName("gx-query-viewer-parameter")
-    );
-    parameters.forEach(parameter => {
-      const parameterObject = {};
-      parameterObject["Value"] = encodeURIComponent(parameter.Value);
-      parameterObject["Name"] = parameter.Name;
-      parametersValue.push(parameterObject);
-    });
+    if (this.hasObjectCall()) {
+      this.objectCall.slice(2).forEach(value => {
+        const parameterObject = {};
+        parameterObject["Value"] = encodeURIComponent(value);
+        parameterObject["Name"] = "";
+        parametersValue.push(parameterObject);
+      });
+    } else {
+      const parameters = Array.from(
+        document.getElementsByTagName("gx-query-viewer-parameter")
+      );
+      parameters.forEach(parameter => {
+        const parameterObject = {};
+        parameterObject["Value"] = encodeURIComponent(parameter.Value);
+        parameterObject["Name"] = parameter.Name;
+        parametersValue.push(parameterObject);
+      });
+    }
 
-    return JSON.stringify(parametersValue);
+    this.parameters = JSON.stringify(parametersValue);
   }
 
-  private getElements(): string {
+  private getElements() {
     const elementsValue = [];
     const elements = Array.from(
       document.getElementsByTagName("gx-query-viewer-element")
@@ -271,7 +357,7 @@ export class QueryViewer implements GxComponent {
     elements.forEach(ax => {
       const elementObjectValue = {};
       elementObjectValue["Name"] = ax.name;
-      elementObjectValue["Title"] = ax.title;
+      elementObjectValue["Title"] = ax.elementTitle;
       elementObjectValue["Visible"] = ax.visible;
       elementObjectValue["Type"] = ax.type;
       elementObjectValue["Axis"] = ax.axis;
@@ -280,23 +366,20 @@ export class QueryViewer implements GxComponent {
       if (ax.axisOrderType) {
         elementObjectValue["AxisOrder"] = { Type: ax.axisOrderType };
         if (ax.axisOrderValues) {
-          elementObjectValue["AxisOrder"]["Values"] = ax.axisOrderValues.split(
-            ","
-          );
+          elementObjectValue["AxisOrder"]["Values"] = ax.axisOrderValues;
         }
       }
       if (ax.filterType) {
         elementObjectValue["Filter"] = { Type: ax.filterType };
         if (ax.axisOrderValues) {
-          elementObjectValue["Filter"]["Values"] = ax.filterValues.split(",");
+          elementObjectValue["Filter"]["Values"] = ax.filterValues;
         }
       }
       if (ax.expandCollapseType) {
         elementObjectValue["ExpandCollapse"] = { Type: ax.expandCollapseType };
         if (ax.axisOrderValues) {
-          elementObjectValue["ExpandCollapse"][
-            "Values"
-          ] = ax.expandCollapseValues.split(",");
+          elementObjectValue["ExpandCollapse"]["Values"] =
+            ax.expandCollapseValues;
         }
       }
 
@@ -358,7 +441,8 @@ export class QueryViewer implements GxComponent {
       });
       elementsValue.push(elementObjectValue);
     });
-    return JSON.stringify(elementsValue);
+
+    this.elements = JSON.stringify(elementsValue);
   }
 
   private getGrouping(
@@ -392,24 +476,10 @@ export class QueryViewer implements GxComponent {
     return grouping;
   }
 
-  private getWidth(): string {
-    const computedStyle = getComputedStyle(this.element);
-    return computedStyle.width;
-  }
-
-  private getHeight(): string {
-    const computedStyle = getComputedStyle(this.element);
-    return computedStyle.height;
-  }
-
   render() {
     return (
-      <div>
-        <iframe
-          name="query_viewer"
-          width={this.getWidth()}
-          height={this.getHeight()}
-        ></iframe>
+      <Host>
+        <iframe name="query_viewer"></iframe>
         <form
           hidden
           target="query_viewer"
@@ -418,7 +488,7 @@ export class QueryViewer implements GxComponent {
         >
           {this.postData()}
         </form>
-      </div>
+      </Host>
     );
   }
 }

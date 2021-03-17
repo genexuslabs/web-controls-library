@@ -1,10 +1,12 @@
-import { Component, Prop } from "@stencil/core";
+import { Component, Event, EventEmitter, Prop } from "@stencil/core";
 
 @Component({
   tag: "gx-query-viewer-element-format",
   shadow: false
 })
 export class QueryViewerElementFormat {
+  @Event() elementChanged: EventEmitter;
+
   /**
    * Format on values
    */
@@ -29,4 +31,8 @@ export class QueryViewerElementFormat {
    * Max value
    */
   @Prop() maximumValue: string;
+
+  componentDidUpdate() {
+    this.elementChanged.emit();
+  }
 }
