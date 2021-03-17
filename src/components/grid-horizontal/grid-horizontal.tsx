@@ -4,24 +4,29 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Method,
   Prop,
   Watch,
-  h,
-  Host
+  h
 } from "@stencil/core";
-
-import { GridBaseHelper, GridBase } from "../grid-base/grid-base";
-import { VisibilityComponent } from "../common/interfaces";
+import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 import Swiper, { SwiperOptions } from "swiper";
+
+import { HighlightableComponent } from "../common/highlightable";
+import { VisibilityComponent } from "../common/interfaces";
 
 @Component({
   styleUrl: "grid-horizontal.scss",
   tag: "gx-grid-horizontal"
 })
 export class GridHorizontal
-  implements GridBase, ComponentInterface, VisibilityComponent {
-  @Element() el!: HTMLGxGridHorizontalElement;
+  implements
+    GridBase,
+    ComponentInterface,
+    VisibilityComponent,
+    HighlightableComponent {
+  @Element() element!: HTMLGxGridHorizontalElement;
 
   private scrollbarEl?: HTMLElement;
   private paginationEl?: HTMLElement;
@@ -112,6 +117,11 @@ export class GridHorizontal
    * Set to false to enable slides in free mode position.
    */
   @Prop() readonly snapToGrid = true;
+
+  /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
 
   /**
    * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
@@ -220,7 +230,7 @@ export class GridHorizontal
 
   componentDidLoad() {
     window.requestAnimationFrame(() => this.ensureSwiper());
-    GridBaseHelper.init(this.el);
+    GridBaseHelper.init(this);
   }
 
   componentDidUpdate() {
@@ -393,7 +403,7 @@ export class GridHorizontal
       this.loadingState !== "loading"
     ) {
       const opts: SwiperOptions = this.normalizeOptions();
-      const container: HTMLElement = this.el;
+      const container: HTMLElement = this.element;
       container
         .querySelector("[slot='grid-content']")
         .classList.add("swiper-wrapper");
@@ -567,7 +577,7 @@ export class GridHorizontal
       return height;
     }
     //When 'column' it uses flex-direction: column layout which requires specified height on swiper-container.
-    height = this.el.parentElement.offsetHeight;
+    height = this.element.parentElement.offsetHeight;
   }
 
   render() {

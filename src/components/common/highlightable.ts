@@ -3,20 +3,33 @@ const UNHIGHTLIGHT_EVENT_NAME = "unhighlight";
 const HIGHLIGHT_CLASS_NAME = "gx-highlighted";
 let isSetup = false;
 
-export function makeHighlightable(element: HTMLElement) {
-  if (!isSetup) {
-    isSetup = true;
-    setup();
-  }
+export interface HighlightableComponent {
+  element: HTMLElement;
+  highlightable: boolean;
+}
 
-  element.addEventListener(HIGHLIGHT_EVENT_NAME, (event: CustomEvent) => {
-    event.stopPropagation();
-    element.classList.add(HIGHLIGHT_CLASS_NAME);
-  });
-  element.addEventListener(UNHIGHTLIGHT_EVENT_NAME, (event: CustomEvent) => {
-    event.stopPropagation();
-    element.classList.remove(HIGHLIGHT_CLASS_NAME);
-  });
+export function makeHighlightable(component: HighlightableComponent) {
+  if (component.highlightable) {
+    if (!isSetup) {
+      isSetup = true;
+      setup();
+    }
+
+    component.element.addEventListener(
+      HIGHLIGHT_EVENT_NAME,
+      (event: CustomEvent) => {
+        event.stopPropagation();
+        component.element.classList.add(HIGHLIGHT_CLASS_NAME);
+      }
+    );
+    component.element.addEventListener(
+      UNHIGHTLIGHT_EVENT_NAME,
+      (event: CustomEvent) => {
+        event.stopPropagation();
+        component.element.classList.remove(HIGHLIGHT_CLASS_NAME);
+      }
+    );
+  }
 }
 
 function setup() {

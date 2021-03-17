@@ -1,11 +1,15 @@
-import { ButtonRender } from "../renders/bootstrap/button/button-render";
-import { Component, Element, Prop, Listen, h } from "@stencil/core";
+import { Component, Element, Listen, Prop, h } from "@stencil/core";
 import {
-  Component as GxComponent,
   DisableableComponent,
+  Component as GxComponent,
   VisibilityComponent
 } from "../common/interfaces";
-import { makeHighlightable } from "../common/highlightable";
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+
+import { ButtonRender } from "../renders/bootstrap/button/button-render";
 
 @Component({
   shadow: false,
@@ -13,7 +17,11 @@ import { makeHighlightable } from "../common/highlightable";
   tag: "gx-button"
 })
 export class Button
-  implements GxComponent, DisableableComponent, VisibilityComponent {
+  implements
+    GxComponent,
+    DisableableComponent,
+    VisibilityComponent,
+    HighlightableComponent {
   constructor() {
     this.renderer = new ButtonRender(this, {
       handleClick: this.handleClick.bind(this)
@@ -76,6 +84,11 @@ export class Button
    */
   @Prop() readonly size: "large" | "normal" | "small" = "normal";
 
+  /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
+
   @Listen("click", { capture: true })
   handleClick(event: UIEvent) {
     if (this.disabled) {
@@ -89,7 +102,7 @@ export class Button
   }
 
   componentDidLoad() {
-    makeHighlightable(this.element);
+    makeHighlightable(this);
   }
 
   render() {

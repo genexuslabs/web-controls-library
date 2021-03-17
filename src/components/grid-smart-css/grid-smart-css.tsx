@@ -4,12 +4,13 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Method,
   Prop,
-  h,
-  Host
+  h
 } from "@stencil/core";
-import { GridBaseHelper, GridBase } from "../grid-base/grid-base";
+import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
+
 import { VisibilityComponent } from "../common/interfaces";
 
 @Component({
@@ -25,7 +26,7 @@ export class GridSmartCss
 
   private CSS_NAME_MOUSE_DRAG_ACTIVE = "gx-smart-cell-drag-active";
 
-  @Element() el!: HTMLGxGridSmartCssElement;
+  @Element() element!: HTMLGxGridSmartCssElement;
 
   /**
    * This attribute defines if the control size will grow automatically,
@@ -100,7 +101,7 @@ export class GridSmartCss
    */
   @Method()
   async complete() {
-    this.el
+    this.element
       .querySelector(':scope > [slot="grid-content"] gx-grid-infinite-scroll"')
       ["complete"]();
   }
@@ -111,11 +112,11 @@ export class GridSmartCss
 
   private ensureViewPort() {
     const directionSize = this.isHorizontal()
-      ? this.el.parentElement.offsetWidth
-      : this.el.parentElement.offsetHeight;
+      ? this.element.parentElement.offsetWidth
+      : this.element.parentElement.offsetHeight;
 
     if (directionSize > 0) {
-      const elementStyle = this.el.style;
+      const elementStyle = this.element.style;
       elementStyle.setProperty(
         "--gx-grid-css-viewport-size",
         directionSize + "px"
@@ -149,7 +150,7 @@ export class GridSmartCss
   }
 
   private getScrollableContainer(): HTMLElement {
-    return this.el.querySelector('[slot="grid-content"]');
+    return this.element.querySelector('[slot="grid-content"]');
   }
 
   private attachMouseScrollHandler() {
