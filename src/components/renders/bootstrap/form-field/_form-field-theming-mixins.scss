@@ -35,7 +35,8 @@
     }
   }
   @if ($highlighted != null) {
-    [data-part="field"]:focus {
+    [data-part="field"]:focus,
+    &.gx-highlighted[type="text"][readonly="true"] [data-readonly] {
       @extend #{$highlighted} !optional;
     }
   }

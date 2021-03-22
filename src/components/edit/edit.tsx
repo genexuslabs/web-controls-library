@@ -3,13 +3,18 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Method,
   Prop,
   State,
   Watch,
-  h,
-  Host
+  h
 } from "@stencil/core";
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+
 import { EditRender } from "../renders/bootstrap/edit/edit-render";
 import { FormComponent } from "../common/interfaces";
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
@@ -20,7 +25,7 @@ import { makeLinesClampable } from "../common/line-clamp";
   styleUrl: "edit.scss",
   tag: "gx-edit"
 })
-export class Edit implements FormComponent {
+export class Edit implements FormComponent, HighlightableComponent {
   constructor() {
     this.renderer = new EditRender(this, {
       handleChange: this.handleChange.bind(this),
@@ -173,6 +178,11 @@ export class Edit implements FormComponent {
    */
   @Prop({ mutable: true }) value: string;
 
+  /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
+
   @State() maxLines = 0;
   @State() maxHeight = 0;
 
@@ -204,6 +214,9 @@ export class Edit implements FormComponent {
 
   componentDidLoad() {
     this.toggleValueSetClass();
+    if (this.readonly) {
+      makeHighlightable(this);
+    }
   }
 
   @Watch("value")
