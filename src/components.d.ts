@@ -228,6 +228,10 @@ export namespace Components {
      */
     getNativeInputId: () => Promise<string>;
     /**
+     * True to highlight control when an action is fired.
+     */
+    highlightable: false;
+    /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode: "collapse" | "keep-space";
@@ -2330,6 +2334,10 @@ declare namespace LocalJSX {
       | "footnote"
       | "caption1"
       | "caption2";
+    /**
+     * True to highlight control when an action is fired.
+     */
+    highlightable?: false;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
