@@ -67,6 +67,12 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller) >, & > *
         }
       }
     }
+
+    @if ($group-separator != null) {
+      .gx-group-separator {
+        @extend #{$group-separator} !optional;
+      }
+    }
   }
 }
 
