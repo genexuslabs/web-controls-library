@@ -48,6 +48,15 @@ predefined slots:
 | `close` | Fired when the modal dialog is closed | `CustomEvent<any>` |
 | `open`  | Fired when the modal dialog is opened | `CustomEvent<any>` |
 
+## CSS Custom Properties
+
+| Name                                 | Description               |
+| ------------------------------------ | ------------------------- |
+| `--gx-modal-header-background-color` | Header background color   |
+| `--gx-modal-header-color`            | Header text color         |
+| `--gx-modal-primary-action-color`    | Primary action text color |
+| `--gx-modal-secondary-action-color`  | Secondary text color      |
+
 ## Dependencies
 
 ### Used by

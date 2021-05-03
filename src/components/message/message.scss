@@ -1,5 +1,65 @@
 @import "../common/_base";
 
+/// Helper mixin to ease styling gx-message
+/// @param {string} $class Base class of the component
+@mixin gx-message-color(
+  $message-type: null,
+  $color: null,
+  $background-color: null,
+  $border-color: null
+) {
+  & .alert-#{$message-type} {
+    color: $color;
+    background-color: $background-color;
+    border-color: $border-color;
+  }
+}
+
 gx-message {
   @include visibility(block);
+
+  /**
+   * @prop --gx-message-info-color: Info text color
+   */
+  --gx-message-info-color: #0c5460;
+  /**
+   * @prop --gx-message-info-background-color: Info background color
+   */
+  --gx-message-info-background-color: #d1ecf1;
+  /**
+   * @prop --gx-message-warning-color: Warning text color
+   */
+  --gx-message-warning-color: #856404;
+  /**
+   * @prop --gx-message-warning-background-color: Warning background color
+   */
+  --gx-message-warning-background-color: #fff3cd;
+
+  /**
+   * @prop --gx-message-error-color: Error text color
+   */
+  --gx-message-error-color: #721c24;
+  /**
+   * @prop --gx-message-error-background-color: Error background color
+   */
+  --gx-message-error-background-color: #f8d7da;
+
+  @include gx-message-color(
+    "info",
+    var(--gx-message-info-color),
+    var(--gx-message-info-background-color),
+    var(--gx-message-info-background-color)
+  );
+  @include gx-message-color(
+    warning,
+    var(--gx-message-warning-color),
+    var(--gx-message-warning-background-color),
+    var(--gx-message-warning-background-color)
+  );
+  @include gx-message-color(
+    danger,
+    var(--gx-message-error-color),
+    var(--gx-message-error-background-color),
+    var(--gx-message-error-background-color)
+  );
 }
