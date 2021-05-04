@@ -2,4 +2,37 @@
 
 gx-modal {
   @include visibility(block);
+
+  /**
+   * @prop --gx-modal-header-color: Header text color
+   */
+  --gx-modal-header-color: black;
+  /**
+   * @prop --gx-modal-header-background-color: Header background color
+   */
+  --gx-modal-header-background-color: white;
+  /**
+   * @prop --gx-modal-primary-action-color: Primary action text color
+   */
+  --gx-modal-primary-action-color: white;
+  /**
+   * @prop --gx-modal-secondary-action-color: Secondary text color
+   */
+  --gx-modal-secondary-action-color: white;
+
+  & .modal-header {
+    background-color: var(--gx-modal-header-background-color);
+    color: var(--gx-modal-header-color);
+    & .close {
+      color: var(--gx-modal-header-color);
+    }
+  }
+
+  .modal-footer .btn-primary {
+    color: var(--gx-modal-primary-action-color);
+  }
+
+  .modal-footer .btn-secondary {
+    color: var(--gx-modal-secondary-action-color);
+  }
 }
