@@ -28,7 +28,8 @@ export class QueryViewer implements GxComponent {
     "objectCall",
     "propsNotToPost",
     "parameters",
-    "elements"
+    "elements",
+    "dataVersionId"
   ];
   private objectCall: Array<string>;
   private configurationObserver = new MutationObserver(() => {
@@ -254,6 +255,10 @@ export class QueryViewer implements GxComponent {
    * Title of the QueryViewer
    */
   @Prop() queryTitle: string;
+  /**
+   * Version of data
+   */
+  @Prop() dataVersionId: number;
 
   @Listen("parameterValueChanged")
   parameterValueChangedHandler(eventInfo: CustomEvent) {
@@ -479,7 +484,10 @@ export class QueryViewer implements GxComponent {
   render() {
     return (
       <Host>
-        <iframe name="query_viewer"></iframe>
+        <iframe
+          name="query_viewer"
+          data-version-id={this.dataVersionId}
+        ></iframe>
         <form
           hidden
           target="query_viewer"
