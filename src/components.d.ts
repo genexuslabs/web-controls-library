@@ -1055,6 +1055,10 @@ export namespace Components {
       | "StepTimeline"
       | "Sparkline";
     /**
+     * Title of the QueryViewer
+     */
+    dataVersionId: number;
+    /**
      * Allowing or not Comlumn sort
      */
     disableColumnSort: boolean;
@@ -3254,6 +3258,10 @@ declare namespace LocalJSX {
       | "SmoothTimeline"
       | "StepTimeline"
       | "Sparkline";
+    /**
+     * Title of the QueryViewer
+     */
+    dataVersionId?: number;
     /**
      * Allowing or not Comlumn sort
      */
