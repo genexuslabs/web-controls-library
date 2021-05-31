@@ -63,6 +63,7 @@ gx-tab {
     display: flex;
     flex: 1;
     flex-direction: column;
+    overflow: hidden;
 
     --tab-scrollbar-background-color: var(
       --gx-scrollbar-background-color,
