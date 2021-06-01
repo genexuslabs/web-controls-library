@@ -9,63 +9,67 @@ gx-gauge {
   --center-circle-text-color: rgba(44, 44, 44, 1);
 
   /**
-  * @prop --gauge-border-radius:
-   * Define the border radius of gauge in `line` gauge type.
-   * (25px by default)
+  * @prop --center-circle-background-color:
+   * Define the color of the center background text in `circle` gauge type.
+   * (rgba(255, 255, 255, 0) by default)
   */
-  --gauge-border-radius: 25px;
+  --center-circle-background-color: rgba(255, 255, 255, 0);
 
   /**
-  * @prop --marker-color:
-   * Define the background color and border color of the marker.
+  * @prop --indicator-circle-background-color:
+   * Define the color of the background value indicator in `circle` gauge type.
    * (rgba(44, 44, 44, 1) by default)
   */
-  --marker-color: rgba(44, 44, 44, 1);
+  --indicator-circle-background-color: rgba(44, 44, 44, 1);
+
+  /**
+  * @prop --value-text-color:
+   * Define the color of the value text in `line` gauge type.
+   * (rgba(44, 44, 44, 1) by default)
+  */
+  --value-text-color: rgba(44, 44, 44, 1);
+
+  /**
+  * @prop --value-text-background-color:
+   * Define the background-color of the value text in `line` gauge type.
+   * (rgba(255, 255, 255, 0.800) by default)
+  */
+  --value-text-background-color: rgba(255, 255, 255, 0.8);
 
   /**
   * @prop --max-value-background-color:
-   * Set the color of maximum value display background.
-   * (rgba(44, 44, 44, 1) by default)
+   * Set the color of maximum value display background in `line` gauge type.
+   * (rgba(255, 255, 255, 0.800) by default)
   */
-  --max-value-background-color: rgba(44, 44, 44, 1);
+  --max-value-background-color: rgba(255, 255, 255, 0.8);
 
   /**
   * @prop --max-value-text-color:
-   * Set the color of maximum value display text.
-   * (rgba(255, 255, 255, 0.8) by default)
+   * Set the color of maximum value display text in `line` gauge type.
+   * (rgba(40, 40, 40, 0.8) by default)
   */
-  --max-value-text-color: rgba(255, 255, 255, 0.8);
+  --max-value-text-color: rgba(40, 40, 40, 0.8);
 
   /**
   * @prop --min-value-background-color:
-   * Set the color of minimum value display background.
-   * (rgba(44, 44, 44, 1) by default)
+   * Set the color of minimum value display background in `line` gauge type.
+   * (rgba(255, 255, 255, 0.8000) by default)
   */
-  --min-value-background-color: rgba(44, 44, 44, 1);
+  --min-value-background-color: rgba(255, 255, 255, 0.8);
 
   /**
   * @prop --min-value-text-color:
-   * Set the color of minimum value display text.
-   * (rgba(255, 255, 255, 0.8) by default)
+   * Set the color of minimum value display text in `line` gauge type.
+   * (rgba(40, 40, 40, 0.8) by default)
   */
-  --min-value-text-color: rgba(255, 255, 255, 0.8);
+  --min-value-text-color: rgba(40, 40, 40, 0.8);
 
   /**
-  * @prop --min-max-text-size:
-   * Set the size of min and max values display text.
-   * (1.5em by default)
+  * @prop --indicator-line-background-color:
+   * Set the color of background value indicator in `line` gauge type.
+   * (rgba(44, 44, 44, 1) by default)
   */
-  --min-max-values-text-size: 1.5em;
-
-  /**
-  * @prop --min-max-text-size:
-   * Set the size of min and max values display text.
-   * (2.7em by default)
-  */
-  --current-value-text-size: 2.7em;
-
-  $transitionConfig: 0.3s ease;
-  $min-width-value-displayers: 24px;
+  --indicator-line-background-color: rgba(44, 44, 44, 1);
 
   @mixin flex-centered {
     display: flex;
@@ -74,107 +78,68 @@ gx-gauge {
   }
 
   @include flex-centered;
-  flex-direction: column;
   flex-wrap: wrap;
-  height: 400px;
+  position: relative;
 
   .gaugeContainerLine {
-    left: 0;
-    right: 4px;
-    height: auto;
-    position: absolute;
-    border-radius: var(--gauge-border-radius);
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+
     .gauge {
-      min-height: 30px;
       display: flex;
-      align-items: flex-start;
-      z-index: 1;
       .marker {
-        @include flex-centered;
-        transform: translateX(-50%);
-        transition: $transitionConfig;
-        z-index: 99;
-        & span.marker-value {
-          min-width: $min-width-value-displayers;
-          display: flex;
-          justify-content: center;
-          align-content: center;
-          background-color: var(--marker-color);
-          color: var(--max-value-text-color);
-          border-radius: 10px;
-          padding: 5px;
-        }
-        & span.pin {
-          width: 13px;
-          height: 13px;
-          transform: translateY(18px) rotate(45deg) skew(12deg, 12deg);
-          background-color: var(--marker-color);
-          position: absolute;
-          z-index: -1;
-        }
+        background-color: var(--value-text-background-color);
+        color: var(--value-text-color);
       }
     }
 
     .minMaxDisplay {
+      z-index: 1;
       display: flex;
       justify-content: space-between;
-      align-content: center;
       width: 100%;
-      height: auto;
       .maxValue {
-        @include flex-centered;
         background-color: var(--max-value-background-color);
         color: var(--max-value-text-color);
-        border-radius: 10px;
-        padding: 5px;
-        float: right;
-        min-width: $min-width-value-displayers;
-        & span {
-          width: 8px;
-          height: 8px;
-          transform: translateY(calc(-100%)) rotate(45deg) skew(12deg, 12deg);
-          right: 0;
-          z-index: -1;
-          background-color: var(--max-value-background-color);
-          position: absolute;
-          border-radius: 0% 200% 0% 10%;
-        }
       }
       .minValue {
-        @include flex-centered;
         background-color: var(--min-value-background-color);
         color: var(--min-value-text-color);
-        border-radius: 10px;
-        padding: 5px;
-        min-width: $min-width-value-displayers;
-        & span {
-          width: 8px;
-          height: 8px;
-          border-radius: 0% 10% 0% 200%;
-          transform: translateY(calc(-100%)) rotate(45deg) skew(12deg, 12deg);
-          left: 0;
-          z-index: -1;
-          background-color: var(--min-value-background-color);
-          position: absolute;
-        }
       }
     }
+
     .rangesContainer {
       overflow: hidden;
-      border-radius: 20px;
       position: absolute;
       width: calc(100%);
       background-color: rgba(0, 0, 0, 0.1);
       .range {
         height: 100%;
         position: absolute;
-        box-shadow: var(--gauge-ranges-box-shadow);
+        // box-shadow: var(--gauge-ranges-box-shadow);
         @include flex-centered;
       }
     }
+
+    span.marker {
+      transform: translateY(-4px);
+      position: absolute;
+      z-index: 1;
+      .indicator {
+        content: "";
+        border-left-style: solid;
+        border-left-color: var(--indicator-line-background-color);
+        transform: translateX(-50%);
+        display: block;
+        background-color: var(--indicator-line-background-color);
+      }
+    }
+
     .labelsContainerLine {
       width: calc(100%);
-      height: calc(100% + 4px);
+      height: calc(100%);
       display: flex;
       align-items: center;
       .rangeName {
@@ -184,72 +149,36 @@ gx-gauge {
       }
     }
   }
+
   .svgContainer {
     @include flex-centered;
+    align-items: center;
     .gaugeContainer {
       @include flex-centered;
-      border-radius: 50%;
       z-index: 0;
       position: absolute;
     }
     .gauge {
-      border-radius: 50%;
       position: absolute;
       @include flex-centered;
       div {
         @include flex-centered;
-        flex-direction: row;
-        flex-wrap: wrap;
         color: var(--center-circle-text-color);
-        & span {
-          @include flex-centered;
-          margin: 10px;
-          font-size: var(--min-max-values-text-size);
-        }
+        background-color: var(--center-circle-background-color);
         & span.current-value {
-          font-size: var(--current-value-text-size);
           font-weight: 900;
-          margin: 5px 50%;
         }
-      }
-    }
-    span.marker {
-      transition: $transitionConfig;
-      position: absolute;
-      .indicator {
-        transition: $transitionConfig;
-        content: "";
-        border: 2px solid var(--marker-color);
-        transform: translateX(-1px);
-        border-radius: 20px 20px 1000% 1000%;
-        display: block;
-        background-color: var(--marker-color);
       }
     }
   }
-  .labelsContainerCircle {
-    width: auto;
-    padding-left: 20px;
+
+  .circularMarker {
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-content: space-evenly;
-    flex-direction: column;
-    flex-wrap: wrap;
-    .range-label {
-      flex-grow: 1;
-      min-height: 16px;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      flex-direction: row;
-      & div {
-        border: 3px solid black;
-        border-radius: 100%;
-        width: 10px;
-        height: 10px;
-        margin-right: 10px;
-      }
+    left: 50%;
+    position: absolute;
+
+    .circularIndicator {
+      background-color: var(--indicator-circle-background-color);
     }
   }
 }
