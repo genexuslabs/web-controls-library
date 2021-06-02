@@ -147,9 +147,10 @@ export class FormFieldRender implements Renderer {
               "form-group": true,
               "no-gutters": true,
               "mb-0": true,
-              "flex-column":
-                formField.labelPosition === "top" ||
-                formField.labelPosition === "bottom"
+              "flex-column": formField.labelPosition === "top",
+              "flex-column-reverse": formField.labelPosition === "bottom",
+              "flex-row-reverse": formField.labelPosition === "right",
+              "flex-row": formField.labelPosition === "left"
             }}
           >
             {renderLabel && renderLabelBefore ? label : null}
