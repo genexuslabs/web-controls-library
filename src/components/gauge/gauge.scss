@@ -143,8 +143,9 @@ gx-gauge {
       display: flex;
       align-items: center;
       .rangeName {
-        position: absolute;
         @include flex-centered;
+        margin-top: 1px;
+        position: absolute;
         filter: brightness(0.5);
       }
     }
@@ -152,6 +153,8 @@ gx-gauge {
 
   .svgContainer {
     @include flex-centered;
+    height: 100%;
+    width: 100%;
     align-items: center;
     .gaugeContainer {
       @include flex-centered;
@@ -174,7 +177,6 @@ gx-gauge {
 
   .circularMarker {
     height: 100%;
-    left: 50%;
     position: absolute;
 
     .circularIndicator {

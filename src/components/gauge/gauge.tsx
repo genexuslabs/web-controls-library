@@ -166,7 +166,6 @@ export class Gauge implements GxComponent {
       <span
         class="rangeName"
         style={{
-          "margin-top": "1px",
           "margin-left": `${position}%`,
           color: color,
           // transform: `translateY(-${this.thickness >= 7 ? 0 : 12 + this.thickness}px)`,
@@ -208,13 +207,7 @@ export class Gauge implements GxComponent {
 
     return (
       <Host>
-        <div
-          class="svgContainer"
-          style={{
-            height: "100%",
-            width: "100%"
-          }}
-        >
+        <div class="svgContainer">
           <svg width="100%" height="100%" viewBox="0 0 100 100">
             <circle
               r={radius}
@@ -257,58 +250,8 @@ export class Gauge implements GxComponent {
               transform:
                 this.calcPercentage() == 100
                   ? "rotate(359.5deg)"
-                  : // Probably, due to loss of floating point precision the rotation needs to be adjusted
-                    // This could be improved, but it takes a lot of time to get a good rotation correction.
-                    `rotate(${this.calcPercentage() *
-                      ONE_PERCENT_OF_CIRCLE_DREGREE}deg) translate(${
-                      this.calcPercentage() <= 15
-                        ? -(50 - this.calcPercentage())
-                        : this.calcPercentage() <= 20
-                        ? -(40 - this.calcPercentage())
-                        : this.calcPercentage() <= 30
-                        ? this.calcPercentage() - 25
-                        : this.calcPercentage() <= 35
-                        ? this.calcPercentage() - 10
-                        : this.calcPercentage() <= 50
-                        ? this.calcPercentage() + 5
-                        : this.calcPercentage() <= 55
-                        ? this.calcPercentage() - 5
-                        : this.calcPercentage() <= 60
-                        ? this.calcPercentage() - 10
-                        : this.calcPercentage() <= 65
-                        ? this.calcPercentage() - 25
-                        : this.calcPercentage() <= 70
-                        ? this.calcPercentage() - 50
-                        : this.calcPercentage() <= 75
-                        ? this.calcPercentage() - 75
-                        : this.calcPercentage() <= 80
-                        ? -(this.calcPercentage() - 65)
-                        : this.calcPercentage() <= 85
-                        ? -(this.calcPercentage() - 60)
-                        : this.calcPercentage() <= 90
-                        ? -(this.calcPercentage() - 55)
-                        : this.calcPercentage() <= 95
-                        ? -(this.calcPercentage() - 45)
-                        : -(this.calcPercentage() - 50)
-                    }%, ${
-                      this.calcPercentage() <= 20
-                        ? this.calcPercentage() / 40
-                        : this.calcPercentage() <= 25
-                        ? this.calcPercentage() / 45
-                        : this.calcPercentage() <= 40
-                        ? 15 / this.calcPercentage()
-                        : this.calcPercentage() <= 47
-                        ? 8 / this.calcPercentage()
-                        : this.calcPercentage() <= 50
-                        ? 2 / this.calcPercentage()
-                        : this.calcPercentage() <= 55
-                        ? -4 / this.calcPercentage()
-                        : this.calcPercentage() <= 63
-                        ? -16 / this.calcPercentage()
-                        : this.calcPercentage() <= 91
-                        ? -32 / this.calcPercentage()
-                        : -16 / this.calcPercentage()
-                    }%)`
+                  : `rotate(${this.calcPercentage() *
+                      ONE_PERCENT_OF_CIRCLE_DREGREE}deg)`
             }}
           >
             <div
