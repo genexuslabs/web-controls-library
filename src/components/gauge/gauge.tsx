@@ -205,10 +205,28 @@ export class Gauge implements GxComponent {
       positionInGauge += (360 * childRanges[i].amount) / this.totalAmount;
     }
 
+    let parent = this.element.parentElement;
+    let maxSize;
+
+    // It iterates from the leaf to the root node searching for size
+    // constraints and stops when finds the first constraint
+    while (parent != null && (maxSize === undefined || maxSize === undefined)) {
+      maxSize =
+        parent.attributes.getNamedItem("max-height") != null
+          ? parent.attributes.getNamedItem("max-height").value
+          : undefined;
+
+      parent = parent.parentElement;
+    }
+
+    // Remove the last 2 characters ('px')
+    if (maxSize !== undefined) {
+      maxSize = maxSize.toString().substring(0, maxSize.length - 2);
+    }
     return (
       <Host>
         <div class="svgContainer">
-          <svg width="100%" height="100%" viewBox="0 0 100 100">
+          <svg viewBox="0 0 100 100">
             <circle
               r={radius}
               cx="50%"
@@ -219,13 +237,6 @@ export class Gauge implements GxComponent {
             />
             {svgRanges}
           </svg>
-          <div
-            class="gaugeContainer"
-            style={{
-              height: `${this.minimumSize}px`,
-              width: `${this.minimumSize}px`
-            }}
-          />
           {this.showValue && (
             <div class="gauge">
               <div>
@@ -233,9 +244,13 @@ export class Gauge implements GxComponent {
                   <span
                     class="current-value"
                     style={{
-                      "font-size": `${(this.minimumSize /
-                        document.body.offsetWidth) *
-                        30}vw`
+                      "font-size":
+                        maxSize !== undefined
+                          ? `clamp(0px, ${(this.minimumSize /
+                              document.body.offsetWidth) *
+                              30}vw, ${maxSize / (10 / 3)}px)`
+                          : `${(this.minimumSize / document.body.offsetWidth) *
+                              30}vw`
                     }}
                   >{`${this.value}`}</span>
                 )}
@@ -251,15 +266,18 @@ export class Gauge implements GxComponent {
                 this.calcPercentage() == 100
                   ? "rotate(359.5deg)"
                   : `rotate(${this.calcPercentage() *
-                      ONE_PERCENT_OF_CIRCLE_DREGREE}deg)`
+                      ONE_PERCENT_OF_CIRCLE_DREGREE +
+                      90}deg)`,
+              "max-width": maxSize !== undefined ? `${maxSize}px` : "auto"
             }}
           >
             <div
               class="circularIndicator"
               style={{
-                width: `${this.element.offsetWidth /
-                  document.body.offsetWidth}vw`,
-                height: `calc(${this.thickness}% + 2%)`
+                width: `calc(${this.thickness}% + 2%)`,
+                height: `${this.minimumSize / document.body.offsetWidth}vw`,
+                "max-height":
+                  maxSize !== undefined ? `${maxSize / 100}px` : "auto"
               }}
             />
           </div>
@@ -321,7 +339,7 @@ export class Gauge implements GxComponent {
                     ? 100
                     : this.calcPercentage()
                 }%`,
-                transform: `translate(-${valueOffset}%, -22px)` // 22px, 38px
+                transform: `translate(-${valueOffset}%, -28px)` // 22px, 38px
               }}
             >
               {this.value}
