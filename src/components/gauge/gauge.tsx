@@ -217,14 +217,12 @@ export class Gauge implements GxComponent {
         for (const entry of entries) {
           const elem = entry.contentRect;
           const minimumSize = Math.min(elem.width, elem.height);
-          const value = this.element.querySelector(
-            "div.svgContainer div.gauge div span.current-value"
-          );
+          const value = this.element.querySelector(".current-value");
 
-          const marker = this.element.querySelector("div.circularMarker");
+          const marker = this.element.querySelector(".circularMarker");
 
           const markerIndicator = this.element.querySelector(
-            "div.circularMarker div.circularIndicator"
+            ".circularIndicator"
           );
 
           value.setAttribute("style", `font-size: ${minimumSize / 2.5}px`);
