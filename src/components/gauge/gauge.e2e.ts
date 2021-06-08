@@ -129,6 +129,8 @@ describe("gx-gauge", () => {
 
     element.setProperty("type", "circle");
     await page.waitForChanges();
+    const delay = ms => new Promise(res => setTimeout(res, ms));
+    await delay(1000); // Wait one second to let the label be positioned
 
     expect(await element.find("svg")).toBeTruthy();
     expect(await element.find("svg circle")).toBeTruthy();
@@ -137,18 +139,17 @@ describe("gx-gauge", () => {
     expect(circularMarker.find("div.circularIndicator")).toBeTruthy();
 
     /* The rotation matrix in 2 dimensions spaces is defined as it follows:
-          R(x) =  (cos(x)  sin(x))
-                  (-sin(x) cos(x))
+        R(x) =  (cos(x)  sin(x))
+                (-sin(x) cos(x))
       Remark that: det(R(x)) = cos(x).cos(x) + sin(x).sin(x) = 1. 
     
-      In this case, to rotate 180deg (Math.PI), the rotation values are
-          R(Math.PI) =  (cos(Math.PI)  sin(Math.PI)) == (-1  0)
-                        (-sin(Math.PI) cos(Math.PI)) == (0  -1)
-
-      In floating point, 1.22465e-16 is pretty much zero.
+      In this case, to rotate 270deg (Math.PI * 1.5), the rotation values are
+        R(Math.PI * 1.5) =  ( cos(Math.PI * 1.5) sin(Math.PI * 1.5)) == (0 -1)
+                            (-sin(Math.PI * 1.5) cos(Math.PI * 1.5)) == (1  0)
+      In floating point, -1.83697e-16 is pretty much zero.
     */
     expect((await circularMarker.getComputedStyle()).transform).toEqual(
-      "matrix(-1, 1.22465e-16, -1.22465e-16, -1, 0, 0)"
+      "matrix(-1.83697e-16, -1, 1, -1.83697e-16, 0, 0)"
     );
   });
 
