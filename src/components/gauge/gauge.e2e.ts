@@ -18,7 +18,7 @@ describe("gx-gauge", () => {
   /////////////////// Values test ///////////////////////
   it("should set the default and the minimum value", async () => {
     await page.setContent(`
-      <gx-gauge show-value="true"></gx-gauge>
+      <gx-gauge show-value="true" show-min-max="true"></gx-gauge>
     `);
     await page.waitForChanges();
     element = await page.find("gx-gauge");
@@ -40,7 +40,7 @@ describe("gx-gauge", () => {
     `);
     await page.waitForChanges();
     element = await page.find("gx-gauge");
-    const gaugeCurrentValue = await page.find("div.gauge span.marker-value");
+    const gaugeCurrentValue = await page.find("div.gauge span.marker");
     expect(await element.getProperty("value")).toEqual(currentValueTest);
     expect(gaugeCurrentValue.textContent).toEqual(`${currentValueTest}`);
   });
@@ -48,7 +48,7 @@ describe("gx-gauge", () => {
   it("should set the passed maximum value", async () => {
     const maxValueTest = 100;
     await page.setContent(`
-      <gx-gauge type="line" min-value="0" value="5" max-value="${maxValueTest}" show-value="true">
+      <gx-gauge type="line" min-value="0" value="5" max-value="${maxValueTest}" show-value="true" show-min-max="true">
       </gx-gauge>
     `);
     await page.waitForChanges();
@@ -62,7 +62,7 @@ describe("gx-gauge", () => {
 
   it("should calculate the total ranges values and show the sum as the maximum value", async () => {
     await page.setContent(`
-      <gx-gauge type="line" show-value="true">
+      <gx-gauge type="line" show-value="true" show-min-max="true">
         <gx-gauge-range amount="50" color="rgba(256, 116, 86, 1)" name="Problem"></gx-gauge-range>
         <gx-gauge-range amount="25" color="rgba(256, 216, 106, 1)" name="Warning"></gx-gauge-range>
         <gx-gauge-range amount="25" color="rgba(166, 216, 116, 1)" name="Good" ></gx-gauge-range>
@@ -93,7 +93,7 @@ describe("gx-gauge", () => {
     expect(await element.find("svg circle")).toBeTruthy();
   });
 
-  it("should display the name of range (in each gauge type)", async () => {
+  it("should display the name of range (in the line gauge type)", async () => {
     await page.setContent(`
       <gx-gauge type="line" min-value="0" value="10" show-value="true">
         <gx-gauge-range amount="10" name="Gold" color="gold" ></gx-gauge-range>
@@ -105,19 +105,9 @@ describe("gx-gauge", () => {
     const rangeName = await namesContainer.find("span.rangeName");
     expect(await element.find("div.gaugeContainerLine")).toBeTruthy();
     expect(rangeName.textContent).toEqual("Gold");
-
-    element.setProperty("type", "circle");
-    await page.waitForChanges();
-
-    const labelsContainer = await element.find("div.labelsContainerCircle");
-    expect(labelsContainer).toBeTruthy();
-    const label = await labelsContainer.find("div.range-label");
-    expect(label).toBeTruthy();
-    expect((await label.find("span")).textContent).toEqual(`10 - Gold`);
   });
 
-  it("should propely the set a marker (in each gauge type)", async () => {
-    // improve this test to check if the marker is in the correct position
+  it("should properly set a marker (in each gauge type)", async () => {
     await page.setContent(
       "<gx-gauge type='line' min-value='-100' max-value='100' value='0' show-value='true'></gx-gauge>"
     );
@@ -127,17 +117,39 @@ describe("gx-gauge", () => {
     expect(await element.find(".gaugeContainerLine")).toBeTruthy();
     const gaugeLineMarker = await element.find(".gaugeContainerLine .marker");
     expect(gaugeLineMarker).toBeTruthy();
-    // expect(gaugeLineMarker.getAttribute("style").includes("margin-left: 50%;")).toBeTruthy()
+
+    // It calculates the container size and divides it by 2 to get the right value of the
+    // "margin-left: 50%" property
+    const containerSz = (await element.getComputedStyle()).width;
+    const marginSz =
+      Number(containerSz.substring(0, containerSz.length - 2)) / 2;
+    expect((await gaugeLineMarker.getComputedStyle()).marginLeft).toEqual(
+      `${marginSz}px`
+    );
 
     element.setProperty("type", "circle");
     await page.waitForChanges();
 
     expect(await element.find("svg")).toBeTruthy();
     expect(await element.find("svg circle")).toBeTruthy();
-    expect(await element.find("div.indicator")).toBeTruthy();
-    const gaugeCircleMarker = await page.find("div.svgContainer span.marker");
-    expect(gaugeCircleMarker).toBeTruthy();
-    // expect(gaugeCircleMarker.getAttribute("style").includes("transform: rotate(180deg)")).toBeTruthy()
+    const circularMarker = await element.find("div.circularMarker");
+    expect(circularMarker).toBeTruthy();
+    expect(circularMarker.find("div.circularIndicator")).toBeTruthy();
+
+    /* The rotation matrix in 2 dimensions spaces is defined as it follows:
+          R(x) =  (cos(x)  sin(x))
+                  (-sin(x) cos(x))
+      Remark that: det(R(x)) = cos(x).cos(x) + sin(x).sin(x) = 1. 
+    
+      In this case, to rotate 180deg (Math.PI), the rotation values are
+          R(Math.PI) =  (cos(Math.PI)  sin(Math.PI)) == (-1  0)
+                        (-sin(Math.PI) cos(Math.PI)) == (0  -1)
+
+      In floating point, 1.22465e-16 is pretty much zero.
+    */
+    expect((await circularMarker.getComputedStyle()).transform).toEqual(
+      "matrix(-1, 1.22465e-16, -1.22465e-16, -1, 0, 0)"
+    );
   });
 
   it("should correctly draw the range (in each gauge type)", async () => {
@@ -160,7 +172,9 @@ describe("gx-gauge", () => {
 
     expect(await element.find("svg")).toBeTruthy();
     expect(await element.find("svg circle")).toBeTruthy();
-    expect(await element.find("div.indicator")).toBeTruthy();
+    const circularMarker = await element.find("div.circularMarker");
+    expect(circularMarker).toBeTruthy();
+    expect(circularMarker.find("div.circularIndicator")).toBeTruthy();
     const gaugeCircleRange = await page.find(
       "div.svgContainer svg circle.circle-range"
     );
