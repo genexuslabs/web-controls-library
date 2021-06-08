@@ -22,7 +22,7 @@ describe("gx-form-field", () => {
   it("should should use flex column for laying out label and field", async () => {
     const positions = [
       ["top", true],
-      ["bottom", true],
+      ["bottom", false],
       ["left", false],
       ["right", false]
     ];
