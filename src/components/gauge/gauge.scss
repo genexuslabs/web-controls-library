@@ -71,6 +71,8 @@ gx-gauge {
   */
   --indicator-line-background-color: rgba(44, 44, 44, 1);
 
+  $transitionConfig: 0.3s ease;
+
   @mixin flex-centered {
     display: flex;
     justify-content: center;
@@ -78,8 +80,10 @@ gx-gauge {
   }
 
   @include flex-centered;
+  align-items: center;
   flex-wrap: wrap;
   position: relative;
+  width: 100%;
 
   .gaugeContainerLine {
     position: relative;
@@ -114,12 +118,13 @@ gx-gauge {
       overflow: hidden;
       position: absolute;
       width: calc(100%);
-      background-color: rgba(0, 0, 0, 0.1);
+      background-color: rgba(0, 0, 0, 0.2);
       .range {
         height: 100%;
         position: absolute;
         // box-shadow: var(--gauge-ranges-box-shadow);
         @include flex-centered;
+        transition: $transitionConfig;
       }
     }
 
@@ -127,11 +132,11 @@ gx-gauge {
       transform: translateY(-4px);
       position: absolute;
       z-index: 1;
+      transition: $transitionConfig;
       .indicator {
         content: "";
         border-left-style: solid;
         border-left-color: var(--indicator-line-background-color);
-        transform: translateX(-50%);
         display: block;
         background-color: var(--indicator-line-background-color);
       }
@@ -147,6 +152,7 @@ gx-gauge {
         margin-top: 1px;
         position: absolute;
         filter: brightness(0.5);
+        transition: $transitionConfig;
       }
     }
   }
@@ -156,10 +162,12 @@ gx-gauge {
     height: 100%;
     width: 100%;
     align-items: center;
-    .gaugeContainer {
-      @include flex-centered;
-      z-index: 0;
-      position: absolute;
+    svg {
+      width: 100%;
+      height: 100%;
+      circle {
+        transition: $transitionConfig;
+      }
     }
     .gauge {
       position: absolute;
@@ -176,8 +184,9 @@ gx-gauge {
   }
 
   .circularMarker {
-    height: 100%;
+    width: 100%;
     position: absolute;
+    transition: $transitionConfig;
 
     .circularIndicator {
       background-color: var(--indicator-circle-background-color);

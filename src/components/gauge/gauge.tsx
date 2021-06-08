@@ -116,10 +116,8 @@ export class Gauge implements GxComponent {
   private calcPercentage(): number {
     return this.value <= this.minValue
       ? 0
-      : this.value >= this.maxValueAux
-      ? 100
       : ((this.value - this.minValue) * 100) /
-        (this.maxValueAux - this.minValue);
+          (this.maxValueAux - this.minValue);
   }
 
   private addCircleRanges(
@@ -130,7 +128,8 @@ export class Gauge implements GxComponent {
     const FULL_CIRCLE_RADIANS = 2 * Math.PI;
     const ROTATION_FIX = -90;
     const circleLength = FULL_CIRCLE_RADIANS * radius;
-    const valuePercentage = (100 * amount) / this.totalAmount;
+    const range = this.maxValueAux - this.minValue;
+    const valuePercentage = amount / range;
     return (
       <circle
         class="circle-range"
@@ -138,8 +137,7 @@ export class Gauge implements GxComponent {
         cx="50%"
         cy="50%"
         stroke={color}
-        stroke-dasharray={`${circleLength *
-          (valuePercentage / 100)}, ${circleLength}`}
+        stroke-dasharray={`${circleLength * valuePercentage}, ${circleLength}`}
         fill="none"
         transform={`rotate(${position + ROTATION_FIX} 50,50)`}
         data-amount={amount}
@@ -149,19 +147,21 @@ export class Gauge implements GxComponent {
   }
 
   private addLineRanges({ amount, color }, position: number): any {
+    const range = this.maxValueAux - this.minValue;
     return (
       <div
         class="range"
         style={{
           "background-color": color,
           "margin-left": `${position}%`,
-          width: `${(amount * 100) / this.totalAmount}%`
+          width: `${(amount * 100) / range}%`
         }}
       />
     );
   }
 
   private addLineRangesLabels({ amount, color, name }, position: number): any {
+    const range = this.maxValueAux - this.minValue;
     return (
       <span
         class="rangeName"
@@ -174,7 +174,7 @@ export class Gauge implements GxComponent {
               ? 0
               : this.element.offsetHeight / 4 + this.thickness / 3
           }px)`,
-          width: `${(amount * 100) / this.totalAmount}%`
+          width: `${(amount * 100) / range}%`
         }}
       >
         {name}
@@ -189,26 +189,64 @@ export class Gauge implements GxComponent {
     const svgRanges = [];
     const ONE_PERCENT_OF_CIRCLE_DREGREE = 3.6;
     const radius = FULL_CIRCLE_RADIO - this.thickness / 2;
-
+    const ROTATION_FIX = 90; // Used to correct the rotation
     this.totalAmount = 0;
     for (let i = childRanges.length - 1; i >= 0; i--) {
       this.totalAmount += childRanges[i].amount;
     }
     this.updateMaxValueAux();
 
+    const range = this.maxValueAux - this.minValue;
     let positionInGauge = 0;
     for (let i = 0; i < childRanges.length; i++) {
       svgRanges.push(
         this.addCircleRanges(childRanges[i], positionInGauge, radius)
       );
 
-      positionInGauge += (360 * childRanges[i].amount) / this.totalAmount;
+      positionInGauge += (360 * childRanges[i].amount) / range;
+    }
+
+    const rotation =
+      this.calcPercentage() == 100
+        ? `rotate(${359.5 + ROTATION_FIX}deg)`
+        : `rotate(${this.calcPercentage() * ONE_PERCENT_OF_CIRCLE_DREGREE +
+            ROTATION_FIX}deg)`;
+
+    if (this.showValue) {
+      const ro = new ResizeObserver(entries => {
+        for (const entry of entries) {
+          const elem = entry.contentRect;
+          const minimumSize = Math.min(elem.width, elem.height);
+          const value = this.element.querySelector(".current-value");
+
+          const marker = this.element.querySelector(".circularMarker");
+
+          const markerIndicator = this.element.querySelector(
+            ".circularIndicator"
+          );
+
+          value.setAttribute("style", `font-size: ${minimumSize / 2.5}px`);
+
+          marker.setAttribute(
+            "style",
+            `transform: ${rotation}; max-width: ${minimumSize}px`
+          );
+
+          markerIndicator.setAttribute(
+            "style",
+            `width: ${this.thickness + 2}%; height: ${minimumSize / 100}px`
+          );
+        }
+      });
+
+      // Observe the gauge to resize the font and the value marker
+      ro.observe(this.element);
     }
 
     return (
       <Host>
         <div class="svgContainer">
-          <svg width="100%" height="100%" viewBox="0 0 100 100">
+          <svg viewBox="0 0 100 100">
             <circle
               r={radius}
               cx="50%"
@@ -219,49 +257,19 @@ export class Gauge implements GxComponent {
             />
             {svgRanges}
           </svg>
-          <div
-            class="gaugeContainer"
-            style={{
-              height: `${this.minimumSize}px`,
-              width: `${this.minimumSize}px`
-            }}
-          />
           {this.showValue && (
             <div class="gauge">
               <div>
                 {this.showValue && (
-                  <span
-                    class="current-value"
-                    style={{
-                      "font-size": `${(this.minimumSize /
-                        document.body.offsetWidth) *
-                        30}vw`
-                    }}
-                  >{`${this.value}`}</span>
+                  <span class="current-value">{`${this.value}`}</span>
                 )}
               </div>
             </div>
           )}
         </div>
         {this.showValue && (
-          <div
-            class="circularMarker"
-            style={{
-              transform:
-                this.calcPercentage() == 100
-                  ? "rotate(359.5deg)"
-                  : `rotate(${this.calcPercentage() *
-                      ONE_PERCENT_OF_CIRCLE_DREGREE}deg)`
-            }}
-          >
-            <div
-              class="circularIndicator"
-              style={{
-                width: `${this.element.offsetWidth /
-                  document.body.offsetWidth}vw`,
-                height: `calc(${this.thickness}% + 2%)`
-              }}
-            />
+          <div class="circularMarker">
+            <div class="circularIndicator" />
           </div>
         )}
       </Host>
@@ -288,6 +296,7 @@ export class Gauge implements GxComponent {
         ? 72
         : 50;
 
+    const range = this.maxValueAux - this.minValue;
     let positionInGauge = 0;
 
     for (let i = 0; i < childRanges.length; i++) {
@@ -296,7 +305,7 @@ export class Gauge implements GxComponent {
         this.addLineRangesLabels(childRanges[i], positionInGauge)
       );
 
-      positionInGauge += (100 * childRanges[i].amount) / this.totalAmount;
+      positionInGauge += (100 * childRanges[i].amount) / range;
     }
     return (
       <div
@@ -321,7 +330,7 @@ export class Gauge implements GxComponent {
                     ? 100
                     : this.calcPercentage()
                 }%`,
-                transform: `translate(-${valueOffset}%, -22px)` // 22px, 38px
+                transform: `translate(-${valueOffset}%, -28px)` // 22px, 38px
               }}
             >
               {this.value}
@@ -344,14 +353,8 @@ export class Gauge implements GxComponent {
             class="marker"
             style={{
               "margin-left": `${
-                this.value <= this.minValue
-                  ? `${this.element.offsetWidth /
-                      (document.body.offsetWidth * 2)}vw`
-                  : this.value >= this.maxValueAux
-                  ? `calc(100% - ${this.element.offsetWidth /
-                      (document.body.offsetWidth * 2)}%)`
-                  : `${this.calcPercentage()}%`
-              }`
+                this.calcPercentage() >= 100 ? 100 : this.calcPercentage()
+              }%`
             }}
           >
             <div
@@ -359,7 +362,13 @@ export class Gauge implements GxComponent {
               style={{
                 height: `${this.thickness * 2 + 4}px`,
                 "border-left-width": `${this.element.offsetWidth /
-                  document.body.offsetWidth}vw`
+                  document.body.offsetWidth}vw`,
+                transform:
+                  this.calcPercentage() > 0 && this.calcPercentage() < 100
+                    ? "translateX(-50%)"
+                    : this.calcPercentage() >= 100
+                    ? "translateX(-100%)"
+                    : "translateX(0%)"
               }}
             />
           </span>
