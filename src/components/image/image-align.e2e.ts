@@ -62,6 +62,7 @@ describe("gx-image alignment", () => {
 
   it("unsets justify-self when width is specified", async () => {
     tableCellElement.setAttribute("align", "center");
+    await page.waitForChanges();
     imageElement.setProperty("width", "40px");
     await page.waitForChanges();
     const computedStyle = await imageElement.getComputedStyle();
