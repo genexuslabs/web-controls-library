@@ -43,16 +43,14 @@ describe("gx-message", () => {
     expect(alertDiv).toHaveClass("alert-info");
   });
 
-  it("should dismiss automatically if duration is specified", async done => {
+  it("should dismiss automatically if duration is specified", async () => {
     await page.setContent(
       "<gx-message duration='200'>Hello world!</gx-message>"
     );
-    element = await page.find("gx-message");
-    setTimeout(async () => {
-      await page.waitForChanges();
-      expect(await page.find(".alert")).not.toHaveClass("show");
-      done();
-    }, 300);
+    const delay = ms => new Promise(res => setTimeout(res, ms));
+    await delay(1000); // Wait 1 second
+
+    expect(await page.find("gx-message")).toBeFalsy();
   });
 
   it("should show a close button", async () => {
@@ -63,14 +61,14 @@ describe("gx-message", () => {
     expect(await page.find(".close")).toBeDefined();
   });
 
-  // it("should dismiss if close button is clicked", async () => {
-  //   await page.setContent(
-  //     "<gx-message show-close-button='true'>Hello world!</gx-message>"
-  //   );
-  //   element = await page.find("gx-message");
-  //   const closeButton = await page.find(".close");
-  //   await closeButton.click();
-  //   await page.waitForChanges();
-  //   expect(await page.find(".alert")).not.toHaveClass("show");
-  // });
+  it("should dismiss if close button is clicked", async () => {
+    await page.setContent(
+      "<gx-message show-close-button='true'>Hello world!</gx-message>"
+    );
+    element = await page.find("gx-message");
+    const closeButton = await page.find(".close");
+    await closeButton.click();
+    await page.waitForChanges();
+    expect(await page.find("gx-message")).toBeFalsy();
+  });
 });
