@@ -74,6 +74,10 @@ export class Gauge implements GxComponent {
 
   private totalAmount = 0;
 
+  private actualRotation: string;
+
+  private watchForItemsObserver: ResizeObserver;
+
   @Listen("gxGaugeRangeDidLoad")
   onGaugeRangeDidLoad({ detail: childRange }) {
     this.rangesChildren = [...this.rangesChildren, childRange];
@@ -95,6 +99,79 @@ export class Gauge implements GxComponent {
         this.totalAmount += childInstance.amount;
       }
     });
+  }
+
+  // It sets the initial rotation in circle gauge type
+  componentWillRender() {
+    if (this.showValue && this.type === "circle") {
+      this.updateRotation();
+    }
+  }
+
+  // The first time the circle gauge is rendered, if showValue == true, it
+  // creates a ResizeObserver to implement the responsive font
+  componentDidLoad() {
+    if (this.showValue && this.type === "circle") {
+      this.watchForItemsObserver = new ResizeObserver(entries => {
+        const elem = entries[0].contentRect;
+        this.minimumSize = Math.min(elem.width, elem.height);
+        const value = this.element.querySelector(".current-value");
+        const markerIndicator = this.element.querySelector(
+          ".circularIndicator"
+        );
+
+        value.setAttribute("style", `font-size: ${this.minimumSize / 2.5}px`);
+
+        this.setMarkerRotation();
+
+        markerIndicator.setAttribute(
+          "style",
+          `width: ${this.thickness + 2}%; height: ${this.minimumSize / 100}px`
+        );
+      });
+
+      // Observe the gauge to resize the font and the value marker
+      this.watchForItemsObserver.observe(this.element);
+    }
+  }
+
+  // When a property of the circle gauge is updated, it updates the rotation
+  // if showValue == true
+  componentDidUpdate() {
+    if (this.showValue && this.type === "circle") {
+      // Update the value of the actual rotation
+      this.updateRotation();
+
+      // Update the position of the marker
+      this.setMarkerRotation();
+    }
+  }
+
+  disconnectedCallback() {
+    if (this.watchForItemsObserver !== undefined) {
+      this.watchForItemsObserver.disconnect();
+      this.watchForItemsObserver = undefined;
+    }
+  }
+
+  private setMarkerRotation() {
+    const marker = this.element.querySelector(".circularMarker");
+
+    marker.setAttribute(
+      "style",
+      `transform: ${this.actualRotation}; max-width: ${this.minimumSize}px`
+    );
+  }
+
+  private updateRotation() {
+    const ONE_PERCENT_OF_CIRCLE_DREGREE = 3.6;
+    const ROTATION_FIX = 90; // Used to correct the rotation
+
+    this.actualRotation =
+      this.calcPercentage() == 100
+        ? `rotate(${359.5 + ROTATION_FIX}deg)`
+        : `rotate(${this.calcPercentage() * ONE_PERCENT_OF_CIRCLE_DREGREE +
+            ROTATION_FIX}deg)`;
   }
 
   // If maxValue is undefined, it defines the maxValue as the sum of the amounts plus minValue
@@ -187,9 +264,7 @@ export class Gauge implements GxComponent {
   ): HTMLElement {
     const FULL_CIRCLE_RADIO = 100 / 2;
     const svgRanges = [];
-    const ONE_PERCENT_OF_CIRCLE_DREGREE = 3.6;
     const radius = FULL_CIRCLE_RADIO - this.thickness / 2;
-    const ROTATION_FIX = 90; // Used to correct the rotation
     this.totalAmount = 0;
     for (let i = childRanges.length - 1; i >= 0; i--) {
       this.totalAmount += childRanges[i].amount;
@@ -204,43 +279,6 @@ export class Gauge implements GxComponent {
       );
 
       positionInGauge += (360 * childRanges[i].amount) / range;
-    }
-
-    const rotation =
-      this.calcPercentage() == 100
-        ? `rotate(${359.5 + ROTATION_FIX}deg)`
-        : `rotate(${this.calcPercentage() * ONE_PERCENT_OF_CIRCLE_DREGREE +
-            ROTATION_FIX}deg)`;
-
-    if (this.showValue) {
-      const ro = new ResizeObserver(entries => {
-        for (const entry of entries) {
-          const elem = entry.contentRect;
-          const minimumSize = Math.min(elem.width, elem.height);
-          const value = this.element.querySelector(".current-value");
-
-          const marker = this.element.querySelector(".circularMarker");
-
-          const markerIndicator = this.element.querySelector(
-            ".circularIndicator"
-          );
-
-          value.setAttribute("style", `font-size: ${minimumSize / 2.5}px`);
-
-          marker.setAttribute(
-            "style",
-            `transform: ${rotation}; max-width: ${minimumSize}px`
-          );
-
-          markerIndicator.setAttribute(
-            "style",
-            `width: ${this.thickness + 2}%; height: ${minimumSize / 100}px`
-          );
-        }
-      });
-
-      // Observe the gauge to resize the font and the value marker
-      ro.observe(this.element);
     }
 
     return (
@@ -395,10 +433,6 @@ export class Gauge implements GxComponent {
   }
 
   render() {
-    this.minimumSize =
-      this.element.offsetHeight > this.element.offsetWidth
-        ? this.element.offsetWidth
-        : this.element.offsetHeight;
     const childRanges = Array.from(
       this.element.querySelectorAll("gx-gauge-range")
     );
