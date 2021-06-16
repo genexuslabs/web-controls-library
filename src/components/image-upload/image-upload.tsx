@@ -3,11 +3,11 @@ import {
   Element,
   // Event,
   // EventEmitter,
-  // Host,
+  Host,
   // Listen,
-  Prop
+  Prop,
   // State,
-  // h
+  h
 } from "@stencil/core";
 
 import { Component as GxComponent } from "../common/interfaces";
@@ -19,6 +19,11 @@ import { Component as GxComponent } from "../common/interfaces";
 })
 export class ImageUpload implements GxComponent {
   @Element() element: HTMLGxImageUploadElement;
+
+  /**
+   * This attribute lets you specify the SRC.
+   */
+  @Prop() readonly src = "";
 
   /**
    * This attribute lets you specify the alternative text.
@@ -33,14 +38,9 @@ export class ImageUpload implements GxComponent {
   @Prop() readonly disabled = false;
 
   /**
-   * This attribute lets you specify the SRC.
+   * .
    */
-  @Prop() readonly src = "";
-
-  /**
-   * True to highlight control when an action is fired.
-   */
-  @Prop() readonly highlightable = false;
+  @Prop() readonly readonly = false;
 
   //  @Listen("click", { capture: true })
   //  handleClick(event: UIEvent) {
@@ -50,7 +50,74 @@ export class ImageUpload implements GxComponent {
   //    }
   //  }
 
+  private show: false;
+
   render() {
-    return undefined;
+    return (
+      <Host>
+        <div class="click-capture">
+          {" "}
+          {/*  (click)="$event.stopPropagation()" */}
+          <div class="image-viewer">
+            <gx-image
+              class="image-viewer-image"
+              src={this.src}
+              alt={this.alt}
+              disabled={this.disabled}
+              // (click)="clickImageAction($event)"
+            ></gx-image>
+            <div class="button-edit-container">
+              {/* <button 
+                  ngClass="image-edit"
+                  *ngIf="!readonly && !uploading"
+                  disabled="disabled"
+                  (click)="triggerAction()">
+                  <img src="images/multimediaedit.png" />
+                </button>
+                <img 
+                  ngClass="image-uploading" 
+                  src="images/loading.gif" 
+                  *ngIf="uploading" 
+                /> */}
+            </div>
+          </div>
+          <gx-modal
+            opened={this.show}
+            // (onClose)="closeAction()"
+            class="action-dialog"
+          >
+            <div slot="header">{/* {{ modalTitle }} */}</div>
+
+            <div
+              slot="body"
+              // style = "display:flex; justify-content: space-around;"
+            >
+              <label class="select-file">
+                {/* <span>{{'Change image' | translate}}</span> */}
+                <input
+                  // #fileInput
+                  type="file"
+                  // (change)="fileSelectedAction(); closeAction()"
+                />
+              </label>
+              <gx-button
+                // (click)="clearImageAction(); closeAction()"
+                class="Button"
+              >
+                {/* {{'Remove image' | translate}} */}
+              </gx-button>
+            </div>
+            <div slot="secondary-action">
+              <gx-button
+                // (click)="closeAction()"
+                class="Button"
+              >
+                {/* {{'GXM_cancel' | translate}} */}
+              </gx-button>
+            </div>
+          </gx-modal>
+        </div>
+      </Host>
+    );
   }
 }
