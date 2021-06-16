@@ -7,7 +7,8 @@ import {
   // Listen,
   Prop,
   // State,
-  h
+  h,
+  getAssetPath
 } from "@stencil/core";
 
 import { Component as GxComponent } from "../common/interfaces";
@@ -53,10 +54,13 @@ export class ImageUpload implements GxComponent {
   private show: false;
 
   render() {
+    const urlLoading = getAssetPath("./assets/burger.svg");
+    const urlEdit = getAssetPath("./assets/show-more.svg");
+    // const urlPromt   = getAssetPath("./assets/arrow-left.svg");
+
     return (
       <Host>
         <div class="click-capture">
-          {" "}
           {/*  (click)="$event.stopPropagation()" */}
           <div class="image-viewer">
             <gx-image
@@ -67,18 +71,20 @@ export class ImageUpload implements GxComponent {
               // (click)="clickImageAction($event)"
             ></gx-image>
             <div class="button-edit-container">
-              {/* <button 
-                  ngClass="image-edit"
-                  *ngIf="!readonly && !uploading"
-                  disabled="disabled"
-                  (click)="triggerAction()">
-                  <img src="images/multimediaedit.png" />
-                </button>
-                <img 
-                  ngClass="image-uploading" 
-                  src="images/loading.gif" 
-                  *ngIf="uploading" 
-                /> */}
+              {this.show}
+              <button
+                class="image-edit image-disabled"
+                // *ngIf="!readonly && !uploading"
+                disabled={this.disabled}
+                // (click)="triggerAction()">
+              >
+                <img src={urlEdit} />
+              </button>
+              <img
+                class="image-uploading"
+                src={urlLoading}
+                // *ngIf="uploading"
+              />
             </div>
           </div>
           <gx-modal
@@ -90,7 +96,10 @@ export class ImageUpload implements GxComponent {
 
             <div
               slot="body"
-              // style = "display:flex; justify-content: space-around;"
+              style={{
+                display: "flex",
+                "justify-content": "space-around"
+              }}
             >
               <label class="select-file">
                 {/* <span>{{'Change image' | translate}}</span> */}
