@@ -35,7 +35,7 @@
 }
 
 .button-edit-container {
-  position: absolute;
+  // position: absolute;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -67,7 +67,16 @@
   display: none;
 }
 
-.image-uploading {
+// .image-uploading {
+//   width: 30px;
+//   height: 30px;
+// }
+
+.svg-container {
   width: 30px;
   height: 30px;
+}
+
+.svg-disabled {
+  display: none;
 }

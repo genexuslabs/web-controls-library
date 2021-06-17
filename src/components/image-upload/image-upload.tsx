@@ -51,10 +51,52 @@ export class ImageUpload implements GxComponent {
   //    }
   //  }
 
-  private show: false;
+  private uploading: false;
+
+  // When the modal is opened
+  private triggerAction = () => {
+    this.element.querySelector("gx-modal").setAttribute("opened", "true");
+  };
+
+  // When the modal closes
+  private closeAction = () => {
+    this.element.querySelector("gx-modal").setAttribute("opened", "false");
+  };
+
+  private getLoadingAnimation(): any {
+    return (
+      <svg
+        class={{
+          "svg-container": true,
+          "svg-disabled": !this.uploading
+        }}
+        version="1.1"
+        id="L9"
+        xmlns="http://www.w3.org/2000/svg"
+        x="0px"
+        y="0px"
+        viewBox="0 0 100 100"
+        enable-background="new 0 0 0 0"
+      >
+        <path
+          fill="#fff"
+          d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50"
+        >
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            dur="1s"
+            from="0 50 50"
+            to="360 50 50"
+            repeatCount="indefinite"
+          />
+        </path>
+      </svg>
+    );
+  }
 
   render() {
-    const urlLoading = getAssetPath("./assets/burger.svg");
     const urlEdit = getAssetPath("./assets/show-more.svg");
     // const urlPromt   = getAssetPath("./assets/arrow-left.svg");
 
@@ -71,28 +113,26 @@ export class ImageUpload implements GxComponent {
               // (click)="clickImageAction($event)"
             ></gx-image>
             <div class="button-edit-container">
-              {this.show}
               <button
-                class="image-edit image-disabled"
-                // *ngIf="!readonly && !uploading"
+                class={{
+                  "image-edit": true,
+                  "image-disabled": this.readonly && this.uploading
+                }}
                 disabled={this.disabled}
-                // (click)="triggerAction()">
+                onClick={this.triggerAction}
               >
                 <img src={urlEdit} />
               </button>
-              <img
-                class="image-uploading"
-                src={urlLoading}
-                // *ngIf="uploading"
-              />
+              {this.getLoadingAnimation()}
             </div>
           </div>
           <gx-modal
-            opened={this.show}
-            // (onClose)="closeAction()"
+            onClose={
+              this.closeAction // I think this won't be necessary
+            }
             class="action-dialog"
           >
-            <div slot="header">{/* {{ modalTitle }} */}</div>
+            <div slot="header">aasdasdasdasdsd{/* {{ modalTitle }} */}</div>
 
             <div
               slot="body"
@@ -102,7 +142,8 @@ export class ImageUpload implements GxComponent {
               }}
             >
               <label class="select-file">
-                {/* <span>{{'Change image' | translate}}</span> */}
+                <span>Cambiar imagen</span>{" "}
+                {/*  {'Change image' | translate} */}
                 <input
                   // #fileInput
                   type="file"
