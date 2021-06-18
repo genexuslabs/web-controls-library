@@ -7,8 +7,7 @@ import {
   // Listen,
   Prop,
   // State,
-  h,
-  getAssetPath
+  h
 } from "@stencil/core";
 
 import { Component as GxComponent } from "../common/interfaces";
@@ -70,7 +69,8 @@ export class ImageUpload implements GxComponent {
 
   private clearImageAction = () => {
     this.element.setAttribute("src", "");
-    this.element.setAttribute("alt", "");
+    this.element.querySelector("input").value = "";
+    // this.element.setAttribute("alt", "");
 
     this.onImageChanged.emit("");
     this.closeAction();
@@ -85,17 +85,32 @@ export class ImageUpload implements GxComponent {
 
   // When the file is selected
   private fileSelectedAction = () => {
-    // Supposed to return the full path. For security, from the client
-    // side it appears as `fakepath`
-    // const files = this.element.querySelector("input").value;
+    this.closeAction();
+    const file = this.element.querySelector("input").files[0];
+    const reader = new FileReader();
 
     const svg = this.element.querySelector("svg");
-    svg.setAttribute("class", "svg-container");
-
     const button = this.element.querySelector("button");
+
+    svg.setAttribute("class", "svg-container");
     button.setAttribute("class", "image-edit image-disabled");
 
-    this.closeAction();
+    const elem = this.element;
+    reader.addEventListener(
+      "load",
+      function() {
+        // convert image file to base64 string
+        elem.setAttribute("src", this.result.toString());
+      },
+      false
+    );
+
+    // if (file) {
+    reader.readAsDataURL(file);
+    // }
+
+    svg.setAttribute("class", "svg-container svg-disabled");
+    button.setAttribute("class", "image-edit");
   };
 
   private getLoadingAnimation(): any {
@@ -132,20 +147,21 @@ export class ImageUpload implements GxComponent {
   }
 
   render() {
-    const urlEdit = getAssetPath("./assets/show-more.svg");
-
     console.log(`Rendering with\n   src: ${this.src}\n   alt: ${this.alt}`);
 
     return (
       <Host>
         <div class="click-capture" onClick={this.stopPropagation}>
           <div class="image-viewer">
+            {/* <img> </img> */}
             <gx-image
-              class="image-viewer-image"
+              // width="32px"
+              // height="32px"
+              // class="image-viewer-image"
               src={this.src}
-              alt={this.alt}
-              disabled={this.disabled}
-              onClick={this.clickImageAction}
+              // alt={this.alt}
+              // disabled={this.disabled}
+              // onClick={this.clickImageAction}
             ></gx-image>
             <div class="button-edit-container">
               <button
@@ -156,7 +172,7 @@ export class ImageUpload implements GxComponent {
                 disabled={this.disabled}
                 onClick={this.triggerAction}
               >
-                <img src={urlEdit} />
+                {/* <img src={urlEdit} /> */}
               </button>
               {this.getLoadingAnimation()}
             </div>
@@ -179,13 +195,7 @@ export class ImageUpload implements GxComponent {
               <label class="select-file">
                 <span>Change image</span>
                 {/*  {'Change image' | translate} */}
-                <input
-                  // #fileInput
-                  type="file"
-                  onChange={
-                    this.fileSelectedAction // (change)="fileSelectedAction(); closeAction()"
-                  }
-                />
+                <input type="file" onChange={this.fileSelectedAction} />
               </label>
               <gx-button onClick={this.clearImageAction} class="Button">
                 Remove image {/* {{'Remove image' | translate}} */}
