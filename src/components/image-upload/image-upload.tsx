@@ -1,8 +1,8 @@
 import {
   Component,
   Element,
-  // Event,
-  // EventEmitter,
+  Event,
+  EventEmitter,
   Host,
   // Listen,
   Prop,
@@ -14,7 +14,7 @@ import {
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
-  shadow: false, // Ver para que es esto
+  shadow: false, // Later, see what its use is for
   styleUrl: "image-upload.scss",
   tag: "gx-image-upload"
 })
@@ -24,12 +24,12 @@ export class ImageUpload implements GxComponent {
   /**
    * This attribute lets you specify the SRC.
    */
-  @Prop() readonly src = "";
+  @Prop({ mutable: true }) src = "";
 
   /**
    * This attribute lets you specify the alternative text.
    */
-  @Prop() readonly alt = "";
+  @Prop({ mutable: true }) alt = "";
 
   /**
    * This attribute lets you specify if the element is disabled.
@@ -39,32 +39,40 @@ export class ImageUpload implements GxComponent {
   @Prop() readonly disabled = false;
 
   /**
-   * .
+   * Needs a description
    */
   @Prop() readonly readonly = false;
 
-  //  @Listen("click", { capture: true })
-  //  handleClick(event: UIEvent) {
-  //    if (this.disabled) {
-  //      event.stopPropagation();
-  //      return;
-  //    }
-  //  }
+  /**
+   * Fired when the image is clicked
+   */
+  @Event() click: EventEmitter;
 
-  //  @Listen("click", { capture: true })
-  //  handleClick(event: UIEvent) {
-  //    if (this.disabled) {
-  //      event.stopPropagation();
-  //      return;
-  //    }
-  //  }
+  /**
+   * Fired when the image is changed
+   */
+  @Event() onImageChanged: EventEmitter<string>;
 
-  // private uploading = true;
+  private stopPropagation(event: UIEvent) {
+    event.stopPropagation();
+  }
+
+  private clickImageAction(event: MouseEvent) {
+    this.click.emit(event);
+  }
 
   // When the modal is opened
   private triggerAction = () => {
     this.element.querySelector("gx-modal").setAttribute("opened", "true");
   };
+
+  private clearImageAction() {
+    this.src = null;
+    this.alt = "";
+    this.onImageChanged.emit("");
+
+    this.closeAction();
+  }
 
   // When the modal closes
   private closeAction = () => {
@@ -85,10 +93,6 @@ export class ImageUpload implements GxComponent {
     const button = this.element.querySelector("button");
     button.setAttribute("class", "image-edit image-disabled");
 
-    this.closeAction();
-  };
-
-  private clearImageAction = () => {
     this.closeAction();
   };
 
@@ -130,15 +134,14 @@ export class ImageUpload implements GxComponent {
 
     return (
       <Host>
-        <div class="click-capture">
-          {/*  (click)="$event.stopPropagation()" */}
+        <div class="click-capture" onClick={this.stopPropagation}>
           <div class="image-viewer">
             <gx-image
               class="image-viewer-image"
-              src={this.src}
-              alt={this.alt}
+              src="" //{this.src}
+              alt="" //{this.alt}
               disabled={this.disabled}
-              // (click)="clickImageAction($event)"
+              onClick={this.clickImageAction}
             ></gx-image>
             <div class="button-edit-container">
               <button
@@ -180,17 +183,12 @@ export class ImageUpload implements GxComponent {
                   }
                 />
               </label>
-              <gx-button
-                onClick={
-                  this.clearImageAction // (click)="clearImageAction(); closeAction()"
-                }
-                class="Button"
-              >
+              <gx-button onClick={this.clearImageAction} class="Button">
                 Remove image {/* {{'Remove image' | translate}} */}
               </gx-button>
             </div>
             <div slot="secondary-action">
-              <gx-button onClick={this.closeAction} class="Button">
+              <gx-button class="Button" onClick={this.closeAction}>
                 GXM_cancel {/* {{'GXM_cancel' | translate}} */}
               </gx-button>
             </div>
