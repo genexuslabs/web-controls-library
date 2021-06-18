@@ -51,7 +51,15 @@ export class ImageUpload implements GxComponent {
   //    }
   //  }
 
-  private uploading: false;
+  //  @Listen("click", { capture: true })
+  //  handleClick(event: UIEvent) {
+  //    if (this.disabled) {
+  //      event.stopPropagation();
+  //      return;
+  //    }
+  //  }
+
+  // private uploading = true;
 
   // When the modal is opened
   private triggerAction = () => {
@@ -60,7 +68,28 @@ export class ImageUpload implements GxComponent {
 
   // When the modal closes
   private closeAction = () => {
+    console.log("closing modal");
+
     this.element.querySelector("gx-modal").setAttribute("opened", "false");
+  };
+
+  // When the file is selected
+  private fileSelectedAction = () => {
+    // Supposed to return the full path. For security, from the client
+    // side it appears as `fakepath`
+    // const files = this.element.querySelector("input").value;
+
+    const svg = this.element.querySelector("svg");
+    svg.setAttribute("class", "svg-container");
+
+    const button = this.element.querySelector("button");
+    button.setAttribute("class", "image-edit image-disabled");
+
+    this.closeAction();
+  };
+
+  private clearImageAction = () => {
+    this.closeAction();
   };
 
   private getLoadingAnimation(): any {
@@ -68,7 +97,7 @@ export class ImageUpload implements GxComponent {
       <svg
         class={{
           "svg-container": true,
-          "svg-disabled": !this.uploading
+          "svg-disabled": true
         }}
         version="1.1"
         id="L9"
@@ -98,7 +127,6 @@ export class ImageUpload implements GxComponent {
 
   render() {
     const urlEdit = getAssetPath("./assets/show-more.svg");
-    // const urlPromt   = getAssetPath("./assets/arrow-left.svg");
 
     return (
       <Host>
@@ -116,7 +144,7 @@ export class ImageUpload implements GxComponent {
               <button
                 class={{
                   "image-edit": true,
-                  "image-disabled": this.readonly && this.uploading
+                  "image-disabled": this.readonly
                 }}
                 disabled={this.disabled}
                 onClick={this.triggerAction}
@@ -128,11 +156,11 @@ export class ImageUpload implements GxComponent {
           </div>
           <gx-modal
             onClose={
-              this.closeAction // I think this won't be necessary
+              this.closeAction // What's the purpose of using this?
             }
             class="action-dialog"
           >
-            <div slot="header">aasdasdasdasdsd{/* {{ modalTitle }} */}</div>
+            <div slot="header">{document.title}</div>
 
             <div
               slot="body"
@@ -142,27 +170,28 @@ export class ImageUpload implements GxComponent {
               }}
             >
               <label class="select-file">
-                <span>Cambiar imagen</span>{" "}
+                <span>Change image</span>
                 {/*  {'Change image' | translate} */}
                 <input
                   // #fileInput
                   type="file"
-                  // (change)="fileSelectedAction(); closeAction()"
+                  onChange={
+                    this.fileSelectedAction // (change)="fileSelectedAction(); closeAction()"
+                  }
                 />
               </label>
               <gx-button
-                // (click)="clearImageAction(); closeAction()"
+                onClick={
+                  this.clearImageAction // (click)="clearImageAction(); closeAction()"
+                }
                 class="Button"
               >
-                {/* {{'Remove image' | translate}} */}
+                Remove image {/* {{'Remove image' | translate}} */}
               </gx-button>
             </div>
             <div slot="secondary-action">
-              <gx-button
-                // (click)="closeAction()"
-                class="Button"
-              >
-                {/* {{'GXM_cancel' | translate}} */}
+              <gx-button onClick={this.closeAction} class="Button">
+                GXM_cancel {/* {{'GXM_cancel' | translate}} */}
               </gx-button>
             </div>
           </gx-modal>
