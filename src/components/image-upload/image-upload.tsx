@@ -24,12 +24,12 @@ export class ImageUpload implements GxComponent {
   /**
    * This attribute lets you specify the SRC.
    */
-  @Prop({ mutable: true }) src = "";
+  @Prop() readonly src = "";
 
   /**
    * This attribute lets you specify the alternative text.
    */
-  @Prop({ mutable: true }) alt = "";
+  @Prop() readonly alt = "";
 
   /**
    * This attribute lets you specify if the element is disabled.
@@ -63,16 +63,18 @@ export class ImageUpload implements GxComponent {
 
   // When the modal is opened
   private triggerAction = () => {
+    // Add some logic here to match Angular implementation
+
     this.element.querySelector("gx-modal").setAttribute("opened", "true");
   };
 
-  private clearImageAction() {
-    this.src = null;
-    this.alt = "";
-    this.onImageChanged.emit("");
+  private clearImageAction = () => {
+    this.element.setAttribute("src", "");
+    this.element.setAttribute("alt", "");
 
+    this.onImageChanged.emit("");
     this.closeAction();
-  }
+  };
 
   // When the modal closes
   private closeAction = () => {
@@ -132,14 +134,16 @@ export class ImageUpload implements GxComponent {
   render() {
     const urlEdit = getAssetPath("./assets/show-more.svg");
 
+    console.log(`Rendering with\n   src: ${this.src}\n   alt: ${this.alt}`);
+
     return (
       <Host>
         <div class="click-capture" onClick={this.stopPropagation}>
           <div class="image-viewer">
             <gx-image
               class="image-viewer-image"
-              src="" //{this.src}
-              alt="" //{this.alt}
+              src={this.src}
+              alt={this.alt}
               disabled={this.disabled}
               onClick={this.clickImageAction}
             ></gx-image>
@@ -158,9 +162,9 @@ export class ImageUpload implements GxComponent {
             </div>
           </div>
           <gx-modal
-            onClose={
-              this.closeAction // What's the purpose of using this?
-            }
+            // onClose={
+            // this.closeAction // What's the purpose of using this?
+            // }
             class="action-dialog"
           >
             <div slot="header">{document.title}</div>
