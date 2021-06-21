@@ -74,22 +74,23 @@ gx-modal {
   height: 100%;
   z-index: 99;
   pointer-events: none;
-}
 
-.image-edit {
-  background-color: #aaa;
-  border-style: none;
-  width: 30px;
-  height: 30px;
-  border-radius: 15px;
-  pointer-events: all;
+  .image-edit {
+    border: 0.075rem solid #ddd;
+    border-radius: 15px;
+    padding: 1px 0 0 2.5px;
+    width: 30px;
+    height: 30px;
+    pointer-events: all;
+  }
 
-  img {
-    // background-image: url("/assets/multimediaedit.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: transparent;
-    border-style: none;
+  .image-edit:focus,
+  .image-edit:active {
+    outline: none;
+  }
+
+  .image-edit:active {
+    background-color: #ddd;
   }
 }
 

@@ -96,6 +96,7 @@ export class ImageUpload implements GxComponent {
   private clearImageAction = () => {
     this.element.setAttribute("src", "");
     this.element.setAttribute("alt", "");
+    this.element.querySelector(".svgSearch").setAttribute("class", "");
 
     this.onImageChanged.emit(null);
     this.closeAction();
@@ -134,39 +135,16 @@ export class ImageUpload implements GxComponent {
       false
     );
     this.reader.readAsDataURL(file);
+    this.element.querySelector(".svgSearch").setAttribute("class", "disabled");
 
     this.onImageChanged.emit(file);
   };
 
-  private getLoadingAnimation(): any {
+  private getLookupSVG(): any {
     return (
-      <svg
-        class={{
-          "svg-container": true,
-          disabled: true
-        }}
-        version="1.1"
-        id="L9"
-        xmlns="http://www.w3.org/2000/svg"
-        x="0px"
-        y="0px"
-        viewBox="0 0 100 100"
-        enable-background="new 0 0 0 0"
-      >
-        <path
-          fill="#fff"
-          d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50"
-        >
-          <animateTransform
-            attributeName="transform"
-            attributeType="XML"
-            type="rotate"
-            dur="1s"
-            from="0 50 50"
-            to="360 50 50"
-            repeatCount="indefinite"
-          />
-        </path>
+      <svg viewBox="0 0 27 27" id="svgSearch">
+        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+        <path d="M0 0h24v24H0z" fill="none" />
       </svg>
     );
   }
@@ -180,8 +158,6 @@ export class ImageUpload implements GxComponent {
           <div class="image-viewer">
             {/* <img> </img> */}
             <gx-image
-              // width="32px"
-              // height="32px"
               // class="image-viewer-image"
               src={this.src}
               alt={this.alt}
@@ -197,9 +173,8 @@ export class ImageUpload implements GxComponent {
                 disabled={this.disabled}
                 onClick={this.triggerAction}
               >
-                {/* <img src={urlEdit} /> */}
+                {this.getLookupSVG()}
               </button>
-              {this.getLoadingAnimation()}
             </div>
           </div>
           <gx-modal
