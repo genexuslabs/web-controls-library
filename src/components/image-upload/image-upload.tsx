@@ -43,6 +43,26 @@ export class ImageUpload implements GxComponent {
   @Prop() readonly readonly = false;
 
   /**
+   * Needs a description
+   */
+  @Prop() readonly modalTitle = null;
+
+  /**
+   * Needs a description
+   */
+  @Prop() readonly changeButtonText = "Change image...";
+
+  /**
+   * Needs a description
+   */
+  @Prop() readonly removeButtonText = "Remove image";
+
+  /**
+   * Needs a description
+   */
+  @Prop() readonly cancelButtonText = "CANCEL";
+
+  /**
    * Fired when the image is clicked
    */
   @Event() click: EventEmitter;
@@ -60,11 +80,14 @@ export class ImageUpload implements GxComponent {
     this.click.emit(event);
   }
 
-  // When the modal is opened
+  // If there is no image, this directly opens the File System to select an image.
+  // In othercase, this allows to change or remove the image
   private triggerAction = () => {
-    // Add some logic here to match Angular implementation
-
-    this.element.querySelector("gx-modal").setAttribute("opened", "true");
+    if (this.src === "") {
+      this.element.querySelector("input").click();
+    } else {
+      this.element.querySelector("gx-modal").setAttribute("opened", "true");
+    }
   };
 
   private clearImageAction = () => {
@@ -88,18 +111,17 @@ export class ImageUpload implements GxComponent {
     this.closeAction();
     const file = this.element.querySelector("input").files[0];
     const reader = new FileReader();
-
     const svg = this.element.querySelector("svg");
     const button = this.element.querySelector("button");
 
     svg.setAttribute("class", "svg-container");
-    button.setAttribute("class", "image-edit image-disabled");
+    button.setAttribute("class", "image-edit disabled");
 
     const elem = this.element;
     reader.addEventListener(
       "load",
       function() {
-        // convert image file to base64 string
+        // Convert image file to base64 string
         elem.setAttribute("src", this.result.toString());
       },
       false
@@ -109,7 +131,7 @@ export class ImageUpload implements GxComponent {
     reader.readAsDataURL(file);
     // }
 
-    svg.setAttribute("class", "svg-container svg-disabled");
+    svg.setAttribute("class", "svg-container disabled");
     button.setAttribute("class", "image-edit");
   };
 
@@ -118,7 +140,7 @@ export class ImageUpload implements GxComponent {
       <svg
         class={{
           "svg-container": true,
-          "svg-disabled": true
+          disabled: true
         }}
         version="1.1"
         id="L9"
@@ -161,13 +183,13 @@ export class ImageUpload implements GxComponent {
               src={this.src}
               // alt={this.alt}
               // disabled={this.disabled}
-              // onClick={this.clickImageAction}
+              onClick={this.clickImageAction}
             ></gx-image>
             <div class="button-edit-container">
               <button
                 class={{
                   "image-edit": true,
-                  "image-disabled": this.readonly
+                  disabled: this.readonly
                 }}
                 disabled={this.disabled}
                 onClick={this.triggerAction}
@@ -183,27 +205,21 @@ export class ImageUpload implements GxComponent {
             // }
             class="action-dialog"
           >
-            <div slot="header">{document.title}</div>
-
-            <div
-              slot="body"
-              style={{
-                display: "flex",
-                "justify-content": "space-around"
-              }}
-            >
-              <label class="select-file">
-                <span>Change image</span>
-                {/*  {'Change image' | translate} */}
+            <div slot="header">
+              {this.modalTitle === null ? document.title : this.modalTitle}
+            </div>
+            <div class="bodyContainer" slot="body">
+              <label class="file">
                 <input type="file" onChange={this.fileSelectedAction} />
+                <span class="file-custom">{this.changeButtonText}</span>
               </label>
-              <gx-button onClick={this.clearImageAction} class="Button">
-                Remove image {/* {{'Remove image' | translate}} */}
+              <gx-button class="remove-button" onClick={this.clearImageAction}>
+                {this.removeButtonText}
               </gx-button>
             </div>
             <div slot="secondary-action">
-              <gx-button class="Button" onClick={this.closeAction}>
-                GXM_cancel {/* {{'GXM_cancel' | translate}} */}
+              <gx-button class="cancel-button" onClick={this.closeAction}>
+                {this.cancelButtonText}
               </gx-button>
             </div>
           </gx-modal>
