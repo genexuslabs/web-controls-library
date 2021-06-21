@@ -72,6 +72,9 @@ export class ImageUpload implements GxComponent {
    */
   @Event() onImageChanged: EventEmitter<string>;
 
+  // Used to read the images
+  private reader = new FileReader();
+
   private stopPropagation(event: UIEvent) {
     event.stopPropagation();
   }
@@ -109,16 +112,10 @@ export class ImageUpload implements GxComponent {
   // When the file is selected
   private fileSelectedAction = () => {
     this.closeAction();
-    const file = this.element.querySelector("input").files[0];
-    const reader = new FileReader();
-    const svg = this.element.querySelector("svg");
-    const button = this.element.querySelector("button");
-
-    svg.setAttribute("class", "svg-container");
-    button.setAttribute("class", "image-edit disabled");
-
     const elem = this.element;
-    reader.addEventListener(
+    const file = elem.querySelector("input").files[0];
+
+    this.reader.addEventListener(
       "load",
       function() {
         // Convert image file to base64 string
@@ -126,13 +123,7 @@ export class ImageUpload implements GxComponent {
       },
       false
     );
-
-    // if (file) {
-    reader.readAsDataURL(file);
-    // }
-
-    svg.setAttribute("class", "svg-container disabled");
-    button.setAttribute("class", "image-edit");
+    this.reader.readAsDataURL(file);
   };
 
   private getLoadingAnimation(): any {
