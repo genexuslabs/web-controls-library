@@ -70,7 +70,7 @@ export class ImageUpload implements GxComponent {
   /**
    * Fired when the image is changed
    */
-  @Event() onImageChanged: EventEmitter<string>;
+  @Event() onImageChanged: EventEmitter<File>;
 
   // Used to read the images
   private reader = new FileReader();
@@ -95,10 +95,9 @@ export class ImageUpload implements GxComponent {
 
   private clearImageAction = () => {
     this.element.setAttribute("src", "");
-    this.element.querySelector("input").value = "";
-    // this.element.setAttribute("alt", "");
+    this.element.setAttribute("alt", "");
 
-    this.onImageChanged.emit("");
+    this.onImageChanged.emit(null);
     this.closeAction();
   };
 
@@ -109,21 +108,34 @@ export class ImageUpload implements GxComponent {
     this.element.querySelector("gx-modal").setAttribute("opened", "false");
   };
 
+  private getFileNameWithoutExtension(fileName: string) {
+    const index = fileName.lastIndexOf(".");
+    if (index === -1) {
+      return fileName;
+    } else {
+      return fileName.substring(0, index);
+    }
+  }
+
   // When the file is selected
   private fileSelectedAction = () => {
     this.closeAction();
     const elem = this.element;
     const file = elem.querySelector("input").files[0];
+    const alt = this.getFileNameWithoutExtension(file.name);
 
     this.reader.addEventListener(
       "load",
       function() {
         // Convert image file to base64 string
         elem.setAttribute("src", this.result.toString());
+        elem.setAttribute("alt", alt);
       },
       false
     );
     this.reader.readAsDataURL(file);
+
+    this.onImageChanged.emit(file);
   };
 
   private getLoadingAnimation(): any {
@@ -172,8 +184,8 @@ export class ImageUpload implements GxComponent {
               // height="32px"
               // class="image-viewer-image"
               src={this.src}
-              // alt={this.alt}
-              // disabled={this.disabled}
+              alt={this.alt}
+              disabled={this.disabled}
               onClick={this.clickImageAction}
             ></gx-image>
             <div class="button-edit-container">
