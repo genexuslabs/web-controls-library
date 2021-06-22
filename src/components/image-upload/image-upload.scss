@@ -84,13 +84,17 @@ gx-modal {
     pointer-events: all;
   }
 
+  .image-edit:hover {
+    background-color: #ddd;
+  }
+
   .image-edit:focus,
   .image-edit:active {
     outline: none;
   }
 
   .image-edit:active {
-    background-color: #ddd;
+    background-color: #ccc;
   }
 }
 
