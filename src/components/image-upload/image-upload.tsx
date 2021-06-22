@@ -175,21 +175,18 @@ export class ImageUpload implements GxComponent {
   }
 
   render() {
-    console.log(`Rendering with\n   src: ${this.src}\n   alt: ${this.alt}`);
-
     return (
       <Host>
         <div class="click-capture" onClick={this.stopPropagation}>
           <div class="image-viewer">
-            {/* <img> </img> */}
             <gx-image
-              // class="image-viewer-image"
               src={this.src}
               alt={this.alt}
               disabled={this.disabled}
               onClick={this.clickImageAction}
+              height={`${this.element.parentElement.getBoundingClientRect()
+                .height - 30}px`}
             ></gx-image>
-            <i class="edit"></i>
             <div class="button-edit-container">
               <button
                 class={{
