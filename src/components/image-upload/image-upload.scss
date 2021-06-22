@@ -6,97 +6,99 @@ $borderColor: #ddd;
   pointer-events: none;
 }
 
-.click-capture {
-  display: contents;
-  pointer-events: auto;
-}
-
-gx-modal {
-  .bodyContainer {
-    display: flex;
-    justify-content: space-around;
-  }
-}
-
 @mixin border-style {
   border: 0.075rem solid $borderColor;
   border-radius: 0.25rem;
 }
 
-.file {
-  display: flex;
-  cursor: pointer;
-  width: 40%;
-  margin: 0px;
+.click-capture {
+  display: contents;
+  pointer-events: auto;
 
-  input {
-    width: 0;
-  }
-
-  .file-custom {
-    @include border-style;
-    padding: 5px 12px 5px 12px;
-    width: 100%;
-    box-shadow: inset 0 0.2rem 0.4rem rgb(0 0 0 / 5%);
-  }
-}
-
-.remove-button {
-  @include border-style;
-  padding: 0 12px 0 12px;
-  background-color: #eee;
-}
-
-.cancel-button {
-  @include border-style;
-  padding: 2px 12px 2px 12px;
-  background-color: #eee;
-}
-
-.image-viewer {
-  display: flex;
-  // flex: 1;
-  flex-direction: column;
-  // height: 100%;
-  // width: 100%;
-  max-height: 100%;
-  position: relative;
-
-  // & .image-viewer-image {
-  //   position: relative;
-  //   // max-width: 100%;
-  //   // height: 100px;
-  //   // flex: 1;
-  // }
-
-  .button-edit-container {
-    // position: absolute;
+  .image-viewer {
+    min-height: 30px;
     display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    z-index: 99;
-    pointer-events: none;
+    // flex: 1;
+    // flex-direction: column;
+    // height: 100%;
+    // width: auto;
+    max-height: 100%;
+    position: relative;
 
-    .image-edit {
-      border: 0.075rem solid $borderColor;
-      border-radius: 15px;
-      padding: 1px 0 0 2.5px;
-      width: 30px;
-      height: 30px;
-      pointer-events: all;
+    // & .image-viewer-image {
+    //   position: relative;
+    //   // max-width: 100%;
+    //   // height: 100px;
+    //   // flex: 1;
+    // }
+
+    .button-edit-container {
+      position: absolute;
+      bottom: 0;
+      // right: 0;
+      z-index: 99;
+      pointer-events: none;
+
+      .image-edit {
+        border: 0.075rem solid $borderColor;
+        border-radius: 15px;
+        padding: 1px 0 0 2.5px;
+        width: 30px;
+        height: 30px;
+        pointer-events: all;
+      }
+
+      .image-edit:hover {
+        background-color: #ddd;
+      }
+
+      .image-edit:focus,
+      .image-edit:active {
+        outline: none;
+      }
+
+      .image-edit:active {
+        background-color: #ccc;
+      }
+    }
+  }
+
+  gx-modal {
+    .bodyContainer {
+      display: flex;
+      justify-content: space-around;
+
+      .file {
+        display: flex;
+        cursor: pointer;
+        width: 40%;
+        margin: 0px;
+
+        input {
+          width: 0;
+        }
+
+        .file-custom {
+          @include border-style;
+          padding: 5px 12px 5px 12px;
+          width: 100%;
+          box-shadow: inset 0 0.2rem 0.4rem rgb(0 0 0 / 5%);
+        }
+      }
+
+      .remove-button {
+        @include border-style;
+        padding: 0 12px 0 12px;
+        background-color: #eee;
+      }
     }
 
-    .image-edit:hover {
-      background-color: #ddd;
-    }
-
-    .image-edit:focus,
-    .image-edit:active {
-      outline: none;
-    }
-
-    .image-edit:active {
-      background-color: #ccc;
+    div {
+      .cancel-button {
+        @include border-style;
+        padding: 2px 12px 2px 12px;
+        background-color: #eee;
+      }
     }
   }
 }
