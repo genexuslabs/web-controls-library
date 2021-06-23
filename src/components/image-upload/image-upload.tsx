@@ -4,9 +4,7 @@ import {
   Event,
   EventEmitter,
   Host,
-  // Listen,
   Prop,
-  // State,
   h
 } from "@stencil/core";
 
@@ -21,14 +19,17 @@ export class ImageUpload implements GxComponent {
   @Element() element: HTMLGxImageUploadElement;
 
   /**
-   * This attribute lets you specify the SRC.
-   */
-  @Prop() readonly src = "";
-
-  /**
    * This attribute lets you specify the alternative text.
    */
   @Prop() readonly alt = "";
+
+  /**
+   * If true, the component will be sized to match the image's intrinsic size when not constrained
+   * via CSS dimension properties (for example, height or width).
+   * If false, the component will never force its height to match the image's intrinsic size. The width, however,
+   * will match the intrinsic width. In GeneXus terms, it will auto grow horizontally, but not vertically.
+   */
+  @Prop() readonly autoGrow = true;
 
   /**
    * This attribute lets you specify if the element is disabled.
@@ -36,6 +37,48 @@ export class ImageUpload implements GxComponent {
    * (for example, click event).
    */
   @Prop() readonly disabled = false;
+
+  /**
+   * This attribute lets you specify the height.
+   */
+  @Prop() readonly height: string;
+
+  /**
+   * This attribute lets you specify how this element will behave when hidden.
+   *
+   * | Value        | Details                                                                     |
+   * | ------------ | --------------------------------------------------------------------------- |
+   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
+   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+   */
+  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
+
+  /**
+   * True to lazy load the image, when it enters the viewport.
+   */
+  @Prop() readonly lazyLoad = true;
+
+  /**
+   * This attribute lets you specify the low resolution image SRC.
+   */
+  @Prop() readonly lowResolutionSrc = "";
+
+  /**
+   * This attribute allows specifing how the image is sized according to its container.
+   * `contain`, `cover`, `fill` and `none` map directly to the values of the CSS `object-fit` property.
+   * The `tile` value repeats the image, both vertically and horizontally, creating a tile effect.
+   */
+  @Prop({ mutable: true }) scaleType:
+    | "contain"
+    | "cover"
+    | "fill"
+    | "none"
+    | "tile";
+
+  /**
+   * This attribute lets you specify the SRC.
+   */
+  @Prop() readonly src = "";
 
   /**
    * Needs a description
@@ -79,6 +122,7 @@ export class ImageUpload implements GxComponent {
     event.stopPropagation();
   }
 
+  // Emits the image click event
   private clickImageAction = (event: MouseEvent) => {
     this.click.emit(event);
   };
