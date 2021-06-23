@@ -41,7 +41,10 @@
       .image-edit {
         @include border-style($borderRadius: 15px);
         background-color: rgb(239, 239, 239);
-        padding: 1px 0 0 2.5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 0 0 2.5px;
         width: 30px;
         height: 30px;
         pointer-events: all;
@@ -64,6 +67,11 @@
         &[disabled] {
           @include border-style(#aaa, 15px);
           background-color: #ccc;
+        }
+
+        svg {
+          width: 18px;
+          height: 18px;
         }
       }
     }

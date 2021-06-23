@@ -200,7 +200,7 @@ export class ImageUpload implements GxComponent {
   private getSearchPlusSolidSVG(): any {
     return (
       <svg
-        viewBox="0 0 27 27"
+        viewBox="3 2 20 20"
         class={{
           svgSearch: true,
           disabled: this.src !== ""
@@ -216,7 +216,7 @@ export class ImageUpload implements GxComponent {
   private getPencilAltSolidSVG(): any {
     return (
       <svg
-        viewBox="-105 0 750 640"
+        viewBox="0 -35 570 570"
         class={{
           svgPencil: true,
           disabled: this.src === ""
