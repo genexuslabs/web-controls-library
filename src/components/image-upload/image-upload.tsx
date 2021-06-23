@@ -192,11 +192,12 @@ export class ImageUpload implements GxComponent {
         <div class="click-capture" onClick={this.stopPropagation}>
           <div class="image-viewer">
             <gx-image
+              class="image-viewer-image"
               src={this.src}
               alt={this.alt}
               disabled={this.disabled}
               onClick={this.clickImageAction}
-            ></gx-image>
+            />
             {!this.readonly && (
               <div class="button-edit-container">
                 <button
