@@ -81,6 +81,16 @@ export class ImageUpload implements GxComponent {
   @Prop() readonly src = "";
 
   /**
+   * This attribute lets you specify the width.
+   */
+  @Prop({ mutable: true }) width: string;
+
+  /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
+
+  /**
    * Needs a description
    */
   @Prop() readonly readonly = false;
@@ -237,23 +247,37 @@ export class ImageUpload implements GxComponent {
           <div class="image-viewer">
             <gx-image
               class="image-viewer-image"
-              src={this.src}
               alt={this.alt}
+              autoGrow={this.autoGrow}
               disabled={this.disabled}
+              height={this.height}
+              invisibleMode={this.invisibleMode}
+              lazyLoad={this.lazyLoad}
+              lowResolutionSrc={this.lowResolutionSrc}
+              scaleType={this.scaleType}
+              src={this.src}
+              width={this.width}
+              highlightable={this.highlightable}
               onClick={this.clickImageAction}
-            />
-            {!this.readonly && (
-              <div class="button-edit-container">
-                <button
-                  class="image-edit"
-                  disabled={this.disabled}
-                  onClick={this.triggerAction}
+            >
+              {!this.readonly && (
+                <div
+                  class={{
+                    "button-edit-container": true,
+                    bottom: this.src !== ""
+                  }}
                 >
-                  {this.getSearchPlusSolidSVG()}
-                  {this.getPencilAltSolidSVG()}
-                </button>
-              </div>
-            )}
+                  <button
+                    class="image-edit"
+                    disabled={this.disabled}
+                    onClick={this.triggerAction}
+                  >
+                    {this.getSearchPlusSolidSVG()}
+                    {this.getPencilAltSolidSVG()}
+                  </button>
+                </div>
+              )}
+            </gx-image>
           </div>
           <gx-modal class="action-dialog">
             <div slot="header">
