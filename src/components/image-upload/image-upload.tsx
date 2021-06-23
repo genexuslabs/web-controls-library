@@ -11,7 +11,7 @@ import {
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
-  shadow: false, // Later, see what its use is for
+  shadow: false,
   styleUrl: "image-upload.scss",
   tag: "gx-image-upload"
 })
