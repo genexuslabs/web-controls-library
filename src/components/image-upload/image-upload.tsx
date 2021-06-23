@@ -172,9 +172,14 @@ export class ImageUpload implements GxComponent {
 
   // When the file is selected
   private fileSelectedAction = () => {
-    this.closeAction();
     const elem = this.element;
     const file = elem.querySelector("input").files[0];
+
+    // This allows to catch an error when the user select a filename, but then
+    // cancels the operation
+    if (file == null) {
+      return;
+    }
     const alt = this.getFileNameWithoutExtension(file.name);
 
     this.reader.addEventListener(
@@ -188,6 +193,7 @@ export class ImageUpload implements GxComponent {
     );
     this.reader.readAsDataURL(file);
 
+    this.closeAction();
     this.onImageChanged.emit(file);
   };
 
@@ -257,7 +263,7 @@ export class ImageUpload implements GxComponent {
             <div slot="header">
               {this.modalTitle === null ? document.title : this.modalTitle}
             </div>
-            <div class="bodyContainer" slot="body">
+            <div class="body-container" slot="body">
               <label class="file">
                 <input type="file" onChange={this.fileSelectedAction} />
                 <span class="file-custom">{this.changeButtonText}</span>
