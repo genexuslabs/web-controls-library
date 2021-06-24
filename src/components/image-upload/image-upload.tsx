@@ -21,7 +21,7 @@ export class ImageUpload implements GxComponent {
   /**
    * This attribute lets you specify the alternative text.
    */
-  @Prop() readonly alt = "";
+  @Prop({ reflect: true }) alt = "";
 
   /**
    * If true, the component will be sized to match the image's intrinsic size when not constrained
@@ -78,7 +78,7 @@ export class ImageUpload implements GxComponent {
   /**
    * This attribute lets you specify the SRC.
    */
-  @Prop() readonly src = "";
+  @Prop({ reflect: true }) src = "";
 
   /**
    * This attribute lets you specify the width.
@@ -91,27 +91,32 @@ export class ImageUpload implements GxComponent {
   @Prop() readonly highlightable = false;
 
   /**
-   * Needs a description
+   * This attribute lets you specify if the image is readonly.
+   * If readonly, it will not allow to use the edit button.
+   * In fact, the edit button will not be shown.
    */
   @Prop() readonly readonly = false;
 
   /**
-   * Needs a description
+   * This attribute lets you specify the modal title.
    */
   @Prop() readonly modalTitle = null;
 
   /**
-   * Needs a description
+   * This attribute lets you specify the description of the
+   * change image button in the modal.
    */
   @Prop() readonly changeButtonText = "Change image...";
 
   /**
-   * Needs a description
+   * This attribute lets you specify the description of the
+   * remove image button in the modal.
    */
   @Prop() readonly removeButtonText = "Remove image";
 
   /**
-   * Needs a description
+   * This attribute lets you specify the description of the
+   * cancel action button in the modal.
    */
   @Prop() readonly cancelButtonText = "CANCEL";
 
@@ -128,6 +133,10 @@ export class ImageUpload implements GxComponent {
   // Used to read the images
   private reader = new FileReader();
 
+  private input: HTMLInputElement;
+
+  private modal: HTMLGxModalElement;
+
   private stopPropagation(event: UIEvent) {
     event.stopPropagation();
   }
@@ -141,16 +150,16 @@ export class ImageUpload implements GxComponent {
   // In othercase, this allows to change or remove the image
   private triggerAction = () => {
     if (this.src === "") {
-      this.element.querySelector("input").click();
+      this.input.click();
     } else {
-      this.element.querySelector("gx-modal").setAttribute("opened", "true");
+      this.modal.opened = true;
     }
   };
 
   private clearImageAction = () => {
-    this.element.querySelector("input").value = "";
-    this.element.setAttribute("src", "");
-    this.element.setAttribute("alt", "");
+    this.input.value = "";
+    this.src = "";
+    this.alt = "";
 
     this.onImageChanged.emit(null);
     this.closeAction();
@@ -158,7 +167,7 @@ export class ImageUpload implements GxComponent {
 
   // When the modal closes
   private closeAction = () => {
-    this.element.querySelector("gx-modal").setAttribute("opened", "false");
+    this.modal.opened = false;
   };
 
   private getFileNameWithoutExtension(fileName: string) {
@@ -173,21 +182,20 @@ export class ImageUpload implements GxComponent {
   // When the file is selected
   private fileSelectedAction = () => {
     const elem = this.element;
-    const file = elem.querySelector("input").files[0];
+    const file = this.input.files[0];
 
     // This allows to catch an error when the user select a filename, but then
     // cancels the operation
     if (file == null) {
       return;
     }
-    const alt = this.getFileNameWithoutExtension(file.name);
+    this.alt = this.getFileNameWithoutExtension(file.name);
 
     this.reader.addEventListener(
       "load",
       function() {
         // Convert image file to base64 string
-        elem.setAttribute("src", this.result.toString());
-        elem.setAttribute("alt", alt);
+        elem.src = this.result.toString();
       },
       false
     );
@@ -259,13 +267,20 @@ export class ImageUpload implements GxComponent {
               )}
             </gx-image>
           </div>
-          <gx-modal class="action-dialog">
+          <gx-modal
+            class="action-dialog"
+            ref={el => (this.modal = el as HTMLGxModalElement)}
+          >
             <div slot="header">
               {this.modalTitle === null ? document.title : this.modalTitle}
             </div>
             <div class="body-container" slot="body">
               <label class="file">
-                <input type="file" onChange={this.fileSelectedAction} />
+                <input
+                  type="file"
+                  onChange={this.fileSelectedAction}
+                  ref={el => (this.input = el as HTMLInputElement)}
+                />
                 <span class="file-custom">{this.changeButtonText}</span>
               </label>
               <gx-button class="remove-button" onClick={this.clearImageAction}>
