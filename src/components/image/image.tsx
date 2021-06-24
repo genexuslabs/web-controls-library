@@ -57,7 +57,7 @@ export class Image
   /**
    * This attribute lets you specify the alternative text.
    */
-  @Prop() readonly alt = "";
+  @Prop() readonly alt: string = "";
 
   /**
    * If true, the component will be sized to match the image's intrinsic size when not constrained
@@ -114,7 +114,7 @@ export class Image
   /**
    * This attribute lets you specify the SRC.
    */
-  @Prop() readonly src = "";
+  @Prop() readonly src: string = "";
 
   /**
    * This attribute lets you specify the width.
