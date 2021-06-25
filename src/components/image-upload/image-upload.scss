@@ -8,6 +8,7 @@
   border: 0.075rem solid $borderColor;
   border-radius: $borderRadius;
 }
+$transitionConfig: 0.2s ease;
 
 .click-capture {
   display: contents;
@@ -37,6 +38,7 @@
           width: 30px;
           height: 30px;
           pointer-events: all;
+          transition: $transitionConfig;
 
           &:not([disabled]) {
             &:hover {
