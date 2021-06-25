@@ -148,12 +148,13 @@ export class ImageUpload implements GxComponent {
 
   // If there is no image, this directly opens the File System to select an image.
   // In othercase, this allows to change or remove the image
-  private triggerAction = () => {
+  private triggerAction = (event: MouseEvent) => {
     if (this.src === "") {
       this.input.click();
     } else {
       this.modal.opened = true;
     }
+    event.stopPropagation();
   };
 
   private clearImageAction = () => {
@@ -231,42 +232,40 @@ export class ImageUpload implements GxComponent {
     return (
       <Host>
         <div class="click-capture" onClick={this.stopPropagation}>
-          <div class="image-viewer">
-            <gx-image
-              class="image-viewer-image"
-              alt={this.alt}
-              autoGrow={this.autoGrow}
-              disabled={this.disabled}
-              height={this.height}
-              invisibleMode={this.invisibleMode}
-              lazyLoad={this.lazyLoad}
-              lowResolutionSrc={this.lowResolutionSrc}
-              scaleType={this.scaleType}
-              src={this.src}
-              width={this.width}
-              highlightable={this.highlightable}
-              onClick={this.clickImageAction}
-            >
-              {!this.readonly && (
-                <div
-                  class={{
-                    "button-edit-container": true,
-                    bottom: this.src !== ""
-                  }}
+          <gx-image
+            class="image-viewer-image"
+            alt={this.alt}
+            autoGrow={this.autoGrow}
+            disabled={this.disabled}
+            height={this.height}
+            invisibleMode={this.invisibleMode}
+            lazyLoad={this.lazyLoad}
+            lowResolutionSrc={this.lowResolutionSrc}
+            scaleType={this.scaleType}
+            src={this.src}
+            width={this.width}
+            highlightable={this.highlightable}
+            onClick={this.clickImageAction}
+          >
+            {!this.readonly && (
+              <div
+                class={{
+                  "button-edit-container": true,
+                  bottom: this.src !== ""
+                }}
+              >
+                <button
+                  class="image-edit"
+                  disabled={this.disabled}
+                  onClick={this.triggerAction}
                 >
-                  <button
-                    class="image-edit"
-                    disabled={this.disabled}
-                    onClick={this.triggerAction}
-                  >
-                    {this.src === ""
-                      ? this.getSearchPlusSolidSVG()
-                      : this.getPencilAltSolidSVG()}
-                  </button>
-                </div>
-              )}
-            </gx-image>
-          </div>
+                  {this.src === ""
+                    ? this.getSearchPlusSolidSVG()
+                    : this.getPencilAltSolidSVG()}
+                </button>
+              </div>
+            )}
+          </gx-image>
           <gx-modal
             class="action-dialog"
             ref={el => (this.modal = el as HTMLGxModalElement)}
