@@ -181,9 +181,9 @@ gx-gauge {
       position: absolute;
       color: var(--center-circle-text-color);
       background-color: var(--center-circle-background-color);
-      padding-bottom: 5%;
 
       & span.current-value {
+        padding-bottom: 4.5%;
         font-weight: 900;
       }
     }
