@@ -70,8 +70,6 @@ export class Gauge implements GxComponent {
 
   private maxValueAux = this.minValue;
 
-  private minimumSize: number;
-
   private totalAmount = 0;
 
   private watchForItemsObserver: ResizeObserver;
@@ -111,17 +109,15 @@ export class Gauge implements GxComponent {
     if (this.showValue && this.type === "circle") {
       this.watchForItemsObserver = new ResizeObserver(entries => {
         const elem = entries[0].contentRect;
-        this.minimumSize = Math.min(elem.width, elem.height);
+        const minimumSize = Math.min(elem.width, elem.height);
 
         // Updates the font size
-        this.circularCurrentValue.style.fontSize = `${this.minimumSize /
-          2.5}px`;
+        this.circularCurrentValue.style.fontSize = `${minimumSize / 2.5}px`;
 
         // Updates the maxWidth of the marker value container
-        this.circularMarker.style.maxWidth = `${this.minimumSize}px`;
+        this.circularMarker.style.maxWidth = `${minimumSize}px`;
 
-        this.circularMarkerIndicator.style.height = `${this.minimumSize /
-          100}px`;
+        this.circularMarkerIndicator.style.height = `${minimumSize / 100}px`;
       });
 
       // Observe the gauge to resize the font and the value marker
