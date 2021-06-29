@@ -93,6 +93,7 @@ gx-gauge {
 
     .gauge {
       display: flex;
+
       .marker {
         background-color: var(--value-text-background-color);
         color: var(--value-text-color);
@@ -104,6 +105,7 @@ gx-gauge {
       display: flex;
       justify-content: space-between;
       width: 100%;
+
       .maxValue {
         background-color: var(--max-value-background-color);
         color: var(--max-value-text-color);
@@ -119,6 +121,7 @@ gx-gauge {
       position: absolute;
       width: calc(100%);
       background-color: rgba(0, 0, 0, 0.2);
+
       .range {
         height: 100%;
         position: absolute;
@@ -133,6 +136,7 @@ gx-gauge {
       position: absolute;
       z-index: 1;
       transition: $transitionConfig;
+
       .indicator {
         content: "";
         border-left-style: solid;
@@ -147,6 +151,7 @@ gx-gauge {
       height: calc(100%);
       display: flex;
       align-items: center;
+
       .rangeName {
         @include flex-centered;
         margin-top: 1px;
@@ -162,23 +167,24 @@ gx-gauge {
     height: 100%;
     width: 100%;
     align-items: center;
+
     svg {
       width: 100%;
       height: 100%;
+
       circle {
         transition: $transitionConfig;
       }
     }
     .gauge {
+      display: flex;
       position: absolute;
-      @include flex-centered;
-      div {
-        @include flex-centered;
-        color: var(--center-circle-text-color);
-        background-color: var(--center-circle-background-color);
-        & span.current-value {
-          font-weight: 900;
-        }
+      color: var(--center-circle-text-color);
+      background-color: var(--center-circle-background-color);
+      padding-bottom: 5%;
+
+      & span.current-value {
+        font-weight: 900;
       }
     }
   }

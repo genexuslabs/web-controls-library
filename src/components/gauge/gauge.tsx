@@ -262,18 +262,12 @@ export class Gauge implements GxComponent {
           </svg>
           {this.showValue && (
             <div class="gauge">
-              <div>
-                {this.showValue && (
-                  <span
-                    class="current-value"
-                    ref={el =>
-                      (this.circularCurrentValue = el as HTMLSpanElement)
-                    }
-                  >
-                    {`${this.value}`}
-                  </span>
-                )}
-              </div>
+              <span
+                class="current-value"
+                ref={el => (this.circularCurrentValue = el as HTMLSpanElement)}
+              >
+                {this.value}
+              </span>
             </div>
           )}
         </div>
