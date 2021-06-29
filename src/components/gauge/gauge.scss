@@ -192,7 +192,7 @@ gx-gauge {
   .circularMarker {
     width: 100%;
     position: absolute;
-    transition: $transitionConfig;
+    transition: transform 0.3s;
 
     .circularIndicator {
       background-color: var(--indicator-circle-background-color);
