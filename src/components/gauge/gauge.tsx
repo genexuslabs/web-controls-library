@@ -74,6 +74,8 @@ export class Gauge implements GxComponent {
 
   private watchForItemsObserver: ResizeObserver;
 
+  private linearCurrentValue: HTMLDivElement;
+
   private circularCurrentValue: HTMLSpanElement;
 
   private circularMarker: HTMLDivElement;
@@ -106,22 +108,67 @@ export class Gauge implements GxComponent {
   // The first time the circle gauge is rendered, if showValue == true, it
   // creates a ResizeObserver to implement the font and marker container responsiveness
   componentDidLoad() {
-    if (this.showValue && this.type === "circle") {
-      this.watchForItemsObserver = new ResizeObserver(entries => {
-        const elem = entries[0].contentRect;
-        const minimumSize = Math.min(elem.width, elem.height);
+    if (this.showValue) {
+      if (this.type === "circle") {
+        this.watchForItemsObserver = new ResizeObserver(entries => {
+          const elem = entries[0].contentRect;
+          const minimumSize = Math.min(elem.width, elem.height);
 
-        // Updates the font size
-        this.circularCurrentValue.style.fontSize = `${minimumSize / 2.5}px`;
+          // Updates the font size
+          this.circularCurrentValue.style.fontSize = `${minimumSize / 2.5}px`;
 
-        // Updates the maxWidth of the marker value container
-        this.circularMarker.style.maxWidth = `${minimumSize}px`;
+          // Updates the maxWidth of the marker value container
+          this.circularMarker.style.maxWidth = `${minimumSize}px`;
 
-        this.circularMarkerIndicator.style.height = `${minimumSize / 100}px`;
-      });
+          this.circularMarkerIndicator.style.height = `${minimumSize / 100}px`;
+        });
+      } else {
+        this.watchForItemsObserver = new ResizeObserver(entries => {
+          const percentage =
+            this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
+
+          const gaugeWidth = entries[0].contentRect.width;
+
+          const spanWidth =
+            this.linearCurrentValue.getBoundingClientRect().width / 2;
+
+          const widthPercentageInPixels = (gaugeWidth / 100) * percentage;
+
+          // const spanMarginLeft = this.linearCurrentValue.style.marginLeft;
+
+          this.linearCurrentValue.style.transform =
+            widthPercentageInPixels + spanWidth > gaugeWidth
+              ? "translateX(-100%)"
+              : widthPercentageInPixels - spanWidth < 0
+              ? "translateX(0%)"
+              : "translateX(-50%)";
+
+          console.log(this.linearCurrentValue.parentElement.style.marginLeft);
+        });
+      }
 
       // Observe the gauge to resize the font and the value marker
       this.watchForItemsObserver.observe(this.element);
+    }
+  }
+
+  componentDidRender() {
+    if (this.showValue && this.type === "line") {
+      // const percentage =
+      //   this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
+      // const gaugeWidth = this.element.getBoundingClientRect().width;
+      // const spanWidth =
+      //   this.linearCurrentValue.getBoundingClientRect().width;
+      // this.linearCurrentValue.style.marginLeft = `calc(${percentage}% - ${spanWidth / 2}px)`;
+      // const percentage =
+      //   this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
+      // const spanWidth =
+      //   this.linearCurrentValue.getBoundingClientRect().width;
+      // const widthPercentageInPixels = (gaugeWidth / 100) * percentage;
+      // this.linearCurrentValue.style.transform =
+      //   widthPercentageInPixels + spanWidth / 2 > gaugeWidth
+      //   ? "translateX(-100%)"
+      //   : "translateX(-50%)";
     }
   }
 
@@ -190,6 +237,7 @@ export class Gauge implements GxComponent {
           "background-color": color,
           "margin-left": `${position}%`,
           width: `${(amount * 100) / range}%`
+          // height: `${2 * this.thickness}px`
         }}
       />
     );
@@ -203,13 +251,14 @@ export class Gauge implements GxComponent {
         style={{
           "margin-left": `${position}%`,
           color: color,
-          // transform: `translateY(-${this.thickness >= 7 ? 0 : 12 + this.thickness}px)`,
-          transform: `translateY(${
-            this.thickness >= 7
-              ? 0
-              : this.element.offsetHeight / 4 + this.thickness / 3
-          }px)`,
+          // // transform: `translateY(-${this.thickness >= 7 ? 0 : 12 + this.thickness}px)`,
+          // transform: `translateY(${
+          //   this.thickness >= 7
+          //     ? 0
+          //     : this.element.offsetHeight / 4 + this.thickness / 3
+          // }px)`,
           width: `${(amount * 100) / range}%`
+          // height: `${2 * this.thickness}px`
         }}
       >
         {name}
@@ -303,16 +352,6 @@ export class Gauge implements GxComponent {
     }
     this.updateMaxValueAux();
 
-    // Depending of `this.value`, it calculates how much the value marker has to move from the left side
-    const valueOffset =
-      this.value <= this.minValue
-        ? 0
-        : this.value >= this.maxValueAux
-        ? 100
-        : this.calcPercentage() >= 98
-        ? 72
-        : 50;
-
     const range = this.maxValueAux - this.minValue;
     let positionInGauge = 0;
 
@@ -324,38 +363,65 @@ export class Gauge implements GxComponent {
 
       positionInGauge += (100 * childRanges[i].amount) / range;
     }
+    const percentage =
+      this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
+    console.log("Rendering");
+
     return (
       <div
         class="gaugeContainerLine"
-        style={{
-          height: `${10 * this.calcThickness()}px`,
-          "margin-top": `${this.showValue || this.thickness < 7 ? 23.5 : 0}px`, // 23.5px, 39.5px
-          "margin-bottom": `${
-            this.showValue && this.thickness < 7 ? 22 : this.showMinMax ? 20 : 1
-          }px`
-        }}
+        // style={{
+        //   height: `${10 * this.calcThickness()}px`,
+        //   "margin-top": `${this.showValue || this.thickness < 7 ? 23.5 : 0}px`, // 23.5px, 39.5px
+        //   "margin-bottom": `${
+        //     this.showValue && this.thickness < 7 ? 22 : this.showMinMax ? 20 : 1
+        //   }px`
+        // }}
       >
-        <div class="gauge">
-          {this.showValue ? (
-            <span
-              class="marker"
-              style={{
-                "margin-left": `${
-                  this.value <= this.minValue
-                    ? 0
-                    : this.value >= this.maxValueAux
-                    ? 100
-                    : this.calcPercentage()
-                }%`,
-                transform: `translate(-${valueOffset}%, -28px)` // 22px, 38px
-              }}
+        {this.showValue && (
+          <div
+            class="value-container"
+            style={{
+              "margin-left": `${percentage}%`
+            }}
+          >
+            <div
+              class="current-value"
+              // style={{
+              //   "margin-left": percentage < 50 ? `${percentage}%` : "none",
+              //   "margin-right": percentage < 50 ? "none" : `${100 - percentage}%`,
+              //   transform:
+              //     `translateX(${percentage < 50 ? -50 : 50}%)`
+              // }}
+              // style={{
+              //   transform:
+              //     `translateX(
+              //       ${percentage <= 1
+              //         ? -(25 + percentage * 2)
+              //         : percentage >= 98
+              //           ? -percentage
+              //           : -50
+              //       }%)`
+              // }}
+              ref={el => (this.linearCurrentValue = el as HTMLDivElement)}
             >
               {this.value}
-            </span>
-          ) : (
-            ""
-          )}
-        </div>
+            </div>
+
+            <div
+              class="indicator"
+              style={{
+                height: `${this.thickness * 2 + 4}px`,
+                "border-left-width": `${this.element.offsetWidth /
+                  document.body.offsetWidth}vw`,
+                transform: `translate(
+                    ${
+                      [0, 100].includes(percentage) ? -percentage : -50
+                    }%, 22px)`
+              }}
+            />
+          </div>
+        )}
         <div
           class="rangesContainer"
           style={{
@@ -364,48 +430,13 @@ export class Gauge implements GxComponent {
           }}
         >
           {divRanges}
+          <div class="labelsContainerLine">{divRangesName}</div>
         </div>
-        {this.showValue ? (
-          <span
-            class="marker"
-            style={{
-              "margin-left": `${
-                this.calcPercentage() >= 100 ? 100 : this.calcPercentage()
-              }%`
-            }}
-          >
-            <div
-              class="indicator"
-              style={{
-                height: `${this.thickness * 2 + 4}px`,
-                "border-left-width": `${this.element.offsetWidth /
-                  document.body.offsetWidth}vw`,
-                transform:
-                  this.calcPercentage() > 0 && this.calcPercentage() < 100
-                    ? "translateX(-50%)"
-                    : this.calcPercentage() >= 100
-                    ? "translateX(-100%)"
-                    : "translateX(0%)"
-              }}
-            />
-          </span>
-        ) : (
-          ""
-        )}
-        <div class="labelsContainerLine">{divRangesName}</div>
-        {this.showMinMax ? (
+        {this.showMinMax && (
           <div class="minMaxDisplay">
-            <span class="minValue">
-              {this.minValue}
-              <span />
-            </span>
-            <span class="maxValue">
-              {this.maxValueAux}
-              <span />
-            </span>
+            <span class="minValue">{this.minValue}</span>
+            <span class="maxValue">{this.maxValueAux}</span>
           </div>
-        ) : (
-          ""
         )}
       </div>
     );

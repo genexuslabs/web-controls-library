@@ -86,40 +86,51 @@ gx-gauge {
   width: 100%;
 
   .gaugeContainerLine {
-    position: relative;
-    width: 100%;
     display: flex;
     flex-wrap: wrap;
+    // @include flex-centered;
+    width: 100%;
+    // height: 150px;
+    // display: flex;
+    // align-content: flex-start;
+    // flex-direction: column;
 
-    .gauge {
+    .value-container {
+      position: relative;
+      // display: block;
+      // justify-content: flex-start;
       display: flex;
+      flex-wrap: wrap;
 
-      .marker {
+      width: 100%;
+      height: 26px;
+
+      .current-value {
+        // display: inline-block;
+        // position: absolute;
+        // width: auto;
+        height: 80%;
+        line-height: 100%;
         background-color: var(--value-text-background-color);
         color: var(--value-text-color);
+        font-weight: 700;
+        z-index: 1;
       }
-    }
 
-    .minMaxDisplay {
-      z-index: 1;
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-
-      .maxValue {
-        background-color: var(--max-value-background-color);
-        color: var(--max-value-text-color);
-      }
-      .minValue {
-        background-color: var(--min-value-background-color);
-        color: var(--min-value-text-color);
+      .indicator {
+        display: block;
+        position: absolute;
+        border-left-style: solid;
+        border-left-color: var(--indicator-line-background-color);
+        background-color: var(--indicator-line-background-color);
+        z-index: 1;
       }
     }
 
     .rangesContainer {
+      position: relative;
       overflow: hidden;
-      position: absolute;
-      width: calc(100%);
+      width: 100%;
       background-color: rgba(0, 0, 0, 0.2);
 
       .range {
@@ -129,35 +140,45 @@ gx-gauge {
         @include flex-centered;
         transition: $transitionConfig;
       }
-    }
 
-    span.marker {
-      transform: translateY(-4px);
-      position: absolute;
-      z-index: 1;
-      transition: $transitionConfig;
+      .labelsContainerLine {
+        // position: absolute;
+        // position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
 
-      .indicator {
-        content: "";
-        border-left-style: solid;
-        border-left-color: var(--indicator-line-background-color);
-        display: block;
-        background-color: var(--indicator-line-background-color);
+        .rangeName {
+          @include flex-centered;
+          // position: relative;
+          // line-height: 200%;
+          // height:024px;
+          // height: 24px;
+          // display: inline-block;
+          padding-bottom: 2px;
+          // line-height: 50%;
+          position: absolute;
+          filter: brightness(0.5);
+          transition: $transitionConfig;
+        }
       }
     }
 
-    .labelsContainerLine {
-      width: calc(100%);
-      height: calc(100%);
+    .minMaxDisplay {
       display: flex;
-      align-items: center;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      width: 100%;
+      z-index: 1;
 
-      .rangeName {
-        @include flex-centered;
-        margin-top: 1px;
-        position: absolute;
-        filter: brightness(0.5);
-        transition: $transitionConfig;
+      .maxValue {
+        background-color: var(--max-value-background-color);
+        color: var(--max-value-text-color);
+      }
+      .minValue {
+        background-color: var(--min-value-background-color);
+        color: var(--min-value-text-color);
       }
     }
   }
