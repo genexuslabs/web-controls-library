@@ -12,11 +12,11 @@ import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
-  styleUrl: "image-upload.scss",
-  tag: "gx-image-upload"
+  styleUrl: "image-picker.scss",
+  tag: "gx-image-picker"
 })
-export class ImageUpload implements GxComponent {
-  @Element() element: HTMLGxImageUploadElement;
+export class ImagePicker implements GxComponent {
+  @Element() element: HTMLGxImagePickerElement;
 
   /**
    * This attribute lets you specify the alternative text.
