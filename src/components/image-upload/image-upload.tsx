@@ -279,6 +279,7 @@ export class ImageUpload implements GxComponent {
                   type="file"
                   onChange={this.fileSelectedAction}
                   ref={el => (this.input = el as HTMLInputElement)}
+                  accept="image/*"
                 />
                 <span class="file-custom">{this.changeButtonText}</span>
               </label>
@@ -288,7 +289,7 @@ export class ImageUpload implements GxComponent {
             </div>
             <div slot="secondary-action">
               <gx-button class="cancel-button" onClick={this.closeAction}>
-                {this.cancelButtonText}
+                <span>{this.cancelButtonText}</span>
               </gx-button>
             </div>
           </gx-modal>
