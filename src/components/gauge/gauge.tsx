@@ -105,8 +105,10 @@ export class Gauge implements GxComponent {
     });
   }
 
-  // The first time the circle gauge is rendered, if showValue == true, it
-  // creates a ResizeObserver to implement the font and marker container responsiveness
+  /*  If showValue == true, it creates a ResizeObserver to implement the font
+      and marker container responsiveness (circle gauge type) or 'current-value'
+      centering responsiveness (line gauge type)
+  */
   componentDidLoad() {
     if (this.showValue) {
       if (this.type === "circle") {
@@ -123,52 +125,21 @@ export class Gauge implements GxComponent {
           this.circularMarkerIndicator.style.height = `${minimumSize / 100}px`;
         });
       } else {
-        this.watchForItemsObserver = new ResizeObserver(entries => {
-          const percentage =
-            this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
-
-          const gaugeWidth = entries[0].contentRect.width;
-
-          const spanWidth =
-            this.linearCurrentValue.getBoundingClientRect().width / 2;
-
-          const widthPercentageInPixels = (gaugeWidth / 100) * percentage;
-
-          // const spanMarginLeft = this.linearCurrentValue.style.marginLeft;
-
-          this.linearCurrentValue.style.transform =
-            widthPercentageInPixels + spanWidth > gaugeWidth
-              ? "translateX(-100%)"
-              : widthPercentageInPixels - spanWidth < 0
-              ? "translateX(0%)"
-              : "translateX(-50%)";
-
-          console.log(this.linearCurrentValue.parentElement.style.marginLeft);
+        this.watchForItemsObserver = new ResizeObserver(() => {
+          this.setCurrentValueOffset();
         });
       }
 
-      // Observe the gauge to resize the font and the value marker
+      // Observe the gauge
       this.watchForItemsObserver.observe(this.element);
     }
   }
 
+  // After the render, it can ask for 'getBoundingClientRect()' and center
+  // the 'current-value' in line gauge type
   componentDidRender() {
     if (this.showValue && this.type === "line") {
-      // const percentage =
-      //   this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
-      // const gaugeWidth = this.element.getBoundingClientRect().width;
-      // const spanWidth =
-      //   this.linearCurrentValue.getBoundingClientRect().width;
-      // this.linearCurrentValue.style.marginLeft = `calc(${percentage}% - ${spanWidth / 2}px)`;
-      // const percentage =
-      //   this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
-      // const spanWidth =
-      //   this.linearCurrentValue.getBoundingClientRect().width;
-      // const widthPercentageInPixels = (gaugeWidth / 100) * percentage;
-      // this.linearCurrentValue.style.transform =
-      //   widthPercentageInPixels + spanWidth / 2 > gaugeWidth
-      //   ? "translateX(-100%)"
-      //   : "translateX(-50%)";
+      this.setCurrentValueOffset();
     }
   }
 
@@ -200,6 +171,34 @@ export class Gauge implements GxComponent {
       ? 0
       : ((this.value - this.minValue) * 100) /
           (this.maxValueAux - this.minValue);
+  }
+
+  /*  In the line gauge type, this functions correctly aligns the
+      'current-value' to the center of the 'indicator', even if
+      the indicator has low or high percentage value
+  */
+  private setCurrentValueOffset(): void {
+    const percentage =
+      this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
+
+    const gaugeWidth = this.element.getBoundingClientRect().width;
+
+    const halfSpanWidth =
+      this.linearCurrentValue.getBoundingClientRect().width / 2;
+
+    const percentageInPixels = (gaugeWidth / 100) * percentage;
+
+    const offsetX =
+      // The indicator has a low value
+      percentageInPixels - halfSpanWidth < 0
+        ? percentageInPixels
+        : // The indicator has a high value
+        percentageInPixels + halfSpanWidth > gaugeWidth
+        ? 2 * halfSpanWidth - (gaugeWidth - percentageInPixels)
+        : // The indicator has an intermedium value
+          halfSpanWidth;
+
+    this.linearCurrentValue.style.transform = `translateX(${-offsetX}px)`;
   }
 
   private addCircleRanges(
@@ -365,19 +364,9 @@ export class Gauge implements GxComponent {
     }
     const percentage =
       this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
-    console.log("Rendering");
 
     return (
-      <div
-        class="gaugeContainerLine"
-        // style={{
-        //   height: `${10 * this.calcThickness()}px`,
-        //   "margin-top": `${this.showValue || this.thickness < 7 ? 23.5 : 0}px`, // 23.5px, 39.5px
-        //   "margin-bottom": `${
-        //     this.showValue && this.thickness < 7 ? 22 : this.showMinMax ? 20 : 1
-        //   }px`
-        // }}
-      >
+      <div class="gaugeContainerLine">
         {this.showValue && (
           <div
             class="value-container"
@@ -385,28 +374,12 @@ export class Gauge implements GxComponent {
               "margin-left": `${percentage}%`
             }}
           >
-            <div
+            <span
               class="current-value"
-              // style={{
-              //   "margin-left": percentage < 50 ? `${percentage}%` : "none",
-              //   "margin-right": percentage < 50 ? "none" : `${100 - percentage}%`,
-              //   transform:
-              //     `translateX(${percentage < 50 ? -50 : 50}%)`
-              // }}
-              // style={{
-              //   transform:
-              //     `translateX(
-              //       ${percentage <= 1
-              //         ? -(25 + percentage * 2)
-              //         : percentage >= 98
-              //           ? -percentage
-              //           : -50
-              //       }%)`
-              // }}
               ref={el => (this.linearCurrentValue = el as HTMLDivElement)}
             >
               {this.value}
-            </div>
+            </span>
 
             <div
               class="indicator"
@@ -416,7 +389,7 @@ export class Gauge implements GxComponent {
                   document.body.offsetWidth}vw`,
                 transform: `translate(
                     ${
-                      [0, 100].includes(percentage) ? -percentage : -50
+                      percentage == 0 || percentage == 100 ? -percentage : -50
                     }%, 22px)`
               }}
             />
