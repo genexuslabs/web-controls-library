@@ -126,7 +126,7 @@ export class ImagePicker implements GxComponent {
    * | Value               | Details                                                                                      |
    * | ------------------- | -------------------------------------------------------------------------------------------- |
    * | `readyToUse`        | Allows you to choose, change or remove an image.                                             |
-   * | `fileReadyToUpload` | It is set only after an image has been selected or changed, not removed.                                       |
+   * | `fileReadyToUpload` | It is set only after an image has been selected or changed, not removed.                     |
    * | `uploadingFile`     | It is set by the parent control to specifies when the image is being uploaded to the server. |
    *
    * `fileReadyToUpload` and `uploadingFile` will not allow you to change or remove the current image.
