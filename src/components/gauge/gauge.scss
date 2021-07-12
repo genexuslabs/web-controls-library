@@ -88,28 +88,17 @@ gx-gauge {
   .gaugeContainerLine {
     display: flex;
     flex-wrap: wrap;
-    // @include flex-centered;
     width: 100%;
-    // height: 150px;
-    // display: flex;
-    // align-content: flex-start;
-    // flex-direction: column;
 
     .value-container {
       position: relative;
-      // display: block;
-      // justify-content: flex-start;
       display: flex;
       flex-wrap: wrap;
-
       width: 100%;
       height: 26px;
       transition: $transitionConfig;
 
       .current-value {
-        // display: inline-block;
-        // position: absolute;
-        // width: auto;
         height: 80%;
         line-height: 100%;
         background-color: var(--value-text-background-color);
@@ -143,8 +132,6 @@ gx-gauge {
       }
 
       .labelsContainerLine {
-        // position: absolute;
-        // position: relative;
         width: 100%;
         height: 100%;
         display: flex;
@@ -152,13 +139,7 @@ gx-gauge {
 
         .rangeName {
           @include flex-centered;
-          // position: relative;
-          // line-height: 200%;
-          // height:024px;
-          // height: 24px;
-          // display: inline-block;
           padding-bottom: 2px;
-          // line-height: 50%;
           position: absolute;
           filter: brightness(0.5);
           transition: $transitionConfig;
@@ -168,7 +149,6 @@ gx-gauge {
 
     .minMaxDisplay {
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
       width: 100%;
       z-index: 1;
