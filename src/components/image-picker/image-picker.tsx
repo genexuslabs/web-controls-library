@@ -12,11 +12,11 @@ import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
-  styleUrl: "image-upload.scss",
-  tag: "gx-image-upload"
+  styleUrl: "image-picker.scss",
+  tag: "gx-image-picker"
 })
-export class ImageUpload implements GxComponent {
-  @Element() element: HTMLGxImageUploadElement;
+export class ImagePicker implements GxComponent {
+  @Element() element: HTMLGxImagePickerElement;
 
   /**
    * This attribute lets you specify the alternative text.
@@ -121,6 +121,20 @@ export class ImageUpload implements GxComponent {
   @Prop() readonly cancelButtonText = "CANCEL";
 
   /**
+   * This attribute lets you specify the current state of the gx-image-picker.
+   *
+   * | Value               | Details                                                                                      |
+   * | ------------------- | -------------------------------------------------------------------------------------------- |
+   * | `readyToUse`        | Allows you to choose, change or remove an image.                                             |
+   * | `fileReadyToUpload` | It is set only after an image has been selected or changed, not removed.                     |
+   * | `uploadingFile`     | It is set by the parent control to specifies when the image is being uploaded to the server. |
+   *
+   * `fileReadyToUpload` and `uploadingFile` will not allow you to change or remove the current image.
+   */
+  @Prop() state: "readyToUse" | "fileReadyToUpload" | "uploadingFile" =
+    "readyToUse";
+
+  /**
    * Fired when the image is clicked
    */
   @Event() click: EventEmitter;
@@ -190,6 +204,7 @@ export class ImageUpload implements GxComponent {
     if (file == null) {
       return;
     }
+    this.state = "fileReadyToUpload";
     this.alt = this.getFileNameWithoutExtension(file.name);
 
     this.reader.addEventListener(
@@ -228,6 +243,36 @@ export class ImageUpload implements GxComponent {
     );
   }
 
+  // SVG used to display when an image is being uploaded to the server
+  private getLoadingSVG(): any {
+    return (
+      <svg
+        class="uploading-file"
+        version="1.1"
+        id="loader-1"
+        xmlns="http://www.w3.org/2000/svg"
+        x="0px"
+        y="0px"
+        viewBox="5 5 40 40"
+      >
+        <path
+          fill="rgba(96, 96, 96, 0.6)"
+          d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z"
+        >
+          <animateTransform
+            attributeType="xml"
+            attributeName="transform"
+            type="rotate"
+            from="0 25 25"
+            to="360 25 25"
+            dur="0.6s"
+            repeatCount="indefinite"
+          />
+        </path>
+      </svg>
+    );
+  }
+
   render() {
     return (
       <Host>
@@ -254,15 +299,21 @@ export class ImageUpload implements GxComponent {
                   bottom: this.src !== ""
                 }}
               >
-                <button
-                  class="image-edit"
-                  disabled={this.disabled}
-                  onClick={this.triggerAction}
-                >
-                  {this.src === ""
-                    ? this.getSearchPlusSolidSVG()
-                    : this.getPencilAltSolidSVG()}
-                </button>
+                {this.state != "uploadingFile" ? (
+                  <button
+                    class="image-edit"
+                    disabled={
+                      this.disabled || this.state == "fileReadyToUpload"
+                    }
+                    onClick={this.triggerAction}
+                  >
+                    {this.src === ""
+                      ? this.getSearchPlusSolidSVG()
+                      : this.getPencilAltSolidSVG()}
+                  </button>
+                ) : (
+                  this.getLoadingSVG()
+                )}
               </div>
             )}
           </gx-image>
@@ -279,6 +330,7 @@ export class ImageUpload implements GxComponent {
                   type="file"
                   onChange={this.fileSelectedAction}
                   ref={el => (this.input = el as HTMLInputElement)}
+                  accept="image/*"
                 />
                 <span class="file-custom">{this.changeButtonText}</span>
               </label>
@@ -288,7 +340,7 @@ export class ImageUpload implements GxComponent {
             </div>
             <div slot="secondary-action">
               <gx-button class="cancel-button" onClick={this.closeAction}>
-                {this.cancelButtonText}
+                <span>{this.cancelButtonText}</span>
               </gx-button>
             </div>
           </gx-modal>
