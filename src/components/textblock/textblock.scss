@@ -1,6 +1,7 @@
 @import "../common/_base";
 
 gx-textblock {
+  direction: var(--direction);
   --elevation: 0;
   flex: 1;
 
@@ -9,5 +10,6 @@ gx-textblock {
   & > .content {
     flex: 1;
     @include elevation();
+    text-align: start;
   }
 }
