@@ -1,6 +1,5 @@
 gx-form-field {
   --elevation: 0;
-  direction: var(--direction);
 
   [data-part="field"] {
     @include elevation();
