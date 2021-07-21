@@ -77,3 +77,72 @@ $gx-xsmall-breakpoint: 768px;
   visibility: hidden;
   position: absolute;
 }
+
+@mixin scss-custom-option-control() {
+  $transitionConfig: 0.15s ease-in-out;
+
+  --option-active-color: #007bff;
+
+  --option-active-background-color: #ffffff;
+
+  --option-highlight-border-color: rgba(0, 123, 255, 0.25);
+
+  --option-border: 1px solid #adb5bd;
+
+  --option-border-radius: 100%;
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    .option-container {
+      display: flex;
+      padding: 0 0.35rem 0 0.35rem;
+
+      .control-input {
+        width: 1rem;
+        height: 1rem;
+        opacity: 0;
+
+        &:checked {
+          & ~ .custom-option {
+            border-color: var(--option-active-color);
+            background-color: var(--option-active-color);
+            transition: $transitionConfig;
+            box-shadow: 0 0 0 0.15rem var(--option-highlight-border-color);
+          }
+
+          & ~ svg {
+            opacity: 100;
+            transition: $transitionConfig;
+          }
+        }
+      }
+
+      .custom-option {
+        position: absolute;
+        width: 1rem;
+        height: 1rem;
+        pointer-events: none;
+        border: var(--option-border);
+        border-radius: var(--option-border-radius);
+        content: "";
+      }
+
+      svg {
+        position: absolute;
+        width: 1rem;
+        height: 1rem;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0;
+        fill: var(--option-active-background-color);
+      }
+    }
+
+    .custom-label {
+      margin: 0;
+    }
+  }
+}
