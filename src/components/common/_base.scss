@@ -110,13 +110,25 @@ $gx-xsmall-breakpoint: 768px;
             border-color: var(--option-active-color);
             background-color: var(--option-active-color);
             transition: $transitionConfig;
-            box-shadow: 0 0 0 0.15rem var(--option-highlight-border-color);
           }
 
           & ~ svg {
             opacity: 100;
             transition: $transitionConfig;
           }
+        }
+
+        &:active:not(:checked) ~ .custom-option {
+          border-color: var(--option-highlight-border-color);
+          background-color: var(--option-highlight-border-color);
+        }
+
+        &:active ~ .custom-option {
+          filter: brightness(85%);
+        }
+
+        &:focus ~ .custom-option {
+          box-shadow: 0 0 0 0.15rem var(--option-highlight-border-color);
         }
       }
 
