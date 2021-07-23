@@ -81,15 +81,15 @@ $gx-xsmall-breakpoint: 768px;
 @mixin scss-custom-option-control() {
   $transitionConfig: 0.15s ease-in-out;
 
-  --option-active-color: #007bff;
+  --option-checked-color: #007bff;
 
-  --option-active-background-color: #ffffff;
-
-  --option-highlight-border-color: rgba(0, 123, 255, 0.25);
+  --option-background-color: #ffffff;
 
   --option-border: 1px solid #adb5bd;
 
   --option-border-radius: 100%;
+
+  --option-highlight-border-color: #007bff40;
 
   .container {
     display: flex;
@@ -107,14 +107,12 @@ $gx-xsmall-breakpoint: 768px;
 
         &:checked {
           & ~ .custom-option {
-            border-color: var(--option-active-color);
-            background-color: var(--option-active-color);
-            transition: $transitionConfig;
+            border-color: var(--option-checked-color);
+            background-color: var(--option-checked-color);
           }
 
           & ~ svg {
             opacity: 100;
-            transition: $transitionConfig;
           }
         }
 
@@ -140,6 +138,7 @@ $gx-xsmall-breakpoint: 768px;
         border: var(--option-border);
         border-radius: var(--option-border-radius);
         content: "";
+        transition: $transitionConfig;
       }
 
       svg {
@@ -149,7 +148,8 @@ $gx-xsmall-breakpoint: 768px;
         pointer-events: none;
         z-index: 1;
         opacity: 0;
-        fill: var(--option-active-background-color);
+        fill: var(--option-background-color);
+        transition: $transitionConfig;
       }
     }
 
