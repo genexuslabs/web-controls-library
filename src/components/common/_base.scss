@@ -30,7 +30,7 @@ $gx-xsmall-breakpoint: 768px;
   &:not([align]),
   &[align="left"] {
     & > * {
-      flex: 1;
+      justify-content: flex-start;
     }
   }
 
