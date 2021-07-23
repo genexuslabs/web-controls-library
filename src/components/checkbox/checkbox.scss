@@ -2,4 +2,8 @@
 
 gx-checkbox {
   @include visibility(flex);
+
+  @include scss-custom-option-control();
+
+  --option-border-radius: 25%;
 }
