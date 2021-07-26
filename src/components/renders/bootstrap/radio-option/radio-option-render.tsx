@@ -22,7 +22,7 @@ export class RadioOptionRender implements Renderer {
   private getCssClasses() {
     const classList = [];
 
-    classList.push("custom-control-input");
+    classList.push("control-input");
 
     if (this.component.cssClass) {
       classList.push(this.component.cssClass);
@@ -36,7 +36,7 @@ export class RadioOptionRender implements Renderer {
   }
 
   private getInnerControlContainerClass() {
-    const classList = ["custom-control", "custom-radio"];
+    const classList = ["container"];
 
     if (this.component.disabled) {
       classList.push("disabled");
@@ -111,8 +111,17 @@ export class RadioOptionRender implements Renderer {
     return [
       <gx-bootstrap />,
       <div class={this.getInnerControlContainerClass()}>
-        <input {...attris} type="radio" checked={radioOption.checked} />
-        <label class="custom-control-label" {...forAttris}>
+        <div class="option-container">
+          <input {...attris} type="radio" checked={radioOption.checked} />
+
+          <label class="custom-option"></label>
+
+          <svg viewBox="-8 -8 16 16">
+            <circle r="3"></circle>
+          </svg>
+        </div>
+
+        <label class="custom-label" {...forAttris}>
           {radioOption.caption}
         </label>
       </div>

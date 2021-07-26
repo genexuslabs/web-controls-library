@@ -30,7 +30,7 @@ $gx-xsmall-breakpoint: 768px;
   &:not([align]),
   &[align="left"] {
     & > * {
-      flex: 1;
+      justify-content: flex-start;
     }
   }
 
@@ -76,4 +76,85 @@ $gx-xsmall-breakpoint: 768px;
 .line-measuring {
   visibility: hidden;
   position: absolute;
+}
+
+@mixin scss-custom-option-control() {
+  $transitionConfig: 0.15s ease-in-out;
+
+  --option-checked-color: #007bff;
+
+  --option-background-color: #ffffff;
+
+  --option-border: 1px solid #adb5bd;
+
+  --option-border-radius: 100%;
+
+  --option-highlight-border-color: #007bff40;
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    .option-container {
+      display: flex;
+      padding: 0 0.35rem 0 0.35rem;
+
+      .control-input {
+        width: 1rem;
+        height: 1rem;
+        opacity: 0;
+
+        &:checked {
+          & ~ .custom-option {
+            border-color: var(--option-checked-color);
+            background-color: var(--option-checked-color);
+          }
+
+          & ~ svg {
+            opacity: 100;
+          }
+        }
+
+        &:active:not(:checked) ~ .custom-option {
+          border-color: var(--option-highlight-border-color);
+          background-color: var(--option-highlight-border-color);
+        }
+
+        &:active ~ .custom-option {
+          filter: brightness(85%);
+        }
+
+        &:focus ~ .custom-option {
+          box-shadow: 0 0 0 0.15rem var(--option-highlight-border-color);
+        }
+      }
+
+      .custom-option {
+        position: absolute;
+        width: 1rem;
+        height: 1rem;
+        pointer-events: none;
+        border: var(--option-border);
+        border-radius: var(--option-border-radius);
+        content: "";
+        transition: $transitionConfig;
+      }
+
+      svg {
+        position: absolute;
+        width: 1rem;
+        height: 1rem;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0;
+        fill: var(--option-background-color);
+        transition: $transitionConfig;
+      }
+    }
+
+    .custom-label {
+      margin: 0;
+    }
+  }
 }

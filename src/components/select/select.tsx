@@ -14,6 +14,7 @@ import { FormComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
+  styleUrl: "select.scss",
   tag: "gx-select"
 })
 export class Select implements FormComponent {
@@ -216,6 +217,10 @@ export class Select implements FormComponent {
 
   render() {
     return this.renderer.render();
+  }
+
+  componentDidRender() {
+    return this.renderer.componentDidRender();
   }
 }
 

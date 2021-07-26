@@ -9,5 +9,6 @@ gx-textblock {
   & > .content {
     flex: 1;
     @include elevation();
+    text-align: start;
   }
 }

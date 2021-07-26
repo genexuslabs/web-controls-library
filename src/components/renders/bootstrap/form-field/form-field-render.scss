@@ -90,8 +90,14 @@ gx-form-field {
     max-width: 25%;
   }
 
+  .label-left,
+  .label-top,
+  .label-bottom {
+    text-align: start;
+  }
+
   .label-right {
-    text-align: right;
+    text-align: end;
   }
 
   .label-top,
