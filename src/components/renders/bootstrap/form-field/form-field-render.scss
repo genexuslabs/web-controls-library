@@ -149,29 +149,6 @@ gx-form-field {
     flex: 1;
     flex-wrap: wrap;
   }
-
-  gx-checkbox {
-    .custom-checkbox {
-      padding-top: calc(1.375rem + 1px);
-      padding-left: 0.75rem;
-    }
-
-    .custom-control-label:before,
-    .custom-control-label:after {
-      top: calc(0.25em - 15px);
-    }
-  }
-
-  gx-radio-option {
-    .custom-radio {
-      padding-top: calc(0.375em + 1px);
-    }
-
-    .custom-control-label:before,
-    .custom-control-label:after {
-      top: calc(-0.15em + 7px);
-    }
-  }
 }
 
 gx-table-cell {
