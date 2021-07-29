@@ -75,31 +75,38 @@ export class CheckBoxRender implements Renderer {
 
     return [
       <gx-bootstrap />,
-      <div class="container">
-        <div class="option-container">
-          <input
-            {...attris}
-            type="checkbox"
-            checked={checkbox.checked}
-            value={
-              checkbox.checked ? checkbox.checkedValue : checkbox.unCheckedValue
-            }
-          />
-
-          <label class="custom-option"></label>
-
-          <svg viewBox="-4 -4 16 16">
-            <path d="M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z" />
-          </svg>
-        </div>
-
-        <label
-          class="custom-label"
-          {...forAttris}
-          aria-hidden={(!checkbox.caption).toString()}
+      <div data-readonly="">
+        <div
+          class="container"
+          data-part={!checkbox.disabled ? "option-control" : ""}
         >
-          {checkbox.caption}
-        </label>
+          <div class="option-container">
+            <input
+              {...attris}
+              type="checkbox"
+              checked={checkbox.checked}
+              value={
+                checkbox.checked
+                  ? checkbox.checkedValue
+                  : checkbox.unCheckedValue
+              }
+            />
+
+            <label class="custom-option"></label>
+
+            <svg viewBox="-4 -4 16 16">
+              <path d="M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z" />
+            </svg>
+          </div>
+
+          <label
+            class="custom-label"
+            {...forAttris}
+            aria-hidden={(!checkbox.caption).toString()}
+          >
+            {checkbox.caption}
+          </label>
+        </div>
       </div>
     ];
   }

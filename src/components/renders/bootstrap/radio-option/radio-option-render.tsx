@@ -110,7 +110,10 @@ export class RadioOptionRender implements Renderer {
 
     return [
       <gx-bootstrap />,
-      <div class={this.getInnerControlContainerClass()}>
+      <div
+        class={this.getInnerControlContainerClass()}
+        data-part={!radioOption.disabled ? "option-control" : ""}
+      >
         <div class="option-container">
           <input {...attris} type="radio" checked={radioOption.checked} />
 
