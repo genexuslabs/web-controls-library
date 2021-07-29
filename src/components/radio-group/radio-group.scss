@@ -1,10 +1,18 @@
 @import "../common/_base";
 
 gx-radio-group {
-  @include visibility(block);
+  @include visibility(flex);
 
-  &[direction="horizontal"] > gx-radio-option {
-    display: inline-flex;
-    margin-right: 1rem;
+  &[direction="vertical"] {
+    flex-direction: column;
+
+    & > gx-radio-option {
+      flex: 1;
+    }
+  }
+
+  &[direction="horizontal"] {
+    flex-wrap: wrap;
+    justify-content: space-around;
   }
 }
