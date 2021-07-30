@@ -184,7 +184,7 @@ export class RadioGroup
 
   render() {
     return (
-      <Host role="radiogroup">
+      <Host role="radiogroup" data-readonly="">
         <slot />
       </Host>
     );
