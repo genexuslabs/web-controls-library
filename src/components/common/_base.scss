@@ -80,6 +80,7 @@ $gx-xsmall-breakpoint: 768px;
 
 @mixin scss-custom-option-control() {
   $transitionConfig: 0.15s ease-in-out;
+  $disabledColor: #a5a8aac0;
 
   --option-checked-color: #007bff;
 
@@ -121,13 +122,15 @@ $gx-xsmall-breakpoint: 768px;
           }
         }
 
-        &:active:not(:checked):not(:disabled) ~ .custom-option {
-          border-color: var(--option-highlight-border-color);
-          background-color: var(--option-highlight-border-color);
-        }
+        &:active:not(:disabled) {
+          &:not(:checked) ~ .custom-option {
+            border-color: var(--option-highlight-border-color);
+            background-color: var(--option-highlight-border-color);
+          }
 
-        &:active:not(:disabled) ~ .custom-option {
-          filter: brightness(85%);
+          & ~ .custom-option {
+            filter: brightness(85%);
+          }
         }
 
         &:focus ~ .custom-option {
@@ -135,8 +138,7 @@ $gx-xsmall-breakpoint: 768px;
         }
 
         &:disabled ~ .custom-option {
-          background-color: #e9ecef;
-          opacity: 1;
+          background-color: $disabledColor;
         }
       }
 
