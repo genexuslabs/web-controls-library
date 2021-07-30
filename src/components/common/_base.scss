@@ -93,10 +93,13 @@ $gx-xsmall-breakpoint: 768px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding: 0 !important;
-    background-color: unset !important;
-    border: unset !important;
     height: 100%;
+
+    &[data-part="option-control"]:active {
+      padding: 0;
+      background-color: unset;
+      border: unset;
+    }
 
     .option-container {
       display: flex;
