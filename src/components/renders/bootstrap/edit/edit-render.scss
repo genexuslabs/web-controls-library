@@ -1,4 +1,6 @@
 gx-edit {
+  $defaultPlaceholderColor: #953535;
+
   // Used to disable the borders
   .no-borders {
     border: none;
@@ -14,6 +16,13 @@ gx-edit {
     margin-left: var(--margin-left, 0);
   }
 
+  // Used to change the placeholder color in the input controls
+  // Opacity property is necessary, because some browsers (e.g., mozilla) change this value
+  @mixin placeholder-color {
+    color: var(--placeholder-color, $defaultPlaceholderColor);
+    opacity: 1;
+  }
+
   // This applies when the input is multiline
   textarea {
     @extend .margins;
@@ -23,6 +32,27 @@ gx-edit {
     &:active,
     &:focus {
       @extend .no-borders;
+    }
+
+    &::-webkit-input-placeholder {
+      @include placeholder-color;
+    }
+
+    &:-ms-input-placeholder {
+      @include placeholder-color;
+    }
+
+    &::-ms-input-placeholder {
+      @include placeholder-color;
+    }
+
+    // Mozilla
+    &::-moz-placeholder {
+      @include placeholder-color;
+    }
+
+    &::placeholder {
+      @include placeholder-color;
     }
   }
 
@@ -36,13 +66,34 @@ gx-edit {
       @extend .margins;
       padding: 0;
 
-      & [data-native-element=""] {
+      & input[data-native-element=""] {
         flex: 1;
 
         &,
         &:active,
         &:focus {
           @extend .no-borders;
+        }
+
+        &::-webkit-input-placeholder {
+          @include placeholder-color;
+        }
+
+        &:-ms-input-placeholder {
+          @include placeholder-color;
+        }
+
+        &::-ms-input-placeholder {
+          @include placeholder-color;
+        }
+
+        // Mozilla
+        &::-moz-placeholder {
+          @include placeholder-color;
+        }
+
+        &::placeholder {
+          @include placeholder-color;
         }
       }
     }
