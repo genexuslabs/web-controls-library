@@ -26,6 +26,7 @@
     $drag-over-class
   );
   [data-part="field"],
+  [data-part="container"],
   [data-readonly] {
     @extend #{$class} !optional;
   }

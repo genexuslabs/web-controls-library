@@ -46,18 +46,11 @@ export class EditRender implements Renderer {
     const classList = [];
 
     if (edit.type === "file") {
-      classList.push("form-control-file");
+      classList.push("input-control-file");
     } else {
-      classList.push("form-control");
+      classList.push("input-control");
     }
 
-    return classList.join(" ");
-  }
-
-  private getTriggerCssClasses() {
-    const classList = [];
-    classList.push("btn");
-    classList.push("btn-outline-secondary");
     return classList.join(" ");
   }
 
@@ -133,39 +126,45 @@ export class EditRender implements Renderer {
       placeholder: edit.placeholder
     };
 
+    // This will be displayed at the end
     let editableElement;
+
+    // If it has multiline, it sets a textarea
     if (edit.multiline) {
       editableElement = <textarea {...attris}>{edit.value}</textarea>;
+
+      // Otherwise, it sets an input
     } else {
       const input = <input {...attris} type={edit.type} value={edit.value} />;
+      const existSlotContent = edit.element.querySelector(
+        "[slot='trigger-content']"
+      );
 
-      if (edit.showTrigger) {
-        const existSlotContent = edit.element.querySelector(
-          "[slot='trigger-content']"
-        );
-        editableElement = (
-          <div class="input-group" hidden={edit.readonly}>
-            {input}
-            <div class="input-group-append">
+      // If showTrigger == true, it also sets a trigger button
+      editableElement = (
+        <div class="container" data-part="container" hidden={edit.readonly}>
+          {input}
+
+          {edit.showTrigger && (
+            <div class="trigger-button-container">
               <button
-                class={this.getTriggerCssClasses()}
+                class="trigger-button"
                 onClick={this.handleTriggerClick}
                 type="button"
                 disabled={edit.disabled}
                 aria-label={edit.triggerText}
               >
-                {existSlotContent !== null
+                {existSlotContent !== null // This doesn't work properly when it has slot and trigger-text seted
                   ? slots.triggerContent
                   : edit.triggerText}
               </button>
             </div>
-          </div>
-        );
-      } else {
-        editableElement = input;
-      }
+          )}
+        </div>
+      );
     }
 
+    // It can be h1, h2, p, footer and span value
     const ReadonlyTag = this.getReadonlyTagByFontCategory() as any;
 
     return [

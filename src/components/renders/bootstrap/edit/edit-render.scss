@@ -1,42 +1,61 @@
 gx-edit {
-  [data-native-element] {
+  // Used to disable the borders
+  .no-borders {
+    border: none;
+    border-radius: 0;
+    outline: 0;
+  }
+
+  // Used to import the margins from GeneXus
+  .margins {
     margin-top: var(--margin-top, 0);
+    margin-right: var(--margin-right, 0);
     margin-bottom: var(--margin-bottom, 0);
-    height: unset;
+    margin-left: var(--margin-left, 0);
+  }
 
+  // This applies when the input is multiline
+  textarea {
+    @extend .margins;
+    flex: 1;
+
+    &,
+    &:active,
     &:focus {
-      box-shadow: none;
+      @extend .no-borders;
     }
   }
 
-  &:not([show-trigger]),
-  &[show-trigger="false"] {
-    [slot="trigger-content"] {
-      display: none;
-    }
+  // This applies when the input is not multiline
+  .container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
 
-    [data-native-element] {
-      margin-right: var(--margin-right, 0);
-      margin-left: var(--margin-left, 0);
-    }
-  }
+    &[data-part="container"] {
+      @extend .margins;
+      padding: 0;
 
-  &[show-trigger],
-  &[show-trigger="true"] {
-    .input-group {
-      margin-right: var(--margin-right, 0);
-      margin-left: var(--margin-left, 0);
+      & [data-native-element=""] {
+        flex: 1;
+
+        &,
+        &:active,
+        &:focus {
+          @extend .no-borders;
+        }
+      }
     }
   }
 
   [data-readonly] {
-    margin: 0;
+    margin: 0; // This seems to be redundant
     margin-right: var(--margin-right, 0);
     margin-left: var(--margin-left, 0);
     margin-top: var(--margin-top, 0);
     margin-bottom: var(--margin-bottom, 0);
-    padding: 0;
-    line-height: 1.2;
+    padding: 0; // Bootstrap?
+    line-height: 1.2; // Bootstrap?
     white-space: break-spaces;
     flex: 1;
   }
