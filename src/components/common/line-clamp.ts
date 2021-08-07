@@ -3,6 +3,7 @@ import { Component } from "./interfaces";
 
 const LINE_HEIGHT_CLAMP_THRESHOLD = 0.3;
 
+// There is an issue, which loops this call
 export function makeLinesClampable(
   component: LineClampComponent,
   contentElementSelect: string,
@@ -24,6 +25,7 @@ export function makeLinesClampable(
       const { offsetHeight, scrollHeight } = contentElement;
       const delta = scrollHeight - offsetHeight;
       const lineHeight = lineMeasuringElement.clientHeight;
+
       if (delta > lineHeight * LINE_HEIGHT_CLAMP_THRESHOLD) {
         component.maxLines = Math.trunc(offsetHeight / lineHeight);
         component.maxHeight = component.maxLines * lineHeight;

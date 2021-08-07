@@ -61,8 +61,8 @@ gx-form-field {
     & [area="field"].value-set ~ label {
       padding-top: calc(var(--input-padding-y) / 3);
       padding-bottom: calc(var(--input-padding-y) / 3);
-      font-size: 12px;
-      color: #777;
+      font-size: 12px; // Probably, this hardcodes the font size
+      color: #777; // Probably, this hardcodes the font color
     }
   }
 
