@@ -2,14 +2,14 @@ gx-edit {
   $defaultPlaceholderColor: #953535;
 
   // Used to disable the borders
-  .no-borders {
+  @mixin no-borders {
     border: none;
     border-radius: 0;
     outline: 0;
   }
 
   // Used to import the margins from GeneXus
-  .margins {
+  @mixin margins {
     margin-top: var(--margin-top, 0);
     margin-right: var(--margin-right, 0);
     margin-bottom: var(--margin-bottom, 0);
@@ -25,13 +25,13 @@ gx-edit {
 
   // This applies when the input is multiline
   textarea {
-    @extend .margins;
+    @include margins;
     flex: 1;
 
     &,
     &:active,
     &:focus {
-      @extend .no-borders;
+      @include no-borders;
     }
 
     &::-webkit-input-placeholder {
@@ -63,7 +63,7 @@ gx-edit {
     overflow: hidden;
 
     &[data-part="container"] {
-      @extend .margins;
+      @include margins;
       padding: 0;
 
       & input[data-native-element=""] {
@@ -72,7 +72,7 @@ gx-edit {
         &,
         &:active,
         &:focus {
-          @extend .no-borders;
+          @include no-borders;
         }
 
         &::-webkit-input-placeholder {
