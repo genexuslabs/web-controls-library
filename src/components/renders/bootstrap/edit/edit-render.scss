@@ -1,5 +1,6 @@
 gx-edit {
-  $defaultPlaceholderColor: #953535;
+  $defaultPlaceholderColor: #757575;
+  overflow: hidden;
 
   // Used to disable the borders
   @mixin no-borders {
