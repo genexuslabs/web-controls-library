@@ -134,18 +134,10 @@ export class Edit implements FormComponent, HighlightableComponent {
 
   /**
    * If true, a trigger button is shown next to the edit field. The button can
-   * be customized using `trigger-text` and `trigger-class` attributes,
-   * or adding a child element with `slot="trigger-content"` attribute to
-   * specify the content inside the trigger button.
+   * be customized adding a child element with `slot="trigger-content"`
+   * attribute to specify the content inside the trigger button.
    */
   @Prop() readonly showTrigger: boolean;
-
-  /**
-   * The text of the trigger button. If a text is specified and an image is
-   * specified (through an element with `slot="trigger-content"`), the content
-   * is ignored and the text is used instead.
-   */
-  @Prop() readonly triggerText: string;
 
   /**
    * The type of control to render. A subset of the types supported by the `input` element is supported:

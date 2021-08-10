@@ -152,11 +152,9 @@ export class EditRender implements Renderer {
                 onClick={this.handleTriggerClick}
                 type="button"
                 disabled={edit.disabled}
-                aria-label={edit.triggerText}
+                // aria-label={edit.triggerText}
               >
-                {existSlotContent !== null // This doesn't work properly when it has slot and trigger-text seted
-                  ? slots.triggerContent
-                  : edit.triggerText}
+                {existSlotContent !== null && slots.triggerContent}
               </button>
             </div>
           )}

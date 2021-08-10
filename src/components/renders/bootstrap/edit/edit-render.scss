@@ -1,5 +1,9 @@
 gx-edit {
   $defaultPlaceholderColor: #757575;
+  $buttonMinWidth: 2.5rem;
+  $buttonMaxWidth: 25%;
+  $transitionConfig: filter 0.2s ease;
+
   overflow: hidden;
 
   // Used to disable the borders
@@ -22,6 +26,14 @@ gx-edit {
   @mixin placeholder-color {
     color: var(--placeholder-color, $defaultPlaceholderColor);
     opacity: 1;
+  }
+
+  // Used to not display the "trigger-content" when show-trigger=false
+  &:not([show-trigger]),
+  &[show-trigger="false"] {
+    [slot="trigger-content"] {
+      display: none;
+    }
   }
 
   // This applies when the input is multiline
@@ -95,6 +107,34 @@ gx-edit {
 
         &::placeholder {
           @include placeholder-color;
+        }
+      }
+    }
+
+    .trigger-button-container {
+      min-width: $buttonMinWidth;
+      max-width: $buttonMaxWidth;
+
+      .trigger-button {
+        @include no-borders;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background-color: #eee;
+        transition: $transitionConfig;
+
+        &:hover {
+          filter: brightness(90%);
+        }
+
+        &:active {
+          filter: brightness(80%);
+        }
+
+        & > [slot="trigger-content"] {
+          pointer-events: none;
         }
       }
     }
