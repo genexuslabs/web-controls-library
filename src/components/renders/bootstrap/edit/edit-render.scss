@@ -45,6 +45,7 @@ gx-edit {
     &:active,
     &:focus {
       @include no-borders;
+      font-size: inherit;
     }
 
     &::-webkit-input-placeholder {
@@ -86,6 +87,7 @@ gx-edit {
         &:active,
         &:focus {
           @include no-borders;
+          font-size: inherit;
         }
 
         &::-webkit-input-placeholder {
@@ -152,6 +154,7 @@ gx-edit {
     flex: 1;
   }
 
+  // Used to inherit the font properties defined in the GeneXus theme
   h1,
   h2,
   footer {
