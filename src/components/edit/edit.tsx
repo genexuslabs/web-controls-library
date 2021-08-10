@@ -50,7 +50,7 @@ export class Edit implements FormComponent, HighlightableComponent {
   /**
    * Allows to specify the role of the element when inside a `gx-form-field` element
    */
-  @Prop({ reflectToAttr: true }) readonly area: "field";
+  @Prop({ reflect: true }) readonly area: "field";
 
   /**
    * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize)
