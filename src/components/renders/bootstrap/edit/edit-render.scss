@@ -71,45 +71,55 @@ gx-edit {
   }
 
   // This applies when the input is not multiline
-  .container {
+  .container[data-part="container"] {
+    @include margins;
     display: flex;
+    align-items: center;
     flex: 1;
     overflow: hidden;
+    padding: 0;
 
-    &[data-part="container"] {
-      @include margins;
-      padding: 0;
+    // Used when format = Text
+    & input[data-native-element=""] {
+      flex: 1;
+      height: 100%;
 
-      & input[data-native-element=""] {
-        flex: 1;
+      &,
+      &:active,
+      &:focus {
+        @include no-borders;
+        font-size: inherit;
+      }
 
-        &,
-        &:active,
-        &:focus {
-          @include no-borders;
-          font-size: inherit;
-        }
+      &::-webkit-input-placeholder {
+        @include placeholder-color;
+      }
 
-        &::-webkit-input-placeholder {
-          @include placeholder-color;
-        }
+      &:-ms-input-placeholder {
+        @include placeholder-color;
+      }
 
-        &:-ms-input-placeholder {
-          @include placeholder-color;
-        }
+      &::-ms-input-placeholder {
+        @include placeholder-color;
+      }
 
-        &::-ms-input-placeholder {
-          @include placeholder-color;
-        }
+      // Mozilla
+      &::-moz-placeholder {
+        @include placeholder-color;
+      }
 
-        // Mozilla
-        &::-moz-placeholder {
-          @include placeholder-color;
-        }
+      &::placeholder {
+        @include placeholder-color;
+      }
+    }
 
-        &::placeholder {
-          @include placeholder-color;
-        }
+    // Used when format = HTML
+    & div[data-native-element] {
+      &,
+      &:active,
+      &:focus {
+        @include no-borders;
+        font-size: inherit;
       }
     }
 

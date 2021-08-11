@@ -129,35 +129,45 @@ export class EditRender implements Renderer {
     // This will be displayed at the end
     let editableElement;
 
-    // If it has multiline, it sets a textarea
-    if (edit.multiline) {
-      editableElement = <textarea {...attris}>{edit.value}</textarea>;
+    // If the format is the default format
+    if (edit.format === "Text") {
+      // If it has multiline, it sets a textarea
+      if (edit.multiline) {
+        editableElement = <textarea {...attris}>{edit.value}</textarea>;
 
-      // Otherwise, it sets an input
+        // Otherwise, it sets an input
+      } else {
+        const input = <input {...attris} type={edit.type} value={edit.value} />;
+        const existSlotContent = edit.element.querySelector(
+          "[slot='trigger-content']"
+        );
+
+        // If showTrigger == true, it also sets a trigger button
+        editableElement = (
+          <div class="container" data-part="container" hidden={edit.readonly}>
+            {input}
+
+            {edit.showTrigger && (
+              <div class="trigger-button-container">
+                <button
+                  class="trigger-button"
+                  onClick={this.handleTriggerClick}
+                  type="button"
+                  disabled={edit.disabled}
+                  // aria-label={edit.triggerText}
+                >
+                  {existSlotContent !== null && slots.triggerContent}
+                </button>
+              </div>
+            )}
+          </div>
+        );
+      }
+      // If format = HTML
     } else {
-      const input = <input {...attris} type={edit.type} value={edit.value} />;
-      const existSlotContent = edit.element.querySelector(
-        "[slot='trigger-content']"
-      );
-
-      // If showTrigger == true, it also sets a trigger button
       editableElement = (
-        <div class="container" data-part="container" hidden={edit.readonly}>
-          {input}
-
-          {edit.showTrigger && (
-            <div class="trigger-button-container">
-              <button
-                class="trigger-button"
-                onClick={this.handleTriggerClick}
-                type="button"
-                disabled={edit.disabled}
-                // aria-label={edit.triggerText}
-              >
-                {existSlotContent !== null && slots.triggerContent}
-              </button>
-            </div>
-          )}
+        <div class="container" data-part="container">
+          <div {...attris} innerHTML={edit.inner}></div>
         </div>
       );
     }

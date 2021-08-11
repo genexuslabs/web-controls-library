@@ -175,6 +175,23 @@ export class Edit implements FormComponent, HighlightableComponent {
    */
   @Prop() readonly highlightable = false;
 
+  /**
+   * It specifies the format that will have the edit control.
+   *
+   * If `format` = `HTML`, the edit control works as an HTML div and the
+   * innerHTML will be the same as the `inner` property specifies. Also, it
+   * does not allow any input/editable UI since it works as an HTML div.
+   *
+   * If `format` = `Text`, the edit control works as a normal input control and
+   * it is affected by most of the defined properties.
+   */
+  @Prop() readonly format: "Text" | "HTML" = "Text";
+
+  /**
+   * Used as the innerHTML when `format` = `HTML`.
+   */
+  @Prop() readonly inner: string = "";
+
   @State() maxLines = 0;
   @State() maxHeight = 0;
 
