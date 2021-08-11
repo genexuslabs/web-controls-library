@@ -120,6 +120,7 @@ gx-edit {
       &:focus {
         @include no-borders;
         font-size: inherit;
+        text-align: start;
       }
     }
 
