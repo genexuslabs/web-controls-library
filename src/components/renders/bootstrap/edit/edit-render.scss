@@ -1,7 +1,8 @@
 gx-edit {
-  $defaultPlaceholderColor: #757575;
   $buttonMinWidth: 2.5rem;
   $buttonMaxWidth: 25%;
+  $defaultPlaceholderColor: #757575;
+  $disabledBackgroundColor: #e9ecef;
   $transitionConfig: filter 0.2s ease;
 
   overflow: hidden;
@@ -41,6 +42,11 @@ gx-edit {
     @include margins;
     flex: 1;
 
+    &:disabled,
+    &[disabled="true"] {
+      background-color: $disabledBackgroundColor;
+    }
+
     &,
     &:active,
     &:focus {
@@ -61,6 +67,10 @@ gx-edit {
     flex: 1;
     overflow: hidden;
     padding: 0;
+
+    &.disabled {
+      background-color: $disabledBackgroundColor;
+    }
 
     // Used when format = Text
     & input[data-native-element=""] {

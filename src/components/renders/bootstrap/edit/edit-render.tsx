@@ -144,7 +144,14 @@ export class EditRender implements Renderer {
 
         // If showTrigger == true, it also sets a trigger button
         editableElement = (
-          <div class="container" data-part="container" hidden={edit.readonly}>
+          <div
+            class={{
+              container: true,
+              disabled: edit.disabled
+            }}
+            data-part="container"
+            hidden={edit.readonly}
+          >
             {input}
 
             {edit.showTrigger && (
@@ -166,7 +173,13 @@ export class EditRender implements Renderer {
       // If format = HTML
     } else {
       editableElement = (
-        <div class="container" data-part="container">
+        <div
+          class={{
+            container: true,
+            disabled: edit.disabled
+          }}
+          data-part="container"
+        >
           <div {...attris} innerHTML={edit.inner}></div>
         </div>
       );
