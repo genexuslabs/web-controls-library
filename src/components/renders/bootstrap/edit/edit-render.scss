@@ -48,23 +48,6 @@ gx-edit {
       font-size: inherit;
     }
 
-    &::-webkit-input-placeholder {
-      @include placeholder-color;
-    }
-
-    &:-ms-input-placeholder {
-      @include placeholder-color;
-    }
-
-    &::-ms-input-placeholder {
-      @include placeholder-color;
-    }
-
-    // Mozilla
-    &::-moz-placeholder {
-      @include placeholder-color;
-    }
-
     &::placeholder {
       @include placeholder-color;
     }
@@ -89,23 +72,6 @@ gx-edit {
       &:focus {
         @include no-borders;
         font-size: inherit;
-      }
-
-      &::-webkit-input-placeholder {
-        @include placeholder-color;
-      }
-
-      &:-ms-input-placeholder {
-        @include placeholder-color;
-      }
-
-      &::-ms-input-placeholder {
-        @include placeholder-color;
-      }
-
-      // Mozilla
-      &::-moz-placeholder {
-        @include placeholder-color;
       }
 
       &::placeholder {
