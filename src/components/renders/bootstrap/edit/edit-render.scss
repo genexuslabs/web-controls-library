@@ -67,7 +67,7 @@ gx-edit {
     }
 
     // Used when format = Text
-    & input[data-native-element=""] {
+    & input[data-native-element] {
       flex: 1;
       height: 100%;
 

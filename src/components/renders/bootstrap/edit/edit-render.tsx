@@ -172,7 +172,6 @@ export class EditRender implements Renderer {
                   onClick={this.handleTriggerClick}
                   type="button"
                   disabled={edit.disabled}
-                  // aria-label={edit.triggerText}
                 >
                   {existSlotContent !== null && slots.triggerContent}
                 </button>
@@ -191,7 +190,7 @@ export class EditRender implements Renderer {
           }}
           data-part="container"
         >
-          <div {...attris} innerHTML={edit.inner}></div>
+          <div data-native-element innerHTML={edit.inner}></div>
         </div>
       );
     }
