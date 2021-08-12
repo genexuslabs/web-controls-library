@@ -118,7 +118,6 @@ export class EditRender implements Renderer {
       class: this.getCssClasses(),
       "data-native-element": "",
       disabled: edit.disabled,
-      hidden: edit.readonly,
       id: this.inputId,
       onChange: this.handleChange,
       onInput: valueChangingHandler,
@@ -140,7 +139,6 @@ export class EditRender implements Renderer {
               disabled: edit.disabled
             }}
             data-part="container"
-            hidden={edit.readonly}
           >
             <textarea {...attris}>{edit.value}</textarea>
           </div>
@@ -161,7 +159,6 @@ export class EditRender implements Renderer {
               disabled: edit.disabled
             }}
             data-part="container"
-            hidden={edit.readonly}
           >
             {input}
 
@@ -200,28 +197,32 @@ export class EditRender implements Renderer {
 
     return [
       <gx-bootstrap />,
-      <ReadonlyTag
-        key="readonly"
-        hidden={!edit.readonly}
-        data-readonly=""
-        class={{
-          "gx-line-clamp": this.shouldClampLines()
-        }}
-        style={
-          this.shouldClampLines() && {
-            "--max-lines": edit.maxLines.toString(),
-            "--max-height": `${edit.maxHeight}px`
-          }
-        }
-      >
-        {edit.lineClamp && (
-          <div class="line-measuring" aria-hidden>
-            {"A"}
-          </div>
-        )}
-        {this.getReadonlyContent(edit, edit.value)}
-      </ReadonlyTag>,
-      editableElement
+      edit.readonly ? (
+        <div data-readonly="">
+          <ReadonlyTag
+            key="readonly"
+            class={{
+              "readonly-content": true,
+              "gx-line-clamp": this.shouldClampLines()
+            }}
+            style={
+              this.shouldClampLines() && {
+                "--max-lines": edit.maxLines.toString(),
+                "--max-height": `${edit.maxHeight}px`
+              }
+            }
+          >
+            {edit.lineClamp && (
+              <div class="line-measuring" aria-hidden>
+                {"A"}
+              </div>
+            )}
+            {this.getReadonlyContent(edit, edit.value)}
+          </ReadonlyTag>
+        </div>
+      ) : (
+        editableElement
+      )
     ];
   }
 

@@ -123,16 +123,16 @@ gx-edit {
     }
   }
 
+  // This applies when the gx-edit is readonly
   [data-readonly] {
-    margin: 0; // This seems to be redundant
-    margin-right: var(--margin-right, 0);
-    margin-left: var(--margin-left, 0);
-    margin-top: var(--margin-top, 0);
-    margin-bottom: var(--margin-bottom, 0);
-    padding: 0; // Bootstrap?
-    line-height: 1.2; // Bootstrap?
+    @include margins;
     white-space: break-spaces;
     flex: 1;
+
+    .readonly-content {
+      margin: 0;
+      text-align: start;
+    }
   }
 
   // Used to inherit the font properties defined in the GeneXus theme
