@@ -133,7 +133,18 @@ export class EditRender implements Renderer {
     if (edit.format === "Text") {
       // If it has multiline, it sets a textarea
       if (edit.multiline) {
-        editableElement = <textarea {...attris}>{edit.value}</textarea>;
+        editableElement = (
+          <div
+            class={{
+              container: true,
+              disabled: edit.disabled
+            }}
+            data-part="container"
+            hidden={edit.readonly}
+          >
+            <textarea {...attris}>{edit.value}</textarea>
+          </div>
+        );
 
         // Otherwise, it sets an input
       } else {

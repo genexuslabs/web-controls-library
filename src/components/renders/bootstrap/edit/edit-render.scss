@@ -37,29 +37,7 @@ gx-edit {
     }
   }
 
-  // This applies when the input is multiline
-  textarea {
-    @include margins;
-    flex: 1;
-
-    &:disabled,
-    &[disabled="true"] {
-      background-color: $disabledBackgroundColor;
-    }
-
-    &,
-    &:active,
-    &:focus {
-      @include no-borders;
-      font-size: inherit;
-    }
-
-    &::placeholder {
-      @include placeholder-color;
-    }
-  }
-
-  // This applies when the input is not multiline
+  // This applies when the gx-edit is not readonly
   .container[data-part="container"] {
     @include margins;
     display: flex;
@@ -70,6 +48,22 @@ gx-edit {
 
     &.disabled {
       background-color: $disabledBackgroundColor;
+    }
+
+    // This applies when the gx-edit is also multiline
+    textarea {
+      flex: 1;
+
+      &,
+      &:active,
+      &:focus {
+        @include no-borders;
+        font-size: inherit;
+      }
+
+      &::placeholder {
+        @include placeholder-color;
+      }
     }
 
     // Used when format = Text
