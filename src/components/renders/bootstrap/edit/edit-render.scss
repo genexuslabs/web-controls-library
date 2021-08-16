@@ -5,6 +5,8 @@ gx-edit {
   $disabledBackgroundColor: #e9ecef;
   $transitionConfig: filter 0.2s ease;
 
+  --trigger-button-font-color: var(--action-tint-color, black);
+
   overflow: hidden;
 
   // Used to disable the borders
@@ -108,7 +110,9 @@ gx-edit {
         align-items: center;
         width: 100%;
         height: 100%;
-        background-color: #eee;
+        background-color: #ddd;
+        opacity: 0.8;
+        color: var(--trigger-button-font-color);
         transition: $transitionConfig;
         flex: 1;
 
