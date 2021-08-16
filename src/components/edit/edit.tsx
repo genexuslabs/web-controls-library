@@ -259,10 +259,6 @@ export class Edit implements FormComponent, HighlightableComponent {
     this.gxTriggerClick.emit(event);
   }
 
-  componentDidRender() {
-    this.renderer.componentDidRender();
-  }
-
   render() {
     return (
       <Host
