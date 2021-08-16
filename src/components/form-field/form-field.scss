@@ -9,6 +9,15 @@ gx-form-field {
   flex: 1;
 }
 
+[align="left"] {
+  & > gx-form-field {
+    [data-part="field"],
+    [data-readonly] {
+      text-align: start;
+    }
+  }
+}
+
 [align="center"] {
   & > gx-form-field {
     [data-part="field"],
