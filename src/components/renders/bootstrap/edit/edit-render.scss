@@ -93,7 +93,6 @@ gx-edit {
       &:focus {
         @include no-borders;
         font-size: inherit;
-        text-align: start;
       }
     }
 
@@ -140,7 +139,6 @@ gx-edit {
 
     .readonly-content {
       margin: 0;
-      text-align: start;
     }
   }
 
