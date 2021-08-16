@@ -139,6 +139,7 @@ export class EditRender implements Renderer {
               disabled: edit.disabled
             }}
             data-part="container"
+            hidden={edit.readonly}
           >
             <textarea {...attris}>{edit.value}</textarea>
           </div>
@@ -159,6 +160,7 @@ export class EditRender implements Renderer {
               disabled: edit.disabled
             }}
             data-part="container"
+            hidden={edit.readonly}
           >
             {input}
 
@@ -197,7 +199,7 @@ export class EditRender implements Renderer {
 
     return [
       <gx-bootstrap />,
-      edit.readonly ? (
+      edit.readonly && edit.format == "Text" && (
         <div data-readonly="">
           <ReadonlyTag
             key="readonly"
@@ -220,9 +222,8 @@ export class EditRender implements Renderer {
             {this.getReadonlyContent(edit, edit.value)}
           </ReadonlyTag>
         </div>
-      ) : (
-        editableElement
-      )
+      ),
+      editableElement
     ];
   }
 
