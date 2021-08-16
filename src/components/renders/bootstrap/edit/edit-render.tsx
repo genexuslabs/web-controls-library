@@ -28,8 +28,6 @@ export class EditRender implements Renderer {
   }
 
   private inputId: string;
-  private inputElement: HTMLInputElement;
-  private existSlotContent: HTMLElement;
   private handleChange: (event: UIEvent) => void;
   private handleTriggerClick: (event: UIEvent) => void;
   private handleValueChanging: (event: UIEvent) => void;
@@ -102,17 +100,6 @@ export class EditRender implements Renderer {
     }
   }
 
-  componentDidRender() {
-    if (this.component.showTrigger && this.existSlotContent !== null) {
-      const slotStyle = this.existSlotContent.style;
-
-      // The first assign is not redundant.
-      // It allows to stop the growth of the max-height.
-      slotStyle.maxHeight = "0px";
-      slotStyle.maxHeight = `${this.inputElement.clientHeight}px`;
-    }
-  }
-
   render(slots) {
     const edit = this.component;
 
@@ -159,15 +146,8 @@ export class EditRender implements Renderer {
 
         // Otherwise, it sets an input
       } else {
-        const input = (
-          <input
-            {...attris}
-            type={edit.type}
-            value={edit.value}
-            ref={el => (this.inputElement = el as HTMLInputElement)}
-          />
-        );
-        this.existSlotContent = edit.element.querySelector(
+        const input = <input {...attris} type={edit.type} value={edit.value} />;
+        const existSlotContent = edit.element.querySelector(
           "[slot='trigger-content']"
         );
 
@@ -190,7 +170,7 @@ export class EditRender implements Renderer {
                   type="button"
                   disabled={edit.disabled}
                 >
-                  {this.existSlotContent !== null && slots.triggerContent}
+                  {existSlotContent !== null && slots.triggerContent}
                 </button>
               </div>
             )}
