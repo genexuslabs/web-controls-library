@@ -150,13 +150,3 @@ gx-edit {
     font-weight: inherit;
   }
 }
-
-gx-table-cell {
-  &[align="center"],
-  &[align="right"] {
-    & > gx-edit {
-      flex-basis: auto;
-      flex-grow: 0;
-    }
-  }
-}
