@@ -43,10 +43,13 @@ gx-edit {
   .container[data-part="container"] {
     @include margins;
     display: flex;
-    align-items: center;
     flex: 1;
     overflow: hidden;
-    padding: 0;
+
+    &,
+    &:focus-within {
+      padding: 0;
+    }
 
     &.disabled {
       background-color: $disabledBackgroundColor;
@@ -71,7 +74,6 @@ gx-edit {
     // Used when format = Text
     & input[data-native-element] {
       flex: 1;
-      height: 100%;
       width: 100%;
 
       &,
@@ -135,6 +137,7 @@ gx-edit {
   [data-readonly] {
     @include margins;
     white-space: break-spaces;
+    display: flex;
     flex: 1;
 
     .readonly-content {

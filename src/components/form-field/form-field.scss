@@ -36,23 +36,37 @@ gx-form-field {
   }
 }
 
-[valign="middle"] {
+[valign="top"] {
   & > gx-form-field {
     [data-readonly],
+    [data-part="container"] {
+      align-items: flex-start;
+    }
+  }
+}
+
+[valign="middle"] {
+  & > gx-form-field {
     [data-part="label"] {
       align-self: center;
+    }
+
+    [data-readonly],
+    [data-part="container"] {
+      align-items: center;
     }
   }
 }
 
 [valign="bottom"] {
   & > gx-form-field {
-    [data-readonly] {
-      align-self: flex-end;
-      line-height: 1.25; // WA: Increase line-height minimally to avoid vertical scrollbars
-    }
     [data-part="label"] {
       align-self: flex-end;
+    }
+
+    [data-readonly],
+    [data-part="container"] {
+      align-items: flex-end;
     }
   }
 }
