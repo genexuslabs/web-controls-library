@@ -46,6 +46,13 @@ export class CheckBox implements FormComponent {
   @Prop() readonly disabled = false;
 
   /**
+   * This attribute indicates that the user cannot modify the value of the control.
+   * Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly)
+   * attribute for `input` elements.
+   */
+  @Prop() readonly readonly = false;
+
+  /**
    * Specifies the label of the checkbox.
    */
   @Prop() readonly caption: string;

@@ -64,7 +64,7 @@ export class CheckBoxRender implements Renderer {
       "aria-disabled": checkbox.disabled ? "true" : undefined,
       class: this.getCssClasses(),
       "data-native-element": "",
-      disabled: checkbox.disabled,
+      disabled: checkbox.disabled || checkbox.readonly,
       id: this.inputId,
       onInput: this.handleChange
     };
@@ -78,7 +78,9 @@ export class CheckBoxRender implements Renderer {
       <div data-readonly="">
         <div
           class="container"
-          data-part={!checkbox.disabled ? "option-control" : ""}
+          data-part={
+            !checkbox.disabled && !checkbox.readonly ? "option-control" : ""
+          }
         >
           <div class="option-container">
             <input
