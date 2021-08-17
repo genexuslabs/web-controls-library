@@ -50,7 +50,7 @@ export class Edit implements FormComponent, HighlightableComponent {
   /**
    * Allows to specify the role of the element when inside a `gx-form-field` element
    */
-  @Prop({ reflectToAttr: true }) readonly area: "field";
+  @Prop({ reflect: true }) readonly area: "field";
 
   /**
    * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize)
@@ -134,18 +134,10 @@ export class Edit implements FormComponent, HighlightableComponent {
 
   /**
    * If true, a trigger button is shown next to the edit field. The button can
-   * be customized using `trigger-text` and `trigger-class` attributes,
-   * or adding a child element with `slot="trigger-content"` attribute to
-   * specify the content inside the trigger button.
+   * be customized adding a child element with `slot="trigger-content"`
+   * attribute to specify the content inside the trigger button.
    */
   @Prop() readonly showTrigger: boolean;
-
-  /**
-   * The text of the trigger button. If a text is specified and an image is
-   * specified (through an element with `slot="trigger-content"`), the content
-   * is ignored and the text is used instead.
-   */
-  @Prop() readonly triggerText: string;
 
   /**
    * The type of control to render. A subset of the types supported by the `input` element is supported:
@@ -182,6 +174,23 @@ export class Edit implements FormComponent, HighlightableComponent {
    * True to highlight control when an action is fired.
    */
   @Prop() readonly highlightable = false;
+
+  /**
+   * It specifies the format that will have the edit control.
+   *
+   * If `format` = `HTML`, the edit control works as an HTML div and the
+   * innerHTML will be the same as the `inner` property specifies. Also, it
+   * does not allow any input/editable UI since it works as an HTML div.
+   *
+   * If `format` = `Text`, the edit control works as a normal input control and
+   * it is affected by most of the defined properties.
+   */
+  @Prop() readonly format: "Text" | "HTML" = "Text";
+
+  /**
+   * Used as the innerHTML when `format` = `HTML`.
+   */
+  @Prop() readonly inner: string = "";
 
   @State() maxLines = 0;
   @State() maxHeight = 0;

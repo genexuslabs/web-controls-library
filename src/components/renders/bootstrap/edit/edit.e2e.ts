@@ -24,7 +24,7 @@ describe("gx-edit", () => {
   });
 
   it("should render as read only", async () => {
-    element.readonly = true;
+    await element.setProperty("readonly", true);
     await page.waitForChanges();
     const readonlyElement = await element.find("[data-readonly]");
     expect(readonlyElement).toBeTruthy();
@@ -34,7 +34,9 @@ describe("gx-edit", () => {
     await element.setProperty("readonly", true);
     await element.setProperty("fontCategory", "headline");
     await page.waitForChanges();
-    const readonlyElement = await element.find("[data-readonly]");
+    const readonlyElement = await element.find(
+      "[data-readonly] .readonly-content"
+    );
     expect(readonlyElement.tagName).toBe("H1");
   });
 
@@ -42,7 +44,9 @@ describe("gx-edit", () => {
     await element.setProperty("readonly", true);
     await element.setProperty("style", "--font-category: headline");
     await page.waitForChanges();
-    const readonlyElement = await element.find("[data-readonly]");
+    const readonlyElement = await element.find(
+      "[data-readonly] .readonly-content"
+    );
     expect(readonlyElement.tagName).toBe("H1");
   });
 
@@ -50,7 +54,9 @@ describe("gx-edit", () => {
     await element.setProperty("readonly", true);
     await element.setProperty("style", "--font-category: body");
     await page.waitForChanges();
-    const readonlyElement = await element.find("[data-readonly]");
+    const readonlyElement = await element.find(
+      "[data-readonly] .readonly-content"
+    );
     expect(readonlyElement.tagName).toBe("P");
   });
 });

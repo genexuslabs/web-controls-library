@@ -61,8 +61,8 @@ gx-form-field {
     & [area="field"].value-set ~ label {
       padding-top: calc(var(--input-padding-y) / 3);
       padding-bottom: calc(var(--input-padding-y) / 3);
-      font-size: 12px;
-      color: #777;
+      font-size: 12px; // Probably, this hardcodes the font size
+      color: #777; // Probably, this hardcodes the font color
     }
   }
 
@@ -148,24 +148,5 @@ gx-form-field {
     display: flex;
     flex: 1;
     flex-wrap: wrap;
-  }
-}
-
-gx-table-cell {
-  &[align="center"],
-  &[align="right"] {
-    & > gx-form-field {
-      .label-left,
-      .label-right,
-      .field-label-left,
-      .field-label-right {
-        -ms-flex-preferred-size: 0;
-        flex-basis: 0;
-        -webkit-box-flex: 1;
-        -ms-flex-positive: 1;
-        flex-grow: 1;
-        max-width: 100%;
-      }
-    }
   }
 }

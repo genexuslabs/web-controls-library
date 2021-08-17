@@ -9,6 +9,15 @@ gx-form-field {
   flex: 1;
 }
 
+[align="left"] {
+  & > gx-form-field {
+    [data-part="field"],
+    [data-readonly] {
+      text-align: start;
+    }
+  }
+}
+
 [align="center"] {
   & > gx-form-field {
     [data-part="field"],
@@ -22,28 +31,42 @@ gx-form-field {
   & > gx-form-field {
     [data-part="field"],
     [data-readonly] {
-      text-align: right;
+      text-align: end;
+    }
+  }
+}
+
+[valign="top"] {
+  & > gx-form-field {
+    [data-readonly],
+    [data-part="container"] {
+      align-items: flex-start;
     }
   }
 }
 
 [valign="middle"] {
   & > gx-form-field {
-    [data-readonly],
     [data-part="label"] {
       align-self: center;
+    }
+
+    [data-readonly],
+    [data-part="container"] {
+      align-items: center;
     }
   }
 }
 
 [valign="bottom"] {
   & > gx-form-field {
-    [data-readonly] {
-      align-self: flex-end;
-      line-height: 1.25; // WA: Increase line-height minimally to avoid vertical scrollbars
-    }
     [data-part="label"] {
       align-self: flex-end;
+    }
+
+    [data-readonly],
+    [data-part="container"] {
+      align-items: flex-end;
     }
   }
 }

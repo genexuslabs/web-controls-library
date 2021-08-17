@@ -26,6 +26,7 @@
     $drag-over-class
   );
   [data-part="field"],
+  [data-part="container"],
   [data-readonly] {
     @extend #{$class} !optional;
   }
@@ -37,6 +38,7 @@
   @if ($highlighted != null) {
     [data-part="field"]:focus,
     [data-part="option-control"]:active,
+    [data-part="container"]:focus-within,
     &.gx-highlighted[type="text"][readonly="true"] [data-readonly] {
       @extend #{$highlighted} !optional;
     }

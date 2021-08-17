@@ -73,6 +73,7 @@ $gx-xsmall-breakpoint: 768px;
   max-height: var(--max-height);
 }
 
+// Used to measure the line height, in order to make the lines clampable
 .line-measuring {
   visibility: hidden;
   position: absolute;

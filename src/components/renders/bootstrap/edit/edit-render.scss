@@ -1,60 +1,155 @@
 gx-edit {
-  [data-native-element] {
-    margin-top: var(--margin-top, 0);
-    margin-bottom: var(--margin-bottom, 0);
-    height: unset;
+  $buttonMinWidth: 2.5rem;
+  $buttonMaxWidth: 25%;
+  $defaultPlaceholderColor: #757575;
+  $disabledBackgroundColor: #e9ecef;
+  $transitionConfig: filter 0.2s ease;
 
-    &:focus {
-      box-shadow: none;
-    }
+  --trigger-button-font-color: var(--action-tint-color, black);
+
+  overflow: hidden;
+
+  // Used to disable the borders
+  @mixin no-borders {
+    border: none;
+    border-radius: 0;
+    outline: 0;
   }
 
+  // Used to import the margins from GeneXus
+  @mixin margins {
+    margin-top: var(--margin-top, 0);
+    margin-right: var(--margin-right, 0);
+    margin-bottom: var(--margin-bottom, 0);
+    margin-left: var(--margin-left, 0);
+  }
+
+  // Used to change the placeholder color in the input controls
+  // Opacity property is necessary, because some browsers (e.g., mozilla) change this value
+  @mixin placeholder-color {
+    color: var(--placeholder-color, $defaultPlaceholderColor);
+    opacity: 1;
+  }
+
+  // Used to not display the "trigger-content" when show-trigger=false
   &:not([show-trigger]),
   &[show-trigger="false"] {
     [slot="trigger-content"] {
       display: none;
     }
-
-    [data-native-element] {
-      margin-right: var(--margin-right, 0);
-      margin-left: var(--margin-left, 0);
-    }
   }
 
-  &[show-trigger],
-  &[show-trigger="true"] {
-    .input-group {
-      margin-right: var(--margin-right, 0);
-      margin-left: var(--margin-left, 0);
-    }
-  }
-
-  [data-readonly] {
-    margin: 0;
-    margin-right: var(--margin-right, 0);
-    margin-left: var(--margin-left, 0);
-    margin-top: var(--margin-top, 0);
-    margin-bottom: var(--margin-bottom, 0);
-    padding: 0;
-    line-height: 1.2;
-    white-space: break-spaces;
+  // This applies when the gx-edit is not readonly
+  .container[data-part="container"] {
+    @include margins;
+    display: flex;
     flex: 1;
+    overflow: hidden;
+
+    &,
+    &:focus-within {
+      padding: 0;
+    }
+
+    &.disabled {
+      background-color: $disabledBackgroundColor;
+    }
+
+    // This applies when the gx-edit is also multiline
+    textarea {
+      flex: 1;
+
+      &,
+      &:active,
+      &:focus {
+        @include no-borders;
+        font-size: inherit;
+      }
+
+      &::placeholder {
+        @include placeholder-color;
+      }
+    }
+
+    // Used when format = Text
+    & input[data-native-element] {
+      flex: 1;
+      width: 100%;
+
+      &,
+      &:active,
+      &:focus {
+        @include no-borders;
+        font-size: inherit;
+      }
+
+      &::placeholder {
+        @include placeholder-color;
+      }
+    }
+
+    // Used when format = HTML
+    & div[data-native-element] {
+      &,
+      &:active,
+      &:focus {
+        @include no-borders;
+        font-size: inherit;
+      }
+    }
+
+    .trigger-button-container {
+      min-width: $buttonMinWidth;
+      max-width: $buttonMaxWidth;
+      height: 100%;
+      overflow: hidden;
+
+      .trigger-button {
+        @include no-borders;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background-color: #ddd;
+        opacity: 0.8;
+        color: var(--trigger-button-font-color);
+        transition: $transitionConfig;
+        flex: 1;
+
+        &:hover {
+          filter: brightness(90%);
+        }
+
+        &:active {
+          filter: brightness(80%);
+        }
+
+        & > [slot="trigger-content"] {
+          pointer-events: none;
+          height: 1.34em;
+        }
+      }
+    }
   }
 
+  // This applies when the gx-edit is readonly
+  [data-readonly] {
+    @include margins;
+    white-space: break-spaces;
+    display: flex;
+    flex: 1;
+
+    .readonly-content {
+      margin: 0;
+    }
+  }
+
+  // Used to inherit the font properties defined in the GeneXus theme
   h1,
   h2,
   footer {
     font-size: inherit;
     font-weight: inherit;
-  }
-}
-
-gx-table-cell {
-  &[align="center"],
-  &[align="right"] {
-    & > gx-edit {
-      flex-basis: auto;
-      flex-grow: 0;
-    }
   }
 }

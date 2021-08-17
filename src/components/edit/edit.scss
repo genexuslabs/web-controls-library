@@ -3,6 +3,10 @@
 
 gx-edit {
   @include visibility(flex);
+
+  &[multiline][readonly="false"] {
+    @include visibility(block);
+  }
   align-items: stretch;
   flex: 1;
 

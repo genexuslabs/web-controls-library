@@ -46,18 +46,11 @@ export class EditRender implements Renderer {
     const classList = [];
 
     if (edit.type === "file") {
-      classList.push("form-control-file");
+      classList.push("input-control-file");
     } else {
-      classList.push("form-control");
+      classList.push("input-control");
     }
 
-    return classList.join(" ");
-  }
-
-  private getTriggerCssClasses() {
-    const classList = [];
-    classList.push("btn");
-    classList.push("btn-outline-secondary");
     return classList.join(" ");
   }
 
@@ -125,7 +118,6 @@ export class EditRender implements Renderer {
       class: this.getCssClasses(),
       "data-native-element": "",
       disabled: edit.disabled,
-      hidden: edit.readonly,
       id: this.inputId,
       onChange: this.handleChange,
       onInput: valueChangingHandler,
@@ -133,64 +125,104 @@ export class EditRender implements Renderer {
       placeholder: edit.placeholder
     };
 
+    // This will be displayed at the end
     let editableElement;
-    if (edit.multiline) {
-      editableElement = <textarea {...attris}>{edit.value}</textarea>;
-    } else {
-      const input = <input {...attris} type={edit.type} value={edit.value} />;
 
-      if (edit.showTrigger) {
+    // If the format is the default format
+    if (edit.format === "Text") {
+      // If it has multiline, it sets a textarea
+      if (edit.multiline) {
+        editableElement = (
+          <div
+            class={{
+              container: true,
+              disabled: edit.disabled
+            }}
+            data-part="container"
+            hidden={edit.readonly}
+          >
+            <textarea {...attris}>{edit.value}</textarea>
+          </div>
+        );
+
+        // Otherwise, it sets an input
+      } else {
+        const input = <input {...attris} type={edit.type} value={edit.value} />;
         const existSlotContent = edit.element.querySelector(
           "[slot='trigger-content']"
         );
+
+        // If showTrigger == true, it also sets a trigger button
         editableElement = (
-          <div class="input-group" hidden={edit.readonly}>
+          <div
+            class={{
+              container: true,
+              disabled: edit.disabled
+            }}
+            data-part="container"
+            hidden={edit.readonly}
+          >
             {input}
-            <div class="input-group-append">
-              <button
-                class={this.getTriggerCssClasses()}
-                onClick={this.handleTriggerClick}
-                type="button"
-                disabled={edit.disabled}
-                aria-label={edit.triggerText}
-              >
-                {existSlotContent !== null
-                  ? slots.triggerContent
-                  : edit.triggerText}
-              </button>
-            </div>
+
+            {edit.showTrigger && (
+              <div class="trigger-button-container">
+                <button
+                  class="trigger-button"
+                  onClick={this.handleTriggerClick}
+                  type="button"
+                  disabled={edit.disabled}
+                >
+                  {existSlotContent !== null && slots.triggerContent}
+                </button>
+              </div>
+            )}
           </div>
         );
-      } else {
-        editableElement = input;
       }
+      // If format = HTML
+    } else {
+      editableElement = (
+        <div
+          class={{
+            container: true,
+            disabled: edit.disabled
+          }}
+          data-part="container"
+        >
+          <div data-native-element innerHTML={edit.inner}></div>
+        </div>
+      );
     }
 
+    // It can be h1, h2, p, footer and span value
     const ReadonlyTag = this.getReadonlyTagByFontCategory() as any;
 
     return [
       <gx-bootstrap />,
-      <ReadonlyTag
-        key="readonly"
-        hidden={!edit.readonly}
-        data-readonly=""
-        class={{
-          "gx-line-clamp": this.shouldClampLines()
-        }}
-        style={
-          this.shouldClampLines() && {
-            "--max-lines": edit.maxLines.toString(),
-            "--max-height": `${edit.maxHeight}px`
-          }
-        }
-      >
-        {edit.lineClamp && (
-          <div class="line-measuring" aria-hidden>
-            {"A"}
-          </div>
-        )}
-        {this.getReadonlyContent(edit, edit.value)}
-      </ReadonlyTag>,
+      edit.readonly && edit.format == "Text" && (
+        <div data-readonly="">
+          <ReadonlyTag
+            key="readonly"
+            class={{
+              "readonly-content": true,
+              "gx-line-clamp": this.shouldClampLines()
+            }}
+            style={
+              this.shouldClampLines() && {
+                "--max-lines": edit.maxLines.toString(),
+                "--max-height": `${edit.maxHeight}px`
+              }
+            }
+          >
+            {edit.lineClamp && (
+              <div class="line-measuring" aria-hidden>
+                {"A"}
+              </div>
+            )}
+            {this.getReadonlyContent(edit, edit.value)}
+          </ReadonlyTag>
+        </div>
+      ),
       editableElement
     ];
   }
