@@ -96,7 +96,9 @@ export class TextBlock
             {"A"}
           </div>
         )}
-        <slot />
+        <div class="text-container">
+          <slot />
+        </div>
       </div>
     );
 

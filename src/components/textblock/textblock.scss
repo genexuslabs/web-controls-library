@@ -1,14 +1,53 @@
 @import "../common/_base";
 
-gx-textblock {
-  --elevation: 0;
-  flex: 1;
+// Used to horizontally and vertically align the text
+@mixin alignment($text-align: null, $align-items: null) {
+  gx-textblock {
+    & > .content {
+      @if ($text-align != null) {
+        text-align: $text-align;
+      }
 
+      @if ($align-items != null) {
+        align-items: $align-items;
+      }
+    }
+  }
+}
+
+// Default alignment which supports RTL
+@include alignment(start, flex-start);
+
+gx-textblock {
   @include visibility(inline-flex);
+  flex: 1;
+  height: 100%;
+  --elevation: 0;
 
   & > .content {
+    display: flex;
     flex: 1;
-    @include elevation();
-    text-align: start;
+
+    & > .text-container {
+      @include elevation();
+      flex: 1;
+    }
   }
+}
+
+// Alignments based on parent control alignment
+[align="center"] {
+  @include alignment(center);
+}
+
+[align="right"] {
+  @include alignment(end);
+}
+
+[valign="middle"] {
+  @include alignment($align-items: center);
+}
+
+[valign="bottom"] {
+  @include alignment($align-items: flex-end);
 }
