@@ -33,8 +33,8 @@ export function makeHighlightable(component: HighlightableComponent) {
 }
 
 function setup() {
-  setupEvent("mousedown", "mouseup", "mousemove");
-  setupEvent("touchstart", "touchend", "touchmove");
+  setupEvent("mousedown", "mouseup", "mouseout");
+  setupEvent("touchstart", "touchend", "touchcancel");
 }
 
 function setupEvent(
