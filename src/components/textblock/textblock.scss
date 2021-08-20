@@ -3,7 +3,7 @@
 // Used to horizontally and vertically align the text
 @mixin alignment($text-align: null, $align-items: null) {
   gx-textblock {
-    & > .content {
+    & > .content.text-content {
       @if ($text-align != null) {
         text-align: $text-align;
       }
@@ -31,6 +31,10 @@ gx-textblock {
     & > .text-container {
       @include elevation();
       flex: 1;
+    }
+
+    &.html-content {
+      text-align: start;
     }
   }
 }
