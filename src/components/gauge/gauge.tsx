@@ -74,6 +74,8 @@ export class Gauge implements GxComponent {
 
   private watchForItemsObserver: ResizeObserver;
 
+  private linearCurrentValue: HTMLDivElement;
+
   private circularCurrentValue: HTMLSpanElement;
 
   private circularMarker: HTMLDivElement;
@@ -206,12 +208,6 @@ export class Gauge implements GxComponent {
         style={{
           "margin-left": `${position}%`,
           color: color,
-          // transform: `translateY(-${this.thickness >= 7 ? 0 : 12 + this.thickness}px)`,
-          transform: `translateY(${
-            this.thickness >= 7
-              ? 0
-              : this.element.offsetHeight / 4 + this.thickness / 3
-          }px)`,
           width: `${(amount * 100) / range}%`
         }}
       >
@@ -326,38 +322,42 @@ export class Gauge implements GxComponent {
 
       positionInGauge += (100 * childRanges[i].amount) / range;
     }
+    const percentage =
+      this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
+
     return (
-      <div
-        class="gaugeContainerLine"
-        style={{
-          height: `${10 * this.calcThickness()}px`,
-          "margin-top": `${this.showValue || this.thickness < 7 ? 23.5 : 0}px`, // 23.5px, 39.5px
-          "margin-bottom": `${
-            this.showValue && this.thickness < 7 ? 22 : this.showMinMax ? 20 : 1
-          }px`
-        }}
-      >
-        <div class="gauge">
-          {this.showValue ? (
+      <div class="gaugeContainerLine">
+        {this.showValue && (
+          <div
+            class="value-container"
+            style={{
+              "margin-left": `${percentage}%`
+            }}
+          >
             <span
-              class="marker"
+              class="current-value"
               style={{
-                "margin-left": `${
-                  this.value <= this.minValue
-                    ? 0
-                    : this.value >= this.maxValueAux
-                    ? 100
-                    : this.calcPercentage()
-                }%`,
-                transform: `translate(-${valueOffset}%, -28px)` // 22px, 38px
+                transform: `translateX(-${valueOffset}%)`
               }}
+              ref={el => (this.linearCurrentValue = el as HTMLDivElement)}
             >
               {this.value}
             </span>
-          ) : (
-            ""
-          )}
-        </div>
+
+            <div
+              class="indicator"
+              style={{
+                height: `${this.thickness * 2 + 4}px`,
+                width: `${this.element.offsetWidth /
+                  document.body.offsetWidth}vw`,
+                transform: `translate(
+                    ${
+                      percentage == 0 || percentage == 100 ? -percentage : -50
+                    }%, 22px)`
+              }}
+            />
+          </div>
+        )}
         <div
           class="rangesContainer"
           style={{
@@ -366,48 +366,13 @@ export class Gauge implements GxComponent {
           }}
         >
           {divRanges}
+          <div class="labelsContainerLine">{divRangesName}</div>
         </div>
-        {this.showValue ? (
-          <span
-            class="marker"
-            style={{
-              "margin-left": `${
-                this.calcPercentage() >= 100 ? 100 : this.calcPercentage()
-              }%`
-            }}
-          >
-            <div
-              class="indicator"
-              style={{
-                height: `${this.thickness * 2 + 4}px`,
-                "border-left-width": `${this.element.offsetWidth /
-                  document.body.offsetWidth}vw`,
-                transform:
-                  this.calcPercentage() > 0 && this.calcPercentage() < 100
-                    ? "translateX(-50%)"
-                    : this.calcPercentage() >= 100
-                    ? "translateX(-100%)"
-                    : "translateX(0%)"
-              }}
-            />
-          </span>
-        ) : (
-          ""
-        )}
-        <div class="labelsContainerLine">{divRangesName}</div>
-        {this.showMinMax ? (
+        {this.showMinMax && (
           <div class="minMaxDisplay">
-            <span class="minValue">
-              {this.minValue}
-              <span />
-            </span>
-            <span class="maxValue">
-              {this.maxValueAux}
-              <span />
-            </span>
+            <span class="minValue">{this.minValue}</span>
+            <span class="maxValue">{this.maxValueAux}</span>
           </div>
-        ) : (
-          ""
         )}
       </div>
     );

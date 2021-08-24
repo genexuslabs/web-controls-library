@@ -86,82 +86,86 @@ gx-gauge {
   width: 100%;
 
   .gaugeContainerLine {
-    position: relative;
-    width: 100%;
     display: flex;
     flex-wrap: wrap;
+    width: 100%;
 
-    .gauge {
+    .value-container {
       display: flex;
-      .marker {
+      flex-wrap: wrap;
+      position: relative;
+      width: 100%;
+      height: 26px;
+      transition: $transitionConfig;
+
+      .current-value {
+        height: 80%;
+        line-height: 100%;
+        font-weight: 700;
+        z-index: 1;
         background-color: var(--value-text-background-color);
         color: var(--value-text-color);
       }
-    }
 
-    .minMaxDisplay {
-      z-index: 1;
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      .maxValue {
-        background-color: var(--max-value-background-color);
-        color: var(--max-value-text-color);
-      }
-      .minValue {
-        background-color: var(--min-value-background-color);
-        color: var(--min-value-text-color);
-      }
-    }
-
-    .rangesContainer {
-      overflow: hidden;
-      position: absolute;
-      width: calc(100%);
-      background-color: rgba(0, 0, 0, 0.2);
-      .range {
-        height: 100%;
-        position: absolute;
-        // box-shadow: var(--gauge-ranges-box-shadow);
-        @include flex-centered;
-        transition: $transitionConfig;
-      }
-    }
-
-    span.marker {
-      transform: translateY(-4px);
-      position: absolute;
-      z-index: 1;
-      transition: $transitionConfig;
       .indicator {
-        content: "";
-        border-left-style: solid;
-        border-left-color: var(--indicator-line-background-color);
         display: block;
+        position: absolute;
+        z-index: 1;
         background-color: var(--indicator-line-background-color);
       }
     }
 
-    .labelsContainerLine {
-      width: calc(100%);
-      height: calc(100%);
-      display: flex;
-      align-items: center;
-      .rangeName {
+    .rangesContainer {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.2);
+
+      .range {
         @include flex-centered;
-        margin-top: 1px;
+        height: 100%;
         position: absolute;
-        filter: brightness(0.5);
         transition: $transitionConfig;
+      }
+
+      .labelsContainerLine {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+
+        .rangeName {
+          @include flex-centered;
+          position: absolute;
+          filter: brightness(0.5);
+          transition: $transitionConfig;
+        }
+      }
+    }
+
+    .minMaxDisplay {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      z-index: 1;
+
+      .maxValue {
+        background-color: var(--max-value-background-color);
+        color: var(--max-value-text-color);
+      }
+
+      .minValue {
+        background-color: var(--min-value-background-color);
+        color: var(--min-value-text-color);
       }
     }
   }
 
   .svgContainer {
     @include flex-centered;
+    align-items: center;
     height: 100%;
     width: 100%;
-    align-items: center;
 
     svg {
       width: 100%;
@@ -187,8 +191,8 @@ gx-gauge {
   }
 
   .circularMarker {
-    width: 100%;
     position: absolute;
+    width: 100%;
     transition: transform 0.3s;
 
     .circularIndicator {
