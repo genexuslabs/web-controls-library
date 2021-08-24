@@ -259,11 +259,7 @@ export class Gauge implements GxComponent {
           </svg>
           {this.showValue && (
             <div class="gauge">
-              <div>
-                {this.showValue && (
-                  <span class="current-value">{`${this.value}`}</span>
-                )}
-              </div>
+              <span class="current-value">{this.value}</span>
             </div>
           )}
         </div>
