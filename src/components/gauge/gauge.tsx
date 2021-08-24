@@ -106,7 +106,8 @@ export class Gauge implements GxComponent {
   }
 
   /*  If showValue == true, it creates a ResizeObserver to implement the font
-    and marker container responsiveness (circle gauge type)
+      and marker container responsiveness (circle gauge type) or 
+      'current-value' centering responsiveness (line gauge type)
   */
   componentDidLoad() {
     if (this.showValue) {
@@ -123,10 +124,23 @@ export class Gauge implements GxComponent {
 
           this.circularMarkerIndicator.style.height = `${minimumSize / 100}px`;
         });
+      } else {
+        this.watchForItemsObserver = new ResizeObserver(() => {
+          this.setValuePosition();
+        });
       }
 
       // Observe the gauge
       this.watchForItemsObserver.observe(this.element);
+    }
+  }
+
+  /*  After the render, it asks for 'getBoundingClientRect()' and centers the
+      'current-value' in line gauge type
+  */
+  componentDidRender() {
+    if (this.showValue && this.type === "line") {
+      this.setValuePosition();
     }
   }
 
@@ -158,6 +172,39 @@ export class Gauge implements GxComponent {
       ? 0
       : ((this.value - this.minValue) * 100) /
           (this.maxValueAux - this.minValue);
+  }
+
+  /*  In the line gauge type, this functions correctly aligns the
+      'current-value' to the center of the 'indicator', even if
+      the indicator has low or high percentage value
+  */
+  private setValuePosition(): void {
+    const percentage =
+      this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
+
+    const gaugeWidth = this.element.getBoundingClientRect().width;
+
+    const spanHalfWidth =
+      this.linearCurrentValue.getBoundingClientRect().width / 2;
+
+    const distanceToTheSpanCenter = (gaugeWidth / 100) * percentage;
+
+    let offsetX;
+
+    // The span is near the left side
+    if (distanceToTheSpanCenter - spanHalfWidth < 0) {
+      offsetX = distanceToTheSpanCenter;
+
+      // The span is near the right side
+    } else if (distanceToTheSpanCenter + spanHalfWidth > gaugeWidth) {
+      offsetX = 2 * spanHalfWidth - (gaugeWidth - distanceToTheSpanCenter);
+
+      // The span is in an intermediate position
+    } else {
+      offsetX = spanHalfWidth;
+    }
+
+    this.linearCurrentValue.style.transform = `translateX(${-offsetX}px)`;
   }
 
   private addCircleRanges(
@@ -301,16 +348,6 @@ export class Gauge implements GxComponent {
     }
     this.updateMaxValueAux();
 
-    // Depending of `this.value`, it calculates how much the value marker has to move from the left side
-    const valueOffset =
-      this.value <= this.minValue
-        ? 0
-        : this.value >= this.maxValueAux
-        ? 100
-        : this.calcPercentage() >= 98
-        ? 72
-        : 50;
-
     const range = this.maxValueAux - this.minValue;
     let positionInGauge = 0;
 
@@ -336,9 +373,6 @@ export class Gauge implements GxComponent {
           >
             <span
               class="current-value"
-              style={{
-                transform: `translateX(-${valueOffset}%)`
-              }}
               ref={el => (this.linearCurrentValue = el as HTMLDivElement)}
             >
               {this.value}
