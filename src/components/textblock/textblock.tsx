@@ -31,7 +31,6 @@ export class TextBlock
   /**
    * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
    */
-
   @Prop() readonly href = "";
 
   /**
@@ -61,6 +60,22 @@ export class TextBlock
    */
   @Prop() readonly highlightable = false;
 
+  /**
+   * It specifies the format that will have the textblock control.
+   *
+   * If `format` = `HTML`, the textblock control works as an HTML div and the
+   * innerHTML will be the same as the `inner` property specifies.
+   *
+   * If `format` = `Text`, the control works as a normal textblock control and
+   * it is affected by most of the defined properties.
+   */
+  @Prop() readonly format: "Text" | "HTML" = "Text";
+
+  /**
+   * Used as the innerHTML when `format` = `HTML`.
+   */
+  @Prop() readonly inner: string = "";
+
   @State() maxLines = 0;
   @State() maxHeight = 0;
 
@@ -78,33 +93,44 @@ export class TextBlock
   }
 
   render() {
-    const body = (
-      <div
-        class={{
-          content: true,
-          "gx-line-clamp": this.shouldClampLines()
-        }}
-        style={
-          this.shouldClampLines() && {
-            "--max-lines": this.maxLines.toString(),
-            "--max-height": `${this.maxHeight}px`
+    if (this.format == "Text") {
+      const body = (
+        <div
+          class={{
+            content: true,
+            "text-content": true,
+            "gx-line-clamp": this.shouldClampLines()
+          }}
+          style={
+            this.shouldClampLines() && {
+              "--max-lines": this.maxLines.toString(),
+              "--max-height": `${this.maxHeight}px`
+            }
           }
-        }
-      >
-        {this.lineClamp && (
-          <div class="line-measuring" aria-hidden>
-            {"A"}
+        >
+          {this.lineClamp && (
+            <div class="line-measuring" aria-hidden>
+              {"A"}
+            </div>
+          )}
+          <div class="text-container">
+            <slot />
           </div>
-        )}
-        <slot />
-      </div>
-    );
+        </div>
+      );
 
-    if (this.href) {
-      return <a href={this.href}>{body}</a>;
+      if (this.href) {
+        return <a href={this.href}>{body}</a>;
+      }
+
+      return body;
+    } else {
+      return (
+        <div class="content html-content">
+          <div innerHTML={this.inner}></div>
+        </div>
+      );
     }
-
-    return body;
   }
 
   private shouldClampLines() {

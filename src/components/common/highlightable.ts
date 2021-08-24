@@ -33,24 +33,24 @@ export function makeHighlightable(component: HighlightableComponent) {
 }
 
 function setup() {
-  setupEvent("mousedown", "mouseup", "mousemove");
-  setupEvent("touchstart", "touchend", "touchmove");
+  setupEvent("mousedown", "mouseup", "mouseout");
+  setupEvent("touchstart", "touchend", "touchcancel");
 }
 
 function setupEvent(
   startEventName: string,
-  endEventName: string,
-  moveEventName: string
+  endEventName1: string,
+  endEventName2: string
 ) {
   document.body.addEventListener(startEventName, startEvent => {
     fireCustomEvent(HIGHLIGHT_EVENT_NAME, startEvent.target as HTMLElement);
     const mouseUpHandler = endEvent => {
       fireCustomEvent(UNHIGHTLIGHT_EVENT_NAME, endEvent.target as HTMLElement);
-      document.body.removeEventListener(endEventName, mouseUpHandler);
-      document.body.removeEventListener(moveEventName, mouseUpHandler);
+      document.body.removeEventListener(endEventName1, mouseUpHandler);
+      document.body.removeEventListener(endEventName2, mouseUpHandler);
     };
-    document.body.addEventListener(endEventName, mouseUpHandler);
-    document.body.addEventListener(moveEventName, mouseUpHandler);
+    document.body.addEventListener(endEventName1, mouseUpHandler);
+    document.body.addEventListener(endEventName2, mouseUpHandler);
   });
 }
 
