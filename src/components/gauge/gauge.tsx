@@ -70,9 +70,15 @@ export class Gauge implements GxComponent {
 
   private maxValueAux = this.minValue;
 
-  private minimumSize: number;
-
   private totalAmount = 0;
+
+  private watchForItemsObserver: ResizeObserver;
+
+  private circularCurrentValue: HTMLSpanElement;
+
+  private circularMarker: HTMLDivElement;
+
+  private circularMarkerIndicator: HTMLDivElement;
 
   @Listen("gxGaugeRangeDidLoad")
   onGaugeRangeDidLoad({ detail: childRange }) {
@@ -95,6 +101,38 @@ export class Gauge implements GxComponent {
         this.totalAmount += childInstance.amount;
       }
     });
+  }
+
+  /*  If showValue == true, it creates a ResizeObserver to implement the font
+    and marker container responsiveness (circle gauge type)
+  */
+  componentDidLoad() {
+    if (this.showValue) {
+      if (this.type === "circle") {
+        this.watchForItemsObserver = new ResizeObserver(entries => {
+          const elem = entries[0].contentRect;
+          const minimumSize = Math.min(elem.width, elem.height);
+
+          // Updates the font size
+          this.circularCurrentValue.style.fontSize = `${minimumSize / 2.5}px`;
+
+          // Updates the maxWidth of the marker value container
+          this.circularMarker.style.maxWidth = `${minimumSize}px`;
+
+          this.circularMarkerIndicator.style.height = `${minimumSize / 100}px`;
+        });
+      }
+
+      // Observe the gauge
+      this.watchForItemsObserver.observe(this.element);
+    }
+  }
+
+  disconnectedCallback() {
+    if (this.watchForItemsObserver !== undefined) {
+      this.watchForItemsObserver.disconnect();
+      this.watchForItemsObserver = undefined;
+    }
   }
 
   // If maxValue is undefined, it defines the maxValue as the sum of the amounts plus minValue
@@ -191,6 +229,7 @@ export class Gauge implements GxComponent {
     const radius = FULL_CIRCLE_RADIO - this.thickness / 2;
     const ROTATION_FIX = 90; // Used to correct the rotation
     this.totalAmount = 0;
+
     for (let i = childRanges.length - 1; i >= 0; i--) {
       this.totalAmount += childRanges[i].amount;
     }
@@ -212,37 +251,6 @@ export class Gauge implements GxComponent {
         : `rotate(${this.calcPercentage() * ONE_PERCENT_OF_CIRCLE_DREGREE +
             ROTATION_FIX}deg)`;
 
-    if (this.showValue) {
-      const ro = new ResizeObserver(entries => {
-        for (const entry of entries) {
-          const elem = entry.contentRect;
-          const minimumSize = Math.min(elem.width, elem.height);
-          const value = this.element.querySelector(".current-value");
-
-          const marker = this.element.querySelector(".circularMarker");
-
-          const markerIndicator = this.element.querySelector(
-            ".circularIndicator"
-          );
-
-          value.setAttribute("style", `font-size: ${minimumSize / 2.5}px`);
-
-          marker.setAttribute(
-            "style",
-            `transform: ${rotation}; max-width: ${minimumSize}px`
-          );
-
-          markerIndicator.setAttribute(
-            "style",
-            `width: ${this.thickness + 2}%; height: ${minimumSize / 100}px`
-          );
-        }
-      });
-
-      // Observe the gauge to resize the font and the value marker
-      ro.observe(this.element);
-    }
-
     return (
       <Host>
         <div class="svgContainer">
@@ -259,13 +267,28 @@ export class Gauge implements GxComponent {
           </svg>
           {this.showValue && (
             <div class="gauge">
-              <span class="current-value">{this.value}</span>
+              <span
+                class="current-value"
+                ref={el => (this.circularCurrentValue = el as HTMLSpanElement)}
+              >
+                {this.value}
+              </span>
             </div>
           )}
         </div>
         {this.showValue && (
-          <div class="circularMarker">
-            <div class="circularIndicator" />
+          <div
+            class="circularMarker"
+            style={{ transform: rotation }}
+            ref={el => (this.circularMarker = el as HTMLDivElement)}
+          >
+            <div
+              class="circularIndicator"
+              style={{
+                width: `${this.thickness + 2}%`
+              }}
+              ref={el => (this.circularMarkerIndicator = el as HTMLDivElement)}
+            />
           </div>
         )}
       </Host>
@@ -391,10 +414,6 @@ export class Gauge implements GxComponent {
   }
 
   render() {
-    this.minimumSize =
-      this.element.offsetHeight > this.element.offsetWidth
-        ? this.element.offsetWidth
-        : this.element.offsetHeight;
     const childRanges = Array.from(
       this.element.querySelectorAll("gx-gauge-range")
     );
