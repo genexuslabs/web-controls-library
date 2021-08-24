@@ -76,6 +76,8 @@ export class Gauge implements GxComponent {
 
   private linearCurrentValue: HTMLDivElement;
 
+  private linearIndicator: HTMLDivElement;
+
   private circularCurrentValue: HTMLSpanElement;
 
   private circularMarker: HTMLDivElement;
@@ -126,7 +128,7 @@ export class Gauge implements GxComponent {
         });
       } else {
         this.watchForItemsObserver = new ResizeObserver(() => {
-          this.setValuePosition();
+          this.setValueAndIndicatorPosition();
         });
       }
 
@@ -140,7 +142,7 @@ export class Gauge implements GxComponent {
   */
   componentDidRender() {
     if (this.showValue && this.type === "line") {
-      this.setValuePosition();
+      this.setValueAndIndicatorPosition();
     }
   }
 
@@ -175,36 +177,60 @@ export class Gauge implements GxComponent {
   }
 
   /*  In the line gauge type, this functions correctly aligns the
-      'current-value' to the center of the 'indicator', even if
-      the indicator has low or high percentage value
+      'current-value' to the center of the 'indicator', even if the indicator
+      has low or high percentage value. Also, it makes to not overflow the
+      'indicator' from his container when he has low or high values.
   */
-  private setValuePosition(): void {
+  private setValueAndIndicatorPosition(): void {
     const percentage =
       this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
 
     const gaugeWidth = this.element.getBoundingClientRect().width;
 
+    const distanceToTheValueCenter = (gaugeWidth / 100) * percentage;
+
+    // - - - - - - - - - - -  Current value positioning  - - - - - - - - - - -
     const spanHalfWidth =
       this.linearCurrentValue.getBoundingClientRect().width / 2;
 
-    const distanceToTheSpanCenter = (gaugeWidth / 100) * percentage;
-
-    let offsetX;
+    let spanOffsetX;
 
     // The span is near the left side
-    if (distanceToTheSpanCenter - spanHalfWidth < 0) {
-      offsetX = distanceToTheSpanCenter;
+    if (distanceToTheValueCenter - spanHalfWidth < 0) {
+      spanOffsetX = distanceToTheValueCenter;
 
       // The span is near the right side
-    } else if (distanceToTheSpanCenter + spanHalfWidth > gaugeWidth) {
-      offsetX = 2 * spanHalfWidth - (gaugeWidth - distanceToTheSpanCenter);
+    } else if (distanceToTheValueCenter + spanHalfWidth > gaugeWidth) {
+      spanOffsetX = 2 * spanHalfWidth - (gaugeWidth - distanceToTheValueCenter);
 
       // The span is in an intermediate position
     } else {
-      offsetX = spanHalfWidth;
+      spanOffsetX = spanHalfWidth;
     }
 
-    this.linearCurrentValue.style.transform = `translateX(${-offsetX}px)`;
+    this.linearCurrentValue.style.transform = `translateX(${-spanOffsetX}px)`;
+
+    // - - - - - - - - - - - -  Indicator positioning  - - - - - - - - - - - -
+    const indicatorHalfWidth =
+      this.linearIndicator.getBoundingClientRect().width / 2;
+
+    let indicatorOffsetX;
+
+    // The indicator is near the left side
+    if (distanceToTheValueCenter - indicatorHalfWidth < 0) {
+      indicatorOffsetX = distanceToTheValueCenter;
+
+      // The indicator is near the right side
+    } else if (distanceToTheValueCenter + indicatorHalfWidth > gaugeWidth) {
+      indicatorOffsetX =
+        2 * indicatorHalfWidth - (gaugeWidth - distanceToTheValueCenter);
+
+      // The indicator is in an intermediate position
+    } else {
+      indicatorOffsetX = indicatorHalfWidth;
+    }
+
+    this.linearIndicator.style.transform = `translate(${-indicatorOffsetX}px, 22px)`;
   }
 
   private addCircleRanges(
@@ -383,12 +409,9 @@ export class Gauge implements GxComponent {
               style={{
                 height: `${this.thickness * 2 + 4}px`,
                 width: `${this.element.offsetWidth /
-                  document.body.offsetWidth}vw`,
-                transform: `translate(
-                    ${
-                      percentage == 0 || percentage == 100 ? -percentage : -50
-                    }%, 22px)`
+                  document.body.offsetWidth}vw`
               }}
+              ref={el => (this.linearIndicator = el as HTMLDivElement)}
             />
           </div>
         )}
