@@ -105,6 +105,7 @@ gx-gauge {
         z-index: 1;
         background-color: var(--value-text-background-color);
         color: var(--value-text-color);
+        transition: $transitionConfig;
       }
 
       .indicator {
@@ -112,6 +113,7 @@ gx-gauge {
         position: absolute;
         z-index: 1;
         background-color: var(--indicator-line-background-color);
+        transition: $transitionConfig;
       }
     }
 
