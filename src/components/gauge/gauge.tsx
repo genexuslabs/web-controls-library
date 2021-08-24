@@ -111,7 +111,7 @@ export class Gauge implements GxComponent {
       and marker container responsiveness (circle gauge type) or 
       'current-value' centering responsiveness (line gauge type)
   */
-  componentDidLoad() {
+  connectedCallback() {
     if (this.showValue) {
       if (this.type === "circle") {
         this.watchForItemsObserver = new ResizeObserver(entries => {
