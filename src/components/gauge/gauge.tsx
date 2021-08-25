@@ -279,7 +279,9 @@ export class Gauge implements GxComponent {
         style={{
           "margin-left": `${position}%`,
           color: color,
-          width: `${(amount * 100) / range}%`
+          width: `${(amount * 100) / range}%`,
+          "max-height": `${this.thickness * 2}px`,
+          "line-height": `min(1em, ${this.thickness * 2}px)`
         }}
       >
         {name}
