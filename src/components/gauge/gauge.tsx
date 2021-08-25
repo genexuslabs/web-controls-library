@@ -78,11 +78,9 @@ export class Gauge implements GxComponent {
 
   private linearIndicator: HTMLDivElement;
 
-  private circularCurrentValue: HTMLSpanElement;
+  private circleCurrentValue: HTMLSpanElement;
 
-  private circularMarker: HTMLDivElement;
-
-  private circularMarkerIndicator: HTMLDivElement;
+  private circleIndicatorContainer: HTMLDivElement;
 
   @Listen("gxGaugeRangeDidLoad")
   onGaugeRangeDidLoad({ detail: childRange }) {
@@ -119,10 +117,10 @@ export class Gauge implements GxComponent {
           const minimumSize = Math.min(elem.width, elem.height);
 
           // Updates the font size
-          this.circularCurrentValue.style.fontSize = `${minimumSize / 2.5}px`;
+          this.circleCurrentValue.style.fontSize = `${minimumSize / 2.5}px`;
 
-          // Updates the maxWidth of the marker value container
-          this.circularMarker.style.maxWidth = `${minimumSize}px`;
+          // Updates the maxWidth of the indicator container
+          this.circleIndicatorContainer.style.maxWidth = `${minimumSize}px`;
         });
       } else {
         this.watchForItemsObserver = new ResizeObserver(() => {
@@ -322,7 +320,7 @@ export class Gauge implements GxComponent {
 
     return (
       <Host>
-        <div class="svgContainer">
+        <div class="circle-gauge-container">
           <svg viewBox="0 0 100 100">
             <circle
               r={radius}
@@ -334,34 +332,31 @@ export class Gauge implements GxComponent {
             />
             {svgRanges}
           </svg>
-          {this.showValue && (
-            <div class="gauge">
+          {this.showValue && [
+            <div class="current-value-container">
               <span
                 class="current-value"
-                ref={el => (this.circularCurrentValue = el as HTMLSpanElement)}
+                ref={el => (this.circleCurrentValue = el as HTMLSpanElement)}
               >
                 {this.value}
               </span>
-            </div>
-          )}
-        </div>
-        {this.showValue && (
-          <div
-            class="circularMarker"
-            style={{
-              transform: rotation
-            }}
-            ref={el => (this.circularMarker = el as HTMLDivElement)}
-          >
+            </div>,
             <div
-              class="circularIndicator"
+              class="indicator-container"
               style={{
-                width: `${this.thickness + 2}%`
+                transform: rotation
               }}
-              ref={el => (this.circularMarkerIndicator = el as HTMLDivElement)}
-            />
-          </div>
-        )}
+              ref={el => (this.circleIndicatorContainer = el as HTMLDivElement)}
+            >
+              <div
+                class="indicator"
+                style={{
+                  width: `${this.thickness + 2}%`
+                }}
+              />
+            </div>
+          ]}
+        </div>
       </Host>
     );
   }
