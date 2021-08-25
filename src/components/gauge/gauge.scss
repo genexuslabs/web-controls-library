@@ -111,6 +111,7 @@ gx-gauge {
       .indicator {
         display: block;
         position: absolute;
+        width: 1.125%;
         z-index: 1;
         background-color: var(--indicator-line-background-color);
         transition: $transitionConfig;
@@ -195,9 +196,11 @@ gx-gauge {
   .circularMarker {
     position: absolute;
     width: 100%;
+    height: 1.125%;
     transition: transform 0.3s;
 
     .circularIndicator {
+      height: 100%;
       background-color: var(--indicator-circle-background-color);
     }
   }

@@ -123,8 +123,6 @@ export class Gauge implements GxComponent {
 
           // Updates the maxWidth of the marker value container
           this.circularMarker.style.maxWidth = `${minimumSize}px`;
-
-          this.circularMarkerIndicator.style.height = `${minimumSize / 100}px`;
         });
       } else {
         this.watchForItemsObserver = new ResizeObserver(() => {
@@ -348,7 +346,9 @@ export class Gauge implements GxComponent {
         {this.showValue && (
           <div
             class="circularMarker"
-            style={{ transform: rotation }}
+            style={{
+              transform: rotation
+            }}
             ref={el => (this.circularMarker = el as HTMLDivElement)}
           >
             <div
@@ -391,14 +391,12 @@ export class Gauge implements GxComponent {
     return (
       <div class="gaugeContainerLine">
         {this.showValue && (
-          <div
-            class="value-container"
-            style={{
-              "margin-left": `${percentage}%`
-            }}
-          >
+          <div class="value-container">
             <span
               class="current-value"
+              style={{
+                "margin-left": `${percentage}%`
+              }}
               ref={el => (this.linearCurrentValue = el as HTMLDivElement)}
             >
               {this.value}
@@ -408,8 +406,7 @@ export class Gauge implements GxComponent {
               class="indicator"
               style={{
                 height: `${this.thickness * 2 + 4}px`,
-                width: `${this.element.offsetWidth /
-                  document.body.offsetWidth}vw`
+                "margin-left": `${percentage}%`
               }}
               ref={el => (this.linearIndicator = el as HTMLDivElement)}
             />
