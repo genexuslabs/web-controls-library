@@ -275,7 +275,7 @@ export class Gauge implements GxComponent {
     const range = this.maxValueAux - this.minValue;
     return (
       <span
-        class="rangeName"
+        class="range-label"
         style={{
           "margin-left": `${position}%`,
           color: color,
@@ -366,7 +366,7 @@ export class Gauge implements GxComponent {
 
   private renderLine(childRanges) {
     const divRanges = [];
-    const divRangesName = [];
+    const divRangesLabel = [];
     this.totalAmount = 0;
 
     for (let i = childRanges.length - 1; i >= 0; i--) {
@@ -379,7 +379,7 @@ export class Gauge implements GxComponent {
 
     for (let i = 0; i < childRanges.length; i++) {
       divRanges.push(this.addLineRanges(childRanges[i], positionInGauge));
-      divRangesName.push(
+      divRangesLabel.push(
         this.addLineRangesLabels(childRanges[i], positionInGauge)
       );
 
@@ -389,9 +389,9 @@ export class Gauge implements GxComponent {
       this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
 
     return (
-      <div class="gaugeContainerLine">
+      <div class="line-gauge-container">
         {this.showValue && (
-          <div class="value-container">
+          <div class="current-value-container">
             <span
               class="current-value"
               style={{
@@ -413,19 +413,19 @@ export class Gauge implements GxComponent {
           </div>
         )}
         <div
-          class="rangesContainer"
+          class="ranges-and-labels-container"
           style={{
             height: `${2 * this.thickness}px`,
             "border-radius": `${this.thickness}px`
           }}
         >
           {divRanges}
-          <div class="labelsContainerLine">{divRangesName}</div>
+          <div class="labels-container">{divRangesLabel}</div>
         </div>
         {this.showMinMax && (
-          <div class="minMaxDisplay">
-            <span class="minValue">{this.minValue}</span>
-            <span class="maxValue">{this.maxValueAux}</span>
+          <div class="min-max-values-container">
+            <span class="min-value">{this.minValue}</span>
+            <span class="max-value">{this.maxValueAux}</span>
           </div>
         )}
       </div>
