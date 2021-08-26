@@ -216,17 +216,17 @@ export class Gauge implements GxComponent {
     // The indicator is near the left side
     if (distanceToTheValueCenter - indicatorHalfWidth < 0) {
       linearIndicatorStyle.marginLeft = "0%";
-      linearIndicatorStyle.transform = "translate(0%, 22px)";
+      linearIndicatorStyle.transform = "translateX(0%)";
 
       // The indicator is near the right side
     } else if (distanceToTheValueCenter + indicatorHalfWidth > gaugeWidth) {
       linearIndicatorStyle.marginLeft = "100%";
-      linearIndicatorStyle.transform = "translate(-100%, 22px)";
+      linearIndicatorStyle.transform = "translateX(-100%)";
 
       // The indicator is in an intermediate position
     } else {
       linearIndicatorStyle.marginLeft = `${percentage}%`;
-      linearIndicatorStyle.transform = "translate(-50%, 22px)";
+      linearIndicatorStyle.transform = "translateX(-50%)";
     }
   }
 
@@ -399,26 +399,33 @@ export class Gauge implements GxComponent {
             >
               {this.value}
             </span>
-
+          </div>
+        )}
+        <div
+          class="ranges-labels-and-indicator-container"
+          style={{
+            height: `${2 * this.thickness + (this.showValue ? 4 : 0)}px`
+          }}
+        >
+          {this.showValue && (
             <div
               class="indicator"
               style={{
-                height: `${this.thickness * 2 + 4}px`,
                 "margin-left": `${percentage}%`
               }}
               ref={el => (this.linearIndicator = el as HTMLDivElement)}
             />
+          )}
+          <div
+            class="ranges-and-labels-container"
+            style={{
+              "border-radius": `${this.thickness}px`,
+              "margin-top": this.showValue ? "4px" : "0px"
+            }}
+          >
+            {divRanges}
+            <div class="labels-container">{divRangesLabel}</div>
           </div>
-        )}
-        <div
-          class="ranges-and-labels-container"
-          style={{
-            height: `${2 * this.thickness}px`,
-            "border-radius": `${this.thickness}px`
-          }}
-        >
-          {divRanges}
-          <div class="labels-container">{divRangesLabel}</div>
         </div>
         {this.showMinMax && (
           <div class="min-max-values-container">

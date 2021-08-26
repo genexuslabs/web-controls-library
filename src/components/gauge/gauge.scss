@@ -107,42 +107,49 @@ gx-gauge {
         color: var(--value-text-color);
         transition: $transitionConfig;
       }
+    }
+
+    .ranges-labels-and-indicator-container {
+      display: flex;
+      position: relative;
+      width: 100%;
 
       .indicator {
         display: block;
         position: absolute;
+        height: 100%;
         width: 1.125%;
         z-index: 1;
         background-color: var(--indicator-line-background-color);
         transition: $transitionConfig;
       }
-    }
 
-    .ranges-and-labels-container {
-      position: relative;
-      overflow: hidden;
-      width: 100%;
-      background-color: rgba(0, 0, 0, 0.2);
-
-      .range {
-        @include flex-centered;
-        height: 100%;
-        position: absolute;
-        transition: $transitionConfig;
-      }
-
-      .labels-container {
-        display: flex;
-        align-items: center;
+      .ranges-and-labels-container {
+        position: relative;
+        overflow: hidden;
         width: 100%;
-        height: 100%;
-        padding-bottom: 1px;
+        background-color: rgba(0, 0, 0, 0.2);
 
-        .range-label {
+        .range {
           @include flex-centered;
+          height: 100%;
           position: absolute;
-          filter: brightness(0.5);
           transition: $transitionConfig;
+        }
+
+        .labels-container {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+          padding-bottom: 1px;
+
+          .range-label {
+            @include flex-centered;
+            position: absolute;
+            filter: brightness(0.5);
+            transition: $transitionConfig;
+          }
         }
       }
     }
