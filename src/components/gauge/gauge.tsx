@@ -160,8 +160,8 @@ export class Gauge implements GxComponent {
   private calcThickness(): number {
     return typeof this.thickness === "number" &&
       this.thickness > 0 &&
-      this.thickness <= 100
-      ? this.thickness / 5
+      this.thickness <= 99
+      ? this.thickness
       : 10;
   }
 
@@ -251,7 +251,7 @@ export class Gauge implements GxComponent {
         fill="none"
         transform={`rotate(${position + ROTATION_FIX} 50,50)`}
         data-amount={amount}
-        stroke-width={`${this.thickness}%`}
+        stroke-width={`${this.calcThickness()}%`}
       />
     );
   }
@@ -279,8 +279,8 @@ export class Gauge implements GxComponent {
           "margin-left": `${position}%`,
           color: color,
           width: `${(amount * 100) / range}%`,
-          "max-height": `${this.thickness * 2}px`,
-          "line-height": `min(1em, ${this.thickness * 2}px)`
+          "max-height": `${this.calcThickness() * 2}px`,
+          "line-height": `min(1em, ${this.calcThickness() * 2}px)`
         }}
       >
         {name}
@@ -294,7 +294,7 @@ export class Gauge implements GxComponent {
     const FULL_CIRCLE_RADIO = 100 / 2;
     const svgRanges = [];
     const ONE_PERCENT_OF_CIRCLE_DREGREE = 3.6;
-    const radius = FULL_CIRCLE_RADIO - this.thickness / 2;
+    const radius = FULL_CIRCLE_RADIO - this.calcThickness() / 2;
     const ROTATION_FIX = 90; // Used to correct the rotation
     this.totalAmount = 0;
 
@@ -329,7 +329,7 @@ export class Gauge implements GxComponent {
               cy="50%"
               stroke={"rgba(0, 0, 0, 0.2)"}
               fill="none"
-              stroke-width={`${this.thickness / 2}%`}
+              stroke-width={`${this.calcThickness() / 2}%`}
             />
             {svgRanges}
           </svg>
@@ -352,7 +352,7 @@ export class Gauge implements GxComponent {
               <div
                 class="indicator"
                 style={{
-                  width: `${this.thickness + 2}%`
+                  width: `${this.calcThickness() + 2}%`
                 }}
               />
             </div>
@@ -404,7 +404,7 @@ export class Gauge implements GxComponent {
         <div
           class="ranges-labels-and-indicator-container"
           style={{
-            height: `${2 * this.thickness + (this.showValue ? 4 : 0)}px`
+            height: `${2 * this.calcThickness() + (this.showValue ? 4 : 0)}px`
           }}
         >
           {this.showValue && (
@@ -419,7 +419,7 @@ export class Gauge implements GxComponent {
           <div
             class="ranges-and-labels-container"
             style={{
-              "border-radius": `${this.thickness}px`,
+              "border-radius": `${this.calcThickness()}px`,
               "margin-top": this.showValue ? "4px" : "0px"
             }}
           >
