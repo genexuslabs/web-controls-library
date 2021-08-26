@@ -189,44 +189,45 @@ export class Gauge implements GxComponent {
     const spanHalfWidth =
       this.linearCurrentValue.getBoundingClientRect().width / 2;
 
-    let spanOffsetX;
+    const linearCurrentValueStyle = this.linearCurrentValue.style;
 
     // The span is near the left side
     if (distanceToTheValueCenter - spanHalfWidth < 0) {
-      spanOffsetX = distanceToTheValueCenter;
+      linearCurrentValueStyle.marginLeft = "0%";
+      linearCurrentValueStyle.transform = "translateX(0%)";
 
       // The span is near the right side
     } else if (distanceToTheValueCenter + spanHalfWidth > gaugeWidth) {
-      spanOffsetX = 2 * spanHalfWidth - (gaugeWidth - distanceToTheValueCenter);
+      linearCurrentValueStyle.marginLeft = "100%";
+      linearCurrentValueStyle.transform = "translateX(-100%)";
 
       // The span is in an intermediate position
     } else {
-      spanOffsetX = spanHalfWidth;
+      linearCurrentValueStyle.marginLeft = `${percentage}%`;
+      linearCurrentValueStyle.transform = "translateX(-50%)";
     }
-
-    this.linearCurrentValue.style.transform = `translateX(${-spanOffsetX}px)`;
 
     // - - - - - - - - - - - -  Indicator positioning  - - - - - - - - - - - -
     const indicatorHalfWidth =
       this.linearIndicator.getBoundingClientRect().width / 2;
 
-    let indicatorOffsetX;
+    const linearIndicatorStyle = this.linearIndicator.style;
 
     // The indicator is near the left side
     if (distanceToTheValueCenter - indicatorHalfWidth < 0) {
-      indicatorOffsetX = distanceToTheValueCenter;
+      linearIndicatorStyle.marginLeft = "0%";
+      linearIndicatorStyle.transform = "translate(0%, 22px)";
 
       // The indicator is near the right side
     } else if (distanceToTheValueCenter + indicatorHalfWidth > gaugeWidth) {
-      indicatorOffsetX =
-        2 * indicatorHalfWidth - (gaugeWidth - distanceToTheValueCenter);
+      linearIndicatorStyle.marginLeft = "100%";
+      linearIndicatorStyle.transform = "translate(-100%, 22px)";
 
       // The indicator is in an intermediate position
     } else {
-      indicatorOffsetX = indicatorHalfWidth;
+      linearIndicatorStyle.marginLeft = `${percentage}%`;
+      linearIndicatorStyle.transform = "translate(-50%, 22px)";
     }
-
-    this.linearIndicator.style.transform = `translate(${-indicatorOffsetX}px, 22px)`;
   }
 
   private addCircleRanges(
