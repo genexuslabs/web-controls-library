@@ -79,6 +79,35 @@ gx-gauge {
     align-content: center;
   }
 
+  // This mixin is used to adjust the range labels based on the value of
+  // `THICKNESS_THRESHOLD`
+  @mixin labels-container(
+    $align-items: center,
+    $position: relative,
+    $height: 100%,
+    $padding-bottom: 1px,
+    $overflow: unset
+  ) {
+    .labels-container {
+      display: flex;
+      align-items: $align-items;
+      position: $position;
+      width: 100%;
+      height: $height;
+      padding-bottom: $padding-bottom;
+      overflow: $overflow;
+
+      .range-label {
+        @include flex-centered;
+        position: absolute;
+        max-height: 100%;
+        filter: brightness(0.5);
+        text-align: center;
+        transition: $transitionConfig;
+      }
+    }
+  }
+
   @include flex-centered;
   align-items: center;
   flex-wrap: wrap;
@@ -137,40 +166,40 @@ gx-gauge {
           transition: $transitionConfig;
         }
 
-        .labels-container {
-          display: flex;
-          align-items: center;
-          width: 100%;
-          height: 100%;
-          padding-bottom: 1px;
-
-          .range-label {
-            @include flex-centered;
-            position: absolute;
-            filter: brightness(0.5);
-            text-align: center;
-            transition: $transitionConfig;
-          }
-        }
+        @include labels-container;
       }
     }
 
-    .min-max-values-container {
+    .min-max-and-labels-container {
       display: flex;
-      justify-content: space-between;
+      align-items: flex-end;
+      position: relative;
       width: 100%;
       height: 1.25em;
-      z-index: 1;
 
-      .max-value {
-        background-color: var(--max-value-background-color);
-        color: var(--max-value-text-color);
+      .min-max-values-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+        font-weight: 500;
+        z-index: 1;
+        pointer-events: none;
+
+        .max-value {
+          background-color: var(--max-value-background-color);
+          color: var(--max-value-text-color);
+          pointer-events: all;
+        }
+
+        .min-value {
+          background-color: var(--min-value-background-color);
+          color: var(--min-value-text-color);
+          pointer-events: all;
+        }
       }
 
-      .min-value {
-        background-color: var(--min-value-background-color);
-        color: var(--min-value-text-color);
-      }
+      @include labels-container(baseline, absolute, 1.25em, 0px, hidden);
     }
   }
 

@@ -82,6 +82,10 @@ export class Gauge implements GxComponent {
 
   private circleIndicatorContainer: HTMLDivElement;
 
+  // If the thickness is less than 9, the range labels will be placed under the
+  // range containers
+  private THICKNESS_THRESHOLD = 9;
+
   @Listen("gxGaugeRangeDidLoad")
   onGaugeRangeDidLoad({ detail: childRange }) {
     this.rangesChildren = [...this.rangesChildren, childRange];
@@ -272,6 +276,11 @@ export class Gauge implements GxComponent {
 
   private addLineRangesLabels({ amount, color, name }, position: number): any {
     const range = this.maxValueAux - this.minValue;
+    const lineHeight =
+      this.calcThickness() < this.THICKNESS_THRESHOLD
+        ? "1.125em"
+        : `min(1em, ${this.calcThickness() * 2}px)`;
+
     return (
       <span
         class="range-label"
@@ -279,8 +288,7 @@ export class Gauge implements GxComponent {
           "margin-left": `${position}%`,
           color: color,
           width: `${(amount * 100) / range}%`,
-          "max-height": `${this.calcThickness() * 2}px`,
-          "line-height": `min(1em, ${this.calcThickness() * 2}px)`
+          "line-height": lineHeight
         }}
       >
         {name}
@@ -424,13 +432,24 @@ export class Gauge implements GxComponent {
             }}
           >
             {divRanges}
-            <div class="labels-container">{divRangesLabel}</div>
+            {this.calcThickness() >= this.THICKNESS_THRESHOLD && (
+              <div class="labels-container">{divRangesLabel}</div>
+            )}
           </div>
         </div>
-        {this.showMinMax && (
-          <div class="min-max-values-container">
-            <span class="min-value">{this.minValue}</span>
-            <span class="max-value">{this.maxValueAux}</span>
+        {(this.calcThickness() < this.THICKNESS_THRESHOLD ||
+          this.showMinMax) && (
+          <div class="min-max-and-labels-container">
+            {this.calcThickness() < this.THICKNESS_THRESHOLD && (
+              <div class="labels-container">{divRangesLabel}</div>
+            )}
+
+            {this.showMinMax && (
+              <div class="min-max-values-container">
+                <span class="min-value">{this.minValue}</span>
+                <span class="max-value">{this.maxValueAux}</span>
+              </div>
+            )}
           </div>
         )}
       </div>
