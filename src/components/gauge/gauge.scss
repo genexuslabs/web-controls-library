@@ -34,14 +34,14 @@ gx-gauge {
    * Define the background-color of the value text in `line` gauge type.
    * (rgba(255, 255, 255, 0.800) by default)
   */
-  --value-text-background-color: rgba(255, 255, 255, 0.8);
+  --value-text-background-color: rgba(255, 255, 255, 0.5);
 
   /**
   * @prop --max-value-background-color:
    * Set the color of maximum value display background in `line` gauge type.
    * (rgba(255, 255, 255, 0.800) by default)
   */
-  --max-value-background-color: rgba(255, 255, 255, 0.8);
+  --max-value-background-color: rgba(255, 255, 255, 0.5);
 
   /**
   * @prop --max-value-text-color:
@@ -55,7 +55,7 @@ gx-gauge {
    * Set the color of minimum value display background in `line` gauge type.
    * (rgba(255, 255, 255, 0.8000) by default)
   */
-  --min-value-background-color: rgba(255, 255, 255, 0.8);
+  --min-value-background-color: rgba(255, 255, 255, 0.5);
 
   /**
   * @prop --min-value-text-color:
@@ -79,13 +79,11 @@ gx-gauge {
     align-content: center;
   }
 
-  // This mixin is used to adjust the range labels based on the value of
-  // `THICKNESS_THRESHOLD`
+  // This mixin is used to adjust the range labels based on the fontSize value
   @mixin labels-container(
     $align-items: center,
     $position: relative,
     $height: 100%,
-    $padding-bottom: 1px,
     $overflow: unset
   ) {
     .labels-container {
@@ -94,16 +92,22 @@ gx-gauge {
       position: $position;
       width: 100%;
       height: $height;
-      padding-bottom: $padding-bottom;
       overflow: $overflow;
 
-      .range-label {
-        @include flex-centered;
-        position: absolute;
-        max-height: 100%;
-        filter: brightness(0.5);
-        text-align: center;
-        transition: $transitionConfig;
+      .labels-subcontainer {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 1.0625em;
+
+        .range-label {
+          @include flex-centered;
+          position: absolute;
+          line-height: 1.125em;
+          max-height: 100%;
+          filter: brightness(0.5);
+          text-align: center;
+        }
       }
     }
   }
@@ -134,7 +138,7 @@ gx-gauge {
         z-index: 1;
         background-color: var(--value-text-background-color);
         color: var(--value-text-color);
-        transition: $transitionConfig;
+        transition: transform 0.3 ease;
       }
     }
 
@@ -142,6 +146,7 @@ gx-gauge {
       display: flex;
       position: relative;
       width: 100%;
+      transition: $transitionConfig;
 
       .indicator {
         display: block;
@@ -157,7 +162,7 @@ gx-gauge {
         position: relative;
         overflow: hidden;
         width: 100%;
-        background-color: rgba(0, 0, 0, 0.2);
+        background-color: rgba(192, 192, 192, 0.5);
 
         .range {
           @include flex-centered;
@@ -176,45 +181,57 @@ gx-gauge {
       position: relative;
       width: 100%;
       height: 1.25em;
+      transition: $transitionConfig;
 
       .min-max-values-container {
         display: flex;
         justify-content: space-between;
         width: 100%;
-        height: 100%;
+        height: 1em;
         font-weight: 500;
         z-index: 1;
         pointer-events: none;
 
         .max-value {
+          line-height: 1em;
+          pointer-events: all;
           background-color: var(--max-value-background-color);
           color: var(--max-value-text-color);
-          pointer-events: all;
         }
 
         .min-value {
+          line-height: 1em;
+          pointer-events: all;
           background-color: var(--min-value-background-color);
           color: var(--min-value-text-color);
-          pointer-events: all;
         }
       }
 
-      @include labels-container(baseline, absolute, 1.25em, 0px, hidden);
+      @include labels-container(baseline, absolute, 1.125em, hidden);
     }
   }
 
   .circle-gauge-container {
     @include flex-centered;
-    align-items: center;
     width: 100%;
     height: 100%;
+
+    &[data-readonly] {
+      align-items: center;
+    }
 
     svg {
       width: 100%;
       height: 100%;
 
-      circle {
+      .circle-range {
+        fill: none;
         transition: stroke-dasharray 0.3s;
+      }
+
+      .background-circle {
+        fill: none;
+        stroke: rgba(192, 192, 192, 0.5);
       }
     }
 

@@ -68,11 +68,17 @@ export class Gauge implements GxComponent {
 
   @State() rangesChildren = [];
 
+  @State() labelsOverflow = false;
+
   private maxValueAux = this.minValue;
 
   private totalAmount = 0;
 
   private watchForItemsObserver: ResizeObserver;
+
+  private labelsSubContainer1: HTMLDivElement;
+
+  private labelsSubContainer2: HTMLDivElement;
 
   private linearCurrentValue: HTMLDivElement;
 
@@ -81,10 +87,6 @@ export class Gauge implements GxComponent {
   private circleCurrentValue: HTMLSpanElement;
 
   private circleIndicatorContainer: HTMLDivElement;
-
-  // If the thickness is less than 9, the range labels will be placed under the
-  // range containers
-  private THICKNESS_THRESHOLD = 9;
 
   @Listen("gxGaugeRangeDidLoad")
   onGaugeRangeDidLoad({ detail: childRange }) {
@@ -129,6 +131,24 @@ export class Gauge implements GxComponent {
       } else {
         this.watchForItemsObserver = new ResizeObserver(() => {
           this.setValueAndIndicatorPosition();
+
+          // This only happens when the component has not yet been rendered to
+          // get the `labelsSubContainer2` reference
+          if (this.labelsOverflow && this.labelsSubContainer2 == undefined) {
+            return;
+          }
+
+          const fontSize = !this.labelsOverflow
+            ? this.labelsSubContainer1.getBoundingClientRect().height
+            : this.labelsSubContainer2.getBoundingClientRect().height;
+
+          // Depending on the current fontSize, it decides the position where
+          // the labels will be placed
+          if (fontSize > this.calcThickness() * 2) {
+            this.labelsOverflow = true;
+          } else {
+            this.labelsOverflow = false;
+          }
         });
       }
 
@@ -252,7 +272,6 @@ export class Gauge implements GxComponent {
         cy="50%"
         stroke={color}
         stroke-dasharray={`${circleLength * valuePercentage}, ${circleLength}`}
-        fill="none"
         transform={`rotate(${position + ROTATION_FIX} 50,50)`}
         data-amount={amount}
         stroke-width={`${this.calcThickness()}%`}
@@ -276,10 +295,6 @@ export class Gauge implements GxComponent {
 
   private addLineRangesLabels({ amount, color, name }, position: number): any {
     const range = this.maxValueAux - this.minValue;
-    const lineHeight =
-      this.calcThickness() < this.THICKNESS_THRESHOLD
-        ? "1.125em"
-        : `min(1em, ${this.calcThickness() * 2}px)`;
 
     return (
       <span
@@ -287,8 +302,7 @@ export class Gauge implements GxComponent {
         style={{
           "margin-left": `${position}%`,
           color: color,
-          width: `${(amount * 100) / range}%`,
-          "line-height": lineHeight
+          width: `${(amount * 100) / range}%`
         }}
       >
         {name}
@@ -329,14 +343,13 @@ export class Gauge implements GxComponent {
 
     return (
       <Host>
-        <div class="circle-gauge-container">
+        <div class="circle-gauge-container" data-readonly>
           <svg viewBox="0 0 100 100">
             <circle
+              class="background-circle"
               r={radius}
               cx="50%"
               cy="50%"
-              stroke={"rgba(0, 0, 0, 0.2)"}
-              fill="none"
               stroke-width={`${this.calcThickness() / 2}%`}
             />
             {svgRanges}
@@ -395,7 +408,7 @@ export class Gauge implements GxComponent {
       this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
 
     return (
-      <div class="line-gauge-container">
+      <div class="line-gauge-container" data-readonly>
         {this.showValue && (
           <div class="current-value-container">
             <span
@@ -432,16 +445,29 @@ export class Gauge implements GxComponent {
             }}
           >
             {divRanges}
-            {this.calcThickness() >= this.THICKNESS_THRESHOLD && (
-              <div class="labels-container">{divRangesLabel}</div>
+            {!this.labelsOverflow && (
+              <div class="labels-container">
+                <div
+                  class="labels-subcontainer"
+                  ref={el => (this.labelsSubContainer1 = el as HTMLDivElement)}
+                >
+                  {divRangesLabel}
+                </div>
+              </div>
             )}
           </div>
         </div>
-        {(this.calcThickness() < this.THICKNESS_THRESHOLD ||
-          this.showMinMax) && (
+        {(this.labelsOverflow || this.showMinMax) && (
           <div class="min-max-and-labels-container">
-            {this.calcThickness() < this.THICKNESS_THRESHOLD && (
-              <div class="labels-container">{divRangesLabel}</div>
+            {this.labelsOverflow && (
+              <div class="labels-container">
+                <div
+                  class="labels-subcontainer"
+                  ref={el => (this.labelsSubContainer2 = el as HTMLDivElement)}
+                >
+                  {divRangesLabel}
+                </div>
+              </div>
             )}
 
             {this.showMinMax && (
