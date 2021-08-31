@@ -15,6 +15,10 @@ gx-form-field {
     [data-readonly] {
       text-align: start;
     }
+
+    gx-gauge {
+      justify-content: flex-start;
+    }
   }
 }
 
@@ -23,6 +27,10 @@ gx-form-field {
     [data-part="field"],
     [data-readonly] {
       text-align: center;
+    }
+
+    gx-gauge {
+      justify-content: center;
     }
   }
 }
@@ -33,6 +41,10 @@ gx-form-field {
     [data-readonly] {
       text-align: end;
     }
+
+    gx-gauge {
+      justify-content: flex-end;
+    }
   }
 }
 
@@ -40,6 +52,10 @@ gx-form-field {
   & > gx-form-field {
     [data-readonly],
     [data-part="container"] {
+      align-items: flex-start;
+    }
+
+    gx-gauge {
       align-items: flex-start;
     }
   }
@@ -55,6 +71,10 @@ gx-form-field {
     [data-part="container"] {
       align-items: center;
     }
+
+    gx-gauge {
+      align-items: center;
+    }
   }
 }
 
@@ -66,6 +86,10 @@ gx-form-field {
 
     [data-readonly],
     [data-part="container"] {
+      align-items: flex-end;
+    }
+
+    gx-gauge {
       align-items: flex-end;
     }
   }

@@ -80,13 +80,15 @@ export class Gauge implements GxComponent {
 
   private labelsSubContainer2: HTMLDivElement;
 
+  private linearCurrentValueContainer: HTMLDivElement;
+
   private linearCurrentValue: HTMLDivElement;
 
   private linearIndicator: HTMLDivElement;
 
   private circleCurrentValue: HTMLSpanElement;
 
-  private circleIndicatorContainer: HTMLDivElement;
+  private SVGcircle: SVGCircleElement;
 
   @Listen("gxGaugeRangeDidLoad")
   onGaugeRangeDidLoad({ detail: childRange }) {
@@ -111,49 +113,58 @@ export class Gauge implements GxComponent {
     });
   }
 
-  /*  If showValue == true, it creates a ResizeObserver to implement the font
-      and marker container responsiveness (circle gauge type) or 
-      'current-value' centering responsiveness (line gauge type)
+  /*  If showValue == true and gauge type == circle, it creates a
+      ResizeObserver to implement the font and indicator container 
+      responsiveness
   */
   connectedCallback() {
-    if (this.showValue) {
-      if (this.type === "circle") {
-        this.watchForItemsObserver = new ResizeObserver(entries => {
-          const elem = entries[0].contentRect;
-          const minimumSize = Math.min(elem.width, elem.height);
+    if (this.showValue && this.type === "circle") {
+      this.watchForItemsObserver = new ResizeObserver(() => {
+        const fontSize =
+          Math.min(
+            this.SVGcircle.getBoundingClientRect().height,
+            this.SVGcircle.getBoundingClientRect().width
+          ) / 2.5;
 
-          // Updates the font size
-          this.circleCurrentValue.style.fontSize = `${minimumSize / 2.5}px`;
-
-          // Updates the maxWidth of the indicator container
-          this.circleIndicatorContainer.style.maxWidth = `${minimumSize}px`;
-        });
-      } else {
-        this.watchForItemsObserver = new ResizeObserver(() => {
-          this.setValueAndIndicatorPosition();
-
-          // This only happens when the component has not yet been rendered to
-          // get the `labelsSubContainer2` reference
-          if (this.labelsOverflow && this.labelsSubContainer2 == undefined) {
-            return;
-          }
-
-          const fontSize = !this.labelsOverflow
-            ? this.labelsSubContainer1.getBoundingClientRect().height
-            : this.labelsSubContainer2.getBoundingClientRect().height;
-
-          // Depending on the current fontSize, it decides the position where
-          // the labels will be placed
-          if (fontSize > this.calcThickness() * 2) {
-            this.labelsOverflow = true;
-          } else {
-            this.labelsOverflow = false;
-          }
-        });
-      }
+        // Updates the font size
+        this.circleCurrentValue.style.fontSize = `${fontSize}px`;
+      });
 
       // Observe the gauge
       this.watchForItemsObserver.observe(this.element);
+    }
+  }
+
+  /*  If gauge type == line, it creates a ResizeObserver to implement 
+      `current-value` and `indicator` centering responsiveness and range labels
+      responsiveness
+  */
+  componentDidLoad() {
+    if (this.type === "line") {
+      this.watchForItemsObserver = new ResizeObserver(() => {
+        this.setValueAndIndicatorPosition();
+
+        // This only happens when the component has not yet been rendered to
+        // get the `labelsSubContainer2` reference
+        if (this.labelsOverflow && this.labelsSubContainer2 == undefined) {
+          return;
+        }
+
+        const fontSize = !this.labelsOverflow
+          ? this.labelsSubContainer1.getBoundingClientRect().height
+          : this.labelsSubContainer2.getBoundingClientRect().height;
+
+        // Depending on the current fontSize, it decides the position where
+        // the labels will be placed
+        if (fontSize > this.calcThickness() * 2) {
+          this.labelsOverflow = true;
+        } else {
+          this.labelsOverflow = false;
+        }
+      });
+
+      // Observe the `current-value` in the line gauge type
+      this.watchForItemsObserver.observe(this.linearCurrentValueContainer);
     }
   }
 
@@ -205,7 +216,9 @@ export class Gauge implements GxComponent {
     const percentage =
       this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
 
-    const gaugeWidth = this.element.getBoundingClientRect().width;
+    // This does not include the gauge padding
+    const gaugeWidth = this.linearCurrentValueContainer.getBoundingClientRect()
+      .width;
 
     const distanceToTheValueCenter = (gaugeWidth / 100) * percentage;
 
@@ -344,17 +357,36 @@ export class Gauge implements GxComponent {
     return (
       <Host>
         <div class="circle-gauge-container" data-readonly>
-          <svg viewBox="0 0 100 100">
-            <circle
-              class="background-circle"
-              r={radius}
-              cx="50%"
-              cy="50%"
-              stroke-width={`${this.calcThickness() / 2}%`}
-            />
-            {svgRanges}
-          </svg>
-          {this.showValue && [
+          <div class="svg-and-indicator-container">
+            <svg viewBox="0 0 100 100">
+              <circle
+                class="background-circle"
+                r={radius}
+                cx="50%"
+                cy="50%"
+                stroke-width={`${this.calcThickness()}%`}
+                ref={el => (this.SVGcircle = el as SVGCircleElement)}
+              />
+              {svgRanges}
+            </svg>
+
+            {this.showValue && (
+              <div
+                class="indicator-container"
+                style={{
+                  transform: rotation
+                }}
+              >
+                <div
+                  class="indicator"
+                  style={{
+                    width: `${this.calcThickness() + 2}%`
+                  }}
+                />
+              </div>
+            )}
+          </div>
+          {this.showValue && (
             <div class="current-value-container">
               <span
                 class="current-value"
@@ -362,22 +394,8 @@ export class Gauge implements GxComponent {
               >
                 {this.value}
               </span>
-            </div>,
-            <div
-              class="indicator-container"
-              style={{
-                transform: rotation
-              }}
-              ref={el => (this.circleIndicatorContainer = el as HTMLDivElement)}
-            >
-              <div
-                class="indicator"
-                style={{
-                  width: `${this.calcThickness() + 2}%`
-                }}
-              />
             </div>
-          ]}
+          )}
         </div>
       </Host>
     );
@@ -410,7 +428,12 @@ export class Gauge implements GxComponent {
     return (
       <div class="line-gauge-container" data-readonly>
         {this.showValue && (
-          <div class="current-value-container">
+          <div
+            class="current-value-container"
+            ref={el =>
+              (this.linearCurrentValueContainer = el as HTMLDivElement)
+            }
+          >
             <span
               class="current-value"
               style={{
