@@ -68,11 +68,27 @@ export class Gauge implements GxComponent {
 
   @State() rangesChildren = [];
 
+  @State() labelsOverflow = false;
+
   private maxValueAux = this.minValue;
 
-  private minimumSize: number;
-
   private totalAmount = 0;
+
+  private watchForItemsObserver: ResizeObserver;
+
+  private labelsSubContainer1: HTMLDivElement;
+
+  private labelsSubContainer2: HTMLDivElement;
+
+  private linearCurrentValueContainer: HTMLDivElement;
+
+  private linearCurrentValue: HTMLDivElement;
+
+  private linearIndicator: HTMLDivElement;
+
+  private circleCurrentValue: HTMLSpanElement;
+
+  private SVGcircle: SVGCircleElement;
 
   @Listen("gxGaugeRangeDidLoad")
   onGaugeRangeDidLoad({ detail: childRange }) {
@@ -97,6 +113,77 @@ export class Gauge implements GxComponent {
     });
   }
 
+  /*  If showValue == true and gauge type == circle, it creates a
+      ResizeObserver to implement the font and indicator container 
+      responsiveness
+  */
+  connectedCallback() {
+    if (this.showValue && this.type === "circle") {
+      this.watchForItemsObserver = new ResizeObserver(() => {
+        const fontSize =
+          Math.min(
+            this.SVGcircle.getBoundingClientRect().height,
+            this.SVGcircle.getBoundingClientRect().width
+          ) / 2.5;
+
+        // Updates the font size
+        this.circleCurrentValue.style.fontSize = `${fontSize}px`;
+      });
+
+      // Observe the gauge
+      this.watchForItemsObserver.observe(this.element);
+    }
+  }
+
+  /*  If gauge type == line, it creates a ResizeObserver to implement 
+      `current-value` and `indicator` centering responsiveness and range labels
+      responsiveness
+  */
+  componentDidLoad() {
+    if (this.type === "line") {
+      this.watchForItemsObserver = new ResizeObserver(() => {
+        this.setValueAndIndicatorPosition();
+
+        // This only happens when the component has not yet been rendered to
+        // get the `labelsSubContainer2` reference
+        if (this.labelsOverflow && this.labelsSubContainer2 == undefined) {
+          return;
+        }
+
+        const fontSize = !this.labelsOverflow
+          ? this.labelsSubContainer1.getBoundingClientRect().height
+          : this.labelsSubContainer2.getBoundingClientRect().height;
+
+        // Depending on the current fontSize, it decides the position where
+        // the labels will be placed
+        if (fontSize > this.calcThickness() * 2) {
+          this.labelsOverflow = true;
+        } else {
+          this.labelsOverflow = false;
+        }
+      });
+
+      // Observe the `current-value` in the line gauge type
+      this.watchForItemsObserver.observe(this.linearCurrentValueContainer);
+    }
+  }
+
+  /*  After the render, it asks for 'getBoundingClientRect()' and centers the
+      'current-value' in line gauge type
+  */
+  componentDidRender() {
+    if (this.showValue && this.type === "line") {
+      this.setValueAndIndicatorPosition();
+    }
+  }
+
+  disconnectedCallback() {
+    if (this.watchForItemsObserver !== undefined) {
+      this.watchForItemsObserver.disconnect();
+      this.watchForItemsObserver = undefined;
+    }
+  }
+
   // If maxValue is undefined, it defines the maxValue as the sum of the amounts plus minValue
   private updateMaxValueAux(): void {
     this.maxValueAux =
@@ -108,8 +195,8 @@ export class Gauge implements GxComponent {
   private calcThickness(): number {
     return typeof this.thickness === "number" &&
       this.thickness > 0 &&
-      this.thickness <= 100
-      ? this.thickness / 5
+      this.thickness <= 99
+      ? this.thickness
       : 10;
   }
 
@@ -118,6 +205,66 @@ export class Gauge implements GxComponent {
       ? 0
       : ((this.value - this.minValue) * 100) /
           (this.maxValueAux - this.minValue);
+  }
+
+  /*  In the line gauge type, this functions correctly aligns the
+      'current-value' to the center of the 'indicator', even if the indicator
+      has low or high percentage value. Also, it makes to not overflow the
+      'indicator' from his container when he has low or high values.
+  */
+  private setValueAndIndicatorPosition(): void {
+    const percentage =
+      this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
+
+    // This does not include the gauge padding
+    const gaugeWidth = this.linearCurrentValueContainer.getBoundingClientRect()
+      .width;
+
+    const distanceToTheValueCenter = (gaugeWidth / 100) * percentage;
+
+    // - - - - - - - - - - -  Current value positioning  - - - - - - - - - - -
+    const spanHalfWidth =
+      this.linearCurrentValue.getBoundingClientRect().width / 2;
+
+    const linearCurrentValueStyle = this.linearCurrentValue.style;
+
+    // The span is near the left side
+    if (distanceToTheValueCenter - spanHalfWidth < 0) {
+      linearCurrentValueStyle.marginLeft = "0%";
+      linearCurrentValueStyle.transform = "translateX(0%)";
+
+      // The span is near the right side
+    } else if (distanceToTheValueCenter + spanHalfWidth > gaugeWidth) {
+      linearCurrentValueStyle.marginLeft = "100%";
+      linearCurrentValueStyle.transform = "translateX(-100%)";
+
+      // The span is in an intermediate position
+    } else {
+      linearCurrentValueStyle.marginLeft = `${percentage}%`;
+      linearCurrentValueStyle.transform = "translateX(-50%)";
+    }
+
+    // - - - - - - - - - - - -  Indicator positioning  - - - - - - - - - - - -
+    const indicatorHalfWidth =
+      this.linearIndicator.getBoundingClientRect().width / 2;
+
+    const linearIndicatorStyle = this.linearIndicator.style;
+
+    // The indicator is near the left side
+    if (distanceToTheValueCenter - indicatorHalfWidth < 0) {
+      linearIndicatorStyle.marginLeft = "0%";
+      linearIndicatorStyle.transform = "translateX(0%)";
+
+      // The indicator is near the right side
+    } else if (distanceToTheValueCenter + indicatorHalfWidth > gaugeWidth) {
+      linearIndicatorStyle.marginLeft = "100%";
+      linearIndicatorStyle.transform = "translateX(-100%)";
+
+      // The indicator is in an intermediate position
+    } else {
+      linearIndicatorStyle.marginLeft = `${percentage}%`;
+      linearIndicatorStyle.transform = "translateX(-50%)";
+    }
   }
 
   private addCircleRanges(
@@ -138,10 +285,9 @@ export class Gauge implements GxComponent {
         cy="50%"
         stroke={color}
         stroke-dasharray={`${circleLength * valuePercentage}, ${circleLength}`}
-        fill="none"
         transform={`rotate(${position + ROTATION_FIX} 50,50)`}
         data-amount={amount}
-        stroke-width={`${this.thickness}%`}
+        stroke-width={`${this.calcThickness()}%`}
       />
     );
   }
@@ -162,18 +308,13 @@ export class Gauge implements GxComponent {
 
   private addLineRangesLabels({ amount, color, name }, position: number): any {
     const range = this.maxValueAux - this.minValue;
+
     return (
       <span
-        class="rangeName"
+        class="range-label"
         style={{
           "margin-left": `${position}%`,
           color: color,
-          // transform: `translateY(-${this.thickness >= 7 ? 0 : 12 + this.thickness}px)`,
-          transform: `translateY(${
-            this.thickness >= 7
-              ? 0
-              : this.element.offsetHeight / 4 + this.thickness / 3
-          }px)`,
           width: `${(amount * 100) / range}%`
         }}
       >
@@ -188,9 +329,10 @@ export class Gauge implements GxComponent {
     const FULL_CIRCLE_RADIO = 100 / 2;
     const svgRanges = [];
     const ONE_PERCENT_OF_CIRCLE_DREGREE = 3.6;
-    const radius = FULL_CIRCLE_RADIO - this.thickness / 2;
+    const radius = FULL_CIRCLE_RADIO - this.calcThickness() / 2;
     const ROTATION_FIX = 90; // Used to correct the rotation
     this.totalAmount = 0;
+
     for (let i = childRanges.length - 1; i >= 0; i--) {
       this.totalAmount += childRanges[i].amount;
     }
@@ -212,73 +354,56 @@ export class Gauge implements GxComponent {
         : `rotate(${this.calcPercentage() * ONE_PERCENT_OF_CIRCLE_DREGREE +
             ROTATION_FIX}deg)`;
 
-    if (this.showValue) {
-      const ro = new ResizeObserver(entries => {
-        for (const entry of entries) {
-          const elem = entry.contentRect;
-          const minimumSize = Math.min(elem.width, elem.height);
-          const value = this.element.querySelector(".current-value");
-
-          const marker = this.element.querySelector(".circularMarker");
-
-          const markerIndicator = this.element.querySelector(
-            ".circularIndicator"
-          );
-
-          value.setAttribute("style", `font-size: ${minimumSize / 2.5}px`);
-
-          marker.setAttribute(
-            "style",
-            `transform: ${rotation}; max-width: ${minimumSize}px`
-          );
-
-          markerIndicator.setAttribute(
-            "style",
-            `width: ${this.thickness + 2}%; height: ${minimumSize / 100}px`
-          );
-        }
-      });
-
-      // Observe the gauge to resize the font and the value marker
-      ro.observe(this.element);
-    }
-
     return (
       <Host>
-        <div class="svgContainer">
-          <svg viewBox="0 0 100 100">
-            <circle
-              r={radius}
-              cx="50%"
-              cy="50%"
-              stroke={"rgba(0, 0, 0, 0.2)"}
-              fill="none"
-              stroke-width={`${this.thickness / 2}%`}
-            />
-            {svgRanges}
-          </svg>
-          {this.showValue && (
-            <div class="gauge">
-              <div>
-                {this.showValue && (
-                  <span class="current-value">{`${this.value}`}</span>
-                )}
+        <div class="circle-gauge-container" data-readonly>
+          <div class="svg-and-indicator-container">
+            <svg viewBox="0 0 100 100">
+              <circle
+                class="background-circle"
+                r={radius}
+                cx="50%"
+                cy="50%"
+                stroke-width={`${this.calcThickness()}%`}
+                ref={el => (this.SVGcircle = el as SVGCircleElement)}
+              />
+              {svgRanges}
+            </svg>
+
+            {this.showValue && (
+              <div
+                class="indicator-container"
+                style={{
+                  transform: rotation
+                }}
+              >
+                <div
+                  class="indicator"
+                  style={{
+                    width: `${this.calcThickness() + 2}%`
+                  }}
+                />
               </div>
+            )}
+          </div>
+          {this.showValue && (
+            <div class="current-value-container">
+              <span
+                class="current-value"
+                ref={el => (this.circleCurrentValue = el as HTMLSpanElement)}
+              >
+                {this.value}
+              </span>
             </div>
           )}
         </div>
-        {this.showValue && (
-          <div class="circularMarker">
-            <div class="circularIndicator" />
-          </div>
-        )}
       </Host>
     );
   }
 
   private renderLine(childRanges) {
     const divRanges = [];
-    const divRangesName = [];
+    const divRangesLabel = [];
     this.totalAmount = 0;
 
     for (let i = childRanges.length - 1; i >= 0; i--) {
@@ -286,119 +411,101 @@ export class Gauge implements GxComponent {
     }
     this.updateMaxValueAux();
 
-    // Depending of `this.value`, it calculates how much the value marker has to move from the left side
-    const valueOffset =
-      this.value <= this.minValue
-        ? 0
-        : this.value >= this.maxValueAux
-        ? 100
-        : this.calcPercentage() >= 98
-        ? 72
-        : 50;
-
     const range = this.maxValueAux - this.minValue;
     let positionInGauge = 0;
 
     for (let i = 0; i < childRanges.length; i++) {
       divRanges.push(this.addLineRanges(childRanges[i], positionInGauge));
-      divRangesName.push(
+      divRangesLabel.push(
         this.addLineRangesLabels(childRanges[i], positionInGauge)
       );
 
       positionInGauge += (100 * childRanges[i].amount) / range;
     }
+    const percentage =
+      this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
+
     return (
-      <div
-        class="gaugeContainerLine"
-        style={{
-          height: `${10 * this.calcThickness()}px`,
-          "margin-top": `${this.showValue || this.thickness < 7 ? 23.5 : 0}px`, // 23.5px, 39.5px
-          "margin-bottom": `${
-            this.showValue && this.thickness < 7 ? 22 : this.showMinMax ? 20 : 1
-          }px`
-        }}
-      >
-        <div class="gauge">
-          {this.showValue ? (
+      <div class="line-gauge-container" data-readonly>
+        {this.showValue && (
+          <div
+            class="current-value-container"
+            ref={el =>
+              (this.linearCurrentValueContainer = el as HTMLDivElement)
+            }
+          >
             <span
-              class="marker"
+              class="current-value"
               style={{
-                "margin-left": `${
-                  this.value <= this.minValue
-                    ? 0
-                    : this.value >= this.maxValueAux
-                    ? 100
-                    : this.calcPercentage()
-                }%`,
-                transform: `translate(-${valueOffset}%, -28px)` // 22px, 38px
+                "margin-left": `${percentage}%`
               }}
+              ref={el => (this.linearCurrentValue = el as HTMLDivElement)}
             >
               {this.value}
             </span>
-          ) : (
-            ""
-          )}
-        </div>
+          </div>
+        )}
         <div
-          class="rangesContainer"
+          class="ranges-labels-and-indicator-container"
           style={{
-            height: `${2 * this.thickness}px`,
-            "border-radius": `${this.thickness}px`
+            height: `${2 * this.calcThickness() + (this.showValue ? 4 : 0)}px`
           }}
         >
-          {divRanges}
-        </div>
-        {this.showValue ? (
-          <span
-            class="marker"
-            style={{
-              "margin-left": `${
-                this.calcPercentage() >= 100 ? 100 : this.calcPercentage()
-              }%`
-            }}
-          >
+          {this.showValue && (
             <div
               class="indicator"
               style={{
-                height: `${this.thickness * 2 + 4}px`,
-                "border-left-width": `${this.element.offsetWidth /
-                  document.body.offsetWidth}vw`,
-                transform:
-                  this.calcPercentage() > 0 && this.calcPercentage() < 100
-                    ? "translateX(-50%)"
-                    : this.calcPercentage() >= 100
-                    ? "translateX(-100%)"
-                    : "translateX(0%)"
+                "margin-left": `${percentage}%`
               }}
+              ref={el => (this.linearIndicator = el as HTMLDivElement)}
             />
-          </span>
-        ) : (
-          ""
-        )}
-        <div class="labelsContainerLine">{divRangesName}</div>
-        {this.showMinMax ? (
-          <div class="minMaxDisplay">
-            <span class="minValue">
-              {this.minValue}
-              <span />
-            </span>
-            <span class="maxValue">
-              {this.maxValueAux}
-              <span />
-            </span>
+          )}
+          <div
+            class="ranges-and-labels-container"
+            style={{
+              "border-radius": `${this.calcThickness()}px`,
+              "margin-top": this.showValue ? "4px" : "0px"
+            }}
+          >
+            {divRanges}
+            {!this.labelsOverflow && (
+              <div class="labels-container">
+                <div
+                  class="labels-subcontainer"
+                  ref={el => (this.labelsSubContainer1 = el as HTMLDivElement)}
+                >
+                  {divRangesLabel}
+                </div>
+              </div>
+            )}
           </div>
-        ) : (
-          ""
+        </div>
+        {(this.labelsOverflow || this.showMinMax) && (
+          <div class="min-max-and-labels-container">
+            {this.labelsOverflow && (
+              <div class="labels-container">
+                <div
+                  class="labels-subcontainer"
+                  ref={el => (this.labelsSubContainer2 = el as HTMLDivElement)}
+                >
+                  {divRangesLabel}
+                </div>
+              </div>
+            )}
+
+            {this.showMinMax && (
+              <div class="min-max-values-container">
+                <span class="min-value">{this.minValue}</span>
+                <span class="max-value">{this.maxValueAux}</span>
+              </div>
+            )}
+          </div>
         )}
       </div>
     );
   }
 
   render() {
-    this.minimumSize =
-      this.element.offsetHeight > this.element.offsetWidth
-        ? this.element.offsetWidth
-        : this.element.offsetHeight;
     const childRanges = Array.from(
       this.element.querySelectorAll("gx-gauge-range")
     );
