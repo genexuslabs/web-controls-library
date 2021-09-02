@@ -16,8 +16,6 @@ export class SelectRender implements Renderer {
   protected options: any[] = [];
   protected element: HTMLElement;
   private selectId: string;
-  private select: HTMLSelectElement;
-  private divSelector: HTMLDivElement;
 
   updateOptions(options) {
     this.options = options;
@@ -62,7 +60,7 @@ export class SelectRender implements Renderer {
     this.component.input.emit(event);
   }
 
-  render() {
+  render(anOptionHasBeenSelected) {
     if (this.component.readonly) {
       return (
         <span class={this.getCssClasses()}>
@@ -79,7 +77,6 @@ export class SelectRender implements Renderer {
         onChange: this.handleChange.bind(this),
         ref: (select: HTMLSelectElement) => {
           select.value = this.component.value;
-          this.select = select;
         }
       };
       if (this.component.suggest) {
@@ -107,6 +104,9 @@ export class SelectRender implements Renderer {
           ]
         : [
             <select {...attris} data-readonly>
+              {!anOptionHasBeenSelected && (
+                <option hidden>{this.component.placeholder}</option>
+              )}
               {this.options.map(({ innerText, selected, value, disabled }) => (
                 <option disabled={disabled} selected={selected} value={value}>
                   {innerText}

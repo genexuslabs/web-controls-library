@@ -24,6 +24,9 @@ export class Select implements FormComponent {
 
   private renderer: SelectRender;
 
+  // Used to show the placeholder when no options are selected
+  private anOptionHasBeenSelected = false;
+
   @State() protected options: any[] = [];
   private didLoad: boolean;
 
@@ -101,6 +104,7 @@ export class Select implements FormComponent {
   @Watch("value")
   valueChanged() {
     // the select value just changed
+    this.anOptionHasBeenSelected = false;
 
     const optionsElement = Array.from(
       this.element.querySelectorAll("gx-select-option")
@@ -112,6 +116,7 @@ export class Select implements FormComponent {
         // the option value matches with the new select value
         // let's check this option
         option.selected = true;
+        this.anOptionHasBeenSelected = true;
       } else {
         // the option value doesn't match
         // with the new select value
@@ -216,7 +221,7 @@ export class Select implements FormComponent {
   }
 
   render() {
-    return this.renderer.render();
+    return this.renderer.render(this.anOptionHasBeenSelected);
   }
 }
 
