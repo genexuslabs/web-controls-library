@@ -31,9 +31,9 @@ export class SelectRender implements Renderer {
     const classList = [];
 
     if (this.component.readonly) {
-      classList.push("form-control-plaintext");
+      classList.push("readonly-select");
     } else {
-      classList.push("custom-select");
+      classList.push("normal-select");
     }
 
     if (this.component.cssClass) {
@@ -106,41 +106,14 @@ export class SelectRender implements Renderer {
             </datalist>
           ]
         : [
-            <gx-bootstrap />,
-            <div class="selector-and-select-container">
-              <div class="select-container">
-                <select {...attris}>
-                  {this.options.map(
-                    ({ innerText, selected, value, disabled }) => (
-                      <option
-                        disabled={disabled}
-                        selected={selected}
-                        value={value}
-                      >
-                        {innerText}
-                      </option>
-                    )
-                  )}
-                </select>
-              </div>
-              <div
-                class="selector-container"
-                ref={el => (this.divSelector = el as HTMLDivElement)}
-              >
-                <svg width="100%" height="100%" viewBox="0 0 4 5">
-                  <path fill="#343a40" d="M2 0L0 2h4zm0 5L0 3h4z"></path>
-                </svg>
-              </div>
-            </div>
+            <select {...attris} data-readonly>
+              {this.options.map(({ innerText, selected, value, disabled }) => (
+                <option disabled={disabled} selected={selected} value={value}>
+                  {innerText}
+                </option>
+              ))}
+            </select>
           ];
     }
-  }
-
-  // When the 'select' has borders it correctly centers the 'selector'
-  componentDidRender() {
-    const select = this.select.getBoundingClientRect();
-    const selectBorderWidth = (select.width - this.select.clientWidth) / 2;
-
-    this.divSelector.style.margin = `0 calc(0.75rem + ${selectBorderWidth}px) 0 calc(0.75rem + ${selectBorderWidth}px)`;
   }
 }

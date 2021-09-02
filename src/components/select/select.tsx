@@ -218,10 +218,6 @@ export class Select implements FormComponent {
   render() {
     return this.renderer.render();
   }
-
-  componentDidRender() {
-    return this.renderer.componentDidRender();
-  }
 }
 
 interface HTMLSelectOptionElementEvent extends CustomEvent {
