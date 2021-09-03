@@ -36,6 +36,8 @@ gx-select {
   }
 
   .normal-select {
+    border: unset;
+
     &,
     &:focus,
     &:active {
