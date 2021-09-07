@@ -1,43 +1,63 @@
+// Used to horizontally align the text
+@mixin alignment($text-align: start) {
+  gx-select {
+    .normal-select {
+      text-align-last: $text-align;
+    }
+
+    option {
+      text-align: $text-align;
+      text-align-last: $text-align;
+    }
+
+    .readonly-select {
+      text-align: $text-align;
+    }
+  }
+}
+
 gx-select {
-  gx-select-option {
-    display: none !important;
+  margin-top: var(--margin-top, 0);
+  margin-right: var(--margin-right, 0);
+  margin-bottom: var(--margin-bottom, 0);
+  margin-left: var(--margin-left, 0);
+
+  [data-readonly] {
+    width: 100%;
+    height: 100%;
   }
 
-  .selector-and-select-container {
+  .readonly-select {
     display: flex;
-    justify-content: flex-end;
 
-    .select-container {
-      position: absolute;
+    & > span {
       width: 100%;
-      height: 100%;
-
-      .custom-select {
-        &,
-        &:focus,
-        &:active {
-          height: 100%;
-        }
-      }
-    }
-
-    .selector-container {
-      position: absolute;
-      width: 8px;
-      height: 100%;
-      pointer-events: none;
     }
   }
 
-  // It disables the bootstrap's css
-  .custom-select {
+  .normal-select {
+    border: unset;
+
     &,
     &:focus,
     &:active {
-      border: unset;
-      background: unset;
-      padding: unset;
-      box-shadow: none;
+      outline: 0;
     }
   }
+
+  gx-select-option {
+    display: none !important;
+  }
+}
+
+// Default alignment which supports RTL
+@include alignment();
+
+// Alignments based on parent control alignment
+[align="center"] {
+  @include alignment(center);
+}
+
+[align="right"] {
+  @include alignment(end);
 }
