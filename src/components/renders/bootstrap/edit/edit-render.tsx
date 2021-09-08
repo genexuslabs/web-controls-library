@@ -198,29 +198,30 @@ export class EditRender implements Renderer {
     const ReadonlyTag = this.getReadonlyTagByFontCategory() as any;
 
     return [
-      <gx-bootstrap />,
       edit.readonly && edit.format == "Text" && (
         <div data-readonly="">
-          <ReadonlyTag
-            key="readonly"
-            class={{
-              "readonly-content": true,
-              "gx-line-clamp": this.shouldClampLines()
-            }}
-            style={
-              this.shouldClampLines() && {
-                "--max-lines": edit.maxLines.toString(),
-                "--max-height": `${edit.maxHeight}px`
+          <div class="readonly-content-container">
+            <ReadonlyTag
+              key="readonly"
+              class={{
+                "readonly-content": true,
+                "gx-line-clamp": this.component.lineClamp,
+                relative: !this.component.lineClamp
+              }}
+              style={
+                this.component.lineClamp && {
+                  "--max-lines": edit.maxLines.toString()
+                }
               }
-            }
-          >
-            {edit.lineClamp && (
-              <div class="line-measuring" aria-hidden>
-                {"A"}
-              </div>
-            )}
-            {this.getReadonlyContent(edit, edit.value)}
-          </ReadonlyTag>
+            >
+              {edit.lineClamp && (
+                <div class="line-measuring" aria-hidden>
+                  {"A"}
+                </div>
+              )}
+              {this.getReadonlyContent(edit, edit.value)}
+            </ReadonlyTag>
+          </div>
         </div>
       ),
       editableElement
@@ -233,9 +234,5 @@ export class EditRender implements Renderer {
       return "span";
     }
     return tag;
-  }
-
-  private shouldClampLines() {
-    return this.component.lineClamp && this.component.maxLines > 0;
   }
 }

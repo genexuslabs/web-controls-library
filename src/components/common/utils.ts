@@ -22,6 +22,9 @@ export function debounce(
   };
 }
 
+/*  This functions overrides a method adding calls before (`before()`) and
+    after (`after()`) 
+*/
 export function overrideMethod(
   component: Component,
   methodName: string,

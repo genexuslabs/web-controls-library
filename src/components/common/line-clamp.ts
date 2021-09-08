@@ -1,81 +1,107 @@
 import { debounce, overrideMethod } from "./utils";
 import { Component } from "./interfaces";
 
-const LINE_HEIGHT_CLAMP_THRESHOLD = 0.3;
-
-// There is an issue, which loops this call
 export function makeLinesClampable(
   component: LineClampComponent,
-  contentElementSelect: string,
+  contentContainerElementSelector: string,
   lineMeasuringElementSelector: string
 ) {
+  // Used to know the sizes of the `content-container`
+  let contentContainerElement;
+
+  // Used to measure the line height
+  let lineMeasuringElement;
+
+  // Used to keep the state of the component
+  let contentContainerHeight = -1;
+  let lineMeasuringHeight = -1;
+
   const applyLineClamp = debounce(function() {
     requestAnimationFrame(function applyLineClampImpl() {
-      const contentElement = component.element.querySelector(
-        contentElementSelect
-      ) as HTMLElement;
-      const lineMeasuringElement = component.element.querySelector(
-        lineMeasuringElementSelector
-      ) as HTMLElement;
+      const currentContentContainerHeight =
+        contentContainerElement.clientHeight;
 
-      if (contentElement === null || lineMeasuringElement === null) {
+      const currentLineMeasuringHeight = lineMeasuringElement.clientHeight;
+
+      /*  If the container height and the line height have not been changed,
+          there is not need to update `component.maxLines`
+      */
+      if (
+        contentContainerHeight == currentContentContainerHeight &&
+        lineMeasuringHeight == currentLineMeasuringHeight
+      ) {
         return;
       }
 
-      const { offsetHeight, scrollHeight } = contentElement;
-      const delta = scrollHeight - offsetHeight;
-      const lineHeight = lineMeasuringElement.clientHeight;
+      // Stores the current height of the content container and line measurement
+      contentContainerHeight = currentContentContainerHeight;
+      lineMeasuringHeight = currentLineMeasuringHeight;
 
-      if (delta > lineHeight * LINE_HEIGHT_CLAMP_THRESHOLD) {
-        component.maxLines = Math.trunc(offsetHeight / lineHeight);
-        component.maxHeight = component.maxLines * lineHeight;
-      }
+      // At least, one line will be displayed
+      component.maxLines = Math.max(
+        Math.trunc(currentContentContainerHeight / lineMeasuringHeight),
+        1
+      );
     });
   }, 100);
 
-  const resetLineClamp = function resetLineClampImpl() {
-    component.maxLines = 0;
-  };
+  let resizeObserverContainer: ResizeObserver = null;
+  let resizeObserverLineHeight: ResizeObserver = null;
 
-  let resizeObserver: ResizeObserver = null;
-  overrideMethod(component, "componentDidLoad", {
-    before: () => {
-      if (component.lineClamp) {
-        resizeObserver = new ResizeObserver(() => {
-          // If the component resizes, we reset the clamping and wait after the next paint to calculate sizes again
-          // to check if clamping is needed
-          resetLineClamp();
+  if (component.lineClamp) {
+    overrideMethod(component, "componentDidLoad", {
+      before: () => {
+        contentContainerElement = component.element.querySelector(
+          contentContainerElementSelector
+        ) as HTMLElement;
+
+        lineMeasuringElement = component.element.querySelector(
+          lineMeasuringElementSelector
+        ) as HTMLElement;
+
+        if (contentContainerElement === null || lineMeasuringElement === null) {
+          return;
+        }
+
+        /*  If the `content-container` resizes, it checks if it is necessary to
+            update `component.maxLines`
+        */
+        resizeObserverContainer = new ResizeObserver(() => {
           applyLineClamp();
         });
-        resizeObserver.observe(component.element);
-      }
-    }
-  });
 
-  overrideMethod(component, "componentDidRender", {
-    before: () => {
-      if (component.lineClamp) {
-        applyLineClamp();
+        /*  If the `font-size` changes, it checks if it is necessary to update
+            `component.maxLines`
+        */
+        resizeObserverLineHeight = new ResizeObserver(() => {
+          applyLineClamp();
+        });
+
+        // Observe the `content-container` and line height
+        resizeObserverContainer.observe(component.element);
+        resizeObserverLineHeight.observe(lineMeasuringElement);
       }
-    }
-  });
+    });
+  }
 
   overrideMethod(component, "disconnectedCallback", {
     before: () => {
-      if (resizeObserver !== null) {
-        resizeObserver.disconnect();
+      if (resizeObserverContainer !== null) {
+        resizeObserverContainer.disconnect();
+      }
+
+      if (resizeObserverLineHeight !== null) {
+        resizeObserverLineHeight.disconnect();
       }
     }
   });
 
   return {
-    applyLineClamp,
-    resetLineClamp
+    applyLineClamp
   };
 }
 
 export interface LineClampComponent extends Component {
   lineClamp: boolean;
   maxLines: number;
-  maxHeight: number;
 }

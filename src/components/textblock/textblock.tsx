@@ -23,7 +23,7 @@ export class TextBlock
     LineClampComponent,
     HighlightableComponent {
   constructor() {
-    makeLinesClampable(this, ".content", ".line-measuring");
+    makeLinesClampable(this, ".readonly-content-container", ".line-measuring");
   }
 
   @Element() element: HTMLGxTextblockElement;
@@ -77,7 +77,6 @@ export class TextBlock
   @Prop() readonly inner: string = "";
 
   @State() maxLines = 0;
-  @State() maxHeight = 0;
 
   @Listen("click", { capture: true })
   handleClick(event: UIEvent) {
@@ -95,26 +94,25 @@ export class TextBlock
   render() {
     if (this.format == "Text") {
       const body = (
-        <div
-          class={{
-            content: true,
-            "text-content": true,
-            "gx-line-clamp": this.shouldClampLines()
-          }}
-          style={
-            this.shouldClampLines() && {
-              "--max-lines": this.maxLines.toString(),
-              "--max-height": `${this.maxHeight}px`
-            }
-          }
-        >
-          {this.lineClamp && (
-            <div class="line-measuring" aria-hidden>
-              {"A"}
+        <div class="content text-content">
+          <div class="readonly-content-container">
+            <div
+              class={{
+                "text-container": true,
+                "gx-line-clamp": this.lineClamp,
+                relative: !this.lineClamp
+              }}
+              style={{
+                "--max-lines": this.lineClamp ? this.maxLines.toString() : "0"
+              }}
+            >
+              {this.lineClamp && (
+                <div class="line-measuring" aria-hidden>
+                  {"A"}
+                </div>
+              )}
+              <slot />
             </div>
-          )}
-          <div class="text-container">
-            <slot />
           </div>
         </div>
       );
@@ -131,9 +129,5 @@ export class TextBlock
         </div>
       );
     }
-  }
-
-  private shouldClampLines() {
-    return this.lineClamp && this.maxLines > 0;
   }
 }
