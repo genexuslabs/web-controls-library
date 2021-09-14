@@ -70,7 +70,6 @@ $gx-xsmall-breakpoint: 768px;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: var(--max-lines);
   overflow: hidden;
-  max-height: var(--max-height);
 }
 
 // Used to measure the line height, in order to make the lines clampable

@@ -8,8 +8,10 @@
         text-align: $text-align;
       }
 
-      @if ($align-items != null) {
-        align-items: $align-items;
+      & > .readonly-content-container {
+        @if ($align-items != null) {
+          align-items: $align-items;
+        }
       }
     }
   }
@@ -28,9 +30,22 @@ gx-textblock {
     display: flex;
     flex: 1;
 
-    & > .text-container {
-      @include elevation();
+    & > .readonly-content-container {
+      display: flex;
       flex: 1;
+      position: relative;
+      overflow: hidden;
+
+      & > .text-container {
+        @include elevation();
+        position: absolute;
+        width: 100%;
+
+        // Used when autoGrow = true
+        &.relative {
+          position: relative;
+        }
+      }
     }
 
     &.html-content {

@@ -136,12 +136,29 @@ gx-edit {
   // This applies when the gx-edit is readonly
   [data-readonly] {
     @include margins;
-    white-space: break-spaces;
     display: flex;
     flex: 1;
+    position: relative;
+    white-space: break-spaces;
 
-    .readonly-content {
-      margin: 0;
+    .readonly-content-container {
+      display: flex;
+      align-items: inherit;
+      flex: 1;
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+
+      .readonly-content {
+        position: absolute;
+        width: 100%;
+        margin: 0;
+
+        // Used when autoGrow = true
+        &.relative {
+          position: relative;
+        }
+      }
     }
   }
 

@@ -40,7 +40,7 @@ export class Edit implements FormComponent, HighlightableComponent {
       }
     ]);
 
-    makeLinesClampable(this, "[data-readonly]", ".line-measuring");
+    makeLinesClampable(this, ".readonly-content-container", ".line-measuring");
   }
 
   private renderer: EditRender;
@@ -193,7 +193,6 @@ export class Edit implements FormComponent, HighlightableComponent {
   @Prop() readonly inner: string = "";
 
   @State() maxLines = 0;
-  @State() maxHeight = 0;
 
   /**
    * The `change` event is emitted when a change to the element's value is
