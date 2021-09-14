@@ -4,6 +4,7 @@ gx-tab {
   @include visibility(flex);
   flex-direction: column;
   flex: 1;
+  width: 100%;
 
   /**
    * @prop --elevation: The size of the shadow for the tab component
@@ -60,10 +61,10 @@ gx-tab {
 
   & > div {
     @include elevation();
-    display: flex;
+    display: grid;
+    grid-template-rows: fit-content(50%) fit-content(100%);
     flex: 1;
-    flex-direction: column;
-    overflow: hidden;
+    height: 100%;
 
     --tab-scrollbar-background-color: var(
       --gx-scrollbar-background-color,
@@ -74,13 +75,16 @@ gx-tab {
     .gx-nav-tabs {
       --elevation: var(--tab-strip-elevation);
       @include elevation();
-      background-color: var(--tab-strip-background-color);
-      height: var(--tab-strip-height);
-
       display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      overflow-y: auto;
+      height: var(--tab-strip-height);
+      background-color: var(--tab-strip-background-color);
+      overflow-x: hidden;
+      overflow-y: overlay;
+      white-space: nowrap;
+
+      &:hover {
+        overflow-x: overlay;
+      }
 
       &-filler {
         flex: 1;
@@ -92,8 +96,8 @@ gx-tab {
         var(--tab-scrollbar-background-color);
 
       &::-webkit-scrollbar {
-        width: 4px;
-        height: 4px;
+        width: 5px;
+        height: 5px;
       }
 
       &::-webkit-scrollbar-track {
@@ -109,7 +113,8 @@ gx-tab {
 
     .gx-tab-content {
       display: flex;
-      flex: 1;
+      height: 100%;
+      overflow: auto;
     }
   }
 }

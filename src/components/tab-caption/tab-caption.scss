@@ -16,7 +16,7 @@
 }
 
 gx-tab-caption {
-  @include visibility(flex);
+  @include visibility(inline-block);
 
   @include imagePosition("a", ":not(.gx-tab-caption--active)");
 
@@ -36,15 +36,16 @@ gx-tab-caption {
   text-transform: uppercase;
 
   &.gx-tab-caption {
+    height: fit-content;
+
     .gx-nav-link {
       display: flex;
+      height: fit-content;
       padding: var(--tab-caption-vertical-padding)
         var(--tab-caption-horizontal-padding);
       white-space: nowrap;
-      border-color: transparent;
-      border-style: solid;
+      border: 1px solid transparent;
       border-bottom-color: var(--tab-caption-border-color);
-      border-width: 1px;
 
       &,
       &:active,
