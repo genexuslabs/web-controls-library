@@ -31,21 +31,25 @@ gx-tab-caption {
   @include imageMargin("above", var(--tab-caption-image-horizontal-margin));
   @include imageMargin("below", var(--tab-caption-image-horizontal-margin));
 
+  background-color: inherit;
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
 
   &.gx-tab-caption {
-    height: fit-content;
+    height: 100%;
+    transition: filter 0.25s;
 
     .gx-nav-link {
       display: flex;
-      height: fit-content;
+      height: 100%;
       padding: var(--tab-caption-vertical-padding)
         var(--tab-caption-horizontal-padding);
-      white-space: nowrap;
+      background-color: inherit;
       border: 1px solid transparent;
       border-bottom-color: var(--tab-caption-border-color);
+      transition: background-color 0.375s, color 0.375s, border-color 0.375s;
+      white-space: nowrap;
 
       &,
       &:active,
@@ -57,28 +61,28 @@ gx-tab-caption {
         outline: 0;
       }
 
-      &:focus {
-        border: 1px solid var(--tab-caption-focus-border-color);
+      &:focus:not(:active) {
+        border-color: var(--tab-caption-focus-border-color);
       }
 
-      &:hover {
-        border-bottom: 2px solid var(--tab-caption-hover-border-color);
-        padding-bottom: calc(var(--tab-caption-vertical-padding) - 1px);
-      }
-
-      &:active {
-        border-bottom: 2px solid var(--tab-caption-active-border-color);
-        padding-bottom: calc(var(--tab-caption-vertical-padding) - 1px);
+      & > span {
+        padding-top: 0.125em;
       }
     }
 
     &--active {
       .gx-nav-link {
-        border-top-color: var(--tab-caption-border-color);
+        border-top: 3px solid var(--tab-caption-active-border-color);
+        padding-top: calc(var(--tab-caption-vertical-padding) - 2px);
+
         border-right-color: var(--tab-caption-border-color);
         border-bottom-color: transparent;
         border-left-color: var(--tab-caption-border-color);
       }
+    }
+
+    &[aria-selected="false"]:hover:not(:active) {
+      filter: brightness(90%);
     }
 
     &--disabled {
