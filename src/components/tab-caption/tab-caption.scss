@@ -16,7 +16,7 @@
 }
 
 gx-tab-caption {
-  @include visibility(inline-block);
+  @include visibility(table-cell);
 
   @include imagePosition("a", ":not(.gx-tab-caption--active)");
 
@@ -38,10 +38,11 @@ gx-tab-caption {
 
   &.gx-tab-caption {
     height: 100%;
-    transition: filter 0.25s;
+    transition: filter 0.375s;
 
     .gx-nav-link {
-      display: flex;
+      display: inline-block;
+      vertical-align: top;
       height: 100%;
       padding: var(--tab-caption-vertical-padding)
         var(--tab-caption-horizontal-padding);
@@ -66,6 +67,9 @@ gx-tab-caption {
       }
 
       & > span {
+        display: flex;
+        align-items: center;
+        height: 100%;
         padding-top: 0.125em;
       }
     }

@@ -136,8 +136,10 @@ export class Tab
       <Host>
         <div role="tablist">
           <div class="gx-nav-tabs">
-            <slot name="caption" />
-            <div aria-hidden="true" class="gx-nav-tabs-filler"></div>
+            <div class="gx-nav-tabs-table">
+              <slot name="caption" />
+              <div aria-hidden="true" class="gx-nav-tabs-filler"></div>
+            </div>
           </div>
           <div class="gx-tab-content">
             <slot name="page" />

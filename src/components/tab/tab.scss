@@ -75,7 +75,6 @@ gx-tab {
     .gx-nav-tabs {
       --elevation: var(--tab-strip-elevation);
       @include elevation();
-      display: flex;
       height: var(--tab-strip-height);
       background-color: var(--tab-strip-background-color);
       overflow-x: hidden;
@@ -84,11 +83,6 @@ gx-tab {
 
       &:hover {
         overflow-x: overlay;
-      }
-
-      &-filler {
-        flex: 1;
-        border-bottom: 1px solid var(--tab-caption-border-color);
       }
 
       scrollbar-width: thin;
@@ -108,6 +102,16 @@ gx-tab {
         background-color: var(--tab-scrollbar-thumb-color);
         border-radius: 6px;
         border: 1px solid var(--tab-scrollbar-background-color);
+      }
+
+      .gx-nav-tabs-table {
+        display: table;
+        height: 100%;
+
+        &-filler {
+          flex: 1;
+          border-bottom: 1px solid var(--tab-caption-border-color);
+        }
       }
     }
 
