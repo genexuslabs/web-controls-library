@@ -82,7 +82,7 @@ export class Tab
     return Array.from(
       this.element.querySelectorAll(
         `:scope > [slot='caption'], 
-         ${BASE_TABLIST_SELECTOR} > .gx-nav-tabs > [slot='caption']`
+         ${BASE_TABLIST_SELECTOR} > .gx-nav-tabs > .gx-nav-tabs-table > [slot='caption']`
       )
     );
   }
