@@ -2,7 +2,6 @@
 
 gx-tab {
   @include visibility(flex);
-  flex-direction: column;
   flex: 1;
   width: 100%;
   overflow: hidden;
@@ -65,7 +64,6 @@ gx-tab {
   & > div {
     @include elevation();
     display: grid;
-    grid-template-rows: fit-content(50%) fit-content(100%);
     flex: 1;
     height: 100%;
 
@@ -74,6 +72,20 @@ gx-tab {
       #f5f5f5
     );
     --tab-scrollbar-thumb-color: var(--gx-scrollbar-thumb-color, #555);
+
+    // Used to show the captions in the top position
+    &[data-position="top"] {
+      grid-template-rows: fit-content(50%) auto;
+    }
+
+    // Used to show the captions in the bottom position
+    &[data-position="bottom"] {
+      grid-template-rows: auto fit-content(50%);
+
+      .gx-nav-tabs {
+        order: 1;
+      }
+    }
 
     .gx-nav-tabs {
       --elevation: var(--tab-strip-elevation);

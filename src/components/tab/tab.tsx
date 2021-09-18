@@ -16,6 +16,7 @@ import {
   HighlightableComponent,
   makeHighlightable
 } from "../common/highlightable";
+import { cssVariablesWatcher } from "../common/css-variables-watcher";
 
 const BASE_TABLIST_SELECTOR = ":scope > [role='tablist']";
 
@@ -26,6 +27,15 @@ const BASE_TABLIST_SELECTOR = ":scope > [role='tablist']";
 })
 export class Tab
   implements GxComponent, VisibilityComponent, HighlightableComponent {
+  constructor() {
+    cssVariablesWatcher(this, [
+      {
+        cssVariableName: "--tabs-position",
+        propertyName: "tabsPosition"
+      }
+    ]);
+  }
+
   @Element() element: HTMLGxTabElement;
 
   private lastSelectedTab: HTMLElement;
@@ -46,8 +56,12 @@ export class Tab
   @Prop() readonly highlightable = false;
 
   /**
+   * Specifies the position to show the tabs.
+   */
+  @Prop({ mutable: true }) tabsPosition: "top" | "bottom" = "top";
+
+  /**
    * Fired when the active tab is changed
-   *
    */
   @Event() tabChange: EventEmitter;
 
@@ -132,9 +146,10 @@ export class Tab
   render() {
     this.setCaptionSlotsClass();
     this.setPageSlotsClass();
+
     return (
       <Host>
-        <div role="tablist">
+        <div role="tablist" data-position={this.tabsPosition}>
           <div class="gx-nav-tabs">
             <div class="gx-nav-tabs-table">
               <slot name="caption" />

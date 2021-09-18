@@ -15,6 +15,51 @@
   }
 }
 
+@mixin tabsPosition(
+  $paddingTop: calc(var(--tab-caption-vertical-padding) - 3px),
+  $paddingBottom: calc(var(--tab-caption-vertical-padding) - 1px),
+  $borderTop: 3px solid transparent,
+  $borderBottom: 1px solid var(--tab-strip-separator-color),
+  $borderTopColorActive: var(--tab-strip-indicator-color),
+  $borderBottomColorActive: transparent
+) {
+  gx-tab-caption {
+    &.gx-tab-caption {
+      .gx-nav-link {
+        padding: $paddingTop var(--tab-caption-horizontal-padding)
+          $paddingBottom var(--tab-caption-horizontal-padding);
+
+        border-top: $borderTop;
+        border-bottom: $borderBottom;
+      }
+
+      &--active {
+        .gx-nav-link {
+          border-top-color: $borderTopColorActive;
+          border-bottom-color: $borderBottomColorActive;
+        }
+      }
+    }
+  }
+}
+
+// Used to show the captions in the top position
+[data-position="top"] {
+  @include tabsPosition;
+}
+
+// Used to show the captions in the bottom position
+[data-position="bottom"] {
+  @include tabsPosition(
+    calc(var(--tab-caption-vertical-padding) - 1px),
+    calc(var(--tab-caption-vertical-padding) - 3px),
+    1px solid var(--tab-strip-separator-color),
+    3px solid transparent,
+    transparent,
+    var(--tab-strip-indicator-color)
+  );
+}
+
 gx-tab-caption {
   @include visibility(table-cell);
 
@@ -44,13 +89,7 @@ gx-tab-caption {
       display: inline-block;
       vertical-align: top;
       height: 100%;
-      padding: calc(var(--tab-caption-vertical-padding) - 3px)
-        var(--tab-caption-horizontal-padding)
-        calc(var(--tab-caption-vertical-padding) - 1px)
-        var(--tab-caption-horizontal-padding);
       background-color: inherit;
-      border-top: 3px solid transparent;
-      border-bottom: 1px solid var(--tab-strip-separator-color);
       transition: background-color 0.375s, color 0.375s, border-color 0.375s;
       white-space: nowrap;
 
@@ -69,13 +108,6 @@ gx-tab-caption {
         align-items: center;
         height: 100%;
         padding-top: 0.125em;
-      }
-    }
-
-    &--active {
-      .gx-nav-link {
-        border-top-color: var(--tab-strip-indicator-color);
-        border-bottom-color: transparent;
       }
     }
 
