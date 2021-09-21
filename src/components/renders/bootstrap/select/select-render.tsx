@@ -16,8 +16,6 @@ export class SelectRender implements Renderer {
   protected options: any[] = [];
   protected element: HTMLElement;
   private selectId: string;
-  private select: HTMLSelectElement;
-  private divSelector: HTMLDivElement;
 
   updateOptions(options) {
     this.options = options;
@@ -25,22 +23,6 @@ export class SelectRender implements Renderer {
 
   getNativeInputId() {
     return !this.component.readonly ? this.selectId : null;
-  }
-
-  private getCssClasses() {
-    const classList = [];
-
-    if (this.component.readonly) {
-      classList.push("form-control-plaintext");
-    } else {
-      classList.push("custom-select");
-    }
-
-    if (this.component.cssClass) {
-      classList.push(this.component.cssClass);
-    }
-
-    return classList.join(" ");
   }
 
   private getReadonlyTextContent() {
@@ -62,24 +44,23 @@ export class SelectRender implements Renderer {
     this.component.input.emit(event);
   }
 
-  render() {
+  render(anOptionHasBeenSelected) {
     if (this.component.readonly) {
       return (
-        <span class={this.getCssClasses()}>
-          {this.getReadonlyTextContent()}
-        </span>
+        <div class="readonly-select" data-readonly>
+          <span>{this.getReadonlyTextContent()}</span>
+        </div>
       );
     } else {
       let datalistId: string;
       const attris = {
         "aria-disabled": this.component.disabled ? "true" : undefined,
-        class: this.getCssClasses(),
+        class: "normal-select",
         disabled: this.component.disabled,
         id: this.selectId,
         onChange: this.handleChange.bind(this),
         ref: (select: HTMLSelectElement) => {
           select.value = this.component.value;
-          this.select = select;
         }
       };
       if (this.component.suggest) {
@@ -106,41 +87,17 @@ export class SelectRender implements Renderer {
             </datalist>
           ]
         : [
-            <gx-bootstrap />,
-            <div class="selector-and-select-container">
-              <div class="select-container">
-                <select {...attris}>
-                  {this.options.map(
-                    ({ innerText, selected, value, disabled }) => (
-                      <option
-                        disabled={disabled}
-                        selected={selected}
-                        value={value}
-                      >
-                        {innerText}
-                      </option>
-                    )
-                  )}
-                </select>
-              </div>
-              <div
-                class="selector-container"
-                ref={el => (this.divSelector = el as HTMLDivElement)}
-              >
-                <svg width="100%" height="100%" viewBox="0 0 4 5">
-                  <path fill="#343a40" d="M2 0L0 2h4zm0 5L0 3h4z"></path>
-                </svg>
-              </div>
-            </div>
+            <select {...attris} data-readonly>
+              {!anOptionHasBeenSelected && (
+                <option hidden>{this.component.placeholder}</option>
+              )}
+              {this.options.map(({ innerText, selected, value, disabled }) => (
+                <option disabled={disabled} selected={selected} value={value}>
+                  {innerText}
+                </option>
+              ))}
+            </select>
           ];
     }
-  }
-
-  // When the 'select' has borders it correctly centers the 'selector'
-  componentDidRender() {
-    const select = this.select.getBoundingClientRect();
-    const selectBorderWidth = (select.width - this.select.clientWidth) / 2;
-
-    this.divSelector.style.margin = `0 calc(0.75rem + ${selectBorderWidth}px) 0 calc(0.75rem + ${selectBorderWidth}px)`;
   }
 }
