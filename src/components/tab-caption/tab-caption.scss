@@ -110,6 +110,7 @@ gx-tab-caption {
         align-items: center;
         height: 100%;
         padding-top: 0.125em;
+        transition: filter var(--tab-delay-transition-color);
       }
     }
 
@@ -120,6 +121,12 @@ gx-tab-caption {
     &--disabled {
       color: var(--tab-caption-disabled-color);
       pointer-events: none;
+
+      .gx-nav-link {
+        & > span {
+          filter: opacity(0.5);
+        }
+      }
     }
   }
 }
