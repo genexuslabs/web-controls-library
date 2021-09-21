@@ -153,7 +153,7 @@ export class Tab
           <div class="gx-nav-tabs">
             <div class="gx-nav-tabs-table">
               <slot name="caption" />
-              <div aria-hidden="true" class="gx-nav-tabs-filler"></div>
+              <div aria-hidden="true" class="gx-nav-tabs-table-filler"></div>
             </div>
           </div>
           <div class="gx-tab-content">

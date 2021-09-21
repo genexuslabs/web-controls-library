@@ -83,14 +83,16 @@ gx-tab-caption {
 
   &.gx-tab-caption {
     height: 100%;
-    transition: filter 0.375s;
+    transition: filter var(--tab-delay-transition-color);
 
     .gx-nav-link {
       display: inline-block;
       vertical-align: top;
       height: 100%;
       background-color: inherit;
-      transition: background-color 0.375s, color 0.375s, border-color 0.375s;
+      transition: background-color var(--tab-delay-transition-color),
+        color var(--tab-delay-transition-color),
+        border-color var(--tab-delay-transition-color);
       white-space: nowrap;
 
       &,
@@ -111,7 +113,7 @@ gx-tab-caption {
       }
     }
 
-    &[aria-selected="false"]:hover:not(:active) {
+    &[aria-selected="false"]:hover:not(:active):not([disabled]) {
       filter: brightness(90%);
     }
 
