@@ -141,6 +141,7 @@ gx-tab {
       .gx-nav-tabs-table {
         display: table;
         height: 100%;
+        background-color: inherit;
 
         &-filler {
           display: table-cell;

@@ -63,8 +63,6 @@
 gx-tab-caption {
   @include visibility(table-cell);
 
-  @include imagePosition("a", ":not(.gx-tab-caption--active)");
-
   [slot="main-image"],
   [slot="disabled-image"] {
     max-height: 18px;
@@ -84,32 +82,40 @@ gx-tab-caption {
     height: 100%;
     transition: filter var(--tab-delay-transition-color);
 
-    .gx-nav-link {
+    .image-and-link-container {
+      @include imagePosition("a", ":not(.gx-tab-caption--active)");
+
       display: inline-block;
       vertical-align: top;
       height: 100%;
       background-color: inherit;
-      transition: background-color var(--tab-delay-transition-color),
-        color var(--tab-delay-transition-color),
-        border-color var(--tab-delay-transition-color);
-      white-space: nowrap;
 
-      &,
-      &:active,
-      &:focus,
-      &:hover,
-      &:visited {
-        color: inherit;
-        text-decoration: none;
-        outline: 0;
-      }
-
-      & > span {
+      .gx-nav-link {
         display: flex;
-        align-items: center;
         height: 100%;
-        padding-top: 0.125em;
-        transition: filter var(--tab-delay-transition-color);
+        color: inherit;
+        background-color: inherit;
+        transition: background-color var(--tab-delay-transition-color),
+          color var(--tab-delay-transition-color),
+          border-color var(--tab-delay-transition-color);
+        white-space: nowrap;
+
+        &:active,
+        &:focus,
+        &:hover,
+        &:visited {
+          color: none;
+          text-decoration: none;
+          outline: 0;
+        }
+
+        & > span {
+          display: flex;
+          align-items: center;
+          height: 100%;
+          padding-top: 0.125em;
+          transition: filter var(--tab-delay-transition-color);
+        }
       }
     }
 
@@ -118,12 +124,13 @@ gx-tab-caption {
     }
 
     &--disabled {
-      color: var(--tab-caption-disabled-color);
       pointer-events: none;
 
-      .gx-nav-link {
-        & > span {
-          filter: opacity(0.5);
+      .image-and-link-container {
+        .gx-nav-link {
+          & > span {
+            filter: opacity(0.5);
+          }
         }
       }
     }

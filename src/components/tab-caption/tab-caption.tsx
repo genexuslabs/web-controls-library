@@ -115,25 +115,31 @@ export class TabCaption
         class={{
           "gx-tab-caption": true,
           "gx-tab-caption--active": this.selected,
-          "gx-tab-caption--disabled": this.disabled,
-          [imagePositionClass(this.imagePosition)]: true,
-          [hideMainImageWhenDisabledClass]:
-            !this.selected && this.hasDisabledImage
+          "gx-tab-caption--disabled": this.disabled
         }}
       >
-        <a
+        <div
           class={{
-            "gx-nav-link": true
+            "image-and-link-container": true,
+            [imagePositionClass(this.imagePosition)]: true,
+            [hideMainImageWhenDisabledClass]:
+              !this.selected && this.hasDisabledImage
           }}
-          href="#"
-          onClick={this.clickHandler}
         >
-          {imagePositionRender({
-            default: <slot />,
-            disabledImage: <slot name="disabled-image" />,
-            mainImage: <slot name="main-image" />
-          })}
-        </a>
+          <a
+            class={{
+              "gx-nav-link": true
+            }}
+            href="#"
+            onClick={this.clickHandler}
+          >
+            {imagePositionRender({
+              default: <slot />,
+              disabledImage: <slot name="disabled-image" />,
+              mainImage: <slot name="main-image" />
+            })}
+          </a>
+        </div>
       </Host>
     );
   }
