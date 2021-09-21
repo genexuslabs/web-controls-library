@@ -5,6 +5,7 @@ gx-tab {
   flex: 1;
   width: 100%;
   overflow: hidden;
+  transition: background-color 0.375s, border-color 0.375s;
 
   /**
    * @prop --elevation: The size of the shadow for the tab component
@@ -76,6 +77,10 @@ gx-tab {
     // Used to show the captions in the top position
     &[data-position="top"] {
       grid-template-rows: fit-content(50%) auto;
+
+      .gx-nav-tabs {
+        @include elevation();
+      }
     }
 
     // Used to show the captions in the bottom position
@@ -83,18 +88,19 @@ gx-tab {
       grid-template-rows: auto fit-content(50%);
 
       .gx-nav-tabs {
+        @include elevation(top);
         order: 1;
       }
     }
 
     .gx-nav-tabs {
       --elevation: var(--tab-strip-elevation);
-      @include elevation();
       height: var(--tab-strip-height);
       background-color: var(--tab-strip-background-color);
       overflow-x: hidden;
       overflow-y: overlay;
       white-space: nowrap;
+      transition: box-shadow 0.375s;
 
       &:hover {
         overflow-x: overlay;
