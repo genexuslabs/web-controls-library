@@ -113,12 +113,13 @@ gx-tab-caption {
       }
     }
 
-    &[aria-selected="false"]:hover:not(:active):not([disabled]) {
+    &[aria-selected="false"]:hover:not(:active) {
       filter: brightness(90%);
     }
 
     &--disabled {
       color: var(--tab-caption-disabled-color);
+      pointer-events: none;
     }
   }
 }

@@ -58,7 +58,7 @@ export class Tab
   /**
    * Specifies the position to show the tabs.
    */
-  @Prop({ mutable: true }) tabsPosition: "top" | "bottom" = "top";
+  @Prop() tabsPosition: "top" | "bottom" = "top";
 
   /**
    * Fired when the active tab is changed
