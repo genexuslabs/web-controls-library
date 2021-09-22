@@ -25,6 +25,23 @@ export class SelectRender implements Renderer {
     return !this.component.readonly ? this.selectId : null;
   }
 
+  private getCssClasses() {
+    const select = this.component;
+    const classList = [];
+
+    if (select.cssClass) {
+      classList.push(select.cssClass);
+    }
+
+    if (select.readonly) {
+      classList.push("readonly-select");
+    } else {
+      classList.push("normal-select");
+    }
+
+    return classList.join(" ");
+  }
+
   private getReadonlyTextContent() {
     const matchingOpts = this.options.filter(
       o => o.value === this.component.value
@@ -47,7 +64,7 @@ export class SelectRender implements Renderer {
   render(anOptionHasBeenSelected) {
     if (this.component.readonly) {
       return (
-        <div class="readonly-select" data-readonly>
+        <div class={this.getCssClasses()} data-readonly>
           <span>{this.getReadonlyTextContent()}</span>
         </div>
       );
@@ -55,7 +72,7 @@ export class SelectRender implements Renderer {
       let datalistId: string;
       const attris = {
         "aria-disabled": this.component.disabled ? "true" : undefined,
-        class: "normal-select",
+        class: this.getCssClasses(),
         disabled: this.component.disabled,
         id: this.selectId,
         onChange: this.handleChange.bind(this),
