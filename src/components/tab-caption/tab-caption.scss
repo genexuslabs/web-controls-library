@@ -15,73 +15,130 @@
   }
 }
 
+@mixin tabsPosition(
+  $paddingTop: calc(var(--tab-caption-vertical-padding) - 3px),
+  $paddingBottom: calc(var(--tab-caption-vertical-padding) - 1px),
+  $borderTop: 3px solid transparent,
+  $borderBottom: 1px solid var(--tab-strip-separator-color),
+  $borderTopColorActive: var(--tab-strip-indicator-color),
+  $borderBottomColorActive: transparent
+) {
+  gx-tab-caption {
+    &.gx-tab-caption {
+      .gx-nav-link {
+        padding: $paddingTop var(--tab-caption-horizontal-padding)
+          $paddingBottom var(--tab-caption-horizontal-padding);
+
+        border-top: $borderTop;
+        border-bottom: $borderBottom;
+      }
+
+      &--active {
+        .gx-nav-link {
+          border-top-color: $borderTopColorActive;
+          border-bottom-color: $borderBottomColorActive;
+        }
+      }
+    }
+  }
+}
+
+// Used to show the captions in the top position
+[data-position="top"] {
+  @include tabsPosition;
+}
+
+// Used to show the captions in the bottom position
+[data-position="bottom"] {
+  @include tabsPosition(
+    calc(var(--tab-caption-vertical-padding) - 1px),
+    calc(var(--tab-caption-vertical-padding) - 3px),
+    1px solid var(--tab-strip-separator-color),
+    3px solid transparent,
+    transparent,
+    var(--tab-strip-indicator-color)
+  );
+}
+
 gx-tab-caption {
-  @include visibility(flex);
+  @include visibility(table-cell);
 
-  @include imagePosition("a", ":not(.gx-tab-caption--active)");
+  @include imageMargin("before", var(--tab-caption-image-vertical-margin));
+  @include imageMargin("after", var(--tab-caption-image-vertical-margin));
+  @include imageMargin("above", var(--tab-caption-image-horizontal-margin));
+  @include imageMargin("below", var(--tab-caption-image-horizontal-margin));
 
+  // Used to decide the position of the image
+  @include imagePosition(
+    ".image-and-link-container a",
+    ":not(.gx-tab-caption--active)"
+  );
+
+  // Used to limit the sizes of the images
   [slot="main-image"],
   [slot="disabled-image"] {
     max-height: 18px;
     max-width: 18px;
     object-fit: contain;
   }
-  @include imageMargin("before", var(--tab-caption-image-vertical-margin));
-  @include imageMargin("after", var(--tab-caption-image-vertical-margin));
-  @include imageMargin("above", var(--tab-caption-image-horizontal-margin));
-  @include imageMargin("below", var(--tab-caption-image-horizontal-margin));
 
+  background-color: inherit;
   font-size: 12px;
   font-weight: 600;
-  text-transform: uppercase;
 
   &.gx-tab-caption {
-    .gx-nav-link {
-      display: flex;
-      padding: var(--tab-caption-vertical-padding)
-        var(--tab-caption-horizontal-padding);
-      white-space: nowrap;
-      border-color: transparent;
-      border-style: solid;
-      border-bottom-color: var(--tab-caption-border-color);
-      border-width: 1px;
+    height: 100%;
+    transition: filter var(--tab-delay-transition-color);
 
-      &,
-      &:active,
-      &:focus,
-      &:hover,
-      &:visited {
+    .image-and-link-container {
+      display: inline-block;
+      vertical-align: top;
+      height: 100%;
+      background-color: inherit;
+
+      .gx-nav-link {
+        display: flex;
+        height: 100%;
         color: inherit;
-        text-decoration: none;
-        outline: 0;
-      }
+        background-color: inherit;
+        transition: background-color var(--tab-delay-transition-color),
+          color var(--tab-delay-transition-color),
+          border-color var(--tab-delay-transition-color);
+        white-space: nowrap;
 
-      &:focus {
-        border: 1px solid var(--tab-caption-focus-border-color);
-      }
+        &:active,
+        &:focus,
+        &:hover,
+        &:visited {
+          color: none;
+          text-decoration: none;
+          outline: 0;
+        }
 
-      &:hover {
-        border-bottom: 2px solid var(--tab-caption-hover-border-color);
-        padding-bottom: calc(var(--tab-caption-vertical-padding) - 1px);
-      }
-
-      &:active {
-        border-bottom: 2px solid var(--tab-caption-active-border-color);
-        padding-bottom: calc(var(--tab-caption-vertical-padding) - 1px);
+        & > span {
+          display: flex;
+          align-items: center;
+          height: 100%;
+          padding-top: 0.125em;
+          transition: filter var(--tab-delay-transition-color);
+        }
       }
     }
 
-    &--active {
-      .gx-nav-link {
-        border-top-color: var(--tab-caption-border-color);
-        border-right-color: var(--tab-caption-border-color);
-        border-bottom-color: transparent;
-        border-left-color: var(--tab-caption-border-color);
-      }
+    &[aria-selected="false"]:hover:not(:active) {
+      filter: brightness(90%);
     }
 
     &--disabled {
-      color: var(--tab-caption-disabled-color);
+      pointer-events: none;
+
+      .image-and-link-container {
+        .gx-nav-link {
+          & > span {
+            filter: opacity(0.5);
+          }
+        }
+      }
     }
   }
 }

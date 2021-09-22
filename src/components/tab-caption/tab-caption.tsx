@@ -72,7 +72,7 @@ export class TabCaption
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = false;
+  @Prop() highlightable = false;
 
   @Watch("selected")
   selectedHandler() {
@@ -81,9 +81,15 @@ export class TabCaption
     }
   }
 
+  // Used to make the caption highlightable when `disabled = false`
+  @Watch("disabled")
+  highlightableHandler() {
+    this.highlightable = !this.disabled;
+    makeHighlightable(this);
+  }
+
   /**
    * Fired when the tab caption is selected
-   *
    */
   @Event() tabSelect: EventEmitter;
 
@@ -96,6 +102,7 @@ export class TabCaption
   }
 
   componentDidLoad() {
+    this.highlightable = !this.disabled;
     makeHighlightable(this);
   }
 
@@ -114,19 +121,21 @@ export class TabCaption
             !this.selected && this.hasDisabledImage
         }}
       >
-        <a
-          class={{
-            "gx-nav-link": true
-          }}
-          href="#"
-          onClick={this.clickHandler}
-        >
-          {imagePositionRender({
-            default: <slot />,
-            disabledImage: <slot name="disabled-image" />,
-            mainImage: <slot name="main-image" />
-          })}
-        </a>
+        <div class="image-and-link-container">
+          <a
+            class={{
+              "gx-nav-link": true
+            }}
+            href="#"
+            onClick={this.clickHandler}
+          >
+            {imagePositionRender({
+              default: <slot />,
+              disabledImage: <slot name="disabled-image" />,
+              mainImage: <slot name="main-image" />
+            })}
+          </a>
+        </div>
       </Host>
     );
   }

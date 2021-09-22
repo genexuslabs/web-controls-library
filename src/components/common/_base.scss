@@ -51,10 +51,20 @@ $gx-xsmall-breakpoint: 768px;
   }
 }
 
-@mixin elevation() {
-  box-shadow: 0 calc(var(--elevation) * 0.125rem)
-    calc(var(--elevation) * 0.25rem)
-    rgba(0, 0, 0, calc(var(--elevation) * 0.075));
+@mixin elevation($shadowPosition: bottom) {
+  @if $shadowPosition == bottom {
+    box-shadow: 0
+      calc(var(--elevation) * 0.125rem)
+      calc(var(--elevation) * 0.25rem)
+      rgba(0, 0, 0, calc(var(--elevation) * 0.075));
+  }
+
+  @if $shadowPosition == top {
+    box-shadow: 0
+      calc(var(--elevation) * -0.125rem)
+      calc(var(--elevation) * 0.25rem)
+      rgba(0, 0, 0, calc(var(--elevation) * 0.075));
+  }
 }
 
 @function overflow-gradient($color, $stop: 90%, $direction: to right) {
