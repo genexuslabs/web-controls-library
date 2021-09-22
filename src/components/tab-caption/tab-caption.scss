@@ -63,16 +63,24 @@
 gx-tab-caption {
   @include visibility(table-cell);
 
+  @include imageMargin("before", var(--tab-caption-image-vertical-margin));
+  @include imageMargin("after", var(--tab-caption-image-vertical-margin));
+  @include imageMargin("above", var(--tab-caption-image-horizontal-margin));
+  @include imageMargin("below", var(--tab-caption-image-horizontal-margin));
+
+  // Used to decide the position of the image
+  @include imagePosition(
+    ".image-and-link-container a",
+    ":not(.gx-tab-caption--active)"
+  );
+
+  // Used to limit the sizes of the images
   [slot="main-image"],
   [slot="disabled-image"] {
     max-height: 18px;
     max-width: 18px;
     object-fit: contain;
   }
-  @include imageMargin("before", var(--tab-caption-image-vertical-margin));
-  @include imageMargin("after", var(--tab-caption-image-vertical-margin));
-  @include imageMargin("above", var(--tab-caption-image-horizontal-margin));
-  @include imageMargin("below", var(--tab-caption-image-horizontal-margin));
 
   background-color: inherit;
   font-size: 12px;
@@ -83,8 +91,6 @@ gx-tab-caption {
     transition: filter var(--tab-delay-transition-color);
 
     .image-and-link-container {
-      @include imagePosition("a", ":not(.gx-tab-caption--active)");
-
       display: inline-block;
       vertical-align: top;
       height: 100%;

@@ -115,17 +115,13 @@ export class TabCaption
         class={{
           "gx-tab-caption": true,
           "gx-tab-caption--active": this.selected,
-          "gx-tab-caption--disabled": this.disabled
+          "gx-tab-caption--disabled": this.disabled,
+          [imagePositionClass(this.imagePosition)]: true,
+          [hideMainImageWhenDisabledClass]:
+            !this.selected && this.hasDisabledImage
         }}
       >
-        <div
-          class={{
-            "image-and-link-container": true,
-            [imagePositionClass(this.imagePosition)]: true,
-            [hideMainImageWhenDisabledClass]:
-              !this.selected && this.hasDisabledImage
-          }}
-        >
+        <div class="image-and-link-container">
           <a
             class={{
               "gx-nav-link": true
