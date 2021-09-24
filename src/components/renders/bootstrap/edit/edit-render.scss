@@ -1,7 +1,7 @@
 gx-edit {
   $buttonMinWidth: 2.5rem;
   $buttonMaxWidth: 25%;
-  $defaultPlaceholderColor: #757575;
+  $defaultPlaceholderTextColor: #757575;
   $disabledBackgroundColor: #e9ecef;
   $transitionConfig: filter 0.2s ease;
 
@@ -27,7 +27,7 @@ gx-edit {
   // Used to change the placeholder color in the input controls
   // Opacity property is necessary, because some browsers (e.g., mozilla) change this value
   @mixin placeholder-color {
-    color: var(--placeholder-color, $defaultPlaceholderColor);
+    color: var(--placeholder-text-color, $defaultPlaceholderTextColor);
     opacity: 1;
   }
 
