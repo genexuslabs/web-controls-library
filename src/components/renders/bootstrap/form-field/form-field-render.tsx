@@ -27,18 +27,6 @@ export class FormFieldRender implements Renderer {
     top: "field-label-top"
   };
 
-  private getLabelCssClass() {
-    const classList = [];
-
-    classList.push(this.LABEL_WIDTH_BY_POSITION[this.component.labelPosition]);
-
-    if (this.component.labelPosition !== "float") {
-      classList.push("col-form-label");
-    }
-
-    return classList.join(" ");
-  }
-
   private getInnerControlContainerClass() {
     const className = this.INNER_CONTROL_WIDTH_BY_LABEL_POSITION[
       this.component.labelPosition
@@ -85,17 +73,25 @@ export class FormFieldRender implements Renderer {
 
   renderForRadio(renderLabel: boolean, renderLabelBefore: boolean, slot) {
     const labelId = `${this.formFieldId}-label`;
+    const labelPosition = this.component.labelPosition;
+
     const label = (
-      <div class={this.getLabelCssClass()} id={labelId} data-part="label">
+      <div
+        class={this.LABEL_WIDTH_BY_POSITION[labelPosition]}
+        id={labelId}
+        data-part="label"
+      >
         <div class="label-content">{this.component.labelCaption}</div>
       </div>
     );
-    const labelPositionClassName = `label-position-${this.component.labelPosition}`;
+
+    const labelPositionClassName = `label-position-${labelPosition}`;
     const isValidLabelPosition =
-      this.component.labelPosition === "top" ||
-      this.component.labelPosition === "right" ||
-      this.component.labelPosition === "bottom" ||
-      this.component.labelPosition === "left";
+      labelPosition === "top" ||
+      labelPosition === "right" ||
+      labelPosition === "bottom" ||
+      labelPosition === "left";
+
     return (
       <div class="form-group mb-0" aria-labelledby={labelId} role="group">
         <div
@@ -115,11 +111,12 @@ export class FormFieldRender implements Renderer {
 
   render(slots) {
     const formField = this.component;
+    const labelPosition = formField.labelPosition;
 
     const isRadioGroup =
       formField.element.querySelector("gx-radio-group[area='field']") !== null;
     const renderLabelBefore = this.shouldRenderLabelBefore();
-    const renderLabel = formField.labelPosition !== "none";
+    const renderLabel = labelPosition !== "none";
 
     if (!this.formFieldId) {
       this.formFieldId =
@@ -130,13 +127,16 @@ export class FormFieldRender implements Renderer {
       return this.renderForRadio(renderLabel, renderLabelBefore, slots.default);
     } else {
       const label = (
-        <label class={this.getLabelCssClass()} data-part="label">
+        <label
+          class={this.LABEL_WIDTH_BY_POSITION[labelPosition]}
+          data-part="label"
+        >
           <div class="label-content">{formField.labelCaption}</div>
         </label>
       );
 
       const result =
-        formField.labelPosition === "float" ? (
+        labelPosition === "float" ? (
           <div>
             {slots.default}
             {label}
@@ -147,10 +147,10 @@ export class FormFieldRender implements Renderer {
               "form-group": true,
               "no-gutters": true,
               "mb-0": true,
-              "flex-column": formField.labelPosition === "top",
-              "flex-column-reverse": formField.labelPosition === "bottom",
-              "flex-row-reverse": formField.labelPosition === "right",
-              "flex-row": formField.labelPosition === "left"
+              "flex-column": labelPosition === "top",
+              "flex-column-reverse": labelPosition === "bottom",
+              "flex-row-reverse": labelPosition === "right",
+              "flex-row": labelPosition === "left"
             }}
           >
             {renderLabel && renderLabelBefore ? label : null}
