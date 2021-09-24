@@ -222,7 +222,7 @@ export class Edit implements FormComponent, HighlightableComponent {
 
   componentDidLoad() {
     this.toggleValueSetClass();
-    if (this.readonly) {
+    if (this.readonly || this.format == "HTML") {
       makeHighlightable(this);
     }
   }

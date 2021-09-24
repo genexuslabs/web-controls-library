@@ -36,11 +36,22 @@
     }
   }
   @if ($highlighted != null) {
+    // Used when readonly = false
     [data-part="field"]:focus,
     [data-part="option-control"]:active,
-    [data-part="container"]:focus-within,
-    &.gx-highlighted[type="text"][readonly="true"] [data-readonly] {
+    [data-part="container"]:focus-within {
       @extend #{$highlighted} !optional;
+    }
+
+    // Used when readonly = true or format = HTML and the control is not disabled
+    .gx-highlighted {
+      &:not([disabled]):not(.disabled),
+      &[disabled="false"] {
+        &[type="text"][readonly="true"] [data-readonly],
+        &[format="HTML"] [data-part="container"] {
+          @extend #{$highlighted} !optional;
+        }
+      }
     }
   }
 }

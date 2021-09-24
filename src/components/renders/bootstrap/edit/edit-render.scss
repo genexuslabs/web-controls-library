@@ -39,6 +39,11 @@ gx-edit {
     }
   }
 
+  &[disabled]:not([disabled="false"]),
+  &[disabled="true"] {
+    pointer-events: none;
+  }
+
   // This applies when the gx-edit is not readonly
   .container[data-part="container"] {
     @include margins;
