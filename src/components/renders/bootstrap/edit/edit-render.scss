@@ -39,8 +39,7 @@ gx-edit {
     }
   }
 
-  &[disabled]:not([disabled="false"]),
-  &[disabled="true"] {
+  &[disabled] {
     pointer-events: none;
   }
 
