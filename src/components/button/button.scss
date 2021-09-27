@@ -11,15 +11,16 @@ gx-button {
   margin-bottom: var(--margin-bottom);
   margin-left: var(--margin-left);
 
+  align-self: stretch;
   vertical-align: middle;
 
   & > button.gx-button {
-    flex: 1;
     display: flex;
+    flex: 1;
     flex-direction: column;
-    position: relative;
     align-items: center;
     justify-content: center;
+    position: relative;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;
