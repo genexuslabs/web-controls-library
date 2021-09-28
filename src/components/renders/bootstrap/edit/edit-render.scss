@@ -1,9 +1,9 @@
+@import "../../../common/_config-variables";
+
 gx-edit {
   $buttonMinWidth: 2.5rem;
   $buttonMaxWidth: 25%;
   $defaultPlaceholderTextColor: #757575;
-  $disabledBackgroundColor: #e9ecef;
-  $transitionConfig: filter 0.2s ease;
 
   --trigger-button-font-color: var(--action-tint-color, black);
 
@@ -39,7 +39,7 @@ gx-edit {
     }
   }
 
-  &[disabled] {
+  &[disabled]:not([disabled="false"]) {
     pointer-events: none;
   }
 
@@ -49,6 +49,8 @@ gx-edit {
     display: flex;
     flex: 1;
     overflow: hidden;
+    transition: background-color $transition-delay, color $transition-delay,
+      border-color $transition-delay, opacity $transition-delay;
 
     &,
     &:focus-within {
@@ -56,12 +58,13 @@ gx-edit {
     }
 
     &.disabled {
-      background-color: $disabledBackgroundColor;
+      opacity: 50%;
     }
 
     // This applies when the gx-edit is also multiline
     textarea {
       flex: 1;
+      transition: inherit;
 
       &,
       &:active,
@@ -79,6 +82,7 @@ gx-edit {
     & input[data-native-element] {
       flex: 1;
       width: 100%;
+      transition: inherit;
 
       &,
       &:active,
@@ -118,7 +122,7 @@ gx-edit {
         background-color: #ddd;
         opacity: 0.8;
         color: var(--trigger-button-font-color);
-        transition: $transitionConfig;
+        transition: filter $transition-delay;
         flex: 1;
 
         &:hover {
@@ -144,6 +148,8 @@ gx-edit {
     flex: 1;
     position: relative;
     white-space: break-spaces;
+    transition: background-color $transition-delay, color $transition-delay,
+      border-color $transition-delay, opacity $transition-delay;
 
     .readonly-content-container {
       display: flex;

@@ -185,7 +185,7 @@ export class EditRender implements Renderer {
         <div
           class={{
             container: true,
-            disabled: edit.disabled
+            disabled: edit.disabled && !edit.readonly
           }}
           data-part="container"
         >
