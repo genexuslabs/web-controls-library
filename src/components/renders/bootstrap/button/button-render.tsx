@@ -38,10 +38,15 @@ export class ButtonRender implements Renderer {
       <Host
         role="button"
         class={{
-          "gx-button--disabled": this.component.disabled,
-          [imagePositionClass(this.component.imagePosition)]: true,
+          "gx-button--disabled": button.disabled,
+          [imagePositionClass(button.imagePosition)]: true,
           [hideMainImageWhenDisabledClass]:
-            this.component.disabled && this.hasDisabledImage
+            button.disabled && this.hasDisabledImage,
+          ["stretch-height"]: button.height === ""
+        }}
+        style={{
+          "--width": button.width === "" ? "100%" : button.width,
+          "--height": button.height === "" ? "auto" : button.height
         }}
       >
         <gx-bootstrap />
@@ -54,7 +59,7 @@ export class ButtonRender implements Renderer {
             "gx-button": true,
             [button.cssClass]: !!button.cssClass
           }}
-          disabled={this.component.disabled}
+          disabled={button.disabled}
           onClick={this.handleClick}
           tabindex="0"
         >

@@ -2,6 +2,13 @@
 @import "../common/_image-position";
 @import "../renders/bootstrap/button/button-render";
 
+// The width property does not apply when the navbar is the main container 
+gx-table-cell {
+  & > gx-button {
+    width: var(--width, auto);
+  }
+}
+
 gx-button {
   @include visibility(inline-flex);
 
@@ -10,9 +17,13 @@ gx-button {
   margin-right: var(--margin-right);
   margin-bottom: var(--margin-bottom);
   margin-left: var(--margin-left);
+  height: var(--height);
 
-  align-self: stretch;
   vertical-align: middle;
+
+  &.stretch-height {
+    align-self: stretch;
+  }
 
   & > button.gx-button {
     display: flex;

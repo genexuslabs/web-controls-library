@@ -89,6 +89,16 @@ export class Button
    */
   @Prop() readonly highlightable = false;
 
+  /**
+   * This attribute lets you specify the width.
+   */
+  @Prop() readonly width: string = "";
+
+  /**
+   * This attribute lets you specify the height.
+   */
+  @Prop() readonly height: string = "";
+
   @Listen("click", { capture: true })
   handleClick(event: UIEvent) {
     if (this.disabled) {
