@@ -125,7 +125,9 @@ export class TextBlock
     } else {
       return (
         <div class="content html-content">
-          <div innerHTML={this.inner}></div>
+          <div class="html-container">
+            <div class="inner-content" innerHTML={this.inner}></div>
+          </div>
         </div>
       );
     }
