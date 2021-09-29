@@ -1,4 +1,5 @@
 @import "../common/_base";
+@import "../common/common-styling-config";
 
 // Used to horizontally and vertically align the text
 @mixin alignment($text-align: null, $align-items: null) {
@@ -26,9 +27,15 @@ gx-textblock {
   height: 100%;
   --elevation: 0;
 
+  &[disabled]:not([disabled="false"]) {
+    pointer-events: none;
+  }
+
   & > .content {
     display: flex;
     flex: 1;
+    transition: background-color $transition-delay, color $transition-delay,
+      border-color $transition-delay;
 
     & > .readonly-content-container {
       display: flex;

@@ -1,4 +1,4 @@
-@import "../../../common/_config-variables";
+@import "../../../common/common-styling-config";
 
 // Used when autoGrow = false and format = HTML
 gx-table-cell[min-height][max-height] {
@@ -96,6 +96,7 @@ gx-edit {
       [data-native-element] {
         position: relative;
         width: 100%;
+        text-align: start;
       }
     }
 
