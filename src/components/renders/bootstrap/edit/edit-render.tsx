@@ -141,13 +141,22 @@ export class EditRender implements Renderer {
             data-part="container"
             hidden={edit.readonly}
           >
-            <textarea {...attris}>{edit.value}</textarea>
+            <textarea {...attris} data-part="field">
+              {edit.value}
+            </textarea>
           </div>
         );
 
         // Otherwise, it sets an input
       } else {
-        const input = <input {...attris} type={edit.type} value={edit.value} />;
+        const input = (
+          <input
+            {...attris}
+            type={edit.type}
+            value={edit.value}
+            data-part="field"
+          />
+        );
         const existSlotContent = edit.element.querySelector(
           "[slot='trigger-content']"
         );
@@ -185,6 +194,7 @@ export class EditRender implements Renderer {
         <div
           class={{
             container: true,
+            "HTML-content": true,
             disabled: edit.disabled && !edit.readonly
           }}
           data-part="container"
