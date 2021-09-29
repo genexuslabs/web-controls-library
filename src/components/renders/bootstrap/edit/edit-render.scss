@@ -1,5 +1,18 @@
 @import "../../../common/_config-variables";
 
+// Used when autoGrow = false and format = HTML
+gx-table-cell[min-height][max-height] {
+  gx-edit {
+    .container[data-part="container"] {
+      .html-container {
+        [data-native-element] {
+          position: absolute;
+        }
+      }
+    }
+  }
+}
+
 gx-edit {
   $buttonMinWidth: 2.5rem;
   $buttonMaxWidth: 25%;
@@ -61,7 +74,7 @@ gx-edit {
 
     // This applies when the gx-edit is also multiline or when format = Text
     textarea,
-    input[data-native-element] { 
+    input[data-native-element] {
       @include no-borders;
       flex: 1;
       width: 100%;
@@ -69,6 +82,20 @@ gx-edit {
 
       &::placeholder {
         @include placeholder-color;
+      }
+    }
+
+    // Used when format = HTML
+    .html-container {
+      display: flex;
+      flex: 1;
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+
+      [data-native-element] {
+        position: relative;
+        width: 100%;
       }
     }
 

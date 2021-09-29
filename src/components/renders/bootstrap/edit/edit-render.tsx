@@ -199,7 +199,9 @@ export class EditRender implements Renderer {
           }}
           data-part="container"
         >
-          <div data-native-element innerHTML={edit.inner}></div>
+          <div class="html-container">
+            <div data-native-element innerHTML={edit.inner}></div>
+          </div>
         </div>
       );
     }
