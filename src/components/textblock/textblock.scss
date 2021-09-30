@@ -1,4 +1,5 @@
 @import "../common/_base";
+@import "../common/_common-styling-config";
 
 // Used to horizontally and vertically align the text
 @mixin alignment($text-align: null, $align-items: null) {
@@ -20,15 +21,34 @@
 // Default alignment which supports RTL
 @include alignment(start, flex-start);
 
+// Used when autoGrow = false and format = HTML
+gx-table-cell[min-height][max-height] {
+  gx-textblock {
+    & > .content.html-content {
+      .html-container {
+        .inner-content {
+          position: absolute;
+        }
+      }
+    }
+  }
+}
+
 gx-textblock {
   @include visibility(inline-flex);
   flex: 1;
   height: 100%;
   --elevation: 0;
 
+  &[disabled]:not([disabled="false"]) {
+    pointer-events: none;
+  }
+
   & > .content {
     display: flex;
     flex: 1;
+    transition: background-color $transition-delay, color $transition-delay,
+      border-color $transition-delay;
 
     & > .readonly-content-container {
       display: flex;
@@ -48,8 +68,22 @@ gx-textblock {
       }
     }
 
+    // Used when format = HTML
     &.html-content {
       text-align: start;
+
+      .html-container {
+        display: flex;
+        flex: 1;
+        position: relative;
+        height: 100%;
+        overflow: hidden;
+
+        .inner-content {
+          position: relative;
+          width: 100%;
+        }
+      }
     }
   }
 }

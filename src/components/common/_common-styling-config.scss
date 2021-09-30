@@ -1,0 +1,5 @@
+$transition-delay: 0.25s;
+
+@mixin hover() {
+  filter: brightness(90%);
+}

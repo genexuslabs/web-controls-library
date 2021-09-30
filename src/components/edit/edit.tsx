@@ -222,7 +222,7 @@ export class Edit implements FormComponent, HighlightableComponent {
 
   componentDidLoad() {
     this.toggleValueSetClass();
-    if (this.readonly) {
+    if (this.readonly || this.format == "HTML") {
       makeHighlightable(this);
     }
   }
@@ -265,6 +265,7 @@ export class Edit implements FormComponent, HighlightableComponent {
           "gx-edit--single-line":
             this.type === "date" || this.type === "datetime-local"
         }}
+        disabled={this.disabled}
       >
         {this.renderer.render({
           triggerContent: <slot name="trigger-content" />

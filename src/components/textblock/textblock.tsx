@@ -48,7 +48,7 @@ export class TextBlock
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() readonly disabled = false;
+  @Prop({ reflect: true }) readonly disabled = false;
 
   /**
    * True to cut text when it overflows, showing an ellipsis.
@@ -125,7 +125,9 @@ export class TextBlock
     } else {
       return (
         <div class="content html-content">
-          <div innerHTML={this.inner}></div>
+          <div class="html-container">
+            <div class="inner-content" innerHTML={this.inner}></div>
+          </div>
         </div>
       );
     }

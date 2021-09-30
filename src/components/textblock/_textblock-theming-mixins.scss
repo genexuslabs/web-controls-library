@@ -29,10 +29,13 @@
   }
 
   @if ($highlighted != null) {
-    &.gx-highlighted {
-      .content,
-      .label-content {
-        @extend #{$highlighted} !optional;
+    &:not([disabled]):not(.disabled),
+    &[disabled="false"] {
+      &.gx-highlighted {
+        .content,
+        .label-content {
+          @extend #{$highlighted} !optional;
+        }
       }
     }
   }
