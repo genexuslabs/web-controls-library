@@ -78,6 +78,7 @@ gx-edit {
       @include no-borders;
       flex: 1;
       width: 100%;
+      background-color: unset;
       transition: inherit;
 
       &::placeholder {
