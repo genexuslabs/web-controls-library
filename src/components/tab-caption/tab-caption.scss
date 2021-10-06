@@ -1,4 +1,5 @@
 @import "../common/_base";
+@import "../common/_common-styling-config";
 @import "../common/_image-position";
 
 @mixin imageMargin($position, $value) {
@@ -88,22 +89,19 @@ gx-tab-caption {
 
   &.gx-tab-caption {
     height: 100%;
-    transition: filter var(--tab-delay-transition-color);
+    transition: background-color $transition-delay, filter $transition-delay;
 
     .image-and-link-container {
       display: inline-block;
       vertical-align: top;
       height: 100%;
-      background-color: inherit;
 
       .gx-nav-link {
         display: flex;
         height: 100%;
         color: inherit;
-        background-color: inherit;
-        transition: background-color var(--tab-delay-transition-color),
-          color var(--tab-delay-transition-color),
-          border-color var(--tab-delay-transition-color);
+        transition: background-color $transition-delay, color $transition-delay,
+          border-color $transition-delay;
         white-space: nowrap;
 
         &:active,
@@ -120,7 +118,7 @@ gx-tab-caption {
           align-items: center;
           height: 100%;
           padding-top: 0.125em;
-          transition: filter var(--tab-delay-transition-color);
+          transition: filter $transition-delay;
         }
       }
     }

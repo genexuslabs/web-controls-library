@@ -1,13 +1,7 @@
 @import "../common/_base";
+@import "../common/_common-styling-config";
 
 gx-tab {
-  @include visibility(flex);
-  flex: 1;
-  width: 100%;
-  overflow: hidden;
-  transition: background-color var(--tab-delay-transition-color),
-    border-color var(--tab-delay-transition-color);
-
   /**
    * @prop --elevation: The size of the shadow for the tab component
    */
@@ -58,13 +52,15 @@ gx-tab {
    */
   --tab-caption-image-horizontal-margin: 2px;
 
-  /**
-   * @prop --tab-delay-transition-color: The delay of the transition color
-   */
-  --tab-delay-transition-color: 0.25s;
+  @include elevation();
+  @include visibility(flex);
+  flex: 1;
+  width: 100%;
+  overflow: hidden;
+  transition: background-color $transition-delay, border-color $transition-delay,
+    box-shadow $transition-delay;
 
   & > div {
-    @include elevation();
     display: grid;
     flex: 1;
     height: 100%;
@@ -75,37 +71,6 @@ gx-tab {
     );
     --tab-scrollbar-thumb-color: var(--gx-scrollbar-thumb-color, #555);
 
-    // Used to show the captions in the top position
-    &[data-position="top"] {
-      grid-template-rows: fit-content(50%) auto;
-
-      .gx-nav-tabs {
-        @include elevation();
-
-        .gx-nav-tabs-table {
-          &-filler {
-            border-bottom-color: var(--tab-strip-separator-color);
-          }
-        }
-      }
-    }
-
-    // Used to show the captions in the bottom position
-    &[data-position="bottom"] {
-      grid-template-rows: auto fit-content(50%);
-
-      .gx-nav-tabs {
-        @include elevation(top);
-        order: 1;
-
-        .gx-nav-tabs-table {
-          &-filler {
-            border-top-color: var(--tab-strip-separator-color);
-          }
-        }
-      }
-    }
-
     .gx-nav-tabs {
       --elevation: var(--tab-strip-elevation);
       height: var(--tab-strip-height);
@@ -113,7 +78,7 @@ gx-tab {
       overflow-x: hidden;
       overflow-y: overlay;
       white-space: nowrap;
-      transition: box-shadow var(--tab-delay-transition-color);
+      transition: box-shadow $transition-delay;
 
       &:hover {
         overflow-x: overlay;
@@ -146,10 +111,42 @@ gx-tab {
         &-filler {
           display: table-cell;
           width: 100%;
+          background-color: inherit;
           border-top: 1px solid transparent;
           border-bottom: 1px solid transparent;
-          transition: background-color var(--tab-delay-transition-color),
-            border-color var(--tab-delay-transition-color);
+          transition: background-color $transition-delay,
+            border-color $transition-delay;
+        }
+      }
+    }
+
+    // Used to show the captions in the top position
+    &[data-position="top"] {
+      grid-template-rows: fit-content(50%) auto;
+
+      .gx-nav-tabs {
+        @include elevation();
+
+        .gx-nav-tabs-table {
+          &-filler {
+            border-bottom-color: var(--tab-strip-separator-color);
+          }
+        }
+      }
+    }
+
+    // Used to show the captions in the bottom position
+    &[data-position="bottom"] {
+      grid-template-rows: auto fit-content(50%);
+
+      .gx-nav-tabs {
+        @include elevation(top);
+        order: 1;
+
+        .gx-nav-tabs-table {
+          &-filler {
+            border-top-color: var(--tab-strip-separator-color);
+          }
         }
       }
     }

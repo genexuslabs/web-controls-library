@@ -122,10 +122,4 @@ export class GridFlex
       </Host>
     );
   }
-
-  private handleGxInfinite() {
-    if (this.loadingState !== "loading") {
-      this.gxInfiniteThresholdReached.emit();
-    }
-  }
 }
