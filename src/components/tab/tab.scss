@@ -60,6 +60,17 @@ gx-tab {
   transition: background-color $transition-delay, border-color $transition-delay,
     box-shadow $transition-delay;
 
+  &[tabs-distribution="fixed-size"] {
+    & > div {
+      .gx-nav-tabs {
+        .gx-nav-tabs-table {
+          table-layout: fixed;
+          width: 100%;
+        }
+      }
+    }
+  }
+
   & > div {
     display: grid;
     flex: 1;

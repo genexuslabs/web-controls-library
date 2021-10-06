@@ -94,12 +94,14 @@ gx-tab-caption {
     .image-and-link-container {
       display: inline-block;
       vertical-align: top;
+      width: 100%;
       height: 100%;
 
       .gx-nav-link {
         display: flex;
         height: 100%;
         color: inherit;
+        overflow: hidden;
         transition: background-color $transition-delay, color $transition-delay,
           border-color $transition-delay;
         white-space: nowrap;
@@ -117,6 +119,8 @@ gx-tab-caption {
           display: flex;
           align-items: center;
           height: 100%;
+          max-width: 100%;
+          min-height: 1em;
           padding-top: 0.125em;
           transition: filter $transition-delay;
         }
