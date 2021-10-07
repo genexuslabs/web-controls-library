@@ -61,6 +61,16 @@ export class Tab
   @Prop() tabsPosition: "top" | "bottom" = "top";
 
   /**
+   * Defines how the tabs will be distributed in the Strip.
+   *
+   * | Value        | Details                                                                            |
+   * | ------------ | ---------------------------------------------------------------------------------- |
+   * | `scoll`      | Allows scrolling the tab control when the number of tabs exceeds the screen width. |
+   * | `fixed-size` | Tabs are fixed size. Used with any amount of tabs.                                 |
+   */
+  @Prop() tabsDistribution: "scroll" | "fixed-size" = "scroll";
+
+  /**
    * Fired when the active tab is changed
    */
   @Event() tabChange: EventEmitter;
@@ -153,7 +163,9 @@ export class Tab
           <div class="gx-nav-tabs">
             <div class="gx-nav-tabs-table">
               <slot name="caption" />
-              <div aria-hidden="true" class="gx-nav-tabs-table-filler"></div>
+              {this.tabsDistribution === "scroll" && (
+                <div aria-hidden="true" class="gx-nav-tabs-table-filler"></div>
+              )}
             </div>
           </div>
           <div class="gx-tab-content">
