@@ -98,7 +98,8 @@ gx-gauge {
     $align-items: center,
     $position: relative,
     $height: 100%,
-    $overflow: unset
+    $overflow: unset,
+    $transition: null
   ) {
     .labels-container {
       display: flex;
@@ -121,7 +122,14 @@ gx-gauge {
           max-height: 100%;
           filter: brightness(0.5);
           text-align: center;
-          transition: $transition-delay;
+
+          @if $transition == null {
+            transition: height $transition-delay, width $transition-delay,
+              font-size $transition-delay;
+          }
+          @if $transition != null {
+            transition: width $transition-delay;
+          }
         }
       }
     }
@@ -148,6 +156,7 @@ gx-gauge {
       position: relative;
       width: 100%;
       height: 1.25em;
+      transition: height $transition-delay;
 
       .current-value {
         @include alignment;
@@ -157,7 +166,8 @@ gx-gauge {
         z-index: 1;
         background-color: var(--value-text-background-color);
         color: var(--value-text-color);
-        transition: margin-left $transition-delay, transform $transition-delay;
+        transition: margin-left $transition-delay, transform $transition-delay,
+          font-size $transition-delay;
       }
 
       & + .ranges-labels-and-indicator-container {
@@ -207,7 +217,8 @@ gx-gauge {
       position: relative;
       width: 100%;
       height: 1.25em;
-      transition: width $transition-delay, height $transition-delay;
+      transition: width $transition-delay, height $transition-delay,
+        font-size $transition-delay;
 
       .min-max-values-container {
         display: flex;
@@ -233,7 +244,7 @@ gx-gauge {
         }
       }
 
-      @include labels-container(baseline, absolute, 1.125em, hidden);
+      @include labels-container(baseline, absolute, 1.125em, hidden, " ");
     }
   }
 

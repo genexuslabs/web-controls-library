@@ -7,7 +7,8 @@ import {
   Listen,
   Prop,
   State,
-  h
+  h,
+  Watch
 } from "@stencil/core";
 
 import { Component as GxComponent } from "../common/interfaces";
@@ -74,15 +75,34 @@ export class Gauge implements GxComponent {
 
   @State() lineIndicatorPosition: "Left" | "Center" | "Right" = "Center";
 
+  @Watch("thickness")
+  labelsPositionHandler(newValue: number, oldValue: number) {
+    // Used only in line gauge type
+    if (this.type === "line") {
+      /*  It means that the labels were inside the .range-container and the
+          thickness will decrease, so it might be necessary to change the
+          position of the labels, because they will overflow.
+       */
+      if (!this.labelsOverflow && newValue < oldValue) {
+        this.decideLabelsPosition();
+
+        /*  It means that the labels were outside of the .range-container and the
+            thickness will increase, so it might be necessary to change the
+            position of the labels, because they will not overflow anymore.
+        */
+      } else if (this.labelsOverflow && newValue > oldValue) {
+        this.decideLabelsPosition();
+      }
+    }
+  }
+
   private maxValueAux = this.minValue;
 
   private totalAmount = 0;
 
   private watchForItemsObserver: ResizeObserver;
 
-  private labelsSubContainer1: HTMLDivElement;
-
-  private labelsSubContainer2: HTMLDivElement;
+  private labelsSubContainer: HTMLDivElement;
 
   private linearCurrentValueContainer: HTMLDivElement;
 
@@ -150,23 +170,7 @@ export class Gauge implements GxComponent {
           this.setValueAndIndicatorPosition();
         }
 
-        // This only happens when the component has not yet been rendered to
-        // get the `labelsSubContainer2` reference
-        if (this.labelsOverflow && this.labelsSubContainer2 == undefined) {
-          return;
-        }
-
-        const fontSize = !this.labelsOverflow
-          ? this.labelsSubContainer1.getBoundingClientRect().height
-          : this.labelsSubContainer2.getBoundingClientRect().height;
-
-        // Depending on the current fontSize, it decides the position where
-        // the labels will be placed
-        if (fontSize > this.calcThickness() * 2) {
-          this.labelsOverflow = true;
-        } else {
-          this.labelsOverflow = false;
-        }
+        this.decideLabelsPosition();
       });
 
       // Observe the `current-value` in the line gauge type
@@ -260,6 +264,24 @@ export class Gauge implements GxComponent {
       // The indicator is in an intermediate position
     } else {
       this.lineIndicatorPosition = "Center";
+    }
+  }
+
+  private decideLabelsPosition() {
+    // This only happens when the component has not yet been rendered to
+    // get the `labelsSubContainer` reference
+    if (this.labelsOverflow && this.labelsSubContainer == undefined) {
+      return;
+    }
+
+    const fontSize = this.labelsSubContainer.getBoundingClientRect().height;
+
+    // Depending on the current fontSize, it decides the position where
+    // the labels will be placed
+    if (fontSize > this.calcThickness() * 2) {
+      this.labelsOverflow = true;
+    } else {
+      this.labelsOverflow = false;
     }
   }
 
@@ -469,28 +491,21 @@ export class Gauge implements GxComponent {
             }}
           >
             {divRanges}
-            {!this.labelsOverflow && (
-              <div class="labels-container">
-                <div
-                  class="labels-subcontainer"
-                  ref={el => (this.labelsSubContainer1 = el as HTMLDivElement)}
-                >
-                  {divRangesLabel}
-                </div>
+            <div class="labels-container">
+              <div
+                class="labels-subcontainer"
+                ref={el => (this.labelsSubContainer = el as HTMLDivElement)}
+              >
+                {!this.labelsOverflow && divRangesLabel}
               </div>
-            )}
+            </div>
           </div>
         </div>
         {(this.labelsOverflow || this.showMinMax) && (
           <div class="min-max-and-labels-container">
             {this.labelsOverflow && (
               <div class="labels-container">
-                <div
-                  class="labels-subcontainer"
-                  ref={el => (this.labelsSubContainer2 = el as HTMLDivElement)}
-                >
-                  {divRangesLabel}
-                </div>
+                <div class="labels-subcontainer">{divRangesLabel}</div>
               </div>
             )}
 
