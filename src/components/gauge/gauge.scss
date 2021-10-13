@@ -1,4 +1,5 @@
 @import "../common/_base";
+@import "../common/_common-styling-config";
 
 gx-gauge {
   /**
@@ -71,12 +72,25 @@ gx-gauge {
   */
   --indicator-line-background-color: rgba(44, 44, 44, 1);
 
-  $transitionConfig: 0.3s ease;
-
   @mixin flex-centered {
     display: flex;
     justify-content: center;
     align-content: center;
+  }
+
+  /*  Used to implement responsive alignment in the .current-value and
+      .indicator for line gauge type.
+   */
+  @mixin alignment {
+    &.center-align {
+      margin-left: var(--percentage, 0);
+      transform: translateX(-50%);
+    }
+
+    &.right-align {
+      margin-left: 100%;
+      transform: translateX(-100%);
+    }
   }
 
   // This mixin is used to adjust the range labels based on the fontSize value
@@ -107,6 +121,7 @@ gx-gauge {
           max-height: 100%;
           filter: brightness(0.5);
           text-align: center;
+          transition: $transition-delay;
         }
       }
     }
@@ -133,16 +148,22 @@ gx-gauge {
       position: relative;
       width: 100%;
       height: 1.25em;
-      transition: $transitionConfig;
 
       .current-value {
+        @include alignment;
         height: 80%;
         line-height: 1em;
         font-weight: 700;
         z-index: 1;
         background-color: var(--value-text-background-color);
         color: var(--value-text-color);
-        transition: transform 0.3s ease 0s, margin-left 0.3s ease 0s;
+        transition: margin-left $transition-delay, transform $transition-delay;
+      }
+
+      & + .ranges-labels-and-indicator-container {
+        .ranges-and-labels-container {
+          margin-top: 4px;
+        }
       }
     }
 
@@ -150,16 +171,17 @@ gx-gauge {
       display: flex;
       position: relative;
       width: 100%;
-      transition: $transitionConfig;
+      transition: width $transition-delay, height $transition-delay;
 
       .indicator {
+        @include alignment;
         display: block;
         position: absolute;
         height: 100%;
         width: 1.125%;
         z-index: 1;
         background-color: var(--indicator-line-background-color);
-        transition: $transitionConfig;
+        transition: margin-left $transition-delay, transform $transition-delay;
       }
 
       .ranges-and-labels-container {
@@ -172,7 +194,7 @@ gx-gauge {
           @include flex-centered;
           height: 100%;
           position: absolute;
-          transition: $transitionConfig;
+          transition: width $transition-delay;
         }
 
         @include labels-container;
@@ -185,7 +207,7 @@ gx-gauge {
       position: relative;
       width: 100%;
       height: 1.25em;
-      transition: $transitionConfig;
+      transition: width $transition-delay, height $transition-delay;
 
       .min-max-values-container {
         display: flex;

@@ -70,6 +70,10 @@ export class Gauge implements GxComponent {
 
   @State() labelsOverflow = false;
 
+  @State() lineCurrentValuePosition: "Left" | "Center" | "Right" = "Center";
+
+  @State() lineIndicatorPosition: "Left" | "Center" | "Right" = "Center";
+
   private maxValueAux = this.minValue;
 
   private totalAmount = 0;
@@ -142,7 +146,9 @@ export class Gauge implements GxComponent {
   componentDidLoad() {
     if (this.type === "line") {
       this.watchForItemsObserver = new ResizeObserver(() => {
-        this.setValueAndIndicatorPosition();
+        if (this.showValue) {
+          this.setValueAndIndicatorPosition();
+        }
 
         // This only happens when the component has not yet been rendered to
         // get the `labelsSubContainer2` reference
@@ -226,44 +232,34 @@ export class Gauge implements GxComponent {
     const spanHalfWidth =
       this.linearCurrentValue.getBoundingClientRect().width / 2;
 
-    const linearCurrentValueStyle = this.linearCurrentValue.style;
-
     // The span is near the left side
     if (distanceToTheValueCenter - spanHalfWidth < 0) {
-      linearCurrentValueStyle.marginLeft = "0%";
-      linearCurrentValueStyle.transform = "translateX(0%)";
+      this.lineCurrentValuePosition = "Left";
 
       // The span is near the right side
     } else if (distanceToTheValueCenter + spanHalfWidth > gaugeWidth) {
-      linearCurrentValueStyle.marginLeft = "100%";
-      linearCurrentValueStyle.transform = "translateX(-100%)";
+      this.lineCurrentValuePosition = "Right";
 
       // The span is in an intermediate position
     } else {
-      linearCurrentValueStyle.marginLeft = `${percentage}%`;
-      linearCurrentValueStyle.transform = "translateX(-50%)";
+      this.lineCurrentValuePosition = "Center";
     }
 
     // - - - - - - - - - - - -  Indicator positioning  - - - - - - - - - - - -
     const indicatorHalfWidth =
       this.linearIndicator.getBoundingClientRect().width / 2;
 
-    const linearIndicatorStyle = this.linearIndicator.style;
-
     // The indicator is near the left side
     if (distanceToTheValueCenter - indicatorHalfWidth < 0) {
-      linearIndicatorStyle.marginLeft = "0%";
-      linearIndicatorStyle.transform = "translateX(0%)";
+      this.lineIndicatorPosition = "Left";
 
       // The indicator is near the right side
     } else if (distanceToTheValueCenter + indicatorHalfWidth > gaugeWidth) {
-      linearIndicatorStyle.marginLeft = "100%";
-      linearIndicatorStyle.transform = "translateX(-100%)";
+      this.lineIndicatorPosition = "Right";
 
       // The indicator is in an intermediate position
     } else {
-      linearIndicatorStyle.marginLeft = `${percentage}%`;
-      linearIndicatorStyle.transform = "translateX(-50%)";
+      this.lineIndicatorPosition = "Center";
     }
   }
 
@@ -426,7 +422,11 @@ export class Gauge implements GxComponent {
       this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
 
     return (
-      <div class="line-gauge-container" data-readonly>
+      <div
+        class="line-gauge-container"
+        data-readonly
+        style={{ "--percentage": `${percentage}%` }}
+      >
         {this.showValue && (
           <div
             class="current-value-container"
@@ -435,9 +435,10 @@ export class Gauge implements GxComponent {
             }
           >
             <span
-              class="current-value"
-              style={{
-                "margin-left": `${percentage}%`
+              class={{
+                "current-value": true,
+                "center-align": this.lineCurrentValuePosition === "Center",
+                "right-align": this.lineCurrentValuePosition === "Right"
               }}
               ref={el => (this.linearCurrentValue = el as HTMLDivElement)}
             >
@@ -453,9 +454,10 @@ export class Gauge implements GxComponent {
         >
           {this.showValue && (
             <div
-              class="indicator"
-              style={{
-                "margin-left": `${percentage}%`
+              class={{
+                indicator: true,
+                "center-align": this.lineIndicatorPosition === "Center",
+                "right-align": this.lineIndicatorPosition === "Right"
               }}
               ref={el => (this.linearIndicator = el as HTMLDivElement)}
             />
@@ -463,8 +465,7 @@ export class Gauge implements GxComponent {
           <div
             class="ranges-and-labels-container"
             style={{
-              "border-radius": `${this.calcThickness()}px`,
-              "margin-top": this.showValue ? "4px" : "0px"
+              "border-radius": `${this.calcThickness()}px`
             }}
           >
             {divRanges}
