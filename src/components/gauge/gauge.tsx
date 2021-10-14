@@ -373,8 +373,8 @@ export class Gauge implements GxComponent {
             ROTATION_FIX}deg)`;
 
     return (
-      <Host>
-        <div class="circle-gauge-container" data-readonly>
+      <Host data-readonly>
+        <div class="circle-gauge-container">
           <div class="svg-and-indicator-container">
             <svg viewBox="0 0 100 100">
               <circle
@@ -444,80 +444,81 @@ export class Gauge implements GxComponent {
       this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
 
     return (
-      <div
-        class="line-gauge-container"
-        data-readonly
-        style={{ "--percentage": `${percentage}%` }}
-      >
-        {this.showValue && (
-          <div
-            class="current-value-container"
-            ref={el =>
-              (this.linearCurrentValueContainer = el as HTMLDivElement)
-            }
-          >
-            <span
-              class={{
-                "current-value": true,
-                "center-align": this.lineCurrentValuePosition === "Center",
-                "right-align": this.lineCurrentValuePosition === "Right"
-              }}
-              ref={el => (this.linearCurrentValue = el as HTMLDivElement)}
-            >
-              {this.value}
-            </span>
-          </div>
-        )}
+      <Host data-readonly>
         <div
-          class="ranges-labels-and-indicator-container"
-          style={{
-            height: `${2 * this.calcThickness() + (this.showValue ? 4 : 0)}px`
-          }}
+          class="line-gauge-container"
+          style={{ "--percentage": `${percentage}%` }}
         >
           {this.showValue && (
             <div
-              class={{
-                indicator: true,
-                "center-align": this.lineIndicatorPosition === "Center",
-                "right-align": this.lineIndicatorPosition === "Right"
-              }}
-              ref={el => (this.linearIndicator = el as HTMLDivElement)}
-            />
+              class="current-value-container"
+              ref={el =>
+                (this.linearCurrentValueContainer = el as HTMLDivElement)
+              }
+            >
+              <span
+                class={{
+                  "current-value": true,
+                  "center-align": this.lineCurrentValuePosition === "Center",
+                  "right-align": this.lineCurrentValuePosition === "Right"
+                }}
+                ref={el => (this.linearCurrentValue = el as HTMLDivElement)}
+              >
+                {this.value}
+              </span>
+            </div>
           )}
           <div
-            class="ranges-and-labels-container"
+            class="ranges-labels-and-indicator-container"
             style={{
-              "border-radius": `${this.calcThickness()}px`
+              height: `${2 * this.calcThickness() + (this.showValue ? 4 : 0)}px`
             }}
           >
-            {divRanges}
-            <div class="labels-container">
+            {this.showValue && (
               <div
-                class="labels-subcontainer"
-                ref={el => (this.labelsSubContainer = el as HTMLDivElement)}
-              >
-                {!this.labelsOverflow && divRangesLabel}
+                class={{
+                  indicator: true,
+                  "center-align": this.lineIndicatorPosition === "Center",
+                  "right-align": this.lineIndicatorPosition === "Right"
+                }}
+                ref={el => (this.linearIndicator = el as HTMLDivElement)}
+              />
+            )}
+            <div
+              class="ranges-and-labels-container"
+              style={{
+                "border-radius": `${this.calcThickness()}px`
+              }}
+            >
+              {divRanges}
+              <div class="labels-container">
+                <div
+                  class="labels-subcontainer"
+                  ref={el => (this.labelsSubContainer = el as HTMLDivElement)}
+                >
+                  {!this.labelsOverflow && divRangesLabel}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        {(this.labelsOverflow || this.showMinMax) && (
-          <div class="min-max-and-labels-container">
-            {this.labelsOverflow && (
-              <div class="labels-container">
-                <div class="labels-subcontainer">{divRangesLabel}</div>
-              </div>
-            )}
+          {(this.labelsOverflow || this.showMinMax) && (
+            <div class="min-max-and-labels-container">
+              {this.labelsOverflow && (
+                <div class="labels-container">
+                  <div class="labels-subcontainer">{divRangesLabel}</div>
+                </div>
+              )}
 
-            {this.showMinMax && (
-              <div class="min-max-values-container">
-                <span class="min-value">{this.minValue}</span>
-                <span class="max-value">{this.maxValueAux}</span>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+              {this.showMinMax && (
+                <div class="min-max-values-container">
+                  <span class="min-value">{this.minValue}</span>
+                  <span class="max-value">{this.maxValueAux}</span>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </Host>
     );
   }
 

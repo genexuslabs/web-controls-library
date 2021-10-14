@@ -75,7 +75,7 @@ gx-gauge {
   @mixin flex-centered {
     display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;
   }
 
   /*  Used to implement responsive alignment in the .current-value and
@@ -143,14 +143,13 @@ gx-gauge {
   margin-right: var(--margin-right, 0);
   margin-bottom: var(--margin-bottom, 0);
   margin-left: var(--margin-left, 0);
+  transition: background-color $transition-delay, border-color $transition-delay;
 
   .line-gauge-container {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     height: fit-content;
-    transition: background-color $transition-delay,
-      border-color $transition-delay;
 
     .current-value-container {
       display: flex;
@@ -252,15 +251,7 @@ gx-gauge {
 
   .circle-gauge-container {
     @include flex-centered;
-    flex: 1;
     position: relative;
-    max-height: 100%;
-    transition: background-color $transition-delay,
-      border-color $transition-delay;
-
-    &[data-readonly] {
-      align-items: center;
-    }
 
     .svg-and-indicator-container {
       display: flex;
@@ -310,15 +301,6 @@ gx-gauge {
         color: var(--center-circle-text-color);
         background-color: var(--center-circle-background-color);
       }
-    }
-  }
-}
-
-// Used when autoGrow = false in the the gx-table-cell
-[max-height] {
-  gx-gauge {
-    .circle-gauge-container {
-      flex: initial;
     }
   }
 }
