@@ -72,6 +72,10 @@ gx-gauge {
   */
   --indicator-line-background-color: rgba(44, 44, 44, 1);
 
+  // Used to customize the transitions for background-color and fore color
+  $transition-color-config: background-color $transition-delay,
+    color $transition-delay;
+
   @mixin flex-centered {
     display: flex;
     justify-content: center;
@@ -165,10 +169,10 @@ gx-gauge {
         line-height: 1em;
         font-weight: 700;
         z-index: 1;
+        transition: margin-left $transition-delay, transform $transition-delay,
+          font-size $transition-delay, $transition-color-config;
         background-color: var(--value-text-background-color);
         color: var(--value-text-color);
-        transition: margin-left $transition-delay, transform $transition-delay,
-          font-size $transition-delay;
       }
 
       & + .ranges-labels-and-indicator-container {
@@ -191,8 +195,9 @@ gx-gauge {
         height: 100%;
         width: 1.125%;
         z-index: 1;
+        transition: margin-left $transition-delay, transform $transition-delay,
+          background-color $transition-delay;
         background-color: var(--indicator-line-background-color);
-        transition: margin-left $transition-delay, transform $transition-delay;
       }
 
       .ranges-and-labels-container {
@@ -230,16 +235,19 @@ gx-gauge {
         z-index: 1;
         pointer-events: none;
 
+        .min-value,
         .max-value {
           line-height: 1em;
           pointer-events: all;
+          transition: $transition-color-config;
+        }
+
+        .max-value {
           background-color: var(--max-value-background-color);
           color: var(--max-value-text-color);
         }
 
         .min-value {
-          line-height: 1em;
-          pointer-events: all;
           background-color: var(--min-value-background-color);
           color: var(--min-value-text-color);
         }
@@ -285,6 +293,7 @@ gx-gauge {
 
         .indicator {
           height: 100%;
+          transition: background-color $transition-delay;
           background-color: var(--indicator-circle-background-color);
         }
       }
@@ -298,6 +307,7 @@ gx-gauge {
         line-height: 100%;
         padding-bottom: 0.125em;
         font-weight: 900;
+        transition: $transition-color-config;
         color: var(--center-circle-text-color);
         background-color: var(--center-circle-background-color);
       }
