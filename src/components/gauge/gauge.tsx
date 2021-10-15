@@ -75,6 +75,37 @@ export class Gauge implements GxComponent {
 
   @State() lineIndicatorPosition: "Left" | "Center" | "Right" = "Center";
 
+  /*  Used to connect and disconnect the resizeObserver based on the value of the
+      `type` property.
+   */
+  @Watch("type")
+  typeHandler(newValue: "line" | "circle") {
+    // We always disconnect the observer
+    this.disconnectObserver();
+
+    /*  If the type will change to "line" or `showValue == true` and the type 
+        will change to "circle", we set the resizeObserver at the end of the 
+        next rendering phase.
+     */
+    this.shouldSetGaugeObserver =
+      newValue === "line" || (this.showValue && newValue === "circle");
+  }
+
+  /*  Used to connect and disconnect the resizeObserver based on the value of the
+      `showValue` property.
+   */
+  @Watch("showValue")
+  showValueHandler(newValue: boolean) {
+    // We always disconnect the observer
+    this.disconnectObserver();
+
+    /*  If the `showValue` option will be turned on, we set the resizeObserver
+        at the end of the next rendering phase.
+     */
+    this.shouldSetGaugeObserver =
+      newValue && (this.type === "line" || this.type === "circle");
+  }
+
   @Watch("thickness")
   labelsPositionHandler(newValue: number, oldValue: number) {
     // Used only in line gauge type
@@ -95,6 +126,13 @@ export class Gauge implements GxComponent {
       }
     }
   }
+
+  /*  Used to set to the gauge an observer when
+        - type == "line" or (`showValue` changes from `false` to `true` and
+          type == "circle").
+        - And the component has finished its rendering phase
+   */
+  private shouldSetGaugeObserver = false;
 
   private maxValueAux = this.minValue;
 
@@ -143,19 +181,7 @@ export class Gauge implements GxComponent {
   */
   connectedCallback() {
     if (this.showValue && this.type === "circle") {
-      this.watchForItemsObserver = new ResizeObserver(() => {
-        const fontSize =
-          Math.min(
-            this.SVGcircle.getBoundingClientRect().height,
-            this.SVGcircle.getBoundingClientRect().width
-          ) / 2.5;
-
-        // Updates the font size
-        this.circleCurrentValue.style.fontSize = `${fontSize}px`;
-      });
-
-      // Observe the gauge
-      this.watchForItemsObserver.observe(this.element);
+      this.setCircleGaugeObserver();
     }
   }
 
@@ -165,16 +191,7 @@ export class Gauge implements GxComponent {
   */
   componentDidLoad() {
     if (this.type === "line") {
-      this.watchForItemsObserver = new ResizeObserver(() => {
-        if (this.showValue) {
-          this.setValueAndIndicatorPosition();
-        }
-
-        this.decideLabelsPosition();
-      });
-
-      // Observe the `current-value` in the line gauge type
-      this.watchForItemsObserver.observe(this.linearCurrentValueContainer);
+      this.setLineGaugeObserver();
     }
   }
 
@@ -185,9 +202,60 @@ export class Gauge implements GxComponent {
     if (this.showValue && this.type === "line") {
       this.setValueAndIndicatorPosition();
     }
+
+    if (this.shouldSetGaugeObserver) {
+      if (this.type == "line") {
+        this.setLineGaugeObserver();
+      } else {
+        this.setCircleGaugeObserver();
+      }
+
+      this.shouldSetGaugeObserver = false;
+    }
   }
 
   disconnectedCallback() {
+    this.disconnectObserver();
+  }
+
+  /*  Preconditions:
+        this.showValue === True
+        this.type === "circle"
+   */
+  private setCircleGaugeObserver() {
+    this.watchForItemsObserver = new ResizeObserver(() => {
+      const fontSize =
+        Math.min(
+          this.SVGcircle.getBoundingClientRect().height,
+          this.SVGcircle.getBoundingClientRect().width
+        ) / 2.5;
+
+      // Updates the font size
+      this.circleCurrentValue.style.fontSize = `${fontSize}px`;
+    });
+
+    // Observe the gauge
+    this.watchForItemsObserver.observe(this.element);
+  }
+
+  /*  Preconditions:
+        this.type === "line"
+        The component has finished its rendering phase
+   */
+  private setLineGaugeObserver() {
+    this.watchForItemsObserver = new ResizeObserver(() => {
+      if (this.showValue) {
+        this.setValueAndIndicatorPosition();
+      }
+
+      this.decideLabelsPosition();
+    });
+
+    // Observe the `labels-subcontainer` in the line gauge type
+    this.watchForItemsObserver.observe(this.labelsSubContainer);
+  }
+
+  private disconnectObserver() {
     if (this.watchForItemsObserver !== undefined) {
       this.watchForItemsObserver.disconnect();
       this.watchForItemsObserver = undefined;
