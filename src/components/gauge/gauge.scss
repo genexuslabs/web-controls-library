@@ -24,6 +24,13 @@ gx-gauge {
   --indicator-circle-background-color: rgba(44, 44, 44, 1);
 
   /**
+  * @prop --stroke-linecap:
+   * Defines the shape to be used at the end of open subpaths when they are stroked.
+   * (initial by default)
+  */
+  --stroke-linecap: initial;
+
+  /**
   * @prop --value-text-color:
    * Define the color of the value text in `line` gauge type.
    * (rgba(44, 44, 44, 1) by default)
@@ -71,6 +78,13 @@ gx-gauge {
    * (rgba(44, 44, 44, 1) by default)
   */
   --indicator-line-background-color: rgba(44, 44, 44, 1);
+
+  /**
+  * @prop empty-range-background-color:
+   * Sets the color of background of the empty range in both gauge types.
+   * (rgba(192, 192, 192, 0.5) by default)
+  */
+  --empty-range-background-color: rgba(192, 192, 192, 0.5);
 
   // Used to customize the transitions for background-color and fore color
   $transition-color-config: background-color $transition-delay,
@@ -204,7 +218,8 @@ gx-gauge {
         position: relative;
         overflow: hidden;
         width: 100%;
-        background-color: rgba(192, 192, 192, 0.5);
+        background-color: var(--empty-range-background-color);
+        transition: background-color $transition-delay;
 
         .range {
           @include flex-centered;
@@ -276,12 +291,15 @@ gx-gauge {
 
         .circle-range {
           fill: none;
-          transition: stroke-dasharray $transition-delay;
+          stroke-linecap: var(--stroke-linecap, initial);
+          transition: stroke $transition-delay,
+            stroke-dasharray $transition-delay;
         }
 
         .background-circle {
           fill: none;
-          stroke: rgba(192, 192, 192, 0.5);
+          stroke: var(--empty-range-background-color);
+          transition: stroke $transition-delay;
         }
       }
 
