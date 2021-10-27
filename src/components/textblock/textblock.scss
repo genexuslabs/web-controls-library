@@ -35,16 +35,18 @@ gx-table-cell[min-height][max-height] {
 }
 
 gx-textblock {
+  @include container-margins();
   @include visibility(inline-flex);
   flex: 1;
-  height: 100%;
-  --elevation: 0;
+  align-self: stretch;
 
   &[disabled]:not([disabled="false"]) {
     pointer-events: none;
   }
 
   & > .content {
+    --elevation: 0;
+    @include elevation();
     display: flex;
     flex: 1;
     transition: background-color $transition-delay, color $transition-delay,
@@ -57,7 +59,6 @@ gx-textblock {
       overflow: hidden;
 
       & > .text-container {
-        @include elevation();
         position: absolute;
         width: 100%;
 
