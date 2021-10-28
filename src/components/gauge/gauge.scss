@@ -274,6 +274,7 @@ gx-gauge {
 
   .circle-gauge-container {
     @include flex-centered;
+    align-self: stretch;
     position: relative;
 
     .svg-and-indicator-container {
