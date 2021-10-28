@@ -7,7 +7,8 @@ import {
   Listen,
   Prop,
   State,
-  h
+  h,
+  Watch
 } from "@stencil/core";
 
 import { Component as GxComponent } from "../common/interfaces";
@@ -70,15 +71,76 @@ export class Gauge implements GxComponent {
 
   @State() labelsOverflow = false;
 
+  @State() lineCurrentValuePosition: "Left" | "Center" | "Right" = "Center";
+
+  @State() lineIndicatorPosition: "Left" | "Center" | "Right" = "Center";
+
+  /*  Used to connect and disconnect the resizeObserver based on the value of the
+      `type` property.
+   */
+  @Watch("type")
+  typeHandler(newValue: "line" | "circle") {
+    // We always disconnect the observer
+    this.disconnectObserver();
+
+    /*  If the type will change to "line" or `showValue == true` and the type 
+        will change to "circle", we set the resizeObserver at the end of the 
+        next rendering phase.
+     */
+    this.shouldSetGaugeObserver =
+      newValue === "line" || (this.showValue && newValue === "circle");
+  }
+
+  /*  Used to connect and disconnect the resizeObserver based on the value of the
+      `showValue` property.
+   */
+  @Watch("showValue")
+  showValueHandler(newValue: boolean) {
+    // We always disconnect the observer
+    this.disconnectObserver();
+
+    /*  If the `showValue` option will be turned on, we set the resizeObserver
+        at the end of the next rendering phase.
+     */
+    this.shouldSetGaugeObserver =
+      newValue && (this.type === "line" || this.type === "circle");
+  }
+
+  @Watch("thickness")
+  labelsPositionHandler(newValue: number, oldValue: number) {
+    // Used only in line gauge type
+    if (this.type === "line") {
+      /*  It means that the labels were inside the .range-container and the
+          thickness will decrease, so it might be necessary to change the
+          position of the labels, because they will overflow.
+       */
+      if (!this.labelsOverflow && newValue < oldValue) {
+        this.decideLabelsPosition();
+
+        /*  It means that the labels were outside of the .range-container and the
+            thickness will increase, so it might be necessary to change the
+            position of the labels, because they will not overflow anymore.
+        */
+      } else if (this.labelsOverflow && newValue > oldValue) {
+        this.decideLabelsPosition();
+      }
+    }
+  }
+
+  /*  Used to set to the gauge an observer when
+        - type == "line" or (`showValue` changes from `false` to `true` and
+          type == "circle").
+        - And the component has finished its rendering phase
+   */
+  private shouldSetGaugeObserver = false;
+
   private maxValueAux = this.minValue;
 
   private totalAmount = 0;
 
   private watchForItemsObserver: ResizeObserver;
 
-  private labelsSubContainer1: HTMLDivElement;
-
-  private labelsSubContainer2: HTMLDivElement;
+  private labelsSubContainer: HTMLDivElement;
 
   private linearCurrentValueContainer: HTMLDivElement;
 
@@ -119,19 +181,7 @@ export class Gauge implements GxComponent {
   */
   connectedCallback() {
     if (this.showValue && this.type === "circle") {
-      this.watchForItemsObserver = new ResizeObserver(() => {
-        const fontSize =
-          Math.min(
-            this.SVGcircle.getBoundingClientRect().height,
-            this.SVGcircle.getBoundingClientRect().width
-          ) / 2.5;
-
-        // Updates the font size
-        this.circleCurrentValue.style.fontSize = `${fontSize}px`;
-      });
-
-      // Observe the gauge
-      this.watchForItemsObserver.observe(this.element);
+      this.setCircleGaugeObserver();
     }
   }
 
@@ -141,30 +191,7 @@ export class Gauge implements GxComponent {
   */
   componentDidLoad() {
     if (this.type === "line") {
-      this.watchForItemsObserver = new ResizeObserver(() => {
-        this.setValueAndIndicatorPosition();
-
-        // This only happens when the component has not yet been rendered to
-        // get the `labelsSubContainer2` reference
-        if (this.labelsOverflow && this.labelsSubContainer2 == undefined) {
-          return;
-        }
-
-        const fontSize = !this.labelsOverflow
-          ? this.labelsSubContainer1.getBoundingClientRect().height
-          : this.labelsSubContainer2.getBoundingClientRect().height;
-
-        // Depending on the current fontSize, it decides the position where
-        // the labels will be placed
-        if (fontSize > this.calcThickness() * 2) {
-          this.labelsOverflow = true;
-        } else {
-          this.labelsOverflow = false;
-        }
-      });
-
-      // Observe the `current-value` in the line gauge type
-      this.watchForItemsObserver.observe(this.linearCurrentValueContainer);
+      this.setLineGaugeObserver();
     }
   }
 
@@ -175,9 +202,60 @@ export class Gauge implements GxComponent {
     if (this.showValue && this.type === "line") {
       this.setValueAndIndicatorPosition();
     }
+
+    if (this.shouldSetGaugeObserver) {
+      if (this.type == "line") {
+        this.setLineGaugeObserver();
+      } else {
+        this.setCircleGaugeObserver();
+      }
+
+      this.shouldSetGaugeObserver = false;
+    }
   }
 
   disconnectedCallback() {
+    this.disconnectObserver();
+  }
+
+  /*  Preconditions:
+        this.showValue === True
+        this.type === "circle"
+   */
+  private setCircleGaugeObserver() {
+    this.watchForItemsObserver = new ResizeObserver(() => {
+      const fontSize =
+        Math.min(
+          this.SVGcircle.getBoundingClientRect().height,
+          this.SVGcircle.getBoundingClientRect().width
+        ) / 2.5;
+
+      // Updates the font size
+      this.circleCurrentValue.style.fontSize = `${fontSize}px`;
+    });
+
+    // Observe the gauge
+    this.watchForItemsObserver.observe(this.element);
+  }
+
+  /*  Preconditions:
+        this.type === "line"
+        The component has finished its rendering phase
+   */
+  private setLineGaugeObserver() {
+    this.watchForItemsObserver = new ResizeObserver(() => {
+      if (this.showValue) {
+        this.setValueAndIndicatorPosition();
+      }
+
+      this.decideLabelsPosition();
+    });
+
+    // Observe the `labels-subcontainer` in the line gauge type
+    this.watchForItemsObserver.observe(this.labelsSubContainer);
+  }
+
+  private disconnectObserver() {
     if (this.watchForItemsObserver !== undefined) {
       this.watchForItemsObserver.disconnect();
       this.watchForItemsObserver = undefined;
@@ -226,44 +304,52 @@ export class Gauge implements GxComponent {
     const spanHalfWidth =
       this.linearCurrentValue.getBoundingClientRect().width / 2;
 
-    const linearCurrentValueStyle = this.linearCurrentValue.style;
-
     // The span is near the left side
     if (distanceToTheValueCenter - spanHalfWidth < 0) {
-      linearCurrentValueStyle.marginLeft = "0%";
-      linearCurrentValueStyle.transform = "translateX(0%)";
+      this.lineCurrentValuePosition = "Left";
 
       // The span is near the right side
     } else if (distanceToTheValueCenter + spanHalfWidth > gaugeWidth) {
-      linearCurrentValueStyle.marginLeft = "100%";
-      linearCurrentValueStyle.transform = "translateX(-100%)";
+      this.lineCurrentValuePosition = "Right";
 
       // The span is in an intermediate position
     } else {
-      linearCurrentValueStyle.marginLeft = `${percentage}%`;
-      linearCurrentValueStyle.transform = "translateX(-50%)";
+      this.lineCurrentValuePosition = "Center";
     }
 
     // - - - - - - - - - - - -  Indicator positioning  - - - - - - - - - - - -
     const indicatorHalfWidth =
       this.linearIndicator.getBoundingClientRect().width / 2;
 
-    const linearIndicatorStyle = this.linearIndicator.style;
-
     // The indicator is near the left side
     if (distanceToTheValueCenter - indicatorHalfWidth < 0) {
-      linearIndicatorStyle.marginLeft = "0%";
-      linearIndicatorStyle.transform = "translateX(0%)";
+      this.lineIndicatorPosition = "Left";
 
       // The indicator is near the right side
     } else if (distanceToTheValueCenter + indicatorHalfWidth > gaugeWidth) {
-      linearIndicatorStyle.marginLeft = "100%";
-      linearIndicatorStyle.transform = "translateX(-100%)";
+      this.lineIndicatorPosition = "Right";
 
       // The indicator is in an intermediate position
     } else {
-      linearIndicatorStyle.marginLeft = `${percentage}%`;
-      linearIndicatorStyle.transform = "translateX(-50%)";
+      this.lineIndicatorPosition = "Center";
+    }
+  }
+
+  private decideLabelsPosition() {
+    // This only happens when the component has not yet been rendered to
+    // get the `labelsSubContainer` reference
+    if (this.labelsOverflow && this.labelsSubContainer == undefined) {
+      return;
+    }
+
+    const fontSize = this.labelsSubContainer.getBoundingClientRect().height;
+
+    // Depending on the current fontSize, it decides the position where
+    // the labels will be placed
+    if (fontSize > this.calcThickness() * 2) {
+      this.labelsOverflow = true;
+    } else {
+      this.labelsOverflow = false;
     }
   }
 
@@ -355,8 +441,8 @@ export class Gauge implements GxComponent {
             ROTATION_FIX}deg)`;
 
     return (
-      <Host>
-        <div class="circle-gauge-container" data-readonly>
+      <Host data-readonly>
+        <div class="circle-gauge-container">
           <div class="svg-and-indicator-container">
             <svg viewBox="0 0 100 100">
               <circle
@@ -426,82 +512,81 @@ export class Gauge implements GxComponent {
       this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
 
     return (
-      <div class="line-gauge-container" data-readonly>
-        {this.showValue && (
-          <div
-            class="current-value-container"
-            ref={el =>
-              (this.linearCurrentValueContainer = el as HTMLDivElement)
-            }
-          >
-            <span
-              class="current-value"
-              style={{
-                "margin-left": `${percentage}%`
-              }}
-              ref={el => (this.linearCurrentValue = el as HTMLDivElement)}
-            >
-              {this.value}
-            </span>
-          </div>
-        )}
+      <Host data-readonly>
         <div
-          class="ranges-labels-and-indicator-container"
-          style={{
-            height: `${2 * this.calcThickness() + (this.showValue ? 4 : 0)}px`
-          }}
+          class="line-gauge-container"
+          style={{ "--percentage": `${percentage}%` }}
         >
           {this.showValue && (
             <div
-              class="indicator"
-              style={{
-                "margin-left": `${percentage}%`
-              }}
-              ref={el => (this.linearIndicator = el as HTMLDivElement)}
-            />
+              class="current-value-container"
+              ref={el =>
+                (this.linearCurrentValueContainer = el as HTMLDivElement)
+              }
+            >
+              <span
+                class={{
+                  "current-value": true,
+                  "center-align": this.lineCurrentValuePosition === "Center",
+                  "right-align": this.lineCurrentValuePosition === "Right"
+                }}
+                ref={el => (this.linearCurrentValue = el as HTMLDivElement)}
+              >
+                {this.value}
+              </span>
+            </div>
           )}
           <div
-            class="ranges-and-labels-container"
+            class="ranges-labels-and-indicator-container"
             style={{
-              "border-radius": `${this.calcThickness()}px`,
-              "margin-top": this.showValue ? "4px" : "0px"
+              height: `${2 * this.calcThickness() + (this.showValue ? 4 : 0)}px`
             }}
           >
-            {divRanges}
-            {!this.labelsOverflow && (
+            {this.showValue && (
+              <div
+                class={{
+                  indicator: true,
+                  "center-align": this.lineIndicatorPosition === "Center",
+                  "right-align": this.lineIndicatorPosition === "Right"
+                }}
+                ref={el => (this.linearIndicator = el as HTMLDivElement)}
+              />
+            )}
+            <div
+              class="ranges-and-labels-container"
+              style={{
+                "border-radius": `${this.calcThickness()}px`
+              }}
+            >
+              {divRanges}
               <div class="labels-container">
                 <div
                   class="labels-subcontainer"
-                  ref={el => (this.labelsSubContainer1 = el as HTMLDivElement)}
+                  ref={el => (this.labelsSubContainer = el as HTMLDivElement)}
                 >
-                  {divRangesLabel}
+                  {!this.labelsOverflow && divRangesLabel}
                 </div>
               </div>
-            )}
+            </div>
           </div>
-        </div>
-        {(this.labelsOverflow || this.showMinMax) && (
-          <div class="min-max-and-labels-container">
-            {this.labelsOverflow && (
-              <div class="labels-container">
-                <div
-                  class="labels-subcontainer"
-                  ref={el => (this.labelsSubContainer2 = el as HTMLDivElement)}
-                >
-                  {divRangesLabel}
+          {(this.labelsOverflow || this.showMinMax) && (
+            <div class="min-max-and-labels-container">
+              {this.labelsOverflow && (
+                <div class="labels-container">
+                  <div class="labels-subcontainer">{divRangesLabel}</div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {this.showMinMax && (
-              <div class="min-max-values-container">
-                <span class="min-value">{this.minValue}</span>
-                <span class="max-value">{this.maxValueAux}</span>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+              {this.showMinMax && (
+                <div class="min-max-values-container">
+                  <span class="min-value">{this.minValue}</span>
+                  <span class="max-value">{this.maxValueAux}</span>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </Host>
     );
   }
 

@@ -1,4 +1,5 @@
 @import "../common/_base";
+@import "../common/_common-styling-config";
 
 gx-gauge {
   /**
@@ -21,6 +22,13 @@ gx-gauge {
    * (rgba(44, 44, 44, 1) by default)
   */
   --indicator-circle-background-color: rgba(44, 44, 44, 1);
+
+  /**
+  * @prop --stroke-linecap:
+   * Defines the shape to be used at the end of open subpaths when they are stroked.
+   * (initial by default)
+  */
+  --stroke-linecap: initial;
 
   /**
   * @prop --value-text-color:
@@ -71,12 +79,36 @@ gx-gauge {
   */
   --indicator-line-background-color: rgba(44, 44, 44, 1);
 
-  $transitionConfig: 0.3s ease;
+  /**
+  * @prop empty-range-background-color:
+   * Sets the color of background of the empty range in both gauge types.
+   * (rgba(192, 192, 192, 0.5) by default)
+  */
+  --empty-range-background-color: rgba(192, 192, 192, 0.5);
+
+  // Used to customize the transitions for background-color and fore color
+  $transition-color-config: background-color $transition-delay,
+    color $transition-delay;
 
   @mixin flex-centered {
     display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;
+  }
+
+  /*  Used to implement responsive alignment in the .current-value and
+      .indicator for line gauge type.
+   */
+  @mixin alignment {
+    &.center-align {
+      margin-left: var(--percentage, 0);
+      transform: translateX(-50%);
+    }
+
+    &.right-align {
+      margin-left: 100%;
+      transform: translateX(-100%);
+    }
   }
 
   // This mixin is used to adjust the range labels based on the fontSize value
@@ -84,7 +116,8 @@ gx-gauge {
     $align-items: center,
     $position: relative,
     $height: 100%,
-    $overflow: unset
+    $overflow: unset,
+    $transition: null
   ) {
     .labels-container {
       display: flex;
@@ -107,6 +140,14 @@ gx-gauge {
           max-height: 100%;
           filter: brightness(0.5);
           text-align: center;
+
+          @if $transition == null {
+            transition: height $transition-delay, width $transition-delay,
+              font-size $transition-delay;
+          }
+          @if $transition != null {
+            transition: width $transition-delay;
+          }
         }
       }
     }
@@ -120,6 +161,7 @@ gx-gauge {
   margin-right: var(--margin-right, 0);
   margin-bottom: var(--margin-bottom, 0);
   margin-left: var(--margin-left, 0);
+  transition: background-color $transition-delay, border-color $transition-delay;
 
   .line-gauge-container {
     display: flex;
@@ -133,16 +175,24 @@ gx-gauge {
       position: relative;
       width: 100%;
       height: 1.25em;
-      transition: $transitionConfig;
+      transition: height $transition-delay;
 
       .current-value {
+        @include alignment;
         height: 80%;
         line-height: 1em;
         font-weight: 700;
         z-index: 1;
+        transition: margin-left $transition-delay, transform $transition-delay,
+          font-size $transition-delay, $transition-color-config;
         background-color: var(--value-text-background-color);
         color: var(--value-text-color);
-        transition: transform 0.3s ease 0s, margin-left 0.3s ease 0s;
+      }
+
+      & + .ranges-labels-and-indicator-container {
+        .ranges-and-labels-container {
+          margin-top: 4px;
+        }
       }
     }
 
@@ -150,29 +200,32 @@ gx-gauge {
       display: flex;
       position: relative;
       width: 100%;
-      transition: $transitionConfig;
+      transition: width $transition-delay, height $transition-delay;
 
       .indicator {
+        @include alignment;
         display: block;
         position: absolute;
         height: 100%;
         width: 1.125%;
         z-index: 1;
+        transition: margin-left $transition-delay, transform $transition-delay,
+          background-color $transition-delay;
         background-color: var(--indicator-line-background-color);
-        transition: $transitionConfig;
       }
 
       .ranges-and-labels-container {
         position: relative;
         overflow: hidden;
         width: 100%;
-        background-color: rgba(192, 192, 192, 0.5);
+        background-color: var(--empty-range-background-color);
+        transition: background-color $transition-delay;
 
         .range {
           @include flex-centered;
           height: 100%;
           position: absolute;
-          transition: $transitionConfig;
+          transition: width $transition-delay;
         }
 
         @include labels-container;
@@ -185,7 +238,8 @@ gx-gauge {
       position: relative;
       width: 100%;
       height: 1.25em;
-      transition: $transitionConfig;
+      transition: width $transition-delay, height $transition-delay,
+        font-size $transition-delay;
 
       .min-max-values-container {
         display: flex;
@@ -196,34 +250,32 @@ gx-gauge {
         z-index: 1;
         pointer-events: none;
 
+        .min-value,
         .max-value {
           line-height: 1em;
           pointer-events: all;
+          transition: $transition-color-config;
+        }
+
+        .max-value {
           background-color: var(--max-value-background-color);
           color: var(--max-value-text-color);
         }
 
         .min-value {
-          line-height: 1em;
-          pointer-events: all;
           background-color: var(--min-value-background-color);
           color: var(--min-value-text-color);
         }
       }
 
-      @include labels-container(baseline, absolute, 1.125em, hidden);
+      @include labels-container(baseline, absolute, 1.125em, hidden, " ");
     }
   }
 
   .circle-gauge-container {
     @include flex-centered;
-    flex: 1;
+    align-self: stretch;
     position: relative;
-    max-height: 100%;
-
-    &[data-readonly] {
-      align-items: center;
-    }
 
     .svg-and-indicator-container {
       display: flex;
@@ -240,12 +292,15 @@ gx-gauge {
 
         .circle-range {
           fill: none;
-          transition: stroke-dasharray 0.3s;
+          stroke-linecap: var(--stroke-linecap, initial);
+          transition: stroke $transition-delay,
+            stroke-dasharray $transition-delay;
         }
 
         .background-circle {
           fill: none;
-          stroke: rgba(192, 192, 192, 0.5);
+          stroke: var(--empty-range-background-color);
+          transition: stroke $transition-delay;
         }
       }
 
@@ -253,10 +308,11 @@ gx-gauge {
         position: absolute;
         width: 100%;
         height: 1.125%;
-        transition: transform 0.3s;
+        transition: transform $transition-delay;
 
         .indicator {
           height: 100%;
+          transition: background-color $transition-delay;
           background-color: var(--indicator-circle-background-color);
         }
       }
@@ -270,18 +326,10 @@ gx-gauge {
         line-height: 100%;
         padding-bottom: 0.125em;
         font-weight: 900;
+        transition: $transition-color-config;
         color: var(--center-circle-text-color);
         background-color: var(--center-circle-background-color);
       }
-    }
-  }
-}
-
-// Used when autoGrow = false in the the gx-table-cell
-[max-height] {
-  gx-gauge {
-    .circle-gauge-container {
-      flex: initial;
     }
   }
 }
