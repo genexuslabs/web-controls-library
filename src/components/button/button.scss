@@ -2,10 +2,18 @@
 @import "../common/_image-position";
 @import "../renders/bootstrap/button/button-render";
 
-// The width property does not apply when the navbar is the main container 
+// The width property does not apply when the navbar is the main container
 gx-table-cell {
   & > gx-button {
     width: var(--width, auto);
+  }
+}
+
+// Due to the gx-canvas-cell defines the width of the inner button, it is
+// necessary to strech the width of the gx-button
+gx-canvas-cell {
+  & > gx-button {
+    flex: 1;
   }
 }
 

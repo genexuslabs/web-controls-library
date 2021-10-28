@@ -3,8 +3,9 @@
 gx-table {
   --elevation: 0;
 
-  @include visibility(grid);
+  @include container-margins();
   @include elevation();
+  @include visibility(grid);
 
   flex: 1;
 }

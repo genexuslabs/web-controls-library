@@ -51,6 +51,13 @@ $gx-xsmall-breakpoint: 768px;
   }
 }
 
+@mixin container-margins() {
+  margin-top: var(--margin-top, 0);
+  margin-right: var(--margin-right, 0);
+  margin-bottom: var(--margin-bottom, 0);
+  margin-left: var(--margin-left, 0);
+}
+
 @mixin elevation($shadowPosition: bottom) {
   @if $shadowPosition == bottom {
     box-shadow: 0
