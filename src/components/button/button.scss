@@ -2,6 +2,25 @@
 @import "../common/_image-position";
 @import "../renders/bootstrap/button/button-render";
 
+// Used to set the margin for different types of images
+@mixin imageMargin() {
+  &.gx-image-position {
+    &--before,
+    &--after,
+    &--above,
+    &--below,
+    &--behind {
+      [slot="main-image"],
+      [slot="disabled-image"] {
+        margin: var(--gx-button-image-margin-top)
+          var(--gx-button-image-margin-right)
+          var(--gx-button-image-margin-bottom)
+          var(--gx-button-image-margin-left);
+      }
+    }
+  }
+}
+
 // The width property does not apply when the navbar is the main container
 gx-table-cell {
   & > gx-button {
@@ -18,9 +37,43 @@ gx-canvas-cell {
 }
 
 gx-button {
+  /**
+   * @prop --gx-button-image-size: Button image size
+   * (16px by default)
+   */
+  --gx-button-image-size: 16px;
+
+  /**
+   * @prop --gx-button-image-margin-top: Button image top margin
+   * (0px by default)
+   */
+  --gx-button-image-margin-top: 0px;
+
+  /**
+   * @prop --gx-button-image-margin-right: Button image right margin
+   * (0px by default)
+   */
+  --gx-button-image-margin-right: 0px;
+
+  /**
+   * @prop --gx-button-image-margin-bottom: Button image bottom margin
+   * (0px by default)
+   */
+  --gx-button-image-margin-bottom: 0px;
+
+  /**
+   * @prop --gx-button-image-margin-left: Button image left margin
+   * (0px by default)
+   */
+  --gx-button-image-margin-left: 0px;
+
   @include visibility(inline-flex);
 
-  --gx-button-image-size: 16px;
+  // Used to decide the position of the image
+  @include imagePosition("button.gx-button", ".gx-button--disabled");
+
+  @include imageMargin();
+
   margin-top: var(--margin-top);
   margin-right: var(--margin-right);
   margin-bottom: var(--margin-bottom);
@@ -66,6 +119,4 @@ gx-button {
       }
     }
   }
-
-  @include imagePosition("button.gx-button", ".gx-button--disabled");
 }
