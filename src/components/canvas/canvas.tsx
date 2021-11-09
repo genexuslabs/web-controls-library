@@ -61,20 +61,24 @@ export class Canvas
    * Emitted when the element is swiped.
    */
   @Event() swipe: EventEmitter;
+
   /**
    * Emitted when the element is swiped in upward direction.
    */
   @Event() swipeUp: EventEmitter;
+
   /**
    * Emitted when the element is swiped right direction.
    */
   @Event() swipeRight: EventEmitter;
+
   /**
    * Emitted when the element is swiped downward direction.
    */
   @Event() swipeDown: EventEmitter;
+
   /**
-   * Emitted when the element is swiped left direction..
+   * Emitted when the element is swiped left direction.
    */
   @Event() swipeLeft: EventEmitter;
 
@@ -130,8 +134,14 @@ export class Canvas
     return (
       <Host
         style={{
-          width: this.width !== null ? `${this.width}px` : undefined,
-          height: this.height !== null ? `${this.height}px` : undefined
+          width:
+            this.width !== null && this.width != 0
+              ? `${this.width}px`
+              : this.element.style.width, // Default width
+          height:
+            this.height !== null && this.height != 0
+              ? `${this.height}px`
+              : this.element.style.height // Default height
         }}
       >
         <slot />
