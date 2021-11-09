@@ -18,7 +18,7 @@ A container for creating absolute positioned layouts.
 | `gxClick`    | Emitted when the element is clicked.                    | `CustomEvent<any>` |
 | `swipe`      | Emitted when the element is swiped.                     | `CustomEvent<any>` |
 | `swipeDown`  | Emitted when the element is swiped downward direction.  | `CustomEvent<any>` |
-| `swipeLeft`  | Emitted when the element is swiped left direction..     | `CustomEvent<any>` |
+| `swipeLeft`  | Emitted when the element is swiped left direction.      | `CustomEvent<any>` |
 | `swipeRight` | Emitted when the element is swiped right direction.     | `CustomEvent<any>` |
 | `swipeUp`    | Emitted when the element is swiped in upward direction. | `CustomEvent<any>` |
 
