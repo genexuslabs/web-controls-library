@@ -57,7 +57,12 @@ gx-grid-smart-css {
     }
     @media (pointer: coarse) {
       #{$gridContentSelector} {
-        overflow-x: auto;
+        overflow-x: overlay;
+
+        &::-webkit-scrollbar {
+          width: 0px;
+          height: 0px;
+        }
       }
     }
   }
