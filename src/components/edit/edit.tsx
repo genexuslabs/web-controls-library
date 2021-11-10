@@ -163,6 +163,7 @@ export class Edit implements FormComponent, HighlightableComponent {
     | "search"
     | "tel"
     | "text"
+    | "time"
     | "url" = "text";
 
   /**

@@ -119,10 +119,33 @@ export class EditRender implements Renderer {
       "data-native-element": "",
       disabled: edit.disabled,
       id: this.inputId,
+
+      // We limit the year to 4 digits
+      max:
+        edit.type === "datetime-local"
+          ? "9999-12-31T23:59:59"
+          : edit.type === "date"
+          ? "9999-12-31"
+          : undefined,
+
+      // We extend the minimum value of the date
+      min:
+        edit.type === "datetime-local"
+          ? "0001-01-01T00:00:00"
+          : edit.type === "date"
+          ? "0001-01-01"
+          : undefined,
+
       onChange: this.handleChange,
-      onInput: valueChangingHandler,
       onClick: edit.disabled ? null : this.stopPropagation,
-      placeholder: edit.placeholder
+      onInput: valueChangingHandler,
+      placeholder: edit.placeholder,
+      step:
+        edit.type === "date" ||
+        edit.type === "datetime-local" ||
+        edit.type === "time"
+          ? "1"
+          : undefined
     };
 
     // This will be displayed at the end
