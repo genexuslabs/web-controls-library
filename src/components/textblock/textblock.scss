@@ -3,27 +3,22 @@
 
 // Used to horizontally and vertically align the text
 @mixin alignment($text-align: null, $align-items: null) {
-  gx-textblock {
-    & > .content.text-content {
-      @if ($text-align != null) {
-        text-align: $text-align;
-      }
+  .content.text-content {
+    @if ($text-align != null) {
+      text-align: $text-align;
+    }
 
-      & > .readonly-content-container {
-        @if ($align-items != null) {
-          align-items: $align-items;
-        }
+    .readonly-content-container {
+      @if ($align-items != null) {
+        align-items: $align-items;
       }
     }
   }
 }
 
-// Default alignment which supports RTL
-@include alignment(start, flex-start);
-
 // Used when autoGrow = false and format = HTML
 gx-table-cell[min-height][max-height] {
-  gx-textblock {
+  & > gx-textblock {
     & > .content.html-content {
       .html-container {
         .inner-content {
@@ -35,6 +30,9 @@ gx-table-cell[min-height][max-height] {
 }
 
 gx-textblock {
+  // Default alignment which supports RTL
+  @include alignment(start, flex-start);
+
   @include container-margins();
   @include visibility(inline-flex);
   flex: 1;
@@ -89,19 +87,27 @@ gx-textblock {
   }
 }
 
-// Alignments based on parent control alignment
+// Alignments based on the direct parent control alignment
 [align="center"] {
-  @include alignment(center);
+  & > gx-textblock {
+    @include alignment(center);
+  }
 }
 
 [align="right"] {
-  @include alignment(end);
+  & > gx-textblock {
+    @include alignment(end);
+  }
 }
 
 [valign="middle"] {
-  @include alignment($align-items: center);
+  & > gx-textblock {
+    @include alignment($align-items: center);
+  }
 }
 
 [valign="bottom"] {
-  @include alignment($align-items: flex-end);
+  & > gx-textblock {
+    @include alignment($align-items: flex-end);
+  }
 }
