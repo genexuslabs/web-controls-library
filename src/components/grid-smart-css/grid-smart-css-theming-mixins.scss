@@ -1,0 +1,25 @@
+////
+/// @group theming-mixins
+////
+
+/// Helper mixin to ease styling gx-grid-smart-css custom elements
+/// @param {string} $class Base class of the component
+/// @param {string} $highlighted Class to be used when the grid is active
+/// @param {string} $odd-row Class for styling the Odd row
+/// @param {string} $even-row Class for styling the Even row
+/// @param {string} loading-animation Class for styling the grid loading animation
+/// @param {string} group-separator Class for styling the grid group-separator
+/// @param {string} $horizontal-line Class of the horizontal line separator (to be implemented)
+@mixin gx-grid-smart-css(
+  $class,
+  $highlighted: null,
+  $odd-row: null,
+  $even-row: null,
+  $loading-animation: null,
+  $group-separator: null,
+  $horizontal-line: null
+) {
+  [slot="grid-content"] {
+    @extend #{$class};
+  }
+}
