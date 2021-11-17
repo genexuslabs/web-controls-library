@@ -132,15 +132,8 @@ gx-tab-caption {
     }
 
     &--disabled {
+      filter: opacity(0.5);
       pointer-events: none;
-
-      .image-and-link-container {
-        .gx-nav-link {
-          & > span {
-            filter: opacity(0.5);
-          }
-        }
-      }
     }
   }
 }
