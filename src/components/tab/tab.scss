@@ -66,6 +66,14 @@ gx-tab {
         .gx-nav-tabs-table {
           table-layout: fixed;
           width: 100%;
+
+          gx-tab-caption.gx-tab-caption {
+            .image-and-link-container {
+              span {
+                overflow: hidden;
+              }
+            }
+          }
         }
       }
     }
