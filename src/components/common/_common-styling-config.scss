@@ -1,5 +1,9 @@
 $transition-delay: 0.25s;
 
-@mixin hover() {
+@mixin disabled-style() {
+  filter: opacity(0.5);
+}
+
+@mixin hover-style() {
   filter: brightness(90%);
 }

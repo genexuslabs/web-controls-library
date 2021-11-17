@@ -85,7 +85,6 @@ gx-tab {
     .gx-nav-tabs {
       --elevation: var(--tab-strip-elevation);
       height: var(--tab-strip-height);
-      background-color: var(--tab-strip-background-color);
       overflow-x: hidden;
       overflow-y: overlay;
       white-space: nowrap;
@@ -117,12 +116,11 @@ gx-tab {
       .gx-nav-tabs-table {
         display: table;
         height: 100%;
-        background-color: inherit;
 
         &-filler {
           display: table-cell;
           width: 100%;
-          background-color: inherit;
+          background-color: var(--tab-strip-background-color);
           border-top: 1px solid transparent;
           border-bottom: 1px solid transparent;
           transition: background-color $transition-delay,

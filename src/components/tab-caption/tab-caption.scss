@@ -83,11 +83,11 @@ gx-tab-caption {
     object-fit: contain;
   }
 
-  background-color: inherit;
   font-size: 12px;
   font-weight: 600;
 
   &.gx-tab-caption {
+    background-color: var(--tab-strip-background-color);
     height: 100%;
     transition: background-color $transition-delay, filter $transition-delay;
 
@@ -122,17 +122,16 @@ gx-tab-caption {
           max-width: 100%;
           min-height: 1em;
           padding-top: 0.125em;
-          transition: filter $transition-delay;
         }
       }
     }
 
     &[aria-selected="false"]:hover:not(:active) {
-      filter: brightness(90%);
+      @include hover-style;
     }
 
     &--disabled {
-      filter: opacity(0.5);
+      @include disabled-style;
       pointer-events: none;
     }
   }
