@@ -103,6 +103,8 @@ export class EditRender implements Renderer {
   render(slots) {
     const edit = this.component;
 
+    const dateTypes = ["datetime-local", "date", "time"];
+
     const valueChangingHandler = this.handleValueChanging;
     if (!this.inputId) {
       this.inputId = edit.element.id
@@ -140,12 +142,7 @@ export class EditRender implements Renderer {
       onClick: edit.disabled ? null : this.stopPropagation,
       onInput: valueChangingHandler,
       placeholder: edit.placeholder,
-      step:
-        edit.type === "date" ||
-        edit.type === "datetime-local" ||
-        edit.type === "time"
-          ? "1"
-          : undefined
+      step: dateTypes.includes(edit.type) ? "1" : undefined
     };
 
     // This will be displayed at the end
@@ -189,12 +186,28 @@ export class EditRender implements Renderer {
           <div
             class={{
               container: true,
-              disabled: edit.disabled
+              disabled: edit.disabled,
+
+              /*  Used when the gx-edit has
+                    type="datetime-local" | "date" | "time"
+                  and its value is null
+              */
+              "null-date":
+                dateTypes.includes(edit.type) &&
+                (edit.value == undefined || edit.value == "")
             }}
             data-part="container"
             hidden={edit.readonly}
           >
             {input}
+
+            {// Implements a non-native placeholder for date types
+            dateTypes.includes(edit.type) &&
+              (edit.value == undefined || edit.value == "") && (
+                <div class="date-placeholder-container" data-readonly>
+                  <span>{edit.placeholder}</span>
+                </div>
+              )}
 
             {edit.showTrigger && (
               <div class="trigger-button-container">

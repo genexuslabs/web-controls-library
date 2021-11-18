@@ -72,6 +72,25 @@ gx-edit {
       opacity: 50%;
     }
 
+    /*  Used when the gx-edit has type="datetime-local" | "date" | "time"
+        and its value is null
+    */
+    &.null-date {
+      // When the gx-edit is not focused, we hide the input
+      &:not(:focus-within) {
+        input[data-native-element] {
+          opacity: 0;
+        }
+      }
+
+      // When the gx-edit is focused, we hide the placeholder
+      &:focus-within {
+        .date-placeholder-container {
+          opacity: 0;
+        }
+      }
+    }
+
     // This applies when the gx-edit is also multiline or when format = Text
     textarea,
     input[data-native-element] {
@@ -82,6 +101,20 @@ gx-edit {
       transition: inherit;
 
       &::placeholder {
+        @include placeholder-color;
+      }
+    }
+
+    // Implements a non-native placeholder for date types
+    .date-placeholder-container[data-readonly] {
+      @include no-borders;
+      position: absolute;
+      flex: 1;
+      background-color: unset;
+      pointer-events: none;
+      transition: inherit;
+
+      span {
         @include placeholder-color;
       }
     }
@@ -137,7 +170,7 @@ gx-edit {
   }
 
   // This applies when the gx-edit is readonly
-  [data-readonly] {
+  & > [data-readonly] {
     @include margins;
     display: flex;
     flex: 1;
