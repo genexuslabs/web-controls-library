@@ -1,13 +1,7 @@
 @import "../common/_base";
+@import "../common/_common-styling-config";
 
 gx-tab {
-  @include visibility(flex);
-  flex: 1;
-  width: 100%;
-  overflow: hidden;
-  transition: background-color var(--tab-delay-transition-color),
-    border-color var(--tab-delay-transition-color);
-
   /**
    * @prop --elevation: The size of the shadow for the tab component
    */
@@ -58,13 +52,34 @@ gx-tab {
    */
   --tab-caption-image-horizontal-margin: 2px;
 
-  /**
-   * @prop --tab-delay-transition-color: The delay of the transition color
-   */
-  --tab-delay-transition-color: 0.25s;
+  @include elevation();
+  @include visibility(flex);
+  flex: 1;
+  width: 100%;
+  overflow: hidden;
+  transition: background-color $transition-delay, border-color $transition-delay,
+    box-shadow $transition-delay;
+
+  &[tabs-distribution="fixed-size"] {
+    & > div {
+      .gx-nav-tabs {
+        .gx-nav-tabs-table {
+          table-layout: fixed;
+          width: 100%;
+
+          gx-tab-caption.gx-tab-caption {
+            .image-and-link-container {
+              span {
+                overflow: hidden;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
   & > div {
-    @include elevation();
     display: grid;
     flex: 1;
     height: 100%;
@@ -74,6 +89,55 @@ gx-tab {
       #f5f5f5
     );
     --tab-scrollbar-thumb-color: var(--gx-scrollbar-thumb-color, #555);
+
+    .gx-nav-tabs {
+      --elevation: var(--tab-strip-elevation);
+      height: var(--tab-strip-height);
+      overflow-x: hidden;
+      overflow-y: auto; // Fix for Mozilla, because it only accepts: visible, hidden, auto or scroll
+      overflow-y: overlay;
+      white-space: nowrap;
+      transition: box-shadow $transition-delay;
+
+      &:hover {
+        overflow-x: auto; // Fix for Mozilla, because it only accepts: visible, hidden, auto or scroll
+        overflow-x: overlay;
+      }
+
+      scrollbar-width: thin;
+      scrollbar-color: var(--tab-scrollbar-thumb-color)
+        var(--tab-scrollbar-background-color);
+
+      &::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: var(--tab-scrollbar-background-color);
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: var(--tab-scrollbar-thumb-color);
+        border-radius: 6px;
+        border: 1px solid var(--tab-scrollbar-background-color);
+      }
+
+      .gx-nav-tabs-table {
+        display: table;
+        height: 100%;
+
+        &-filler {
+          display: table-cell;
+          width: 100%;
+          background-color: var(--tab-strip-background-color);
+          border-top: 1px solid transparent;
+          border-bottom: 1px solid transparent;
+          transition: background-color $transition-delay,
+            border-color $transition-delay;
+        }
+      }
+    }
 
     // Used to show the captions in the top position
     &[data-position="top"] {
@@ -102,54 +166,6 @@ gx-tab {
           &-filler {
             border-top-color: var(--tab-strip-separator-color);
           }
-        }
-      }
-    }
-
-    .gx-nav-tabs {
-      --elevation: var(--tab-strip-elevation);
-      height: var(--tab-strip-height);
-      background-color: var(--tab-strip-background-color);
-      overflow-x: hidden;
-      overflow-y: overlay;
-      white-space: nowrap;
-      transition: box-shadow var(--tab-delay-transition-color);
-
-      &:hover {
-        overflow-x: overlay;
-      }
-
-      scrollbar-width: thin;
-      scrollbar-color: var(--tab-scrollbar-thumb-color)
-        var(--tab-scrollbar-background-color);
-
-      &::-webkit-scrollbar {
-        width: 5px;
-        height: 5px;
-      }
-
-      &::-webkit-scrollbar-track {
-        background: var(--tab-scrollbar-background-color);
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background-color: var(--tab-scrollbar-thumb-color);
-        border-radius: 6px;
-        border: 1px solid var(--tab-scrollbar-background-color);
-      }
-
-      .gx-nav-tabs-table {
-        display: table;
-        height: 100%;
-        background-color: inherit;
-
-        &-filler {
-          display: table-cell;
-          width: 100%;
-          border-top: 1px solid transparent;
-          border-bottom: 1px solid transparent;
-          transition: background-color var(--tab-delay-transition-color),
-            border-color var(--tab-delay-transition-color);
         }
       }
     }

@@ -123,9 +123,9 @@ export class GridFlex
     );
   }
 
-  private handleGxInfinite() {
-    if (this.loadingState !== "loading") {
-      this.gxInfiniteThresholdReached.emit();
-    }
-  }
+  // private handleGxInfinite() {
+  //   if (this.loadingState !== "loading") {
+  //     this.gxInfiniteThresholdReached.emit();
+  //   }
+  // }
 }
