@@ -57,7 +57,9 @@ gx-grid-smart-css {
     }
     @media (pointer: coarse) {
       #{$gridContentSelector} {
+        overflow-x: auto; // Fix for Mozilla, because it only accepts: visible, hidden, auto or scroll
         overflow-x: overlay;
+        scrollbar-width: none;
 
         &::-webkit-scrollbar {
           width: 0px;
