@@ -141,7 +141,7 @@ gx-tab {
 
     // Used to show the captions in the top position
     &[data-position="top"] {
-      grid-template-rows: fit-content(50%) auto;
+      grid-template-rows: minmax(auto, max-content);
 
       .gx-nav-tabs {
         @include elevation();
@@ -156,7 +156,7 @@ gx-tab {
 
     // Used to show the captions in the bottom position
     &[data-position="bottom"] {
-      grid-template-rows: auto fit-content(50%);
+      grid-template-rows: auto minmax(auto, max-content);
 
       .gx-nav-tabs {
         @include elevation(top);
