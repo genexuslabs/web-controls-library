@@ -57,7 +57,10 @@ export class ButtonRender implements Renderer {
             "btn-lg": button.size === "large",
             "btn-sm": button.size === "small",
             "gx-button": true,
-            [button.cssClass]: !!button.cssClass
+            [button.cssClass]: !!button.cssClass,
+
+            // Strings with only white spaces are taken as null captions
+            "empty-caption": button.element.textContent.trim() === ""
           }}
           disabled={button.disabled}
           onClick={this.handleClick}
