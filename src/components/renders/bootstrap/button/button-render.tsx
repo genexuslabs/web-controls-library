@@ -42,7 +42,10 @@ export class ButtonRender implements Renderer {
           [imagePositionClass(button.imagePosition)]: true,
           [hideMainImageWhenDisabledClass]:
             button.disabled && this.hasDisabledImage,
-          ["stretch-height"]: button.height === ""
+          ["stretch-height"]: button.height === "",
+
+          // Strings with only white spaces are taken as null captions
+          "empty-caption": button.element.textContent.trim() === ""
         }}
         style={{
           "--width": button.width === "" ? "100%" : button.width,
@@ -57,10 +60,7 @@ export class ButtonRender implements Renderer {
             "btn-lg": button.size === "large",
             "btn-sm": button.size === "small",
             "gx-button": true,
-            [button.cssClass]: !!button.cssClass,
-
-            // Strings with only white spaces are taken as null captions
-            "empty-caption": button.element.textContent.trim() === ""
+            [button.cssClass]: !!button.cssClass
           }}
           disabled={button.disabled}
           onClick={this.handleClick}

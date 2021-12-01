@@ -74,16 +74,21 @@ gx-button {
 
   @include imageMargin();
 
-  margin-top: var(--margin-top);
-  margin-right: var(--margin-right);
-  margin-bottom: var(--margin-bottom);
-  margin-left: var(--margin-left);
+  @include reset-variables();
+  @include container-margins();
   height: var(--height);
 
   vertical-align: middle;
 
   &.stretch-height {
     align-self: stretch;
+  }
+
+  /*  If the button caption is empty, the inner image will stretch to the
+      container size
+  */
+  &.empty-caption {
+    --gx-button-image-size: 100%;
   }
 
   & > button.gx-button {
@@ -97,13 +102,6 @@ gx-button {
     background-position: center center;
     background-size: contain;
     max-width: 100%;
-
-    /*  If the button caption is empty, the inner image will stretch to the
-        container size
-    */
-    &.empty-caption {
-      --gx-button-image-size: 100%;
-    }
 
     & > img {
       height: var(--gx-button-image-size);

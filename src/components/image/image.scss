@@ -3,6 +3,7 @@
 gx-image {
   --elevation: 0;
 
+  @include reset-variables();
   @include visibility(inline-flex);
 
   justify-content: stretch;
@@ -12,11 +13,7 @@ gx-image {
   &.gx-img-no-auto-grow {
     width: var(--width);
     height: var(--height);
-    margin-top: var(--margin-top);
-    margin-right: var(--margin-right);
-    margin-bottom: var(--margin-bottom);
-    margin-left: var(--margin-left);
-
+    @include container-margins();
     position: relative;
 
     & > img {
@@ -35,10 +32,7 @@ gx-image {
     & > img {
       width: var(--width);
       height: var(--height);
-      margin-top: var(--margin-top);
-      margin-right: var(--margin-right);
-      margin-bottom: var(--margin-bottom);
-      margin-left: var(--margin-left);
+      @include container-margins();
 
       max-height: calc(
         100% - var(--margin-top, 0px) - var(--margin-bottom, 0px)

@@ -34,6 +34,7 @@ gx-textblock {
   // Default alignment which supports RTL
   @include alignment(start, flex-start);
 
+  @include reset-variables();
   @include container-margins();
   @include visibility(inline-flex);
   flex: 1;
