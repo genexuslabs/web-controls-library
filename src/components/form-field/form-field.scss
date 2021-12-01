@@ -2,6 +2,7 @@
 @import "../renders/bootstrap/form-field/form-field-render";
 
 gx-form-field {
+  @include reset-variables();
   @include visibility(flex);
 
   justify-self: stretch;

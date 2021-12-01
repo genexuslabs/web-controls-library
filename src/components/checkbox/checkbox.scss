@@ -7,8 +7,5 @@ gx-checkbox {
 
   --option-border-radius: 25%;
 
-  margin-top: var(--margin-top, 0);
-  margin-right: var(--margin-right, 0);
-  margin-bottom: var(--margin-bottom, 0);
-  margin-left: var(--margin-left, 0);
+  @include container-margins();
 }
