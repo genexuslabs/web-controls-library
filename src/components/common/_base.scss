@@ -58,6 +58,15 @@ $gx-xsmall-breakpoint: 768px;
   margin-left: var(--margin-left, 0);
 }
 
+@mixin reset-variables() {
+  --margin-top: initial;
+  --margin-right: initial;
+  --margin-bottom: initial;
+  --margin-left: initial;
+  --width: initial;
+  --height: initial;
+}
+
 @mixin elevation($shadowPosition: bottom) {
   @if $shadowPosition == bottom {
     box-shadow: 0
