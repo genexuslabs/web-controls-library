@@ -275,7 +275,7 @@ export class ImagePicker implements GxComponent {
 
   render() {
     return (
-      <Host>
+      <Host data-part="container">
         <div class="click-capture" onClick={this.stopPropagation}>
           <gx-image
             class="image-viewer-image"

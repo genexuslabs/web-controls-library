@@ -1,4 +1,8 @@
+@import "../common/_base";
+
 gx-image-picker {
+  @include container-margins();
+
   display: flex;
   flex: 1;
   pointer-events: none;
