@@ -24,7 +24,7 @@ export class MessageRender implements Renderer {
     return {
       alert: true,
       [`${typeClass}`]: true,
-      "alert-dismissible": true,
+      "alert-dismissible": this.component.showCloseButton,
       fade: true
     };
   }
