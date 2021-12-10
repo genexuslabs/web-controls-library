@@ -44,16 +44,20 @@ Use `gx-gauge-range` element to set the number of ranges.
 
 ## CSS Custom Properties
 
-| Name                           | Description                                                                                  |
-| ------------------------------ | -------------------------------------------------------------------------------------------- |
-| `--center-circle-text-color`   | Define the color of the center text in `circle` gauge type. (rgba(44, 44, 44, 1) by default) |
-| `--gauge-border-radius`        | Define the border radius of gauge in `line` gauge type. (25px by default)                    |
-| `--marker-color`               | Define the background color and border color of the marker. (rgba(44, 44, 44, 1) by default) |
-| `--max-value-background-color` | Set the color of maximum value display background. (rgba(44, 44, 44, 1) by default)          |
-| `--max-value-text-color`       | Set the color of maximum value display text. (rgba(255, 255, 255, 0.8) by default)           |
-| `--min-max-text-size`          | Set the size of min and max values display text. (1.5em by default)                          |
-| `--min-value-background-color` | Set the color of minimum value display background. (rgba(44, 44, 44, 1) by default)          |
-| `--min-value-text-color`       | Set the color of minimum value display text. (rgba(255, 255, 255, 0.8) by default)           |
+| Name                                  | Description                                                                                                      |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `--center-circle-background-color`    | Define the color of the center background text in `circle` gauge type. (rgba(255, 255, 255, 0) by default)       |
+| `--center-circle-text-color`          | Define the color of the center text in `circle` gauge type. (rgba(44, 44, 44, 1) by default)                     |
+| `--indicator-circle-background-color` | Define the color of the background value indicator in `circle` gauge type. (rgba(44, 44, 44, 1) by default)      |
+| `--indicator-line-background-color`   | Set the color of background value indicator in `line` gauge type. (rgba(44, 44, 44, 1) by default)               |
+| `--max-value-background-color`        | Set the color of maximum value display background in `line` gauge type. (rgba(255, 255, 255, 0.800) by default)  |
+| `--max-value-text-color`              | Set the color of maximum value display text in `line` gauge type. (rgba(40, 40, 40, 0.8) by default)             |
+| `--min-value-background-color`        | Set the color of minimum value display background in `line` gauge type. (rgba(255, 255, 255, 0.8000) by default) |
+| `--min-value-text-color`              | Set the color of minimum value display text in `line` gauge type. (rgba(40, 40, 40, 0.8) by default)             |
+| `--stroke-animation-duration`         | Sets the duration of the stroke transition animation the first time the component is loaded. (1s by default)     |
+| `--stroke-linecap`                    | Defines the shape to be used at the end of open subpaths when they are stroked. (initial by default)             |
+| `--value-text-background-color`       | Define the background-color of the value text in `line` gauge type. (rgba(255, 255, 255, 0.800) by default)      |
+| `--value-text-color`                  | Define the color of the value text in `line` gauge type. (rgba(44, 44, 44, 1) by default)                        |
 
 ---
 
