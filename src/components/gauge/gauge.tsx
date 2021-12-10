@@ -385,7 +385,11 @@ export class Gauge implements GxComponent {
     );
   }
 
-  private addLineRanges({ amount, color }, position: number): any {
+  private addLineRanges(
+    { amount, color },
+    position: number,
+    childNumber: string // Identifies the number of child to animate it at the start
+  ): any {
     const range = this.maxValueAux - this.minValue;
     return (
       <div
@@ -393,13 +397,18 @@ export class Gauge implements GxComponent {
         style={{
           "background-color": color,
           "margin-left": `${position}%`,
-          width: `${(amount * 100) / range}%`
+          "--child-number": childNumber,
+          "--range-width": `${(amount * 100) / range}%`
         }}
       />
     );
   }
 
-  private addLineRangesLabels({ amount, color, name }, position: number): any {
+  private addLineRangesLabels(
+    { amount, color, name },
+    position: number,
+    childNumber: string // Identifies the number of child to animate it at the start
+  ): any {
     const range = this.maxValueAux - this.minValue;
 
     return (
@@ -408,7 +417,8 @@ export class Gauge implements GxComponent {
         style={{
           "margin-left": `${position}%`,
           color: color,
-          width: `${(amount * 100) / range}%`
+          "--child-number": childNumber,
+          "--range-width": `${(amount * 100) / range}%`
         }}
       >
         {name}
@@ -513,9 +523,11 @@ export class Gauge implements GxComponent {
     let positionInGauge = 0;
 
     for (let i = 0; i < childRanges.length; i++) {
-      divRanges.push(this.addLineRanges(childRanges[i], positionInGauge));
+      divRanges.push(
+        this.addLineRanges(childRanges[i], positionInGauge, i.toString())
+      );
       divRangesLabel.push(
-        this.addLineRangesLabels(childRanges[i], positionInGauge)
+        this.addLineRangesLabels(childRanges[i], positionInGauge, i.toString())
       );
 
       positionInGauge += (100 * childRanges[i].amount) / range;

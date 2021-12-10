@@ -118,6 +118,38 @@ gx-gauge {
     }
   }
 
+  /*  Useful when the line gauge has at least 2 childs. 
+      In each child, c, it sets a delay of c * --stroke-animation-duration
+      to keep the stroke-dasharray at the starting position.
+  */
+  @keyframes delay-line-animation {
+    0% {
+      width: 0;
+    }
+
+    100% {
+      width: 0;
+    }
+  }
+
+  @keyframes loading-line-animation {
+    0% {
+      width: 0;
+    }
+
+    100% {
+      width: var(--range-width);
+    }
+  }
+
+  // Animates the first load of the ranges in the line gauge type
+  @mixin animate-loading-of-line-gauge-childs {
+    animation: delay-line-animation
+        calc(var(--child-number) * var(--stroke-animation-duration)),
+      loading-line-animation var(--stroke-animation-duration) ease-in-out
+        calc(var(--child-number) * var(--stroke-animation-duration));
+  }
+
   // This mixin is used to adjust the range labels based on the fontSize value
   @mixin labels-container(
     $align-items: center,
@@ -144,9 +176,14 @@ gx-gauge {
           @include flex-centered;
           position: absolute;
           line-height: 1.125em;
+          width: var(--range-width);
           max-height: 100%;
           filter: brightness(0.5);
           text-align: center;
+          overflow: hidden;
+
+          // Animates the first load of the ranges
+          @include animate-loading-of-line-gauge-childs;
 
           @if $transition == null {
             transition: height $transition-delay, width $transition-delay,
@@ -227,9 +264,13 @@ gx-gauge {
 
         .range {
           @include flex-centered;
+          width: var(--range-width);
           height: 100%;
           position: absolute;
           transition: width $transition-delay;
+
+          // Animates the first load of the ranges
+          @include animate-loading-of-line-gauge-childs;
         }
 
         @include labels-container;
