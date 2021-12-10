@@ -118,11 +118,37 @@ gx-gauge {
     }
   }
 
+  /*  Useful when the circle gauge has at least 2 childs. 
+      In each child, c, it sets a delay of c * --stroke-animation-duration
+      to keep the stroke-dasharray at the starting position.
+  */
+  @keyframes delay-animation-circle {
+    0% {
+      stroke-linecap: initial;
+      stroke-dasharray: var(--stroke-dasharray-initial);
+    }
+
+    100% {
+      stroke-linecap: initial;
+      stroke-dasharray: var(--stroke-dasharray-initial);
+    }
+  }
+
+  @keyframes loading-animation-circle {
+    0% {
+      stroke-dasharray: var(--stroke-dasharray-initial);
+    }
+
+    100% {
+      stroke-dasharray: var(--stroke-dasharray);
+    }
+  }
+
   /*  Useful when the line gauge has at least 2 childs. 
       In each child, c, it sets a delay of c * --stroke-animation-duration
       to keep the stroke-dasharray at the starting position.
   */
-  @keyframes delay-line-animation {
+  @keyframes delay-animation-line {
     0% {
       width: 0;
     }
@@ -132,7 +158,7 @@ gx-gauge {
     }
   }
 
-  @keyframes loading-line-animation {
+  @keyframes loading-animation-line {
     0% {
       width: 0;
     }
@@ -144,9 +170,9 @@ gx-gauge {
 
   // Animates the first load of the ranges in the line gauge type
   @mixin animate-loading-of-line-gauge-childs {
-    animation: delay-line-animation
+    animation: delay-animation-line
         calc(var(--child-number) * var(--stroke-animation-duration)),
-      loading-line-animation var(--stroke-animation-duration) ease-in-out
+      loading-animation-line var(--stroke-animation-duration) ease-in-out
         calc(var(--child-number) * var(--stroke-animation-duration));
   }
 
@@ -342,9 +368,10 @@ gx-gauge {
             stroke-dasharray $transition-delay;
 
           // Animates the first load of the ranges
-          animation: delay-animation
+          animation: delay-animation-circle
               calc(var(--child-number) * var(--stroke-animation-duration)),
-            loading-animation var(--stroke-animation-duration) ease-in-out
+            loading-animation-circle var(--stroke-animation-duration)
+              ease-in-out
               calc(var(--child-number) * var(--stroke-animation-duration));
         }
 
@@ -352,32 +379,6 @@ gx-gauge {
           fill: none;
           stroke: var(--empty-range-background-color);
           transition: stroke $transition-delay;
-        }
-
-        /*  Useful when the circle gauge has at least 2 childs. 
-            In each child, c, it sets a delay of c * --stroke-animation-duration
-            to keep the stroke-dasharray at the starting position.
-        */
-        @keyframes delay-animation {
-          0% {
-            stroke-linecap: initial;
-            stroke-dasharray: var(--stroke-dasharray-initial);
-          }
-
-          100% {
-            stroke-linecap: initial;
-            stroke-dasharray: var(--stroke-dasharray-initial);
-          }
-        }
-
-        @keyframes loading-animation {
-          0% {
-            stroke-dasharray: var(--stroke-dasharray-initial);
-          }
-
-          100% {
-            stroke-dasharray: var(--stroke-dasharray);
-          }
         }
       }
 
