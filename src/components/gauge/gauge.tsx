@@ -356,7 +356,8 @@ export class Gauge implements GxComponent {
   private addCircleRanges(
     { amount, color },
     position: number,
-    radius: number
+    radius: number,
+    childNumber: string // Identifies the number of child to animate it at the start
   ): any {
     const FULL_CIRCLE_RADIANS = 2 * Math.PI;
     const ROTATION_FIX = -90;
@@ -374,6 +375,12 @@ export class Gauge implements GxComponent {
         transform={`rotate(${position + ROTATION_FIX} 50,50)`}
         data-amount={amount}
         stroke-width={`${this.calcThickness()}%`}
+        style={{
+          "--child-number": childNumber,
+          "--stroke-dasharray-initial": `0, ${circleLength}`,
+          "--stroke-dasharray": `${circleLength *
+            valuePercentage}, ${circleLength}`
+        }}
       />
     );
   }
@@ -428,7 +435,12 @@ export class Gauge implements GxComponent {
     let positionInGauge = 0;
     for (let i = 0; i < childRanges.length; i++) {
       svgRanges.push(
-        this.addCircleRanges(childRanges[i], positionInGauge, radius)
+        this.addCircleRanges(
+          childRanges[i],
+          positionInGauge,
+          radius,
+          i.toString()
+        )
       );
 
       positionInGauge += (360 * childRanges[i].amount) / range;

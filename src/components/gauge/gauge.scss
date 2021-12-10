@@ -31,6 +31,13 @@ gx-gauge {
   --stroke-linecap: initial;
 
   /**
+  * @prop --stroke-animation-duration:
+   * Sets the duration of the stroke transition animation the first time the component is loaded.
+   * (1s by default)
+  */
+  --stroke-animation-duration: 1s;
+
+  /**
   * @prop --value-text-color:
    * Define the color of the value text in `line` gauge type.
    * (rgba(44, 44, 44, 1) by default)
@@ -292,12 +299,44 @@ gx-gauge {
           stroke-linecap: var(--stroke-linecap, initial);
           transition: stroke $transition-delay,
             stroke-dasharray $transition-delay;
+
+          // Animates the first load of the ranges
+          animation: delay-animation
+              calc(var(--child-number) * var(--stroke-animation-duration)),
+            loading-animation var(--stroke-animation-duration) ease-in-out
+              calc(var(--child-number) * var(--stroke-animation-duration));
         }
 
         .background-circle {
           fill: none;
           stroke: var(--empty-range-background-color);
           transition: stroke $transition-delay;
+        }
+
+        /*  Useful when the circle gauge has at least 2 childs. 
+            In each child, c, it sets a delay of c * --stroke-animation-duration
+            to keep the stroke-dasharray at the starting position.
+        */
+        @keyframes delay-animation {
+          0% {
+            stroke-linecap: initial;
+            stroke-dasharray: var(--stroke-dasharray-initial);
+          }
+
+          100% {
+            stroke-linecap: initial;
+            stroke-dasharray: var(--stroke-dasharray-initial);
+          }
+        }
+
+        @keyframes loading-animation {
+          0% {
+            stroke-dasharray: var(--stroke-dasharray-initial);
+          }
+
+          100% {
+            stroke-dasharray: var(--stroke-dasharray);
+          }
         }
       }
 
