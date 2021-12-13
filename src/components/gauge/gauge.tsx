@@ -356,7 +356,8 @@ export class Gauge implements GxComponent {
   private addCircleRanges(
     { amount, color },
     position: number,
-    radius: number
+    radius: number,
+    childNumber: string // Identifies the number of child to animate it at the start
   ): any {
     const FULL_CIRCLE_RADIANS = 2 * Math.PI;
     const ROTATION_FIX = -90;
@@ -374,11 +375,21 @@ export class Gauge implements GxComponent {
         transform={`rotate(${position + ROTATION_FIX} 50,50)`}
         data-amount={amount}
         stroke-width={`${this.calcThickness()}%`}
+        style={{
+          "--child-number": childNumber,
+          "--stroke-dasharray-initial": `0, ${circleLength}`,
+          "--stroke-dasharray": `${circleLength *
+            valuePercentage}, ${circleLength}`
+        }}
       />
     );
   }
 
-  private addLineRanges({ amount, color }, position: number): any {
+  private addLineRanges(
+    { amount, color },
+    position: number,
+    childNumber: string // Identifies the number of child to animate it at the start
+  ): any {
     const range = this.maxValueAux - this.minValue;
     return (
       <div
@@ -386,13 +397,18 @@ export class Gauge implements GxComponent {
         style={{
           "background-color": color,
           "margin-left": `${position}%`,
-          width: `${(amount * 100) / range}%`
+          "--child-number": childNumber,
+          "--range-width": `${(amount * 100) / range}%`
         }}
       />
     );
   }
 
-  private addLineRangesLabels({ amount, color, name }, position: number): any {
+  private addLineRangesLabels(
+    { amount, color, name },
+    position: number,
+    childNumber: string // Identifies the number of child to animate it at the start
+  ): any {
     const range = this.maxValueAux - this.minValue;
 
     return (
@@ -401,7 +417,8 @@ export class Gauge implements GxComponent {
         style={{
           "margin-left": `${position}%`,
           color: color,
-          width: `${(amount * 100) / range}%`
+          "--child-number": childNumber,
+          "--range-width": `${(amount * 100) / range}%`
         }}
       >
         {name}
@@ -428,7 +445,12 @@ export class Gauge implements GxComponent {
     let positionInGauge = 0;
     for (let i = 0; i < childRanges.length; i++) {
       svgRanges.push(
-        this.addCircleRanges(childRanges[i], positionInGauge, radius)
+        this.addCircleRanges(
+          childRanges[i],
+          positionInGauge,
+          radius,
+          i.toString()
+        )
       );
 
       positionInGauge += (360 * childRanges[i].amount) / range;
@@ -501,9 +523,11 @@ export class Gauge implements GxComponent {
     let positionInGauge = 0;
 
     for (let i = 0; i < childRanges.length; i++) {
-      divRanges.push(this.addLineRanges(childRanges[i], positionInGauge));
+      divRanges.push(
+        this.addLineRanges(childRanges[i], positionInGauge, i.toString())
+      );
       divRangesLabel.push(
-        this.addLineRangesLabels(childRanges[i], positionInGauge)
+        this.addLineRangesLabels(childRanges[i], positionInGauge, i.toString())
       );
 
       positionInGauge += (100 * childRanges[i].amount) / range;
