@@ -13,13 +13,11 @@ export class Loading implements GxComponent {
 
   /**
    * Sets the description text.
-   *
    */
   @Prop() readonly description: string;
 
   /**
    * Sets the caption text.
-   *
    */
   @Prop() readonly caption: string;
 
@@ -29,14 +27,21 @@ export class Loading implements GxComponent {
   @Prop() readonly presented = false;
 
   /**
+   * Sets if the loading will be separated from the main content of the page.
+   * If `dialog = true` the `gx-loading` will be displayed separately from the
+   * main content the web page in a dialog box.
+   * If `dialog = false` the `gx-loading` will be displayed inside its
+   * container and will not be separated from the web page.
+   */
+  @Prop() readonly dialog = false;
+
+  /**
    * Sets the value.
-   *
    */
   @Prop() readonly type: "determinate" | "indeterminate";
 
   /**
    * Sets the value when type is determinate. Must be a value between 0 and 1.
-   *
    */
   @Prop() readonly value = 0;
 
@@ -91,16 +96,17 @@ export class Loading implements GxComponent {
     this.element.style.display = this.presented ? "block" : "none";
 
     return (
-      <Host>
-        <div class="box" role="dialog">
+      <Host class={{ dialog: this.dialog }}>
+        <div class="box" role={this.dialog ? "dialog" : null}>
           <div class="gx-lottie-test" />
+
           {this.lottiePath ? (
             <gx-lottie
               path={this.lottiePath}
               loop={this.type === "indeterminate"}
               autoPlay={this.type === "indeterminate"}
             />
-          ) : (
+          ) : this.dialog ? (
             <div
               class={{
                 [this.type]: true,
@@ -113,6 +119,13 @@ export class Loading implements GxComponent {
                   width: `${this.value * 100}%`
                 }}
               />
+            </div>
+          ) : (
+            // Default loading animation if no gx-lottie
+            <div class="loading-rotate-container">
+              <div class="circle" />
+              <div class="circle" />
+              <div class="circle" />
             </div>
           )}
           <div class="title">{this.caption}</div>

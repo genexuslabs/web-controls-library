@@ -1,6 +1,7 @@
 @import "../common/_base";
 @import "../common/_common-styling-config";
 @import "../common/_layout-styling-config";
+@import "_loading-rotate-animation";
 
 $animation-duration: 1.5s;
 $box-padding: 30px 20px;
@@ -12,14 +13,43 @@ $title-font-size: 16px;
 $description-font-size: $title-font-size - 2;
 
 gx-loading {
-  @include visibility(block);
+  --rotate-animation-container-size: 48px;
 
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  --rotate-animation-duration: 1.5s;
+
+  --rotate-animation-circle-1-color: rgb(71, 109, 255);
+
+  --rotate-animation-circle-2-color: rgb(0, 0, 0);
+
+  --rotate-animation-circle-3-color: rgb(200, 10, 70);
+
+  @include visibility(block);
   z-index: $base-z-index;
+
+  // Style applied when the gx-loading is displayed as a dialog
+  &[dialog],
+  &[dialog="true"] {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    .box {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      background-color: $box-background-color;
+      border-radius: 4px;
+      box-shadow: 0px 8px 16px 4px $box-shadow-color;
+      max-width: $box-max-width;
+      min-width: $box-min-width;
+      padding: $box-padding;
+      overflow: hidden;
+      transform: translate(-50%, -50%);
+      z-index: $base-z-index + 1;
+    }
+  }
 
   .gx-lottie-test {
     display: none !important;
@@ -31,18 +61,8 @@ gx-loading {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    background-color: $box-background-color;
-    border-radius: 4px;
-    box-shadow: 0px 8px 16px 4px $box-shadow-color;
-    max-width: $box-max-width;
-    min-width: $box-min-width;
-    padding: $box-padding;
-    overflow: hidden;
-    transform: translate(-50%, -50%);
-    z-index: $base-z-index + 1;
+
+    @include rotate-animation-styling;
   }
 
   .title {
