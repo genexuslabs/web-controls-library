@@ -95,9 +95,18 @@ export class Loading implements GxComponent {
   render() {
     this.element.style.display = this.presented ? "block" : "none";
 
+    // Accessibility
+    const title = this.dialog ? "dialogTitle" : null;
+    const description = this.dialog ? "dialogDescription" : null;
+
     return (
       <Host class={{ dialog: this.dialog }}>
-        <div class="box" role={this.dialog ? "dialog" : null}>
+        <div
+          class="box"
+          role={this.dialog ? "dialog" : null}
+          aria-labelledby={title}
+          aria-describedby={description}
+        >
           <div class="gx-lottie-test" />
 
           {this.lottiePath ? (
@@ -128,8 +137,12 @@ export class Loading implements GxComponent {
               <div class="circle" />
             </div>
           )}
-          <div class="title">{this.caption}</div>
-          <div class="description">{this.description}</div>
+          <div id={title} class="title">
+            {this.caption}
+          </div>
+          <div id={description} class="description">
+            {this.description}
+          </div>
         </div>
       </Host>
     );
