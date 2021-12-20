@@ -1,13 +1,15 @@
 @import "../common/_base";
+@import "../common/_common-styling-config";
+@import "../common/_layout-styling-config";
 
-$animation-duration: 1.4s;
+$animation-duration: 1.5s;
 $box-padding: 30px 20px;
-$box-background-color: rgba(200, 200, 200, 0.8);
+$box-background-color: rgba(228, 228, 228, 0.75);
+$box-shadow-color: rgba(114, 114, 114, 0.5);
 $box-max-width: 30%;
 $box-min-width: 200px;
 $title-font-size: 16px;
 $description-font-size: $title-font-size - 2;
-$base-z-index: 10000;
 
 gx-loading {
   @include visibility(block);
@@ -24,21 +26,22 @@ gx-loading {
   }
 
   .box {
-    position: fixed;
-    padding: $box-padding;
-    border-radius: 3px;
-    overflow: hidden;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background-color: $box-background-color;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    flex-wrap: wrap;
     align-items: center;
+    flex-wrap: wrap;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    background-color: $box-background-color;
+    border-radius: 4px;
+    box-shadow: 0px 8px 16px 4px $box-shadow-color;
     max-width: $box-max-width;
     min-width: $box-min-width;
+    padding: $box-padding;
+    overflow: hidden;
+    transform: translate(-50%, -50%);
     z-index: $base-z-index + 1;
   }
 
@@ -72,15 +75,12 @@ gx-loading {
 
     &.determinate {
       .loader-inner {
-        transition: width linear 0.2s;
+        transition: width linear $transition-delay;
       }
     }
 
     &.indeterminate {
       .loader-inner {
-        content: "";
-        left: -100%;
-        width: 10%;
         animation: gx-loading-animation $animation-duration linear infinite;
       }
     }
@@ -88,23 +88,29 @@ gx-loading {
 }
 
 @keyframes gx-loading-animation {
-  from {
+  0% {
     left: -100%;
     width: 30%;
   }
+
   50% {
     width: 30%;
   }
+
   70% {
     width: 70%;
   }
+
   80% {
     left: 50%;
   }
+
   95% {
     left: 120%;
   }
-  to {
+
+  100% {
     left: 100%;
+    width: 70%;
   }
 }
