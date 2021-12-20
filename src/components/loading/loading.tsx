@@ -1,4 +1,4 @@
-import { Component, Element, Prop, State, Watch, h } from "@stencil/core";
+import { Component, Element, Prop, State, Watch, h, Host } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
@@ -91,32 +91,34 @@ export class Loading implements GxComponent {
     this.element.style.display = this.presented ? "block" : "none";
 
     return (
-      <div class="box" role="dialog">
-        <div class="gx-lottie-test" />
-        {this.lottiePath ? (
-          <gx-lottie
-            path={this.lottiePath}
-            loop={this.type === "indeterminate"}
-            autoPlay={this.type === "indeterminate"}
-          />
-        ) : (
-          <div
-            class={{
-              [this.type]: true,
-              loader: true
-            }}
-          >
-            <div
-              class="loader-inner"
-              style={{
-                width: `${this.value * 100}%`
-              }}
+      <Host>
+        <div class="box" role="dialog">
+          <div class="gx-lottie-test" />
+          {this.lottiePath ? (
+            <gx-lottie
+              path={this.lottiePath}
+              loop={this.type === "indeterminate"}
+              autoPlay={this.type === "indeterminate"}
             />
-          </div>
-        )}
-        <div class="title">{this.caption}</div>
-        <div class="description">{this.description}</div>
-      </div>
+          ) : (
+            <div
+              class={{
+                [this.type]: true,
+                loader: true
+              }}
+            >
+              <div
+                class="loader-inner"
+                style={{
+                  width: `${this.value * 100}%`
+                }}
+              />
+            </div>
+          )}
+          <div class="title">{this.caption}</div>
+          <div class="description">{this.description}</div>
+        </div>
+      </Host>
     );
   }
 }
