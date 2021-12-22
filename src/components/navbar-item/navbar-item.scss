@@ -1,4 +1,5 @@
 @import "../common/_base";
+@import "../common/_common-styling-config";
 @import "../navbar/_navbar-button-states";
 
 :host {
@@ -80,7 +81,7 @@
 
     &:hover,
     &:focus {
-      background-color: var(--gx-navbar-low-hover-background-color);
+      @include hover-style();
       color: var(--gx-navbar-main-color);
     }
   }
