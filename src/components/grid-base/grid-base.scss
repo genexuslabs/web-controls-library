@@ -15,6 +15,7 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller), & > * >
 
   & > .grid-empty-placeholder > [slot="grid-content-empty"] {
     flex: 1;
+    align-self: stretch;
   }
 }
 
