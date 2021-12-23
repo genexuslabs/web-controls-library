@@ -14,7 +14,12 @@
   }
 
   &:active {
-    background-color: var(--gx-navbar-main-active-background-color);
+    background: var(--gx-navbar-main-active-background);
+
+    /*  In case of using a traditional color, this property will allow us to
+        still have the transition effect.
+    */
+    background-color: var(--gx-navbar-main-active-background);
     color: var(--gx-navbar-main-active-color);
 
     gx-icon {

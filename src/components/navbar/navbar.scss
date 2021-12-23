@@ -18,13 +18,15 @@ gx-navbar {
   --gx-navbar-sub-separator-top: none;
   --gx-navbar-sub-separator-bottom: 1px solid rgb(195, 196, 200);
   --gx-navbar-actions-separator: 1px solid #e0e0e0;
-  --gx-navbar-main-active-background-color: #c3c4c8;
-  --gx-navbar-main-active-color: #111111;
   --gx-navbar-sub-hover-color: #575965;
   --gx-navbar-sub-active-background-color: rgba(195, 196, 200, 0.2);
   --gx-navbar-sub-active-color: #000;
   --gx-navbar-low-background-color: #e0e0e0;
   --gx-navbar-base-z-index: 100;
+
+  // - - - - - - - - - - - - - - Active - - - - - - - - - - - - - -
+  --gx-navbar-main-active-background: transparent;
+  --gx-navbar-main-active-color: #111111;
 
   font-size: 14px;
   font-weight: 600;
