@@ -85,6 +85,16 @@ gx-grid-smart-css {
 /*
   Vertical Orientation
 */
+
+/*  This ensures that the rows will only set their height based on the height
+    of the content.
+*/
+gx-grid-smart-css[direction="vertical"] {
+  & > div {
+    grid-auto-rows: var(--gx-table-row-autogrow);
+  }
+}
+
 gx-grid-smart-css[direction="vertical"] {
   #{$gridContentSelector} {
     & > gx-grid-smart-cell[relative-size] {
