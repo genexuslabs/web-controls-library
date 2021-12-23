@@ -1,16 +1,22 @@
+@import "../common/common-styling-config";
+
 :host {
+  display: inline-flex;
   --gx-icon-size: 24px;
   width: var(--gx-icon-size);
   height: var(--gx-icon-size);
-  display: inline-flex;
 
   svg {
     width: var(--gx-icon-size);
     height: var(--gx-icon-size);
+
     * {
       fill: var(--gx-icon-color);
+      transition: color $transition-delay, fill $transition-delay,
+        stroke $transition-delay;
     }
   }
+
   .svg-icon-native {
     line-height: 0;
   }
