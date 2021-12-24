@@ -123,6 +123,7 @@ export class NavBar implements GxComponent {
 
   render() {
     const navOnly = !this.showToggleButton && !this.hasActions();
+
     return (
       <Host
         class={{
@@ -134,6 +135,7 @@ export class NavBar implements GxComponent {
           <div class="gx-navbar-line gx-navbar-line-1">
             {this.showBackButton && this.singleLine && (
               <button
+                key="back-button"
                 type="button"
                 class="gx-navbar-back-button gx-navbar-icon-button"
                 aria-label={this.backButtonLabel}
@@ -142,8 +144,10 @@ export class NavBar implements GxComponent {
                 <gx-icon type="arrow-left"></gx-icon>
               </button>
             )}
+
             {this.showToggleButton && (
               <button
+                key="toggle-button"
                 type="button"
                 class="gx-navbar-target-toggle gx-navbar-icon-button"
                 aria-label={this.toggleButtonLabel}
@@ -152,6 +156,7 @@ export class NavBar implements GxComponent {
                 <gx-icon type="burger"></gx-icon>
               </button>
             )}
+
             <a class="gx-navbar-header" tabindex="-1">
               <slot name="header" />
               {this.caption}
@@ -159,8 +164,10 @@ export class NavBar implements GxComponent {
             <div class="gx-navbar-links">
               <slot name="navigation" />
             </div>
+
             {this.singleLine && this.renderActions()}
           </div>
+
           {!this.singleLine && (
             <div class="gx-navbar-line gx-navbar-line-2">
               {this.showBackButton && (
