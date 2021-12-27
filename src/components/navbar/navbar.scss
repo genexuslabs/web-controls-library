@@ -1,4 +1,5 @@
 @import "../common/_base";
+@import "../common/_layout-styling-config";
 @import "./_navbar-button-states";
 
 gx-navbar {
@@ -17,12 +18,11 @@ gx-navbar {
   --gx-navbar-icon-size: 24px;
   --gx-navbar-sub-separator-top: none;
   --gx-navbar-sub-separator-bottom: 1px solid rgb(195, 196, 200);
-  --gx-navbar-actions-separator: 1px solid #e0e0e0;
+  --gx-navbar-actions-separator: 1.5px solid #e0e0e0;
   --gx-navbar-sub-hover-color: #575965;
   --gx-navbar-sub-active-background-color: rgba(195, 196, 200, 0.2);
   --gx-navbar-sub-active-color: #000;
   --gx-navbar-low-background-color: #e0e0e0;
-  --gx-navbar-base-z-index: 100;
 
   // - - - - - - - - - - - - - - Active - - - - - - - - - - - - - -
   --gx-navbar-main-active-background: transparent;
