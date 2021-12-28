@@ -8,8 +8,6 @@ gx-navbar {
 
   --gx-navbar-main-background-color: rgb(87, 89, 101);
   --gx-navbar-sub-background-color: white;
-  --gx-navbar-items-background-color: #e0e0e0;
-  --gx-navbar-items-color: #575965;
   --gx-navbar-main-color: white;
   --gx-navbar-icon-color: var(--gx-navbar-main-color);
   --gx-navbar-sub-color: black;
@@ -159,11 +157,11 @@ gx-navbar {
         left: 0;
         right: 0;
         bottom: 0;
-        z-index: calc(var(--gx-navbar-base-z-index) + 1);
-        height: 60px;
-        background-color: var(--gx-navbar-items-background-color);
-        color: var(--gx-navbar-items-color);
         justify-content: stretch;
+        height: var(--gx-navbar-main-height);
+        background-color: var(--gx-navbar-main-background-color);
+        color: var(--gx-navbar-main-color);
+        z-index: calc(var(--gx-navbar-base-z-index) + 1);
 
         &:empty {
           display: none;
