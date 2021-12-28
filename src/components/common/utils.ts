@@ -45,3 +45,28 @@ export function overrideMethod(
     }
   };
 }
+
+export function getFileNameWithoutExtension(filePath: string) {
+  /*  If the function is called in the same folder as the file, 
+      lastIndexOf("/") might return -1, but since we add 1 to the result, the
+      value of fileNameStartIndex will be 0.
+
+      If lastIndexOf("/") >= 0, it means that filePath has at least one "/" and
+      adding 1 to the result of the function will return the index where the
+      fileName starts.
+  */
+  const fileNameStartIndex = filePath.lastIndexOf("/") + 1;
+
+  // We store the fileName that could have extension
+  const fileName = filePath.substring(fileNameStartIndex);
+
+  const extensionIndex = fileName.lastIndexOf(".");
+
+  // If the file does not have extension
+  if (extensionIndex === -1) {
+    return fileName;
+  }
+
+  // Returns the name between the last "/" and the last "." of the `fileName`
+  return fileName.substring(0, extensionIndex);
+}

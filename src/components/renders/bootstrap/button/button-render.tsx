@@ -6,6 +6,7 @@ import {
   imagePositionClass,
   hideMainImageWhenDisabledClass
 } from "../../../common/image-position";
+import { getFileNameWithoutExtension } from "../../../common/utils";
 
 export class ButtonRender implements Renderer {
   constructor(private component: Button, handlers: { handleClick }) {
@@ -24,13 +25,23 @@ export class ButtonRender implements Renderer {
   render(slots: { default; disabledImage; mainImage }) {
     const button = this.component;
 
-    // Main image and disabled image are set an empty alt as they are decorative images.
+    // True if the button does not have any text
+    const isEmptyCaption = button.element.textContent.trim() === "";
+
+    /*  Main image and disabled image are set with an empty alt as they are
+        decorative images, but if the button has no caption, the alt property
+        will take the name of the image.
+    */
     const images = button.element.querySelectorAll(
       "[slot='main-image'], [slot='disabled-image']"
     );
+
     Array.from(images).forEach((img: HTMLImageElement) => {
       if (!img.alt) {
-        img.setAttribute("alt", "");
+        // The src image property always contains a path to the image file
+        const alt = isEmptyCaption ? getFileNameWithoutExtension(img.src) : "";
+
+        img.setAttribute("alt", alt);
       }
     });
 
@@ -45,7 +56,7 @@ export class ButtonRender implements Renderer {
           ["stretch-height"]: button.height === "",
 
           // Strings with only white spaces are taken as null captions
-          "empty-caption": button.element.textContent.trim() === ""
+          "empty-caption": isEmptyCaption
         }}
         style={{
           "--width": button.width === "" ? "100%" : button.width,
