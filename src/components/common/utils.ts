@@ -47,15 +47,18 @@ export function overrideMethod(
 }
 
 export function getFileNameWithoutExtension(filePath: string) {
-  let lastSlashIndex = filePath.lastIndexOf("/");
+  /*  If the function is called in the same folder as the file, 
+      lastIndexOf("/") might return -1, but since we add 1 to the result, the
+      value of fileNameStartIndex will be 0.
 
-  // If the function is call in the same folder of the file
-  if (lastSlashIndex === -1) {
-    lastSlashIndex = 0;
-  }
+      If lastIndexOf("/") >= 0, it means that filePath has at least one "/" and
+      adding 1 to the result of the function will return the index where the
+      fileName starts.
+  */
+  const fileNameStartIndex = filePath.lastIndexOf("/") + 1;
 
-  // We store the fileName that could have extension (+1 removes the last slash)
-  const fileName = filePath.substring(lastSlashIndex + 1);
+  // We store the fileName that could have extension
+  const fileName = filePath.substring(fileNameStartIndex);
 
   const extensionIndex = fileName.lastIndexOf(".");
 
