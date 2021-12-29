@@ -42,11 +42,26 @@ gx-navbar {
     top: 0;
   }
 
+  /*  If the top navbar has no actions and does not have toggle button, we 
+      hide it, because the bottom nav bar will be displayed with the links
+  */
+  &.navbar-nav-only[position="top"] {
+    @media screen and (max-width: $gx-xsmall-breakpoint) {
+      height: 0;
+
+      .gx-navbar-line-1,
+      .gx-navbar-line-2 {
+        height: 0;
+        overflow: hidden;
+      }
+    }
+  }
+
   &[position="bottom"] {
+    bottom: 0;
+
     &,
     &.navbar-single-line {
-      bottom: 0;
-
       /*  If the width of the screen >= $gx-xsmall-breakpoint-plus-1, we hide
           the bottom navbar
       */
@@ -260,21 +275,6 @@ gx-navbar {
         gx-icon {
           --gx-icon-color: var(--gx-navbar-sub-color);
         }
-      }
-    }
-  }
-
-  /*  If the top navbar has no actions and does not have toggle button, we 
-      hide it, because the bottom nav bar will be displayed with the links
-  */
-  &.navbar-nav-only[position="top"] {
-    @media screen and (max-width: $gx-xsmall-breakpoint) {
-      height: 0;
-
-      .gx-navbar-line-1,
-      .gx-navbar-line-2 {
-        height: 0;
-        overflow: hidden;
       }
     }
   }
