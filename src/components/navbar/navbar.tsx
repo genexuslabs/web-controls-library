@@ -54,7 +54,7 @@ export class NavBar implements GxComponent {
    * of the viewport. This `position` of navbar is used to show navigation
    * links.
    */
-  @Prop() readonly position: "top" | "bottom";
+  @Prop() readonly position: "top" | "bottom" = "top";
 
   @State() showLowActions = false;
 
