@@ -1,4 +1,5 @@
 $gx-xsmall-breakpoint: 768px;
+$gx-xsmall-breakpoint-plus-1: 769px;
 
 @mixin visibility($display) {
   display: $display;

@@ -11,8 +11,6 @@ gx-navbar {
   --gx-navbar-main-color: white;
   --gx-navbar-icon-color: var(--gx-navbar-main-color);
   --gx-navbar-sub-color: black;
-  --gx-navbar-main-height: 60px;
-  --gx-navbar-sub-height: 48px;
   --gx-navbar-icon-size: 24px;
   --gx-navbar-sub-separator-top: none;
   --gx-navbar-sub-separator-bottom: 1px solid rgb(195, 196, 200);
@@ -26,10 +24,38 @@ gx-navbar {
   --gx-navbar-main-active-background: transparent;
   --gx-navbar-main-active-color: #111111;
 
+  @include visibility(block);
+  @include elevation();
+
+  position: sticky;
   font-size: 14px;
   font-weight: 600;
   width: 100%;
   height: calc(var(--gx-navbar-main-height) + var(--gx-navbar-sub-height));
+  z-index: calc(var(--gx-navbar-base-z-index) + 1);
+
+  &.navbar-single-line {
+    height: var(--gx-navbar-main-height);
+  }
+
+  &[position="top"] {
+    top: 0;
+  }
+
+  &[position="bottom"] {
+    &,
+    &.navbar-single-line {
+      bottom: 0;
+
+      /*  If the width of the screen >= $gx-xsmall-breakpoint-plus-1, we hide
+          the bottom navbar
+      */
+      @media screen and (min-width: $gx-xsmall-breakpoint-plus-1) {
+        height: 0;
+        overflow: hidden;
+      }
+    }
+  }
 
   gx-icon {
     --gx-icon-size: var(--gx-navbar-icon-size);
@@ -51,11 +77,6 @@ gx-navbar {
   }
 
   .gx-navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: calc(var(--gx-navbar-base-z-index) + 1);
     display: flex;
     flex-direction: column;
 
@@ -145,26 +166,34 @@ gx-navbar {
     }
 
     &-links {
+      display: none;
       flex: 1;
-      display: flex;
       flex-direction: row;
       justify-content: center;
       align-items: stretch;
       overflow: hidden;
 
-      @media screen and (max-width: $gx-xsmall-breakpoint) {
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        justify-content: stretch;
-        height: var(--gx-navbar-main-height);
-        background-color: var(--gx-navbar-main-background-color);
-        color: var(--gx-navbar-main-color);
-        z-index: calc(var(--gx-navbar-base-z-index) + 1);
+      /*  We display the links at the top navbar, when the width of the screen
+          is >= $gx-xsmall-breakpoint-plus-1
+      */
+      &[data-position="top"] {
+        @media screen and (min-width: $gx-xsmall-breakpoint-plus-1) {
+          display: flex;
+        }
+      }
 
-        &:empty {
-          display: none;
+      /*  We display the links at the bottom navbar, when the width of the
+          screen is <= $gx-xsmall-breakpoint
+      */
+      &[data-position="bottom"] {
+        @media screen and (max-width: $gx-xsmall-breakpoint) {
+          display: flex;
+          justify-content: stretch;
+          color: var(--gx-navbar-main-color);
+
+          &:empty {
+            display: none;
+          }
         }
       }
     }
@@ -235,11 +264,10 @@ gx-navbar {
     }
   }
 
-  &.navbar-single-line {
-    height: var(--gx-navbar-main-height);
-  }
-
-  &.navbar-nav-only {
+  /*  If the top navbar has no actions and does not have toggle button, we 
+      hide it, because the bottom nav bar will be displayed with the links
+  */
+  &.navbar-nav-only[position="top"] {
     @media screen and (max-width: $gx-xsmall-breakpoint) {
       height: 0;
 

@@ -45,6 +45,17 @@ export class NavBar implements GxComponent {
    */
   @Prop() readonly showBackButton: false;
 
+  /**
+   * This attribute lets you specify the position of the navbar in the
+   * viewport.
+   * If `position = "top"` the navbar will be placed normally at the top of the
+   * viewport.
+   * If `position = "bottom"` the navbar will be placed normally at the bottom
+   * of the viewport. This `position` of navbar is used to show navigation
+   * links.
+   */
+  @Prop() readonly position: "top" | "bottom";
+
   @State() showLowActions = false;
 
   /**
@@ -123,6 +134,7 @@ export class NavBar implements GxComponent {
 
   render() {
     const navOnly = !this.showToggleButton && !this.hasActions();
+    const isTopPosition = this.position === "top";
 
     return (
       <Host
@@ -133,7 +145,7 @@ export class NavBar implements GxComponent {
       >
         <nav class="gx-navbar">
           <div class="gx-navbar-line gx-navbar-line-1">
-            {this.showBackButton && this.singleLine && (
+            {isTopPosition && this.showBackButton && this.singleLine && (
               <button
                 key="back-button"
                 type="button"
@@ -145,7 +157,7 @@ export class NavBar implements GxComponent {
               </button>
             )}
 
-            {this.showToggleButton && (
+            {isTopPosition && this.showToggleButton && (
               <button
                 key="toggle-button"
                 type="button"
@@ -157,18 +169,21 @@ export class NavBar implements GxComponent {
               </button>
             )}
 
-            <a class="gx-navbar-header" tabindex="-1">
-              <slot name="header" />
-              {this.caption}
-            </a>
-            <div class="gx-navbar-links">
+            {isTopPosition && (
+              <a class="gx-navbar-header" tabindex="-1">
+                <slot name="header" />
+                {this.caption}
+              </a>
+            )}
+
+            <div class="gx-navbar-links" data-position={this.position}>
               <slot name="navigation" />
             </div>
 
-            {this.singleLine && this.renderActions()}
+            {isTopPosition && this.singleLine && this.renderActions()}
           </div>
 
-          {!this.singleLine && (
+          {isTopPosition && !this.singleLine && (
             <div class="gx-navbar-line gx-navbar-line-2">
               {this.showBackButton && (
                 <button
