@@ -86,6 +86,8 @@ export class NavBar implements GxComponent {
 
   private watchForItemsObserver: MutationObserver;
 
+  private isTopPosition: boolean;
+
   private handleToggleButtonClick = (e: MouseEvent) => {
     this.toggleButtonClick.emit(e);
   };
@@ -108,6 +110,13 @@ export class NavBar implements GxComponent {
       }
     }
   };
+
+  /*  Before the first render, we store the result of this.position === "top",
+      because it won't change at runtime.
+  */
+  componentWillLoad() {
+    this.isTopPosition = this.position === "top";
+  }
 
   componentDidLoad() {
     document.body.addEventListener("click", this.handleBodyClick);
@@ -134,7 +143,6 @@ export class NavBar implements GxComponent {
 
   render() {
     const navOnly = !this.showToggleButton && !this.hasActions();
-    const isTopPosition = this.position === "top";
 
     return (
       <Host
@@ -145,7 +153,7 @@ export class NavBar implements GxComponent {
       >
         <nav class="gx-navbar">
           <div class="gx-navbar-line gx-navbar-line-1">
-            {isTopPosition && this.showBackButton && this.singleLine && (
+            {this.isTopPosition && this.showBackButton && this.singleLine && (
               <button
                 key="back-button"
                 type="button"
@@ -157,7 +165,7 @@ export class NavBar implements GxComponent {
               </button>
             )}
 
-            {isTopPosition && this.showToggleButton && (
+            {this.isTopPosition && this.showToggleButton && (
               <button
                 key="toggle-button"
                 type="button"
@@ -169,7 +177,7 @@ export class NavBar implements GxComponent {
               </button>
             )}
 
-            {isTopPosition && (
+            {this.isTopPosition && (
               <a class="gx-navbar-header" tabindex="-1">
                 <slot name="header" />
                 {this.caption}
@@ -180,10 +188,10 @@ export class NavBar implements GxComponent {
               <slot name="navigation" />
             </div>
 
-            {isTopPosition && this.singleLine && this.renderActions()}
+            {this.isTopPosition && this.singleLine && this.renderActions()}
           </div>
 
-          {isTopPosition && !this.singleLine && (
+          {this.isTopPosition && !this.singleLine && (
             <div class="gx-navbar-line gx-navbar-line-2">
               {this.showBackButton && (
                 <button
