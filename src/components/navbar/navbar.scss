@@ -13,15 +13,6 @@
   }
 }
 
-/*  If the top navbar has no actions and does not have toggle button, we 
-    hide it, because the bottom nav bar will be displayed with the links
-*/
-:host(.navbar-nav-only:not([position="bottom"])) {
-  @media screen and (max-width: $gx-xsmall-breakpoint) {
-    display: none;
-  }
-}
-
 :host {
   @include visibility(block);
   @include elevation();
