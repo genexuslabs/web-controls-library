@@ -114,6 +114,7 @@
       color: var(--gx-navbar-main-color);
       background-color: var(--gx-navbar-main-background-color);
       background-image: var(--gx-navbar-main-background-image);
+      overflow: hidden;
     }
 
     &-line-2 {
@@ -122,6 +123,7 @@
       background-color: var(--gx-navbar-sub-background-color);
       border-top: var(--gx-navbar-sub-separator-top);
       border-bottom: var(--gx-navbar-sub-separator-bottom);
+      overflow: hidden;
 
       .gx-navbar-actions {
         flex: 1;
