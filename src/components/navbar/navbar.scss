@@ -2,20 +2,14 @@
 @import "../common/_layout-styling-config";
 @import "./_navbar-button-states";
 
-:host(.navbar-single-line) {
-  height: var(--gx-navbar-main-height);
-}
-
 :host([position="bottom"]) {
   bottom: 0;
-  height: var(--gx-navbar-main-height);
 
   /*  If the width of the screen >= $gx-xsmall-breakpoint-plus-1, we hide
       the bottom navbar
   */
   @media screen and (min-width: $gx-xsmall-breakpoint-plus-1) {
-    height: 0;
-    overflow: hidden;
+    display: none;
   }
 }
 
@@ -24,13 +18,7 @@
 */
 :host(.navbar-nav-only:not([position="bottom"])) {
   @media screen and (max-width: $gx-xsmall-breakpoint) {
-    height: 0;
-
-    .gx-navbar-line-1,
-    .gx-navbar-line-2 {
-      height: 0;
-      overflow: hidden;
-    }
+    display: none;
   }
 }
 
@@ -64,7 +52,6 @@
   font-size: 14px;
   font-weight: 600;
   width: 100%;
-  height: calc(var(--gx-navbar-main-height) + var(--gx-navbar-sub-height));
   z-index: calc(var(--gx-navbar-base-z-index) + 1);
 
   gx-icon {

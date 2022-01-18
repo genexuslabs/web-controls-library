@@ -145,12 +145,7 @@ export class NavBar implements GxComponent {
     const navOnly = !this.showToggleButton && !this.hasActions();
 
     return (
-      <Host
-        class={{
-          "navbar-single-line": this.singleLine,
-          "navbar-nav-only": navOnly
-        }}
-      >
+      <Host class={{ "navbar-nav-only": navOnly }}>
         <nav class="gx-navbar">
           <div class="gx-navbar-line gx-navbar-line-1">
             {this.isTopPosition && this.showBackButton && this.singleLine && (
