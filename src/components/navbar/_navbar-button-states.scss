@@ -9,7 +9,7 @@
     padding: $vertical-padding $horizontal-padding;
   }
 
-  &:hover {
+  &:hover:not(:active) {
     @include hover-style();
   }
 
