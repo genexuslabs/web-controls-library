@@ -2,7 +2,39 @@
 @import "../common/_layout-styling-config";
 @import "./_navbar-button-states";
 
-gx-navbar {
+:host(.navbar-single-line) {
+  height: var(--gx-navbar-main-height);
+}
+
+:host([position="bottom"]) {
+  bottom: 0;
+  height: var(--gx-navbar-main-height);
+
+  /*  If the width of the screen >= $gx-xsmall-breakpoint-plus-1, we hide
+      the bottom navbar
+  */
+  @media screen and (min-width: $gx-xsmall-breakpoint-plus-1) {
+    height: 0;
+    overflow: hidden;
+  }
+}
+
+/*  If the top navbar has no actions and does not have toggle button, we 
+    hide it, because the bottom nav bar will be displayed with the links
+*/
+:host(.navbar-nav-only:not([position="bottom"])) {
+  @media screen and (max-width: $gx-xsmall-breakpoint) {
+    height: 0;
+
+    .gx-navbar-line-1,
+    .gx-navbar-line-2 {
+      height: 0;
+      overflow: hidden;
+    }
+  }
+}
+
+:host {
   @include visibility(block);
   @include elevation();
 
@@ -28,49 +60,12 @@ gx-navbar {
   @include elevation();
 
   position: sticky;
+  top: 0;
   font-size: 14px;
   font-weight: 600;
   width: 100%;
   height: calc(var(--gx-navbar-main-height) + var(--gx-navbar-sub-height));
   z-index: calc(var(--gx-navbar-base-z-index) + 1);
-
-  &.navbar-single-line {
-    height: var(--gx-navbar-main-height);
-  }
-
-  &[position="top"] {
-    top: 0;
-  }
-
-  /*  If the top navbar has no actions and does not have toggle button, we 
-      hide it, because the bottom nav bar will be displayed with the links
-  */
-  &.navbar-nav-only[position="top"] {
-    @media screen and (max-width: $gx-xsmall-breakpoint) {
-      height: 0;
-
-      .gx-navbar-line-1,
-      .gx-navbar-line-2 {
-        height: 0;
-        overflow: hidden;
-      }
-    }
-  }
-
-  &[position="bottom"] {
-    bottom: 0;
-
-    &,
-    &.navbar-single-line {
-      /*  If the width of the screen >= $gx-xsmall-breakpoint-plus-1, we hide
-          the bottom navbar
-      */
-      @media screen and (min-width: $gx-xsmall-breakpoint-plus-1) {
-        height: 0;
-        overflow: hidden;
-      }
-    }
-  }
 
   gx-icon {
     --gx-icon-size: var(--gx-navbar-icon-size);

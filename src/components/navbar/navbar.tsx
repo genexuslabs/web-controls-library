@@ -12,7 +12,7 @@ import { Component as GxComponent } from "../common/interfaces";
 import { watchForItems } from "../common/watch-items";
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "navbar.scss",
   tag: "gx-navbar"
 })
@@ -102,7 +102,7 @@ export class NavBar implements GxComponent {
 
   private handleBodyClick = (e: MouseEvent) => {
     if (this.showLowActions) {
-      const navbarToggleBtn = this.element.querySelector(
+      const navbarToggleBtn = this.element.shadowRoot.querySelector(
         ".gx-navbar-actions-toggle"
       );
       if (e.composedPath().find(el => el === navbarToggleBtn) === undefined) {
