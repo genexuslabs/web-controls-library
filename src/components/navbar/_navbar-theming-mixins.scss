@@ -21,15 +21,16 @@
     }
   }
 
+  /*  We assume that the mixin defined inside the #{$default-button} class will
+      style the "default-button" ::part, so we don't have to specify the ::part
+      in this file.
+      Same goes for the #{$back-button} class.
+  */
   @if ($default-button != null) {
-    button {
-      @extend #{$default-button} !optional;
-    }
+    @extend #{$default-button} !optional;
   }
 
   @if ($back-button != null) {
-    .gx-navbar-back-button {
-      @extend #{$back-button} !optional;
-    }
+    @extend #{$back-button} !optional;
   }
 }

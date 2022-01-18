@@ -157,6 +157,7 @@ export class NavBar implements GxComponent {
               <button
                 key="back-button"
                 type="button"
+                part="back-button"
                 class="gx-navbar-back-button gx-navbar-icon-button"
                 aria-label={this.backButtonLabel}
                 onClick={this.handleBackButtonClick}
@@ -169,7 +170,8 @@ export class NavBar implements GxComponent {
               <button
                 key="toggle-button"
                 type="button"
-                class="gx-navbar-target-toggle gx-navbar-icon-button"
+                part="default-button"
+                class="gx-navbar-icon-button"
                 aria-label={this.toggleButtonLabel}
                 onClick={this.handleToggleButtonClick}
               >
@@ -196,6 +198,7 @@ export class NavBar implements GxComponent {
               {this.showBackButton && (
                 <button
                   type="button"
+                  part="back-button"
                   class="gx-navbar-back-button"
                   onClick={this.handleBackButtonClick}
                 >
@@ -239,6 +242,7 @@ export class NavBar implements GxComponent {
         <button
           type="button"
           aria-label={this.actionToggleButtonLabel}
+          part="default-button"
           class={{
             "gx-navbar-icon-button": true,
             "gx-navbar-actions-toggle": true,
