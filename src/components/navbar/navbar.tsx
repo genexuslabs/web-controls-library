@@ -254,12 +254,4 @@ export class NavBar implements GxComponent {
       this.element.querySelector(`[slot='${type}-priority-action']`) !== null
     );
   }
-
-  private hasActions(): boolean {
-    return (
-      this.hasHighPriorityActions ||
-      this.hasNormalPriorityActions ||
-      this.hasLowPriorityActions
-    );
-  }
 }
