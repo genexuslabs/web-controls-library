@@ -12,7 +12,7 @@ import { Component as GxComponent } from "../common/interfaces";
 import { watchForItems } from "../common/watch-items";
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "navbar.scss",
   tag: "gx-navbar"
 })
@@ -45,6 +45,17 @@ export class NavBar implements GxComponent {
    */
   @Prop() readonly showBackButton: false;
 
+  /**
+   * This attribute lets you specify the position of the navbar in the
+   * viewport.
+   * If `position = "top"` the navbar will be placed normally at the top of the
+   * viewport.
+   * If `position = "bottom"` the navbar will be placed normally at the bottom
+   * of the viewport. This `position` of navbar is used to show navigation
+   * links.
+   */
+  @Prop() readonly position: "top" | "bottom" = "top";
+
   @State() showLowActions = false;
 
   /**
@@ -75,6 +86,8 @@ export class NavBar implements GxComponent {
 
   private watchForItemsObserver: MutationObserver;
 
+  private isTopPosition: boolean;
+
   private handleToggleButtonClick = (e: MouseEvent) => {
     this.toggleButtonClick.emit(e);
   };
@@ -89,7 +102,7 @@ export class NavBar implements GxComponent {
 
   private handleBodyClick = (e: MouseEvent) => {
     if (this.showLowActions) {
-      const navbarToggleBtn = this.element.querySelector(
+      const navbarToggleBtn = this.element.shadowRoot.querySelector(
         ".gx-navbar-actions-toggle"
       );
       if (e.composedPath().find(el => el === navbarToggleBtn) === undefined) {
@@ -97,6 +110,13 @@ export class NavBar implements GxComponent {
       }
     }
   };
+
+  /*  Before the first render, we store the result of this.position === "top",
+      because it won't change at runtime.
+  */
+  componentWillLoad() {
+    this.isTopPosition = this.position === "top";
+  }
 
   componentDidLoad() {
     document.body.addEventListener("click", this.handleBodyClick);
@@ -122,19 +142,15 @@ export class NavBar implements GxComponent {
   }
 
   render() {
-    const navOnly = !this.showToggleButton && !this.hasActions();
     return (
-      <Host
-        class={{
-          "navbar-single-line": this.singleLine,
-          "navbar-nav-only": navOnly
-        }}
-      >
+      <Host>
         <nav class="gx-navbar">
           <div class="gx-navbar-line gx-navbar-line-1">
-            {this.showBackButton && this.singleLine && (
+            {this.isTopPosition && this.showBackButton && this.singleLine && (
               <button
+                key="back-button"
                 type="button"
+                part="back-button"
                 class="gx-navbar-back-button gx-navbar-icon-button"
                 aria-label={this.backButtonLabel}
                 onClick={this.handleBackButtonClick}
@@ -142,30 +158,40 @@ export class NavBar implements GxComponent {
                 <gx-icon type="arrow-left"></gx-icon>
               </button>
             )}
-            {this.showToggleButton && (
+
+            {this.isTopPosition && this.showToggleButton && (
               <button
+                key="toggle-button"
                 type="button"
-                class="gx-navbar-target-toggle gx-navbar-icon-button"
+                part="default-button"
+                class="gx-navbar-icon-button"
                 aria-label={this.toggleButtonLabel}
                 onClick={this.handleToggleButtonClick}
               >
                 <gx-icon type="burger"></gx-icon>
               </button>
             )}
-            <a class="gx-navbar-header" tabindex="-1">
-              <slot name="header" />
-              {this.caption}
-            </a>
-            <div class="gx-navbar-links">
+
+            {this.isTopPosition && (
+              <a class="gx-navbar-header" tabindex="-1">
+                <slot name="header" />
+                {this.caption}
+              </a>
+            )}
+
+            <div class="gx-navbar-links" data-position={this.position}>
               <slot name="navigation" />
             </div>
-            {this.singleLine && this.renderActions()}
+
+            {this.isTopPosition && this.singleLine && this.renderActions()}
           </div>
-          {!this.singleLine && (
+
+          {this.isTopPosition && !this.singleLine && (
             <div class="gx-navbar-line gx-navbar-line-2">
               {this.showBackButton && (
                 <button
                   type="button"
+                  part="back-button"
                   class="gx-navbar-back-button"
                   onClick={this.handleBackButtonClick}
                 >
@@ -209,6 +235,7 @@ export class NavBar implements GxComponent {
         <button
           type="button"
           aria-label={this.actionToggleButtonLabel}
+          part="default-button"
           class={{
             "gx-navbar-icon-button": true,
             "gx-navbar-actions-toggle": true,
@@ -225,14 +252,6 @@ export class NavBar implements GxComponent {
   private hasActionsByType(type: string): boolean {
     return (
       this.element.querySelector(`[slot='${type}-priority-action']`) !== null
-    );
-  }
-
-  private hasActions(): boolean {
-    return (
-      this.hasHighPriorityActions ||
-      this.hasNormalPriorityActions ||
-      this.hasLowPriorityActions
     );
   }
 }

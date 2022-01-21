@@ -4,32 +4,21 @@
 
 /// Helper mixin to ease styling gx-navbar custom elements
 /// @param {string} $class Base class of the component
-/// @param {string} $action Class for styling the actions of the navigation bar
 /// @param {string} $back-button Class for styling the back button of the navigation bar
 /// @param {string} $default-button Class for styling buttons of the navigation bar
-@mixin gx-navbar(
-  $class,
-  $action: null,
-  $back-button: null,
-  $default-button: null
-) {
+@mixin gx-navbar($class, $back-button: null, $default-button: null) {
   @extend #{$class} !optional;
 
-  @if ($action != null) {
-    gx-navbar-item {
-      @extend #{$action} !optional;
-    }
-  }
-
+  /*  We assume that the mixin defined inside the #{$default-button} class will
+      style the "default-button" ::part, so we don't have to specify the ::part
+      in this file.
+      Same goes for the #{$back-button} class.
+  */
   @if ($default-button != null) {
-    button {
-      @extend #{$default-button} !optional;
-    }
+    @extend #{$default-button} !optional;
   }
 
   @if ($back-button != null) {
-    .gx-navbar-back-button {
-      @extend #{$back-button} !optional;
-    }
+    @extend #{$back-button} !optional;
   }
 }
