@@ -7,10 +7,6 @@ gx-radio-group {
 
   &[direction="vertical"] {
     flex-direction: column;
-
-    & > gx-radio-option {
-      flex: 1;
-    }
   }
 
   &[direction="horizontal"] {

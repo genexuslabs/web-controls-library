@@ -51,9 +51,13 @@ gx-form-field {
 
 [valign="top"] {
   & > gx-form-field {
-    [data-readonly],
+    [data-readonly]:not([direction="vertical"]),
     [data-part="container"] {
       align-items: flex-start;
+    }
+
+    gx-radio-group[direction="vertical"] {
+      justify-content: flex-start;
     }
 
     gx-gauge {
@@ -68,9 +72,13 @@ gx-form-field {
       align-self: center;
     }
 
-    [data-readonly],
+    [data-readonly]:not([direction="vertical"]),
     [data-part="container"] {
       align-items: center;
+    }
+
+    gx-radio-group[direction="vertical"] {
+      justify-content: center;
     }
 
     gx-gauge {
@@ -85,9 +93,13 @@ gx-form-field {
       align-self: flex-end;
     }
 
-    [data-readonly],
+    [data-readonly]:not([direction="vertical"]),
     [data-part="container"] {
       align-items: flex-end;
+    }
+
+    gx-radio-group[direction="vertical"] {
+      justify-content: flex-end;
     }
 
     gx-gauge {

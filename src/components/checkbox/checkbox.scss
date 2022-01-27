@@ -11,6 +11,7 @@ gx-checkbox {
   flex: 1;
 
   & > [data-readonly] {
+    display: flex;
     flex: 1;
   }
 }
