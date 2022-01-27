@@ -180,10 +180,6 @@
           display: flex;
           justify-content: stretch;
           color: var(--gx-navbar-main-color);
-
-          &:empty {
-            display: none;
-          }
         }
       }
     }
