@@ -9,4 +9,9 @@ gx-table {
   @include visibility(grid);
 
   flex: 1;
+
+  /*  gx-table must hide its content overflow to ensure that the border-radius
+      property is apply
+  */
+  overflow: hidden;
 }
