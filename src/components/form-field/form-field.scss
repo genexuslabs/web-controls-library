@@ -60,13 +60,23 @@ gx-form-field {
 
 [valign="top"] {
   & > gx-form-field {
-    [data-readonly]:not([direction="vertical"]),
+    /*  gx-radio-group has data-readonly property in its definition, so with
+        :not([direction]) selector we make sure that gx-radio-group will not be
+        affected.
+    */
+    [data-readonly]:not([direction]),
     [data-part="container"] {
       align-items: flex-start;
     }
 
-    gx-radio-group[direction="vertical"] {
-      justify-content: flex-start;
+    gx-radio-group {
+      &[direction="vertical"] {
+        justify-content: flex-start;
+      }
+
+      &[direction="horizontal"] {
+        align-content: flex-start;
+      }
     }
 
     gx-gauge {
@@ -81,13 +91,19 @@ gx-form-field {
       align-self: center;
     }
 
-    [data-readonly]:not([direction="vertical"]),
+    [data-readonly]:not([direction]),
     [data-part="container"] {
       align-items: center;
     }
 
-    gx-radio-group[direction="vertical"] {
-      justify-content: center;
+    gx-radio-group {
+      &[direction="vertical"] {
+        justify-content: center;
+      }
+
+      &[direction="horizontal"] {
+        align-content: center;
+      }
     }
 
     gx-gauge {
@@ -102,13 +118,19 @@ gx-form-field {
       align-self: flex-end;
     }
 
-    [data-readonly]:not([direction="vertical"]),
+    [data-readonly]:not([direction]),
     [data-part="container"] {
       align-items: flex-end;
     }
 
-    gx-radio-group[direction="vertical"] {
-      justify-content: flex-end;
+    gx-radio-group {
+      &[direction="vertical"] {
+        justify-content: flex-end;
+      }
+
+      &[direction="horizontal"] {
+        align-content: flex-end;
+      }
     }
 
     gx-gauge {
