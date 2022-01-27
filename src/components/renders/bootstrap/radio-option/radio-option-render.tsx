@@ -108,8 +108,7 @@ export class RadioOptionRender implements Renderer {
       for: attris.id
     };
 
-    return [
-      <gx-bootstrap />,
+    return (
       <div
         class={this.getInnerControlContainerClass()}
         data-part={!radioOption.disabled ? "option-control" : ""}
@@ -128,6 +127,6 @@ export class RadioOptionRender implements Renderer {
           {radioOption.caption}
         </label>
       </div>
-    ];
+    );
   }
 }
