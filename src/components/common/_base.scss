@@ -122,6 +122,7 @@ $gx-xsmall-breakpoint-plus-1: 769px;
     align-items: center;
     justify-content: flex-start;
     height: 100%;
+    overflow: hidden;
 
     &[data-part="option-control"]:active {
       padding: 0;
