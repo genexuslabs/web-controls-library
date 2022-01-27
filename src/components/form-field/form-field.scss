@@ -17,6 +17,9 @@ gx-form-field {
       text-align: start;
     }
 
+    gx-radio-group[direction="vertical"] [data-part="option-control"],
+    gx-radio-group[direction="horizontal"],
+    gx-checkbox [data-part="option-control"],
     gx-gauge {
       justify-content: flex-start;
     }
@@ -30,6 +33,9 @@ gx-form-field {
       text-align: center;
     }
 
+    gx-radio-group[direction="vertical"] [data-part="option-control"],
+    gx-radio-group[direction="horizontal"],
+    gx-checkbox [data-part="option-control"],
     gx-gauge {
       justify-content: center;
     }
@@ -43,6 +49,9 @@ gx-form-field {
       text-align: end;
     }
 
+    gx-radio-group[direction="vertical"] [data-part="option-control"],
+    gx-radio-group[direction="horizontal"],
+    gx-checkbox [data-part="option-control"],
     gx-gauge {
       justify-content: flex-end;
     }
