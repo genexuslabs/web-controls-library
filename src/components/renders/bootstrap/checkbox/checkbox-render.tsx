@@ -73,8 +73,7 @@ export class CheckBoxRender implements Renderer {
       for: attris.id
     };
 
-    return [
-      <gx-bootstrap />,
+    return (
       <div data-readonly="">
         <div
           class="container"
@@ -110,6 +109,6 @@ export class CheckBoxRender implements Renderer {
           </label>
         </div>
       </div>
-    ];
+    );
   }
 }
