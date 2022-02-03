@@ -136,17 +136,17 @@ export class GridHorizontal
   /**
    * Emitted when the user taps/clicks on the slide's container.
    */
-  @Event() gxGridClick!: EventEmitter<void>;
+  @Event() gxGridClick!: EventEmitter;
 
   /**
    * Emitted when the user double taps on the slide's container.
    */
-  @Event() gxGridDoubleClick!: EventEmitter<void>;
+  @Event() gxGridDoubleClick!: EventEmitter;
 
   /**
    * Emitted before the active slide has changed.
    */
-  @Event() gxGridWillChange!: EventEmitter<void>;
+  @Event() gxGridWillChange!: EventEmitter;
 
   /**
    * Emitted after the active slide has changed.
@@ -156,42 +156,42 @@ export class GridHorizontal
   /**
    * Emitted when the next slide has started.
    */
-  @Event() gxGridNextStart!: EventEmitter<void>;
+  @Event() gxGridNextStart!: EventEmitter;
 
   /**
    * Emitted when the previous slide has started.
    */
-  @Event() gxGridPrevStart!: EventEmitter<void>;
+  @Event() gxGridPrevStart!: EventEmitter;
 
   /**
    * Emitted when the next slide has ended.
    */
-  @Event() gxGridNextEnd!: EventEmitter<void>;
+  @Event() gxGridNextEnd!: EventEmitter;
 
   /**
    * Emitted when the previous slide has ended.
    */
-  @Event() gxGridPrevEnd!: EventEmitter<void>;
+  @Event() gxGridPrevEnd!: EventEmitter;
 
   /**
    * Emitted when the slide transition has started.
    */
-  @Event() gxGridTransitionStart!: EventEmitter<void>;
+  @Event() gxGridTransitionStart!: EventEmitter;
 
   /**
    * Emitted when the slide transition has ended.
    */
-  @Event() gxGridTransitionEnd!: EventEmitter<void>;
+  @Event() gxGridTransitionEnd!: EventEmitter;
 
   /**
    * Emitted when the slider is actively being moved.
    */
-  @Event() gxGridDrag!: EventEmitter<void>;
+  @Event() gxGridDrag!: EventEmitter;
 
   /**
    * Emitted when the slider is at its initial position.
    */
-  @Event() gxGridReachStart!: EventEmitter<void>;
+  @Event() gxGridReachStart!: EventEmitter;
 
   /**
    * Emitted when the slider is at the last slide.
@@ -201,12 +201,12 @@ export class GridHorizontal
   /**
    * Emitted when the user first touches the slider.
    */
-  @Event() gxGridTouchStart!: EventEmitter<void>;
+  @Event() gxGridTouchStart!: EventEmitter;
 
   /**
    * Emitted when the user releases the touch.
    */
-  @Event() gxGridTouchEnd!: EventEmitter<void>;
+  @Event() gxGridTouchEnd!: EventEmitter;
 
   private getSwiperCurrentPage() {
     return this.currentPage - 1;
@@ -471,14 +471,16 @@ export class GridHorizontal
       threshold: 0,
       touchMoveStopPropagation: true,
       touchReleaseOnEdges: false,
-      iOSEdgeSwipeDetection: false,
-      iOSEdgeSwipeThreshold: 20,
+      edgeSwipeDetection: false,
+      edgeSwipeThreshold: 20,
       mousewheel: false,
       resistance: true,
       resistanceRatio: 0.85,
       roundLengths: true,
+
+      // This aditionally triggers previous: watchSlidesVisibility: false
+      // https://swiperjs.com/swiper-api#param-watchSlidesProgress
       watchSlidesProgress: false,
-      watchSlidesVisibility: false,
       watchOverflow: this.pager,
       preventClicks: true,
       preventClicksPropagation: true,

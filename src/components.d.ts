@@ -50,6 +50,10 @@ export namespace Components {
      */
     disabled: false;
     /**
+     * This attribute lets you specify the height.
+     */
+    height: string;
+    /**
      * True to highlight control when an action is fired.
      */
     highlightable: false;
@@ -65,6 +69,10 @@ export namespace Components {
      * This attribute lets you specify the size of the button.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `large`  | Large sized button.                                     | | `normal` | Standard sized button.                                  | | `small`  | Small sized button.                                     |
      */
     size: "large" | "normal" | "small";
+    /**
+     * This attribute lets you specify the width.
+     */
+    width: string;
   }
   interface GxCanvas {
     /**
@@ -137,6 +145,10 @@ export namespace Components {
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode: "collapse" | "keep-space";
+    /**
+     * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
+     */
+    readonly: false;
     /**
      * The value when the checkbox is 'off'
      */
@@ -224,6 +236,10 @@ export namespace Components {
       | "caption1"
       | "caption2";
     /**
+     * It specifies the format that will have the edit control.  If `format` = `HTML`, the edit control works as an HTML div and the innerHTML will be the same as the `inner` property specifies. Also, it does not allow any input/editable UI since it works as an HTML div.  If `format` = `Text`, the edit control works as a normal input control and it is affected by most of the defined properties.
+     */
+    format: "Text" | "HTML";
+    /**
      * Returns the id of the inner `input` element (if set).
      */
     getNativeInputId: () => Promise<string>;
@@ -231,6 +247,10 @@ export namespace Components {
      * True to highlight control when an action is fired.
      */
     highlightable: false;
+    /**
+     * Used as the innerHTML when `format` = `HTML`.
+     */
+    inner: string;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -252,13 +272,9 @@ export namespace Components {
      */
     readonly: boolean;
     /**
-     * If true, a trigger button is shown next to the edit field. The button can be customized using `trigger-text` and `trigger-class` attributes, or adding a child element with `slot="trigger-content"` attribute to specify the content inside the trigger button.
+     * If true, a trigger button is shown next to the edit field. The button can be customized adding a child element with `slot="trigger-content"` attribute to specify the content inside the trigger button.
      */
     showTrigger: boolean;
-    /**
-     * The text of the trigger button. If a text is specified and an image is specified (through an element with `slot="trigger-content"`), the content is ignored and the text is used instead.
-     */
-    triggerText: string;
     /**
      * The type of control to render. A subset of the types supported by the `input` element is supported:  * `"date"` * `"datetime-local"` * `"email"` * `"file"` * `"number"` * `"password"` * `"search"` * `"tel"` * `"text"` * `"url"`
      */
@@ -272,6 +288,7 @@ export namespace Components {
       | "search"
       | "tel"
       | "text"
+      | "time"
       | "url";
     /**
      * The initial value of the control.
@@ -649,7 +666,7 @@ export namespace Components {
     /**
      * This attribute lets you specify the alternative text.
      */
-    alt: "";
+    alt: string;
     /**
      * If true, the component will be sized to match the image's intrinsic size when not constrained via CSS dimension properties (for example, height or width). If false, the component will never force its height to match the image's intrinsic size. The width, however, will match the intrinsic width. In GeneXus terms, it will auto grow horizontally, but not vertically.
      */
@@ -685,7 +702,77 @@ export namespace Components {
     /**
      * This attribute lets you specify the SRC.
      */
-    src: "";
+    src: string;
+    /**
+     * This attribute lets you specify the width.
+     */
+    width: string;
+  }
+  interface GxImagePicker {
+    /**
+     * This attribute lets you specify the alternative text.
+     */
+    alt: string;
+    /**
+     * If true, the component will be sized to match the image's intrinsic size when not constrained via CSS dimension properties (for example, height or width). If false, the component will never force its height to match the image's intrinsic size. The width, however, will match the intrinsic width. In GeneXus terms, it will auto grow horizontally, but not vertically.
+     */
+    autoGrow: true;
+    /**
+     * This attribute lets you specify the description of the cancel action button in the modal.
+     */
+    cancelButtonText: "CANCEL";
+    /**
+     * This attribute lets you specify the description of the change image button in the modal.
+     */
+    changeButtonText: "Change image...";
+    /**
+     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+     */
+    disabled: false;
+    /**
+     * This attribute lets you specify the height.
+     */
+    height: string;
+    /**
+     * True to highlight control when an action is fired.
+     */
+    highlightable: false;
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode: "collapse" | "keep-space";
+    /**
+     * True to lazy load the image, when it enters the viewport.
+     */
+    lazyLoad: true;
+    /**
+     * This attribute lets you specify the low resolution image SRC.
+     */
+    lowResolutionSrc: "";
+    /**
+     * This attribute lets you specify the modal title.
+     */
+    modalTitle: any;
+    /**
+     * This attribute lets you specify if the image is readonly. If readonly, it will not allow to use the edit button. In fact, the edit button will not be shown.
+     */
+    readonly: false;
+    /**
+     * This attribute lets you specify the description of the remove image button in the modal.
+     */
+    removeButtonText: "Remove image";
+    /**
+     * This attribute allows specifing how the image is sized according to its container. `contain`, `cover`, `fill` and `none` map directly to the values of the CSS `object-fit` property. The `tile` value repeats the image, both vertically and horizontally, creating a tile effect.
+     */
+    scaleType: "contain" | "cover" | "fill" | "none" | "tile";
+    /**
+     * This attribute lets you specify the SRC.
+     */
+    src: string;
+    /**
+     * This attribute lets you specify the current state of the gx-image-picker.  | Value               | Details                                                                                      | | ------------------- | -------------------------------------------------------------------------------------------- | | `readyToUse`        | Allows you to choose, change or remove an image.                                             | | `fileReadyToUpload` | It is set only after an image has been selected or changed, not removed.                     | | `uploadingFile`     | It is set by the parent control to specifies when the image is being uploaded to the server. |  `fileReadyToUpload` and `uploadingFile` will not allow you to change or remove the current image.
+     */
+    state: "readyToUse" | "fileReadyToUpload" | "uploadingFile";
     /**
      * This attribute lets you specify the width.
      */
@@ -732,6 +819,10 @@ export namespace Components {
      * Sets the description text.
      */
     description: string;
+    /**
+     * Sets if the loading will be separated from the main content of the page. If `dialog = true` the `gx-loading` will be displayed separately from the main content the web page in a dialog box. If `dialog = false` the `gx-loading` will be displayed inside its container and will not be separated from the web page.
+     */
+    dialog: false;
     /**
      * Sets if the loading dialog is presented.
      */
@@ -904,6 +995,10 @@ export namespace Components {
      */
     caption: string;
     /**
+     * This attribute lets you specify the position of the navbar in the viewport. If `position = "top"` the navbar will be placed normally at the top of the viewport. If `position = "bottom"` the navbar will be placed normally at the bottom of the viewport. This `position` of navbar is used to show navigation links.
+     */
+    position: "top" | "bottom";
+    /**
      * True to show the back button
      */
     showBackButton: false;
@@ -1055,7 +1150,7 @@ export namespace Components {
       | "StepTimeline"
       | "Sparkline";
     /**
-     * Title of the QueryViewer
+     * Version of data
      */
     dataVersionId: number;
     /**
@@ -1550,6 +1645,14 @@ export namespace Components {
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode: "collapse" | "keep-space";
+    /**
+     * Defines how the tabs will be distributed in the Strip.  | Value        | Details                                                                            | | ------------ | ---------------------------------------------------------------------------------- | | `scoll`      | Allows scrolling the tab control when the number of tabs exceeds the screen width. | | `fixed-size` | Tabs are fixed size. Used with any amount of tabs.                                 |
+     */
+    tabsDistribution: "scroll" | "fixed-size";
+    /**
+     * Specifies the position to show the tabs.
+     */
+    tabsPosition: "top" | "bottom";
   }
   interface GxTabCaption {
     /**
@@ -1559,7 +1662,7 @@ export namespace Components {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable: false;
+    highlightable: boolean;
     /**
      * This attribute lets you specify the relative location of the image to the text.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `above`  | The image is located above the text.                    | | `before` | The image is located before the text, in the same line. | | `after`  | The image is located after the text, in the same line.  | | `below`  | The image is located below the text.                    | | `behind` | The image is located behind the text.                   |
      */
@@ -1632,6 +1735,10 @@ export namespace Components {
      */
     disabled: false;
     /**
+     * It specifies the format that will have the textblock control.  If `format` = `HTML`, the textblock control works as an HTML div and the innerHTML will be the same as the `inner` property specifies.  If `format` = `Text`, the control works as a normal textblock control and it is affected by most of the defined properties.
+     */
+    format: "Text" | "HTML";
+    /**
      * True to highlight control when an action is fired.
      */
     highlightable: false;
@@ -1639,6 +1746,10 @@ export namespace Components {
      * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
      */
     href: "";
+    /**
+     * Used as the innerHTML when `format` = `HTML`.
+     */
+    inner: string;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -1824,6 +1935,13 @@ declare global {
   var HTMLGxImageElement: {
     prototype: HTMLGxImageElement;
     new (): HTMLGxImageElement;
+  };
+  interface HTMLGxImagePickerElement
+    extends Components.GxImagePicker,
+      HTMLStencilElement {}
+  var HTMLGxImagePickerElement: {
+    prototype: HTMLGxImagePickerElement;
+    new (): HTMLGxImagePickerElement;
   };
   interface HTMLGxInteractiveImageElement
     extends Components.GxInteractiveImage,
@@ -2058,6 +2176,7 @@ declare global {
     "gx-group": HTMLGxGroupElement;
     "gx-icon": HTMLGxIconElement;
     "gx-image": HTMLGxImageElement;
+    "gx-image-picker": HTMLGxImagePickerElement;
     "gx-interactive-image": HTMLGxInteractiveImageElement;
     "gx-layout": HTMLGxLayoutElement;
     "gx-loading": HTMLGxLoadingElement;
@@ -2141,6 +2260,10 @@ declare namespace LocalJSX {
      */
     disabled?: false;
     /**
+     * This attribute lets you specify the height.
+     */
+    height?: string;
+    /**
      * True to highlight control when an action is fired.
      */
     highlightable?: false;
@@ -2156,6 +2279,10 @@ declare namespace LocalJSX {
      * This attribute lets you specify the size of the button.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `large`  | Large sized button.                                     | | `normal` | Standard sized button.                                  | | `small`  | Small sized button.                                     |
      */
     size?: "large" | "normal" | "small";
+    /**
+     * This attribute lets you specify the width.
+     */
+    width?: string;
   }
   interface GxCanvas {
     /**
@@ -2179,7 +2306,7 @@ declare namespace LocalJSX {
      */
     onSwipeDown?: (event: CustomEvent<any>) => void;
     /**
-     * Emitted when the element is swiped left direction..
+     * Emitted when the element is swiped left direction.
      */
     onSwipeLeft?: (event: CustomEvent<any>) => void;
     /**
@@ -2252,6 +2379,10 @@ declare namespace LocalJSX {
      * The `input` event is emitted when a change to the element's value is committed by the user.
      */
     onInput?: (event: CustomEvent<any>) => void;
+    /**
+     * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
+     */
+    readonly?: false;
     /**
      * The value when the checkbox is 'off'
      */
@@ -2339,9 +2470,17 @@ declare namespace LocalJSX {
       | "caption1"
       | "caption2";
     /**
+     * It specifies the format that will have the edit control.  If `format` = `HTML`, the edit control works as an HTML div and the innerHTML will be the same as the `inner` property specifies. Also, it does not allow any input/editable UI since it works as an HTML div.  If `format` = `Text`, the edit control works as a normal input control and it is affected by most of the defined properties.
+     */
+    format?: "Text" | "HTML";
+    /**
      * True to highlight control when an action is fired.
      */
     highlightable?: false;
+    /**
+     * Used as the innerHTML when `format` = `HTML`.
+     */
+    inner?: string;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -2375,13 +2514,9 @@ declare namespace LocalJSX {
      */
     readonly?: boolean;
     /**
-     * If true, a trigger button is shown next to the edit field. The button can be customized using `trigger-text` and `trigger-class` attributes, or adding a child element with `slot="trigger-content"` attribute to specify the content inside the trigger button.
+     * If true, a trigger button is shown next to the edit field. The button can be customized adding a child element with `slot="trigger-content"` attribute to specify the content inside the trigger button.
      */
     showTrigger?: boolean;
-    /**
-     * The text of the trigger button. If a text is specified and an image is specified (through an element with `slot="trigger-content"`), the content is ignored and the text is used instead.
-     */
-    triggerText?: string;
     /**
      * The type of control to render. A subset of the types supported by the `input` element is supported:  * `"date"` * `"datetime-local"` * `"email"` * `"file"` * `"number"` * `"password"` * `"search"` * `"tel"` * `"text"` * `"url"`
      */
@@ -2395,6 +2530,7 @@ declare namespace LocalJSX {
       | "search"
       | "tel"
       | "text"
+      | "time"
       | "url";
     /**
      * The initial value of the control.
@@ -2593,7 +2729,7 @@ declare namespace LocalJSX {
     /**
      * Emitted when the user taps/clicks on the slide's container.
      */
-    onGxGridClick?: (event: CustomEvent<void>) => void;
+    onGxGridClick?: (event: CustomEvent<any>) => void;
     /**
      * Emitted after the active slide has changed.
      */
@@ -2605,27 +2741,27 @@ declare namespace LocalJSX {
     /**
      * Emitted when the user double taps on the slide's container.
      */
-    onGxGridDoubleClick?: (event: CustomEvent<void>) => void;
+    onGxGridDoubleClick?: (event: CustomEvent<any>) => void;
     /**
      * Emitted when the slider is actively being moved.
      */
-    onGxGridDrag?: (event: CustomEvent<void>) => void;
+    onGxGridDrag?: (event: CustomEvent<any>) => void;
     /**
      * Emitted when the next slide has ended.
      */
-    onGxGridNextEnd?: (event: CustomEvent<void>) => void;
+    onGxGridNextEnd?: (event: CustomEvent<any>) => void;
     /**
      * Emitted when the next slide has started.
      */
-    onGxGridNextStart?: (event: CustomEvent<void>) => void;
+    onGxGridNextStart?: (event: CustomEvent<any>) => void;
     /**
      * Emitted when the previous slide has ended.
      */
-    onGxGridPrevEnd?: (event: CustomEvent<void>) => void;
+    onGxGridPrevEnd?: (event: CustomEvent<any>) => void;
     /**
      * Emitted when the previous slide has started.
      */
-    onGxGridPrevStart?: (event: CustomEvent<void>) => void;
+    onGxGridPrevStart?: (event: CustomEvent<any>) => void;
     /**
      * Emitted when the slider is at the last slide.
      */
@@ -2633,27 +2769,27 @@ declare namespace LocalJSX {
     /**
      * Emitted when the slider is at its initial position.
      */
-    onGxGridReachStart?: (event: CustomEvent<void>) => void;
+    onGxGridReachStart?: (event: CustomEvent<any>) => void;
     /**
      * Emitted when the user releases the touch.
      */
-    onGxGridTouchEnd?: (event: CustomEvent<void>) => void;
+    onGxGridTouchEnd?: (event: CustomEvent<any>) => void;
     /**
      * Emitted when the user first touches the slider.
      */
-    onGxGridTouchStart?: (event: CustomEvent<void>) => void;
+    onGxGridTouchStart?: (event: CustomEvent<any>) => void;
     /**
      * Emitted when the slide transition has ended.
      */
-    onGxGridTransitionEnd?: (event: CustomEvent<void>) => void;
+    onGxGridTransitionEnd?: (event: CustomEvent<any>) => void;
     /**
      * Emitted when the slide transition has started.
      */
-    onGxGridTransitionStart?: (event: CustomEvent<void>) => void;
+    onGxGridTransitionStart?: (event: CustomEvent<any>) => void;
     /**
      * Emitted before the active slide has changed.
      */
-    onGxGridWillChange?: (event: CustomEvent<void>) => void;
+    onGxGridWillChange?: (event: CustomEvent<any>) => void;
     /**
      * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
      */
@@ -2790,7 +2926,7 @@ declare namespace LocalJSX {
     /**
      * This attribute lets you specify the alternative text.
      */
-    alt?: "";
+    alt?: string;
     /**
      * If true, the component will be sized to match the image's intrinsic size when not constrained via CSS dimension properties (for example, height or width). If false, the component will never force its height to match the image's intrinsic size. The width, however, will match the intrinsic width. In GeneXus terms, it will auto grow horizontally, but not vertically.
      */
@@ -2826,7 +2962,85 @@ declare namespace LocalJSX {
     /**
      * This attribute lets you specify the SRC.
      */
-    src?: "";
+    src?: string;
+    /**
+     * This attribute lets you specify the width.
+     */
+    width?: string;
+  }
+  interface GxImagePicker {
+    /**
+     * This attribute lets you specify the alternative text.
+     */
+    alt?: string;
+    /**
+     * If true, the component will be sized to match the image's intrinsic size when not constrained via CSS dimension properties (for example, height or width). If false, the component will never force its height to match the image's intrinsic size. The width, however, will match the intrinsic width. In GeneXus terms, it will auto grow horizontally, but not vertically.
+     */
+    autoGrow?: true;
+    /**
+     * This attribute lets you specify the description of the cancel action button in the modal.
+     */
+    cancelButtonText?: "CANCEL";
+    /**
+     * This attribute lets you specify the description of the change image button in the modal.
+     */
+    changeButtonText?: "Change image...";
+    /**
+     * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
+     */
+    disabled?: false;
+    /**
+     * This attribute lets you specify the height.
+     */
+    height?: string;
+    /**
+     * True to highlight control when an action is fired.
+     */
+    highlightable?: false;
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode?: "collapse" | "keep-space";
+    /**
+     * True to lazy load the image, when it enters the viewport.
+     */
+    lazyLoad?: true;
+    /**
+     * This attribute lets you specify the low resolution image SRC.
+     */
+    lowResolutionSrc?: "";
+    /**
+     * This attribute lets you specify the modal title.
+     */
+    modalTitle?: any;
+    /**
+     * Fired when the image is clicked
+     */
+    onClick?: (event: CustomEvent<any>) => void;
+    /**
+     * Fired when the image is changed
+     */
+    onOnImageChanged?: (event: CustomEvent<File>) => void;
+    /**
+     * This attribute lets you specify if the image is readonly. If readonly, it will not allow to use the edit button. In fact, the edit button will not be shown.
+     */
+    readonly?: false;
+    /**
+     * This attribute lets you specify the description of the remove image button in the modal.
+     */
+    removeButtonText?: "Remove image";
+    /**
+     * This attribute allows specifing how the image is sized according to its container. `contain`, `cover`, `fill` and `none` map directly to the values of the CSS `object-fit` property. The `tile` value repeats the image, both vertically and horizontally, creating a tile effect.
+     */
+    scaleType?: "contain" | "cover" | "fill" | "none" | "tile";
+    /**
+     * This attribute lets you specify the SRC.
+     */
+    src?: string;
+    /**
+     * This attribute lets you specify the current state of the gx-image-picker.  | Value               | Details                                                                                      | | ------------------- | -------------------------------------------------------------------------------------------- | | `readyToUse`        | Allows you to choose, change or remove an image.                                             | | `fileReadyToUpload` | It is set only after an image has been selected or changed, not removed.                     | | `uploadingFile`     | It is set by the parent control to specifies when the image is being uploaded to the server. |  `fileReadyToUpload` and `uploadingFile` will not allow you to change or remove the current image.
+     */
+    state?: "readyToUse" | "fileReadyToUpload" | "uploadingFile";
     /**
      * This attribute lets you specify the width.
      */
@@ -2885,6 +3099,10 @@ declare namespace LocalJSX {
      * Sets the description text.
      */
     description?: string;
+    /**
+     * Sets if the loading will be separated from the main content of the page. If `dialog = true` the `gx-loading` will be displayed separately from the main content the web page in a dialog box. If `dialog = false` the `gx-loading` will be displayed inside its container and will not be separated from the web page.
+     */
+    dialog?: false;
     /**
      * Sets if the loading dialog is presented.
      */
@@ -3104,6 +3322,10 @@ declare namespace LocalJSX {
      */
     onToggleButtonClick?: (event: CustomEvent<any>) => void;
     /**
+     * This attribute lets you specify the position of the navbar in the viewport. If `position = "top"` the navbar will be placed normally at the top of the viewport. If `position = "bottom"` the navbar will be placed normally at the bottom of the viewport. This `position` of navbar is used to show navigation links.
+     */
+    position?: "top" | "bottom";
+    /**
      * True to show the back button
      */
     showBackButton?: false;
@@ -3259,7 +3481,7 @@ declare namespace LocalJSX {
       | "StepTimeline"
       | "Sparkline";
     /**
-     * Title of the QueryViewer
+     * Version of data
      */
     dataVersionId?: number;
     /**
@@ -3804,6 +4026,14 @@ declare namespace LocalJSX {
      * Fired when the active tab is changed
      */
     onTabChange?: (event: CustomEvent<any>) => void;
+    /**
+     * Defines how the tabs will be distributed in the Strip.  | Value        | Details                                                                            | | ------------ | ---------------------------------------------------------------------------------- | | `scoll`      | Allows scrolling the tab control when the number of tabs exceeds the screen width. | | `fixed-size` | Tabs are fixed size. Used with any amount of tabs.                                 |
+     */
+    tabsDistribution?: "scroll" | "fixed-size";
+    /**
+     * Specifies the position to show the tabs.
+     */
+    tabsPosition?: "top" | "bottom";
   }
   interface GxTabCaption {
     /**
@@ -3813,7 +4043,7 @@ declare namespace LocalJSX {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable?: false;
+    highlightable?: boolean;
     /**
      * This attribute lets you specify the relative location of the image to the text.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `above`  | The image is located above the text.                    | | `before` | The image is located before the text, in the same line. | | `after`  | The image is located after the text, in the same line.  | | `below`  | The image is located below the text.                    | | `behind` | The image is located behind the text.                   |
      */
@@ -3910,6 +4140,10 @@ declare namespace LocalJSX {
      */
     disabled?: false;
     /**
+     * It specifies the format that will have the textblock control.  If `format` = `HTML`, the textblock control works as an HTML div and the innerHTML will be the same as the `inner` property specifies.  If `format` = `Text`, the control works as a normal textblock control and it is affected by most of the defined properties.
+     */
+    format?: "Text" | "HTML";
+    /**
      * True to highlight control when an action is fired.
      */
     highlightable?: false;
@@ -3917,6 +4151,10 @@ declare namespace LocalJSX {
      * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
      */
     href?: "";
+    /**
+     * Used as the innerHTML when `format` = `HTML`.
+     */
+    inner?: string;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -3970,6 +4208,7 @@ declare namespace LocalJSX {
     "gx-group": GxGroup;
     "gx-icon": GxIcon;
     "gx-image": GxImage;
+    "gx-image-picker": GxImagePicker;
     "gx-interactive-image": GxInteractiveImage;
     "gx-layout": GxLayout;
     "gx-loading": GxLoading;
@@ -4050,6 +4289,8 @@ declare module "@stencil/core" {
       "gx-group": LocalJSX.GxGroup & JSXBase.HTMLAttributes<HTMLGxGroupElement>;
       "gx-icon": LocalJSX.GxIcon & JSXBase.HTMLAttributes<HTMLGxIconElement>;
       "gx-image": LocalJSX.GxImage & JSXBase.HTMLAttributes<HTMLGxImageElement>;
+      "gx-image-picker": LocalJSX.GxImagePicker &
+        JSXBase.HTMLAttributes<HTMLGxImagePickerElement>;
       "gx-interactive-image": LocalJSX.GxInteractiveImage &
         JSXBase.HTMLAttributes<HTMLGxInteractiveImageElement>;
       "gx-layout": LocalJSX.GxLayout &
