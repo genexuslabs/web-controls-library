@@ -62,12 +62,14 @@ predefined slots:
 ### Used by
 
 - [gx-action-sheet](../action-sheet)
+- [gx-image-picker](../image-picker)
 
 ### Graph
 
 ```mermaid
 graph TD;
   gx-action-sheet --> gx-modal
+  gx-image-picker --> gx-modal
   style gx-modal fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
