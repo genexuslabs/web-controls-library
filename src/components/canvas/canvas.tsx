@@ -20,16 +20,19 @@ import { Swipeable, makeSwipeable } from "../common/swipeable";
 const THRESHOLD = 1.75;
 
 /* - - - - - - - - SELECTORS - - - - - - - - */
-const ALL_CANVAS_CELLS = ":scope > gx-canvas-cell";
+const ALL_CANVAS_CELLS = ":scope > .canvas-cells-container > gx-canvas-cell";
 
-const AUTOGROW_CANVAS_CELLS = ":scope > .auto-grow-cell";
+const AUTOGROW_CANVAS_CELLS =
+  ":scope > .canvas-cells-container > .auto-grow-cell";
 
 const AUTOGROW_CANVAS_CELL_CLASS = (id: string) => {
   return `autogrow-cell-${id}`;
 };
 
 const AUTOGROW_CANVAS_CELL_BY_ID = (id: string) => {
-  return `:scope > .${AUTOGROW_CANVAS_CELL_CLASS(id)}`;
+  return `:scope > .canvas-cells-container > .${AUTOGROW_CANVAS_CELL_CLASS(
+    id
+  )}`;
 };
 
 @Component({
@@ -323,7 +326,9 @@ export class Canvas
           "min-height": this.minHeight
         }}
       >
-        <slot />
+        <div class="canvas-cells-container">
+          <slot />
+        </div>
       </Host>
     );
   }

@@ -4,4 +4,10 @@ gx-canvas {
   @include visibility(block);
 
   position: relative;
+
+  > .canvas-cells-container {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+  }
 }
