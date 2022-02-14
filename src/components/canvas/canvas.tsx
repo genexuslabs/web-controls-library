@@ -34,6 +34,13 @@ export class Canvas
   @Element() element: HTMLGxCanvasElement;
 
   /**
+   * This attribute lets you specify if the element is disabled.
+   * If disabled, it will not fire any user interaction related event
+   * (for example, click event).
+   */
+  @Prop() readonly disabled = false;
+
+  /**
    * This attribute lets you specify how this element will behave when hidden.
    *
    * | Value        | Details                                                                     |
@@ -44,11 +51,15 @@ export class Canvas
   @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
-   * This attribute lets you specify if the element is disabled.
-   * If disabled, it will not fire any user interaction related event
-   * (for example, click event).
+   * This attribute defines the minimum height of the cell when its contents
+   * are visible.
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly minHeight: string = null;
+
+  /**
+   * This attribute lets you specify the width of the control.
+   */
+  @Prop() readonly width: string;
 
   /**
    * Emitted when the element is clicked.
