@@ -5,7 +5,6 @@ import {
   EventEmitter,
   Prop,
   h,
-  State,
   Host
 } from "@stencil/core";
 import {
@@ -82,9 +81,6 @@ export class Canvas
    */
   @Event() swipeLeft: EventEmitter;
 
-  @State() width: number = null;
-  @State() height: number = null;
-
   private watchForItemsObserver: MutationObserver;
 
   private handleClick(event: UIEvent) {
@@ -97,17 +93,6 @@ export class Canvas
 
   componentDidLoad() {
     makeSwipeable(this);
-    this.watchForItemsObserver = new MutationObserver(mutationsList => {
-      const shouldUpdateDimensions = mutationsList.some(
-        mutation =>
-          mutation.type === "attributes" || mutation.type === "childList"
-      );
-      if (shouldUpdateDimensions) {
-        this.calculateDimensions();
-      }
-    });
-    this.watchForItemsObserver.observe(this.element, { childList: true });
-    this.calculateDimensions();
   }
 
   disconnectedCallback() {
@@ -117,33 +102,11 @@ export class Canvas
     }
   }
 
-  private calculateDimensions() {
-    const dimensions = Array.from(this.element.childNodes)
-      .filter(node => node instanceof HTMLElement)
-      .map((element: HTMLElement) => [
-        element.clientWidth + element.offsetLeft,
-        element.clientHeight + element.offsetTop
-      ]);
-    this.width = Math.max(...dimensions.map(tuple => tuple[0]));
-    this.height = Math.max(...dimensions.map(tuple => tuple[1]));
-  }
-
   render() {
     this.element.addEventListener("click", this.handleClick);
 
     return (
-      <Host
-        style={{
-          width:
-            this.width !== null && this.width != 0
-              ? `${this.width}px`
-              : this.element.style.width, // Default width
-          height:
-            this.height !== null && this.height != 0
-              ? `${this.height}px`
-              : this.element.style.height // Default height
-        }}
-      >
+      <Host>
         <slot />
       </Host>
     );
