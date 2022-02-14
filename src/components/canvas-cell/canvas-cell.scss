@@ -1,6 +1,6 @@
-@import "../common/_base";
+@import "../common/_base.scss";
 
 gx-canvas-cell {
-  position: absolute;
   @include containerCell();
+  position: absolute;
 }

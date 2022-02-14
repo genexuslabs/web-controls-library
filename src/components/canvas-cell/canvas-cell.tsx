@@ -1,4 +1,4 @@
-import { Component, Element, Prop, h } from "@stencil/core";
+import { Component, Element, Prop, h, Host } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
@@ -15,6 +15,24 @@ export class CanvasCell implements GxComponent {
   @Prop() readonly align: "left" | "right" | "center" = "left";
 
   /**
+   * Defines the left position of the control which is relative to the position
+   * of its `gx-canvas` container.
+   * This attribute maps directly to the `left` CSS property.
+   */
+  @Prop() readonly left: string = null;
+
+  /**
+   * This attribute defines the maximum height of the cell.
+   */
+  @Prop() readonly maxHeight: string = null;
+
+  /**
+   * This attribute defines the minimum height of the cell when its contents
+   * are visible.
+   */
+  @Prop() readonly minHeight: string = null;
+
+  /**
    * This attribute defines how the control behaves when the content overflows.
    *
    * | Value    | Details                                                     |
@@ -26,11 +44,38 @@ export class CanvasCell implements GxComponent {
   @Prop() readonly overflowMode: "scroll" | "clip";
 
   /**
-   * Defines the vertical aligmnent of the content of the cell.
+   * Defines the top position of the control which is relative to the position
+   * of its `gx-canvas` container.
+   * This attribute maps directly to the `top` CSS property.
+   */
+  @Prop() readonly top: string = null;
+
+  /**
+   * Defines the vertical alignment of the content of the cell.
    */
   @Prop() readonly valign: "top" | "bottom" | "medium" = "top";
 
+  /**
+   * This attribute lets you specify the width of the control.
+   */
+  @Prop() readonly width: string;
+
   render() {
-    return <slot />;
+    return (
+      <Host
+        class={{
+          "auto-grow-cell": this.maxHeight == null
+        }}
+        style={{
+          top: this.top,
+          left: this.left,
+          width: this.width,
+          "min-height": this.minHeight,
+          "max-height": this.maxHeight
+        }}
+      >
+        <slot />
+      </Host>
+    );
   }
 }
