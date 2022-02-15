@@ -223,14 +223,6 @@ export class Canvas
     this.canvasFixedHeight = maxHeightConstraint;
   }
 
-  private handleClick(event: UIEvent) {
-    if (this.disabled) {
-      return;
-    }
-
-    this.gxClick.emit(event);
-  }
-
   private getCanvasCellTotalHeight(
     canvasCell: HTMLGxCanvasCellElement
   ): number {
@@ -278,10 +270,6 @@ export class Canvas
     if (canvasCell.maxHeight != null) {
       canvasCell.style.setProperty("max-height", fixedHeight);
     }
-  }
-
-  componentDidLoad() {
-    makeSwipeable(this);
   }
 
   /*  The height adjustment of the gx-canvas will trigger if one of the
@@ -333,6 +321,18 @@ export class Canvas
     });
 
     return maxCanvasCellHeight;
+  }
+
+  private handleClick(event: UIEvent) {
+    if (this.disabled) {
+      return;
+    }
+
+    this.gxClick.emit(event);
+  }
+
+  componentDidLoad() {
+    makeSwipeable(this);
   }
 
   disconnectedCallback() {
