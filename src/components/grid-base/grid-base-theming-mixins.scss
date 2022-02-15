@@ -48,10 +48,19 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller) >, & > *
       }
     }
 
-    @if ($horizontal-line != null) {
-      /// CSS Grid Smart. row-gap css property does not support color.
-      gx-grid-smart-cell {
-        & > *::after {
+    @if ($group-separator != null) {
+      .gx-group-separator {
+        @extend #{$group-separator} !optional;
+      }
+    }
+  }
+
+  // HorizontalLine only applies when the Grid has vertical cells
+  &:not([direction="horizontal"]) {
+    #{$gridContentSelector} {
+      @if ($horizontal-line != null) {
+        /// CSS Grid Smart. row-gap css property does not support color.
+        gx-grid-smart-cell::after {
           --grid--horizontal-line-separator-default: block;
           @extend #{$horizontal-line} !optional;
           content: "";
@@ -65,12 +74,6 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller) >, & > *
           left: 0;
           right: 0;
         }
-      }
-    }
-
-    @if ($group-separator != null) {
-      .gx-group-separator {
-        @extend #{$group-separator} !optional;
       }
     }
   }
