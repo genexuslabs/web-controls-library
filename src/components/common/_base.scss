@@ -23,10 +23,12 @@ $gx-xsmall-breakpoint-plus-1: 769px;
   }
 }
 
-@mixin containerCell() {
+@mixin containerCell($has-overflow-mode: true) {
   @include visibility(flex);
 
-  @include overflowMode();
+  @if $has-overflow-mode {
+    @include overflowMode();
+  }
 
   &:not([align]),
   &[align="left"] {
