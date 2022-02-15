@@ -1,0 +1,7 @@
+@import "../common/_base.scss";
+
+gx-grid-smart-cell {
+  // Support for margin with variables
+  @include reset-variables();
+  @include container-margins();
+}
