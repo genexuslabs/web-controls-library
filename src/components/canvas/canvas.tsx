@@ -127,13 +127,43 @@ export class Canvas
 
   // Observers
   private watchForItemsObserver: ResizeObserver;
+  private watchForCanvasObserver: ResizeObserver;
 
   /**
-   *
+   *  If the layout is loaded and the `gx-canvas` control has at least one
+   *  `gx-canvas-cell` with autoGrow == True (maxHeight == null), this method
+   *  will set the observers to implement autoGrow in the `gx-canvas` control.
    */
   @Method()
   async setObserver() {
+    this.setCanvasObserver();
+
     this.setCanvasCellsObserver();
+  }
+
+  /*  Observes canvas resizing. In each resize of the gx-canvas, it checks if
+      there is a gx-canvas-cell that is taller than the gx-canvas.
+
+      This observer is used while: this.canvasFixedHeight == null
+  */
+  private setCanvasObserver() {
+    this.watchForCanvasObserver = new ResizeObserver(() => {
+      if (this.canvasFixedHeight != null) {
+        this.watchForCanvasObserver.disconnect();
+        this.watchForCanvasObserver = undefined;
+        return;
+      }
+
+      /*  If the canvas decreased its height and there is a gx-canvas-cell that
+          provokes overflow-y, we fix the canvas height 
+      */
+      const maxHeightConstraint = this.getMaxHeightConstraint();
+      if (this.element.clientHeight + THRESHOLD < maxHeightConstraint) {
+        this.fixCanvasHeight(maxHeightConstraint);
+      }
+    });
+
+    this.watchForCanvasObserver.observe(this.element);
   }
 
   /*  Observes each gx-canvas-cell that has auto-grow = True. When interrupt,
@@ -282,7 +312,7 @@ export class Canvas
   }
 
   /*  Returns the maxHeight of all gx-canvas-cell that has auto-grow == True.
-      Also, stores the id of the gx-canvas-cell that acomplish the previous
+      Also, it stores the id of the gx-canvas-cell that accomplish the previous
       condition
   */
   private getMaxHeightConstraint(): number {
@@ -309,6 +339,11 @@ export class Canvas
     if (this.watchForItemsObserver !== undefined) {
       this.watchForItemsObserver.disconnect();
       this.watchForItemsObserver = undefined;
+    }
+
+    if (this.watchForCanvasObserver !== undefined) {
+      this.watchForCanvasObserver.disconnect();
+      this.watchForCanvasObserver = undefined;
     }
   }
 
