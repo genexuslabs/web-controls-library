@@ -4,6 +4,8 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller), & > * >
 
 .gx-grid-base {
   flex: 1;
+  align-self: stretch;
+
   #{$gridContentSelector} {
     flex: 1;
   }
