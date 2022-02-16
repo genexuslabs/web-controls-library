@@ -33,19 +33,17 @@ export class GridEmptyIndicator implements ComponentInterface {
     return (
       <Host>
         <gx-canvas>
-          {this.image ? (
+          {this.image && (
             <gx-canvas-cell class={EMPTY_IMAGE_CLASS}>
-              {/* 
-              // @ts-ignore */}
               <gx-image src={this.image} class={this.imageClass}></gx-image>
             </gx-canvas-cell>
-          ) : null}
+          )}
 
-          {this.text ? (
+          {this.text && (
             <gx-canvas-cell class={EMPTY_TEXT_CLASS}>
               <gx-textblock class={this.textClass}>{this.text}</gx-textblock>
             </gx-canvas-cell>
-          ) : null}
+          )}
         </gx-canvas>
       </Host>
     );
