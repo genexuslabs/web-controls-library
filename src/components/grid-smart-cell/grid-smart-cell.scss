@@ -1,7 +1,11 @@
 @import "../common/_base.scss";
+@import "../common/_common-styling-config.scss";
 
 gx-grid-smart-cell {
   // Support for margin with variables
   @include reset-variables();
   @include container-margins();
+
+  transition: background-color $transition-delay, border-color $transition-delay,
+    color $transition-delay, filter $transition-delay;
 }
