@@ -70,15 +70,15 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller) >, & > *
           --grid--horizontal-line-separator-default: block;
           @extend #{$horizontal-line} !optional;
           content: "";
-          height: var(--grid--horizontal-line-size, 1px);
           display: var(
             --grid--horizontal-line-separator,
             --grid--horizontal-line-separator-default
           );
           position: absolute;
+          height: var(--grid--horizontal-line-size, 1px);
+          right: 0;
           bottom: 0;
           left: 0;
-          right: 0;
         }
       }
     }
