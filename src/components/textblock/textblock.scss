@@ -3,11 +3,11 @@
 
 // Used to horizontally and vertically align the text
 @mixin alignment($text-align: null, $align-items: null) {
-  .content {
-    @if ($text-align != null) {
-      text-align: $text-align;
-    }
+  @if ($text-align != null) {
+    text-align: $text-align;
+  }
 
+  .content {
     .html-container,
     .readonly-content-container {
       @if ($align-items != null) {

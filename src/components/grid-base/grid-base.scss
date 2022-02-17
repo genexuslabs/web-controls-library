@@ -2,6 +2,48 @@
 
 $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller), & > * > .scrollable-content";
 
+// Used to horizontally and vertically align the text and image
+@mixin empty-placeholder-alignment(
+  $text-align: null,
+  $justify-content: null,
+  $align-items: null
+) {
+  > .grid-empty-placeholder
+    > div
+    > .empty-indicator
+    > .empty-indicator-container {
+    @if $text-align != null {
+      > .empty-indicator-text {
+        text-align: $text-align;
+      }
+
+      > .empty-indicator-image {
+        justify-content: $justify-content;
+      }
+    }
+
+    @if $align-items != null {
+      align-items: $align-items;
+    }
+  }
+}
+
+[align="center"] > .gx-grid-empty {
+  @include empty-placeholder-alignment(center, center);
+}
+
+[align="right"] > .gx-grid-empty {
+  @include empty-placeholder-alignment(end, flex-end);
+}
+
+[valign="middle"] > .gx-grid-empty {
+  @include empty-placeholder-alignment($align-items: center);
+}
+
+[valign="bottom"] > .gx-grid-empty {
+  @include empty-placeholder-alignment($align-items: flex-end);
+}
+
 .gx-grid-base {
   flex: 1;
   align-self: stretch;
@@ -25,12 +67,11 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller), & > * >
   & > :first-child {
     @include visibility(none);
   }
+
   .grid-empty-placeholder {
     @include visibility(flex);
     flex: 1;
     height: 100%;
-    align-items: center;
-    justify-content: center;
   }
 }
 
