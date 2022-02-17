@@ -124,7 +124,7 @@ export class GridSmartCss
     }
   }
 
-  componentDidRender() {
+  componentDidLoad() {
     this.attachMouseScrollHandler();
   }
 
@@ -172,14 +172,17 @@ export class GridSmartCss
       startX = e.pageX - slider.offsetLeft;
       scrollLeft = slider.scrollLeft;
     });
+
     slider.addEventListener("mouseleave", () => {
       isDown = false;
       slider.classList.remove("active");
     });
+
     slider.addEventListener("mouseup", () => {
       isDown = false;
       slider.classList.remove(this.CSS_NAME_MOUSE_DRAG_ACTIVE);
     });
+
     slider.addEventListener("mousemove", e => {
       if (!isDown) {
         return;
