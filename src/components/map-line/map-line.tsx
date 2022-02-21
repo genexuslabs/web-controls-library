@@ -57,7 +57,7 @@ export class MapLine implements GxComponent {
     this.gxMapLineDidLoad.emit(this.lineInstance);
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.gxMapLineDeleted.emit(this.lineInstance);
   }
 

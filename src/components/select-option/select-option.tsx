@@ -91,7 +91,7 @@ export class SelectOption implements GxComponent, DisableableComponent {
     this.gxSelectDidLoad.emit({ select: this });
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.gxSelectDidUnload.emit({ select: this });
   }
 

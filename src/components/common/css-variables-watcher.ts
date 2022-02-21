@@ -35,7 +35,7 @@ export function cssVariablesWatcher(
     }
   );
 
-  // componentDidLoad, componentDidUpdate and componentDidUnload are overriden
+  // componentDidLoad, componentDidUpdate and disconnectedCallback are overriden
   // to start and end observing the mutations, and to update the properties values.
   overrideMethod(component, "componentDidLoad", {
     after: () => updatePropertiesFromCss(),
@@ -52,7 +52,7 @@ export function cssVariablesWatcher(
     after: () => updatePropertiesFromCss()
   });
 
-  overrideMethod(component, "componentDidUnload", {
+  overrideMethod(component, "disconnectedCallback", {
     before: () => classObserver.disconnect()
   });
 }

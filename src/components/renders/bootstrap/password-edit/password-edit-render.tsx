@@ -38,7 +38,7 @@ export class PasswordEditRender implements Renderer {
     }
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.innerEdit = null;
   }
 

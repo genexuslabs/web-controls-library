@@ -41,7 +41,7 @@ export class CardRender implements Renderer {
     }, 10);
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     if (this.bodyClickHandler) {
       document.body.removeEventListener("click", this.bodyClickHandler);
     }

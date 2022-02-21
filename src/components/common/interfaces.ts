@@ -35,7 +35,7 @@ export interface Renderer {
   componentDidLoad?: () => void;
   componentWillUpdate?: () => void;
   componentDidUpdate?: () => void;
-  componentDidUnload?: () => void;
+  disconnectedCallback?: () => void;
 }
 
 export interface RendererConstructor {

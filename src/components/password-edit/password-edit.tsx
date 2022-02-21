@@ -127,7 +127,7 @@ export class PasswordEdit
     return this.renderer.render();
   }
 
-  componentDidUnload() {
-    this.renderer.componentDidUnload();
+  disconnectedCallback() {
+    this.renderer.disconnectedCallback();
   }
 }
