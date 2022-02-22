@@ -48,7 +48,7 @@ export class GaugeRange implements GxComponent {
     this.gxGaugeRangeDidLoad.emit(this);
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.gxGaugeRangeDidUnload.emit(this);
   }
 

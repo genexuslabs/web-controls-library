@@ -91,6 +91,7 @@ export class Tab
 
   private setSelectedTab(captionElement: HTMLElement) {
     this.lastSelectedTab = captionElement;
+
     this.getCaptionSlots().forEach((slotElement: any, i) => {
       slotElement.selected = slotElement === captionElement;
       const nthChild = i + 1;
@@ -115,7 +116,7 @@ export class Tab
     captionElement: any,
     pageElement: HTMLElement
   ) {
-    pageElement.classList.toggle(
+    pageElement?.classList.toggle(
       "gx-tab-page--active",
       !!captionElement.selected
     );

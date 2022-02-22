@@ -210,7 +210,7 @@ export class GridInfiniteScroll implements ComponentInterface {
     this.ensure();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.scrollEl = null;
     this.attachedToWindow = false;
     this.attached = false;

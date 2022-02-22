@@ -154,7 +154,7 @@ export class MapMarker implements GxComponent {
     this.setPopup();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.gxMapMarkerDeleted.emit(this.markerInstance);
   }
 

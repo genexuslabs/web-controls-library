@@ -64,6 +64,13 @@ It also supports a set of items that will be rendered according to their priorit
 | `backButtonClick`   | Fired when the back button is clicked   | `CustomEvent<any>` |
 | `toggleButtonClick` | Fired when the toggle button is clicked | `CustomEvent<any>` |
 
+## Shadow Parts
+
+| Part               | Description |
+| ------------------ | ----------- |
+| `"back-button"`    |             |
+| `"default-button"` |             |
+
 ## Dependencies
 
 ### Depends on

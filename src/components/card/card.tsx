@@ -52,8 +52,8 @@ export class Card implements GxComponent, VisibilityComponent {
     this.renderer.componentDidUpdate();
   }
 
-  componentDidUnload() {
-    this.renderer.componentDidUnload();
+  disconnectedCallback() {
+    this.renderer.disconnectedCallback();
   }
 
   render() {
