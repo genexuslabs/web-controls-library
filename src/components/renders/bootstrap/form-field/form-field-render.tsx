@@ -1,6 +1,9 @@
-import { h } from "@stencil/core";
+import { h, Host } from "@stencil/core";
 import { Renderer } from "../../../common/interfaces";
 import { FormField } from "../../../form-field/form-field";
+
+// Class transforms
+import { tFormField } from "../../../css-transforms/css-transforms";
 
 let autoFormFieldId = 0;
 
@@ -37,19 +40,6 @@ export class FormFieldRender implements Renderer {
     };
   }
 
-  private shouldRenderLabelBefore() {
-    const formField = this.component;
-
-    return (
-      !formField.labelPosition ||
-      formField.labelPosition === "top" ||
-      formField.labelPosition === "right" ||
-      formField.labelPosition === "bottom" ||
-      formField.labelPosition === "left" ||
-      formField.labelPosition === "none"
-    );
-  }
-
   async componentDidLoad() {
     const formField = this.component;
 
@@ -71,17 +61,20 @@ export class FormFieldRender implements Renderer {
     }
   }
 
-  renderForRadio(renderLabel: boolean, renderLabelBefore: boolean, slot) {
+  renderForRadio(renderLabel: boolean, slot) {
     const labelId = `${this.formFieldId}-label`;
-    const labelPosition = this.component.labelPosition;
+    const formField = this.component;
+    const labelPosition = formField.labelPosition;
 
     const label = (
       <div
-        class={this.LABEL_WIDTH_BY_POSITION[labelPosition]}
+        class={{
+          [this.LABEL_WIDTH_BY_POSITION[labelPosition]]: true,
+          "gx-label": true
+        }}
         id={labelId}
-        data-part="label"
       >
-        <div class="label-content">{this.component.labelCaption}</div>
+        <div class="label-content">{formField.labelCaption}</div>
       </div>
     );
 
@@ -101,9 +94,8 @@ export class FormFieldRender implements Renderer {
             [labelPositionClassName]: isValidLabelPosition
           }}
         >
-          {renderLabel && renderLabelBefore ? label : null}
           <div class={this.getInnerControlContainerClass()}>{slot}</div>
-          {renderLabel && !renderLabelBefore ? label : null}
+          {renderLabel && label}
         </div>
       </div>
     );
@@ -115,7 +107,6 @@ export class FormFieldRender implements Renderer {
 
     const isRadioGroup =
       formField.element.querySelector("gx-radio-group[area='field']") !== null;
-    const renderLabelBefore = this.shouldRenderLabelBefore();
     const renderLabel = labelPosition !== "none";
 
     if (!this.formFieldId) {
@@ -124,12 +115,14 @@ export class FormFieldRender implements Renderer {
     }
 
     if (isRadioGroup) {
-      return this.renderForRadio(renderLabel, renderLabelBefore, slots.default);
+      return this.renderForRadio(renderLabel, slots.default);
     } else {
       const label = (
         <label
-          class={this.LABEL_WIDTH_BY_POSITION[labelPosition]}
-          data-part="label"
+          class={{
+            [this.LABEL_WIDTH_BY_POSITION[labelPosition]]: true,
+            "gx-label": true
+          }}
         >
           <div class="label-content">{formField.labelCaption}</div>
         </label>
@@ -147,21 +140,25 @@ export class FormFieldRender implements Renderer {
               "form-group": true,
               "no-gutters": true,
               "mb-0": true,
-              "flex-column": labelPosition === "top",
-              "flex-column-reverse": labelPosition === "bottom",
-              "flex-row-reverse": labelPosition === "right",
-              "flex-row": labelPosition === "left"
+              "flex-column-reverse": labelPosition === "top",
+              "flex-column": labelPosition === "bottom",
+              "flex-row": labelPosition === "right",
+              "flex-row-reverse": labelPosition === "left"
             }}
           >
-            {renderLabel && renderLabelBefore ? label : null}
             <div class={this.getInnerControlContainerClass()}>
               {slots.default}
             </div>
-            {renderLabel && !renderLabelBefore ? label : null}
+            {renderLabel && label}
           </div>
         );
 
-      return [<gx-bootstrap />, result];
+      return (
+        <Host class={tFormField(formField.cssClass)}>
+          <gx-bootstrap />
+          {result}
+        </Host>
+      );
     }
   }
 }
