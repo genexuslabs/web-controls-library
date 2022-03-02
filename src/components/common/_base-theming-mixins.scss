@@ -1,3 +1,13 @@
+@import "../css-transforms/scss-transforms";
+
+/// Helper mixin to ease styling custom vars of the custom elements
+/// @param {string} $class Base class of the custom vars properties
+@mixin custom-vars($class) {
+  &#{$gx-vars} {
+    @extend #{$class} !optional;
+  }
+}
+
 @mixin dragging-behavior(
   $accept-drag-class: null,
   $no-accept-drag-class: null,
@@ -23,5 +33,16 @@
     &.drag-over-class {
       @extend #{$drag-over-class} !optional;
     }
+  }
+}
+
+/// Helper mixin to ease styling highlightable custom elements
+/// @param {string} $class Base class of the highlight properties
+@mixin highlighted($class) {
+  &#{$gx-highlighted},
+  &.#{$gx-highlighted-dot}, // <----- It generates incorrect additional selectors
+  &#{$gx-highlighted-active}:active,
+  &#{$gx-highlighted-focus-within}:focus-within {
+    @extend #{$class} !optional;
   }
 }
