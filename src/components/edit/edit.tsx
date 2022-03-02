@@ -73,6 +73,11 @@ export class Edit implements FormComponent, HighlightableComponent {
   @Prop() readonly autocorrect: string;
 
   /**
+   *
+   */
+  @Prop() cssClass: string = null;
+
+  /**
    * Used to define the semantic of the element when readonly=true.
    *
    * Font categories are mapped to semantic HTML elements when rendered:
