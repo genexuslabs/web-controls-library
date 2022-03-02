@@ -1,0 +1,23 @@
+@import "../../../css-transforms/_scss-transforms";
+
+////
+/// @group theming-mixins
+////
+
+/// Helper mixin to ease styling gx-form-field label
+/// @param {string} $label Base class of the label of the component
+/// @param {string} $highlighted-label Class to be used on the label when the component's field is focused
+@mixin gx-form-field-label($label, $highlighted-label: null) {
+  // We extend the gx-form-field label with the base and highlighted class
+  &#{$gx-form-field} > .form-group {
+    & > .gx-label {
+      @extend #{$label} !optional;
+    }
+
+    @if $highlighted-label != null {
+      & > *:focus-within + .gx-label {
+        @extend #{$highlighted-label} !optional;
+      }
+    }
+  }
+}
