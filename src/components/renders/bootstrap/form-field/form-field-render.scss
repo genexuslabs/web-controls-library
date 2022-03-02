@@ -1,3 +1,5 @@
+@import "../../../common/_common-styling-config";
+
 gx-form-field {
   --elevation: 0;
 
@@ -131,6 +133,9 @@ gx-form-field {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: background-color $transition-delay,
+      border-color $transition-delay, color $transition-delay,
+      filter $transition-delay, opacity $transition-delay;
   }
 
   & > .form-group {
