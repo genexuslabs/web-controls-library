@@ -19,39 +19,39 @@
   $start-dragging-class: null,
   $drag-over-class: null
 ) {
-  @include dragging-behavior(
-    $accept-drag-class,
-    $no-accept-drag-class,
-    $start-dragging-class,
-    $drag-over-class
-  );
-  [data-part="field"],
-  [data-part="container"],
-  [data-readonly] {
-    @extend #{$class} !optional;
-  }
-  @if ($label != null) {
-    [data-part="label"] {
-      @extend #{$label} !optional;
-    }
-  }
-  @if ($highlighted != null) {
-    // Used when readonly = false
-    [data-part="field"]:focus,
-    [data-part="option-control"]:active,
-    [data-part="container"]:focus-within {
-      @extend #{$highlighted} !optional;
-    }
+  // @include dragging-behavior(
+  //   $accept-drag-class,
+  //   $no-accept-drag-class,
+  //   $start-dragging-class,
+  //   $drag-over-class
+  // );
+  // [data-part="field"],
+  // [data-part="container"],
+  // [data-readonly] {
+  //   @extend #{$class} !optional;
+  // }
+  // @if ($label != null) {
+  //   [data-part="label"] {
+  //     @extend #{$label} !optional;
+  //   }
+  // }
+  // @if ($highlighted != null) {
+  //   // Used when readonly = false
+  //   [data-part="field"]:focus,
+  //   [data-part="option-control"]:active,
+  //   [data-part="container"]:focus-within {
+  //     @extend #{$highlighted} !optional;
+  //   }
 
-    // Used when readonly = true or format = HTML and the control is not disabled
-    .gx-highlighted {
-      &:not([disabled]):not(.disabled),
-      &[disabled="false"] {
-        &[type="text"][readonly="true"] [data-readonly],
-        &[format="HTML"] [data-part="container"] {
-          @extend #{$highlighted} !optional;
-        }
-      }
-    }
-  }
+  //   // Used when readonly = true or format = HTML and the control is not disabled
+  //   .gx-highlighted {
+  //     &:not([disabled]):not(.disabled),
+  //     &[disabled="false"] {
+  //       &[type="text"][readonly="true"] [data-readonly],
+  //       &[format="HTML"] [data-part="container"] {
+  //         @extend #{$highlighted} !optional;
+  //       }
+  //     }
+  //   }
+  // }
 }
