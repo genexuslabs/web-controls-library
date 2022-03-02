@@ -153,8 +153,16 @@ export class FormFieldRender implements Renderer {
           </div>
         );
 
+      /*  Since to the control can recieve more than one class, we apply the 
+          "tFormField" transform for each class.
+      */
+      const formFieldClass = formField.cssClass
+        ?.split(" ")
+        .map(tFormField)
+        .join(" ");
+
       return (
-        <Host class={tFormField(formField.cssClass)}>
+        <Host class={formFieldClass}>
           <gx-bootstrap />
           {result}
         </Host>

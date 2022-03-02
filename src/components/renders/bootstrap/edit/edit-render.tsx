@@ -104,12 +104,21 @@ export class EditRender implements Renderer {
         : `gx-edit-auto-id-${autoEditId++}`;
     }
 
-    // Styling for gx-edit control
+    /*  Styling for gx-edit control.
+        Since to the control can recieve more than one class, we apply the
+        "tVars" and "tHighlightedFocusWithin" transforms for each class.
+    */
+    const editSplitClasses = edit.cssClass ? edit.cssClass.split(" ") : [];
+    const editVars = editSplitClasses.map(tVars).join(" ");
+    const editHighlighted = editSplitClasses
+      .map(tHighlightedFocusWithin)
+      .join(" ");
+
     const editClass = (showVars = false) => {
       return {
         [edit.cssClass]: true,
-        [tVars(edit.cssClass)]: showVars,
-        [tHighlightedFocusWithin(edit.cssClass)]: !edit.readonly
+        [editVars]: showVars,
+        [editHighlighted]: !edit.readonly
       };
     };
 
