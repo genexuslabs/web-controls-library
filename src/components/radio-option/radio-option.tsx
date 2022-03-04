@@ -108,7 +108,7 @@ export class RadioOption
     this.renderer.componentDidLoad();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.gxRadioDidUnload.emit({ radio: this });
   }
 

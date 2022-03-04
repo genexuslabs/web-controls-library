@@ -161,7 +161,7 @@ export class Lottie
     this.setAnimation();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.animation.destroy();
   }
 

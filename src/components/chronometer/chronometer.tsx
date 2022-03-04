@@ -100,7 +100,7 @@ export class Chronometer implements GxComponent {
     this.elapsedTime = this.value * this.getUnit();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.stop();
   }
 

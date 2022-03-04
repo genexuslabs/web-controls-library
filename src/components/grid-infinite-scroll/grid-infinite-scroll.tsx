@@ -6,11 +6,12 @@ import {
   EventEmitter,
   Method,
   Prop,
-  QueueApi,
   State,
   Watch,
   Host,
-  h
+  h,
+  readTask,
+  writeTask
 } from "@stencil/core";
 
 @Component({
@@ -41,11 +42,6 @@ export class GridInfiniteScroll implements ComponentInterface {
    * It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the intial batch does not overflow the main container
    */
   @Prop() readonly itemCount: number = 0;
-
-  /**
-   * A QueueAPI object
-   */
-  @Prop({ context: "queue" }) readonly queue!: QueueApi;
 
   /**
    * The threshold distance from the bottom
@@ -199,7 +195,7 @@ export class GridInfiniteScroll implements ComponentInterface {
       this.enableScrollEvents(!this.disabled);
       this.attached = !this.disabled;
       if (this.position === "top") {
-        this.queue.write(() => {
+        writeTask(() => {
           if (this.scrollEl !== null) {
             this.scrollEl.scrollTop =
               this.scrollEl.scrollHeight - this.scrollEl.clientHeight;
@@ -214,7 +210,7 @@ export class GridInfiniteScroll implements ComponentInterface {
     this.ensure();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.scrollEl = null;
     this.attachedToWindow = false;
     this.attached = false;
@@ -299,7 +295,7 @@ export class GridInfiniteScroll implements ComponentInterface {
 
       // ******** DOM READ ****************
       requestAnimationFrame(() => {
-        this.queue.read(() => {
+        readTask(() => {
           // UI has updated, save the new content dimensions
           const scrollHeight = scrollEl.scrollHeight;
           // New content was added on top, so the scroll position should be changed immediately to prevent it from jumping around
@@ -307,7 +303,7 @@ export class GridInfiniteScroll implements ComponentInterface {
 
           // ******** DOM WRITE ****************
           requestAnimationFrame(() => {
-            this.queue.write(() => {
+            writeTask(() => {
               scrollEl.scrollTop = newScrollTop;
               this.isBusy = false;
             });

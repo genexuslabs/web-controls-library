@@ -402,7 +402,7 @@ export class Map implements GxComponent {
     this.userLocationChange.emit(this.userLocationCoords);
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     navigator.geolocation.clearWatch(this.watchPositionId);
   }
 

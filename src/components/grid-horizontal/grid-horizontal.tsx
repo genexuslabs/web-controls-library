@@ -237,7 +237,7 @@ export class GridHorizontal
     this.update();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     if (this.isInitialized()) {
       this.swiper.destroy(true, true);
     }
