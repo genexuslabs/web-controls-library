@@ -1,9 +1,12 @@
 @import "../common/_base";
+@import "../common/_common-styling-config";
 
 gx-canvas {
   @include visibility(block);
 
   position: relative;
+  transition: background-color $transition-delay, border-color $transition-delay,
+    color $transition-delay, filter $transition-delay, opacity $transition-delay;
 
   > .canvas-cells-container {
     position: relative;
