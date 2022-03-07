@@ -7,7 +7,7 @@ import {
   h,
   Host,
   State,
-  Method
+  Watch
 } from "@stencil/core";
 import {
   ClickableComponent,
@@ -58,7 +58,7 @@ export class Canvas
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -69,6 +69,12 @@ export class Canvas
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
   @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
+
+  /**
+   * This attribute defines when the layout has been fully loaded. Useful for
+   * determining if the canvas control can set the auto-grow mechanism
+   */
+  @Prop() readonly layoutIsReady: boolean = false;
 
   /**
    * This attribute defines the minimum height of the cell when its contents
@@ -130,12 +136,13 @@ export class Canvas
   private watchForCanvasObserver: ResizeObserver;
 
   /**
-   *  If the layout is loaded and the `gx-canvas` control has at least one
-   *  `gx-canvas-cell` with autoGrow == True (maxHeight == null), this method
-   *  will set the observers to implement autoGrow in the `gx-canvas` control.
+   * If the layout is loaded and the `gx-canvas` control has at least one
+   * `gx-canvas-cell` with autoGrow == True (maxHeight == null), this property
+   * will change to true and we will set the observers to implement autoGrow
+   * in the `gx-canvas` control.
    */
-  @Method()
-  async setObserver() {
+  @Watch("layoutIsReady")
+  setObserver() {
     this.setCanvasObserver();
 
     this.setCanvasCellsObserver();
