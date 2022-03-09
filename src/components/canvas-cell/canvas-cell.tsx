@@ -19,7 +19,7 @@ export class CanvasCell implements GxComponent {
    * of its `gx-canvas` container.
    * This attribute maps directly to the `left` CSS property.
    */
-  @Prop() readonly left: string = null;
+  @Prop() readonly left: string = "0px";
 
   /**
    * This attribute defines the maximum height of the cell.
@@ -30,7 +30,7 @@ export class CanvasCell implements GxComponent {
    * This attribute defines the minimum height of the cell when its contents
    * are visible.
    */
-  @Prop() readonly minHeight: string = null;
+  @Prop() readonly minHeight: string = "100%";
 
   /**
    * This attribute defines how the control behaves when the content overflows.
@@ -48,7 +48,7 @@ export class CanvasCell implements GxComponent {
    * of its `gx-canvas` container.
    * This attribute maps directly to the `top` CSS property.
    */
-  @Prop() readonly top: string = null;
+  @Prop() readonly top: string = "0px";
 
   /**
    * Defines the vertical alignment of the content of the cell.
