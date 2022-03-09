@@ -316,15 +316,20 @@ export class Canvas
   }
 
   private fixCanvasHeight(maxHeightConstraint: number) {
+    let maxCanvasCellMinHeight = 0;
+
     /*  In each gx-canvas-cell, we adapt its top, min-height and max-height
         values to make them absolute
     */
     const canvasCells = this.element.querySelectorAll(ALL_CANVAS_CELLS);
     canvasCells.forEach((canvasCell: HTMLGxCanvasCellElement) => {
-      this.fixCanvasCellProperties(canvasCell);
+      const minHeight = this.fixCanvasCellProperties(canvasCell);
+
+      maxCanvasCellMinHeight = Math.max(maxCanvasCellMinHeight, minHeight);
     });
 
     this.canvasFixedHeight = maxHeightConstraint;
+    this.canvasFixedMinHeight = maxCanvasCellMinHeight;
   }
 
   private getCanvasCellTotalHeight(
@@ -338,12 +343,15 @@ export class Canvas
   
       Due to at this point we have to resize the gx-canvas, we fix the relative
       values of top, min-height and max-height in all the gx-canvas-cell
+
+      Also, this functions returns: top + min-height in pixels
   */
-  private fixCanvasCellProperties(canvasCell: HTMLGxCanvasCellElement) {
-    canvasCell.style.setProperty("top", `${canvasCell.offsetTop}px`);
+  private fixCanvasCellProperties(canvasCell: HTMLGxCanvasCellElement): number {
+    const fixedTop = canvasCell.offsetTop;
+    canvasCell.style.setProperty("top", `${fixedTop}px`);
 
     const minHeight = canvasCell.minHeight;
-    let fixedHeight;
+    let fixedHeight: number;
 
     const canvasInitialHeight = this.element.clientHeight;
 
@@ -355,25 +363,31 @@ export class Canvas
       const relative = Number(minHeight.match(reRelative)[0].replace("%", ""));
       const absolute = Number(minHeight.match(reAbsolute)[0].replace("px", ""));
 
-      fixedHeight = `${absolute + canvasInitialHeight * (relative / 100)}px`;
+      fixedHeight = absolute + canvasInitialHeight * (relative / 100);
 
       // Relative height. For example, "min-height: 50%"
     } else if (minHeight.includes("%")) {
       const relative = Number(minHeight.replace("%", "").trim());
 
-      fixedHeight = `${canvasInitialHeight * (relative / 100)}px`;
+      fixedHeight = canvasInitialHeight * (relative / 100);
 
       // Absolute height. For example, "min-height: 100px"
     } else {
-      fixedHeight = minHeight;
+      fixedHeight = Number(minHeight.replace("px", "").trim());
     }
 
-    canvasCell.style.setProperty("min-height", fixedHeight);
+    canvasCell.style.setProperty("min-height", `${fixedHeight}px`);
 
-    // If the gx-canvas-cell has auto-grow == False, we limit its height
+    /*  If the gx-canvas-cell has auto-grow == False, we limit its height and
+        return: top + height
+    */
     if (canvasCell.maxHeight != null) {
-      canvasCell.style.setProperty("max-height", fixedHeight);
+      canvasCell.style.setProperty("max-height", `${fixedHeight}px`);
+      return fixedTop + fixedHeight;
     }
+
+    // If the gx-canvas-cell has auto-grow == True, we return 0
+    return 0;
   }
 
   /*  The height adjustment of the gx-canvas will trigger if one of the
@@ -465,7 +479,7 @@ export class Canvas
           "min-height":
             this.canvasFixedHeight == null
               ? this.minHeight
-              : `${this.canvasFixedMinHeight}`
+              : `${this.canvasFixedMinHeight}px`
         }}
       >
         <div class="canvas-cells-container">
