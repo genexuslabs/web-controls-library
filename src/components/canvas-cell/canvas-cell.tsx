@@ -33,17 +33,6 @@ export class CanvasCell implements GxComponent {
   @Prop() readonly minHeight: string = "100%";
 
   /**
-   * This attribute defines how the control behaves when the content overflows.
-   *
-   * | Value    | Details                                                     |
-   * | -------- | ----------------------------------------------------------- |
-   * | `scroll` | The overflowin content is hidden, but scrollbars are shown  |
-   * | `clip`   | The overflowing content is hidden, without scrollbars       |
-   *
-   */
-  @Prop() readonly overflowMode: "scroll" | "clip";
-
-  /**
    * Defines the top position of the control which is relative to the position
    * of its `gx-canvas` container.
    * This attribute maps directly to the `top` CSS property.
