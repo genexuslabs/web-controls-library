@@ -236,6 +236,21 @@ export class Canvas
         return;
       }
 
+      /*  If one of the parent elements has display: none, we don't adjust
+          the height of the gx-canvas
+      */
+      if (this.element.clientHeight == 0) {
+        return;
+      }
+
+      /*  If we reach the minHeight determined by the gx-canvas-cells with
+          auto-grow = False, we have to fix the height of the canvas
+      */
+      if (this.element.clientHeight <= this.canvasFixedMinHeight) {
+        this.fixCanvasHeight(this.canvasFixedMinHeight);
+        return;
+      }
+
       /*  If the canvas decreased its height and there is a gx-canvas-cell that
           provokes overflow-y, we fix the canvas height 
       */
