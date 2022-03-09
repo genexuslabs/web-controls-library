@@ -215,6 +215,13 @@ export class Canvas
     */
     this.canvasFixedMinHeight = maxCanvasCellHeight;
 
+    /*  If one of the parent elements has display: none, we don't adjust the
+        height of the gx-canvas
+    */
+    if (this.element.clientHeight == 0) {
+      return;
+    }
+
     /*  If there is a gx-canvas-cell with auto-grow = False that is taller than
         the canvas, we update the gx-canvas height
     */
