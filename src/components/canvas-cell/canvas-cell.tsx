@@ -64,7 +64,8 @@ export class CanvasCell implements GxComponent {
     return (
       <Host
         class={{
-          "auto-grow-cell": this.maxHeight == null
+          "auto-grow-cell": this.maxHeight == null,
+          "without-auto-grow-cell": this.maxHeight != null
         }}
         style={{
           top: this.top,

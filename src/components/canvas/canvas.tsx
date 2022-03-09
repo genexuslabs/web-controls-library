@@ -35,6 +35,9 @@ const AUTOGROW_CANVAS_CELL_BY_ID = (id: string) => {
   )}`;
 };
 
+const WITHOUT_AUTOGROW_CANVAS_CELLS =
+  ":scope > .canvas-cells-container > .without-auto-grow-cell";
+
 @Component({
   shadow: false,
   styleUrl: "canvas.scss",
@@ -125,6 +128,11 @@ export class Canvas
    */
   @State() canvasFixedHeight: number = null;
 
+  /*  Used to optimize height adjustments. This variable stores the "absolute"
+      maximum height of all gx-canvas-cells with auto-grow = False 
+  */
+  private canvasFixedMinHeight = 0;
+
   /*  Used to optimize height adjustments. This variable allows us to ignore
       the height adjustments triggered by a gx-canvas-cell that had less height
       than the highest gx-canvas-cell.
@@ -136,16 +144,83 @@ export class Canvas
   private watchForCanvasObserver: ResizeObserver;
 
   /**
-   * If the layout is loaded and the `gx-canvas` control has at least one
-   * `gx-canvas-cell` with autoGrow == True (maxHeight == null), this property
-   * will change to true and we will set the observers to implement autoGrow
-   * in the `gx-canvas` control.
+   * If the layout is loaded, this property will change to true and we will
+   * calculate an additional minHeight of the `gx-canvas` based on the absolute
+   * height of the `gx-canvas-cell`s with `autoGrow == False`
+   * (`maxHeight != null`), then we will set the observers to implement
+   * autoGrow on the `gx-canvas` control.
    */
   @Watch("layoutIsReady")
-  setObserver() {
-    this.setCanvasObserver();
+  setCanvasAutoHeight() {
+    this.setCanvasMinHeight();
+
+    /*  At this point, if (this.canvasFixedHeight == null) we can assume that
+        gx-canvas-cells with "auto-grow = False" were not taller than the
+        gx-canvas. So, we need to set up the canvas observer
+    */
+    if (this.canvasFixedHeight == null) {
+      this.setCanvasObserver();
+    }
 
     this.setCanvasCellsObserver();
+  }
+
+  /*  In each gx-canvas-cell with auto-grow = False, we get their "absolute
+      height". For example:
+        - If top="calc(50% + -100px)" and min-height="200px" -> 200
+        - If top="25px"               and min-height="200px" -> 225
+        - If top="25%"                and min-height="75%"   -> 0
+  
+      'maxCanvasCellHeight' determines the max value of all "absolute heights".
+      We use this variable to update the gx-canvas minHeight and to determinate
+      if there is a gx-canvas-cell with auto-grow = False that is taller than
+      the gx-canvas
+  */
+  private setCanvasMinHeight() {
+    let maxCanvasCellHeight = 0;
+
+    const withoutAutoGrowCanvasCells = this.element.querySelectorAll(
+      WITHOUT_AUTOGROW_CANVAS_CELLS
+    );
+    withoutAutoGrowCanvasCells.forEach(
+      (canvasCell: HTMLGxCanvasCellElement) => {
+        let canvasCellHeight = 0;
+        const { top, minHeight } = canvasCell;
+
+        /*  If one of the properties includes "calc", it means that the other
+            property has an absolute value (it includes "px")
+        */
+        if (top.includes("calc")) {
+          canvasCellHeight = Number(minHeight.replace("px", "").trim());
+        } else if (minHeight.includes("calc")) {
+          canvasCellHeight = Number(top.replace("px", "").trim());
+
+          /*  If neither property includes "calc", it means that both properties
+              can be relative (they include "%") or absolute (they include "px")
+          */
+        } else {
+          if (top.includes("px")) {
+            canvasCellHeight = Number(top.replace("px", "").trim());
+          }
+
+          if (minHeight.includes("px")) {
+            canvasCellHeight += Number(minHeight.replace("px", "").trim());
+          }
+        }
+        maxCanvasCellHeight = Math.max(maxCanvasCellHeight, canvasCellHeight);
+      }
+    );
+    /*  If there is a gx-canvas-cell with auto-grow = False that has absolute
+        properties, we update the gx-canvas minHeight
+    */
+    this.canvasFixedMinHeight = maxCanvasCellHeight;
+
+    /*  If there is a gx-canvas-cell with auto-grow = False that is taller than
+        the canvas, we update the gx-canvas height
+    */
+    if (this.element.clientHeight < maxCanvasCellHeight) {
+      this.fixCanvasHeight(maxCanvasCellHeight);
+    }
   }
 
   /*  Observes canvas resizing. In each resize of the gx-canvas, it checks if
@@ -365,7 +440,10 @@ export class Canvas
             this.canvasFixedHeight == null
               ? this.minHeight
               : `${this.canvasFixedHeight}px`,
-          "min-height": this.minHeight
+          "min-height":
+            this.canvasFixedHeight == null
+              ? this.minHeight
+              : `${this.canvasFixedMinHeight}`
         }}
       >
         <div class="canvas-cells-container">
