@@ -451,6 +451,11 @@ export class Canvas
 
   componentDidLoad() {
     makeSwipeable(this);
+
+    // The layout could be ready after the gx-canvas is rendered for the first time
+    if (this.layoutIsReady) {
+      this.setCanvasAutoHeight();
+    }
   }
 
   disconnectedCallback() {
