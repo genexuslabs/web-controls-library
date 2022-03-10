@@ -1,8 +1,10 @@
 @import "../common/_base";
+@import "../common/_common-styling-config.scss";
 
 gx-table {
   --elevation: 0;
 
+  // Support for margin with variables
   @include reset-variables();
   @include container-margins();
   @include elevation();
@@ -11,7 +13,9 @@ gx-table {
   flex: 1;
 
   /*  gx-table must hide its content overflow to ensure that the border-radius
-      property is apply
+      property is applied
   */
   overflow: hidden;
+  transition: background-color $transition-delay, border-color $transition-delay,
+    color $transition-delay, filter $transition-delay;
 }
