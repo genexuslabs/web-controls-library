@@ -136,6 +136,11 @@ export class Canvas
   */
   private canvasFixedMinHeight = 0;
 
+  /**
+   * `true` if the `componentDidLoad()` method was called
+   */
+  private didLoad = false;
+
   /*  Used to optimize height adjustments. This variable allows us to ignore
       the height adjustments triggered by a gx-canvas-cell that had less height
       than the highest gx-canvas-cell.
@@ -155,7 +160,7 @@ export class Canvas
    */
   @Watch("layoutIsReady")
   setCanvasAutoGrowMechanism() {
-    if (this.autoGrowMechanismStarted) {
+    if (!this.didLoad || this.autoGrowMechanismStarted) {
       return;
     }
     this.autoGrowMechanismStarted = true;
@@ -465,6 +470,7 @@ export class Canvas
 
   componentDidLoad() {
     makeSwipeable(this);
+    this.didLoad = true;
 
     // The layout could be ready after the gx-canvas is rendered for the first time
     if (this.layoutIsReady) {
