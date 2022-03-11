@@ -128,6 +128,9 @@ export class Canvas
    */
   @State() canvasFixedHeight: number = null;
 
+  // Useful to avoid extra calls for setCanvasAutoGrowMechanism()
+  private autoGrowMechanismStarted = false;
+
   /*  Used to optimize height adjustments. This variable stores the "absolute"
       maximum height of all gx-canvas-cells with auto-grow = False 
   */
@@ -151,7 +154,12 @@ export class Canvas
    * autoGrow on the `gx-canvas` control.
    */
   @Watch("layoutIsReady")
-  setCanvasAutoHeight() {
+  setCanvasAutoGrowMechanism() {
+    if (this.autoGrowMechanismStarted) {
+      return;
+    }
+    this.autoGrowMechanismStarted = true;
+
     this.setCanvasMinHeight();
 
     /*  At this point, if (this.canvasFixedHeight == null) we can assume that
@@ -460,7 +468,7 @@ export class Canvas
 
     // The layout could be ready after the gx-canvas is rendered for the first time
     if (this.layoutIsReady) {
-      this.setCanvasAutoHeight();
+      this.setCanvasAutoGrowMechanism();
     }
   }
 
