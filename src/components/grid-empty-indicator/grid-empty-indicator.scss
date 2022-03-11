@@ -2,18 +2,25 @@
 
 gx-grid-empty-indicator {
   @include visibility(flex);
+  position: relative;
+  flex: 1;
   height: 100%;
+  overflow: hidden;
 
-  & > gx-canvas {
-    flex: 1;
-    & > gx-canvas-cell.empty-text,
-    & > gx-canvas-cell.empty-image {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      text-align: center;
-      align-items: center;
+  > .empty-indicator-container {
+    display: flex;
+    align-items: flex-start;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+
+    > .empty-indicator-text {
+      align-self: initial;
+    }
+
+    > .empty-indicator-image > img {
+      max-width: fit-content;
     }
   }
 }

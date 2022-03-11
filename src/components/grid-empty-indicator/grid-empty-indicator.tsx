@@ -1,8 +1,5 @@
 import { Component, ComponentInterface, h, Host, Prop } from "@stencil/core";
 
-const EMPTY_IMAGE_CLASS = "empty-image";
-const EMPTY_TEXT_CLASS = "empty-text";
-
 @Component({
   shadow: false,
   styleUrl: "grid-empty-indicator.scss",
@@ -31,22 +28,23 @@ export class GridEmptyIndicator implements ComponentInterface {
 
   render() {
     return (
-      <Host>
-        <gx-canvas>
-          {this.image ? (
-            <gx-canvas-cell class={EMPTY_IMAGE_CLASS}>
-              {/* 
-              // @ts-ignore */}
-              <gx-image src={this.image} class={this.imageClass}></gx-image>
-            </gx-canvas-cell>
-          ) : null}
+      <Host class="empty-indicator">
+        {this.image && (
+          <div class="empty-indicator-container">
+            <gx-image
+              src={this.image}
+              class={`${this.imageClass} empty-indicator-image`}
+            ></gx-image>
+          </div>
+        )}
 
-          {this.text ? (
-            <gx-canvas-cell class={EMPTY_TEXT_CLASS}>
-              <gx-textblock class={this.textClass}>{this.text}</gx-textblock>
-            </gx-canvas-cell>
-          ) : null}
-        </gx-canvas>
+        {this.text && (
+          <div class="empty-indicator-container">
+            <gx-textblock class={`${this.textClass} empty-indicator-text`}>
+              {this.text}
+            </gx-textblock>
+          </div>
+        )}
       </Host>
     );
   }
