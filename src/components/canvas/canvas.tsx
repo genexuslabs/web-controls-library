@@ -147,6 +147,13 @@ export class Canvas
   */
   private highestCanvasCellId: string = null;
 
+  /**
+   * Reference to the  div `"canvas-cells-container"`. The height of this div
+   * will be changed when at least one `gx-canvas-cell` needs to force
+   * `auto-grow`
+   */
+  private innerCanvasContainer: HTMLDivElement;
+
   // Observers
   private watchForItemsObserver: ResizeObserver;
   private watchForCanvasObserver: ResizeObserver;
@@ -238,7 +245,7 @@ export class Canvas
     /*  If there is a gx-canvas-cell with auto-grow = False that is taller than
         the canvas, we update the gx-canvas height
     */
-    if (this.element.clientHeight < maxCanvasCellHeight) {
+    if (this.innerCanvasContainer.clientHeight < maxCanvasCellHeight) {
       this.fixCanvasHeight(maxCanvasCellHeight);
     }
   }
@@ -260,7 +267,7 @@ export class Canvas
       /*  If we reach the minHeight determined by the gx-canvas-cells with
           auto-grow = False, we have to fix the height of the canvas
       */
-      if (this.element.clientHeight <= this.canvasFixedMinHeight) {
+      if (this.innerCanvasContainer.clientHeight <= this.canvasFixedMinHeight) {
         this.fixCanvasHeight(this.canvasFixedMinHeight);
         return;
       }
@@ -269,12 +276,15 @@ export class Canvas
           provokes overflow-y, we fix the canvas height 
       */
       const maxHeightConstraint = this.getMaxHeightConstraint();
-      if (this.element.clientHeight + THRESHOLD < maxHeightConstraint) {
+      if (
+        this.innerCanvasContainer.clientHeight + THRESHOLD <
+        maxHeightConstraint
+      ) {
         this.fixCanvasHeight(maxHeightConstraint);
       }
     });
 
-    this.watchForCanvasObserver.observe(this.element);
+    this.watchForCanvasObserver.observe(this.innerCanvasContainer);
   }
 
   /*  Observes each gx-canvas-cell that has auto-grow = True. When interrupt,
@@ -365,7 +375,7 @@ export class Canvas
     const minHeight = canvasCell.minHeight;
     let fixedHeight: number;
 
-    const canvasInitialHeight = this.element.clientHeight;
+    const innerContainerCurrentHeight = this.innerCanvasContainer.clientHeight;
 
     // Mixed height. For example, "min-height: calc( 50% + -75px )"
     if (minHeight.includes("calc")) {
@@ -375,13 +385,13 @@ export class Canvas
       const relative = Number(minHeight.match(reRelative)[0].replace("%", ""));
       const absolute = Number(minHeight.match(reAbsolute)[0].replace("px", ""));
 
-      fixedHeight = absolute + canvasInitialHeight * (relative / 100);
+      fixedHeight = absolute + innerContainerCurrentHeight * (relative / 100);
 
       // Relative height. For example, "min-height: 50%"
     } else if (minHeight.includes("%")) {
       const relative = Number(minHeight.replace("%", "").trim());
 
-      fixedHeight = canvasInitialHeight * (relative / 100);
+      fixedHeight = innerContainerCurrentHeight * (relative / 100);
 
       // Absolute height. For example, "min-height: 100px"
     } else {
@@ -411,7 +421,10 @@ export class Canvas
   */
   private adjustCanvasHeight(canvasCellId: string, canvasCellHeight: number) {
     if (this.canvasFixedHeight == null) {
-      if (this.element.clientHeight + THRESHOLD < canvasCellHeight) {
+      if (
+        this.innerCanvasContainer.clientHeight + THRESHOLD <
+        canvasCellHeight
+      ) {
         this.fixCanvasHeight(canvasCellHeight);
       }
 
@@ -494,17 +507,20 @@ export class Canvas
       <Host
         style={{
           width: this.width,
-          height:
-            this.canvasFixedHeight == null
-              ? this.minHeight
-              : `${this.canvasFixedHeight}px`,
-          "min-height":
-            this.canvasFixedHeight == null
-              ? this.minHeight
-              : `${this.canvasFixedMinHeight}px`
+          height: this.canvasFixedHeight == null ? this.minHeight : null,
+          "min-height": this.canvasFixedHeight == null ? this.minHeight : null
         }}
       >
-        <div class="canvas-cells-container">
+        <div
+          class="canvas-cells-container"
+          style={{
+            height:
+              this.canvasFixedHeight != null && `${this.canvasFixedHeight}px`,
+            "min-height":
+              this.canvasFixedHeight != null && `${this.canvasFixedMinHeight}px`
+          }}
+          ref={(el: HTMLDivElement) => (this.innerCanvasContainer = el)}
+        >
           <slot />
         </div>
       </Host>
