@@ -237,12 +237,6 @@ export class Canvas
   */
   private setCanvasObserver() {
     this.watchForCanvasObserver = new ResizeObserver(() => {
-      if (this.canvasFixedHeight != null) {
-        this.watchForCanvasObserver.disconnect();
-        this.watchForCanvasObserver = undefined;
-        return;
-      }
-
       /*  If one of the parent elements has display: none, we don't adjust
           the height of the gx-canvas
       */
@@ -327,6 +321,11 @@ export class Canvas
 
       maxCanvasCellMinHeight = Math.max(maxCanvasCellMinHeight, minHeight);
     });
+
+    /*  The gx-canvas observer is no longer needed, because resizing the layout
+        will not cause any interruptions in this observer
+     */
+    this.disconnectCanvasObserver();
 
     this.canvasFixedHeight = maxHeightConstraint;
     this.canvasFixedMinHeight = maxCanvasCellMinHeight;
@@ -449,6 +448,13 @@ export class Canvas
     this.gxClick.emit(event);
   }
 
+  private disconnectCanvasObserver() {
+    if (this.watchForCanvasObserver !== undefined) {
+      this.watchForCanvasObserver.disconnect();
+      this.watchForCanvasObserver = undefined;
+    }
+  }
+
   componentDidLoad() {
     makeSwipeable(this);
 
@@ -464,10 +470,7 @@ export class Canvas
       this.watchForItemsObserver = undefined;
     }
 
-    if (this.watchForCanvasObserver !== undefined) {
-      this.watchForCanvasObserver.disconnect();
-      this.watchForCanvasObserver = undefined;
-    }
+    this.disconnectCanvasObserver();
   }
 
   render() {
