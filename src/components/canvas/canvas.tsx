@@ -26,7 +26,7 @@ const AUTOGROW_CANVAS_CELLS =
   ":scope > .canvas-cells-container > .auto-grow-cell";
 
 const AUTOGROW_CANVAS_CELL_CLASS = (id: string) => {
-  return `autogrow-cell-${id}`;
+  return `auto-grow-cell-${id}`;
 };
 
 const AUTOGROW_CANVAS_CELL_BY_ID = (id: string) => {
@@ -360,6 +360,25 @@ export class Canvas
     return canvasCell.clientHeight + canvasCell.offsetTop;
   }
 
+  /**
+   * @param property The min-height or top property of a gx-canvas-cell
+   * containing the string `"calc"`. For example, `"calc( 50% + -75px )"`
+   * @param innerContainerCurrentHeight Height of div `"canvas-cells-container"`
+   * @returns the absolute value of the `property` parameter
+   */
+  private getValueOfCalcProperty(
+    property: string,
+    innerContainerCurrentHeight: number
+  ) {
+    const reRelative = /-?\d+%/g;
+    const reAbsolute = /-?\d+px/g;
+
+    const relative = Number(property.match(reRelative)[0].replace("%", ""));
+    const absolute = Number(property.match(reAbsolute)[0].replace("px", ""));
+
+    return absolute + innerContainerCurrentHeight * (relative / 100);
+  }
+
   /*  This functions is called the first time that
         this.canvasFixedHeight != null
   
@@ -379,13 +398,10 @@ export class Canvas
 
     // Mixed height. For example, "min-height: calc( 50% + -75px )"
     if (minHeight.includes("calc")) {
-      const reRelative = /-?\d+%/g;
-      const reAbsolute = /-?\d+px/g;
-
-      const relative = Number(minHeight.match(reRelative)[0].replace("%", ""));
-      const absolute = Number(minHeight.match(reAbsolute)[0].replace("px", ""));
-
-      fixedHeight = absolute + innerContainerCurrentHeight * (relative / 100);
+      fixedHeight = this.getValueOfCalcProperty(
+        minHeight,
+        innerContainerCurrentHeight
+      );
 
       // Relative height. For example, "min-height: 50%"
     } else if (minHeight.includes("%")) {
