@@ -36,6 +36,11 @@ export class Modal implements GxComponent {
   @Prop() readonly closeButtonLabel: string;
 
   /**
+   * This attribute lets you specify the height of the control.
+   */
+  @Prop() readonly height: string = null;
+
+  /**
    * This attribute lets you specify if the modal dialog is opened or closed.
    */
   @Prop({ mutable: true }) opened = false;
@@ -44,6 +49,11 @@ export class Modal implements GxComponent {
    * This attribute lets you specify if a header is renderd on top of the modal dialog.
    */
   @Prop() showHeader = true;
+
+  /**
+   * This attribute lets you specify the width of the control.
+   */
+  @Prop() readonly width: string = null;
 
   /**
    * Fired when the modal dialog is closed
