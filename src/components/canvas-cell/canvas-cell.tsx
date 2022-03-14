@@ -47,7 +47,7 @@ export class CanvasCell implements GxComponent {
   /**
    * This attribute lets you specify the width of the control.
    */
-  @Prop() readonly width: string;
+  @Prop() readonly width: string = "100%";
 
   private observer: MutationObserver;
 
