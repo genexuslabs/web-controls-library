@@ -185,13 +185,13 @@ export class Canvas
     this.setCanvasCellsObserver();
   }
 
-  /*  In each gx-canvas-cell with auto-grow = False, we get their "absolute
+  /** In each gx-canvas-cell with `auto-grow = False`, we get their "absolute
       height". For example:
-        - If top="calc(50% + -100px)" and min-height="200px" -> 200
-        - If top="25px"               and min-height="200px" -> 225
-        - If top="25%"                and min-height="75%"   -> 0
+        - If `top="calc(50% + -100px)"` and `min-height="200px"` -> 200 + 0.5 * innerContainerCurrentHeight + -100px
+        - If `top="25px"`               and `min-height="200px"` -> 225
+        - If `top="25%"`                and `min-height="75%"`   -> 0
   
-      'maxCanvasCellHeight' determines the max value of all "absolute heights".
+      `maxCanvasCellHeight` determines the max value of all "absolute heights".
       We use this variable to update the gx-canvas minHeight and to determinate
       if there is a gx-canvas-cell with auto-grow = False that is taller than
       the gx-canvas
@@ -202,6 +202,8 @@ export class Canvas
     const withoutAutoGrowCanvasCells = this.element.querySelectorAll(
       WITHOUT_AUTOGROW_CANVAS_CELLS
     );
+    const innerContainerCurrentHeight = this.innerCanvasContainer.clientHeight;
+
     withoutAutoGrowCanvasCells.forEach(
       (canvasCell: HTMLGxCanvasCellElement) => {
         let canvasCellHeight = 0;
@@ -211,9 +213,13 @@ export class Canvas
             property has an absolute value (it includes "px")
         */
         if (top.includes("calc")) {
-          canvasCellHeight = Number(minHeight.replace("px", "").trim());
+          canvasCellHeight =
+            Number(minHeight.replace("px", "").trim()) +
+            this.getValueOfCalcProperty(top, innerContainerCurrentHeight);
         } else if (minHeight.includes("calc")) {
-          canvasCellHeight = Number(top.replace("px", "").trim());
+          canvasCellHeight =
+            Number(top.replace("px", "").trim()) +
+            this.getValueOfCalcProperty(minHeight, innerContainerCurrentHeight);
 
           /*  If neither property includes "calc", it means that both properties
               can be relative (they include "%") or absolute (they include "px")
