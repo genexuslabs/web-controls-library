@@ -78,25 +78,53 @@ export namespace Components {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled: false;
+    disabled: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode: "collapse" | "keep-space";
+    /**
+     * This attribute defines when the layout has been fully loaded. Useful for determining if the canvas control can set the auto-grow mechanism
+     */
+    layoutIsReady: boolean;
+    /**
+     * This attribute defines the minimum height of the cell when its contents are visible.
+     */
+    minHeight: string;
+    /**
+     * This attribute lets you specify the width of the control.
+     */
+    width: string;
   }
   interface GxCanvasCell {
     /**
-     * Defines the horizontal aligmnent of the content of the cell.
+     * Defines the horizontal alignment of the content of the cell.
      */
     align: "left" | "right" | "center";
     /**
-     * This attribute defines how the control behaves when the content overflows.  | Value    | Details                                                     | | -------- | ----------------------------------------------------------- | | `scroll` | The overflowin content is hidden, but scrollbars are shown  | | `clip`   | The overflowing content is hidden, without scrollbars       |
+     * Defines the left position of the control which is relative to the position of its `gx-canvas` container. This attribute maps directly to the `left` CSS property.
      */
-    overflowMode: "scroll" | "clip";
+    left: string;
     /**
-     * Defines the vertical aligmnent of the content of the cell.
+     * This attribute defines the maximum height of the cell.
+     */
+    maxHeight: string;
+    /**
+     * This attribute defines the minimum height of the cell when its contents are visible.
+     */
+    minHeight: string;
+    /**
+     * Defines the top position of the control which is relative to the position of its `gx-canvas` container. This attribute maps directly to the `top` CSS property.
+     */
+    top: string;
+    /**
+     * Defines the vertical alignment of the content of the cell.
      */
     valign: "top" | "bottom" | "medium";
+    /**
+     * This attribute lets you specify the width of the control.
+     */
+    width: string;
   }
   interface GxCard {
     /**
@@ -2288,11 +2316,19 @@ declare namespace LocalJSX {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled?: false;
+    disabled?: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode?: "collapse" | "keep-space";
+    /**
+     * This attribute defines when the layout has been fully loaded. Useful for determining if the canvas control can set the auto-grow mechanism
+     */
+    layoutIsReady?: boolean;
+    /**
+     * This attribute defines the minimum height of the cell when its contents are visible.
+     */
+    minHeight?: string;
     /**
      * Emitted when the element is clicked.
      */
@@ -2317,20 +2353,40 @@ declare namespace LocalJSX {
      * Emitted when the element is swiped in upward direction.
      */
     onSwipeUp?: (event: CustomEvent<any>) => void;
+    /**
+     * This attribute lets you specify the width of the control.
+     */
+    width?: string;
   }
   interface GxCanvasCell {
     /**
-     * Defines the horizontal aligmnent of the content of the cell.
+     * Defines the horizontal alignment of the content of the cell.
      */
     align?: "left" | "right" | "center";
     /**
-     * This attribute defines how the control behaves when the content overflows.  | Value    | Details                                                     | | -------- | ----------------------------------------------------------- | | `scroll` | The overflowin content is hidden, but scrollbars are shown  | | `clip`   | The overflowing content is hidden, without scrollbars       |
+     * Defines the left position of the control which is relative to the position of its `gx-canvas` container. This attribute maps directly to the `left` CSS property.
      */
-    overflowMode?: "scroll" | "clip";
+    left?: string;
     /**
-     * Defines the vertical aligmnent of the content of the cell.
+     * This attribute defines the maximum height of the cell.
+     */
+    maxHeight?: string;
+    /**
+     * This attribute defines the minimum height of the cell when its contents are visible.
+     */
+    minHeight?: string;
+    /**
+     * Defines the top position of the control which is relative to the position of its `gx-canvas` container. This attribute maps directly to the `top` CSS property.
+     */
+    top?: string;
+    /**
+     * Defines the vertical alignment of the content of the cell.
      */
     valign?: "top" | "bottom" | "medium";
+    /**
+     * This attribute lets you specify the width of the control.
+     */
+    width?: string;
   }
   interface GxCard {
     /**
