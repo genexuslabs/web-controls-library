@@ -33,7 +33,8 @@ export class Image
     cssVariablesWatcher(this, [
       {
         cssVariableName: "--image-scale-type",
-        propertyName: "scaleType"
+        propertyName: "scaleType",
+        defaultPropertyValue: "contain"
       },
       {
         cssVariableName: "--height",
