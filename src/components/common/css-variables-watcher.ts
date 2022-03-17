@@ -7,9 +7,10 @@ export function cssVariablesWatcher(
 ): void {
   const updatePropertiesFromCss = debounce(function(): void {
     for (const prop of properties) {
-      const propCssValue = getComputedStyle(component.element)
-        .getPropertyValue(prop.cssVariableName)
-        .trim();
+      const propCssValue =
+        getComputedStyle(component.element)
+          .getPropertyValue(prop.cssVariableName)
+          .trim() || prop.defaultPropertyValue;
       if (propCssValue && component[prop.propertyName] !== propCssValue) {
         component[prop.propertyName] = propCssValue;
       }
@@ -60,4 +61,5 @@ export function cssVariablesWatcher(
 export interface CssVariableWatcherProperty {
   propertyName: string;
   cssVariableName: string;
+  defaultPropertyValue?: string;
 }
