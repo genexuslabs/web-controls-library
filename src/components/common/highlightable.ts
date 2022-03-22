@@ -8,21 +8,30 @@ export interface HighlightableComponent {
   highlightable: boolean;
 }
 
-export function makeHighlightable(component: HighlightableComponent) {
+/**
+ * @param component The highlightable component.
+ * @param innerElement Specifies a descendant of the `component`. If defined, the highlight class will be applied to this element.
+ */
+export function makeHighlightable(
+  component: HighlightableComponent,
+  innerElement?: HTMLElement
+) {
+  const actualHighlightableElement = innerElement || component.element;
+
   if (component.highlightable) {
     if (!isSetup) {
       isSetup = true;
       setup();
     }
 
-    component.element.addEventListener(
+    actualHighlightableElement.addEventListener(
       HIGHLIGHT_EVENT_NAME,
       (event: CustomEvent) => {
         event.stopPropagation();
         component.element.classList.add(HIGHLIGHT_CLASS_NAME);
       }
     );
-    component.element.addEventListener(
+    actualHighlightableElement.addEventListener(
       UNHIGHTLIGHT_EVENT_NAME,
       (event: CustomEvent) => {
         event.stopPropagation();
