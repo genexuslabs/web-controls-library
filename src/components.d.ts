@@ -1001,6 +1001,10 @@ export namespace Components {
      */
     closeButtonLabel: string;
     /**
+     * This attribute lets you specify the height of the control.
+     */
+    height: string;
+    /**
      * This attribute lets you specify if the modal dialog is opened or closed.
      */
     opened: boolean;
@@ -1008,6 +1012,10 @@ export namespace Components {
      * This attribute lets you specify if a header is renderd on top of the modal dialog.
      */
     showHeader: boolean;
+    /**
+     * This attribute lets you specify the width of the control.
+     */
+    width: string;
   }
   interface GxNavbar {
     /**
@@ -3340,6 +3348,10 @@ declare namespace LocalJSX {
      */
     closeButtonLabel?: string;
     /**
+     * This attribute lets you specify the height of the control.
+     */
+    height?: string;
+    /**
      * Fired when the modal dialog is closed
      */
     onClose?: (event: CustomEvent<any>) => void;
@@ -3355,6 +3367,10 @@ declare namespace LocalJSX {
      * This attribute lets you specify if a header is renderd on top of the modal dialog.
      */
     showHeader?: boolean;
+    /**
+     * This attribute lets you specify the width of the control.
+     */
+    width?: string;
   }
   interface GxNavbar {
     /**
