@@ -138,6 +138,11 @@ export class Gauge implements GxComponent {
 
   private totalAmount = 0;
 
+  /**
+   * `true` if the `componentDidLoad()` method was called
+   */
+  private didLoad = false;
+
   private watchForItemsObserver: ResizeObserver;
 
   private labelsSubContainer: HTMLDivElement;
@@ -193,6 +198,8 @@ export class Gauge implements GxComponent {
     if (this.type === "line") {
       this.setLineGaugeObserver();
     }
+
+    this.didLoad = true;
   }
 
   /*  After the render, it asks for 'getBoundingClientRect()' and centers the
@@ -338,7 +345,10 @@ export class Gauge implements GxComponent {
   private decideLabelsPosition() {
     // This only happens when the component has not yet been rendered to
     // get the `labelsSubContainer` reference
-    if (this.labelsOverflow && this.labelsSubContainer == undefined) {
+    if (
+      !this.didLoad ||
+      (this.labelsOverflow && this.labelsSubContainer == undefined)
+    ) {
       return;
     }
 
