@@ -69,21 +69,13 @@ export class TableCell implements GxComponent {
 
   private setupObserver(childElement: any) {
     if (childElement && childElement.invisibleMode === "collapse") {
-      this.observer = new MutationObserver(
-        (mutationsList: MutationRecord[]) => {
-          for (const mutation of mutationsList) {
-            if (
-              mutation.type === "attributes" &&
-              mutation.attributeName === "hidden"
-            ) {
-              this.setMinHeight(childElement);
-            }
-          }
-        }
-      );
+      this.observer = new MutationObserver(() => {
+        this.setMinHeight(childElement);
+      });
 
       this.observer.observe(childElement, {
         attributes: true,
+        attributeFilter: ["hidden"],
         childList: false,
         subtree: false
       });

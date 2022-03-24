@@ -89,7 +89,13 @@ export class ModalRender implements Renderer {
         aria-hidden="true"
       >
         <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
+          <div
+            class="modal-content"
+            style={{
+              width: this.component.width,
+              height: this.component.height
+            }}
+          >
             {modal.showHeader && (
               <div class="modal-header">
                 <h5 class="modal-title" id={this.headerId}>

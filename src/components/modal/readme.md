@@ -38,8 +38,10 @@ predefined slots:
 | ------------------ | -------------------- | ------------------------------------------------------------------------------------------------------ | --------- | ----------- |
 | `autoClose`        | `auto-close`         | This attribute lets you specify if the modal dialog is automatically closed when an action is clicked. | `boolean` | `undefined` |
 | `closeButtonLabel` | `close-button-label` | This attribute lets you specify the label for the close button. Important for accessibility.           | `string`  | `undefined` |
+| `height`           | `height`             | This attribute lets you specify the height of the control.                                             | `string`  | `null`      |
 | `opened`           | `opened`             | This attribute lets you specify if the modal dialog is opened or closed.                               | `boolean` | `false`     |
 | `showHeader`       | `show-header`        | This attribute lets you specify if a header is renderd on top of the modal dialog.                     | `boolean` | `true`      |
+| `width`            | `width`              | This attribute lets you specify the width of the control.                                              | `string`  | `null`      |
 
 ## Events
 
