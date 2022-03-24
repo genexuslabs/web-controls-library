@@ -6,7 +6,7 @@ import { Edit } from "../../../edit/edit";
 import {
   tHighlightedFocusWithin,
   tVars
-} from "../../../css-transforms/css-transforms";
+} from "../../../common/css-transforms/css-transforms";
 
 let autoEditId = 0;
 

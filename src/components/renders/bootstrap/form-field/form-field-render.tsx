@@ -3,7 +3,7 @@ import { Renderer } from "../../../common/interfaces";
 import { FormField } from "../../../form-field/form-field";
 
 // Class transforms
-import { tFormField } from "../../../css-transforms/css-transforms";
+import { tFormField } from "../../../common/css-transforms/css-transforms";
 
 let autoFormFieldId = 0;
 
