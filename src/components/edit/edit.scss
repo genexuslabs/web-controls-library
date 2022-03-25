@@ -3,6 +3,7 @@
 
 gx-edit {
   @include visibility(flex);
+  @include elevation();
 
   &[multiline][readonly="false"] {
     @include visibility(block);

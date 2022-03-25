@@ -3,10 +3,6 @@
 gx-form-field {
   --elevation: 0;
 
-  [data-part="field"] {
-    @include elevation();
-  }
-
   & > .form-group {
     display: flex;
     max-height: 100%;
