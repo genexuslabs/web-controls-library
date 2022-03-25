@@ -3,7 +3,10 @@ import { Renderer } from "../../../common/interfaces";
 import { FormField } from "../../../form-field/form-field";
 
 // Class transforms
-import { tFormField } from "../../../common/css-transforms/css-transforms";
+import {
+  tLabel,
+  tLabelHighlighted
+} from "../../../common/css-transforms/css-transforms";
 
 let autoFormFieldId = 0;
 
@@ -74,7 +77,7 @@ export class FormFieldRender implements Renderer {
         }}
         id={labelId}
       >
-        <div class="label-content">{formField.labelCaption}</div>
+        <div class="gx-label-content">{formField.labelCaption}</div>
       </div>
     );
 
@@ -109,6 +112,18 @@ export class FormFieldRender implements Renderer {
       formField.element.querySelector("gx-radio-group[area='field']") !== null;
     const renderLabel = labelPosition !== "none";
 
+    /*  Since the control can recieve more than one class, we apply the 
+        "tLabel" and "tLabelHighlighted" transforms for each class.
+    */
+    const labelSplitClasses =
+      renderLabel && formField.cssClass ? formField.cssClass.split(" ") : [];
+
+    const labelBaseClass = labelSplitClasses.map(tLabel).join(" ");
+
+    const labelHighlightedClass = labelSplitClasses
+      .map(tLabelHighlighted)
+      .join(" ");
+
     if (!this.formFieldId) {
       this.formFieldId =
         formField.element.id || `gx-form-field-auto-id-${autoFormFieldId++}`;
@@ -121,10 +136,12 @@ export class FormFieldRender implements Renderer {
         <label
           class={{
             [this.LABEL_WIDTH_BY_POSITION[labelPosition]]: true,
-            "gx-label": true
+            "gx-label": true,
+            [labelBaseClass]: true,
+            [labelHighlightedClass]: true
           }}
         >
-          <div class="label-content">{formField.labelCaption}</div>
+          <div class="gx-label-content">{formField.labelCaption}</div>
         </label>
       );
 
@@ -153,16 +170,8 @@ export class FormFieldRender implements Renderer {
           </div>
         );
 
-      /*  Since to the control can recieve more than one class, we apply the 
-          "tFormField" transform for each class.
-      */
-      const formFieldClass = formField.cssClass
-        ?.split(" ")
-        .map(tFormField)
-        .join(" ");
-
       return (
-        <Host class={formFieldClass}>
+        <Host>
           <gx-bootstrap />
           {result}
         </Host>

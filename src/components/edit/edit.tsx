@@ -20,6 +20,12 @@ import { FormComponent } from "../common/interfaces";
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
 import { makeLinesClampable } from "../common/line-clamp";
 
+// Class transforms
+import {
+  tHighlightedFocusWithin,
+  tVars
+} from "../common/css-transforms/css-transforms";
+
 @Component({
   shadow: false,
   styleUrl: "edit.scss",
@@ -265,11 +271,24 @@ export class Edit implements FormComponent, HighlightableComponent {
   }
 
   render() {
+    /*  Styling for gx-edit control.
+        Since to the control can recieve more than one class, we apply the
+        "tVars" and "tHighlightedFocusWithin" transforms for each class.
+    */
+    const editSplitClasses = this.cssClass ? this.cssClass.split(" ") : [];
+    const editVars = editSplitClasses.map(tVars).join(" ");
+    const editHighlighted = editSplitClasses
+      .map(tHighlightedFocusWithin)
+      .join(" ");
+
     return (
       <Host
         class={{
           "gx-edit--single-line":
-            this.type === "date" || this.type === "datetime-local"
+            this.type === "date" || this.type === "datetime-local",
+          [this.cssClass]: true,
+          [editVars]: true,
+          [editHighlighted]: !this.readonly
         }}
         disabled={this.disabled}
       >

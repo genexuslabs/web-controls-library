@@ -2,12 +2,6 @@ import { h } from "@stencil/core";
 import { Renderer } from "../../../common/interfaces";
 import { Edit } from "../../../edit/edit";
 
-// Class transforms
-import {
-  tHighlightedFocusWithin,
-  tVars
-} from "../../../common/css-transforms/css-transforms";
-
 let autoEditId = 0;
 
 const fontCategoryTagMap = {
@@ -104,30 +98,11 @@ export class EditRender implements Renderer {
         : `gx-edit-auto-id-${autoEditId++}`;
     }
 
-    /*  Styling for gx-edit control.
-        Since to the control can recieve more than one class, we apply the
-        "tVars" and "tHighlightedFocusWithin" transforms for each class.
-    */
-    const editSplitClasses = edit.cssClass ? edit.cssClass.split(" ") : [];
-    const editVars = editSplitClasses.map(tVars).join(" ");
-    const editHighlighted = editSplitClasses
-      .map(tHighlightedFocusWithin)
-      .join(" ");
-
-    const editClass = (showVars = false) => {
-      return {
-        [edit.cssClass]: true,
-        [editVars]: showVars,
-        [editHighlighted]: !edit.readonly
-      };
-    };
-
     const attris = {
       "aria-disabled": edit.disabled ? "true" : undefined,
       autocapitalize: edit.autocapitalize,
       autocomplete: edit.autocomplete,
       autocorrect: edit.autocorrect,
-      class: editClass(),
       "data-native-element": "",
       disabled: edit.disabled,
       id: this.inputId,
@@ -164,11 +139,7 @@ export class EditRender implements Renderer {
       if (edit.multiline) {
         editableElement = (
           <div
-            class={{
-              container: true,
-              ...editClass(true),
-              disabled: edit.disabled
-            }}
+            class={{ container: true, disabled: edit.disabled }}
             data-part="container"
             hidden={edit.readonly}
           >
@@ -197,7 +168,6 @@ export class EditRender implements Renderer {
           <div
             class={{
               container: true,
-              ...editClass(true),
               disabled: edit.disabled,
 
               /*  Used when the gx-edit has
@@ -259,7 +229,7 @@ export class EditRender implements Renderer {
 
     return [
       edit.readonly && edit.format == "Text" && (
-        <div class={editClass(true)} data-readonly="">
+        <div data-readonly="">
           <div class="readonly-content-container">
             <ReadonlyTag
               key="readonly"

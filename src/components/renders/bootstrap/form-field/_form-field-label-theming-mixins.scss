@@ -7,17 +7,26 @@
 /// Helper mixin to ease styling gx-form-field label
 /// @param {string} $label Base class of the label of the component
 /// @param {string} $highlighted-label Class to be used on the label when the component's field is focused
-@mixin gx-form-field-label($label, $highlighted-label: null) {
-  // We extend the gx-form-field label with the base and highlighted class
-  &#{$gx-form-field} > .form-group {
-    & > .gx-label {
+/// @param {string} $label-align Determine the horizontal alignment of the label
+/// @param {string} $label-valign Determine the vertical alignment of the label
+@mixin gx-form-field-label(
+  $label: null,
+  $highlighted-label: null,
+  $label-align: null,
+  $label-valign: null
+) {
+  /*  We create a custom label class to use inside the gx-form-field. The same
+      goes for the highlighted label class.
+  */
+  @if $label != null {
+    &#{$gx-label} {
       @extend #{$label} !optional;
     }
+  }
 
-    @if $highlighted-label != null {
-      & > *:focus-within + .gx-label {
-        @extend #{$highlighted-label} !optional;
-      }
+  @if $highlighted-label != null {
+    *:focus-within + &#{$gx-label-highlighted} {
+      @extend #{$highlighted-label} !optional;
     }
   }
 }
