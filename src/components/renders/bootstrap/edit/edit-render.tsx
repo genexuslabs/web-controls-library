@@ -104,7 +104,6 @@ export class EditRender implements Renderer {
       autocomplete: edit.autocomplete,
       autocorrect: edit.autocorrect,
       "data-native-element": "",
-      disabled: edit.disabled,
       id: this.inputId,
 
       // We limit the year to 4 digits
@@ -138,11 +137,7 @@ export class EditRender implements Renderer {
       // If it has multiline, it sets a textarea
       if (edit.multiline) {
         editableElement = (
-          <div
-            class={{ container: true, disabled: edit.disabled }}
-            data-part="container"
-            hidden={edit.readonly}
-          >
+          <div class="container" data-part="container" hidden={edit.readonly}>
             <textarea {...attris} data-part="field">
               {edit.value}
             </textarea>
@@ -168,7 +163,6 @@ export class EditRender implements Renderer {
           <div
             class={{
               container: true,
-              disabled: edit.disabled,
 
               /*  Used when the gx-edit has
                     type="datetime-local" | "date" | "time"
@@ -209,14 +203,7 @@ export class EditRender implements Renderer {
       // If format = HTML
     } else {
       editableElement = (
-        <div
-          class={{
-            container: true,
-            "HTML-content": true,
-            disabled: edit.disabled && !edit.readonly
-          }}
-          data-part="container"
-        >
+        <div class="container HTML-content" data-part="container">
           <div class="html-container">
             <div data-native-element innerHTML={edit.inner}></div>
           </div>

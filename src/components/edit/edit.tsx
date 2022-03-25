@@ -286,11 +286,11 @@ export class Edit implements FormComponent, HighlightableComponent {
         class={{
           "gx-edit--single-line":
             this.type === "date" || this.type === "datetime-local",
+          disabled: this.disabled && !this.readonly,
           [this.cssClass]: true,
           [editVars]: true,
           [editHighlighted]: !this.readonly
         }}
-        disabled={this.disabled}
       >
         {this.renderer.render({
           triggerContent: <slot name="trigger-content" />

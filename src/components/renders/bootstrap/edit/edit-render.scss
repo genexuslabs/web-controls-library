@@ -20,20 +20,14 @@ gx-edit {
   $trigger-button-font-color: var(--action-tint-color, black);
 
   overflow: hidden;
+  transition-property: background-color, border-color, box-shadow, color, filter,
+    opacity;
+  transition-duration: $transition-delay;
 
   // Used to disable the borders
   @mixin no-borders {
     border: none;
-    border-radius: 0;
     outline: 0;
-  }
-
-  // Used to import the margins from GeneXus
-  @mixin margins {
-    margin-top: var(--margin-top, 0);
-    margin-right: var(--margin-right, 0);
-    margin-bottom: var(--margin-bottom, 0);
-    margin-left: var(--margin-left, 0);
   }
 
   // Used to change the placeholder color in the input controls
@@ -51,25 +45,20 @@ gx-edit {
     }
   }
 
-  &[disabled]:not([disabled="false"]) {
+  // Disable styling for the gx-edit
+  &.disabled {
+    @include disabled-style();
     pointer-events: none;
   }
 
   // This applies when the gx-edit is not readonly
   .container[data-part="container"] {
-    @include margins;
     display: flex;
     flex: 1;
     overflow: hidden;
-    transition: background-color $transition-delay, color $transition-delay,
-      border-color $transition-delay, opacity $transition-delay;
 
     &:not(.HTML-content) {
       padding: 0;
-    }
-
-    &.disabled {
-      opacity: 50%;
     }
 
     /*  Used when the gx-edit has type="datetime-local" | "date" | "time"
@@ -98,7 +87,7 @@ gx-edit {
       flex: 1;
       width: 100%;
       background-color: unset;
-      transition: inherit;
+      transition: opacity $transition-delay;
 
       &::placeholder {
         @include placeholder-color;
@@ -107,12 +96,10 @@ gx-edit {
 
     // Implements a non-native placeholder for date types
     .date-placeholder-container[data-readonly] {
-      @include no-borders;
       position: absolute;
       flex: 1;
-      background-color: unset;
       pointer-events: none;
-      transition: inherit;
+      transition: opacity $transition-delay;
 
       span {
         @include placeholder-color;
@@ -171,14 +158,11 @@ gx-edit {
 
   // This applies when the gx-edit is readonly
   & > [data-readonly] {
-    @include margins;
     display: flex;
     flex: 1;
     position: relative;
     white-space: break-spaces;
     overflow: hidden;
-    transition: background-color $transition-delay, color $transition-delay,
-      border-color $transition-delay, opacity $transition-delay;
 
     .readonly-content-container {
       display: flex;
