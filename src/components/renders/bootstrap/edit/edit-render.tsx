@@ -104,6 +104,7 @@ export class EditRender implements Renderer {
       autocomplete: edit.autocomplete,
       autocorrect: edit.autocorrect,
       "data-native-element": "",
+      disabled: edit.disabled,
       id: this.inputId,
 
       // We limit the year to 4 digits
