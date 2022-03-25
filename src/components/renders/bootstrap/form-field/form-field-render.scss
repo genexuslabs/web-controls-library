@@ -7,6 +7,30 @@ gx-form-field {
     @include elevation();
   }
 
+  & > .form-group {
+    display: flex;
+    max-height: 100%;
+    flex: 1;
+    flex-wrap: nowrap;
+
+    & > div {
+      flex: 1;
+      max-height: 100%;
+    }
+
+    & > .gx-label {
+      transition-property: background-color, border-color, box-shadow, color,
+        filter, opacity;
+      transition-duration: $transition-delay;
+
+      > .gx-label-content {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
   &[label-position="float"] > div {
     position: relative;
     margin-bottom: 1em;
@@ -127,26 +151,6 @@ gx-form-field {
     width: 100%;
     flex: 0 0 75%;
     max-width: 75%;
-  }
-
-  .label-content {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    transition: background-color $transition-delay,
-      border-color $transition-delay, color $transition-delay,
-      filter $transition-delay, opacity $transition-delay;
-  }
-
-  & > .form-group {
-    max-height: 100%;
-    display: flex;
-    flex: 1;
-    flex-wrap: nowrap;
-    & > div {
-      flex: 1;
-      max-height: 100%;
-    }
   }
 
   .radio-group {
