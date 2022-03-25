@@ -138,7 +138,15 @@ export class EditRender implements Renderer {
       if (edit.multiline) {
         editableElement = (
           <div class="gx-edit-container" hidden={edit.readonly}>
-            <textarea {...attris} data-part="field">
+            <textarea
+              class={{
+                [slots.cssClass]: edit.multiline,
+                [slots.editVars]: edit.multiline,
+                [slots.editHighlighted]: edit.multiline
+              }}
+              {...attris}
+              data-part="field"
+            >
               {edit.value}
             </textarea>
           </div>

@@ -13,29 +13,29 @@ gx-table-cell[min-height][max-height] {
   }
 }
 
+// Used to disable the borders
+@mixin no-borders {
+  border: none;
+  outline: 0;
+}
+
+// Used to change the placeholder color in the input controls
+// Opacity property is necessary, because some browsers (e.g., mozilla) change this value
+@mixin placeholder-color {
+  $defaultPlaceholderTextColor: #757575c0;
+  color: var(--placeholder-text-color, $defaultPlaceholderTextColor);
+  opacity: 1;
+}
+
 gx-edit {
   $buttonMinWidth: 2.5rem;
   $buttonMaxWidth: 25%;
-  $defaultPlaceholderTextColor: #757575c0;
   $trigger-button-font-color: var(--action-tint-color, black);
 
   overflow: hidden;
   transition-property: background-color, border-color, box-shadow, color, filter,
     opacity;
   transition-duration: $transition-delay;
-
-  // Used to disable the borders
-  @mixin no-borders {
-    border: none;
-    outline: 0;
-  }
-
-  // Used to change the placeholder color in the input controls
-  // Opacity property is necessary, because some browsers (e.g., mozilla) change this value
-  @mixin placeholder-color {
-    color: var(--placeholder-text-color, $defaultPlaceholderTextColor);
-    opacity: 1;
-  }
 
   // Used to not display the "trigger-content" when show-trigger=false
   &:not([show-trigger]),
@@ -67,7 +67,7 @@ gx-edit {
     &.null-date {
       // When the gx-edit is not focused, we hide the input
       &:not(:focus-within) {
-        input[data-native-element] {
+        input {
           opacity: 0;
         }
       }
@@ -80,9 +80,8 @@ gx-edit {
       }
     }
 
-    // This applies when the gx-edit is also multiline or when format = Text
-    textarea,
-    input[data-native-element] {
+    // This applies when the gx-edit has format = Text and multiline = False
+    input {
       @include no-borders;
       flex: 1;
       width: 100%;
@@ -190,5 +189,20 @@ gx-edit {
   footer {
     font-size: inherit;
     font-weight: inherit;
+  }
+}
+
+// This applies when the gx-edit has multiline = True
+textarea {
+  @include no-borders;
+  flex: 1;
+  width: 100%;
+  background-color: unset;
+  transition-property: background-color, border-color, box-shadow, color, filter,
+    opacity;
+  transition-duration: $transition-delay;
+
+  &::placeholder {
+    @include placeholder-color;
   }
 }
