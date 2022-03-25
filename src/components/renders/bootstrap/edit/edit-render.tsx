@@ -137,7 +137,7 @@ export class EditRender implements Renderer {
       // If it has multiline, it sets a textarea
       if (edit.multiline) {
         editableElement = (
-          <div class="container" data-part="container" hidden={edit.readonly}>
+          <div class="gx-edit-container" hidden={edit.readonly}>
             <textarea {...attris} data-part="field">
               {edit.value}
             </textarea>
@@ -162,7 +162,7 @@ export class EditRender implements Renderer {
         editableElement = (
           <div
             class={{
-              container: true,
+              "gx-edit-container": true,
 
               /*  Used when the gx-edit has
                     type="datetime-local" | "date" | "time"
@@ -172,7 +172,6 @@ export class EditRender implements Renderer {
                 dateTypes.includes(edit.type) &&
                 (edit.value == undefined || edit.value == "")
             }}
-            data-part="container"
             hidden={edit.readonly}
           >
             {input}
@@ -203,7 +202,7 @@ export class EditRender implements Renderer {
       // If format = HTML
     } else {
       editableElement = (
-        <div class="container HTML-content" data-part="container">
+        <div class="gx-edit-container HTML-content">
           <div class="html-container">
             <div data-native-element innerHTML={edit.inner}></div>
           </div>

@@ -3,7 +3,7 @@
 // Used when autoGrow = false and format = HTML
 gx-table-cell[min-height][max-height] {
   gx-edit {
-    .container[data-part="container"] {
+    .gx-edit-container {
       .html-container {
         [data-native-element] {
           position: absolute;
@@ -52,7 +52,7 @@ gx-edit {
   }
 
   // This applies when the gx-edit is not readonly
-  .container[data-part="container"] {
+  .gx-edit-container {
     display: flex;
     flex: 1;
     overflow: hidden;
