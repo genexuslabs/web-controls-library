@@ -182,6 +182,7 @@ export class EditRender implements Renderer {
                 (edit.value == undefined || edit.value == "")
             }}
             hidden={edit.readonly}
+            data-part="container"
           >
             {input}
 
@@ -211,7 +212,7 @@ export class EditRender implements Renderer {
       // If format = HTML
     } else {
       editableElement = (
-        <div class="gx-edit-container">
+        <div class="gx-edit-container" data-part="container">
           <div class="html-container">
             <div data-native-element innerHTML={edit.inner}></div>
           </div>
