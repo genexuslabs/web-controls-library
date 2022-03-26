@@ -141,9 +141,9 @@ export class EditRender implements Renderer {
           <div class="gx-edit-container" hidden={edit.readonly}>
             <textarea
               class={{
-                [slots.cssClass]: edit.multiline,
-                [slots.editVars]: edit.multiline,
-                [slots.editHighlighted]: edit.multiline
+                [slots.cssClass]: !slots.shouldStyleHostElement,
+                [slots.editVars]: !slots.shouldStyleHostElement,
+                [slots.editHighlighted]: !slots.shouldStyleHostElement
               }}
               {...attris}
               data-part="field"

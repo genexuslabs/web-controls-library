@@ -232,6 +232,12 @@ export class Edit implements FormComponent, HighlightableComponent {
     return this.renderer.getNativeInputId();
   }
 
+  private shouldStyleHostElement = false;
+
+  componentWillLoad() {
+    this.shouldStyleHostElement = !this.multiline || this.readonly;
+  }
+
   componentDidLoad() {
     this.toggleValueSetClass();
     if (this.readonly || this.format == "HTML") {
@@ -287,13 +293,14 @@ export class Edit implements FormComponent, HighlightableComponent {
           "gx-edit--single-line":
             this.type === "date" || this.type === "datetime-local",
           disabled: this.disabled && !this.readonly,
-          [this.cssClass]: !this.multiline,
-          [editVars]: !this.multiline,
-          [editHighlighted]: !this.readonly && !this.multiline
+          [this.cssClass]: this.shouldStyleHostElement,
+          [editVars]: this.shouldStyleHostElement,
+          [editHighlighted]: this.shouldStyleHostElement
         }}
       >
         {this.renderer.render({
           triggerContent: <slot name="trigger-content" />,
+          shouldStyleHostElement: this.shouldStyleHostElement,
           cssClass: this.cssClass,
           editVars: editVars,
           editHighlighted: editHighlighted
