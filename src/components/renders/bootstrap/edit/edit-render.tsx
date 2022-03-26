@@ -188,7 +188,7 @@ export class EditRender implements Renderer {
             {// Implements a non-native placeholder for date types
             dateTypes.includes(edit.type) &&
               (edit.value == undefined || edit.value == "") && (
-                <div class="date-placeholder-container" data-readonly>
+                <div class="date-placeholder-container">
                   <span>{edit.placeholder}</span>
                 </div>
               )}
@@ -211,7 +211,7 @@ export class EditRender implements Renderer {
       // If format = HTML
     } else {
       editableElement = (
-        <div class="gx-edit-container HTML-content">
+        <div class="gx-edit-container">
           <div class="html-container">
             <div data-native-element innerHTML={edit.inner}></div>
           </div>
