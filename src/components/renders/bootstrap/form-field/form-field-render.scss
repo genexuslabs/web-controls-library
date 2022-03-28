@@ -15,9 +15,14 @@ gx-form-field {
     }
 
     & > .gx-label {
+      text-align: start;
       transition-property: background-color, border-color, box-shadow, color,
         filter, opacity;
       transition-duration: $transition-delay;
+
+      &.right-label {
+        text-align: end;
+      }
 
       > .gx-label-content {
         white-space: nowrap;
@@ -104,48 +109,15 @@ gx-form-field {
     flex-direction: row;
   }
 
-  .label-left,
-  .label-right {
+  .side-label {
     position: relative;
     width: 100%;
     flex: 0 0 25%;
     max-width: 25%;
   }
 
-  .label-left,
-  .label-top,
-  .label-bottom {
-    text-align: start;
-  }
-
-  .label-right {
-    text-align: end;
-  }
-
-  .label-top,
-  .label-bottom,
-  .field-label-top,
-  .field-label-bottom {
+  .side-field {
     position: relative;
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .label-top,
-  .label-bottom {
-    flex: 0;
-  }
-
-  .field-label-top,
-  .field-label-bottom {
-    flex: 1;
-  }
-
-  .field-label-left,
-  .field-label-right {
-    position: relative;
-    width: 100%;
-    flex: 0 0 75%;
     max-width: 75%;
   }
 

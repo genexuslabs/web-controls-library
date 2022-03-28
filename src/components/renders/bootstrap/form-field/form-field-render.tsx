@@ -16,21 +16,21 @@ export class FormFieldRender implements Renderer {
   private formFieldId: string;
 
   private LABEL_WIDTH_BY_POSITION = {
-    bottom: "label-bottom",
+    bottom: "",
     float: "",
-    left: "label-left",
-    none: "sr-only",
-    right: "label-right",
-    top: "label-top"
+    left: "side-label",
+    none: "",
+    right: "side-label right-label",
+    top: ""
   };
 
   private INNER_CONTROL_WIDTH_BY_LABEL_POSITION = {
-    bottom: "field-label-bottom",
+    bottom: "",
     float: "",
-    left: "field-label-left",
-    none: "field-label-top",
-    right: "field-label-right",
-    top: "field-label-top"
+    left: "side-field",
+    none: "",
+    right: "side-field",
+    top: ""
   };
 
   private getInnerControlContainerClass() {
