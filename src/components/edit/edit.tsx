@@ -233,9 +233,14 @@ export class Edit implements FormComponent, HighlightableComponent {
   }
 
   private shouldStyleHostElement = false;
+  private disabledClass = "disabled";
 
   componentWillLoad() {
     this.shouldStyleHostElement = !this.multiline || this.readonly;
+
+    if (this.format === "HTML") {
+      this.disabledClass = "disabled-html";
+    }
   }
 
   componentDidLoad() {
@@ -292,7 +297,7 @@ export class Edit implements FormComponent, HighlightableComponent {
         class={{
           "gx-edit--single-line":
             this.type === "date" || this.type === "datetime-local",
-          disabled: this.disabled && !this.readonly,
+          [this.disabledClass]: this.disabled && !this.readonly,
           [this.cssClass]: this.shouldStyleHostElement,
           [editVars]: this.shouldStyleHostElement,
           [editHighlighted]: this.shouldStyleHostElement
