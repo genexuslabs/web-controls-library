@@ -38,8 +38,7 @@ export class FormFieldRender implements Renderer {
       this.component.labelPosition
     ];
     return {
-      [className]: true,
-      "d-flex": true
+      [className]: true
     };
   }
 
@@ -89,17 +88,16 @@ export class FormFieldRender implements Renderer {
       labelPosition === "left";
 
     return (
-      <div class="form-group mb-0" aria-labelledby={labelId} role="group">
-        <div
-          class={{
-            "radio-group": true,
-            "no-gutters": true,
-            [labelPositionClassName]: isValidLabelPosition
-          }}
-        >
-          <div class={this.getInnerControlContainerClass()}>{slot}</div>
-          {renderLabel && label}
-        </div>
+      <div
+        class={{
+          "form-field-group": true,
+          [labelPositionClassName]: isValidLabelPosition
+        }}
+        aria-labelledby={labelId}
+        role="group"
+      >
+        <div class={this.getInnerControlContainerClass()}>{slot}</div>
+        {renderLabel && label}
       </div>
     );
   }
@@ -154,13 +152,11 @@ export class FormFieldRender implements Renderer {
         ) : (
           <div
             class={{
-              "form-group": true,
-              "no-gutters": true,
-              "mb-0": true,
-              "flex-column-reverse": labelPosition === "top",
-              "flex-column": labelPosition === "bottom",
-              "flex-row": labelPosition === "right",
-              "flex-row-reverse": labelPosition === "left"
+              "form-field-group": true,
+              "label-position-top": labelPosition === "top",
+              "label-position-bottom": labelPosition === "bottom",
+              "label-position-right": labelPosition === "right",
+              "label-position-left": labelPosition === "left"
             }}
           >
             <div class={this.getInnerControlContainerClass()}>
@@ -170,12 +166,7 @@ export class FormFieldRender implements Renderer {
           </div>
         );
 
-      return (
-        <Host>
-          <gx-bootstrap />
-          {result}
-        </Host>
-      );
+      return <Host>{result}</Host>;
     }
   }
 }

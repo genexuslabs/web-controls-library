@@ -3,13 +3,14 @@
 gx-form-field {
   --elevation: 0;
 
-  & > .form-group {
+  & > .form-field-group {
     display: flex;
     max-height: 100%;
     flex: 1;
     flex-wrap: nowrap;
 
     & > div {
+      display: flex;
       flex: 1;
       max-height: 100%;
     }
@@ -94,19 +95,19 @@ gx-form-field {
   }
 
   .label-position-top {
-    flex-direction: column;
-  }
-
-  .label-position-right {
-    flex-direction: row-reverse;
-  }
-
-  .label-position-bottom {
     flex-direction: column-reverse;
   }
 
-  .label-position-left {
+  .label-position-right {
     flex-direction: row;
+  }
+
+  .label-position-bottom {
+    flex-direction: column;
+  }
+
+  .label-position-left {
+    flex-direction: row-reverse;
   }
 
   .side-label {
