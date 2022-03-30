@@ -3,10 +3,7 @@ import { Renderer } from "../../../common/interfaces";
 import { Select } from "../../../select/select";
 
 // Class transforms
-import {
-  tHighlightedFocusWithin,
-  tVars
-} from "../../../common/css-transforms/css-transforms";
+import { getClasses } from "../../../common/css-transforms/css-transforms";
 
 let autoSelectId = 0;
 
@@ -51,28 +48,17 @@ export class SelectRender implements Renderer {
   }
 
   render(anOptionHasBeenSelected) {
-    const select = this.component;
-
-    /*  Styling for gx-select control.
-        Since to the control can recieve more than one class, we apply the
-        "tVars" and "tHighlightedFocusWithin" transforms for each class.
-    */
-    const selectSplitClasses = select.cssClass
-      ? select.cssClass.split(" ")
-      : [];
-    const selectVars = selectSplitClasses.map(tVars).join(" ");
-    const selectHighlighted = selectSplitClasses
-      .map(tHighlightedFocusWithin)
-      .join(" ");
+    // Styling for gx-select control.
+    const classes = getClasses(this.component.cssClass);
 
     if (this.component.readonly) {
       return (
         <div
           class={{
             "gx-select-control": true,
-            [select.cssClass]: true,
-            [selectVars]: true,
-            [selectHighlighted]: true
+            [this.component.cssClass]: true,
+            [classes.vars]: true,
+            [classes.highlighted]: true
           }}
         >
           <span>{this.getReadonlyTextContent()}</span>
@@ -84,9 +70,9 @@ export class SelectRender implements Renderer {
         "aria-disabled": this.component.disabled ? "true" : undefined,
         class: {
           "gx-select-control": true,
-          [select.cssClass]: true,
-          [selectVars]: true,
-          [selectHighlighted]: true
+          [this.component.cssClass]: true,
+          [classes.vars]: true,
+          [classes.highlighted]: true
         },
         disabled: this.component.disabled,
         id: this.selectId,

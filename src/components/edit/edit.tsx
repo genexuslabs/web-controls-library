@@ -21,10 +21,7 @@ import { cssVariablesWatcher } from "../common/css-variables-watcher";
 import { makeLinesClampable } from "../common/line-clamp";
 
 // Class transforms
-import {
-  tHighlightedFocusWithin,
-  tVars
-} from "../common/css-transforms/css-transforms";
+import { getClasses } from "../common/css-transforms/css-transforms";
 
 @Component({
   shadow: false,
@@ -282,15 +279,8 @@ export class Edit implements FormComponent, HighlightableComponent {
   }
 
   render() {
-    /*  Styling for gx-edit control.
-        Since to the control can recieve more than one class, we apply the
-        "tVars" and "tHighlightedFocusWithin" transforms for each class.
-    */
-    const editSplitClasses = this.cssClass ? this.cssClass.split(" ") : [];
-    const editVars = editSplitClasses.map(tVars).join(" ");
-    const editHighlighted = editSplitClasses
-      .map(tHighlightedFocusWithin)
-      .join(" ");
+    // Styling for gx-edit control.
+    const classes = getClasses(this.cssClass);
 
     return (
       <Host
@@ -299,16 +289,16 @@ export class Edit implements FormComponent, HighlightableComponent {
             this.type === "date" || this.type === "datetime-local",
           [this.disabledClass]: this.disabled && !this.readonly,
           [this.cssClass]: this.shouldStyleHostElement,
-          [editVars]: this.shouldStyleHostElement,
-          [editHighlighted]: this.shouldStyleHostElement
+          [classes.vars]: this.shouldStyleHostElement,
+          [classes.highlighted]: this.shouldStyleHostElement
         }}
       >
         {this.renderer.render({
           triggerContent: <slot name="trigger-content" />,
           shouldStyleHostElement: this.shouldStyleHostElement,
           cssClass: this.cssClass,
-          editVars: editVars,
-          editHighlighted: editHighlighted
+          vars: classes.vars,
+          highlighted: classes.highlighted
         })}
       </Host>
     );

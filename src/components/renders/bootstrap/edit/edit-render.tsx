@@ -142,8 +142,8 @@ export class EditRender implements Renderer {
             <textarea
               class={{
                 [slots.cssClass]: !slots.shouldStyleHostElement,
-                [slots.editVars]: !slots.shouldStyleHostElement,
-                [slots.editHighlighted]: !slots.shouldStyleHostElement
+                [slots.vars]: !slots.shouldStyleHostElement,
+                [slots.highlighted]: !slots.shouldStyleHostElement
               }}
               {...attris}
               data-part="field"
