@@ -2,6 +2,6 @@
 @import "../renders/bootstrap/select/select-render";
 
 gx-select {
-  @include visibility(block);
+  @include visibility(flex);
   flex: 1;
 }

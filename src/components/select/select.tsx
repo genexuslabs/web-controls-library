@@ -33,7 +33,7 @@ export class Select implements FormComponent {
   @Element() element: HTMLGxSelectElement;
 
   /**
-   * A CSS class to set as the inner `input` element class.
+   * A CSS class to set as the `gx-select` element class.
    */
   @Prop() readonly cssClass: string;
 
