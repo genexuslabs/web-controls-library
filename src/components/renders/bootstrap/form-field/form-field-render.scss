@@ -17,9 +17,6 @@ gx-form-field {
 
     & > .gx-label-container {
       text-align: start;
-      transition-property: background-color, border-color, box-shadow, color,
-        filter, opacity;
-      transition-duration: $transition-delay;
 
       &.right-label {
         text-align: end;
@@ -30,6 +27,9 @@ gx-form-field {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        transition-property: background-color, border-color, box-shadow, color,
+          filter, opacity;
+        transition-duration: $transition-delay;
       }
     }
   }
