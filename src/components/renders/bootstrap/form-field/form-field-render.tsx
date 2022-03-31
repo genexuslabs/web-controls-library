@@ -131,16 +131,22 @@ export class FormFieldRender implements Renderer {
       return this.renderForRadio(renderLabel, slots.default);
     } else {
       const label = (
-        <label
+        <div
           class={{
             [this.LABEL_WIDTH_BY_POSITION[labelPosition]]: true,
-            "gx-label": true,
-            [labelBaseClass]: true,
-            [labelHighlightedClass]: true
+            "gx-label-container": true
           }}
         >
-          <div class="gx-label-content">{formField.labelCaption}</div>
-        </label>
+          <label
+            class={{
+              "gx-label": true,
+              [labelBaseClass]: true,
+              [labelHighlightedClass]: true
+            }}
+          >
+            {formField.labelCaption}
+          </label>
+        </div>
       );
 
       const result =

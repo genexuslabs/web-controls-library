@@ -15,7 +15,7 @@ gx-form-field {
       max-height: 100%;
     }
 
-    & > .gx-label {
+    & > .gx-label-container {
       text-align: start;
       transition-property: background-color, border-color, box-shadow, color,
         filter, opacity;
@@ -25,7 +25,8 @@ gx-form-field {
         text-align: end;
       }
 
-      > .gx-label-content {
+      > .gx-label {
+        flex: 1;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
