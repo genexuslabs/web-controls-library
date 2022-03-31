@@ -9,11 +9,13 @@
 /// @param {string} $highlighted-label Class to be used on the label when the component's field is focused
 /// @param {string} $label-align Determine the horizontal alignment of the label
 /// @param {string} $label-valign Determine the vertical alignment of the label
+/// @param {string} $label-width Determine the width of the label
 @mixin gx-form-field-label(
   $label: null,
   $highlighted-label: null,
   $label-align: null,
-  $label-valign: null
+  $label-valign: null,
+  $label-width: null
 ) {
   /*  We create a custom label class to use inside the gx-form-field. The same
       goes for the highlighted label class.
