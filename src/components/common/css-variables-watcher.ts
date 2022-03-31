@@ -11,6 +11,7 @@ export function cssVariablesWatcher(
         getComputedStyle(component.element)
           .getPropertyValue(prop.cssVariableName)
           .trim() || prop.defaultPropertyValue;
+
       if (propCssValue && component[prop.propertyName] !== propCssValue) {
         component[prop.propertyName] = propCssValue;
       }
@@ -26,12 +27,12 @@ export function cssVariablesWatcher(
     updatePropertiesFromCss();
   });
 
-  // componentDidLoad and disconnectedCallback are overriden
+  // componentWillLoad and disconnectedCallback are overriden
   // to start and end observing the mutations, and to update the properties values.
-  overrideMethod(component, "componentDidLoad", {
+  overrideMethod(component, "componentWillLoad", {
     before: () => {
       classObserver.observe(component.element, {
-        attributeFilter: ["class", "style"],
+        attributeFilter: ["class"],
         childList: false,
         subtree: false
       });
