@@ -3,7 +3,8 @@ import { overrideMethod, debounce } from "./utils";
 
 export function cssVariablesWatcher(
   component: Component,
-  properties: CssVariableWatcherProperty[]
+  properties: CssVariableWatcherProperty[],
+  debounceValue = 100
 ): void {
   const updatePropertiesFromCss = debounce(function(): void {
     for (const prop of properties) {
@@ -16,7 +17,7 @@ export function cssVariablesWatcher(
         component[prop.propertyName] = propCssValue;
       }
     }
-  }, 100);
+  }, debounceValue);
 
   // Set up a MutationObserver to monitor changes on style and class attributes.
   // When a change occurs on this attributes, the properties listed in
