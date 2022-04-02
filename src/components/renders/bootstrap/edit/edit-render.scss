@@ -28,10 +28,11 @@ gx-table-cell[min-height][max-height] {
 }
 
 gx-edit {
-  $buttonMinWidth: 2.5rem;
-  $buttonMaxWidth: 25%;
+  $trigger-button-background-color: #dddddde6;
   $trigger-button-font-color: var(--action-tint-color, black);
+  $trigger-button-width: 2.5em;
 
+  position: relative;
   overflow: hidden;
   transition-property: background-color, border-color, box-shadow, color, filter,
     opacity;
@@ -122,36 +123,38 @@ gx-edit {
       }
     }
 
-    .trigger-button-container {
-      min-width: $buttonMinWidth;
-      max-width: $buttonMaxWidth;
-      height: 100%;
-      overflow: hidden;
+    & > .trigger-button-container {
+      display: flex;
+      justify-content: flex-end;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      pointer-events: none;
 
-      .trigger-button {
+      & > .trigger-button {
         @include no-borders;
         display: flex;
         justify-content: center;
         align-items: center;
-        flex: 1;
-        width: 100%;
+        width: $trigger-button-width;
         height: 100%;
-        opacity: 0.8;
-        background-color: #ddd;
+        background-color: $trigger-button-background-color;
         color: $trigger-button-font-color;
         transition: filter $transition-delay;
+        overflow: hidden;
 
-        &:hover {
-          filter: brightness(90%);
+        &.not-disabled {
+          pointer-events: all;
         }
 
-        &:active {
-          filter: brightness(80%);
+        &:hover {
+          @include hover-style();
         }
 
         & > [slot="trigger-content"] {
           pointer-events: none;
-          height: 1.34em;
         }
       }
     }

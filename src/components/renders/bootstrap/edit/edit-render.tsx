@@ -197,7 +197,10 @@ export class EditRender implements Renderer {
             {edit.showTrigger && (
               <div class="trigger-button-container">
                 <button
-                  class="trigger-button"
+                  class={{
+                    "trigger-button": true,
+                    "not-disabled": !edit.disabled
+                  }}
                   onClick={this.handleTriggerClick}
                   type="button"
                   disabled={edit.disabled}
