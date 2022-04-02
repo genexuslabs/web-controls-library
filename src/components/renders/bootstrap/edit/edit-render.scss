@@ -30,7 +30,7 @@ gx-table-cell[min-height][max-height] {
 gx-edit {
   $trigger-button-background-color: #dddddde6;
   $trigger-button-font-color: var(--action-tint-color, black);
-  $trigger-button-width: 2.5em;
+  $trigger-button-width: clamp(32px, 2.5em, 64px);
 
   position: relative;
   overflow: hidden;

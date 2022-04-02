@@ -49,7 +49,6 @@ export class PasswordEditRender implements Renderer {
         ref={input => (this.innerEdit = input as any)}
         css-class={passwordEdit.cssClass}
         disabled={passwordEdit.disabled}
-        id={`gx-password-edit-${passwordEdit.element.id}`}
         placeholder={passwordEdit.placeholder}
         readonly={passwordEdit.readonly}
         show-trigger={!passwordEdit.readonly && passwordEdit.showRevealButton}
