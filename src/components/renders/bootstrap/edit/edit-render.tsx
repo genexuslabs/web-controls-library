@@ -167,8 +167,23 @@ export class EditRender implements Renderer {
           "[slot='trigger-content']"
         );
 
-        // If showTrigger == true, it also sets a trigger button
-        editableElement = (
+        editableElement = [
+          // If showTrigger == true, it sets a trigger button
+          edit.showTrigger && (
+            <div class="trigger-button-container">
+              <button
+                class={{
+                  "trigger-button": true,
+                  "not-disabled": !edit.disabled
+                }}
+                onClick={this.handleTriggerClick}
+                type="button"
+                disabled={edit.disabled}
+              >
+                {existSlotContent !== null && slots.triggerContent}
+              </button>
+            </div>
+          ),
           <div
             class={{
               "gx-edit-container": true,
@@ -193,24 +208,8 @@ export class EditRender implements Renderer {
                   <span>{edit.placeholder}</span>
                 </div>
               )}
-
-            {edit.showTrigger && (
-              <div class="trigger-button-container">
-                <button
-                  class={{
-                    "trigger-button": true,
-                    "not-disabled": !edit.disabled
-                  }}
-                  onClick={this.handleTriggerClick}
-                  type="button"
-                  disabled={edit.disabled}
-                >
-                  {existSlotContent !== null && slots.triggerContent}
-                </button>
-              </div>
-            )}
           </div>
-        );
+        ];
       }
       // If format = HTML
     } else {

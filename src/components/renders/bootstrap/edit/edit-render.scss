@@ -57,6 +57,47 @@ gx-edit {
     pointer-events: none;
   }
 
+  & > .trigger-button-container {
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+
+    // Space reserved for trigger-button that support RTL
+    & + .gx-edit-container {
+      margin-inline-end: $trigger-button-width;
+    }
+
+    & > .trigger-button {
+      @include no-borders;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: $trigger-button-width;
+      height: 100%;
+      background-color: $trigger-button-background-color;
+      color: $trigger-button-font-color;
+      transition: filter $transition-delay;
+      overflow: hidden;
+
+      &.not-disabled {
+        pointer-events: all;
+      }
+
+      &:hover {
+        @include hover-style();
+      }
+
+      & > [slot="trigger-content"] {
+        pointer-events: none;
+      }
+    }
+  }
+
   // This applies when the gx-edit is not readonly
   .gx-edit-container {
     display: flex;
@@ -120,42 +161,6 @@ gx-edit {
         position: relative;
         width: 100%;
         text-align: start;
-      }
-    }
-
-    & > .trigger-button-container {
-      display: flex;
-      justify-content: flex-end;
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      pointer-events: none;
-
-      & > .trigger-button {
-        @include no-borders;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: $trigger-button-width;
-        height: 100%;
-        background-color: $trigger-button-background-color;
-        color: $trigger-button-font-color;
-        transition: filter $transition-delay;
-        overflow: hidden;
-
-        &.not-disabled {
-          pointer-events: all;
-        }
-
-        &:hover {
-          @include hover-style();
-        }
-
-        & > [slot="trigger-content"] {
-          pointer-events: none;
-        }
       }
     }
   }
