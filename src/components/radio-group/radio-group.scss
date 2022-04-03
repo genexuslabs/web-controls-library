@@ -2,7 +2,6 @@
 
 gx-radio-group {
   @include visibility(flex);
-  @include container-margins();
   flex: 1;
 
   &[direction="vertical"] {

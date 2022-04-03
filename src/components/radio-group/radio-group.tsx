@@ -15,6 +15,9 @@ import {
   VisibilityComponent
 } from "../common/interfaces";
 
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
+
 @Component({
   shadow: false,
   styleUrl: "radio-group.scss",
@@ -28,13 +31,18 @@ export class RadioGroup
   @Element() element: HTMLGxRadioGroupElement;
 
   /**
+   * A CSS class to set as the `gx-radio-group` element class.
+   */
+  @Prop() readonly cssClass: string;
+
+  /**
    * Specifies how the child `gx-radio-option` will be layed out.
    * It supports two values:
    *
    * * `horizontal`
    * * `vertical` (default)
    */
-  @Prop() readonly direction: "horizontal" | "vertical" = "horizontal";
+  @Prop() readonly direction: "horizontal" | "vertical" = "vertical";
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -171,7 +179,7 @@ export class RadioGroup
     });
   }
 
-  setDisabled() {
+  private setDisabled() {
     this.radios.forEach(radio => {
       radio.disabled = this.disabled || this.readonly;
     });
@@ -183,8 +191,18 @@ export class RadioGroup
   }
 
   render() {
+    // Styling for gx-radio-group control.
+    const classes = getClasses(this.cssClass);
+
     return (
-      <Host role="radiogroup" data-readonly="">
+      <Host
+        class={{
+          [this.cssClass]: true,
+          [classes.vars]: true,
+          [classes.highlighted]: true
+        }}
+        role="radiogroup"
+      >
         <slot />
       </Host>
     );

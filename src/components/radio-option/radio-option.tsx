@@ -41,11 +41,6 @@ export class RadioOption
   @Prop({ mutable: true }) checked: boolean;
 
   /**
-   * A CSS class to set as the inner `input` element class.
-   */
-  @Prop() readonly cssClass: string;
-
-  /**
    * This attribute lets you specify how this element will behave when hidden.
    *
    * | Value        | Details                                                                     |
