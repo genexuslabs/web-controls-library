@@ -112,6 +112,7 @@ $gx-xsmall-breakpoint-plus-1: 769px;
   $disabled-color: #a5a8aac0;
   $transition-duration: 0.2s;
   $transition-function: ease-in-out;
+  $space-between-option-and-label: min(0.35em, 7px);
 
   --option-checked-color: #007bff;
 
@@ -129,7 +130,7 @@ $gx-xsmall-breakpoint-plus-1: 769px;
 
     .option-container {
       display: flex;
-      padding: 0.15rem 0.35rem 0.15rem 0.35rem;
+      padding-inline-end: $space-between-option-and-label;
 
       .hidden-input {
         width: $custom-option-size;
