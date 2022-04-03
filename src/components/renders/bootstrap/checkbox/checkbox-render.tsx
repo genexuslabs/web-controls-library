@@ -19,24 +19,6 @@ export class CheckBoxRender implements Renderer {
     return this.component.element.querySelector("[data-native-element]");
   }
 
-  private getCssClasses() {
-    const checkbox = this.component;
-
-    const classList = [];
-
-    classList.push("control-input");
-
-    if (checkbox.cssClass) {
-      classList.push(checkbox.cssClass);
-    }
-
-    if (!checkbox.caption) {
-      classList.push("position-static");
-    }
-
-    return classList.join(" ");
-  }
-
   getValueFromEvent(event: UIEvent): boolean {
     return event.target && (event.target as HTMLInputElement).checked;
   }
@@ -62,7 +44,7 @@ export class CheckBoxRender implements Renderer {
 
     const attris = {
       "aria-disabled": checkbox.disabled ? "true" : undefined,
-      class: this.getCssClasses(),
+      class: "hidden-input",
       "data-native-element": "",
       disabled: checkbox.disabled || checkbox.readonly,
       id: this.inputId,
@@ -74,40 +56,31 @@ export class CheckBoxRender implements Renderer {
     };
 
     return (
-      <div data-readonly="">
-        <div
-          class="container"
-          data-part={
-            !checkbox.disabled && !checkbox.readonly ? "option-control" : ""
-          }
-        >
-          <div class="option-container">
-            <input
-              {...attris}
-              type="checkbox"
-              checked={checkbox.checked}
-              value={
-                checkbox.checked
-                  ? checkbox.checkedValue
-                  : checkbox.unCheckedValue
-              }
-            />
+      <div class="option-and-label-container">
+        <div class="option-container">
+          <input
+            {...attris}
+            type="checkbox"
+            checked={checkbox.checked}
+            value={
+              checkbox.checked ? checkbox.checkedValue : checkbox.unCheckedValue
+            }
+          />
 
-            <label class="custom-option"></label>
+          <label class="custom-option"></label>
 
-            <svg viewBox="-4 -4 16 16">
-              <path d="M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z" />
-            </svg>
-          </div>
-
-          <label
-            class="custom-label"
-            {...forAttris}
-            aria-hidden={(!checkbox.caption).toString()}
-          >
-            {checkbox.caption}
-          </label>
+          <svg viewBox="-4 -4 16 16">
+            <path d="M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z" />
+          </svg>
         </div>
+
+        <label
+          class="label-of-the-option"
+          {...forAttris}
+          aria-hidden={(!checkbox.caption).toString()}
+        >
+          {checkbox.caption}
+        </label>
       </div>
     );
   }

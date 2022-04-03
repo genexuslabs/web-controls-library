@@ -6,12 +6,5 @@ gx-checkbox {
 
   --option-border-radius: 25%;
 
-  @include container-margins();
-
   flex: 1;
-
-  & > [data-readonly] {
-    display: flex;
-    flex: 1;
-  }
 }

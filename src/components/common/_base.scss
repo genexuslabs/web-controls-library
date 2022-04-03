@@ -108,8 +108,10 @@ $gx-xsmall-breakpoint-plus-1: 769px;
 }
 
 @mixin scss-custom-option-control() {
-  $transitionConfig: 0.15s ease-in-out;
-  $disabledColor: #a5a8aac0;
+  $custom-option-size: min(1em, 20px);
+  $disabled-color: #a5a8aac0;
+  $transition-duration: 0.2s;
+  $transition-function: ease-in-out;
 
   --option-checked-color: #007bff;
 
@@ -119,26 +121,19 @@ $gx-xsmall-breakpoint-plus-1: 769px;
 
   --option-highlight-border-color: #007bff40;
 
-  .container {
+  .option-and-label-container {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    flex: 1;
     overflow: hidden;
-
-    &[data-part="option-control"]:active {
-      padding: 0;
-      background-color: unset;
-      border: unset;
-    }
 
     .option-container {
       display: flex;
       padding: 0.15rem 0.35rem 0.15rem 0.35rem;
 
-      .control-input {
-        width: 1rem;
-        height: 1rem;
+      .hidden-input {
+        width: $custom-option-size;
+        height: $custom-option-size;
         opacity: 0;
 
         &:checked {
@@ -153,52 +148,53 @@ $gx-xsmall-breakpoint-plus-1: 769px;
         }
 
         &:active:not(:disabled) {
-          &:not(:checked) ~ .custom-option {
+          &:not(:checked) + .custom-option {
             border-color: var(--option-highlight-border-color);
             background-color: var(--option-highlight-border-color);
           }
 
-          & ~ .custom-option {
+          & + .custom-option {
             filter: brightness(85%);
           }
         }
 
-        &:focus ~ .custom-option {
-          box-shadow: 0 0 0 0.15rem var(--option-highlight-border-color);
+        &:focus + .custom-option {
+          box-shadow: 0 0 0 min(0.15em, 4px)
+            var(--option-highlight-border-color);
         }
 
-        &:disabled ~ .custom-option {
-          background-color: $disabledColor;
+        &:disabled + .custom-option {
+          background-color: $disabled-color;
         }
       }
 
       .custom-option {
         position: absolute;
-        width: 1rem;
-        height: 1rem;
-        pointer-events: none;
+        width: $custom-option-size;
+        height: $custom-option-size;
         border: var(--option-border);
         border-radius: var(--option-border-radius);
-        content: "";
-        transition: $transitionConfig;
+        margin-bottom: 0;
+        pointer-events: none;
+        transition-property: background-color, border-color, box-shadow, filter;
+        transition-duration: $transition-duration;
+        transition-timing-function: $transition-function;
       }
 
       svg {
         position: absolute;
-        width: 1rem;
-        height: 1rem;
+        width: $custom-option-size;
+        height: $custom-option-size;
         pointer-events: none;
         z-index: 1;
         opacity: 0;
         fill: white;
         fill-opacity: 0.75;
-        transition: $transitionConfig;
       }
     }
 
-    .custom-label {
-      margin: 0;
-      transition: $transitionConfig;
+    .label-of-the-option {
+      margin-bottom: 0;
     }
   }
 }
