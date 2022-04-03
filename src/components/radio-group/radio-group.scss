@@ -1,8 +1,13 @@
 @import "../common/_base";
+@import "../common/common-styling-config";
 
 gx-radio-group {
+  @include elevation();
   @include visibility(flex);
   flex: 1;
+  transition-property: background-color, border-color, box-shadow, color, filter,
+    opacity;
+  transition-duration: $transition-delay;
 
   &[direction="vertical"] {
     flex-direction: column;
