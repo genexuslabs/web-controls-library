@@ -135,6 +135,11 @@ export class Image
     }
   }
 
+  /**
+   * `true` if the `componentDidLoad()` method was called
+   */
+  private didLoad = false;
+
   private handleImageLoad(event: UIEvent) {
     if (!this.autoGrow) {
       const img = event.target as HTMLImageElement;
@@ -146,6 +151,8 @@ export class Image
 
   componentDidLoad() {
     makeHighlightable(this);
+
+    this.didLoad = true;
   }
 
   disconnectedCallback() {
@@ -177,6 +184,9 @@ export class Image
         class={{
           "gx-img-lazyloading": shouldLazyLoad,
           "gx-img-no-auto-grow": !this.autoGrow
+        }}
+        style={{
+          opacity: !this.didLoad ? "0" : null
         }}
       >
         {body}
