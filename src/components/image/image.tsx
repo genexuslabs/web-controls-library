@@ -30,21 +30,17 @@ export class Image
     VisibilityComponent,
     HighlightableComponent {
   constructor() {
-    cssVariablesWatcher(this, [
-      {
-        cssVariableName: "--image-scale-type",
-        propertyName: "scaleType",
-        defaultPropertyValue: "contain"
-      },
-      {
-        cssVariableName: "--height",
-        propertyName: "height"
-      },
-      {
-        cssVariableName: "--width",
-        propertyName: "width"
-      }
-    ]);
+    cssVariablesWatcher(
+      this,
+      [
+        {
+          cssVariableName: "--image-scale-type",
+          propertyName: "scaleType",
+          defaultPropertyValue: "contain"
+        }
+      ],
+      0
+    );
 
     this.handleClick = this.handleClick.bind(this);
     this.handleImageLoad = this.handleImageLoad.bind(this);
