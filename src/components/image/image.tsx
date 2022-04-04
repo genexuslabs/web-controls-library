@@ -140,15 +140,6 @@ export class Image
       const img = event.target as HTMLImageElement;
       // Some image formats do not specify intrinsic dimensions. The naturalWidth property returns 0 in those cases.
       if (img.naturalWidth !== 0) {
-        if (this.element.clientWidth > 0) {
-          if (img.naturalWidth > this.element.clientWidth) {
-            this.width = `${this.element.clientWidth}px`;
-          } else {
-            this.width = null;
-          }
-        } else {
-          this.width = `${img.naturalWidth}px`;
-        }
       }
     }
   }
@@ -163,8 +154,6 @@ export class Image
 
   render() {
     const shouldLazyLoad = this.shouldLazyLoad();
-    const isHeightSpecified = !!this.height;
-    const isWidthSpecified = !!this.width;
 
     const body = this.src
       ? [
@@ -173,7 +162,6 @@ export class Image
               [LAZY_LOAD_CLASS]: shouldLazyLoad,
               "gx-image-tile": this.scaleType === "tile"
             }}
-            style={this.getInnerImageStyle(isWidthSpecified, isHeightSpecified)}
             onClick={this.handleClick}
             onLoad={this.handleImageLoad}
             data-src={shouldLazyLoad ? this.src : undefined}
@@ -190,48 +178,10 @@ export class Image
           "gx-img-lazyloading": shouldLazyLoad,
           "gx-img-no-auto-grow": !this.autoGrow
         }}
-        style={{
-          alignSelf: isHeightSpecified ? "unset" : null,
-          justifySelf: isWidthSpecified ? "unset" : null,
-          height: isHeightSpecified
-            ? `calc(${this.height} + var(--margin-top, 0px) + var(--margin-bottom, 0px))`
-            : null,
-          width: isWidthSpecified
-            ? `calc(${this.width} + var(--margin-left, 0px) + var(--margin-right, 0px))`
-            : null
-        }}
       >
         {body}
       </Host>
     );
-  }
-
-  private getInnerImageStyle(
-    isWidthSpecified: boolean,
-    isHeightSpecified: boolean
-  ) {
-    const scaleType =
-      this.scaleType === "tile"
-        ? { backgroundImage: `url(${this.src})` }
-        : { objectFit: this.scaleType };
-
-    const dimensions = this.autoGrow
-      ? {}
-      : {
-          width: isWidthSpecified ? this.width : undefined,
-          height: isHeightSpecified ? this.height : undefined,
-          left: isWidthSpecified
-            ? `calc(50% - ((${this.width} - var(--margin-left, 0px) - var(--margin-right, 0px)) / 2))`
-            : undefined,
-          top: isHeightSpecified
-            ? `calc(50% - ((${this.height} - var(--margin-top, 0px) - var(--margin-bottom, 0px)) / 2))`
-            : undefined
-        };
-
-    return {
-      ...scaleType,
-      ...dimensions
-    };
   }
 
   private shouldLazyLoad(): boolean {

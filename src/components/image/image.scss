@@ -6,59 +6,17 @@ gx-image {
   @include reset-variables();
   @include visibility(inline-flex);
 
-  justify-content: stretch;
-  align-items: stretch;
   flex: 1;
-
-  &.gx-img-no-auto-grow {
-    width: var(--width);
-    height: var(--height);
-    @include container-margins();
-    position: relative;
-
-    & > img {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      object-position: left top;
-    }
-  }
-
-  &:not(.gx-img-no-auto-grow) {
-    & > img {
-      width: var(--width);
-      height: var(--height);
-      @include container-margins();
-
-      max-height: calc(
-        100% - var(--margin-top, 0px) - var(--margin-bottom, 0px)
-      );
-      max-width: calc(
-        100% - var(--margin-right, 0px) - var(--margin-left, 0px)
-      );
-      flex: 1;
-    }
-  }
-
-  &.gx-img-lazyloading {
-    overflow: hidden;
-  }
 
   & > img {
     @include elevation();
     object-fit: var(--image-scale-type, contain);
   }
 
-  .gx-image-tile {
-    width: 100% !important;
-    height: 100% !important;
+  > .gx-image-tile {
+    display: inline-block !important;
     padding-left: 100% !important;
     box-sizing: border-box !important;
-    display: inline-block !important;
     background-position: 0 !important;
     background-repeat: repeat;
   }
