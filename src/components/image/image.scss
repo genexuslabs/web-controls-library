@@ -93,47 +93,102 @@ gx-image {
   }
 }
 
-[align="center"] {
+[align="left"] {
+  & > gx-form-field gx-image,
   & > gx-image {
-    justify-self: stretch;
+    justify-content: flex-start;
+  }
+}
+
+// Default horizontal alignment
+[align="center"],
+:not([align]) {
+  & > gx-form-field gx-image,
+  & > gx-image {
     justify-content: center;
   }
 }
 
 [align="right"] {
+  & > gx-form-field gx-image,
   & > gx-image {
-    justify-self: stretch;
     justify-content: flex-end;
   }
 }
 
-[valign="middle"] {
+[valign="top"] {
+  & > gx-form-field gx-image,
   & > gx-image {
-    align-self: stretch;
+    align-items: flex-start;
+  }
+}
+
+// Default vertical alignment
+[valign="middle"],
+:not([valign]) {
+  & > gx-form-field gx-image,
+  & > gx-image {
     align-items: center;
   }
 }
 
 [valign="bottom"] {
+  & > gx-form-field gx-image,
   & > gx-image {
-    align-self: stretch;
     align-items: flex-end;
   }
 }
 
+// Allow inner image positioning even when auto-grow is enabled
 @mixin cellAlignmentNoAutoGrow($halign, $valign) {
   $valignValue: if($valign == middle, center, $valign);
-  [align="#{$halign}"][valign="#{$valign}"] {
-    & > gx-image {
-      &.gx-img-no-auto-grow {
-        img {
-          object-position: $halign $valignValue;
-        }
+
+  // Default horizontal and vertical alignment
+  @if $halign == null and $valign == null {
+    :not([align]):not([valign]) {
+      & > gx-form-field .inner-image,
+      & > gx-image > .inner-image {
+        object-position: center center;
+      }
+    }
+  }
+  // Default horizontal alignment
+  @else if $halign == null {
+    [valign="#{$valign}"]:not([align]) {
+      & > gx-form-field .inner-image,
+      & > gx-image > .inner-image {
+        object-position: center $valignValue;
+      }
+    }
+  }
+  // Default vertical alignment
+  @else if $valign == null {
+    [align="#{$halign}"]:not([valign]) {
+      & > gx-form-field .inner-image,
+      & > gx-image > .inner-image {
+        object-position: $halign center;
+      }
+    }
+  }
+  // Horizontal and vertical alignment specified
+  @else {
+    [align="#{$halign}"][valign="#{$valign}"] {
+      & > gx-form-field .inner-image,
+      & > gx-image > .inner-image {
+        object-position: $halign $valignValue;
       }
     }
   }
 }
 
+// Alignment for the image inside the img tag
+@include cellAlignmentNoAutoGrow(null, null);
+@include cellAlignmentNoAutoGrow(null, top);
+@include cellAlignmentNoAutoGrow(null, middle);
+@include cellAlignmentNoAutoGrow(null, bottom);
+@include cellAlignmentNoAutoGrow(left, null);
+@include cellAlignmentNoAutoGrow(center, null);
+@include cellAlignmentNoAutoGrow(right, null);
 @include cellAlignmentNoAutoGrow(left, top);
 @include cellAlignmentNoAutoGrow(left, middle);
 @include cellAlignmentNoAutoGrow(left, bottom);
