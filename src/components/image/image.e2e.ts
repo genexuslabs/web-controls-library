@@ -14,7 +14,7 @@ describe("gx-image", () => {
   beforeEach(async () => {
     page = await newE2EPage();
     await page.setContent(
-      "<div style='display: flex; width: 100px;'><gx-image src='img.png' alt='Alternate text'></gx-image></div>"
+      "<div style='display: flex;'><gx-image style='--width: 100px;' src='img.png' alt='Alternate text'></gx-image></div>"
     );
     element = await page.find("gx-image");
   });
@@ -33,15 +33,17 @@ describe("gx-image", () => {
     expect(element.classList.contains("gx-img-no-auto-grow")).toBe(true);
   });
 
-  it("should set the width to match the intrinsic width of the image when autoGrow=false", async () => {
+  it("should set the width to match the --width CSS variable regardless of the src used", async () => {
     await element.setProperty("autoGrow", false);
     await element.setProperty("src", testImage1);
     await page.waitForChanges();
-    expect(await element.getProperty("width")).toEqual(null);
+
+    const img = await element.find("img");
+    expect((await img.getComputedStyle()).width).toEqual("100px");
 
     await element.setProperty("src", testImage2);
     await page.waitForChanges();
-    expect(await element.getProperty("width")).toEqual(`100px`);
+    expect((await img.getComputedStyle()).width).toEqual("100px");
   });
 
   it("should fire click event", async () => {

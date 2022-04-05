@@ -69,11 +69,11 @@ describe("gx-image alignment", () => {
     expect(computedStyle.justifySelf).toBe("auto");
   });
 
-  it("unsets align-self when height is specified", async () => {
+  it("align-self is always set even when height is specified", async () => {
     tableCellElement.setAttribute("valign", "middle");
     imageElement.setProperty("height", "40px");
     await page.waitForChanges();
     const computedStyle = await imageElement.getComputedStyle();
-    expect(computedStyle.alignSelf).toBe("auto");
+    expect(computedStyle.alignSelf).toBe("stretch");
   });
 });
