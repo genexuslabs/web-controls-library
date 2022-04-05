@@ -136,6 +136,8 @@ export class Image
    */
   private didLoad = false;
 
+  private innerImage: HTMLImageElement = null;
+
   private handleImageLoad(event: UIEvent) {
     if (!this.autoGrow) {
       const img = event.target as HTMLImageElement;
@@ -146,7 +148,9 @@ export class Image
   }
 
   componentDidLoad() {
-    makeHighlightable(this);
+    if (this.src) {
+      makeHighlightable(this, this.innerImage);
+    }
 
     this.didLoad = true;
   }
@@ -173,8 +177,11 @@ export class Image
             onClick={this.handleClick}
             onLoad={this.handleImageLoad}
             data-src={shouldLazyLoad ? this.src : undefined}
+            // Mouse pointer to indicate action
+            data-has-action={this.highlightable ? "" : undefined}
             src={!shouldLazyLoad ? this.src : undefined}
             alt={this.alt}
+            ref={el => (this.innerImage = el as HTMLImageElement)}
           />,
           <span />
         ]
@@ -183,6 +190,7 @@ export class Image
     return (
       <Host
         class={{
+          disabled: this.disabled,
           "gx-img-lazyloading": shouldLazyLoad,
           "gx-img-no-auto-grow": this.scaleType !== "tile" && !this.autoGrow
         }}

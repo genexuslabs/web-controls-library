@@ -16,6 +16,17 @@ gx-image {
   width: 100%;
   overflow-x: hidden; // Horizontal overflow is always hidden
 
+  /*  Workaround to stop firing events when the gx-image clicked but not the
+      inner img
+  */
+  pointer-events: none;
+
+  &:not(.disabled) {
+    > .inner-image {
+      pointer-events: all;
+    }
+  }
+
   &.gx-img-lazyloading {
     overflow: hidden;
   }
