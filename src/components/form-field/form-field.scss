@@ -10,7 +10,8 @@ gx-form-field {
   flex: 1;
 }
 
-[align="left"] {
+[align="left"],
+:not([align]) {
   & > gx-form-field {
     [data-part="field"],
     [data-readonly] {
@@ -85,7 +86,8 @@ gx-form-field {
   }
 }
 
-[valign="middle"] {
+[valign="middle"],
+:not([valign]) {
   & > gx-form-field {
     [data-part="label"] {
       align-self: center;
