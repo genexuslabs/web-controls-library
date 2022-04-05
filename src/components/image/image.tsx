@@ -72,11 +72,6 @@ export class Image
   @Prop() readonly disabled = false;
 
   /**
-   * This attribute lets you specify the height.
-   */
-  @Prop() readonly height: string;
-
-  /**
    * This attribute lets you specify how this element will behave when hidden.
    *
    * | Value        | Details                                                                     |
@@ -112,11 +107,6 @@ export class Image
    * This attribute lets you specify the SRC.
    */
   @Prop() readonly src: string = "";
-
-  /**
-   * This attribute lets you specify the width.
-   */
-  @Prop({ mutable: true }) width: string;
 
   /**
    * True to highlight control when an action is fired.

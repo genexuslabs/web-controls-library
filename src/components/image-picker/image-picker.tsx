@@ -39,11 +39,6 @@ export class ImagePicker implements GxComponent {
   @Prop() readonly disabled = false;
 
   /**
-   * This attribute lets you specify the height.
-   */
-  @Prop() readonly height: string;
-
-  /**
    * This attribute lets you specify how this element will behave when hidden.
    *
    * | Value        | Details                                                                     |
@@ -79,11 +74,6 @@ export class ImagePicker implements GxComponent {
    * This attribute lets you specify the SRC.
    */
   @Prop({ reflect: true }) src = "";
-
-  /**
-   * This attribute lets you specify the width.
-   */
-  @Prop({ mutable: true }) width: string;
 
   /**
    * True to highlight control when an action is fired.
@@ -282,13 +272,11 @@ export class ImagePicker implements GxComponent {
             alt={this.alt}
             autoGrow={this.autoGrow}
             disabled={this.disabled}
-            height={this.height}
             invisibleMode={this.invisibleMode}
             lazyLoad={this.lazyLoad}
             lowResolutionSrc={this.lowResolutionSrc}
             scaleType={this.scaleType}
             src={this.src}
-            width={this.width}
             highlightable={this.highlightable}
             onClick={this.clickImageAction}
           >
