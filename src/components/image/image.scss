@@ -1,14 +1,21 @@
 @import "../common/_base";
 
 gx-image {
+  @include container-margins();
+  @include reset-variables(false, false);
+  @include visibility(flex);
   --elevation: 0;
-
-  @include reset-variables();
-  @include visibility(inline-flex);
+  --width: 100%;
+  --height: 100%;
 
   flex: 1;
+  overflow-x: hidden; // Horizontal overflow is always hidden
 
-  & > img {
+  &.gx-img-lazyloading {
+    overflow: hidden;
+  }
+
+  > .inner-image {
     @include elevation();
     object-fit: var(--image-scale-type, contain);
   }

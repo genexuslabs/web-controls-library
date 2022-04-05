@@ -163,7 +163,12 @@ export class Image
           <img
             class={{
               [LAZY_LOAD_CLASS]: shouldLazyLoad,
+              "inner-image": true,
               "gx-image-tile": this.scaleType === "tile"
+            }}
+            style={{
+              backgroundImage:
+                this.scaleType === "tile" ? `url(${this.src})` : null
             }}
             onClick={this.handleClick}
             onLoad={this.handleImageLoad}
@@ -179,7 +184,7 @@ export class Image
       <Host
         class={{
           "gx-img-lazyloading": shouldLazyLoad,
-          "gx-img-no-auto-grow": !this.autoGrow
+          "gx-img-no-auto-grow": this.scaleType !== "tile" && !this.autoGrow
         }}
         style={{
           opacity: !this.didLoad ? "0" : null
