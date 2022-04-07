@@ -30,20 +30,17 @@ export class Image
     VisibilityComponent,
     HighlightableComponent {
   constructor() {
-    cssVariablesWatcher(this, [
-      {
-        cssVariableName: "--image-scale-type",
-        propertyName: "scaleType"
-      },
-      {
-        cssVariableName: "--height",
-        propertyName: "height"
-      },
-      {
-        cssVariableName: "--width",
-        propertyName: "width"
-      }
-    ]);
+    cssVariablesWatcher(
+      this,
+      [
+        {
+          cssVariableName: "--image-scale-type",
+          propertyName: "scaleType",
+          defaultPropertyValue: "contain"
+        }
+      ],
+      0
+    );
 
     this.handleClick = this.handleClick.bind(this);
     this.handleImageLoad = this.handleImageLoad.bind(this);
@@ -73,11 +70,6 @@ export class Image
    * (for example, click event).
    */
   @Prop() readonly disabled = false;
-
-  /**
-   * This attribute lets you specify the height.
-   */
-  @Prop() readonly height: string;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -117,11 +109,6 @@ export class Image
   @Prop() readonly src: string = "";
 
   /**
-   * This attribute lets you specify the width.
-   */
-  @Prop({ mutable: true }) width: string;
-
-  /**
    * True to highlight control when an action is fired.
    */
   @Prop() readonly highlightable = false;
@@ -134,26 +121,28 @@ export class Image
     }
   }
 
+  /**
+   * `true` if the `componentDidLoad()` method was called
+   */
+  private didLoad = false;
+
+  private innerImage: HTMLImageElement = null;
+
   private handleImageLoad(event: UIEvent) {
     if (!this.autoGrow) {
       const img = event.target as HTMLImageElement;
       // Some image formats do not specify intrinsic dimensions. The naturalWidth property returns 0 in those cases.
       if (img.naturalWidth !== 0) {
-        if (this.element.clientWidth > 0) {
-          if (img.naturalWidth > this.element.clientWidth) {
-            this.width = `${this.element.clientWidth}px`;
-          } else {
-            this.width = null;
-          }
-        } else {
-          this.width = `${img.naturalWidth}px`;
-        }
       }
     }
   }
 
   componentDidLoad() {
-    makeHighlightable(this);
+    if (this.src) {
+      makeHighlightable(this, this.innerImage);
+    }
+
+    this.didLoad = true;
   }
 
   disconnectedCallback() {
@@ -162,22 +151,27 @@ export class Image
 
   render() {
     const shouldLazyLoad = this.shouldLazyLoad();
-    const isHeightSpecified = !!this.height;
-    const isWidthSpecified = !!this.width;
 
     const body = this.src
       ? [
           <img
             class={{
               [LAZY_LOAD_CLASS]: shouldLazyLoad,
+              "inner-image": true,
               "gx-image-tile": this.scaleType === "tile"
             }}
-            style={this.getInnerImageStyle(isWidthSpecified, isHeightSpecified)}
+            style={{
+              backgroundImage:
+                this.scaleType === "tile" ? `url(${this.src})` : null
+            }}
             onClick={this.handleClick}
             onLoad={this.handleImageLoad}
             data-src={shouldLazyLoad ? this.src : undefined}
+            // Mouse pointer to indicate action
+            data-has-action={this.highlightable ? "" : undefined}
             src={!shouldLazyLoad ? this.src : undefined}
             alt={this.alt}
+            ref={el => (this.innerImage = el as HTMLImageElement)}
           />,
           <span />
         ]
@@ -186,51 +180,17 @@ export class Image
     return (
       <Host
         class={{
+          disabled: this.disabled,
           "gx-img-lazyloading": shouldLazyLoad,
-          "gx-img-no-auto-grow": !this.autoGrow
+          "gx-img-no-auto-grow": this.scaleType !== "tile" && !this.autoGrow
         }}
         style={{
-          alignSelf: isHeightSpecified ? "unset" : null,
-          justifySelf: isWidthSpecified ? "unset" : null,
-          height: isHeightSpecified
-            ? `calc(${this.height} + var(--margin-top, 0px) + var(--margin-bottom, 0px))`
-            : null,
-          width: isWidthSpecified
-            ? `calc(${this.width} + var(--margin-left, 0px) + var(--margin-right, 0px))`
-            : null
+          opacity: !this.didLoad ? "0" : null
         }}
       >
         {body}
       </Host>
     );
-  }
-
-  private getInnerImageStyle(
-    isWidthSpecified: boolean,
-    isHeightSpecified: boolean
-  ) {
-    const scaleType =
-      this.scaleType === "tile"
-        ? { backgroundImage: `url(${this.src})` }
-        : { objectFit: this.scaleType };
-
-    const dimensions = this.autoGrow
-      ? {}
-      : {
-          width: isWidthSpecified ? this.width : undefined,
-          height: isHeightSpecified ? this.height : undefined,
-          left: isWidthSpecified
-            ? `calc(50% - ((${this.width} - var(--margin-left, 0px) - var(--margin-right, 0px)) / 2))`
-            : undefined,
-          top: isHeightSpecified
-            ? `calc(50% - ((${this.height} - var(--margin-top, 0px) - var(--margin-bottom, 0px)) / 2))`
-            : undefined
-        };
-
-    return {
-      ...scaleType,
-      ...dimensions
-    };
   }
 
   private shouldLazyLoad(): boolean {

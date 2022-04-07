@@ -21,6 +21,10 @@ export function makeLinesClampable(
       const currentContentContainerHeight =
         contentContainerElement.clientHeight;
 
+      if (currentContentContainerHeight == 0) {
+        return;
+      }
+
       const currentLineMeasuringHeight = lineMeasuringElement.clientHeight;
 
       /*  If the container height and the line height have not been changed,
@@ -43,10 +47,9 @@ export function makeLinesClampable(
         1
       );
     });
-  }, 100);
+  }, 50);
 
   let resizeObserverContainer: ResizeObserver = null;
-  let resizeObserverLineHeight: ResizeObserver = null;
 
   if (component.lineClamp) {
     overrideMethod(component, "componentDidLoad", {
@@ -63,23 +66,16 @@ export function makeLinesClampable(
           return;
         }
 
-        /*  If the `content-container` resizes, it checks if it is necessary to
-            update `component.maxLines`
+        /*  If the `content-container` resizes or the `font-size` changes, it
+            checks if it is necessary to update `component.maxLines`
         */
         resizeObserverContainer = new ResizeObserver(() => {
           applyLineClamp();
         });
 
-        /*  If the `font-size` changes, it checks if it is necessary to update
-            `component.maxLines`
-        */
-        resizeObserverLineHeight = new ResizeObserver(() => {
-          applyLineClamp();
-        });
-
         // Observe the `content-container` and line height
         resizeObserverContainer.observe(component.element);
-        resizeObserverLineHeight.observe(lineMeasuringElement);
+        resizeObserverContainer.observe(lineMeasuringElement);
       }
     });
   }
@@ -88,10 +84,6 @@ export function makeLinesClampable(
     before: () => {
       if (resizeObserverContainer !== null) {
         resizeObserverContainer.disconnect();
-      }
-
-      if (resizeObserverLineHeight !== null) {
-        resizeObserverLineHeight.disconnect();
       }
     }
   });

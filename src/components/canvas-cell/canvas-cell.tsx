@@ -12,7 +12,7 @@ export class CanvasCell implements GxComponent {
   /**
    * Defines the horizontal alignment of the content of the cell.
    */
-  @Prop({ reflect: true }) readonly align: "left" | "right" | "center" = "left";
+  @Prop({ reflect: true }) readonly align: "left" | "right" | "center";
 
   /**
    * Defines the left position of the control which is relative to the position
@@ -42,7 +42,7 @@ export class CanvasCell implements GxComponent {
   /**
    * Defines the vertical alignment of the content of the cell.
    */
-  @Prop({ reflect: true }) readonly valign: "top" | "bottom" | "medium" = "top";
+  @Prop({ reflect: true }) readonly valign: "top" | "bottom" | "middle";
 
   /**
    * This attribute lets you specify the width of the control.

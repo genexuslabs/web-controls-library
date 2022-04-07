@@ -1,46 +1,29 @@
-@import "../common/_base";
+@import "../common/base";
+@import "../common/common-styling-config";
 
 gx-image {
   --elevation: 0;
+  @include container-margins();
+  @include elevation();
+  @include reset-variables(false, false);
+  @include visibility(flex);
+  --width: 100%;
+  --height: 100%;
 
-  @include reset-variables();
-  @include visibility(inline-flex);
-
-  justify-content: stretch;
-  align-items: stretch;
+  position: relative;
   flex: 1;
+  align-self: stretch;
+  width: 100%;
+  overflow-x: hidden; // Horizontal overflow is always hidden
 
-  &.gx-img-no-auto-grow {
-    width: var(--width);
-    height: var(--height);
-    @include container-margins();
-    position: relative;
+  /*  Workaround to stop firing events when the gx-image clicked but not the
+      inner img
+  */
+  pointer-events: none;
 
-    & > img {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      object-position: left top;
-    }
-  }
-
-  &:not(.gx-img-no-auto-grow) {
-    & > img {
-      width: var(--width);
-      height: var(--height);
-      @include container-margins();
-
-      max-height: calc(
-        100% - var(--margin-top, 0px) - var(--margin-bottom, 0px)
-      );
-      max-width: calc(
-        100% - var(--margin-right, 0px) - var(--margin-left, 0px)
-      );
-      flex: 1;
+  &:not(.disabled) {
+    > .inner-image {
+      pointer-events: all;
     }
   }
 
@@ -48,17 +31,31 @@ gx-image {
     overflow: hidden;
   }
 
-  & > img {
-    @include elevation();
-    object-fit: var(--image-scale-type, contain);
+  // gx-image with auto-grow = FALSE
+  &.gx-img-no-auto-grow {
+    overflow-y: hidden; // Vertical overflow is hidden if auto-grow = False
+
+    > .inner-image {
+      position: absolute;
+    }
   }
 
-  .gx-image-tile {
-    width: 100% !important;
-    height: 100% !important;
+  > .inner-image {
+    @include elevation();
+    width: var(--width);
+    height: var(--height);
+
+    // Default Scale Type = Fit
+    object-fit: var(--image-scale-type, contain);
+    transition-property: background-color, border-color, box-shadow, color,
+      filter, opacity;
+    transition-duration: $transition-delay;
+  }
+
+  > .gx-image-tile {
+    display: inline-block !important;
     padding-left: 100% !important;
     box-sizing: border-box !important;
-    display: inline-block !important;
     background-position: 0 !important;
     background-repeat: repeat;
   }
@@ -96,47 +93,102 @@ gx-image {
   }
 }
 
-[align="center"] {
+[align="left"] {
+  & > gx-form-field gx-image,
   & > gx-image {
-    justify-self: stretch;
+    justify-content: flex-start;
+  }
+}
+
+// Default horizontal alignment
+[align="center"],
+:not([align]) {
+  & > gx-form-field gx-image,
+  & > gx-image {
     justify-content: center;
   }
 }
 
 [align="right"] {
+  & > gx-form-field gx-image,
   & > gx-image {
-    justify-self: stretch;
     justify-content: flex-end;
   }
 }
 
-[valign="middle"] {
+[valign="top"] {
+  & > gx-form-field gx-image,
   & > gx-image {
-    align-self: stretch;
+    align-items: flex-start;
+  }
+}
+
+// Default vertical alignment
+[valign="middle"],
+:not([valign]) {
+  & > gx-form-field gx-image,
+  & > gx-image {
     align-items: center;
   }
 }
 
 [valign="bottom"] {
+  & > gx-form-field gx-image,
   & > gx-image {
-    align-self: stretch;
     align-items: flex-end;
   }
 }
 
+// Allow inner image positioning even when auto-grow is enabled
 @mixin cellAlignmentNoAutoGrow($halign, $valign) {
   $valignValue: if($valign == middle, center, $valign);
-  [align="#{$halign}"][valign="#{$valign}"] {
-    & > gx-image {
-      &.gx-img-no-auto-grow {
-        img {
-          object-position: $halign $valignValue;
-        }
+
+  // Default horizontal and vertical alignment
+  @if $halign == null and $valign == null {
+    :not([align]):not([valign]) {
+      & > gx-form-field .inner-image,
+      & > gx-image > .inner-image {
+        object-position: center center;
+      }
+    }
+  }
+  // Default horizontal alignment
+  @else if $halign == null {
+    [valign="#{$valign}"]:not([align]) {
+      & > gx-form-field .inner-image,
+      & > gx-image > .inner-image {
+        object-position: center $valignValue;
+      }
+    }
+  }
+  // Default vertical alignment
+  @else if $valign == null {
+    [align="#{$halign}"]:not([valign]) {
+      & > gx-form-field .inner-image,
+      & > gx-image > .inner-image {
+        object-position: $halign center;
+      }
+    }
+  }
+  // Horizontal and vertical alignment specified
+  @else {
+    [align="#{$halign}"][valign="#{$valign}"] {
+      & > gx-form-field .inner-image,
+      & > gx-image > .inner-image {
+        object-position: $halign $valignValue;
       }
     }
   }
 }
 
+// Alignment for the image inside the img tag
+@include cellAlignmentNoAutoGrow(null, null);
+@include cellAlignmentNoAutoGrow(null, top);
+@include cellAlignmentNoAutoGrow(null, middle);
+@include cellAlignmentNoAutoGrow(null, bottom);
+@include cellAlignmentNoAutoGrow(left, null);
+@include cellAlignmentNoAutoGrow(center, null);
+@include cellAlignmentNoAutoGrow(right, null);
 @include cellAlignmentNoAutoGrow(left, top);
 @include cellAlignmentNoAutoGrow(left, middle);
 @include cellAlignmentNoAutoGrow(left, bottom);
