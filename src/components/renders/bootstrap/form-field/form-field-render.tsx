@@ -14,6 +14,7 @@ export class FormFieldRender implements Renderer {
   constructor(private component: FormField) {}
 
   private formFieldId: string;
+  private innerLabel: HTMLLabelElement = null;
 
   private LABEL_WIDTH_BY_POSITION = {
     bottom: "",
@@ -48,17 +49,22 @@ export class FormFieldRender implements Renderer {
     const innerControl: any = formField.element.querySelector("[area='field']");
     if (innerControl && innerControl.getNativeInputId) {
       const nativeInputId = await innerControl.getNativeInputId();
+
       if (nativeInputId) {
         const nativeInput = formField.element.querySelector(
           `#${nativeInputId}`
         );
+
         if (nativeInput !== null) {
           nativeInput.setAttribute("data-part", "field");
         }
-        const innerLabel: any = formField.element.querySelector("label");
-        if (nativeInputId && innerLabel) {
-          innerLabel.setAttribute("for", nativeInputId);
+
+        if (formField.labelPosition === "none" || this.innerLabel == null) {
+          return;
         }
+
+        this.innerLabel.setAttribute("for", nativeInputId);
+        this.innerLabel = null;
       }
     }
   }
@@ -110,7 +116,7 @@ export class FormFieldRender implements Renderer {
       formField.element.querySelector("gx-radio-group[area='field']") !== null;
     const renderLabel = labelPosition !== "none";
 
-    /*  Since the control can recieve more than one class, we apply the 
+    /*  Since the control can receive more than one class, we apply the
         "tLabel" and "tLabelHighlighted" transforms for each class.
     */
     const labelSplitClasses =
@@ -143,6 +149,7 @@ export class FormFieldRender implements Renderer {
               [labelBaseClass]: true,
               [labelHighlightedClass]: true
             }}
+            ref={el => (this.innerLabel = el as HTMLLabelElement)}
           >
             {formField.labelCaption}
           </label>

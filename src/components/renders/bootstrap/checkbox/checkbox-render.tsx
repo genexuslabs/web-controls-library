@@ -7,12 +7,19 @@ let autoCheckBoxId = 0;
 export class CheckBoxRender implements Renderer {
   constructor(private component: CheckBox, handlers: { handleChange }) {
     this.handleChange = handlers.handleChange;
+
+    // ID for gx-checkbox's Label
+    if (!this.inputId && !this.component.readonly) {
+      this.inputId = this.component.element.id
+        ? `${this.component.element.id}__checkbox`
+        : `gx-checkbox-auto-id-${autoCheckBoxId++}`;
+    }
   }
   private inputId: string;
   private handleChange: (event: UIEvent) => void;
 
   getNativeInputId() {
-    return this.getNativeInput().id;
+    return this.inputId;
   }
 
   private getNativeInput(): HTMLInputElement {
@@ -35,12 +42,6 @@ export class CheckBoxRender implements Renderer {
 
   render() {
     const checkbox = this.component;
-
-    if (!this.inputId) {
-      this.inputId = checkbox.element.id
-        ? `${checkbox.element.id}__checkbox`
-        : `gx-checkbox-auto-id-${autoCheckBoxId++}`;
-    }
 
     const attris = {
       "aria-disabled": checkbox.disabled ? "true" : undefined,
