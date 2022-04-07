@@ -22,7 +22,7 @@ import { LineClampComponent, makeLinesClampable } from "../common/line-clamp";
 import { getClasses } from "../common/css-transforms/css-transforms";
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "textblock.scss",
   tag: "gx-textblock"
 })
@@ -125,7 +125,7 @@ export class TextBlock
     const classes = getClasses(this.cssClass, this.highlightFunction);
 
     const body = (
-      <div class="gx-textblock-container">
+      <div class="gx-textblock-container" part="valign">
         {this.lineClamp && <div class="line-measuring">{"A"}</div>}
         {this.format === "Text" ? (
           <span
@@ -138,11 +138,16 @@ export class TextBlock
                 ? this.maxLines.toString()
                 : undefined
             }}
+            part="content"
           >
             <slot />
           </span>
         ) : (
-          <div class="gx-textblock-content" innerHTML={this.inner}></div>
+          <div
+            class="gx-textblock-content"
+            innerHTML={this.inner}
+            part="content"
+          ></div>
         )}
       </div>
     );
@@ -152,7 +157,8 @@ export class TextBlock
         class={{
           [this.cssClass]: true,
           [classes.vars]: true,
-          [classes.highlighted]: this.highlightable
+          [classes.highlighted]: this.highlightable,
+          disabled: this.disabled
         }}
       >
         {this.href ? <a href={this.href}>{body}</a> : body}

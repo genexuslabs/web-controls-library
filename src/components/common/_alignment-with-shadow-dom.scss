@@ -1,0 +1,41 @@
+/// Helper mixin to ease text alignment of shadow DOM components
+@mixin text-align-with-shadow-DOM() {
+  &[align="left"] {
+    > gx-textblock {
+      text-align: start;
+    }
+  }
+
+  &[align="center"] {
+    > gx-textblock {
+      text-align: center;
+    }
+  }
+
+  &[align="right"] {
+    > gx-textblock {
+      text-align: end;
+    }
+  }
+}
+
+/// Helper mixin to ease vertical alignment of shadow DOM components
+@mixin valign-with-shadow-DOM() {
+  &[align="top"] {
+    > ::part(valign) {
+      align-items: flex-start;
+    }
+  }
+
+  &[align="center"] {
+    > ::part(valign) {
+      align-items: center;
+    }
+  }
+
+  &[align="right"] {
+    > ::part(valign) {
+      align-items: flex-end;
+    }
+  }
+}

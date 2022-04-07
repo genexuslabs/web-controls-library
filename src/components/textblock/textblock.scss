@@ -1,79 +1,32 @@
 @import "../common/_base";
 @import "../common/_common-styling-config";
 
-// Used to horizontally and vertically align the text
-@mixin alignment($text-align: null, $align-items: null) {
-  @if ($text-align != null) {
-    text-align: $text-align;
-  }
+@include visibility-shadow-DOM(inline-flex);
 
-  @if ($align-items != null) {
-    .gx-textblock-container {
-      align-items: $align-items;
-    }
-  }
+:host(.disabled) {
+  pointer-events: none;
 }
 
-// Used when autoGrow = false to ensure the content does not overflows
-gx-table-cell[max-height] {
-  & > gx-textblock {
-    .gx-textblock-content {
-      position: absolute;
-    }
-  }
-}
-
-gx-textblock {
+:host {
   --elevation: 0;
-
-  // Default alignment which supports RTL
-  @include alignment(start, flex-start);
   @include elevation();
-  @include reset-variables();
-  @include visibility(inline-flex);
+
   flex: 1;
   align-self: stretch;
+  text-align: start; // Default alignment which supports RTL
   transition-property: background-color, border-color, box-shadow, color, filter,
     opacity;
   transition-duration: $transition-delay;
-
-  &[disabled]:not([disabled="false"]) {
-    pointer-events: none;
-  }
-
-  & > .gx-textblock-container {
-    display: flex;
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-
-    & > .gx-textblock-content {
-      width: 100%;
-    }
-  }
 }
 
-// Alignments based on the direct parent control alignment
-[align="center"] {
-  & > gx-textblock {
-    @include alignment(center);
-  }
-}
+.gx-textblock-container {
+  display: flex;
+  align-items: flex-start;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
 
-[align="right"] {
-  & > gx-textblock {
-    @include alignment(end);
-  }
-}
-
-[valign="middle"] {
-  & > gx-textblock {
-    @include alignment($align-items: center);
-  }
-}
-
-[valign="bottom"] {
-  & > gx-textblock {
-    @include alignment($align-items: flex-end);
+  & > .gx-textblock-content {
+    width: 100%;
   }
 }

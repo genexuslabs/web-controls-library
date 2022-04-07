@@ -14,6 +14,24 @@ $gx-xsmall-breakpoint-plus-1: 769px;
   }
 }
 
+// Same as "visibility" mixin, but for shadow DOM components
+@mixin visibility-shadow-DOM($display) {
+  :host {
+    display: $display;
+  }
+
+  :host([hidden]) {
+    display: none !important;
+  }
+
+  :host([hidden][invisible-mode="keep-space"]) {
+    display: $display !important;
+
+    // "!important" is needed to avoid "visibility: inherit" from "hydrated" class
+    visibility: hidden !important;
+  }
+}
+
 @mixin overflowMode() {
   &[overflow-mode="clip"] {
     overflow: hidden;
