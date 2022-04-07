@@ -1,6 +1,7 @@
 @import "../common/_base";
 @import "../common/_common-styling-config";
 
+@include line-clamp();
 @include visibility-shadow-DOM(inline-flex);
 
 :host(.disabled) {

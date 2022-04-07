@@ -34,7 +34,12 @@ export class TextBlock
     LineClampComponent,
     HighlightableComponent {
   constructor() {
-    makeLinesClampable(this, ".gx-textblock-container", ".line-measuring");
+    makeLinesClampable(
+      this,
+      ".gx-textblock-container",
+      ".line-measuring",
+      true
+    );
   }
 
   @Element() element: HTMLGxTextblockElement;

@@ -118,18 +118,20 @@ $gx-xsmall-breakpoint-plus-1: 769px;
   );
 }
 
-.gx-line-clamp {
-  display: -webkit-box;
-  position: absolute;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: var(--max-lines);
-  overflow: hidden;
-}
+@mixin line-clamp() {
+  .gx-line-clamp {
+    display: -webkit-box;
+    position: absolute;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--max-lines);
+    overflow: hidden;
+  }
 
-// Used to measure the line height, in order to make the lines clampable
-.line-measuring {
-  visibility: hidden;
-  position: absolute;
+  // Used to measure the line height, in order to make the lines clampable
+  .line-measuring {
+    visibility: hidden;
+    position: absolute;
+  }
 }
 
 @mixin scss-custom-option-control() {

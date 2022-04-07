@@ -4,7 +4,8 @@ import { Component } from "./interfaces";
 export function makeLinesClampable(
   component: LineClampComponent,
   contentContainerElementSelector: string,
-  lineMeasuringElementSelector: string
+  lineMeasuringElementSelector: string,
+  componentHasShadowDOM = false
 ) {
   // Used to know the sizes of the `content-container`
   let contentContainerElement;
@@ -54,13 +55,23 @@ export function makeLinesClampable(
   if (component.lineClamp) {
     overrideMethod(component, "componentDidLoad", {
       before: () => {
-        contentContainerElement = component.element.querySelector(
-          contentContainerElementSelector
-        ) as HTMLElement;
+        if (componentHasShadowDOM) {
+          contentContainerElement = component.element.shadowRoot.querySelector(
+            contentContainerElementSelector
+          ) as HTMLElement;
 
-        lineMeasuringElement = component.element.querySelector(
-          lineMeasuringElementSelector
-        ) as HTMLElement;
+          lineMeasuringElement = component.element.shadowRoot.querySelector(
+            lineMeasuringElementSelector
+          ) as HTMLElement;
+        } else {
+          contentContainerElement = component.element.querySelector(
+            contentContainerElementSelector
+          ) as HTMLElement;
+
+          lineMeasuringElement = component.element.querySelector(
+            lineMeasuringElementSelector
+          ) as HTMLElement;
+        }
 
         if (contentContainerElement === null || lineMeasuringElement === null) {
           return;
