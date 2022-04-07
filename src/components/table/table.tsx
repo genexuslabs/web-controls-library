@@ -19,6 +19,9 @@ import {
 } from "../common/highlightable";
 import { Swipeable, makeSwipeable } from "../common/swipeable";
 
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
+
 @Component({
   shadow: false,
   styleUrl: "table.scss",
@@ -49,6 +52,11 @@ export class Table
    * (for example, click event).
    */
   @Prop() readonly disabled = false;
+
+  /**
+   * A CSS class to set as the `gx-table` element class.
+   */
+  @Prop() readonly cssClass: string;
 
   /**
    * Like the `grid-templates-areas` CSS property, this attribute defines a grid
@@ -84,18 +92,22 @@ export class Table
    * Emitted when the element is swiped.
    */
   @Event() swipe: EventEmitter;
+
   /**
    * Emitted when the element is swiped in upward direction.
    */
   @Event() swipeUp: EventEmitter;
+
   /**
    * Emitted when the element is swiped right direction.
    */
   @Event() swipeRight: EventEmitter;
+
   /**
    * Emitted when the element is swiped downward direction.
    */
   @Event() swipeDown: EventEmitter;
+
   /**
    * Emitted when the element is swiped left direction..
    */
@@ -115,18 +127,22 @@ export class Table
   }
 
   render() {
-    if (this.areasTemplate) {
-      this.element.style["gridTemplateAreas"] = this.areasTemplate;
-    }
-    if (this.columnsTemplate) {
-      this.element.style["gridTemplateColumns"] = this.columnsTemplate;
-    }
-    if (this.rowsTemplate) {
-      this.element.style["gridTemplateRows"] = this.rowsTemplate;
-    }
+    // Styling for gx-table control.
+    const classes = getClasses(this.cssClass);
 
     return (
-      <Host>
+      <Host
+        class={{
+          [this.cssClass]: true,
+          [classes.vars]: true,
+          [classes.highlighted]: this.highlightable
+        }}
+        style={{
+          gridTemplateAreas: this.areasTemplate,
+          gridTemplateColumns: this.columnsTemplate,
+          gridTemplateRows: this.rowsTemplate
+        }}
+      >
         <slot />
       </Host>
     );

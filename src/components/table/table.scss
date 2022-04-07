@@ -6,7 +6,6 @@ gx-table {
 
   // Support for margin with variables
   @include reset-variables();
-  @include container-margins();
   @include elevation();
   @include visibility(grid);
 
@@ -16,6 +15,7 @@ gx-table {
       property is applied
   */
   overflow: hidden;
-  transition: background-color $transition-delay, border-color $transition-delay,
-    color $transition-delay, filter $transition-delay;
+  transition-property: background-color, border-color, box-shadow, color, filter,
+    opacity;
+  transition-duration: $transition-delay;
 }
