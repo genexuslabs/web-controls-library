@@ -76,9 +76,9 @@ export class Edit implements FormComponent, HighlightableComponent {
   @Prop() readonly autocorrect: string;
 
   /**
-   *
+   * A CSS class to set as the `gx-edit` element class.
    */
-  @Prop() cssClass: string = null;
+  @Prop() readonly cssClass: string;
 
   /**
    * Used to define the semantic of the element when readonly=true.
@@ -230,10 +230,17 @@ export class Edit implements FormComponent, HighlightableComponent {
   }
 
   private shouldStyleHostElement = false;
+  private shouldAddHighlightedClasses = true;
+
   private disabledClass = "disabled";
 
   componentWillLoad() {
     this.shouldStyleHostElement = !this.multiline || this.readonly;
+
+    // In case of false, makeHighligtable() function highlights the gx-edit control
+    this.shouldAddHighlightedClasses = !(
+      this.readonly || this.format === "HTML"
+    );
 
     if (this.format === "HTML") {
       this.disabledClass = "disabled-html";
@@ -242,7 +249,7 @@ export class Edit implements FormComponent, HighlightableComponent {
 
   componentDidLoad() {
     this.toggleValueSetClass();
-    if (this.readonly || this.format == "HTML") {
+    if (!this.shouldAddHighlightedClasses) {
       makeHighlightable(this);
     }
   }
@@ -279,8 +286,14 @@ export class Edit implements FormComponent, HighlightableComponent {
   }
 
   render() {
-    // Styling for gx-edit control.
-    const classes = getClasses(this.cssClass);
+    /*  Styling for gx-edit control. 
+        If the gx-edit is (readonly || format == "HTML"), we do not add 
+        highlighted classes
+    */
+    const classes = getClasses(
+      this.cssClass,
+      this.shouldAddHighlightedClasses ? 1 : -1
+    );
 
     return (
       <Host
@@ -290,7 +303,8 @@ export class Edit implements FormComponent, HighlightableComponent {
           [this.disabledClass]: this.disabled && !this.readonly,
           [this.cssClass]: this.shouldStyleHostElement,
           [classes.vars]: this.shouldStyleHostElement,
-          [classes.highlighted]: this.shouldStyleHostElement
+          [classes.highlighted]:
+            this.shouldStyleHostElement && this.shouldAddHighlightedClasses
         }}
       >
         {this.renderer.render({

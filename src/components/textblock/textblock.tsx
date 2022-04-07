@@ -107,17 +107,9 @@ export class TextBlock
       return;
     }
   }
-
-  /** `-1`: Empty highlight function
-   *  `1`: Include active highlight function
-   */
-  private highlightFunction: number;
-
   private shouldLineClamp: boolean;
 
   componentWillLoad() {
-    this.highlightFunction = this.highlightable ? 1 : -1;
-
     this.shouldLineClamp = this.format === "Text" && this.lineClamp;
   }
 
@@ -127,7 +119,7 @@ export class TextBlock
 
   render() {
     // Styling for gx-textblock control.
-    const classes = getClasses(this.cssClass, this.highlightFunction);
+    const classes = getClasses(this.cssClass, -1);
 
     const body = (
       <div class="gx-textblock-container" part="valign">
@@ -162,9 +154,9 @@ export class TextBlock
         class={{
           [this.cssClass]: true,
           [classes.vars]: true,
-          [classes.highlighted]: this.highlightable,
           disabled: this.disabled
         }}
+        data-has-action={this.highlightable ? "" : undefined}
       >
         {this.href ? <a href={this.href}>{body}</a> : body}
       </Host>

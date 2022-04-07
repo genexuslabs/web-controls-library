@@ -1,10 +1,12 @@
+import { tHighlighted } from "./css-transforms/css-transforms";
+
 const HIGHLIGHT_EVENT_NAME = "highlight";
 const UNHIGHTLIGHT_EVENT_NAME = "unhighlight";
-const HIGHLIGHT_CLASS_NAME = "gx-highlighted";
 let isSetup = false;
 
 export interface HighlightableComponent {
   element: HTMLElement;
+  cssClass?: string;
   highlightable: boolean;
 }
 
@@ -18,6 +20,12 @@ export function makeHighlightable(
 ) {
   const actualHighlightableElement = innerElement || component.element;
 
+  // Used to store the last value of the cssClass property
+  let lastCssClass: string;
+
+  // Used to remove the last highlighted class when the click event has ended
+  let highlightedClasses: string[];
+
   if (component.highlightable) {
     if (!isSetup) {
       isSetup = true;
@@ -28,14 +36,30 @@ export function makeHighlightable(
       HIGHLIGHT_EVENT_NAME,
       (event: CustomEvent) => {
         event.stopPropagation();
-        component.element.classList.add(HIGHLIGHT_CLASS_NAME);
+
+        // If the component does not have a class, we reset the highlighted class
+        if (component.cssClass == null) {
+          highlightedClasses = null;
+
+          // If the class did change since the last tap event, we recalculate the highlighted class
+        } else if (component.cssClass != lastCssClass) {
+          lastCssClass = component.cssClass;
+          highlightedClasses = lastCssClass.split(" ").map(tHighlighted);
+        }
+
+        highlightedClasses.forEach(highlightedClass => {
+          component.element.classList.add(highlightedClass);
+        });
       }
     );
     actualHighlightableElement.addEventListener(
       UNHIGHTLIGHT_EVENT_NAME,
       (event: CustomEvent) => {
         event.stopPropagation();
-        component.element.classList.remove(HIGHLIGHT_CLASS_NAME);
+
+        highlightedClasses.forEach(highlightedClass => {
+          component.element.classList.remove(highlightedClass);
+        });
       }
     );
   }

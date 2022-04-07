@@ -39,8 +39,7 @@
 /// Helper mixin to ease styling highlightable custom elements
 /// @param {string} $class Base class of the highlight properties
 @mixin highlighted($class) {
-  &#{$gx-highlighted},
-  &.#{$gx-highlighted-dot}, // <----- It generates incorrect additional selectors
+  &#{$gx-highlighted}[data-has-action],
   &#{$gx-highlighted-active}:active,
   &#{$gx-highlighted-focus-within}:focus-within {
     @extend #{$class} !optional;

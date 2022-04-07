@@ -1,5 +1,5 @@
 const transforms = {
-  highlighted: "gx-highlighted",
+  highlighted: "-gx-highlighted",
   highlightedActive: "-gx-highlighted-active",
   highlightedFocusWithin: "-gx-highlighted-focus-within",
   label: "-gx-label",
@@ -7,8 +7,8 @@ const transforms = {
   vars: "-gx-vars"
 };
 
-export function tHighlighted(): string {
-  return transforms["highlighted"];
+export function tHighlighted(className): string {
+  return className + transforms["highlighted"];
 }
 
 export function tHighlightedActive(className: string): string {
@@ -36,7 +36,7 @@ export function tLabelHighlighted(className: string): string {
  * @param highlightOption Function type to be applied in the second return value
  * @returns For each class in the `cssClass` param, return two string that match the variables and highlighted classes of the control.
  */
-export function getClasses(cssClass: string, highlightOption = 2): any {
+export function getClasses(cssClass: string, highlightOption = 1): any {
   // If the cssClass is empty, we return empty classes
   if (!cssClass) {
     return { vars: "", highlighted: "" };
@@ -48,16 +48,15 @@ export function getClasses(cssClass: string, highlightOption = 2): any {
 
   switch (highlightOption) {
     case 0:
-      highlighted = splitedClasses.map(tHighlighted).join(" ");
-      break;
-
-    case 1:
       highlighted = splitedClasses.map(tHighlightedActive).join(" ");
       break;
 
-    default:
+    case 1:
       highlighted = splitedClasses.map(tHighlightedFocusWithin).join(" ");
       break;
+
+    default:
+      highlighted = "";
   }
   return { vars, highlighted };
 }

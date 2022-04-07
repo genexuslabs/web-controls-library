@@ -128,20 +128,17 @@ export class Table
 
   render() {
     // Styling for gx-table control.
-    const classes = getClasses(this.cssClass);
+    const classes = getClasses(this.cssClass, -1);
 
     return (
       <Host
-        class={{
-          [this.cssClass]: true,
-          [classes.vars]: true,
-          [classes.highlighted]: this.highlightable
-        }}
+        class={{ [this.cssClass]: true, [classes.vars]: true }}
         style={{
           gridTemplateAreas: this.areasTemplate,
           gridTemplateColumns: this.columnsTemplate,
           gridTemplateRows: this.rowsTemplate
         }}
+        data-has-action={this.highlightable ? "" : undefined}
       >
         <slot />
       </Host>
