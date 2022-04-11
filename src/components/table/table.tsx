@@ -132,7 +132,7 @@ export class Table
 
     return (
       <Host
-        class={{ [this.cssClass]: true, [classes.vars]: true }}
+        class={{ [this.cssClass]: !!this.cssClass, [classes.vars]: true }}
         style={{
           gridTemplateAreas: this.areasTemplate,
           gridTemplateColumns: this.columnsTemplate,

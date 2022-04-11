@@ -56,7 +56,7 @@ export class SelectRender implements Renderer {
         <div
           class={{
             "gx-select-control": true,
-            [this.component.cssClass]: true,
+            [this.component.cssClass]: !!this.component.cssClass,
             [classes.vars]: true,
             [classes.highlighted]: true
           }}
@@ -70,7 +70,7 @@ export class SelectRender implements Renderer {
         "aria-disabled": this.component.disabled ? "true" : undefined,
         class: {
           "gx-select-control": true,
-          [this.component.cssClass]: true,
+          [this.component.cssClass]: !!this.component.cssClass,
           [classes.vars]: true,
           [classes.highlighted]: true
         },

@@ -301,7 +301,7 @@ export class Edit implements FormComponent, HighlightableComponent {
           "gx-edit--single-line":
             this.type === "date" || this.type === "datetime-local",
           [this.disabledClass]: this.disabled && !this.readonly,
-          [this.cssClass]: this.shouldStyleHostElement,
+          [this.cssClass]: this.shouldStyleHostElement && !!this.cssClass,
           [classes.vars]: this.shouldStyleHostElement,
           [classes.highlighted]:
             this.shouldStyleHostElement && this.shouldAddHighlightedClasses

@@ -130,7 +130,7 @@ export class CheckBox implements FormComponent {
     return (
       <Host
         class={{
-          [this.cssClass]: true,
+          [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,
           [classes.highlighted]: true
         }}

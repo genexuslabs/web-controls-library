@@ -141,7 +141,8 @@ export class EditRender implements Renderer {
           <div class="gx-edit-container" hidden={edit.readonly}>
             <textarea
               class={{
-                [slots.cssClass]: !slots.shouldStyleHostElement,
+                [slots.cssClass]:
+                  !slots.shouldStyleHostElement && !!this.component.cssClass,
                 [slots.vars]: !slots.shouldStyleHostElement,
                 [slots.highlighted]: !slots.shouldStyleHostElement
               }}

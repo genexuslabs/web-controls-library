@@ -152,7 +152,7 @@ export class TextBlock
     return (
       <Host
         class={{
-          [this.cssClass]: true,
+          [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,
           disabled: this.disabled
         }}

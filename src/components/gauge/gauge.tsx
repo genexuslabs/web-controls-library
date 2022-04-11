@@ -485,7 +485,7 @@ export class Gauge implements GxComponent {
 
     return (
       <Host
-        class={{ [this.cssClass]: true, [classes.vars]: true }}
+        class={{ [this.cssClass]: !!this.cssClass, [classes.vars]: true }}
         data-readonly
       >
         <div class="circle-gauge-container">
@@ -564,7 +564,7 @@ export class Gauge implements GxComponent {
 
     return (
       <Host
-        class={{ [this.cssClass]: true, [classes.vars]: true }}
+        class={{ [this.cssClass]: !!this.cssClass, [classes.vars]: true }}
         data-readonly
       >
         <div
