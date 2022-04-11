@@ -3,7 +3,6 @@
 
 gx-image {
   --elevation: 0;
-  @include container-margins();
   @include elevation();
   @include reset-variables(false, false);
   @include visibility(flex);
@@ -20,6 +19,12 @@ gx-image {
       inner img
   */
   pointer-events: none;
+
+  .gx-image-container {
+    display: flex;
+    flex: 1;
+    height: 100%;
+  }
 
   &:not(.disabled) {
     > .inner-image {

@@ -17,7 +17,10 @@ import {
 } from "../common/interfaces";
 import { Swipeable, makeSwipeable } from "../common/swipeable";
 
-const THRESHOLD = 1.75;
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
+
+const CANVAS_THRESHOLD = 1.75;
 
 /* - - - - - - - - SELECTORS - - - - - - - - */
 const ALL_CANVAS_CELLS = ":scope > .canvas-cells-container > gx-canvas-cell";
@@ -55,6 +58,11 @@ export class Canvas
   }
 
   @Element() element: HTMLGxCanvasElement;
+
+  /**
+   * A CSS class to set as the `gx-canvas` element class.
+   */
+  @Prop() readonly cssClass: string;
 
   /**
    * This attribute lets you specify if the element is disabled.
@@ -283,7 +291,7 @@ export class Canvas
       */
       const maxHeightConstraint = this.getMaxHeightConstraint();
       if (
-        this.innerCanvasContainer.clientHeight + THRESHOLD <
+        this.innerCanvasContainer.clientHeight + CANVAS_THRESHOLD <
         maxHeightConstraint
       ) {
         this.fixCanvasHeight(maxHeightConstraint);
@@ -444,7 +452,7 @@ export class Canvas
   private adjustCanvasHeight(canvasCellId: string, canvasCellHeight: number) {
     if (this.canvasFixedHeight == null) {
       if (
-        this.innerCanvasContainer.clientHeight + THRESHOLD <
+        this.innerCanvasContainer.clientHeight + CANVAS_THRESHOLD <
         canvasCellHeight
       ) {
         this.fixCanvasHeight(canvasCellHeight);
@@ -523,10 +531,14 @@ export class Canvas
   }
 
   render() {
+    // Styling for gx-canvas control.
+    const classes = getClasses(this.cssClass, -1);
+
     this.element.addEventListener("click", this.handleClick);
 
     return (
       <Host
+        class={{ [this.cssClass]: !!this.cssClass, [classes.vars]: true }}
         style={{
           width: this.width,
           height: this.canvasFixedHeight == null ? this.minHeight : null,
