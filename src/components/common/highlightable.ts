@@ -48,7 +48,7 @@ export function makeHighlightable(
         }
 
         highlightedClasses.forEach(highlightedClass => {
-          component.element.classList.add(highlightedClass);
+          actualHighlightableElement.classList.add(highlightedClass);
         });
       }
     );
@@ -58,7 +58,7 @@ export function makeHighlightable(
         event.stopPropagation();
 
         highlightedClasses.forEach(highlightedClass => {
-          component.element.classList.remove(highlightedClass);
+          actualHighlightableElement.classList.remove(highlightedClass);
         });
       }
     );

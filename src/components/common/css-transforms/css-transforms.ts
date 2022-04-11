@@ -1,4 +1,5 @@
 const transforms = {
+  groupCaption: "-gx-group-caption",
   highlighted: "-gx-highlighted",
   highlightedActive: "-gx-highlighted-active",
   highlightedFocusWithin: "-gx-highlighted-focus-within",
@@ -6,6 +7,10 @@ const transforms = {
   labelHighlighted: "-gx-label-highlighted",
   vars: "-gx-vars"
 };
+
+export function tGroupCaption(className): string {
+  return className + transforms["groupCaption"];
+}
 
 export function tHighlighted(className): string {
   return className + transforms["highlighted"];

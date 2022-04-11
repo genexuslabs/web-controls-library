@@ -2,11 +2,19 @@
 
 gx-group {
   --elevation: 0;
-
-  @include visibility(block);
+  @include visibility(flex);
   @include overflowMode();
+  flex: 1;
+  width: 100%;
 
   & > fieldset {
     @include elevation();
+    display: flex;
+    flex: 1;
+
+    & > legend {
+      font-size: unset;
+      margin: 0;
+    }
   }
 }
