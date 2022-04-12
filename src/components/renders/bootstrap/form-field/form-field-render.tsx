@@ -69,7 +69,12 @@ export class FormFieldRender implements Renderer {
     }
   }
 
-  renderForRadio(renderLabel: boolean, slot) {
+  renderForRadio(
+    renderLabel: boolean,
+    labelBaseClass: string,
+    labelHighlightedClass: string,
+    slot
+  ) {
     const labelId = `${this.formFieldId}-label`;
     const formField = this.component;
     const labelPosition = formField.labelPosition;
@@ -78,11 +83,19 @@ export class FormFieldRender implements Renderer {
       <div
         class={{
           [this.LABEL_WIDTH_BY_POSITION[labelPosition]]: true,
-          "gx-label": true
+          "gx-label-container": true
         }}
         id={labelId}
       >
-        <div class="gx-label-content">{formField.labelCaption}</div>
+        <div
+          class={{
+            "gx-label": true,
+            [labelBaseClass]: !!formField.cssClass,
+            [labelHighlightedClass]: true
+          }}
+        >
+          {formField.labelCaption}
+        </div>
       </div>
     );
 
@@ -120,7 +133,7 @@ export class FormFieldRender implements Renderer {
         "tLabel" and "tLabelHighlighted" transforms for each class.
     */
     const labelSplitClasses =
-      renderLabel && formField.cssClass ? formField.cssClass.split(" ") : [];
+      renderLabel && !!formField.cssClass ? formField.cssClass.split(" ") : [];
 
     const labelBaseClass = labelSplitClasses.map(tLabel).join(" ");
 
@@ -134,7 +147,12 @@ export class FormFieldRender implements Renderer {
     }
 
     if (isRadioGroup) {
-      return this.renderForRadio(renderLabel, slots.default);
+      return this.renderForRadio(
+        renderLabel,
+        labelBaseClass,
+        labelHighlightedClass,
+        slots.default
+      );
     } else {
       const label = (
         <div
@@ -146,7 +164,7 @@ export class FormFieldRender implements Renderer {
           <label
             class={{
               "gx-label": true,
-              [labelBaseClass]: true,
+              [labelBaseClass]: !!formField.cssClass,
               [labelHighlightedClass]: true
             }}
             ref={el => (this.innerLabel = el as HTMLLabelElement)}
