@@ -60,6 +60,14 @@
   }
 }
 
+/// Helper mixin to ease styling hoverable custom elements
+/// @param {string} $class Base class of the hover properties
+@mixin hover($class) {
+  &#{$gx-hover}:hover {
+    @extend #{$class} !optional;
+  }
+}
+
 /// Helper mixin to ease styling highlightable custom elements
 /// @param {string} $class Base class of the highlight properties
 /// @param {string} $control-type Determine what type of control the highlight class will apply to
@@ -76,7 +84,6 @@
   // Any control
   @if $control-type == null {
     &#{$gx-highlighted}[data-has-action],
-    &#{$gx-highlighted-active}:active,
     &#{$gx-highlighted-focus-within}:focus-within {
       @include extend-highlighted-class(
         $class,
@@ -90,6 +97,7 @@
   // gx-form-field's controls
   @if $control-type == attribute {
     @at-root [area="field"]#{&},
+      // gx-edit with multiline = True, readonly = False and format = "Text"
       textarea#{&} {
       &#{$gx-highlighted-focus-within}:focus-within {
         @include extend-highlighted-class(
@@ -156,7 +164,7 @@
 
   // gx-button control
   @if $control-type == button {
-    @at-root .gx-button#{&}#{$gx-highlighted-active}:active {
+    @at-root .gx-button#{&}#{$gx-highlighted}[data-has-action] {
       @include extend-highlighted-class(
         $class,
         $background-color,

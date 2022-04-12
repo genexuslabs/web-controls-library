@@ -87,7 +87,9 @@ gx-button {
 
   // Default appearance
   & > button {
+    background-color: transparent;
     border-style: none;
+    user-select: none;
   }
 
   & > .gx-button {
