@@ -33,7 +33,7 @@ export class Button
   @Element() element: HTMLGxButtonElement;
 
   /**
-   * A CSS class to set as the inner `input` element class.
+   * A CSS class to set as the `gx-button` element class.
    */
   @Prop() readonly cssClass: string;
 
@@ -87,7 +87,7 @@ export class Button
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = false;
+  @Prop() readonly highlightable = true;
 
   /**
    * This attribute lets you specify the width.
@@ -112,7 +112,9 @@ export class Button
   }
 
   componentDidLoad() {
-    makeHighlightable(this);
+    const innerButton = this.element.querySelector("button");
+
+    makeHighlightable(this, innerButton);
   }
 
   render() {

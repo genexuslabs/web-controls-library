@@ -1,23 +1,14 @@
 @import "../common/_base";
+@import "../common/common-styling-config";
 @import "../common/_image-position";
-@import "../renders/bootstrap/button/button-render";
 
 // Used to set the margin for different types of images
 @mixin imageMargin() {
-  &.gx-image-position {
-    &--before,
-    &--after,
-    &--above,
-    &--below,
-    &--behind {
-      [slot="main-image"],
-      [slot="disabled-image"] {
-        margin: var(--gx-button-image-margin-top)
-          var(--gx-button-image-margin-right)
-          var(--gx-button-image-margin-bottom)
-          var(--gx-button-image-margin-left);
-      }
-    }
+  [slot="main-image"],
+  [slot="disabled-image"] {
+    margin: var(--gx-button-image-margin-top)
+      var(--gx-button-image-margin-right) var(--gx-button-image-margin-bottom)
+      var(--gx-button-image-margin-left);
   }
 }
 
@@ -67,18 +58,21 @@ gx-button {
    */
   --gx-button-image-margin-left: 0px;
 
+  --elevation: 0;
+
   @include visibility(inline-flex);
 
   // Used to decide the position of the image
-  @include imagePosition("button.gx-button", ".gx-button--disabled");
-
+  @include imagePosition("button.gx-button", ".disabled");
   @include imageMargin();
 
   @include reset-variables();
-  @include container-margins();
   height: var(--height);
+  overflow: hidden;
 
-  vertical-align: middle;
+  &.disabled {
+    pointer-events: none;
+  }
 
   &.stretch-height {
     align-self: stretch;
@@ -91,7 +85,14 @@ gx-button {
     --gx-button-image-size: 100%;
   }
 
-  & > button.gx-button {
+  // Default appearance
+  & > button {
+    border-style: none;
+  }
+
+  & > .gx-button {
+    @include elevation();
+
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -102,6 +103,13 @@ gx-button {
     background-position: center center;
     background-size: contain;
     max-width: 100%;
+    outline: unset;
+
+    // Avoid zooming on double tap
+    touch-action: manipulation;
+    transition-property: background-color, border-color, box-shadow, color,
+      filter, opacity;
+    transition-duration: $transition-delay;
 
     & > img {
       height: var(--gx-button-image-size);
@@ -115,13 +123,6 @@ gx-button {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-    }
-
-    &:not(:disabled):not(.disabled) {
-      &:focus,
-      &:active:focus {
-        box-shadow: none;
-      }
     }
   }
 }

@@ -8,6 +8,9 @@ import {
 } from "../../../common/image-position";
 import { getFileNameWithoutExtension } from "../../../common/utils";
 
+// Class transforms
+import { getClasses } from "../../../common/css-transforms/css-transforms";
+
 export class ButtonRender implements Renderer {
   constructor(private component: Button, handlers: { handleClick }) {
     this.handleClick = handlers.handleClick;
@@ -45,11 +48,14 @@ export class ButtonRender implements Renderer {
       }
     });
 
+    // Styling for gx-chronometer control.
+    const classes = getClasses(button.cssClass, -1);
+
     return (
       <Host
         role="button"
         class={{
-          "gx-button--disabled": button.disabled,
+          disabled: button.disabled,
           [imagePositionClass(button.imagePosition)]: true,
           [hideMainImageWhenDisabledClass]:
             button.disabled && this.hasDisabledImage,
@@ -63,16 +69,13 @@ export class ButtonRender implements Renderer {
           "--height": button.height === "" ? "auto" : button.height
         }}
       >
-        <gx-bootstrap />
         <button
           class={{
-            btn: true,
-            "p-0": true,
-            "btn-lg": button.size === "large",
-            "btn-sm": button.size === "small",
             "gx-button": true,
-            [button.cssClass]: !!button.cssClass
+            [button.cssClass]: !!button.cssClass,
+            [classes.vars]: true
           }}
+          data-has-action
           disabled={button.disabled}
           onClick={this.handleClick}
           tabindex="0"
