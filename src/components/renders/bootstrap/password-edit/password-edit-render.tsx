@@ -47,6 +47,7 @@ export class PasswordEditRender implements Renderer {
     return (
       <gx-edit
         ref={input => (this.innerEdit = input as any)}
+        area="field"
         css-class={passwordEdit.cssClass}
         disabled={passwordEdit.disabled}
         placeholder={passwordEdit.placeholder}
