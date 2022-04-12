@@ -3,6 +3,7 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Method,
   Prop,
   State,
@@ -11,6 +12,9 @@ import {
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 import { TimerState } from "./chronometer-timer-state";
+
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
 
 @Component({
   shadow: false,
@@ -26,6 +30,11 @@ export class Chronometer implements GxComponent {
   @Element() element: HTMLGxChronometerElement;
 
   @State() elapsedTime = 0;
+
+  /**
+   * A CSS class to set as the `gx-chronometer` element class.
+   */
+  @Prop() readonly cssClass: string;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -200,6 +209,13 @@ export class Chronometer implements GxComponent {
     const maxVal = this.maxValue * this.getUnit();
     const maxValueReached = this.elapsedTime > maxVal && maxVal !== 0;
 
-    return <span>{maxValueReached ? this.maxValueText : time}</span>;
+    // Styling for gx-chronometer control.
+    const classes = getClasses(this.cssClass, -1);
+
+    return (
+      <Host class={{ [this.cssClass]: !!this.cssClass, [classes.vars]: true }}>
+        <span>{maxValueReached ? this.maxValueText : time}</span>
+      </Host>
+    );
   }
 }
