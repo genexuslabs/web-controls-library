@@ -39,7 +39,7 @@ export function makeHighlightable(
 
         // If the component does not have a class, we reset the highlighted class
         if (component.cssClass == null) {
-          highlightedClasses = null;
+          highlightedClasses = [];
 
           // If the class did change since the last tap event, we recalculate the highlighted class
         } else if (component.cssClass != lastCssClass) {
