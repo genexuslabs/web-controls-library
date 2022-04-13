@@ -42,13 +42,11 @@
 /// @param {string} $background-image Specifies the background image for the highlight class
 /// @param {string} $color Specifies the font color for the highlight class
 @mixin extend-highlighted-class(
-  $class,
+  $class: null,
   $background-color: null,
   $background-image: null,
   $color: null
 ) {
-  @extend #{$class} !optional;
-
   @if $background-color != null {
     background-color: $background-color;
   }
@@ -57,6 +55,10 @@
   }
   @if $color != null {
     color: $color;
+  }
+
+  @if $class != null {
+    @extend #{$class} !optional;
   }
 }
 
@@ -75,7 +77,7 @@
 /// @param {string} $background-image Specifies the background image for the highlight class
 /// @param {string} $color Specifies the font color for the highlight class
 @mixin highlighted(
-  $class,
+  $class: null,
   $control-type: null,
   $background-color: null,
   $background-image: null,
