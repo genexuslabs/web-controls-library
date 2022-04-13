@@ -3,6 +3,7 @@ const transforms = {
   highlighted: "-gx-highlighted",
   highlightedActive: "-gx-highlighted-active",
   highlightedFocusWithin: "-gx-highlighted-focus-within",
+  hover: "-gx-hover",
   label: "-gx-label",
   labelHighlighted: "-gx-label-highlighted",
   vars: "-gx-vars"
@@ -22,6 +23,10 @@ export function tHighlightedActive(className: string): string {
 
 export function tHighlightedFocusWithin(className: string): string {
   return className + transforms["highlightedFocusWithin"];
+}
+
+export function tHover(className: string): string {
+  return className + transforms["hover"];
 }
 
 export function tVars(className: string): string {
@@ -44,11 +49,12 @@ export function tLabelHighlighted(className: string): string {
 export function getClasses(cssClass: string, highlightOption = 1): any {
   // If the cssClass is empty, we return empty classes
   if (!cssClass) {
-    return { vars: "", highlighted: "" };
+    return { vars: "", highlighted: "", hover: "" };
   }
   const splitedClasses = cssClass.split(" ");
 
   const vars = splitedClasses.map(tVars).join(" ");
+  const hover = splitedClasses.map(tHover).join(" ");
   let highlighted: string;
 
   switch (highlightOption) {
@@ -63,5 +69,5 @@ export function getClasses(cssClass: string, highlightOption = 1): any {
     default:
       highlighted = "";
   }
-  return { vars, highlighted };
+  return { vars, highlighted, hover };
 }
