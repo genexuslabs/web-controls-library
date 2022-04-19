@@ -6,6 +6,8 @@ const transforms = {
   hover: "-gx-hover",
   label: "-gx-label",
   labelHighlighted: "-gx-label-highlighted",
+  selectedTabCaption: "-gx-selected-tab-caption",
+  unselectedTabCaption: "-gx-unselected-tab-caption",
   vars: "-gx-vars"
 };
 
@@ -29,16 +31,30 @@ export function tHover(className: string): string {
   return className + transforms["hover"];
 }
 
-export function tVars(className: string): string {
-  return className + transforms["vars"];
-}
-
 export function tLabel(className: string): string {
   return className + transforms["label"];
 }
 
 export function tLabelHighlighted(className: string): string {
   return className + transforms["labelHighlighted"];
+}
+
+export function tSelectedTabCaption(className: string): string {
+  if (!className) {
+    return "";
+  }
+  return className + transforms["selectedTabCaption"];
+}
+
+export function tUnselectedTabCaption(className: string): string {
+  if (!className) {
+    return "";
+  }
+  return className + transforms["unselectedTabCaption"];
+}
+
+export function tVars(className: string): string {
+  return className + transforms["vars"];
 }
 
 /**

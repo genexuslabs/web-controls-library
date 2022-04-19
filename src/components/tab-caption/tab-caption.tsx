@@ -22,6 +22,13 @@ import {
   imagePositionRender
 } from "../common/image-position";
 
+// Class transforms
+import {
+  getClasses,
+  tSelectedTabCaption,
+  tUnselectedTabCaption
+} from "../common/css-transforms/css-transforms";
+
 let autoTabId = 0;
 
 @Component({
@@ -40,8 +47,7 @@ export class TabCaption
   @Element() element: HTMLGxTabCaptionElement;
 
   /**
-   * This attribute lets you specify if the tab page is disabled
-   *
+   * This attribute lets you specify if the tab page is disabled.
    */
   @Prop() disabled = false;
 
@@ -65,9 +71,25 @@ export class TabCaption
 
   /**
    * This attribute lets you specify if the tab page corresponding to this caption is selected
-   *
    */
   @Prop() selected = false;
+
+  /**
+   * A CSS class to set as the `gx-tab-caption` element class when
+   * `selected = true`.
+   */
+  @Prop() readonly selectedCssClass: string;
+
+  /**
+   * A CSS class that is used by the `gx-tab` parent container.
+   */
+  @Prop() readonly tabCssClass: string;
+
+  /**
+   * A CSS class to set as the `gx-tab-caption` element class when
+   * `selected = false`.
+   */
+  @Prop() readonly unselectedCssClass: string;
 
   /**
    * True to highlight control when an action is fired.
@@ -107,15 +129,44 @@ export class TabCaption
   }
 
   render() {
-    this.element.setAttribute("aria-selected", (!!this.selected).toString());
+    // Styling for gx-tab-caption control.
+    const selectedTabCaptionClass = tSelectedTabCaption(this.tabCssClass);
+    const unselectedTabCaptionClass = tUnselectedTabCaption(this.tabCssClass);
+
+    const selectedTabCaptionClasses = getClasses(selectedTabCaptionClass, -1);
+    const unselectedTabCaptionClasses = getClasses(
+      unselectedTabCaptionClass,
+      -1
+    );
+
+    const selectedClasses = getClasses(this.selectedCssClass, -1);
+    const unselectedClasses = getClasses(this.unselectedCssClass, -1);
 
     return (
       <Host
+        aria-selected={(!!this.selected).toString()}
         role="tab"
         class={{
           "gx-tab-caption": true,
           "gx-tab-caption--active": this.selected,
           "gx-tab-caption--disabled": this.disabled,
+          // Configured by the main container gx-tab
+          [selectedTabCaptionClass]: this.selected,
+          [selectedTabCaptionClasses.vars]: this.selected,
+
+          // Configured by the gx-tab-caption control
+          [this.selectedCssClass]: !!this.selectedCssClass && this.selected,
+          [selectedClasses.vars]: this.selected,
+
+          // Configured by the main container gx-tab
+          [unselectedTabCaptionClass]: !this.selected,
+          [unselectedTabCaptionClasses.vars]: !this.selected,
+
+          // Configured by the gx-tab-caption control
+          [this.unselectedCssClass]:
+            !!this.unselectedCssClass && !this.selected,
+          [unselectedClasses.vars]: !this.selected,
+
           [imagePositionClass(this.imagePosition)]: true,
           [hideMainImageWhenDisabledClass]:
             !this.selected && this.hasDisabledImage

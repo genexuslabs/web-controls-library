@@ -87,7 +87,6 @@ gx-tab-caption {
   font-weight: 600;
 
   &.gx-tab-caption {
-    background-color: var(--tab-strip-background-color);
     height: 100%;
     transition: background-color $transition-delay, filter $transition-delay;
 

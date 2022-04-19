@@ -18,6 +18,9 @@ import {
 } from "../common/highlightable";
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
 
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
+
 const BASE_TABLIST_SELECTOR = ":scope > [role='tablist']";
 
 @Component({
@@ -39,6 +42,11 @@ export class Tab
   @Element() element: HTMLGxTabElement;
 
   private lastSelectedTab: HTMLElement;
+
+  /**
+   * A CSS class to set as the `gx-tab` element class.
+   */
+  @Prop() readonly cssClass: string;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -158,8 +166,16 @@ export class Tab
     this.setCaptionSlotsClass();
     this.setPageSlotsClass();
 
+    // Styling for gx-tab-caption control.
+    const classes = getClasses(this.cssClass, -1);
+
     return (
-      <Host>
+      <Host
+        class={{
+          [this.cssClass]: !!this.cssClass,
+          [classes.vars]: true
+        }}
+      >
         <div role="tablist" data-position={this.tabsPosition}>
           <div class="gx-nav-tabs">
             <div class="gx-nav-tabs-table">

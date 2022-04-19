@@ -53,12 +53,11 @@ gx-tab {
   --tab-caption-image-horizontal-margin: 2px;
 
   @include elevation();
+  @include transition-properties();
   @include visibility(flex);
   flex: 1;
   width: 100%;
   overflow: hidden;
-  transition: background-color $transition-delay, border-color $transition-delay,
-    box-shadow $transition-delay;
 
   &[tabs-distribution="fixed-size"] {
     & > div {

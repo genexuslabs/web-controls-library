@@ -1,34 +1,30 @@
+@import "../common/css-transforms/scss-transforms";
+
 ////
 /// @group theming-mixins
 ////
 
 /// Helper mixin to ease styling gx-tab custom elements
-/// @param {string} $class Base class of the component
-/// @param {string} $highlighted Class to be used when the tab is active
+/// @param {string} $class Base class of the component. DEPRECATED
+/// @param {string} $highlighted Class to be used when the tab is active. DEPRECATED
+/// @param {string} $tabs-position Determine the tab position (top or bottom).
 /// @param {string} $selected-tab-caption Class for styling the selected tab caption
 /// @param {string} $unselected-tab-caption Class for styling unselected tab caption
 @mixin gx-tab(
-  $class,
+  $class: null,
   $highlighted: null,
+  $tabs-position: null,
   $selected-tab-caption: null,
   $unselected-tab-caption: null
 ) {
-  @extend #{$class} !optional;
-
-  @if ($highlighted != null) {
-    &.gx-highlighted {
-      @extend #{$highlighted} !optional;
-    }
-  }
-
   @if ($unselected-tab-caption != null) {
-    gx-tab-caption[aria-selected="false"] {
+    &#{$gx-unselected-tab-caption} {
       @extend #{$unselected-tab-caption} !optional;
     }
   }
 
   @if ($selected-tab-caption != null) {
-    gx-tab-caption[aria-selected="true"] {
+    &#{$gx-selected-tab-caption} {
       @extend #{$selected-tab-caption} !optional;
     }
   }
