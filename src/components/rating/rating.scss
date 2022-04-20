@@ -1,19 +1,25 @@
 @import "../common/base";
 @import "../common/common-styling-config";
 
-gx-rating {
-  /**
-   * @prop $rating-selected-color:
-   * Set the color that will have the stars.
-  */
-  $rating-selected-color: #e4ac13;
+/**
+ * @prop $rating-selected-color:
+ * Set the color that will have the stars.
+*/
+$rating-selected-color: #e4ac13;
 
-  /**
-   * @prop $rating-unselected-color:
-   * Set the color of unselected stars.
-  */
-  $rating-unselected-color: rgba(80, 80, 80, 0.4);
+/**
+ * @prop $rating-unselected-color:
+ * Set the color of unselected stars.
+*/
+$rating-unselected-color: rgba(80, 80, 80, 0.4);
 
+@include visibility-shadow-DOM(flex);
+
+:host(.disabled) {
+  pointer-events: none;
+}
+
+:host {
   /**
    * @prop --star-width:
    * Set the width of each star.
@@ -27,59 +33,55 @@ gx-rating {
   --star-heigth: auto;
 
   /**
-   * @prop --star-separation
+   * @prop --star-separation:
    * This is for set the space between each star
   */
   --star-separation: 2px;
 
-  @include visibility(flex);
+  @include transition-properties();
   flex: 1;
   align-self: stretch;
+}
 
-  &.disabled {
-    pointer-events: none;
-  }
+.stars-container {
+  display: flex;
+  flex-wrap: wrap;
 
-  & > .stars-container {
-    display: flex;
-    flex-wrap: wrap;
-
+  &:hover {
     & > .rating-star-container {
-      width: var(--star-width);
-      height: var(--star-heigth);
-      padding: 0px var(--star-separation);
-      cursor: pointer;
-
       & > .rating-star {
-        width: var(--star-width);
-        height: var(--star-heigth);
-        fill: var(--rating-unselected-color, $rating-unselected-color);
+        fill: var(--rating-selected-color, $rating-selected-color);
+      }
 
-        // Only the svg container should trigger click event
-        pointer-events: none;
-        transition: fill 200ms linear;
-
-        &.selected-star {
-          fill: var(--rating-selected-color, $rating-selected-color);
-          filter: drop-shadow(
-            0 0 2px var(--rating-selected-color, $rating-selected-color)
-          );
+      &:hover ~ svg {
+        & > .rating-star {
+          fill: var(--rating-unselected-color, $rating-unselected-color);
         }
       }
     }
+  }
+}
 
-    &:hover {
-      & > .rating-star-container {
-        & > .rating-star {
-          fill: var(--rating-selected-color, $rating-selected-color);
-        }
+.rating-star-container {
+  width: var(--star-width);
+  height: var(--star-heigth);
+  padding: 0px var(--star-separation);
+  cursor: pointer;
 
-        &:hover ~ svg {
-          & > .rating-star {
-            fill: var(--rating-unselected-color, $rating-unselected-color);
-          }
-        }
-      }
+  & > .rating-star {
+    width: var(--star-width);
+    height: var(--star-heigth);
+    fill: var(--rating-unselected-color, $rating-unselected-color);
+
+    // Only the svg container (.rating-star) should trigger click event
+    pointer-events: none;
+    transition: fill 200ms linear;
+
+    &.selected-star {
+      fill: var(--rating-selected-color, $rating-selected-color);
+      filter: drop-shadow(
+        0 0 2px var(--rating-selected-color, $rating-selected-color)
+      );
     }
   }
 }

@@ -10,10 +10,13 @@ import {
 } from "@stencil/core";
 import { FormComponent } from "../common/interfaces";
 
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
+
 let autoRatingId = 0;
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "rating.scss",
   tag: "gx-rating"
 })
@@ -31,6 +34,11 @@ export class Rating implements FormComponent {
   private inputId: string;
 
   @Element() element: HTMLGxRatingElement;
+
+  /**
+   * A CSS class to set as the `gx-rating` element class.
+   */
+  @Prop() readonly cssClass: string;
 
   /**
    * This attribute allows you specify if the element is disabled.
@@ -89,9 +97,16 @@ export class Rating implements FormComponent {
       calculatedMaxValue // At most this.maxValue
     );
 
+    // Styling for gx-rating control.
+    const classes = getClasses(this.cssClass, -1);
+
     return (
       <Host
-        class={{ disabled: this.disabled }}
+        class={{
+          [this.cssClass]: !!this.cssClass,
+          [classes.vars]: true,
+          disabled: this.disabled
+        }}
         data-score={this.value !== 0 ? this.value : undefined}
       >
         <input
