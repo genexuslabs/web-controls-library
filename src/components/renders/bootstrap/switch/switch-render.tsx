@@ -2,10 +2,18 @@ import { h } from "@stencil/core";
 import { Renderer } from "../../../common/interfaces";
 import { Switch } from "../../../switch/switch";
 
-let autoCheckBoxId = 0;
+let autoSwitchId = 0;
 
 export class SwitchRender implements Renderer {
-  constructor(private component: Switch) {}
+  constructor(private component: Switch) {
+    const switchCmp = this.component;
+
+    if (!this.inputId) {
+      this.inputId = switchCmp.element.id
+        ? `${switchCmp.element.id}_switch`
+        : `gx-switch-auto-id-${autoSwitchId++}`;
+    }
+  }
 
   private inputId: string;
 
@@ -38,11 +46,6 @@ export class SwitchRender implements Renderer {
 
   render() {
     const switchCmp = this.component;
-    if (!this.inputId) {
-      this.inputId = switchCmp.element.id
-        ? `${switchCmp.element.id}_checkbox`
-        : `gx-checkbox-auto-id-${autoCheckBoxId++}`;
-    }
 
     const inputAttrs = {
       "aria-checked": switchCmp.checked ? "true" : "false",
