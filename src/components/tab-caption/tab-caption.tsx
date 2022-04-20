@@ -47,6 +47,12 @@ export class TabCaption
   @Element() element: HTMLGxTabCaptionElement;
 
   /**
+   * A CSS class to set as the `gx-tab-caption` element class when
+   * `selected = false`.
+   */
+  @Prop() readonly cssClass: string;
+
+  /**
    * This attribute lets you specify if the tab page is disabled.
    */
   @Prop() disabled = false;
@@ -84,12 +90,6 @@ export class TabCaption
    * A CSS class that is used by the `gx-tab` parent container.
    */
   @Prop() readonly tabCssClass: string;
-
-  /**
-   * A CSS class to set as the `gx-tab-caption` element class when
-   * `selected = false`.
-   */
-  @Prop() readonly unselectedCssClass: string;
 
   /**
    * True to highlight control when an action is fired.
@@ -140,7 +140,7 @@ export class TabCaption
     );
 
     const selectedClasses = getClasses(this.selectedCssClass, -1);
-    const unselectedClasses = getClasses(this.unselectedCssClass, -1);
+    const unselectedClasses = getClasses(this.cssClass, -1);
 
     return (
       <Host
@@ -163,8 +163,7 @@ export class TabCaption
           [unselectedTabCaptionClasses.vars]: !this.selected,
 
           // Configured by the gx-tab-caption control
-          [this.unselectedCssClass]:
-            !!this.unselectedCssClass && !this.selected,
+          [this.cssClass]: !!this.cssClass && !this.selected,
           [unselectedClasses.vars]: !this.selected,
 
           [imagePositionClass(this.imagePosition)]: true,
