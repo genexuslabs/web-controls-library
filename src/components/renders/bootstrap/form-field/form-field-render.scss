@@ -4,33 +4,34 @@ gx-form-field {
   --elevation: 0;
 
   & > .form-field-group {
-    display: flex;
+    display: grid;
     max-height: 100%;
     flex: 1;
-    flex-wrap: nowrap;
 
-    & > div {
+    & > .gx-inner-control-container {
+      grid-area: cell-inner-control;
       display: flex;
       flex: 1;
       max-height: 100%;
     }
+  }
 
-    & > .gx-label-container {
-      text-align: start;
+  .gx-label-container {
+    grid-area: cell-label;
+    display: flex;
+    width: 100%;
+    text-align: start;
 
-      &.right-label {
-        text-align: end;
-      }
+    &.right-label {
+      text-align: end;
+    }
 
-      > .gx-label {
-        flex: 1;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        transition-property: background-color, border-color, box-shadow, color,
-          filter, opacity;
-        transition-duration: $transition-delay;
-      }
+    & > label {
+      @include transition-properties();
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
@@ -95,37 +96,25 @@ gx-form-field {
     }
   }
 
-  .label-position-top {
-    flex-direction: column-reverse;
+  & > .label-position-top {
+    grid-template: "cell-label" 0.25fr "cell-inner-control" 0.75fr;
   }
 
-  .label-position-right {
-    flex-direction: row;
+  & > .label-position-bottom {
+    grid-template: "cell-inner-control" 0.75fr "cell-label" 0.25fr;
   }
 
-  .label-position-bottom {
-    flex-direction: column;
+  & > .label-position-left {
+    grid-template-areas: "cell-label cell-inner-control";
+    grid-template-columns: 25% 1fr;
   }
 
-  .label-position-left {
-    flex-direction: row-reverse;
+  & > .label-position-right {
+    grid-template-areas: "cell-inner-control cell-label";
+    grid-template-columns: 1fr 25%;
   }
 
-  .side-label {
-    position: relative;
-    width: 100%;
-    flex: 0 0 25%;
-    max-width: 25%;
-  }
-
-  .side-field {
-    position: relative;
-    max-width: 75%;
-  }
-
-  .radio-group {
-    display: flex;
-    flex: 1;
-    flex-wrap: wrap;
+  & > .label-position-none {
+    grid-template-areas: "cell-inner-control";
   }
 }

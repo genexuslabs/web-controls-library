@@ -1,23 +1,13 @@
 $gx-group-caption: "-gx-group-caption";
 $gx-highlighted: "-gx-highlighted";
-$gx-highlighted-active: "-gx-highlighted-active";
 $gx-highlighted-focus-within: "-gx-highlighted-focus-within";
 $gx-hover: "-gx-hover";
 $gx-label: "-gx-label";
+$gx-label-container: "-gx-label-container";
 $gx-label-highlighted: "-gx-label-highlighted";
+$gx-label-position-left: "-gx-label-position-left";
+$gx-label-position-right: "-gx-label-position-right";
 $gx-selected-tab-caption: "-gx-selected-tab-caption";
 $gx-unselected-tab-caption: "-gx-unselected-tab-caption";
 
 $gx-vars: "-gx-vars";
-
-@function t-highlighted($class-name) {
-  @return #{$class-name}#{$gx-highlighted};
-}
-
-@function t-highlighted-active($class-name) {
-  @return #{$class-name}#{$gx-highlighted-active};
-}
-
-@function t-highlighted-focus-within($class-name) {
-  @return #{$class-name}#{$gx-highlighted-focus-within};
-}

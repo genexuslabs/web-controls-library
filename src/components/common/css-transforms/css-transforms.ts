@@ -5,7 +5,10 @@ const transforms = {
   highlightedFocusWithin: "-gx-highlighted-focus-within",
   hover: "-gx-hover",
   label: "-gx-label",
+  labelContainer: "-gx-label-container",
   labelHighlighted: "-gx-label-highlighted",
+  labelPositionLeft: "-gx-label-position-left",
+  labelPositionRight: "-gx-label-position-right",
   selectedTabCaption: "-gx-selected-tab-caption",
   unselectedTabCaption: "-gx-unselected-tab-caption",
   vars: "-gx-vars"
@@ -35,8 +38,20 @@ export function tLabel(className: string): string {
   return className + transforms["label"];
 }
 
+export function tLabelContainer(className: string): string {
+  return className + transforms["labelContainer"];
+}
+
 export function tLabelHighlighted(className: string): string {
   return className + transforms["labelHighlighted"];
+}
+
+export function tLabelPositionLeft(className: string): string {
+  return className + transforms["labelPositionLeft"];
+}
+
+export function tLabelPositionRight(className: string): string {
+  return className + transforms["labelPositionRight"];
 }
 
 export function tSelectedTabCaption(className: string): string {

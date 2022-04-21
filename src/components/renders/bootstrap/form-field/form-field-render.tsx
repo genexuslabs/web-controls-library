@@ -5,7 +5,10 @@ import { FormField } from "../../../form-field/form-field";
 // Class transforms
 import {
   tLabel,
-  tLabelHighlighted
+  tLabelContainer,
+  tLabelHighlighted,
+  tLabelPositionLeft,
+  tLabelPositionRight
 } from "../../../common/css-transforms/css-transforms";
 
 let autoFormFieldId = 0;
@@ -15,33 +18,6 @@ export class FormFieldRender implements Renderer {
 
   private formFieldId: string;
   private innerLabel: HTMLLabelElement = null;
-
-  private LABEL_WIDTH_BY_POSITION = {
-    bottom: "",
-    float: "",
-    left: "side-label",
-    none: "",
-    right: "side-label right-label",
-    top: ""
-  };
-
-  private INNER_CONTROL_WIDTH_BY_LABEL_POSITION = {
-    bottom: "",
-    float: "",
-    left: "side-field",
-    none: "",
-    right: "side-field",
-    top: ""
-  };
-
-  private getInnerControlContainerClass() {
-    const className = this.INNER_CONTROL_WIDTH_BY_LABEL_POSITION[
-      this.component.labelPosition
-    ];
-    return {
-      [className]: true
-    };
-  }
 
   async componentDidLoad() {
     const formField = this.component;
@@ -73,6 +49,8 @@ export class FormFieldRender implements Renderer {
     renderLabel: boolean,
     labelBaseClass: string,
     labelHighlightedClass: string,
+    labelContainerClass: string,
+    labelLeftOrRightPositionClass: string,
     slot
   ) {
     const labelId = `${this.formFieldId}-label`;
@@ -82,40 +60,40 @@ export class FormFieldRender implements Renderer {
     const label = (
       <div
         class={{
-          [this.LABEL_WIDTH_BY_POSITION[labelPosition]]: true,
-          "gx-label-container": true
+          "gx-label-container": true,
+          [labelContainerClass]: true,
+          "right-label": labelPosition === "right"
         }}
-        id={labelId}
+        data-part={!!formField.cssClass ? "label-container" : undefined}
       >
-        <div
+        <label
           class={{
-            "gx-label": true,
             [labelBaseClass]: !!formField.cssClass,
             [labelHighlightedClass]: true
           }}
+          id={labelId}
         >
           {formField.labelCaption}
-        </div>
+        </label>
       </div>
     );
 
     const labelPositionClassName = `label-position-${labelPosition}`;
-    const isValidLabelPosition =
-      labelPosition === "top" ||
-      labelPosition === "right" ||
-      labelPosition === "bottom" ||
-      labelPosition === "left";
+    const shouldCustomLabelPosition =
+      !!formField.cssClass &&
+      (labelPosition === "left" || labelPosition === "right");
 
     return (
       <div
         class={{
           "form-field-group": true,
-          [labelPositionClassName]: isValidLabelPosition
+          [labelPositionClassName]: true,
+          [labelLeftOrRightPositionClass]: shouldCustomLabelPosition
         }}
         aria-labelledby={labelId}
         role="group"
       >
-        <div class={this.getInnerControlContainerClass()}>{slot}</div>
+        <div class="gx-inner-control-container">{slot}</div>
         {renderLabel && label}
       </div>
     );
@@ -141,6 +119,15 @@ export class FormFieldRender implements Renderer {
       .map(tLabelHighlighted)
       .join(" ");
 
+    const labelContainerClass = labelSplitClasses
+      .map(tLabelContainer)
+      .join(" ");
+
+    const labelLeftOrRightPositionClass =
+      labelPosition === "left"
+        ? labelSplitClasses.map(tLabelPositionLeft).join(" ")
+        : labelSplitClasses.map(tLabelPositionRight).join(" ");
+
     if (!this.formFieldId) {
       this.formFieldId =
         formField.element.id || `gx-form-field-auto-id-${autoFormFieldId++}`;
@@ -151,19 +138,22 @@ export class FormFieldRender implements Renderer {
         renderLabel,
         labelBaseClass,
         labelHighlightedClass,
+        labelContainerClass,
+        labelLeftOrRightPositionClass,
         slots.default
       );
     } else {
       const label = (
         <div
           class={{
-            [this.LABEL_WIDTH_BY_POSITION[labelPosition]]: true,
-            "gx-label-container": true
+            "gx-label-container": true,
+            [labelContainerClass]: true,
+            "right-label": labelPosition === "right"
           }}
+          data-part={!!formField.cssClass ? "label-container" : undefined}
         >
           <label
             class={{
-              "gx-label": true,
               [labelBaseClass]: !!formField.cssClass,
               [labelHighlightedClass]: true
             }}
@@ -173,6 +163,11 @@ export class FormFieldRender implements Renderer {
           </label>
         </div>
       );
+
+      const labelPositionClassName = `label-position-${labelPosition}`;
+      const shouldCustomLabelPosition =
+        !!formField.cssClass &&
+        (labelPosition === "left" || labelPosition === "right");
 
       const result =
         labelPosition === "float" ? (
@@ -184,15 +179,11 @@ export class FormFieldRender implements Renderer {
           <div
             class={{
               "form-field-group": true,
-              "label-position-top": labelPosition === "top",
-              "label-position-bottom": labelPosition === "bottom",
-              "label-position-right": labelPosition === "right",
-              "label-position-left": labelPosition === "left"
+              [labelPositionClassName]: true,
+              [labelLeftOrRightPositionClass]: shouldCustomLabelPosition
             }}
           >
-            <div class={this.getInnerControlContainerClass()}>
-              {slots.default}
-            </div>
+            <div class="gx-inner-control-container">{slots.default}</div>
             {renderLabel && label}
           </div>
         );

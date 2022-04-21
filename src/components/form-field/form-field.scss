@@ -90,10 +90,6 @@ gx-form-field {
 [valign="middle"],
 :not([valign]) {
   & > gx-form-field {
-    [data-part="label"] {
-      align-self: center;
-    }
-
     [data-readonly]:not([direction]),
     [data-part="container"],
     gx-checkbox {
@@ -118,10 +114,6 @@ gx-form-field {
 
 [valign="bottom"] {
   & > gx-form-field {
-    [data-part="label"] {
-      align-self: flex-end;
-    }
-
     [data-readonly]:not([direction]),
     [data-part="container"],
     gx-checkbox {

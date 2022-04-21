@@ -1,4 +1,4 @@
-@import "../../../common/css-transforms/_scss-transforms.scss";
+@import "../../../common/css-transforms/scss-transforms";
 
 ////
 /// @group theming-mixins
@@ -26,9 +26,83 @@
     }
   }
 
+  // - - - - - - - - - - Highlighted Label - - - - - - - - - -
   @if $highlighted-label != null {
     *:focus-within + .gx-label-container > &#{$gx-label-highlighted} {
       @extend #{$highlighted-label} !optional;
+    }
+  }
+
+  // - - - - - - - - - -  Label alignment  - - - - - - - - - -
+  /*  The default text alignment does not have a mapping, because left and
+      right Label positioning define their default text alignment values
+  */
+  $text-align-array: (
+    Left: start,
+    Center: center,
+    Right: end,
+    Justify: start
+  );
+  $horizontal-align-array: (
+    Left: flex-start,
+    Center: center,
+    Right: flex-end,
+    Justify: flex-start
+  );
+  $vertical-align-array: (
+    Default: flex-start,
+    Top: flex-start,
+    Middle: center,
+    Bottom: flex-end
+  );
+
+  $valid-align: false;
+  $valid-valign: false;
+
+  @if $label-align != null and $label-align != Default {
+    $valid-align: true;
+  }
+
+  @if $label-valign != null {
+    $valid-valign: true;
+  }
+
+  @if $valid-align == true or $valid-valign == true {
+    @at-root #{&}#{$gx-label-container}.gx-label-container[data-part="label-container"] {
+      @if $valid-align == true {
+        text-align: map-get($text-align-array, $label-align);
+        justify-self: map-get($horizontal-align-array, $label-align);
+      }
+
+      @if $valid-valign == true {
+        align-items: map-get($vertical-align-array, $label-valign);
+      }
+    }
+  }
+
+  // - - - - - - - - Label position and width - - - - - - - -
+  $left-and-right-width: $label-width;
+
+  // Default left and right width value
+  @if $left-and-right-width == null {
+    $left-and-right-width: 25%;
+  }
+
+  // Width for the left position
+  @at-root #{&}#{$gx-label-position-left}.form-field-group {
+    grid-template-columns: $left-and-right-width 1fr;
+  }
+
+  // Width for the right position
+  @at-root #{&}#{$gx-label-position-right}.form-field-group {
+    grid-template-columns: 1fr $left-and-right-width;
+  }
+
+  // Width for top and bottom positions
+  @if $label-width != null {
+    @at-root .label-position-top > #{&}#{$gx-label-container},
+      .label-position-bottom > #{&}#{$gx-label-container} {
+      width: $label-width;
     }
   }
 }
