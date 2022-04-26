@@ -1,4 +1,8 @@
-import { tHighlighted } from "./css-transforms/css-transforms";
+import {
+  tHighlighted,
+  tEvenRow,
+  tOddRow
+} from "./css-transforms/css-transforms";
 
 const HIGHLIGHT_EVENT_NAME = "highlight";
 const UNHIGHTLIGHT_EVENT_NAME = "unhighlight";
@@ -8,6 +12,7 @@ export interface HighlightableComponent {
   element: HTMLElement;
   cssClass?: string;
   highlightable: boolean;
+  isRowEven?: boolean; // Useful to customize gx-grid cells
 }
 
 /**
@@ -25,6 +30,17 @@ export function makeHighlightable(
 
   // Used to remove the last highlighted class when the click event has ended
   let highlightedClasses: string[];
+
+  let highlightedFunction: (x: string) => string;
+
+  // If the component is not a gx-grid cell
+  if (component.isRowEven == undefined) {
+    highlightedFunction = tHighlighted;
+  } else {
+    highlightedFunction = component.isRowEven
+      ? x => tHighlighted(tEvenRow(x))
+      : x => tHighlighted(tOddRow(x));
+  }
 
   if (component.highlightable) {
     if (!isSetup) {
@@ -44,7 +60,7 @@ export function makeHighlightable(
           // If the class did change since the last tap event, we recalculate the highlighted class
         } else if (component.cssClass != lastCssClass) {
           lastCssClass = component.cssClass;
-          highlightedClasses = lastCssClass.split(" ").map(tHighlighted);
+          highlightedClasses = lastCssClass.split(" ").map(highlightedFunction);
         }
 
         highlightedClasses.forEach(highlightedClass => {

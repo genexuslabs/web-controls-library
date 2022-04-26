@@ -42,6 +42,11 @@ export class GridFreeStyle
   @Prop() readonly autoGrow = false;
 
   /**
+   * A CSS class to set as the `gx-grid-fs` element class.
+   */
+  @Prop() readonly cssClass: string;
+
+  /**
    * This attribute lets you specify how this element will behave when hidden.
    *
    * | Value        | Details                                                                     |

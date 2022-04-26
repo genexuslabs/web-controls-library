@@ -70,6 +70,18 @@
   }
 }
 
+@mixin horizontal-line($class) {
+  &#{$gx-horizontal-line}::after {
+    content: "";
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    @extend #{$class} !optional;
+  }
+}
+
 /// Helper mixin to ease styling highlightable custom elements
 /// @param {string} $class Base class of the highlight properties
 /// @param {string} $control-type Determine what type of control the highlight class will apply to

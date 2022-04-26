@@ -72,19 +72,7 @@ $gx-xsmall-breakpoint-plus-1: 769px;
   }
 }
 
-@mixin container-margins() {
-  margin-top: var(--margin-top, 0);
-  margin-right: var(--margin-right, 0);
-  margin-bottom: var(--margin-bottom, 0);
-  margin-left: var(--margin-left, 0);
-}
-
 @mixin reset-variables($include-width: true, $include-height: true) {
-  --margin-top: initial;
-  --margin-right: initial;
-  --margin-bottom: initial;
-  --margin-left: initial;
-
   @if $include-width == true {
     --width: initial;
   }

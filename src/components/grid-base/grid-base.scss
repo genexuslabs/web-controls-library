@@ -1,6 +1,7 @@
 @import "../common/_base";
+@import "../common/common-styling-config";
 
-$gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller), & > * > .scrollable-content";
+$grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller), & > * > .scrollable-content";
 
 // Used to horizontally and vertically align the text and image
 @mixin empty-placeholder-alignment(
@@ -60,10 +61,11 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller), & > * >
 }
 
 .gx-grid-base {
+  @include transition-properties();
   flex: 1;
   align-self: stretch;
 
-  #{$gridContentSelector} {
+  #{$grid-content-selector} {
     flex: 1;
   }
 
@@ -91,7 +93,7 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller), & > * >
 }
 
 .gx-grid-base.gx-grid-empty {
-  #{$gridContentSelector},
+  #{$grid-content-selector},
   .gx-grid-paging {
     @include visibility(none);
   }
@@ -108,13 +110,4 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller), & > * >
     justify-content: center;
     text-align: center;
   }
-}
-
-.gx-grid-row {
-  position: relative;
-
-  /*  gx-grid-smart-cell must hide its content overflow to ensure that the
-      border-radius property is applied
-  */
-  overflow: hidden;
 }

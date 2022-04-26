@@ -227,7 +227,6 @@ gx-gauge {
   display: flex;
   position: relative;
   width: 100%;
-  @include container-margins();
   transition: background-color $transition-delay, border-color $transition-delay;
 
   .line-gauge-container {

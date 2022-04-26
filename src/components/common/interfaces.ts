@@ -4,6 +4,13 @@ export interface ClickableComponent {
   gxClick: EventEmitter;
 }
 
+export interface CssClasses {
+  transformedCssClass: string;
+  highlighted: string;
+  hover: string;
+  vars: string;
+}
+
 export interface VisibilityComponent {
   invisibleMode: "collapse" | "keep-space";
 }

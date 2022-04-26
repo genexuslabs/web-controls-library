@@ -47,6 +47,11 @@ export class GridHorizontal
   @Prop() readonly columns: number | "auto";
 
   /**
+   * A CSS class to set as the `gx-grid-horizontal` element class.
+   */
+  @Prop() readonly cssClass: string;
+
+  /**
    * 1-Indexed number of currently active page
    */
   @Prop({ mutable: true }) currentPage = 1;
