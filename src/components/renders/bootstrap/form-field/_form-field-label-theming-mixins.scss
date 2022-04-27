@@ -12,7 +12,6 @@
 /// @param {string} $label-width Determine the width of the label
 @mixin gx-form-field-label(
   $label: null,
-  $highlighted-label: null,
   $label-align: null,
   $label-valign: null,
   $label-width: null
@@ -24,12 +23,10 @@
     &#{$gx-label} {
       @extend #{$label} !optional;
     }
-  }
 
-  // - - - - - - - - - - Highlighted Label - - - - - - - - - -
-  @if $highlighted-label != null {
+    // - - - - - - - - - - Highlighted Label - - - - - - - - - -
     *:focus-within + .gx-label-container > &#{$gx-label-highlighted} {
-      @extend #{$highlighted-label} !optional;
+      @extend #{$label}#{$gx-highlighted} !optional;
     }
   }
 

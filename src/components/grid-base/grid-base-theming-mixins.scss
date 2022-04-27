@@ -10,9 +10,7 @@ $grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller) >, & > 
 /// @param {string} $class Base class of the component. NO LONGER USED
 /// @param {string} $highlighted Class to be used when the grid is active. NO LONGER USED
 /// @param {string} $odd-row Class for styling the Odd row
-/// @param {string} $highlighted-odd-row Class to be used when the grid odd row is active
 /// @param {string} $even-row Class for styling the Odd even
-/// @param {string} $highlighted-even-row Class to be used when the grid even row is active
 /// @param {string} loading-animation Class for styling the grid loading animation
 /// @param {string} group-separator Class for styling the grid group-separator
 /// @param {string} $horizontal-line Class of the horizontal line separator (to be implemented). NO LONGER USED
@@ -20,9 +18,7 @@ $grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller) >, & > 
   $class: null,
   $highlighted: null,
   $odd-row: null,
-  $highlighted-odd-row: null,
   $even-row: null,
-  $highlighted-even-row: null,
   $loading-animation: null,
   $group-separator: null,
   $horizontal-line: null
@@ -32,24 +28,22 @@ $grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller) >, & > 
     &#{$gx-odd-row} {
       @extend #{$odd-row} !optional;
     }
-  }
 
-  @if ($highlighted-odd-row != null) {
+    // Highlighted class
     &#{$gx-odd-row-highlighted}[data-has-action] {
-      @extend #{$highlighted-odd-row} !optional;
+      @extend #{$odd-row}#{$gx-highlighted} !optional;
     }
   }
 
   // - - - - - - - - - - Even row - - - - - - - - - -
-  @if ($even-row != null) {
+  @if $even-row != null {
     &#{$gx-even-row} {
       @extend #{$even-row} !optional;
     }
-  }
 
-  @if ($highlighted-even-row != null) {
+    // Highlighted class
     &#{$gx-even-row-highlighted}[data-has-action] {
-      @extend #{$highlighted-even-row} !optional;
+      @extend #{$even-row}#{$gx-highlighted} !optional;
     }
   }
 
