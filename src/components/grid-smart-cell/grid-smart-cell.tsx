@@ -50,7 +50,7 @@ export class GridSmartCell
   @Prop() readonly showHorizontalLine = false;
 
   componentDidLoad() {
-    makeHighlightable(this);
+    makeHighlightable(this, undefined, "grid-cell");
   }
 
   render() {

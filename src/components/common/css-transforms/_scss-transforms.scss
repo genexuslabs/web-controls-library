@@ -1,5 +1,5 @@
 $gx-even-row: "-gx-even-row";
-$gx-even-row-highlighted: "-gx-even-row-gx-highlighted";
+$gx-even-row-highlighted: "-gx-even-row-highlighted";
 $gx-group-caption: "-gx-group-caption";
 $gx-highlighted: "-gx-highlighted";
 $gx-highlighted-focus-within: "-gx-highlighted-focus-within";
@@ -11,8 +11,30 @@ $gx-label-highlighted: "-gx-label-highlighted";
 $gx-label-position-left: "-gx-label-position-left";
 $gx-label-position-right: "-gx-label-position-right";
 $gx-odd-row: "-gx-odd-row";
-$gx-odd-row-highlighted: "-gx-odd-row-gx-highlighted";
+$gx-odd-row-highlighted: "-gx-odd-row-highlighted";
 $gx-selected-tab-caption: "-gx-selected-tab-caption";
+$gx-selected-tab-caption-highlighted: "-gx-selected-tab-caption-highlighted";
 $gx-unselected-tab-caption: "-gx-unselected-tab-caption";
+$gx-unselected-tab-caption-highlighted: "-gx-unselected-tab-caption-highlighted";
 
 $gx-vars: "-gx-vars";
+
+/// Replace `$search` with `$replace` in `$string`
+/// @param {String} $string - Initial string
+/// @param {String} $search - Substring to replace
+/// @param {String} $replace ('') - New value
+/// @return {String} - Updated string
+@function str-replace($string, $search, $replace: "") {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace +
+      str-replace(
+        str-slice($string, $index + str-length($search)),
+        $search,
+        $replace
+      );
+  }
+
+  @return $string;
+}

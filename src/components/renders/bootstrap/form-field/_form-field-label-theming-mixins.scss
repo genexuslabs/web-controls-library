@@ -6,7 +6,6 @@
 
 /// Helper mixin to ease styling gx-form-field label
 /// @param {string} $label Base class of the label of the component
-/// @param {string} $highlighted-label Class to be used on the label when the component's field is focused
 /// @param {string} $label-align Determine the horizontal alignment of the label
 /// @param {string} $label-valign Determine the vertical alignment of the label
 /// @param {string} $label-width Determine the width of the label
@@ -26,7 +25,7 @@
 
     // - - - - - - - - - - Highlighted Label - - - - - - - - - -
     *:focus-within + .gx-label-container > &#{$gx-label-highlighted} {
-      @extend #{$label}#{$gx-highlighted} !optional;
+      @extend #{str-replace($label, ".", "%")}#{$gx-highlighted} !optional;
     }
   }
 

@@ -1,7 +1,9 @@
 import {
   tHighlighted,
-  tEvenRow,
-  tOddRow
+  tEvenRowHighlighted,
+  tOddRowHighlighted,
+  tSelectedTabCaptionHighlighted,
+  tUnselectedTabCaptionHighlighted
 } from "./css-transforms/css-transforms";
 
 const HIGHLIGHT_EVENT_NAME = "highlight";
@@ -12,34 +14,66 @@ export interface HighlightableComponent {
   element: HTMLElement;
   cssClass?: string;
   highlightable: boolean;
-  isRowEven?: boolean; // Useful to customize gx-grid cells
+
+  /** (`gx-grid-smart-cell` property) */
+  isRowEven?: boolean;
+
+  /**
+   * (`gx-tab-caption` property) This attribute lets you specify if the tab page corresponding to this caption is selected
+   */
+  selected?: boolean;
+  /**
+   * (`gx-tab-caption` property) A CSS class to set as the `gx-tab-caption` element class when `selected = true`.
+   */
+  selectedCssClass?: string;
+  /**
+   * (`gx-tab-caption` property) A CSS class that is used by the `gx-tab` parent container.
+   */
+  tabCssClass?: string;
 }
 
 /**
  * @param component The highlightable component.
  * @param innerElement Specifies a descendant of the `component`. If defined, the highlight class will be applied to this element.
- */
+   @param highlightableOption Useful to customizing gx-grid cells and tab captions.
+*/
 export function makeHighlightable(
   component: HighlightableComponent,
-  innerElement?: HTMLElement
+  innerElement?: HTMLElement,
+  highlightableOption?: "grid-cell" | "tab-caption"
 ) {
   const actualHighlightableElement = innerElement || component.element;
 
-  // Used to store the last value of the cssClass property
+  /*  Used to store the last value of the cssClass, selected selectedCssClass
+      and tabCssClass properties
+  */
   let lastCssClass: string;
+  // let lastSelected: string;
+  // let lastSelectedCssClass: string;
+  // let lastTabCssClass: string;
 
   // Used to remove the last highlighted class when the click event has ended
   let highlightedClasses: string[];
 
   let highlightedFunction: (x: string) => string;
 
-  // If the component is not a gx-grid cell
-  if (component.isRowEven == undefined) {
-    highlightedFunction = tHighlighted;
-  } else {
-    highlightedFunction = component.isRowEven
-      ? x => tHighlighted(tEvenRow(x))
-      : x => tHighlighted(tOddRow(x));
+  // Depending on the component, we implement different highlighting functions
+  switch (highlightableOption) {
+    case undefined:
+      highlightedFunction = tHighlighted;
+      break;
+
+    case "grid-cell":
+      highlightedFunction = component.isRowEven
+        ? tEvenRowHighlighted
+        : tOddRowHighlighted;
+      break;
+
+    case "tab-caption":
+      highlightedFunction = component.selected
+        ? tSelectedTabCaptionHighlighted
+        : tUnselectedTabCaptionHighlighted;
+      break;
   }
 
   if (component.highlightable) {
@@ -55,6 +89,7 @@ export function makeHighlightable(
 
         // If the component does not have a class, we reset the highlighted class
         if (component.cssClass == null) {
+          lastCssClass = null;
           highlightedClasses = [];
 
           // If the class did change since the last tap event, we recalculate the highlighted class
