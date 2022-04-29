@@ -1,66 +1,62 @@
 @import "../common/_base";
-@import "../common/_layout-styling-config";
-@import "./_navbar-button-states";
+@import "../common/common-styling-config";
+@import "../common/layout-styling-config.scss";
 
 :host([position="bottom"]) {
   bottom: 0;
 
-  /*  If the width of the screen >= $gx-xsmall-breakpoint-plus-1, we hide
-      the bottom navbar
-  */
+  // If the width of the screen >= $gx-xsmall-breakpoint-plus-1, we hide
+  // the bottom navbar
   @media screen and (min-width: $gx-xsmall-breakpoint-plus-1) {
     display: none;
   }
 }
 
+@include visibility-shadow-DOM(block);
+
 :host {
-  @include visibility(block);
   @include elevation();
 
-  --gx-navbar-main-background-color: rgb(87, 89, 101);
-  --gx-navbar-sub-background-color: white;
-  --gx-navbar-main-color: white;
-  --gx-navbar-icon-color: var(--gx-navbar-main-color);
+  $gx-navbar-main-background-color: rgb(87, 89, 101);
+
+  $gx-navbar-low-background-color: #e0e0e0;
+
+  $gx-navbar-active-color: black;
+
+  // Unused properties?
   --gx-navbar-sub-color: black;
-  --gx-navbar-icon-size: 24px;
   --gx-navbar-sub-separator-top: none;
   --gx-navbar-sub-separator-bottom: 1px solid rgb(195, 196, 200);
-  --gx-navbar-actions-separator: 1.5px solid #e0e0e0;
-  --gx-navbar-sub-hover-color: #575965;
-  --gx-navbar-sub-active-background-color: rgba(195, 196, 200, 0.2);
-  --gx-navbar-sub-active-color: #000;
-  --gx-navbar-low-background-color: #e0e0e0;
-
-  // - - - - - - - - - - - - - - Active - - - - - - - - - - - - - -
-  --gx-navbar-main-active-background: transparent;
-  --gx-navbar-main-active-color: #111111;
-
-  @include visibility(block);
-  @include elevation();
 
   position: sticky;
   top: 0;
+  background-color: $gx-navbar-main-background-color;
   font-size: 14px;
   font-weight: 600;
   width: 100%;
-  z-index: calc(var(--gx-navbar-base-z-index) + 1);
+  z-index: $z-index-gx-navbar;
 
-  gx-icon {
-    --gx-icon-size: var(--gx-navbar-icon-size);
-    --gx-icon-color: var(--gx-navbar-icon-color);
-  }
+  // We do not add "color" property to de transition to avoid double duration
+  // when the items inherit the color property
+  transition-property: background-color, border-color, box-shadow, filter,
+    opacity, transform;
+  transition-duration: $transition-duration;
 
+  // Default style for back, burger and show more buttons
   button {
+    appearance: none;
     background: none;
+    background-color: transparent;
+    border-style: none;
+    color: inherit;
     cursor: pointer;
-    padding: 0;
-    border: 0;
+    outline: none;
+    padding: 4px;
+    user-select: none;
+    @include transition-properties();
 
-    &,
-    &:focus,
     &:active {
-      appearance: none;
-      outline: none;
+      color: $gx-navbar-active-color;
     }
   }
 
@@ -68,9 +64,10 @@
     display: flex;
     flex-direction: column;
 
-    &-header {
+    &-caption {
       outline: none;
-      margin-left: 24px;
+      margin-inline-start: 22px;
+      transition: color $transition-duration;
 
       &,
       &:hover,
@@ -81,46 +78,37 @@
       }
     }
 
+    // Burger icon
     &-icon-button {
+      border-radius: 4px;
       line-height: 0;
-
-      @include button-default-states();
+      margin-inline-end: 2px;
     }
 
     &-back-button {
+      display: flex;
+      align-items: center;
+      border-radius: 50%;
       font: inherit;
       font-size: 11px;
       font-weight: 600;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-
-      gx-icon {
-        --gx-icon-color: var(--gx-navbar-icon-color);
-      }
-
-      @include button-default-states();
+      margin-inline-end: 2px;
     }
 
     &-line {
       display: flex;
-      flex-direction: row;
       align-items: center;
       padding: 0 16px;
     }
 
     &-line-1 {
-      height: var(--gx-navbar-main-height);
-      color: var(--gx-navbar-main-color);
-      background-color: var(--gx-navbar-main-background-color);
+      height: $gx-navbar-main-height;
       background-image: var(--gx-navbar-main-background-image);
-      overflow: hidden;
     }
 
     &-line-2 {
-      height: var(--gx-navbar-sub-height);
+      height: $gx-navbar-sub-height;
       color: var(--gx-navbar-sub-color);
-      background-color: var(--gx-navbar-sub-background-color);
       border-top: var(--gx-navbar-sub-separator-top);
       border-bottom: var(--gx-navbar-sub-separator-bottom);
       overflow: hidden;
@@ -128,66 +116,50 @@
       .gx-navbar-actions {
         flex: 1;
         justify-content: flex-end;
-
-        &-toggle {
-          gx-icon {
-            --gx-icon-color: var(--gx-navbar-sub-color);
-          }
-
-          &--active {
-            gx-icon {
-              --gx-icon-color: var(--gx-navbar-icon-color);
-            }
-          }
-        }
       }
 
       .gx-navbar-back-button {
-        gx-icon {
-          --gx-icon-color: var(--gx-navbar-sub-color);
-        }
-
-        @include button-line-2-states();
-      }
-
-      .gx-navbar-icon-button {
-        @include button-line-2-states();
+        color: inherit;
       }
     }
 
     &-links {
       display: none;
+      align-self: stretch;
       flex: 1;
-      flex-direction: row;
-      justify-content: center;
-      align-items: stretch;
       overflow: hidden;
 
-      /*  We display the links at the top navbar, when the width of the screen
-          is >= $gx-xsmall-breakpoint-plus-1
-      */
+      // We display the links at the top navbar, when the width of the screen
+      // is >= $gx-xsmall-breakpoint-plus-1
       &[data-position="top"] {
         @media screen and (min-width: $gx-xsmall-breakpoint-plus-1) {
           display: flex;
+          justify-content: center;
         }
       }
 
-      /*  We display the links at the bottom navbar, when the width of the
-          screen is <= $gx-xsmall-breakpoint
-      */
+      // We display the links at the bottom navbar, when the width of the
+      // screen is <= $gx-xsmall-breakpoint
       &[data-position="bottom"] {
         @media screen and (max-width: $gx-xsmall-breakpoint) {
-          display: flex;
-          justify-content: stretch;
-          color: var(--gx-navbar-main-color);
+          display: grid;
+          grid-auto-flow: column;
+          grid-auto-columns: minmax(max-content, 1fr);
+          overflow-x: auto;
+          scrollbar-width: none;
+
+          &::-webkit-scrollbar {
+            height: 0;
+          }
         }
       }
     }
 
+    // Style for each type of action (HIGH, NORMAL and LOW priority)
     &-actions {
       display: flex;
-      flex-direction: row;
       position: relative;
+      align-self: stretch;
 
       @media screen and (max-width: $gx-xsmall-breakpoint) {
         flex: 1;
@@ -197,33 +169,35 @@
       &-high,
       &-normal {
         display: flex;
-        flex-direction: row;
         align-items: center;
       }
 
-      &-normal {
-        &--separator {
-          border-left: var(--gx-navbar-actions-separator);
-        }
+      &--separator {
+        align-self: center;
+        background-color: currentColor;
+        width: 2px;
+        height: 60%;
+        transition: color $transition-duration;
       }
 
+      // A popup appears when show more button is clicked
       &-low {
         display: none;
-        width: 160px;
-        background-color: var(--gx-navbar-low-background-color);
-        color: var(--gx-navbar-sub-color);
-        font-weight: 400;
-        font-size: 12px;
+        flex-direction: column;
         position: absolute;
         top: 34px;
         right: -32px;
-        z-index: calc(var(--gx-navbar-base-z-index) + 1);
-        flex-direction: column;
+        width: 160px;
+        background-color: $gx-navbar-low-background-color;
+        color: var(--gx-navbar-sub-color);
+        font-weight: 400;
+        font-size: 12px;
         border-radius: 2px;
         padding: 5px 0;
         box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.14),
           0px 3px 3px -2px rgba(0, 0, 0, 0.12),
           0px 1px 8px 0px rgba(0, 0, 0, 0.2);
+        z-index: $z-index-gx-navbar-item;
 
         &--active {
           display: flex;
@@ -231,21 +205,21 @@
       }
     }
 
+    // Show more button at the end of the gx-navbar
     &-actions-toggle {
-      border-radius: 100%;
-      height: 32px;
-      width: 32px;
-      min-width: 32px;
       display: inline-flex;
       place-content: center;
       place-items: center;
+      border-radius: 50%;
+      color: inherit;
+      width: 35px;
+      height: 35px;
+      min-width: 35px;
+      margin-inline-start: 2px;
 
       &--active {
-        background-color: var(--gx-navbar-low-background-color);
-
-        gx-icon {
-          --gx-icon-color: var(--gx-navbar-sub-color);
-        }
+        background-color: $gx-navbar-low-background-color;
+        color: $gx-navbar-active-color;
       }
     }
   }

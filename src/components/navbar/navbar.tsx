@@ -11,6 +11,9 @@ import {
 import { Component as GxComponent } from "../common/interfaces";
 import { watchForItems } from "../common/watch-items";
 
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
+
 @Component({
   shadow: true,
   styleUrl: "navbar.scss",
@@ -35,6 +38,11 @@ export class NavBar implements GxComponent {
   @Prop() readonly caption: string;
 
   /**
+   * A CSS class to set as the `gx-navbar` element class.
+   */
+  @Prop() readonly cssClass: string;
+
+  /**
    * This attribute lets you specify if one or two lines will be used to render the navigation bar.
    * Useful when there are links and also actions, to have links in the first line, and actions in the second
    */
@@ -50,9 +58,8 @@ export class NavBar implements GxComponent {
    * viewport.
    * If `position = "top"` the navbar will be placed normally at the top of the
    * viewport.
-   * If `position = "bottom"` the navbar will be placed normally at the bottom
-   * of the viewport. This `position` of navbar is used to show navigation
-   * links.
+   * If `position = "bottom"` the navbar will be placed at the bottom of the
+   * viewport. This position of navbar is used to show navigation links.
    */
   @Prop() readonly position: "top" | "bottom" = "top";
 
@@ -142,8 +149,17 @@ export class NavBar implements GxComponent {
   }
 
   render() {
+    //  Styling for gx-navbar control.
+    const classes = getClasses(this.cssClass, -1);
+
     return (
-      <Host>
+      <Host
+        class={{
+          [this.cssClass]: !!this.cssClass,
+          [classes.vars]: true,
+          "gx-navbar-actions-active": this.showLowActions
+        }}
+      >
         <nav class="gx-navbar">
           <div class="gx-navbar-line gx-navbar-line-1">
             {this.isTopPosition && this.showBackButton && this.singleLine && (
@@ -173,7 +189,7 @@ export class NavBar implements GxComponent {
             )}
 
             {this.isTopPosition && (
-              <a class="gx-navbar-header" tabindex="-1">
+              <a class="gx-navbar-caption" tabindex="-1">
                 <slot name="header" />
                 {this.caption}
               </a>
@@ -208,21 +224,24 @@ export class NavBar implements GxComponent {
   }
 
   private renderActions() {
+    const shouldDisplayActionsSeparator =
+      this.hasHighPriorityActions && this.hasNormalPriorityActions;
+
     return [
       <div class="gx-navbar-actions">
         <div class="gx-navbar-actions-high">
           <slot name="high-priority-action" />
         </div>
-        <div
-          class={{
-            "gx-navbar-actions-normal": true,
-            "gx-navbar-actions-normal--separator":
-              this.hasHighPriorityActions && this.hasNormalPriorityActions
-          }}
-        >
+
+        {shouldDisplayActionsSeparator && (
+          <span class="gx-navbar-actions--separator" />
+        )}
+
+        <div class="gx-navbar-actions-normal">
           <slot name="normal-priority-action" />
         </div>
         <div
+          part="popup-action-low"
           class={{
             "gx-navbar-actions-low": true,
             "gx-navbar-actions-low--active": this.showLowActions
@@ -231,13 +250,13 @@ export class NavBar implements GxComponent {
           <slot name="low-priority-action" />
         </div>
       </div>,
+
       this.hasLowPriorityActions && (
         <button
           type="button"
           aria-label={this.actionToggleButtonLabel}
-          part="default-button"
+          part="action-low"
           class={{
-            "gx-navbar-icon-button": true,
             "gx-navbar-actions-toggle": true,
             "gx-navbar-actions-toggle--active": this.showLowActions
           }}
