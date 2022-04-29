@@ -49,7 +49,7 @@ gx-loading {
   --rotate-animation-circle-3-color: rgb(200, 10, 70);
 
   @include visibility(block);
-  z-index: $base-z-index;
+  z-index: $z-index-gx-loading;
 
   // Style applied when the gx-loading is displayed as a dialog
   &[dialog],
@@ -72,7 +72,7 @@ gx-loading {
       padding: $box-padding;
       overflow: hidden;
       transform: translate(-50%, -50%);
-      z-index: $base-z-index + 1;
+      z-index: $z-index-gx-loading-box;
     }
   }
 
