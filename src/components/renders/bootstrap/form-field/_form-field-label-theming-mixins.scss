@@ -15,9 +15,8 @@
   $label-valign: null,
   $label-width: null
 ) {
-  /*  We create a custom label class to use inside the gx-form-field. The same
-      goes for the highlighted label class.
-  */
+  // We create a custom label class to use inside the gx-form-field. The same
+  // goes for the highlighted label class.
   @if $label != null {
     &#{$gx-label} {
       @extend #{$label} !optional;
@@ -30,9 +29,8 @@
   }
 
   // - - - - - - - - - -  Label alignment  - - - - - - - - - -
-  /*  The default text alignment does not have a mapping, because left and
-      right Label positioning define their default text alignment values
-  */
+  // The default text alignment does not have a mapping, because left and
+  // right Label positioning define their default text alignment values
   $text-align-array: (
     Left: start,
     Center: center,

@@ -94,20 +94,13 @@ export class TabCaption
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() highlightable = false;
+  @Prop() highlightable = true;
 
   @Watch("selected")
   selectedHandler() {
     if (this.selected) {
       this.tabSelect.emit(event);
     }
-  }
-
-  // Used to make the caption highlightable when `disabled = false`
-  @Watch("disabled")
-  highlightableHandler() {
-    this.highlightable = !this.disabled;
-    makeHighlightable(this);
   }
 
   /**
@@ -124,7 +117,6 @@ export class TabCaption
   }
 
   componentDidLoad() {
-    this.highlightable = !this.disabled;
     makeHighlightable(this);
   }
 

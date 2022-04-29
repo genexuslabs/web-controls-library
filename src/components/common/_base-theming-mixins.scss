@@ -98,7 +98,7 @@
   // Any control
   @if $control-type == null {
     @at-root #{str-replace(#{&}, ".", "%")}#{$gx-highlighted},
-      #{&}#{$gx-highlighted}[data-has-action],
+      #{&}#{$gx-highlighted-dot},
       #{&}#{$gx-highlighted-focus-within}:focus-within {
       @include extend-highlighted-class(
         $class,
@@ -125,7 +125,7 @@
     }
 
     @at-root [area="field"]#{&} {
-      &#{$gx-highlighted}[data-has-action] {
+      &#{$gx-highlighted-dot} {
         @include extend-highlighted-class(
           $class,
           $background-color,
@@ -138,7 +138,7 @@
 
   // gx-textblock control
   @if $control-type == text-block {
-    @at-root gx-textblock#{&}#{$gx-highlighted}[data-has-action] {
+    @at-root gx-textblock#{&}#{$gx-highlighted-dot} {
       @include extend-highlighted-class(
         $class,
         $background-color,
@@ -150,7 +150,7 @@
 
   // gx-image control
   @if $control-type == image {
-    @at-root .inner-image#{&}#{$gx-highlighted}[data-has-action] {
+    @at-root .inner-image#{&}#{$gx-highlighted-dot} {
       @include extend-highlighted-class(
         $class,
         $background-color,
@@ -166,7 +166,7 @@
     @at-root gx-canvas#{&},
       gx-group#{&},
       gx-table#{&} {
-      &#{$gx-highlighted}[data-has-action] {
+      &#{$gx-highlighted-dot} {
         @include extend-highlighted-class(
           $class,
           $background-color,
@@ -179,7 +179,7 @@
 
   // gx-button control
   @if $control-type == button {
-    @at-root .gx-button#{&}#{$gx-highlighted}[data-has-action] {
+    @at-root .gx-button#{&}#{$gx-highlighted-dot} {
       @include extend-highlighted-class(
         $class,
         $background-color,

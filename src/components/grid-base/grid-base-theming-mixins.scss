@@ -30,7 +30,7 @@ $grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller) >, & > 
     }
 
     // Highlighted class
-    &#{$gx-odd-row-highlighted}[data-has-action] {
+    &#{$gx-odd-row}#{$gx-highlighted-dot} {
       @extend #{str-replace($odd-row, ".", "%")}#{$gx-highlighted} !optional;
     }
   }
@@ -42,7 +42,7 @@ $grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller) >, & > 
     }
 
     // Highlighted class
-    &#{$gx-even-row-highlighted}[data-has-action] {
+    &#{$gx-even-row}#{$gx-highlighted-dot} {
       @extend #{str-replace($even-row, ".", "%")}#{$gx-highlighted} !optional;
     }
   }

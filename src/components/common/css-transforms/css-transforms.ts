@@ -2,10 +2,8 @@ import { CssClasses } from "../interfaces";
 
 const transforms = {
   evenRow: "-gx-even-row",
-  evenRowHighlighted: "-gx-even-row-highlighted",
   groupCaption: "-gx-group-caption",
   highlighted: "-gx-highlighted",
-  highlightedActive: "-gx-highlighted-active",
   highlightedFocusWithin: "-gx-highlighted-focus-within",
   hover: "-gx-hover",
   horizontalLine: "-gx-horizontal-line",
@@ -15,20 +13,13 @@ const transforms = {
   labelPositionLeft: "-gx-label-position-left",
   labelPositionRight: "-gx-label-position-right",
   oddRow: "-gx-odd-row",
-  oddRowHighlighted: "-gx-odd-row-highlighted",
   selectedTabCaption: "-gx-selected-tab-caption",
-  selectedTabCaptionHighlighted: "-gx-selected-tab-caption-highlighted",
   unselectedTabCaption: "-gx-unselected-tab-caption",
-  unselectedTabCaptionHighlighted: "-gx-unselected-tab-caption-highlighted",
   vars: "-gx-vars"
 };
 
 export function tEvenRow(className: string): string {
   return className + transforms["evenRow"];
-}
-
-export function tEvenRowHighlighted(className: string): string {
-  return className + transforms["evenRowHighlighted"];
 }
 
 export function tGroupCaption(className): string {
@@ -75,10 +66,6 @@ export function tOddRow(className: string): string {
   return className + transforms["oddRow"];
 }
 
-export function tOddRowHighlighted(className: string): string {
-  return className + transforms["oddRowHighlighted"];
-}
-
 export function tSelectedTabCaption(className: string): string {
   if (!className) {
     return "";
@@ -86,19 +73,11 @@ export function tSelectedTabCaption(className: string): string {
   return className + transforms["selectedTabCaption"];
 }
 
-export function tSelectedTabCaptionHighlighted(className: string): string {
-  return className + transforms["selectedTabCaptionHighlighted"];
-}
-
 export function tUnselectedTabCaption(className: string): string {
   if (!className) {
     return "";
   }
   return className + transforms["unselectedTabCaption"];
-}
-
-export function tUnselectedTabCaptionHighlighted(className: string): string {
-  return className + transforms["unselectedTabCaptionHighlighted"];
 }
 
 export function tVars(className: string): string {
