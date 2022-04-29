@@ -1,8 +1,8 @@
 @import "../common/common-styling-config";
 
 :host {
-  display: inline-flex;
   --gx-icon-size: 24px;
+  display: inline-flex;
   width: var(--gx-icon-size);
   height: var(--gx-icon-size);
 
@@ -11,9 +11,8 @@
     height: var(--gx-icon-size);
 
     * {
-      fill: var(--gx-icon-color);
-      transition: color $transition-delay, fill $transition-delay,
-        stroke $transition-delay;
+      transition-property: fill, stroke;
+      transition-duration: $transition-duration;
     }
   }
 
