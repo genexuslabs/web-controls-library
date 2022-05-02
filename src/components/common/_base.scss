@@ -122,20 +122,18 @@ $gx-xsmall-breakpoint-plus-1: 769px;
   }
 }
 
-@mixin scss-custom-option-control() {
+@mixin scss-custom-option-control($option-border-radius: 100%) {
   $custom-option-size: min(1em, 20px);
   $disabled-color: #a5a8aac0;
   $transition-duration: 0.2s;
   $transition-function: ease-in-out;
   $space-between-option-and-label: min(0.35em, 7px);
 
-  --option-checked-color: #007bff;
+  $option-checked-color: var(--option-checked-color, #ffa7c0);
 
-  --option-border: 1px solid #adb5bd;
+  $option-border-color: var(--option-border-color, #adb5bd);
 
-  --option-border-radius: 100%;
-
-  --option-highlight-border-color: #007bff40;
+  $option-highlight-color: var(--option-highlight-color, #dc354570);
 
   .option-and-label-container {
     display: flex;
@@ -154,8 +152,8 @@ $gx-xsmall-breakpoint-plus-1: 769px;
 
         &:checked {
           & ~ .custom-option {
-            border-color: var(--option-checked-color);
-            background-color: var(--option-checked-color);
+            border-color: $option-checked-color;
+            background-color: $option-checked-color;
           }
 
           & ~ svg {
@@ -165,8 +163,8 @@ $gx-xsmall-breakpoint-plus-1: 769px;
 
         &:active:not(:disabled) {
           &:not(:checked) + .custom-option {
-            border-color: var(--option-highlight-border-color);
-            background-color: var(--option-highlight-border-color);
+            border-color: $option-highlight-color;
+            background-color: $option-highlight-color;
           }
 
           & + .custom-option {
@@ -175,8 +173,7 @@ $gx-xsmall-breakpoint-plus-1: 769px;
         }
 
         &:focus + .custom-option {
-          box-shadow: 0 0 0 min(0.15em, 4px)
-            var(--option-highlight-border-color);
+          box-shadow: 0 0 0 min(0.15em, 4px) $option-highlight-color;
         }
 
         &:disabled + .custom-option {
@@ -188,8 +185,8 @@ $gx-xsmall-breakpoint-plus-1: 769px;
         position: absolute;
         width: $custom-option-size;
         height: $custom-option-size;
-        border: var(--option-border);
-        border-radius: var(--option-border-radius);
+        border: 1px solid $option-border-color;
+        border-radius: $option-border-radius;
         margin-bottom: 0;
         pointer-events: none;
         transition-property: background-color, border-color, box-shadow, filter;
@@ -202,7 +199,7 @@ $gx-xsmall-breakpoint-plus-1: 769px;
         width: $custom-option-size;
         height: $custom-option-size;
         pointer-events: none;
-        z-index: 1;
+        z-index: 1; // Necessary?
         opacity: 0;
         fill: white;
         fill-opacity: 0.75;

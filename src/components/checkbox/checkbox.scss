@@ -4,12 +4,8 @@
 gx-checkbox {
   @include elevation();
   @include visibility(flex);
-  @include scss-custom-option-control();
-
-  --option-border-radius: 25%;
+  @include scss-custom-option-control(25%);
 
   flex: 1;
-  transition-property: background-color, border-color, box-shadow, color, filter,
-    opacity;
-  transition-duration: $transition-delay;
+  @include transition-properties();
 }
