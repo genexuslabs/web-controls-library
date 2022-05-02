@@ -132,9 +132,9 @@ export class Loading implements GxComponent {
           ) : (
             // Default loading animation if no gx-lottie
             <div class="loading-rotate-container">
-              <div class="circle" />
-              <div class="circle" />
-              <div class="circle" />
+              <div class="circle circle-1" />
+              <div class="circle circle-2" />
+              <div class="circle circle-3" />
             </div>
           )}
           <div id={title} class="title">
