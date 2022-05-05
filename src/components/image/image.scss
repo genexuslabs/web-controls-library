@@ -14,6 +14,7 @@ gx-image {
   flex: 1;
   align-self: stretch;
   width: 100%;
+  font-size: 10px; // Used to set the default size of the loading indicator
   overflow-x: hidden; // Horizontal overflow is always hidden
 
   // Workaround to stop firing events when the gx-image clicked but not the
@@ -77,15 +78,17 @@ gx-image {
 
   .gx-lazyloading + span,
   .gx-lazyloading + span:after {
-    border-radius: 50%;
+    display: var(--image-loading-indicator, inline-block);
     width: 2em;
     height: 2em;
-    display: var(--image-loading-indicator, inline-block);
+    border-radius: 50%;
   }
 
   .gx-lazyloading + span {
-    font-size: 10px;
-    position: relative;
+    $center-loading: calc(50% - 1em);
+    position: absolute;
+    top: $center-loading;
+    left: $center-loading;
     text-indent: -9999em;
     border-top: 0.3em solid rgba(0, 0, 0, 0.2);
     border-right: 0.3em solid rgba(0, 0, 0, 0.2);
