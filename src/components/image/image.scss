@@ -36,6 +36,9 @@ gx-image {
   }
 
   > .gx-image-container {
+    // To adjust the position of the image picker button
+    position: relative;
+
     // Takes "flex: 1" value when the --width is not defined
     flex: var(--width);
 

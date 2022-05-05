@@ -112,6 +112,11 @@ export class Image
     | "tile";
 
   /**
+   * True to show the image picker button.
+   */
+  @Prop() showImagePickerButton = false;
+
+  /**
    * This attribute lets you specify the SRC.
    */
   @Prop() readonly src: string = "";
@@ -208,6 +213,7 @@ export class Image
           ref={el => (this.innerImageContainer = el as HTMLDivElement)}
         >
           {body}
+          {this.showImagePickerButton && <slot />}
         </div>
       </Host>
     );

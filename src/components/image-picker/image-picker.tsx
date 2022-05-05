@@ -78,7 +78,7 @@ export class ImagePicker implements GxComponent {
   /**
    * This attribute lets you specify the SRC.
    */
-  @Prop({ reflect: true }) src = "";
+  @Prop() src = "";
 
   /**
    * True to highlight control when an action is fired.
@@ -145,6 +145,8 @@ export class ImagePicker implements GxComponent {
   private input: HTMLInputElement;
 
   private modal: HTMLGxModalElement;
+
+  private shouldShowImagePickerButton: boolean;
 
   private stopPropagation(event: UIEvent) {
     event.stopPropagation();
@@ -242,7 +244,6 @@ export class ImagePicker implements GxComponent {
   private getLoadingSVG(): any {
     return (
       <svg
-        class="uploading-file"
         version="1.1"
         id="loader-1"
         xmlns="http://www.w3.org/2000/svg"
@@ -268,77 +269,76 @@ export class ImagePicker implements GxComponent {
     );
   }
 
+  componentWillLoad() {
+    this.shouldShowImagePickerButton = !this.readonly;
+  }
+
   render() {
     return (
-      <Host data-part="container">
-        <div class="click-capture" onClick={this.stopPropagation}>
-          <gx-image
-            class="image-viewer-image"
-            alt={this.alt}
-            autoGrow={this.autoGrow}
-            cssClass={this.cssClass}
-            disabled={this.disabled}
-            invisibleMode={this.invisibleMode}
-            lazyLoad={this.lazyLoad}
-            lowResolutionSrc={this.lowResolutionSrc}
-            scaleType={this.scaleType}
-            src={this.src}
-            highlightable={this.highlightable}
-            onClick={this.clickImageAction}
-          >
-            {!this.readonly && (
-              <div
-                class={{
-                  "button-edit-container": true,
-                  bottom: this.src !== ""
-                }}
-              >
-                {this.state != "uploadingFile" ? (
-                  <button
-                    class="image-edit"
-                    disabled={
-                      this.disabled || this.state == "fileReadyToUpload"
-                    }
-                    onClick={this.triggerAction}
-                  >
-                    {this.src === ""
-                      ? this.getSearchPlusSolidSVG()
-                      : this.getPencilAltSolidSVG()}
-                  </button>
-                ) : (
-                  this.getLoadingSVG()
-                )}
-              </div>
-            )}
-          </gx-image>
-          <gx-modal
-            class="action-dialog"
-            ref={el => (this.modal = el as HTMLGxModalElement)}
-          >
-            <div slot="header">
-              {this.modalTitle === null ? document.title : this.modalTitle}
+      <Host onClick={this.stopPropagation}>
+        <gx-image
+          alt={this.alt}
+          autoGrow={this.autoGrow}
+          cssClass={this.cssClass}
+          disabled={this.disabled}
+          invisibleMode={this.invisibleMode}
+          lazyLoad={this.lazyLoad}
+          lowResolutionSrc={this.lowResolutionSrc}
+          scaleType={this.scaleType}
+          showImagePickerButton={this.shouldShowImagePickerButton}
+          src={this.src}
+          highlightable={this.highlightable}
+          onClick={this.clickImageAction}
+        >
+          {this.shouldShowImagePickerButton && (
+            <div
+              class="image-picker-state-container"
+              onClick={this.stopPropagation}
+            >
+              {this.state != "uploadingFile" ? (
+                <button
+                  class="image-picker-button"
+                  disabled={this.disabled || this.state == "fileReadyToUpload"}
+                  onClick={this.triggerAction}
+                >
+                  {this.src === ""
+                    ? this.getSearchPlusSolidSVG()
+                    : this.getPencilAltSolidSVG()}
+                </button>
+              ) : (
+                this.getLoadingSVG()
+              )}
             </div>
-            <div class="body-container" slot="body">
-              <label class="file">
-                <input
-                  type="file"
-                  onChange={this.fileSelectedAction}
-                  ref={el => (this.input = el as HTMLInputElement)}
-                  accept="image/*"
-                />
-                <span class="file-custom">{this.changeButtonText}</span>
-              </label>
-              <gx-button class="remove-button" onClick={this.clearImageAction}>
-                {this.removeButtonText}
-              </gx-button>
-            </div>
-            <div slot="secondary-action">
-              <gx-button class="cancel-button" onClick={this.closeAction}>
-                <span>{this.cancelButtonText}</span>
-              </gx-button>
-            </div>
-          </gx-modal>
-        </div>
+          )}
+        </gx-image>
+        <gx-modal
+          class="action-dialog"
+          onClick={this.stopPropagation}
+          ref={el => (this.modal = el as HTMLGxModalElement)}
+        >
+          <div slot="header">
+            {this.modalTitle === null ? document.title : this.modalTitle}
+          </div>
+          <div class="body-container" slot="body">
+            <label class="file">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={this.fileSelectedAction}
+                ref={el => (this.input = el as HTMLInputElement)}
+              />
+              <span class="file-custom">{this.changeButtonText}</span>
+            </label>
+            <gx-button class="remove-button" onClick={this.clearImageAction}>
+              {this.removeButtonText}
+            </gx-button>
+          </div>
+          <div slot="secondary-action">
+            <gx-button class="cancel-button" onClick={this.closeAction}>
+              <span>{this.cancelButtonText}</span>
+            </gx-button>
+          </div>
+        </gx-modal>
       </Host>
     );
   }
