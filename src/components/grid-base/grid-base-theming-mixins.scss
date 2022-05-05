@@ -7,21 +7,15 @@
 $grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller) >, & > * > .scrollable-content >";
 
 /// Helper mixin to ease styling gx-grid-base custom elements
-/// @param {string} $class Base class of the component. NO LONGER USED
-/// @param {string} $highlighted Class to be used when the grid is active. NO LONGER USED
 /// @param {string} $odd-row Class for styling the Odd row
 /// @param {string} $even-row Class for styling the Odd even
 /// @param {string} loading-animation Class for styling the grid loading animation
 /// @param {string} group-separator Class for styling the grid group-separator
-/// @param {string} $horizontal-line Class of the horizontal line separator (to be implemented). NO LONGER USED
 @mixin gx-grid-base(
-  $class: null,
-  $highlighted: null,
   $odd-row: null,
   $even-row: null,
   $loading-animation: null,
-  $group-separator: null,
-  $horizontal-line: null
+  $group-separator: null
 ) {
   // - - - - - - - - - - Odd row - - - - - - - - - -
   @if ($odd-row != null) {

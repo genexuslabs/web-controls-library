@@ -5,14 +5,10 @@
 ////
 
 /// Helper mixin to ease styling gx-tab custom elements
-/// @param {string} $class Base class of the component. NO LONGER USED
-/// @param {string} $highlighted Class to be used when the tab is active. NO LONGER USED
 /// @param {string} $tabs-position Determine the tab position (top or bottom).
 /// @param {string} $selected-tab-caption Class for styling the selected tab caption
 /// @param {string} $unselected-tab-caption Class for styling unselected tab caption
 @mixin gx-tab(
-  $class: null,
-  $highlighted: null,
   $tabs-position: null,
   $selected-tab-caption: null,
   $unselected-tab-caption: null
