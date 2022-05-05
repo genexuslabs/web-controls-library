@@ -32,6 +32,11 @@ export class ImagePicker implements GxComponent {
   @Prop() readonly autoGrow = true;
 
   /**
+   * A CSS class to set as the `gx-image-picker` element class.
+   */
+  @Prop() readonly cssClass: string;
+
+  /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
@@ -271,6 +276,7 @@ export class ImagePicker implements GxComponent {
             class="image-viewer-image"
             alt={this.alt}
             autoGrow={this.autoGrow}
+            cssClass={this.cssClass}
             disabled={this.disabled}
             invisibleMode={this.invisibleMode}
             lazyLoad={this.lazyLoad}

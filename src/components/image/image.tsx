@@ -12,6 +12,9 @@ import {
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
 import lazySizes from "lazysizes";
 
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
+
 const LAZY_LOAD_CLASS = "gx-lazyload";
 const LAZY_LOADING_CLASS = "gx-lazyloading";
 const LAZY_LOADED_CLASS = "gx-lazyloaded";
@@ -63,6 +66,11 @@ export class Image
    * will match the intrinsic width. In GeneXus terms, it will auto grow horizontally, but not vertically.
    */
   @Prop() readonly autoGrow = true;
+
+  /**
+   * A CSS class to set as the `gx-image` element class.
+   */
+  @Prop() readonly cssClass: string;
 
   /**
    * This attribute lets you specify if the element is disabled.
@@ -126,7 +134,7 @@ export class Image
    */
   private didLoad = false;
 
-  private innerImage: HTMLImageElement = null;
+  private innerImageContainer: HTMLDivElement = null;
 
   private handleImageLoad(event: UIEvent) {
     if (!this.autoGrow) {
@@ -139,7 +147,7 @@ export class Image
 
   componentDidLoad() {
     if (this.src) {
-      makeHighlightable(this, this.innerImage);
+      makeHighlightable(this, this.innerImageContainer);
     }
 
     this.didLoad = true;
@@ -147,17 +155,21 @@ export class Image
 
   disconnectedCallback() {
     document.removeEventListener("lazyloaded", this.handleLazyLoaded);
+    this.innerImageContainer = null;
   }
 
   render() {
     const shouldLazyLoad = this.shouldLazyLoad();
 
+    // Styling for gx-image control.
+    const classes = getClasses(this.cssClass, -1);
+
     const body = this.src
       ? [
           <img
             class={{
-              [LAZY_LOAD_CLASS]: shouldLazyLoad,
               "inner-image": true,
+              [LAZY_LOAD_CLASS]: shouldLazyLoad,
               "gx-image-tile": this.scaleType === "tile"
             }}
             style={{
@@ -167,11 +179,8 @@ export class Image
             onClick={this.handleClick}
             onLoad={this.handleImageLoad}
             data-src={shouldLazyLoad ? this.src : undefined}
-            // Mouse pointer to indicate action
-            data-has-action={this.highlightable ? "" : undefined}
             src={!shouldLazyLoad ? this.src : undefined}
             alt={this.alt}
-            ref={el => (this.innerImage = el as HTMLImageElement)}
           />,
           <span />
         ]
@@ -180,6 +189,7 @@ export class Image
     return (
       <Host
         class={{
+          [classes.vars]: true,
           disabled: this.disabled,
           "gx-img-lazyloading": shouldLazyLoad,
           "gx-img-no-auto-grow": this.scaleType !== "tile" && !this.autoGrow
@@ -188,7 +198,17 @@ export class Image
           opacity: !this.didLoad ? "0" : null
         }}
       >
-        {body}
+        <div
+          class={{
+            "gx-image-container": true,
+            [this.cssClass]: !!this.cssClass
+          }}
+          // Mouse pointer to indicate action
+          data-has-action={this.highlightable ? "" : undefined}
+          ref={el => (this.innerImageContainer = el as HTMLDivElement)}
+        >
+          {body}
+        </div>
       </Host>
     );
   }
