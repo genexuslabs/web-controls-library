@@ -78,9 +78,8 @@ gx-button {
     align-self: stretch;
   }
 
-  /*  If the button caption is empty, the inner image will stretch to the
-      container size
-  */
+  // If the button caption is empty, the inner image will stretch to the
+  // container size
   &.empty-caption {
     --gx-button-image-size: 100%;
   }
@@ -89,6 +88,7 @@ gx-button {
   & > button {
     background-color: transparent;
     border-style: none;
+    padding: 0;
     user-select: none;
   }
 
