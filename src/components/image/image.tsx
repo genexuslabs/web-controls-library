@@ -169,6 +169,8 @@ export class Image
     // Styling for gx-image control.
     const classes = getClasses(this.cssClass, -1);
 
+    const withoutAutogrow = this.scaleType !== "tile" && !this.autoGrow;
+
     const body = this.src
       ? [
           <img
@@ -187,7 +189,7 @@ export class Image
             src={!shouldLazyLoad ? this.src : undefined}
             alt={this.alt}
           />,
-          <span />
+          <span class="gx-image-loading-indicator" />
         ]
       : [];
 
@@ -197,7 +199,7 @@ export class Image
           [classes.vars]: true,
           disabled: this.disabled,
           "gx-img-lazyloading": shouldLazyLoad,
-          "gx-img-no-auto-grow": this.scaleType !== "tile" && !this.autoGrow
+          "gx-img-no-auto-grow": withoutAutogrow
         }}
         style={{
           opacity: !this.didLoad ? "0" : null
@@ -212,7 +214,11 @@ export class Image
           data-has-action={this.highlightable ? "" : undefined}
           ref={el => (this.innerImageContainer = el as HTMLDivElement)}
         >
-          {body}
+          {withoutAutogrow ? (
+            <div class="gx-image-no-auto-grow-container">{body}</div>
+          ) : (
+            body
+          )}
           {this.showImagePickerButton && <slot />}
         </div>
       </Host>

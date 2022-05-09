@@ -14,7 +14,6 @@ gx-image {
   flex: 1;
   align-self: stretch;
   width: 100%;
-  font-size: 10px; // Used to set the default size of the loading indicator
   overflow-x: hidden; // Horizontal overflow is always hidden
 
   // Workaround to stop firing events when the gx-image clicked but not the
@@ -34,6 +33,17 @@ gx-image {
   // gx-image with auto-grow = FALSE
   &.gx-img-no-auto-grow {
     overflow-y: hidden; // Vertical overflow is hidden if auto-grow = False
+
+    & > .gx-image-container > .gx-image-no-auto-grow-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+
+      > .inner-image {
+        position: absolute;
+      }
+    }
   }
 
   > .gx-image-container {
@@ -52,12 +62,16 @@ gx-image {
     @include transition-properties();
   }
 
-  > .gx-image-container > .inner-image {
-    width: 100%;
-    height: 100%;
+  > .gx-image-container,
+  .gx-image-container > .gx-image-no-auto-grow-container {
+    & > .inner-image {
+      display: block;
+      width: 100%;
+      height: 100%;
 
-    // Default Scale Type = Fit
-    object-fit: var(--image-scale-type, contain);
+      // Default Scale Type = Fit
+      object-fit: var(--image-scale-type, contain);
+    }
   }
 
   > .gx-image-container > .gx-image-tile {
@@ -76,19 +90,21 @@ gx-image {
     display: none;
   }
 
-  .gx-lazyloading + span,
-  .gx-lazyloading + span:after {
+  .gx-lazyloading + .gx-image-loading-indicator,
+  .gx-lazyloading + .gx-image-loading-indicator:after {
     display: var(--image-loading-indicator, inline-block);
     width: 2em;
     height: 2em;
     border-radius: 50%;
   }
 
-  .gx-lazyloading + span {
+  .gx-lazyloading + .gx-image-loading-indicator {
     $center-loading: calc(50% - 1em);
+
     position: absolute;
     top: $center-loading;
     left: $center-loading;
+    font-size: 0.625em; // Used to set the default size of the loading indicator
     text-indent: -9999em;
     border-top: 0.3em solid rgba(0, 0, 0, 0.2);
     border-right: 0.3em solid rgba(0, 0, 0, 0.2);
@@ -98,7 +114,7 @@ gx-image {
     animation: gx-image-loading 1.1s infinite linear;
   }
 
-  .gx-lazyloaded + span {
+  .gx-lazyloaded + .gx-image-loading-indicator {
     display: none;
   }
 }
@@ -150,8 +166,8 @@ gx-image {
 }
 
 // Allow inner image positioning even when auto-grow is enabled
-@mixin cellAlignmentNoAutoGrow($halign, $valign) {
-  $inner-image-control-selector: "& > gx-image > .gx-image-container > .inner-image";
+@mixin inner-image-alignment($halign, $valign) {
+  $inner-image-control-selector: "& > gx-image .inner-image";
   $inner-image-variable-selector: "& > gx-form-field .inner-image";
 
   $valign-value: if($valign == middle, center, $valign);
@@ -195,22 +211,22 @@ gx-image {
 }
 
 // Alignment for the image inside the img tag
-@include cellAlignmentNoAutoGrow(null, null);
-@include cellAlignmentNoAutoGrow(null, top);
-@include cellAlignmentNoAutoGrow(null, middle);
-@include cellAlignmentNoAutoGrow(null, bottom);
-@include cellAlignmentNoAutoGrow(left, null);
-@include cellAlignmentNoAutoGrow(center, null);
-@include cellAlignmentNoAutoGrow(right, null);
-@include cellAlignmentNoAutoGrow(left, top);
-@include cellAlignmentNoAutoGrow(left, middle);
-@include cellAlignmentNoAutoGrow(left, bottom);
-@include cellAlignmentNoAutoGrow(center, top);
-@include cellAlignmentNoAutoGrow(center, middle);
-@include cellAlignmentNoAutoGrow(center, bottom);
-@include cellAlignmentNoAutoGrow(right, top);
-@include cellAlignmentNoAutoGrow(right, middle);
-@include cellAlignmentNoAutoGrow(right, bottom);
+@include inner-image-alignment(null, null);
+@include inner-image-alignment(null, top);
+@include inner-image-alignment(null, middle);
+@include inner-image-alignment(null, bottom);
+@include inner-image-alignment(left, null);
+@include inner-image-alignment(center, null);
+@include inner-image-alignment(right, null);
+@include inner-image-alignment(left, top);
+@include inner-image-alignment(left, middle);
+@include inner-image-alignment(left, bottom);
+@include inner-image-alignment(center, top);
+@include inner-image-alignment(center, middle);
+@include inner-image-alignment(center, bottom);
+@include inner-image-alignment(right, top);
+@include inner-image-alignment(right, middle);
+@include inner-image-alignment(right, bottom);
 
 @keyframes gx-image-loading {
   0% {
