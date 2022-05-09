@@ -1,4 +1,5 @@
 @import "../common/_base";
+@import "../common/layout-styling-config";
 
 gx-modal {
   @include visibility(block);
@@ -20,6 +21,8 @@ gx-modal {
    */
   --gx-modal-secondary-action-color: white;
 
+  z-index: $z-index-gx-modal;
+
   & .modal-header {
     background-color: var(--gx-modal-header-background-color);
     color: var(--gx-modal-header-color);
@@ -35,4 +38,9 @@ gx-modal {
   .modal-footer .btn-secondary {
     color: var(--gx-modal-secondary-action-color);
   }
+}
+
+// WA to change the z-index property of the bootstrap class
+div.modal-backdrop {
+  z-index: $z-index-gx-modal-backdrop;
 }

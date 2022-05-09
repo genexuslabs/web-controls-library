@@ -1,4 +1,5 @@
 @import "../common/_base";
+@import "../common/layout-styling-config";
 
 /// Helper mixin to ease styling gx-message
 /// @param {string} $class Base class of the component
@@ -62,4 +63,15 @@ gx-message {
     var(--gx-message-error-background-color),
     var(--gx-message-error-background-color)
   );
+}
+
+#messageBar {
+  top: 0;
+  z-index: $z-index-gx-message;
+}
+
+gx-navbar + gx-messages {
+  & > #messageBar {
+    top: $gx-navbar-main-height;
+  }
 }
