@@ -5,8 +5,13 @@ gx-card {
   gx-button {
     &[slot="high-priority-action"],
     &[slot="normal-priority-action"] {
-      margin-right: 5px;
+      margin-inline-start: 5px;
     }
+  }
+
+  .gx-card-actions-container {
+    display: flex;
+    float: right;
   }
 
   .gx-dropdown-toggle::after {
@@ -27,6 +32,7 @@ gx-card {
     display: flex;
     flex: 1;
     background-color: transparent;
+
     & > [slot="body"] {
       flex: 1;
       display: flex;

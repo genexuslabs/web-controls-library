@@ -3,27 +3,12 @@
 @import "../common/_image-position";
 
 // Used to set the margin for different types of images
-@mixin imageMargin() {
+@mixin image-margin() {
   [slot="main-image"],
   [slot="disabled-image"] {
     margin: var(--gx-button-image-margin-top)
       var(--gx-button-image-margin-right) var(--gx-button-image-margin-bottom)
       var(--gx-button-image-margin-left);
-  }
-}
-
-// The width property does not apply when the navbar is the main container
-gx-table-cell {
-  & > gx-button {
-    width: var(--width, auto);
-  }
-}
-
-// Due to the gx-canvas-cell defines the width of the inner button, it is
-// necessary to strech the width of the gx-button
-gx-canvas-cell {
-  & > gx-button {
-    flex: 1;
   }
 }
 
@@ -60,22 +45,21 @@ gx-button {
 
   --elevation: 0;
 
-  @include visibility(inline-flex);
+  @include visibility(flex);
 
   // Used to decide the position of the image
   @include imagePosition("button.gx-button", ".disabled");
-  @include imageMargin();
+  @include image-margin();
+  flex: 1;
+  align-self: stretch;
+  width: 100%;
 
-  @include reset-variables();
-  height: var(--height);
-  overflow: hidden;
+  // Workaround to stop firing events when the gx-button clicked but not the
+  // inner button
+  pointer-events: none;
 
-  &.disabled {
+  &.disabled > .gx-button {
     pointer-events: none;
-  }
-
-  &.stretch-height {
-    align-self: stretch;
   }
 
   // If the button caption is empty, the inner image will stretch to the
@@ -88,7 +72,17 @@ gx-button {
   & > button {
     background-color: transparent;
     border-style: none;
+
+    // Takes "flex: 1" value when the --width is not defined
+    flex: var(--width);
+
+    // Takes "align-self: stretch" value when the --height is not defined
+    align-self: var(--height);
+
+    max-width: var(--width);
+    height: var(--height);
     padding: 0;
+    pointer-events: all;
     user-select: none;
   }
 
@@ -96,7 +90,6 @@ gx-button {
     @include elevation();
 
     display: flex;
-    flex: 1;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -104,14 +97,12 @@ gx-button {
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;
-    max-width: 100%;
     outline: unset;
+    overflow: hidden;
 
     // Avoid zooming on double tap
     touch-action: manipulation;
-    transition-property: background-color, border-color, box-shadow, color,
-      filter, opacity;
-    transition-duration: $transition-delay;
+    @include transition-properties();
 
     & > img {
       height: var(--gx-button-image-size);
@@ -127,4 +118,45 @@ gx-button {
       text-overflow: ellipsis;
     }
   }
+}
+
+// Button alignment
+@mixin horizontal-alignment($justify-content) {
+  & > gx-button {
+    justify-content: $justify-content;
+  }
+}
+
+@mixin vertical-alignment($align-items) {
+  & > gx-button {
+    align-items: $align-items;
+  }
+}
+
+// Default horizontal alignment
+[align="left"],
+:not([align]) {
+  @include horizontal-alignment(flex-start);
+}
+
+[align="center"] {
+  @include horizontal-alignment(center);
+}
+
+[align="right"] {
+  @include horizontal-alignment(flex-end);
+}
+
+// Default vertical alignment
+[valign="top"],
+:not([valign]) {
+  @include vertical-alignment(flex-start);
+}
+
+[valign="middle"] {
+  @include vertical-alignment(center);
+}
+
+[valign="bottom"] {
+  @include vertical-alignment(flex-end);
 }

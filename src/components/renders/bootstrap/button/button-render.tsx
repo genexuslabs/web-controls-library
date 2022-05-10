@@ -48,7 +48,7 @@ export class ButtonRender implements Renderer {
       }
     });
 
-    // Styling for gx-chronometer control.
+    // Styling for gx-button control.
     const classes = getClasses(button.cssClass, -1);
 
     return (
@@ -59,14 +59,13 @@ export class ButtonRender implements Renderer {
           [imagePositionClass(button.imagePosition)]: true,
           [hideMainImageWhenDisabledClass]:
             button.disabled && this.hasDisabledImage,
-          ["stretch-height"]: button.height === "",
 
           // Strings with only white spaces are taken as null captions
           "empty-caption": isEmptyCaption
         }}
         style={{
-          "--width": button.width === "" ? "100%" : button.width,
-          "--height": button.height === "" ? "auto" : button.height
+          "--width": button.width !== "" ? button.width : "1",
+          "--height": button.height !== "" ? button.height : "stretch"
         }}
       >
         <button

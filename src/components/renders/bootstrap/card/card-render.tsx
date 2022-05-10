@@ -184,7 +184,9 @@ export class CardRender implements Renderer {
           }}
         >
           {slots.header}
-          <div class="float-right">{slots.highPriorityAction}</div>
+          <div class="gx-card-actions-container">
+            {slots.highPriorityAction}
+          </div>
         </div>
         {slots.body}
         {slots.default}
@@ -199,7 +201,7 @@ export class CardRender implements Renderer {
           >
             {slots.footer}
             {hasFooterActions && (
-              <div class="float-right">
+              <div class="gx-card-actions-container">
                 {slots.normalPriorityAction}
                 {hasLowPriorityActions && (
                   <button
