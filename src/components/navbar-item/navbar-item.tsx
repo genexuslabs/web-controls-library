@@ -81,7 +81,11 @@ export class NavBarItem implements GxComponent, HighlightableComponent {
           {...attris}
         >
           {this.iconSrc && (
-            <img class="item-icon" src={this.iconSrc} alt={this.iconAltText} />
+            <img
+              class="navbar-item-icon"
+              src={this.iconSrc}
+              alt={this.iconAltText}
+            />
           )}
           <slot />
         </TagName>

@@ -24,6 +24,7 @@ $gx-navbar-active-color: black;
   align-self: stretch;
   cursor: pointer;
   outline: none;
+  padding-inline: 12px;
   @include transition-properties();
 
   @media screen and (max-width: $gx-xsmall-breakpoint) {
@@ -59,7 +60,7 @@ $gx-navbar-active-color: black;
       height: var(--gx-navbar-item-icon-size-small);
       width: var(--gx-navbar-item-icon-size-small);
       object-fit: contain;
-      margin-right: 12px;
+      margin-inline-end: 12px;
     }
 
     @media screen and (max-width: $gx-xsmall-breakpoint) {
@@ -70,7 +71,7 @@ $gx-navbar-active-color: black;
 
       &-icon {
         margin-bottom: 5px;
-        margin-right: 0;
+        margin-inline-end: 0;
       }
     }
   }
