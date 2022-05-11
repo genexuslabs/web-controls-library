@@ -142,12 +142,13 @@ export class Image
   private innerImageContainer: HTMLDivElement = null;
 
   private handleImageLoad(event: UIEvent) {
+    const img = event.target as HTMLImageElement;
     if (!this.autoGrow) {
-      const img = event.target as HTMLImageElement;
       // Some image formats do not specify intrinsic dimensions. The naturalWidth property returns 0 in those cases.
       if (img.naturalWidth !== 0) {
       }
     }
+    img.style.setProperty("display", "block");
   }
 
   componentDidLoad() {
