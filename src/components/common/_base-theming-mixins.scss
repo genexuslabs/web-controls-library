@@ -70,7 +70,7 @@
   }
 }
 
-@mixin horizontal-line($class) {
+@mixin horizontal-line($class: null) {
   &#{$gx-horizontal-line}::after {
     content: "";
     display: block;
@@ -78,7 +78,12 @@
     right: 0;
     bottom: 0;
     left: 0;
-    @extend #{$class} !optional;
+    background-color: #e0e0e0;
+    height: 1px;
+
+    @if $class != null {
+      @extend #{$class} !optional;
+    }
   }
 }
 
