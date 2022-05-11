@@ -88,7 +88,7 @@ gx-image {
 
   .gx-lazyloading + .gx-image-loading-indicator,
   .gx-lazyloading + .gx-image-loading-indicator:after {
-    display: var(--image-loading-indicator, inline-block);
+    display: var(--image-loading-indicator, none);
     width: 2em;
     height: 2em;
     border-radius: 50%;
