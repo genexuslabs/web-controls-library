@@ -26,6 +26,7 @@ import {
 import {
   getClasses,
   tSelectedTabCaption,
+  tTabsPositionCaption,
   tUnselectedTabCaption
 } from "../common/css-transforms/css-transforms";
 
@@ -134,6 +135,13 @@ export class TabCaption
     const selectedClasses = getClasses(this.selectedCssClass, -1);
     const unselectedClasses = getClasses(this.cssClass, -1);
 
+    const tabsPositionCaptionClass = !!this.tabCssClass
+      ? this.tabCssClass
+          .split(" ")
+          .map(tTabsPositionCaption)
+          .join(" ")
+      : "";
+
     return (
       <Host
         aria-selected={(!!this.selected).toString()}
@@ -166,7 +174,9 @@ export class TabCaption
         <div class="image-and-link-container">
           <a
             class={{
-              "gx-nav-link": true
+              "gx-nav-link": true,
+              "gx-nav-link--active": this.selected,
+              [tabsPositionCaptionClass]: true
             }}
             href="#"
             onClick={this.clickHandler}

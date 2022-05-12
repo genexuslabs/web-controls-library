@@ -16,10 +16,12 @@ import {
   HighlightableComponent,
   makeHighlightable
 } from "../common/highlightable";
-import { cssVariablesWatcher } from "../common/css-variables-watcher";
 
 // Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
+import {
+  getClasses,
+  tTabsPosition
+} from "../common/css-transforms/css-transforms";
 
 const BASE_TABLIST_SELECTOR = ":scope > [role='tablist']";
 
@@ -30,15 +32,6 @@ const BASE_TABLIST_SELECTOR = ":scope > [role='tablist']";
 })
 export class Tab
   implements GxComponent, VisibilityComponent, HighlightableComponent {
-  constructor() {
-    cssVariablesWatcher(this, [
-      {
-        cssVariableName: "--tabs-position",
-        propertyName: "tabsPosition"
-      }
-    ]);
-  }
-
   @Element() element: HTMLGxTabElement;
 
   private lastSelectedTab: HTMLElement;
@@ -62,11 +55,6 @@ export class Tab
    * True to highlight control when an action is fired.
    */
   @Prop() readonly highlightable = false;
-
-  /**
-   * Specifies the position to show the tabs.
-   */
-  @Prop() tabsPosition: "top" | "bottom" = "top";
 
   /**
    * Defines how the tabs will be distributed in the Strip.
@@ -169,6 +157,13 @@ export class Tab
     // Styling for gx-tab-caption control.
     const classes = getClasses(this.cssClass, -1);
 
+    const tabsPositionClass = !!this.cssClass
+      ? this.cssClass
+          .split(" ")
+          .map(tTabsPosition)
+          .join(" ")
+      : "";
+
     return (
       <Host
         class={{
@@ -176,7 +171,7 @@ export class Tab
           [classes.vars]: true
         }}
       >
-        <div role="tablist" data-position={this.tabsPosition}>
+        <div role="tablist" class={tabsPositionClass}>
           <div class="gx-nav-tabs">
             <div class="gx-nav-tabs-table">
               <slot name="caption" />

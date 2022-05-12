@@ -14,6 +14,8 @@ const transforms = {
   labelPositionRight: "-gx-label-position-right",
   oddRow: "-gx-odd-row",
   selectedTabCaption: "-gx-selected-tab-caption",
+  tabsPosition: "-gx-tabs-position",
+  tabsPositionCaption: "-gx-tabs-position-caption",
   unselectedTabCaption: "-gx-unselected-tab-caption",
   vars: "-gx-vars"
 };
@@ -71,6 +73,14 @@ export function tSelectedTabCaption(className: string): string {
     return "";
   }
   return className + transforms["selectedTabCaption"];
+}
+
+export function tTabsPosition(className: string): string {
+  return className + transforms["tabsPosition"];
+}
+
+export function tTabsPositionCaption(className: string): string {
+  return className + transforms["tabsPositionCaption"];
 }
 
 export function tUnselectedTabCaption(className: string): string {
