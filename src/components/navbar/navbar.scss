@@ -1,6 +1,17 @@
 @import "../common/_base";
 @import "../common/common-styling-config";
-@import "../common/layout-styling-config.scss";
+@import "../common/layout-styling-config";
+
+$gx-navbar-main-background-color: rgb(87, 89, 101);
+
+$gx-navbar-active-background-color: #e0e0e0e0;
+
+$gx-navbar-active-color: black;
+
+@mixin button-default-active-color() {
+  background-color: $gx-navbar-active-background-color;
+  color: $gx-navbar-active-color;
+}
 
 :host([position="bottom"]) {
   bottom: 0;
@@ -9,6 +20,78 @@
   // the bottom navbar
   @media screen and (min-width: $gx-xsmall-breakpoint-plus-1) {
     display: none;
+
+    .gx-navbar-line {
+      grid-template: "cell-links" 100% / 100%;
+    }
+  }
+
+  // We display the links at the bottom navbar, when the width of the
+  // screen is <= $gx-xsmall-breakpoint
+  @media screen and (max-width: $gx-xsmall-breakpoint) {
+    .gx-navbar-links {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(max-content, 1fr);
+      height: inherit;
+    }
+  }
+}
+
+:host(:not([position="bottom"])) {
+  @media screen and (min-width: $gx-xsmall-breakpoint-plus-1) {
+    .gx-navbar-line {
+      grid-template: "cell-left-side-container cell-links cell-actions cell-show-more-btn" 100% / 25% 50% 1fr max-content;
+    }
+
+    // We display the links at the top navbar, when the width of the screen
+    // is >= $gx-xsmall-breakpoint-plus-1
+    .gx-navbar-links {
+      display: flex;
+    }
+  }
+
+  @media screen and (max-width: $gx-xsmall-breakpoint) {
+    .gx-navbar-0-action-types {
+      grid-template: "cell-left-side-container" 100% / 100%;
+
+      &-low-action {
+        grid-template: "cell-left-side-container cell-show-more-btn" 100% / 1fr max-content;
+      }
+    }
+
+    .gx-navbar-1-action-types {
+      grid-template:
+        "cell-left-side-container cell-actions" 100% / minmax(min-content, 2fr)
+        minmax(10%, max-content);
+
+      &-low-action {
+        grid-template:
+          "cell-left-side-container cell-actions cell-show-more-btn" 100% / minmax(
+            min-content,
+            2fr
+          )
+          minmax(10%, max-content) max-content;
+      }
+    }
+
+    .gx-navbar-2-action-types {
+      grid-template:
+        "cell-left-side-container cell-actions" 100% / minmax(
+          min-content,
+          1.25fr
+        )
+        minmax(20%, max-content);
+
+      &-low-action {
+        grid-template:
+          "cell-left-side-container cell-actions cell-show-more-btn" 100% / minmax(
+            min-content,
+            1.25fr
+          )
+          minmax(20%, max-content) max-content;
+      }
+    }
   }
 }
 
@@ -16,12 +99,6 @@
 
 :host {
   @include elevation();
-
-  $gx-navbar-main-background-color: rgb(87, 89, 101);
-
-  $gx-navbar-low-background-color: #e0e0e0;
-
-  $gx-navbar-active-color: black;
 
   // Unused properties?
   --gx-navbar-sub-color: black;
@@ -57,7 +134,7 @@
     @include transition-properties();
 
     &:active {
-      color: $gx-navbar-active-color;
+      @include button-default-active-color();
     }
   }
 
@@ -79,13 +156,6 @@
       }
     }
 
-    // Burger icon
-    &-icon-button {
-      border-radius: 4px;
-      line-height: 0;
-      margin-inline-end: 2px;
-    }
-
     &-back-button {
       display: flex;
       align-items: center;
@@ -96,10 +166,17 @@
       margin-inline-end: 2px;
     }
 
+    // Burger button
+    &-toggle-button {
+      border-radius: 4px;
+      line-height: 0;
+      margin-inline-end: 2px;
+    }
+
     &-line {
-      display: flex;
-      align-items: center;
-      padding: 0 16px;
+      display: grid;
+      place-items: center;
+      padding-inline: 16px;
     }
 
     &-line-1 {
@@ -124,53 +201,49 @@
       }
     }
 
-    &-links {
-      display: none;
-      align-self: stretch;
-      flex: 1;
+    // Container for back button, toggle button and gx-navbar caption
+    &-left-side-container {
+      grid-area: cell-left-side-container;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      max-height: 100%;
       overflow: hidden;
+    }
 
-      // We display the links at the top navbar, when the width of the screen
-      // is >= $gx-xsmall-breakpoint-plus-1
-      &[data-position="top"] {
-        @media screen and (min-width: $gx-xsmall-breakpoint-plus-1) {
-          display: flex;
-          justify-content: center;
-        }
-      }
+    &-links {
+      grid-area: cell-links;
+      display: none;
+      max-width: 100%;
+      align-self: stretch;
+      overflow-x: auto;
+      scrollbar-width: none;
 
-      // We display the links at the bottom navbar, when the width of the
-      // screen is <= $gx-xsmall-breakpoint
-      &[data-position="bottom"] {
-        @media screen and (max-width: $gx-xsmall-breakpoint) {
-          display: grid;
-          grid-auto-flow: column;
-          grid-auto-columns: minmax(max-content, 1fr);
-          overflow-x: auto;
-          scrollbar-width: none;
-
-          &::-webkit-scrollbar {
-            height: 0;
-          }
-        }
+      &::-webkit-scrollbar {
+        height: 0;
       }
     }
 
     // Style for each type of action (HIGH, NORMAL and LOW priority)
     &-actions {
+      grid-area: cell-actions;
       display: flex;
+      justify-content: flex-end;
       position: relative;
+      width: 100%;
       align-self: stretch;
-
-      @media screen and (max-width: $gx-xsmall-breakpoint) {
-        flex: 1;
-        justify-content: flex-end;
-      }
+      overflow: hidden;
 
       &-high,
       &-normal {
         display: flex;
         align-items: center;
+        overflow-x: auto;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+          height: 0;
+        }
       }
 
       &--separator {
@@ -181,16 +254,21 @@
         transition: color $transition-duration;
       }
 
-      // A popup appears when show more button is clicked
+      // Container of LOW actions
       &-low {
+        display: flex;
+        position: relative;
+      }
+
+      // A popup appears when show more button is clicked
+      &-low-popup {
+        @include button-default-active-color();
         display: none;
         flex-direction: column;
         position: absolute;
-        top: 34px;
-        right: -32px;
+        top: calc(#{$gx-navbar-main-height} / 2 + 6px);
+        right: 0;
         width: 160px;
-        background-color: $gx-navbar-low-background-color;
-        color: var(--gx-navbar-sub-color);
         font-weight: 400;
         font-size: 12px;
         border-radius: 2px;
@@ -207,20 +285,18 @@
     }
 
     // Show more button at the end of the gx-navbar
-    &-actions-toggle {
+    &-actions-low-toggle {
+      grid-area: cell-show-more-btn;
       display: inline-flex;
       place-content: center;
       place-items: center;
       border-radius: 50%;
       color: inherit;
-      width: 35px;
-      height: 35px;
-      min-width: 35px;
+      align-self: center;
       margin-inline-start: 2px;
 
       &--active {
-        background-color: $gx-navbar-low-background-color;
-        color: $gx-navbar-active-color;
+        @include button-default-active-color();
       }
     }
   }

@@ -110,7 +110,7 @@ export class NavBar implements GxComponent {
   private handleBodyClick = (e: MouseEvent) => {
     if (this.showLowActions) {
       const navbarToggleBtn = this.element.shadowRoot.querySelector(
-        ".gx-navbar-actions-toggle"
+        ".gx-navbar-actions-low-toggle"
       );
       if (e.composedPath().find(el => el === navbarToggleBtn) === undefined) {
         this.showLowActions = false;
@@ -152,6 +152,16 @@ export class NavBar implements GxComponent {
     //  Styling for gx-navbar control.
     const classes = getClasses(this.cssClass, -1);
 
+    let amountOfActionTypes = 0;
+
+    if (this.hasHighPriorityActions) {
+      amountOfActionTypes++;
+    }
+
+    if (this.hasNormalPriorityActions) {
+      amountOfActionTypes++;
+    }
+
     return (
       <Host
         class={{
@@ -161,41 +171,50 @@ export class NavBar implements GxComponent {
         }}
       >
         <nav class="gx-navbar">
-          <div class="gx-navbar-line gx-navbar-line-1">
-            {this.isTopPosition && this.showBackButton && this.singleLine && (
-              <button
-                key="back-button"
-                type="button"
-                part="back-button"
-                class="gx-navbar-back-button gx-navbar-icon-button"
-                aria-label={this.backButtonLabel}
-                onClick={this.handleBackButtonClick}
-              >
-                <gx-icon type="arrow-left"></gx-icon>
-              </button>
-            )}
-
-            {this.isTopPosition && this.showToggleButton && (
-              <button
-                key="toggle-button"
-                type="button"
-                part="default-button"
-                class="gx-navbar-icon-button"
-                aria-label={this.toggleButtonLabel}
-                onClick={this.handleToggleButtonClick}
-              >
-                <gx-icon type="burger"></gx-icon>
-              </button>
-            )}
-
+          <div
+            class={{
+              "gx-navbar-line": true,
+              "gx-navbar-line-1": true,
+              [`gx-navbar-${amountOfActionTypes}-action-types-low-action`]: this
+                .hasLowPriorityActions,
+              [`gx-navbar-${amountOfActionTypes}-action-types`]: !this
+                .hasLowPriorityActions
+            }}
+          >
             {this.isTopPosition && (
-              <a class="gx-navbar-caption" tabindex="-1">
-                <slot name="header" />
-                {this.caption}
-              </a>
+              <div class="gx-navbar-left-side-container">
+                {this.showBackButton && this.singleLine && (
+                  <button
+                    key="back-button"
+                    type="button"
+                    part="back-button"
+                    class="gx-navbar-back-button"
+                    aria-label={this.backButtonLabel}
+                    onClick={this.handleBackButtonClick}
+                  >
+                    <gx-icon type="arrow-left"></gx-icon>
+                  </button>
+                )}
+                {this.showToggleButton && (
+                  <button
+                    key="toggle-button"
+                    type="button"
+                    part="default-button"
+                    class="gx-navbar-toggle-button"
+                    aria-label={this.toggleButtonLabel}
+                    onClick={this.handleToggleButtonClick}
+                  >
+                    <gx-icon type="burger"></gx-icon>
+                  </button>
+                )}
+                <a class="gx-navbar-caption" tabindex="-1">
+                  <slot name="header" />
+                  {this.caption}
+                </a>
+              </div>
             )}
 
-            <div class="gx-navbar-links" data-position={this.position}>
+            <div class="gx-navbar-links">
               <slot name="navigation" />
             </div>
 
@@ -240,30 +259,32 @@ export class NavBar implements GxComponent {
         <div class="gx-navbar-actions-normal">
           <slot name="normal-priority-action" />
         </div>
-        <div
-          part="popup-action-low"
-          class={{
-            "gx-navbar-actions-low": true,
-            "gx-navbar-actions-low--active": this.showLowActions
-          }}
-        >
-          <slot name="low-priority-action" />
-        </div>
       </div>,
 
       this.hasLowPriorityActions && (
-        <button
-          type="button"
-          aria-label={this.actionToggleButtonLabel}
-          part="action-low"
-          class={{
-            "gx-navbar-actions-toggle": true,
-            "gx-navbar-actions-toggle--active": this.showLowActions
-          }}
-          onClick={this.handleActionToggleButtonClick}
-        >
-          <gx-icon type="show-more"></gx-icon>
-        </button>
+        <div class="gx-navbar-actions-low">
+          <div
+            part="action-low-popup"
+            class={{
+              "gx-navbar-actions-low-popup": true,
+              "gx-navbar-actions-low-popup--active": this.showLowActions
+            }}
+          >
+            <slot name="low-priority-action" />
+          </div>
+          <button
+            type="button"
+            aria-label={this.actionToggleButtonLabel}
+            part="action-low"
+            class={{
+              "gx-navbar-actions-low-toggle": true,
+              "gx-navbar-actions-low-toggle--active": this.showLowActions
+            }}
+            onClick={this.handleActionToggleButtonClick}
+          >
+            <gx-icon type="show-more"></gx-icon>
+          </button>
+        </div>
       )
     ];
   }
