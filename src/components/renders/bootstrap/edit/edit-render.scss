@@ -22,8 +22,8 @@ gx-table-cell[min-height][max-height] {
 // Used to change the placeholder color in the input controls
 // Opacity property is necessary, because some browsers (e.g., mozilla) change this value
 @mixin placeholder-color {
-  $defaultPlaceholderTextColor: #757575c0;
-  color: var(--placeholder-text-color, $defaultPlaceholderTextColor);
+  $default-placeholder-text-color: #757575c0;
+  color: var(--placeholder-text-color, $default-placeholder-text-color);
   opacity: 1;
 }
 
@@ -34,9 +34,7 @@ gx-edit {
 
   position: relative;
   overflow: hidden;
-  transition-property: background-color, border-color, box-shadow, color, filter,
-    opacity;
-  transition-duration: $transition-delay;
+  @include transition-properties();
 
   // Used to not display the "trigger-content" when show-trigger=false
   &:not([show-trigger]),
@@ -104,9 +102,8 @@ gx-edit {
     flex: 1;
     overflow: hidden;
 
-    /*  Used when the gx-edit has type="datetime-local" | "date" | "time"
-        and its value is null
-    */
+    // Used when the gx-edit has type="datetime-local" | "date" | "time"
+    // and its value is null
     &.null-date {
       // When the gx-edit is not focused, we hide the input
       &:not(:focus-within) {
@@ -170,7 +167,7 @@ gx-edit {
     display: flex;
     flex: 1;
     position: relative;
-    white-space: break-spaces;
+    // white-space: break-spaces;
     overflow: hidden;
 
     .readonly-content-container {
@@ -208,9 +205,7 @@ textarea {
   flex: 1;
   width: 100%;
   background-color: unset;
-  transition-property: background-color, border-color, box-shadow, color, filter,
-    opacity;
-  transition-duration: $transition-delay;
+  @include transition-properties();
 
   &::placeholder {
     @include placeholder-color;
