@@ -5,18 +5,16 @@ gx-canvas-cell {
   @include text-align-with-shadow-DOM();
   @include valign-with-shadow-DOM();
 
-  /*  The include "overflowMode()" from the mixin
-        @mixin containerCell()
-      does not apply in this case, because the gx-canvas control always has
-      auto-grow = True
-  */
+  // The include "overflowMode()" from the mixin
+  //   @mixin containerCell()
+  // does not apply in this case, because the gx-canvas control always has
+  // auto-grow = True
   @include containerCell(false);
   position: absolute;
   overflow: hidden;
 
-  /*  Used when autoGrow = false in the gx-textblock to ensure the content does
-      not overflows 
-  */
+  // Used when autoGrow = false in the gx-textblock to ensure the content does
+  // not overflows
   &[max-height] {
     > gx-textblock::part(content) {
       position: absolute;

@@ -11,9 +11,9 @@ gx-table-cell {
 
   flex-direction: row;
 
-  /*  Used when autoGrow = false in the gx-textblock to ensure the content does
-      not overflows 
-  */
+  // Used when autoGrow = false in the gx-textblock to ensure the content does
+  // not overflows
+  // &:not([auto-grow]) {
   &[max-height] {
     > gx-textblock::part(content) {
       position: absolute;
