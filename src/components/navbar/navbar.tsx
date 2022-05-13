@@ -175,10 +175,10 @@ export class NavBar implements GxComponent {
             class={{
               "gx-navbar-line": true,
               "gx-navbar-line-1": true,
-              [`gx-navbar-${amountOfActionTypes}-action-types-low-action`]: this
-                .hasLowPriorityActions,
-              [`gx-navbar-${amountOfActionTypes}-action-types`]: !this
-                .hasLowPriorityActions
+              [`gx-navbar-${amountOfActionTypes}-action-types-low-action`]:
+                this.isTopPosition && this.hasLowPriorityActions,
+              [`gx-navbar-${amountOfActionTypes}-action-types`]:
+                this.isTopPosition && !this.hasLowPriorityActions
             }}
           >
             {this.isTopPosition && (

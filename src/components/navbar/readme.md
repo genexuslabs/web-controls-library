@@ -70,9 +70,9 @@ It also supports a set of items that will be rendered according to their priorit
 | Part                 | Description |
 | -------------------- | ----------- |
 | `"action-low"`       |             |
+| `"action-low-popup"` |             |
 | `"back-button"`      |             |
 | `"default-button"`   |             |
-| `"popup-action-low"` |             |
 
 ## Dependencies
 

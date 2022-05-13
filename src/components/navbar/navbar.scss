@@ -20,24 +20,26 @@ $gx-navbar-active-color: black;
   // the bottom navbar
   @media screen and (min-width: $gx-xsmall-breakpoint-plus-1) {
     display: none;
-
-    .gx-navbar-line {
-      grid-template: "cell-links" 100% / 100%;
-    }
   }
 
   // We display the links at the bottom navbar, when the width of the
   // screen is <= $gx-xsmall-breakpoint
   @media screen and (max-width: $gx-xsmall-breakpoint) {
+    .gx-navbar-line {
+      grid-template: "cell-links" 100% / 100%;
+    }
+
     .gx-navbar-links {
       display: grid;
       grid-auto-flow: column;
       grid-auto-columns: minmax(max-content, 1fr);
-      height: inherit;
+      width: 100%;
     }
   }
 }
 
+// The layout of the top navbar adjusts based on the breakpoints and actions
+// displayed
 :host(:not([position="bottom"])) {
   @media screen and (min-width: $gx-xsmall-breakpoint-plus-1) {
     .gx-navbar-line {
