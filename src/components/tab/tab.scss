@@ -96,7 +96,7 @@ gx-tab {
       overflow-y: auto; // Fix for Mozilla, because it only accepts: visible, hidden, auto or scroll
       overflow-y: overlay;
       white-space: nowrap;
-      transition: box-shadow $transition-delay;
+      transition: box-shadow $transition-duration;
 
       &:hover {
         overflow-x: auto; // Fix for Mozilla, because it only accepts: visible, hidden, auto or scroll
@@ -132,8 +132,8 @@ gx-tab {
           background-color: var(--tab-strip-background-color);
           border-top: 1px solid transparent;
           border-bottom: 1px solid transparent;
-          transition: background-color $transition-delay,
-            border-color $transition-delay;
+          transition: background-color $transition-duration,
+            border-color $transition-duration;
         }
       }
     }

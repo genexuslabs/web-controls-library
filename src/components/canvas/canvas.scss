@@ -6,8 +6,7 @@ gx-canvas {
 
   position: relative;
   height: fit-content;
-  transition: background-color $transition-delay, border-color $transition-delay,
-    color $transition-delay, filter $transition-delay, opacity $transition-delay;
+  @include transition-properties();
 
   > .canvas-cells-container {
     position: relative;

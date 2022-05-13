@@ -15,9 +15,7 @@
   flex: 1;
   align-self: stretch;
   text-align: start; // Default alignment which supports RTL
-  transition-property: background-color, border-color, box-shadow, color, filter,
-    opacity;
-  transition-duration: $transition-delay;
+  @include transition-properties();
 }
 
 .gx-textblock-container {

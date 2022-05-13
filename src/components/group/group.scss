@@ -1,4 +1,5 @@
 @import "../common/_base";
+@import "../common/common-styling-config";
 
 gx-group {
   --elevation: 0;
@@ -11,10 +12,16 @@ gx-group {
     @include elevation();
     display: flex;
     flex: 1;
+    @include transition-properties();
 
     & > legend {
+      color: black;
       font-size: unset;
       margin: 0;
+
+      & > .gx-group-caption {
+        @include transition-properties();
+      }
     }
   }
 }

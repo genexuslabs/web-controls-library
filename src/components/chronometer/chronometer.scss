@@ -7,7 +7,5 @@ gx-chronometer {
   width: 100%;
 
   text-align: start;
-  transition-property: background-color, border-color, box-shadow, color, filter,
-    opacity;
-  transition-duration: $transition-delay;
+  @include transition-properties();
 }

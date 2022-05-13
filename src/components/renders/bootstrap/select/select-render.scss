@@ -24,9 +24,7 @@ gx-select {
   & > .gx-select-control {
     display: flex;
     flex: 1;
-    transition-property: background-color, border-color, box-shadow, color,
-      filter, opacity;
-    transition-duration: $transition-delay;
+    @include transition-properties();
 
     & > span {
       width: 100%;

@@ -120,7 +120,7 @@ gx-loading {
 
     &.determinate {
       .loader-inner {
-        transition: width linear $transition-delay;
+        transition: width linear $transition-duration;
       }
     }
 

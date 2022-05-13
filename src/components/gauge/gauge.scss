@@ -94,8 +94,8 @@ gx-gauge {
   --empty-range-background-color: rgba(192, 192, 192, 0.5);
 
   // Used to customize the transitions for background-color and fore color
-  $transition-color-config: background-color $transition-delay,
-    color $transition-delay;
+  $transition-color-config: background-color $transition-duration,
+    color $transition-duration;
 
   @mixin flex-centered {
     display: flex;
@@ -212,11 +212,11 @@ gx-gauge {
           @include animate-loading-of-line-gauge-childs;
 
           @if $transition == null {
-            transition: height $transition-delay, width $transition-delay,
-              font-size $transition-delay;
+            transition: height $transition-duration, width $transition-duration,
+              font-size $transition-duration;
           }
           @if $transition != null {
-            transition: width $transition-delay;
+            transition: width $transition-duration;
           }
         }
       }
@@ -227,7 +227,7 @@ gx-gauge {
   display: flex;
   position: relative;
   width: 100%;
-  transition: background-color $transition-delay, border-color $transition-delay;
+  @include transition-properties();
 
   .line-gauge-container {
     display: flex;
@@ -241,7 +241,7 @@ gx-gauge {
       position: relative;
       width: 100%;
       height: 1.25em;
-      transition: height $transition-delay;
+      transition: height $transition-duration;
 
       .current-value {
         @include alignment;
@@ -249,8 +249,9 @@ gx-gauge {
         line-height: 1em;
         font-weight: 700;
         z-index: 1;
-        transition: margin-left $transition-delay, transform $transition-delay,
-          font-size $transition-delay, $transition-color-config;
+        transition: margin-left $transition-duration,
+          transform $transition-duration, font-size $transition-duration,
+          $transition-color-config;
         background-color: var(--value-text-background-color);
         color: var(--value-text-color);
       }
@@ -266,7 +267,7 @@ gx-gauge {
       display: flex;
       position: relative;
       width: 100%;
-      transition: width $transition-delay, height $transition-delay;
+      transition: width $transition-duration, height $transition-duration;
 
       .indicator {
         @include alignment;
@@ -275,8 +276,8 @@ gx-gauge {
         height: 100%;
         width: 1.125%;
         z-index: 1;
-        transition: margin-left $transition-delay, transform $transition-delay,
-          background-color $transition-delay;
+        transition: margin-left $transition-duration,
+          transform $transition-duration, background-color $transition-duration;
         background-color: var(--indicator-line-background-color);
       }
 
@@ -285,14 +286,14 @@ gx-gauge {
         overflow: hidden;
         width: 100%;
         background-color: var(--empty-range-background-color);
-        transition: background-color $transition-delay;
+        transition: background-color $transition-duration;
 
         .range {
           @include flex-centered;
           width: var(--range-width);
           height: 100%;
           position: absolute;
-          transition: width $transition-delay;
+          transition: width $transition-duration;
 
           // Animates the first load of the ranges
           @include animate-loading-of-line-gauge-childs;
@@ -308,8 +309,8 @@ gx-gauge {
       position: relative;
       width: 100%;
       height: 1.25em;
-      transition: width $transition-delay, height $transition-delay,
-        font-size $transition-delay;
+      transition: width $transition-duration, height $transition-duration,
+        font-size $transition-duration;
 
       .min-max-values-container {
         display: flex;
@@ -363,8 +364,8 @@ gx-gauge {
         .circle-range {
           fill: none;
           stroke-linecap: var(--stroke-linecap, initial);
-          transition: stroke $transition-delay,
-            stroke-dasharray $transition-delay;
+          transition: stroke $transition-duration,
+            stroke-dasharray $transition-duration;
 
           // Animates the first load of the ranges
           animation: delay-animation-circle
@@ -377,7 +378,7 @@ gx-gauge {
         .background-circle {
           fill: none;
           stroke: var(--empty-range-background-color);
-          transition: stroke $transition-delay;
+          transition: stroke $transition-duration;
         }
       }
 
@@ -385,11 +386,11 @@ gx-gauge {
         position: absolute;
         width: 100%;
         height: 1.125%;
-        transition: transform $transition-delay;
+        transition: transform $transition-duration;
 
         .indicator {
           height: 100%;
-          transition: background-color $transition-delay;
+          transition: background-color $transition-duration;
           background-color: var(--indicator-circle-background-color);
         }
       }

@@ -64,7 +64,9 @@ export class Group implements GxComponent, HighlightableComponent {
         ref={el => (this.fieldsetElement = el as HTMLFieldSetElement)}
       >
         <legend>
-          <span class={captionClass}>{this.caption}</span>
+          <span class={{ "gx-group-caption": true, [captionClass]: true }}>
+            {this.caption}
+          </span>
         </legend>
         <slot />
       </fieldset>

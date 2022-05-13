@@ -149,7 +149,7 @@ export class Image
     //   }
     // }
     img.style.setProperty("display", "block");
-    this.element.style.removeProperty("opacity");
+    img.style.removeProperty("opacity");
     this.imageDidLoad = true;
   }
 
@@ -182,7 +182,8 @@ export class Image
             }}
             style={{
               backgroundImage:
-                this.scaleType === "tile" ? `url(${this.src})` : null
+                this.scaleType === "tile" ? `url(${this.src})` : null,
+              opacity: !this.imageDidLoad ? "0" : null
             }}
             onClick={this.handleClick}
             onLoad={this.handleImageLoad}
@@ -201,9 +202,6 @@ export class Image
           disabled: this.disabled,
           "gx-img-lazyloading": shouldLazyLoad,
           "gx-img-no-auto-grow": withoutAutogrow
-        }}
-        style={{
-          opacity: !this.imageDidLoad ? "0" : null
         }}
       >
         <div

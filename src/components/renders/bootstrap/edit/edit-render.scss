@@ -79,7 +79,7 @@ gx-edit {
       height: 100%;
       background-color: $trigger-button-background-color;
       color: $trigger-button-font-color;
-      transition: filter $transition-delay;
+      transition: filter $transition-duration;
       overflow: hidden;
 
       &.not-disabled {
@@ -127,7 +127,7 @@ gx-edit {
       width: 100%;
       background-color: unset;
       color: inherit;
-      transition: opacity $transition-delay;
+      transition: opacity $transition-duration;
 
       &::placeholder {
         @include placeholder-color;
@@ -139,7 +139,7 @@ gx-edit {
       position: absolute;
       flex: 1;
       pointer-events: none;
-      transition: opacity $transition-delay;
+      transition: opacity $transition-duration;
 
       span {
         @include placeholder-color;

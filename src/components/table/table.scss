@@ -11,11 +11,8 @@ gx-table {
 
   flex: 1;
 
-  /*  gx-table must hide its content overflow to ensure that the border-radius
-      property is applied
-  */
+  // gx-table must hide its content overflow to ensure that the border-radius
+  // property is applied
   overflow: hidden;
-  transition-property: background-color, border-color, box-shadow, color, filter,
-    opacity;
-  transition-duration: $transition-delay;
+  @include transition-properties();
 }
