@@ -70,9 +70,13 @@
   }
 }
 
-@mixin horizontal-line($class: null) {
+@mixin horizontal-line($class: null, $show-horizontal-line: true) {
   &#{$gx-horizontal-line}::after {
-    content: "";
+    @if $show-horizontal-line == true {
+      content: "";
+    } @else {
+      content: none;
+    }
     display: block;
     position: absolute;
     right: 0;
