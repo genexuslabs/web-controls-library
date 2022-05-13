@@ -100,4 +100,9 @@ gx-image-picker {
       }
     }
   }
+
+  .gx-button-fit-content {
+    flex: unset;
+    width: auto;
+  }
 }

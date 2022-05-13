@@ -329,12 +329,16 @@ export class ImagePicker implements GxComponent {
               />
               <span class="file-custom">{this.changeButtonText}</span>
             </label>
-            <gx-button class="remove-button" onClick={this.clearImageAction}>
+            <gx-button
+              class="gx-button-fit-content"
+              cssClass="remove-button"
+              onClick={this.clearImageAction}
+            >
               {this.removeButtonText}
             </gx-button>
           </div>
           <div slot="secondary-action">
-            <gx-button class="cancel-button" onClick={this.closeAction}>
+            <gx-button cssClass="cancel-button" onClick={this.closeAction}>
               <span>{this.cancelButtonText}</span>
             </gx-button>
           </div>
