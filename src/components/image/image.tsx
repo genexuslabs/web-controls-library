@@ -135,28 +135,28 @@ export class Image
   }
 
   /**
-   * `true` if the `componentDidLoad()` method was called
+   * `true` if the image has been loaded
    */
-  private didLoad = false;
+  private imageDidLoad = false;
 
   private innerImageContainer: HTMLDivElement = null;
 
   private handleImageLoad(event: UIEvent) {
     const img = event.target as HTMLImageElement;
-    if (!this.autoGrow) {
-      // Some image formats do not specify intrinsic dimensions. The naturalWidth property returns 0 in those cases.
-      if (img.naturalWidth !== 0) {
-      }
-    }
+    // if (!this.autoGrow) {
+    //   // Some image formats do not specify intrinsic dimensions. The naturalWidth property returns 0 in those cases.
+    //   if (img.naturalWidth !== 0) {
+    //   }
+    // }
     img.style.setProperty("display", "block");
+    this.element.style.removeProperty("opacity");
+    this.imageDidLoad = true;
   }
 
   componentDidLoad() {
     if (this.src) {
       makeHighlightable(this, this.innerImageContainer);
     }
-
-    this.didLoad = true;
   }
 
   disconnectedCallback() {
@@ -203,7 +203,7 @@ export class Image
           "gx-img-no-auto-grow": withoutAutogrow
         }}
         style={{
-          opacity: !this.didLoad ? "0" : null
+          opacity: !this.imageDidLoad ? "0" : null
         }}
       >
         <div
