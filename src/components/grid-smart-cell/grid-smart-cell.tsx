@@ -45,6 +45,16 @@ export class GridSmartCell
   @Prop({ reflect: true }) readonly isRowEven = false;
 
   /**
+   * Specifies the number of rows that will be displayed in the landscape mode.
+   */
+  @Prop() rowsLandscape: number = null;
+
+  /**
+   * Specifies the number of rows that will be displayed in the portrait mode.
+   */
+  @Prop() rowsPortrait: number = null;
+
+  /**
    * True to show horizontal line.
    */
   @Prop() readonly showHorizontalLine = false;
@@ -67,6 +77,12 @@ export class GridSmartCell
           [classes.vars]: true,
           [tHorizontalLine(this.cssClass)]:
             !!this.cssClass && this.showHorizontalLine
+        }}
+        style={{
+          "--rows-landscape":
+            this.rowsLandscape != null ? this.rowsLandscape.toString() : null,
+          "--rows-portrait":
+            this.rowsPortrait != null ? this.rowsPortrait.toString() : null
         }}
         data-has-action
       ></Host>
