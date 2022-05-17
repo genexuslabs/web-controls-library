@@ -38,6 +38,8 @@ gx-tab-caption {
     object-fit: contain;
   }
 
+  // Default style
+  background-color: var(--tab-strip-background-color);
   font-size: 12px;
   font-weight: 600;
 
