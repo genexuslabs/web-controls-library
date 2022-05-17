@@ -11,16 +11,4 @@
   // border-radius property is applied
   overflow: hidden;
   @include transition-properties();
-
-  @media (orientation: landscape) {
-    &[rows-landscape] {
-      height: calc(100% / var(--rows-landscape, 1));
-    }
-  }
-
-  @media (orientation: portrait) {
-    &[rows-portrait] {
-      height: calc(100% / var(--rows-portrait, 1));
-    }
-  }
 }
