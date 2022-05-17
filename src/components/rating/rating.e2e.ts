@@ -78,7 +78,7 @@ describe("gx-rating", () => {
     element.setAttribute("Id", "idTest");
     await page.waitForChanges();
     const inputId = await element.callMethod("getNativeInputId");
-    expect(inputId).toEqual("gx-inputRange-auto-id-0");
+    expect(inputId).toEqual("gx-rating-auto-id-0");
   });
 
   it("should retun the correct input Id when it is defined in the control", async () => {
@@ -87,6 +87,6 @@ describe("gx-rating", () => {
     await page.waitForChanges();
     element = await page.find("gx-rating");
     const inputId = await element.callMethod("getNativeInputId");
-    expect(inputId).toEqual("idTest_inputRange");
+    expect(inputId).toEqual("idTest_rating");
   });
 });
