@@ -74,18 +74,20 @@
   &#{$gx-horizontal-line}::after {
     @if $show-horizontal-line == true {
       content: "";
+      display: block;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: #cfcfcf;
+      height: 1px;
     } @else {
       content: none;
     }
-    display: block;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: #cfcfcf;
-    height: 1px;
+  }
 
-    @if $class != null {
+  @if $show-horizontal-line == true and $class != null {
+    @at-root gx-grid-smart-cell#{&}#{$gx-horizontal-line}::after {
       @extend #{$class} !optional;
     }
   }

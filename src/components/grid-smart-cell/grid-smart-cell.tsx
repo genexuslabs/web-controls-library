@@ -29,7 +29,7 @@ export class GridSmartCell
   @Element() element: HTMLGxGridSmartCellElement;
 
   /**
-   * A CSS class to set as the `gx-grid-smart-cell` element class.
+   * The CSS class of gx-grid parent element.
    */
   @Prop() readonly cssClass: string;
 
@@ -69,14 +69,20 @@ export class GridSmartCell
     // Styling for gx-grid-smart-cell control.
     const classes = getClasses(this.cssClass, -1, tClass);
 
+    const horizontalLineClasses = !!this.cssClass
+      ? this.cssClass
+          .split(" ")
+          .map(tHorizontalLine)
+          .join(" ")
+      : "";
+
     return (
       <Host
         class={{
           "gx-grid-row": true,
           [classes.transformedCssClass]: !!this.cssClass,
           [classes.vars]: true,
-          [tHorizontalLine(this.cssClass)]:
-            !!this.cssClass && this.showHorizontalLine
+          [horizontalLineClasses]: this.showHorizontalLine
         }}
         style={{
           "--rows-landscape":
