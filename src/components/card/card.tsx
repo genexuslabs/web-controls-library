@@ -20,6 +20,12 @@ export class Card implements GxComponent, VisibilityComponent {
   @Element() element: HTMLGxCardElement;
 
   /**
+   * A CSS class to set for the header and footer element classes of the
+   * `gx-card` control.
+   */
+  @Prop() readonly cssClass: string;
+
+  /**
    * This attribute lets you specify how this element will behave when hidden.
    *
    * | Value        | Details                                                                     |

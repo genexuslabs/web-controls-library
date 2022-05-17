@@ -42,7 +42,7 @@ export namespace Components {
   interface GxBootstrap {}
   interface GxButton {
     /**
-     * A CSS class to set as the inner `input` element class.
+     * A CSS class to set as the `gx-button` element class.
      */
     cssClass: string;
     /**
@@ -56,7 +56,7 @@ export namespace Components {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable: false;
+    highlightable: true;
     /**
      * This attribute lets you specify the relative location of the image to the text.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `above`  | The image is located above the text.                    | | `before` | The image is located before the text, in the same line. | | `after`  | The image is located after the text, in the same line.  | | `below`  | The image is located below the text.                    | | `behind` | The image is located behind the text.                   |
      */
@@ -75,6 +75,10 @@ export namespace Components {
     width: string;
   }
   interface GxCanvas {
+    /**
+     * A CSS class to set as the `gx-canvas` element class.
+     */
+    cssClass: string;
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
@@ -120,13 +124,17 @@ export namespace Components {
     /**
      * Defines the vertical alignment of the content of the cell.
      */
-    valign: "top" | "bottom" | "medium";
+    valign: "top" | "bottom" | "middle";
     /**
      * This attribute lets you specify the width of the control.
      */
     width: string;
   }
   interface GxCard {
+    /**
+     * A CSS class to set for the header and footer element classes of the `gx-card` control.
+     */
+    cssClass: string;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -158,7 +166,7 @@ export namespace Components {
      */
     checkedValue: string;
     /**
-     * A CSS class to set as the inner `input` element class.
+     * A CSS class to set as the `gx-checkbox` element class.
      */
     cssClass: string;
     /**
@@ -187,6 +195,10 @@ export namespace Components {
     value: string;
   }
   interface GxChronometer {
+    /**
+     * A CSS class to set as the `gx-chronometer` element class.
+     */
+    cssClass: string;
     /**
      * Returns the id of the inner `input` element (if set).
      */
@@ -249,6 +261,10 @@ export namespace Components {
      * Used to control whether autocorrection should be enabled when the user is entering/editing the text value. Sames as [autocorrect](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocorrect) attribute for `input` elements.
      */
     autocorrect: string;
+    /**
+     * A CSS class to set as the `gx-edit` element class.
+     */
+    cssClass: string;
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
@@ -324,6 +340,7 @@ export namespace Components {
     value: string;
   }
   interface GxFormField {
+    cssClass: string;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -338,6 +355,10 @@ export namespace Components {
     labelPosition: "none" | "top" | "right" | "bottom" | "left" | "float";
   }
   interface GxGauge {
+    /**
+     * A CSS class to set as the `gx-gauge` element class.
+     */
+    cssClass: string;
     /**
      * The maximum value of the gauge. This prop allows specify the maximum value that the gauge will handle. If there is no value specified it will be calculated by the sum of all gx-ranges values
      */
@@ -406,6 +427,10 @@ export namespace Components {
     autoGrow: false;
     complete: () => Promise<void>;
     /**
+     * A CSS class to set as the `gx-grid-flex` element class.
+     */
+    cssClass: string;
+    /**
      * This establishes the main-axis, thus defining the direction flex items are placed in the flex container.  Flexbox is (aside from optional wrapping) a single-direction layout concept.  Think of flex items as primarily laying out either in horizontal rows or vertical columns.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `row` | The flex container's main-axis is defined to be the same as the text direction. The main-start and main-end points are the same as the content direction.                | | `column`   | The flex container's main-axis is the same as the block-axis. The main-start and main-end points are the same as the before and after points of the writing-mode. |
      */
     flexDirection: "row" | "column";
@@ -432,6 +457,10 @@ export namespace Components {
      */
     autoGrow: false;
     complete: () => Promise<void>;
+    /**
+     * A CSS class to set as the `gx-grid-fs` element class.
+     */
+    cssClass: string;
     /**
      * True to highlight control when an action is fired.
      */
@@ -462,6 +491,10 @@ export namespace Components {
      * Number of items per column (items visible at the same time on slider's container).
      */
     columns: number | "auto";
+    /**
+     * A CSS class to set as the `gx-grid-horizontal` element class.
+     */
+    cssClass: string;
     /**
      * 1-Indexed number of currently active page
      */
@@ -619,9 +652,29 @@ export namespace Components {
   interface GxGridInfiniteScrollContent {}
   interface GxGridSmartCell {
     /**
+     * The CSS class of gx-grid parent element.
+     */
+    cssClass: string;
+    /**
+     * True to highlight control when an action is fired.
+     */
+    highlightable: true;
+    /**
      * Whether this row is even position or not. This is specially required in Virtual scroll scenarios where the position in the DOM is not the real position in the collection.
      */
     isRowEven: false;
+    /**
+     * Specifies the number of rows that will be displayed in the landscape mode.
+     */
+    rowsLandscape: number;
+    /**
+     * Specifies the number of rows that will be displayed in the portrait mode.
+     */
+    rowsPortrait: number;
+    /**
+     * True to show horizontal line.
+     */
+    showHorizontalLine: false;
   }
   interface GxGridSmartCss {
     /**
@@ -629,6 +682,10 @@ export namespace Components {
      */
     autoGrow: false;
     complete: () => Promise<void>;
+    /**
+     * A CSS class to set as the `gx-grid-smart-css` element class.
+     */
+    cssClass: string;
     /**
      * Specifies the direction of the flexible items.
      */
@@ -668,6 +725,10 @@ export namespace Components {
      */
     caption: string;
     /**
+     * A CSS class to set as the `gx-group` element class.
+     */
+    cssClass: string;
+    /**
      * True to highlight control when an action is fired.
      */
     highlightable: false;
@@ -700,13 +761,13 @@ export namespace Components {
      */
     autoGrow: true;
     /**
+     * A CSS class to set as the `gx-image` element class.
+     */
+    cssClass: string;
+    /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled: false;
-    /**
-     * This attribute lets you specify the height.
-     */
-    height: string;
     /**
      * True to highlight control when an action is fired.
      */
@@ -728,13 +789,13 @@ export namespace Components {
      */
     scaleType: "contain" | "cover" | "fill" | "none" | "tile";
     /**
+     * True to show the image picker button.
+     */
+    showImagePickerButton: boolean;
+    /**
      * This attribute lets you specify the SRC.
      */
     src: string;
-    /**
-     * This attribute lets you specify the width.
-     */
-    width: string;
   }
   interface GxImagePicker {
     /**
@@ -754,13 +815,13 @@ export namespace Components {
      */
     changeButtonText: "Change image...";
     /**
+     * A CSS class to set as the `gx-image-picker` element class.
+     */
+    cssClass: string;
+    /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled: false;
-    /**
-     * This attribute lets you specify the height.
-     */
-    height: string;
     /**
      * True to highlight control when an action is fired.
      */
@@ -801,10 +862,6 @@ export namespace Components {
      * This attribute lets you specify the current state of the gx-image-picker.  | Value               | Details                                                                                      | | ------------------- | -------------------------------------------------------------------------------------------- | | `readyToUse`        | Allows you to choose, change or remove an image.                                             | | `fileReadyToUpload` | It is set only after an image has been selected or changed, not removed.                     | | `uploadingFile`     | It is set by the parent control to specifies when the image is being uploaded to the server. |  `fileReadyToUpload` and `uploadingFile` will not allow you to change or remove the current image.
      */
     state: "readyToUse" | "fileReadyToUpload" | "uploadingFile";
-    /**
-     * This attribute lets you specify the width.
-     */
-    width: string;
   }
   interface GxInteractiveImage {
     /**
@@ -1031,7 +1088,11 @@ export namespace Components {
      */
     caption: string;
     /**
-     * This attribute lets you specify the position of the navbar in the viewport. If `position = "top"` the navbar will be placed normally at the top of the viewport. If `position = "bottom"` the navbar will be placed normally at the bottom of the viewport. This `position` of navbar is used to show navigation links.
+     * A CSS class to set as the `gx-navbar` element class.
+     */
+    cssClass: string;
+    /**
+     * This attribute lets you specify the position of the navbar in the viewport. If `position = "top"` the navbar will be placed normally at the top of the viewport. If `position = "bottom"` the navbar will be placed at the bottom of the viewport. This position of navbar is used to show navigation links.
      */
     position: "top" | "bottom";
     /**
@@ -1057,6 +1118,14 @@ export namespace Components {
      */
     active: false;
     /**
+     * A CSS class to set as the `gx-navbar-item` element class.
+     */
+    cssClass: string;
+    /**
+     * True to highlight control when an action is fired.
+     */
+    highlightable: true;
+    /**
      * This attribute lets you specify the URL of the navbar item.
      */
     href: "";
@@ -1071,7 +1140,7 @@ export namespace Components {
   }
   interface GxPasswordEdit {
     /**
-     * A CSS class to set as the inner `input` element class.
+     * A CSS class to set as the `gx-password-edit` element class.
      */
     cssClass: string;
     /**
@@ -1514,6 +1583,10 @@ export namespace Components {
   }
   interface GxRadioGroup {
     /**
+     * A CSS class to set as the `gx-radio-group` element class.
+     */
+    cssClass: string;
+    /**
      * Specifies how the child `gx-radio-option` will be layed out. It supports two values:  * `horizontal` * `vertical` (default)
      */
     direction: "horizontal" | "vertical";
@@ -1548,10 +1621,6 @@ export namespace Components {
      */
     checked: boolean;
     /**
-     * A CSS class to set as the inner `input` element class.
-     */
-    cssClass: string;
-    /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled: false;
@@ -1570,6 +1639,10 @@ export namespace Components {
   }
   interface GxRating {
     /**
+     * A CSS class to set as the `gx-rating` element class.
+     */
+    cssClass: string;
+    /**
      * This attribute allows you specify if the element is disabled. If disabled, it will not trigger any user interaction related event (for example, click event).
      */
     disabled: boolean;
@@ -1582,13 +1655,9 @@ export namespace Components {
      */
     invisibleMode: "collapse" | "keep-space";
     /**
-     * This porpoerty is required if you want to display a score. >E.g: In a score of 4/5 stars the `maxValue` is `5` and the `value` is `4`
+     * This property determine the number of stars displayed.
      */
     maxValue: number;
-    /**
-     * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_
-     */
-    readonly: boolean;
     /**
      * The current value displayed by the component.
      */
@@ -1596,7 +1665,7 @@ export namespace Components {
   }
   interface GxSelect {
     /**
-     * A CSS class to set as the inner `input` element class.
+     * A CSS class to set as the `gx-select` element class.
      */
     cssClass: string;
     /**
@@ -1674,6 +1743,10 @@ export namespace Components {
   }
   interface GxTab {
     /**
+     * A CSS class to set as the `gx-tab` element class.
+     */
+    cssClass: string;
+    /**
      * True to highlight control when an action is fired.
      */
     highlightable: false;
@@ -1685,14 +1758,14 @@ export namespace Components {
      * Defines how the tabs will be distributed in the Strip.  | Value        | Details                                                                            | | ------------ | ---------------------------------------------------------------------------------- | | `scoll`      | Allows scrolling the tab control when the number of tabs exceeds the screen width. | | `fixed-size` | Tabs are fixed size. Used with any amount of tabs.                                 |
      */
     tabsDistribution: "scroll" | "fixed-size";
-    /**
-     * Specifies the position to show the tabs.
-     */
-    tabsPosition: "top" | "bottom";
   }
   interface GxTabCaption {
     /**
-     * This attribute lets you specify if the tab page is disabled
+     * A CSS class to set as the `gx-tab-caption` element class when `selected = false`.
+     */
+    cssClass: string;
+    /**
+     * This attribute lets you specify if the tab page is disabled.
      */
     disabled: boolean;
     /**
@@ -1707,6 +1780,14 @@ export namespace Components {
      * This attribute lets you specify if the tab page corresponding to this caption is selected
      */
     selected: boolean;
+    /**
+     * A CSS class to set as the `gx-tab-caption` element class when `selected = true`.
+     */
+    selectedCssClass: string;
+    /**
+     * A CSS class that is used by the `gx-tab` parent container.
+     */
+    tabCssClass: string;
   }
   interface GxTabPage {}
   interface GxTable {
@@ -1718,6 +1799,10 @@ export namespace Components {
      * Like the `grid-templates-columns` CSS property, this attribute defines the columns of the grid with a space-separated list of values. The values represent the width of column.
      */
     columnsTemplate: string;
+    /**
+     * A CSS class to set as the `gx-table` element class.
+     */
+    cssClass: string;
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
@@ -1763,9 +1848,13 @@ export namespace Components {
     /**
      * Defines the vertical aligmnent of the content of the cell.
      */
-    valign: "top" | "bottom" | "medium";
+    valign: "top" | "bottom" | "middle";
   }
   interface GxTextblock {
+    /**
+     * A CSS class to set as the `gx-textblock` element class.
+     */
+    cssClass: string;
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
@@ -2288,7 +2377,7 @@ declare namespace LocalJSX {
   interface GxBootstrap {}
   interface GxButton {
     /**
-     * A CSS class to set as the inner `input` element class.
+     * A CSS class to set as the `gx-button` element class.
      */
     cssClass?: string;
     /**
@@ -2302,7 +2391,7 @@ declare namespace LocalJSX {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable?: false;
+    highlightable?: true;
     /**
      * This attribute lets you specify the relative location of the image to the text.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `above`  | The image is located above the text.                    | | `before` | The image is located before the text, in the same line. | | `after`  | The image is located after the text, in the same line.  | | `below`  | The image is located below the text.                    | | `behind` | The image is located behind the text.                   |
      */
@@ -2321,6 +2410,10 @@ declare namespace LocalJSX {
     width?: string;
   }
   interface GxCanvas {
+    /**
+     * A CSS class to set as the `gx-canvas` element class.
+     */
+    cssClass?: string;
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
@@ -2390,13 +2483,17 @@ declare namespace LocalJSX {
     /**
      * Defines the vertical alignment of the content of the cell.
      */
-    valign?: "top" | "bottom" | "medium";
+    valign?: "top" | "bottom" | "middle";
     /**
      * This attribute lets you specify the width of the control.
      */
     width?: string;
   }
   interface GxCard {
+    /**
+     * A CSS class to set for the header and footer element classes of the `gx-card` control.
+     */
+    cssClass?: string;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -2428,7 +2525,7 @@ declare namespace LocalJSX {
      */
     checkedValue?: string;
     /**
-     * A CSS class to set as the inner `input` element class.
+     * A CSS class to set as the `gx-checkbox` element class.
      */
     cssClass?: string;
     /**
@@ -2457,6 +2554,10 @@ declare namespace LocalJSX {
     value?: string;
   }
   interface GxChronometer {
+    /**
+     * A CSS class to set as the `gx-chronometer` element class.
+     */
+    cssClass?: string;
     /**
      * Defines the interval that the function onTick will be called.
      */
@@ -2519,6 +2620,10 @@ declare namespace LocalJSX {
      * Used to control whether autocorrection should be enabled when the user is entering/editing the text value. Sames as [autocorrect](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocorrect) attribute for `input` elements.
      */
     autocorrect?: string;
+    /**
+     * A CSS class to set as the `gx-edit` element class.
+     */
+    cssClass?: string;
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
@@ -2602,6 +2707,7 @@ declare namespace LocalJSX {
     value?: string;
   }
   interface GxFormField {
+    cssClass?: string;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -2616,6 +2722,10 @@ declare namespace LocalJSX {
     labelPosition?: "none" | "top" | "right" | "bottom" | "left" | "float";
   }
   interface GxGauge {
+    /**
+     * A CSS class to set as the `gx-gauge` element class.
+     */
+    cssClass?: string;
     /**
      * The maximum value of the gauge. This prop allows specify the maximum value that the gauge will handle. If there is no value specified it will be calculated by the sum of all gx-ranges values
      */
@@ -2699,6 +2809,10 @@ declare namespace LocalJSX {
      */
     autoGrow?: false;
     /**
+     * A CSS class to set as the `gx-grid-flex` element class.
+     */
+    cssClass?: string;
+    /**
      * This establishes the main-axis, thus defining the direction flex items are placed in the flex container.  Flexbox is (aside from optional wrapping) a single-direction layout concept.  Think of flex items as primarily laying out either in horizontal rows or vertical columns.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `row` | The flex container's main-axis is defined to be the same as the text direction. The main-start and main-end points are the same as the content direction.                | | `column`   | The flex container's main-axis is the same as the block-axis. The main-start and main-end points are the same as the before and after points of the writing-mode. |
      */
     flexDirection?: "row" | "column";
@@ -2728,6 +2842,10 @@ declare namespace LocalJSX {
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
      */
     autoGrow?: false;
+    /**
+     * A CSS class to set as the `gx-grid-fs` element class.
+     */
+    cssClass?: string;
     /**
      * True to highlight control when an action is fired.
      */
@@ -2762,6 +2880,10 @@ declare namespace LocalJSX {
      * Number of items per column (items visible at the same time on slider's container).
      */
     columns?: number | "auto";
+    /**
+     * A CSS class to set as the `gx-grid-horizontal` element class.
+     */
+    cssClass?: string;
     /**
      * 1-Indexed number of currently active page
      */
@@ -2912,15 +3034,39 @@ declare namespace LocalJSX {
   interface GxGridInfiniteScrollContent {}
   interface GxGridSmartCell {
     /**
+     * The CSS class of gx-grid parent element.
+     */
+    cssClass?: string;
+    /**
+     * True to highlight control when an action is fired.
+     */
+    highlightable?: true;
+    /**
      * Whether this row is even position or not. This is specially required in Virtual scroll scenarios where the position in the DOM is not the real position in the collection.
      */
     isRowEven?: false;
+    /**
+     * Specifies the number of rows that will be displayed in the landscape mode.
+     */
+    rowsLandscape?: number;
+    /**
+     * Specifies the number of rows that will be displayed in the portrait mode.
+     */
+    rowsPortrait?: number;
+    /**
+     * True to show horizontal line.
+     */
+    showHorizontalLine?: false;
   }
   interface GxGridSmartCss {
     /**
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
      */
     autoGrow?: false;
+    /**
+     * A CSS class to set as the `gx-grid-smart-css` element class.
+     */
+    cssClass?: string;
     /**
      * Specifies the direction of the flexible items.
      */
@@ -2964,6 +3110,10 @@ declare namespace LocalJSX {
      */
     caption?: string;
     /**
+     * A CSS class to set as the `gx-group` element class.
+     */
+    cssClass?: string;
+    /**
      * True to highlight control when an action is fired.
      */
     highlightable?: false;
@@ -2996,13 +3146,13 @@ declare namespace LocalJSX {
      */
     autoGrow?: true;
     /**
+     * A CSS class to set as the `gx-image` element class.
+     */
+    cssClass?: string;
+    /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled?: false;
-    /**
-     * This attribute lets you specify the height.
-     */
-    height?: string;
     /**
      * True to highlight control when an action is fired.
      */
@@ -3024,13 +3174,13 @@ declare namespace LocalJSX {
      */
     scaleType?: "contain" | "cover" | "fill" | "none" | "tile";
     /**
+     * True to show the image picker button.
+     */
+    showImagePickerButton?: boolean;
+    /**
      * This attribute lets you specify the SRC.
      */
     src?: string;
-    /**
-     * This attribute lets you specify the width.
-     */
-    width?: string;
   }
   interface GxImagePicker {
     /**
@@ -3050,13 +3200,13 @@ declare namespace LocalJSX {
      */
     changeButtonText?: "Change image...";
     /**
+     * A CSS class to set as the `gx-image-picker` element class.
+     */
+    cssClass?: string;
+    /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled?: false;
-    /**
-     * This attribute lets you specify the height.
-     */
-    height?: string;
     /**
      * True to highlight control when an action is fired.
      */
@@ -3105,10 +3255,6 @@ declare namespace LocalJSX {
      * This attribute lets you specify the current state of the gx-image-picker.  | Value               | Details                                                                                      | | ------------------- | -------------------------------------------------------------------------------------------- | | `readyToUse`        | Allows you to choose, change or remove an image.                                             | | `fileReadyToUpload` | It is set only after an image has been selected or changed, not removed.                     | | `uploadingFile`     | It is set by the parent control to specifies when the image is being uploaded to the server. |  `fileReadyToUpload` and `uploadingFile` will not allow you to change or remove the current image.
      */
     state?: "readyToUse" | "fileReadyToUpload" | "uploadingFile";
-    /**
-     * This attribute lets you specify the width.
-     */
-    width?: string;
   }
   interface GxInteractiveImage {
     /**
@@ -3386,6 +3532,10 @@ declare namespace LocalJSX {
      */
     caption?: string;
     /**
+     * A CSS class to set as the `gx-navbar` element class.
+     */
+    cssClass?: string;
+    /**
      * Fired when the back button is clicked
      */
     onBackButtonClick?: (event: CustomEvent<any>) => void;
@@ -3394,7 +3544,7 @@ declare namespace LocalJSX {
      */
     onToggleButtonClick?: (event: CustomEvent<any>) => void;
     /**
-     * This attribute lets you specify the position of the navbar in the viewport. If `position = "top"` the navbar will be placed normally at the top of the viewport. If `position = "bottom"` the navbar will be placed normally at the bottom of the viewport. This `position` of navbar is used to show navigation links.
+     * This attribute lets you specify the position of the navbar in the viewport. If `position = "top"` the navbar will be placed normally at the top of the viewport. If `position = "bottom"` the navbar will be placed at the bottom of the viewport. This position of navbar is used to show navigation links.
      */
     position?: "top" | "bottom";
     /**
@@ -3420,6 +3570,14 @@ declare namespace LocalJSX {
      */
     active?: false;
     /**
+     * A CSS class to set as the `gx-navbar-item` element class.
+     */
+    cssClass?: string;
+    /**
+     * True to highlight control when an action is fired.
+     */
+    highlightable?: true;
+    /**
      * This attribute lets you specify the URL of the navbar item.
      */
     href?: "";
@@ -3434,7 +3592,7 @@ declare namespace LocalJSX {
   }
   interface GxPasswordEdit {
     /**
-     * A CSS class to set as the inner `input` element class.
+     * A CSS class to set as the `gx-password-edit` element class.
      */
     cssClass?: string;
     /**
@@ -3887,6 +4045,10 @@ declare namespace LocalJSX {
   }
   interface GxRadioGroup {
     /**
+     * A CSS class to set as the `gx-radio-group` element class.
+     */
+    cssClass?: string;
+    /**
      * Specifies how the child `gx-radio-option` will be layed out. It supports two values:  * `horizontal` * `vertical` (default)
      */
     direction?: "horizontal" | "vertical";
@@ -3925,10 +4087,6 @@ declare namespace LocalJSX {
      */
     checked?: boolean;
     /**
-     * A CSS class to set as the inner `input` element class.
-     */
-    cssClass?: string;
-    /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled?: false;
@@ -3963,6 +4121,10 @@ declare namespace LocalJSX {
   }
   interface GxRating {
     /**
+     * A CSS class to set as the `gx-rating` element class.
+     */
+    cssClass?: string;
+    /**
      * This attribute allows you specify if the element is disabled. If disabled, it will not trigger any user interaction related event (for example, click event).
      */
     disabled?: boolean;
@@ -3971,7 +4133,7 @@ declare namespace LocalJSX {
      */
     invisibleMode?: "collapse" | "keep-space";
     /**
-     * This porpoerty is required if you want to display a score. >E.g: In a score of 4/5 stars the `maxValue` is `5` and the `value` is `4`
+     * This property determine the number of stars displayed.
      */
     maxValue?: number;
     /**
@@ -3979,17 +4141,13 @@ declare namespace LocalJSX {
      */
     onInput?: (event: CustomEvent<any>) => void;
     /**
-     * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements. _Disable by default_
-     */
-    readonly?: boolean;
-    /**
      * The current value displayed by the component.
      */
     value?: number;
   }
   interface GxSelect {
     /**
-     * A CSS class to set as the inner `input` element class.
+     * A CSS class to set as the `gx-select` element class.
      */
     cssClass?: string;
     /**
@@ -4087,6 +4245,10 @@ declare namespace LocalJSX {
   }
   interface GxTab {
     /**
+     * A CSS class to set as the `gx-tab` element class.
+     */
+    cssClass?: string;
+    /**
      * True to highlight control when an action is fired.
      */
     highlightable?: false;
@@ -4102,14 +4264,14 @@ declare namespace LocalJSX {
      * Defines how the tabs will be distributed in the Strip.  | Value        | Details                                                                            | | ------------ | ---------------------------------------------------------------------------------- | | `scoll`      | Allows scrolling the tab control when the number of tabs exceeds the screen width. | | `fixed-size` | Tabs are fixed size. Used with any amount of tabs.                                 |
      */
     tabsDistribution?: "scroll" | "fixed-size";
-    /**
-     * Specifies the position to show the tabs.
-     */
-    tabsPosition?: "top" | "bottom";
   }
   interface GxTabCaption {
     /**
-     * This attribute lets you specify if the tab page is disabled
+     * A CSS class to set as the `gx-tab-caption` element class when `selected = false`.
+     */
+    cssClass?: string;
+    /**
+     * This attribute lets you specify if the tab page is disabled.
      */
     disabled?: boolean;
     /**
@@ -4128,6 +4290,14 @@ declare namespace LocalJSX {
      * This attribute lets you specify if the tab page corresponding to this caption is selected
      */
     selected?: boolean;
+    /**
+     * A CSS class to set as the `gx-tab-caption` element class when `selected = true`.
+     */
+    selectedCssClass?: string;
+    /**
+     * A CSS class that is used by the `gx-tab` parent container.
+     */
+    tabCssClass?: string;
   }
   interface GxTabPage {}
   interface GxTable {
@@ -4139,6 +4309,10 @@ declare namespace LocalJSX {
      * Like the `grid-templates-columns` CSS property, this attribute defines the columns of the grid with a space-separated list of values. The values represent the width of column.
      */
     columnsTemplate?: string;
+    /**
+     * A CSS class to set as the `gx-table` element class.
+     */
+    cssClass?: string;
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
@@ -4204,9 +4378,13 @@ declare namespace LocalJSX {
     /**
      * Defines the vertical aligmnent of the content of the cell.
      */
-    valign?: "top" | "bottom" | "medium";
+    valign?: "top" | "bottom" | "middle";
   }
   interface GxTextblock {
+    /**
+     * A CSS class to set as the `gx-textblock` element class.
+     */
+    cssClass?: string;
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */

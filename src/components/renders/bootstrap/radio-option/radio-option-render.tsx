@@ -19,32 +19,6 @@ export class RadioOptionRender implements Renderer {
     return this.component.element.querySelector("[data-native-element]");
   }
 
-  private getCssClasses() {
-    const classList = [];
-
-    classList.push("control-input");
-
-    if (this.component.cssClass) {
-      classList.push(this.component.cssClass);
-    }
-
-    if (!this.component.caption) {
-      classList.push("position-static");
-    }
-
-    return classList.join(" ");
-  }
-
-  private getInnerControlContainerClass() {
-    const classList = ["container"];
-
-    if (this.component.disabled) {
-      classList.push("disabled");
-    }
-
-    return classList.join(" ");
-  }
-
   handleClick() {
     this.checkedChanged(true);
   }
@@ -94,7 +68,7 @@ export class RadioOptionRender implements Renderer {
 
     const attris = {
       "aria-disabled": radioOption.disabled ? "true" : undefined,
-      class: this.getCssClasses(),
+      class: "hidden-input",
       "data-native-element": "",
       disabled: radioOption.disabled,
       id: this.inputId,
@@ -110,7 +84,7 @@ export class RadioOptionRender implements Renderer {
 
     return (
       <div
-        class={this.getInnerControlContainerClass()}
+        class="option-and-label-container"
         data-part={!radioOption.disabled ? "option-control" : ""}
       >
         <div class="option-container">
@@ -123,7 +97,7 @@ export class RadioOptionRender implements Renderer {
           </svg>
         </div>
 
-        <label class="custom-label" {...forAttris}>
+        <label class="label-of-the-option" {...forAttris}>
           {radioOption.caption}
         </label>
       </div>

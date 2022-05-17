@@ -20,6 +20,9 @@ import { FormComponent } from "../common/interfaces";
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
 import { makeLinesClampable } from "../common/line-clamp";
 
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
+
 @Component({
   shadow: false,
   styleUrl: "edit.scss",
@@ -71,6 +74,11 @@ export class Edit implements FormComponent, HighlightableComponent {
    * attribute for `input` elements.
    */
   @Prop() readonly autocorrect: string;
+
+  /**
+   * A CSS class to set as the `gx-edit` element class.
+   */
+  @Prop() readonly cssClass: string;
 
   /**
    * Used to define the semantic of the element when readonly=true.
@@ -221,9 +229,27 @@ export class Edit implements FormComponent, HighlightableComponent {
     return this.renderer.getNativeInputId();
   }
 
+  private shouldStyleHostElement = false;
+  private shouldAddHighlightedClasses = true;
+
+  private disabledClass = "disabled";
+
+  componentWillLoad() {
+    this.shouldStyleHostElement = !this.multiline || this.readonly;
+
+    // In case of false, makeHighligtable() function highlights the gx-edit control
+    this.shouldAddHighlightedClasses = !(
+      this.readonly || this.format === "HTML"
+    );
+
+    if (this.format === "HTML") {
+      this.disabledClass = "disabled-html";
+    }
+  }
+
   componentDidLoad() {
     this.toggleValueSetClass();
-    if (this.readonly || this.format == "HTML") {
+    if (!this.shouldAddHighlightedClasses) {
       makeHighlightable(this);
     }
   }
@@ -260,16 +286,33 @@ export class Edit implements FormComponent, HighlightableComponent {
   }
 
   render() {
+    /*  Styling for gx-edit control. 
+        If the gx-edit is (readonly || format == "HTML"), we do not add 
+        highlighted classes
+    */
+    const classes = getClasses(
+      this.cssClass,
+      this.shouldAddHighlightedClasses ? 1 : -1
+    );
+
     return (
       <Host
         class={{
           "gx-edit--single-line":
-            this.type === "date" || this.type === "datetime-local"
+            this.type === "date" || this.type === "datetime-local",
+          [this.disabledClass]: this.disabled && !this.readonly,
+          [this.cssClass]: this.shouldStyleHostElement && !!this.cssClass,
+          [classes.vars]: this.shouldStyleHostElement,
+          [classes.highlighted]:
+            this.shouldStyleHostElement && this.shouldAddHighlightedClasses
         }}
-        disabled={this.disabled}
       >
         {this.renderer.render({
-          triggerContent: <slot name="trigger-content" />
+          triggerContent: <slot name="trigger-content" />,
+          shouldStyleHostElement: this.shouldStyleHostElement,
+          cssClass: this.cssClass,
+          vars: classes.vars,
+          highlighted: classes.highlighted
         })}
       </Host>
     );

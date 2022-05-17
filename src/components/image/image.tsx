@@ -12,6 +12,9 @@ import {
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
 import lazySizes from "lazysizes";
 
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
+
 const LAZY_LOAD_CLASS = "gx-lazyload";
 const LAZY_LOADING_CLASS = "gx-lazyloading";
 const LAZY_LOADED_CLASS = "gx-lazyloaded";
@@ -65,6 +68,11 @@ export class Image
   @Prop() readonly autoGrow = true;
 
   /**
+   * A CSS class to set as the `gx-image` element class.
+   */
+  @Prop() readonly cssClass: string;
+
+  /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
@@ -104,6 +112,11 @@ export class Image
     | "tile";
 
   /**
+   * True to show the image picker button.
+   */
+  @Prop() showImagePickerButton = false;
+
+  /**
    * This attribute lets you specify the SRC.
    */
   @Prop() readonly src: string = "";
@@ -122,73 +135,91 @@ export class Image
   }
 
   /**
-   * `true` if the `componentDidLoad()` method was called
+   * `true` if the image has been loaded
    */
-  private didLoad = false;
+  private imageDidLoad = false;
 
-  private innerImage: HTMLImageElement = null;
+  private innerImageContainer: HTMLDivElement = null;
 
   private handleImageLoad(event: UIEvent) {
-    if (!this.autoGrow) {
-      const img = event.target as HTMLImageElement;
-      // Some image formats do not specify intrinsic dimensions. The naturalWidth property returns 0 in those cases.
-      if (img.naturalWidth !== 0) {
-      }
-    }
+    const img = event.target as HTMLImageElement;
+    // if (!this.autoGrow) {
+    //   // Some image formats do not specify intrinsic dimensions. The naturalWidth property returns 0 in those cases.
+    //   if (img.naturalWidth !== 0) {
+    //   }
+    // }
+    img.style.setProperty("display", "block");
+    img.style.removeProperty("opacity");
+    this.imageDidLoad = true;
   }
 
   componentDidLoad() {
     if (this.src) {
-      makeHighlightable(this, this.innerImage);
+      makeHighlightable(this, this.innerImageContainer);
     }
-
-    this.didLoad = true;
   }
 
   disconnectedCallback() {
     document.removeEventListener("lazyloaded", this.handleLazyLoaded);
+    this.innerImageContainer = null;
   }
 
   render() {
     const shouldLazyLoad = this.shouldLazyLoad();
 
+    // Styling for gx-image control.
+    const classes = getClasses(this.cssClass, -1);
+
+    const withoutAutogrow = this.scaleType !== "tile" && !this.autoGrow;
+
     const body = this.src
       ? [
           <img
             class={{
-              [LAZY_LOAD_CLASS]: shouldLazyLoad,
               "inner-image": true,
+              [LAZY_LOAD_CLASS]: shouldLazyLoad,
               "gx-image-tile": this.scaleType === "tile"
             }}
             style={{
               backgroundImage:
-                this.scaleType === "tile" ? `url(${this.src})` : null
+                this.scaleType === "tile" ? `url(${this.src})` : null,
+              opacity: !this.imageDidLoad ? "0" : null
             }}
             onClick={this.handleClick}
             onLoad={this.handleImageLoad}
             data-src={shouldLazyLoad ? this.src : undefined}
-            // Mouse pointer to indicate action
-            data-has-action={this.highlightable ? "" : undefined}
             src={!shouldLazyLoad ? this.src : undefined}
             alt={this.alt}
-            ref={el => (this.innerImage = el as HTMLImageElement)}
           />,
-          <span />
+          <span class="gx-image-loading-indicator" />
         ]
       : [];
 
     return (
       <Host
         class={{
+          [classes.vars]: true,
           disabled: this.disabled,
           "gx-img-lazyloading": shouldLazyLoad,
-          "gx-img-no-auto-grow": this.scaleType !== "tile" && !this.autoGrow
-        }}
-        style={{
-          opacity: !this.didLoad ? "0" : null
+          "gx-img-no-auto-grow": withoutAutogrow
         }}
       >
-        {body}
+        <div
+          class={{
+            "gx-image-container": true,
+            [this.cssClass]: !!this.cssClass
+          }}
+          // Mouse pointer to indicate action
+          data-has-action={this.highlightable ? "" : undefined}
+          ref={el => (this.innerImageContainer = el as HTMLDivElement)}
+        >
+          {withoutAutogrow ? (
+            <div class="gx-image-no-auto-grow-container">{body}</div>
+          ) : (
+            body
+          )}
+          {this.showImagePickerButton && <slot />}
+        </div>
       </Host>
     );
   }

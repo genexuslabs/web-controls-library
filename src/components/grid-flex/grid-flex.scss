@@ -37,7 +37,7 @@ gx-grid-flex {
     flex: 1;
   }
 
-  #{$gridContentSelector} {
+  #{$grid-content-selector} {
     @include visibility(flex);
     flex-direction: var(--gx-grid-flex-direction);
     flex-wrap: var(--gx-grid-flex-wrap);
@@ -46,7 +46,7 @@ gx-grid-flex {
     align-content: var(--gx-grid-flex-align-content);
 
     &[flex-direction="row"] {
-      #{$gridContentSelector} {
+      #{$grid-content-selector} {
         & > gx-grid-smart-cell[relative-size] {
           min-width: calc(
             var(--gx-grid-css-viewport-width) *

@@ -17,6 +17,11 @@ export class FormField implements GxComponent {
   @Element() element: HTMLGxFormFieldElement;
 
   /**
+   *
+   */
+  @Prop() cssClass: string = null;
+
+  /**
    * This attribute lets you specify how this element will behave when hidden.
    *
    * | Value        | Details                                                                     |

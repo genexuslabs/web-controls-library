@@ -13,6 +13,9 @@ import {
 
 import { Component as GxComponent } from "../common/interfaces";
 
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
+
 @Component({
   shadow: false,
   styleUrl: "gauge.scss",
@@ -20,6 +23,11 @@ import { Component as GxComponent } from "../common/interfaces";
 })
 export class Gauge implements GxComponent {
   @Element() element: HTMLGxGaugeElement;
+
+  /**
+   * A CSS class to set as the `gx-gauge` element class.
+   */
+  @Prop() readonly cssClass: string;
 
   /**
    * The `gxGaugeDidLoad` event is triggered when the component has been rendered completely.
@@ -472,8 +480,14 @@ export class Gauge implements GxComponent {
         : `rotate(${this.calcPercentage() * ONE_PERCENT_OF_CIRCLE_DREGREE +
             ROTATION_FIX}deg)`;
 
+    // Styling for gx-gauge control.
+    const classes = getClasses(this.cssClass, -1);
+
     return (
-      <Host data-readonly>
+      <Host
+        class={{ [this.cssClass]: !!this.cssClass, [classes.vars]: true }}
+        data-readonly
+      >
         <div class="circle-gauge-container">
           <div class="svg-and-indicator-container">
             <svg viewBox="0 0 100 100">
@@ -545,8 +559,14 @@ export class Gauge implements GxComponent {
     const percentage =
       this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
 
+    // Styling for gx-gauge control.
+    const classes = getClasses(this.cssClass, -1);
+
     return (
-      <Host data-readonly>
+      <Host
+        class={{ [this.cssClass]: !!this.cssClass, [classes.vars]: true }}
+        data-readonly
+      >
         <div
           class="line-gauge-container"
           style={{ "--percentage": `${percentage}%` }}

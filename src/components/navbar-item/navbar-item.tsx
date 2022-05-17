@@ -1,18 +1,35 @@
 import { Component, Element, Host, Prop, h } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
 
 @Component({
   shadow: true,
   styleUrl: "navbar-item.scss",
   tag: "gx-navbar-item"
 })
-export class NavBarItem implements GxComponent {
+export class NavBarItem implements GxComponent, HighlightableComponent {
   @Element() element: HTMLGxNavbarItemElement;
 
   /**
    * Indicates if the navbar item is the active one (for example, when the item represents the current page)
    */
   @Prop() readonly active = false;
+
+  /**
+   * A CSS class to set as the `gx-navbar-item` element class.
+   */
+  @Prop() readonly cssClass: string;
+
+  /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = true;
 
   /**
    * This attribute lets you specify the URL of the navbar item.
@@ -29,6 +46,10 @@ export class NavBarItem implements GxComponent {
    */
   @Prop() readonly iconSrc = "";
 
+  componentDidLoad() {
+    makeHighlightable(this);
+  }
+
   render() {
     const TagName = this.href ? "a" : "button";
     const attris = this.href
@@ -39,18 +60,32 @@ export class NavBarItem implements GxComponent {
           type: "button"
         };
 
+    // Styling for gx-navbar-item control.
+    const classes = getClasses(this.cssClass);
+
     return (
-      <Host>
+      <Host
+        class={{
+          "gx-navbar-item-empty": !this.cssClass,
+          [this.cssClass]: !!this.cssClass,
+          [classes.vars]: true,
+          [classes.highlighted]: this.active
+        }}
+        data-has-action
+      >
         <TagName
           class={{
-            item: true,
-            "item-with-icon": !!this.iconSrc,
-            "item--active": this.active
+            "navbar-item": true,
+            "navbar-item-with-icon": !!this.iconSrc
           }}
           {...attris}
         >
           {this.iconSrc && (
-            <img class="item-icon" src={this.iconSrc} alt={this.iconAltText} />
+            <img
+              class="navbar-item-icon"
+              src={this.iconSrc}
+              alt={this.iconAltText}
+            />
           )}
           <slot />
         </TagName>

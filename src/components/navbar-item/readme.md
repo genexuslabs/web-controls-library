@@ -26,12 +26,14 @@ Represents an item with a link inside a `<gx-navbar>`.
 
 ## Properties
 
-| Property      | Attribute       | Description                                                                                             | Type      | Default |
-| ------------- | --------------- | ------------------------------------------------------------------------------------------------------- | --------- | ------- |
-| `active`      | `active`        | Indicates if the navbar item is the active one (for example, when the item represents the current page) | `boolean` | `false` |
-| `href`        | `href`          | This attribute lets you specify the URL of the navbar item.                                             | `""`      | `""`    |
-| `iconAltText` | `icon-alt-text` | This attribute lets you specify the alternate text for the image specified in iconSrc.                  | `""`      | `""`    |
-| `iconSrc`     | `icon-src`      | This attribute lets you specify the URL of an icon for the navbar item.                                 | `""`      | `""`    |
+| Property        | Attribute       | Description                                                                                             | Type      | Default     |
+| --------------- | --------------- | ------------------------------------------------------------------------------------------------------- | --------- | ----------- |
+| `active`        | `active`        | Indicates if the navbar item is the active one (for example, when the item represents the current page) | `boolean` | `false`     |
+| `cssClass`      | `css-class`     | A CSS class to set as the `gx-navbar-item` element class.                                               | `string`  | `undefined` |
+| `highlightable` | `highlightable` | True to highlight control when an action is fired.                                                      | `boolean` | `true`      |
+| `href`          | `href`          | This attribute lets you specify the URL of the navbar item.                                             | `""`      | `""`        |
+| `iconAltText`   | `icon-alt-text` | This attribute lets you specify the alternate text for the image specified in iconSrc.                  | `""`      | `""`        |
+| `iconSrc`       | `icon-src`      | This attribute lets you specify the URL of an icon for the navbar item.                                 | `""`      | `""`        |
 
 ---
 

@@ -1,3 +1,13 @@
+@import "./css-transforms/scss-transforms";
+
+/// Helper mixin to ease styling custom vars of the custom elements
+/// @param {string} $class Base class of the custom vars properties
+@mixin custom-vars($class) {
+  &#{$gx-vars} {
+    @extend #{$class} !optional;
+  }
+}
+
 @mixin dragging-behavior(
   $accept-drag-class: null,
   $no-accept-drag-class: null,
@@ -23,5 +33,174 @@
     &.drag-over-class {
       @extend #{$drag-over-class} !optional;
     }
+  }
+}
+
+/// Helper mixin to be use within the "highlighted" mixin
+/// @param {string} $class Base class of the highlight properties
+/// @param {string} $background-color Specifies the background color for the highlight class
+/// @param {string} $background-image Specifies the background image for the highlight class
+/// @param {string} $color Specifies the font color for the highlight class
+@mixin extend-highlighted-class(
+  $class: null,
+  $background-color: null,
+  $background-image: null,
+  $color: null
+) {
+  @if $background-color != null {
+    background-color: $background-color;
+  }
+  @if $background-image != null {
+    background-image: $background-image;
+  }
+  @if $color != null {
+    color: $color;
+  }
+
+  @if $class != null {
+    @extend #{$class} !optional;
+  }
+}
+
+/// Helper mixin to ease styling hoverable custom elements
+/// @param {string} $class Base class of the hover properties
+@mixin hover($class) {
+  &#{$gx-hover}:hover {
+    @extend #{$class} !optional;
+  }
+}
+
+@mixin horizontal-line($class: null, $show-horizontal-line: true) {
+  &#{$gx-horizontal-line}::after {
+    @if $show-horizontal-line == true {
+      content: "";
+      display: block;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: #cfcfcf;
+      height: 1px;
+    } @else {
+      content: none;
+    }
+  }
+
+  @if $show-horizontal-line == true and $class != null {
+    @at-root gx-grid-smart-cell#{&}#{$gx-horizontal-line}::after {
+      @extend #{$class} !optional;
+    }
+  }
+}
+
+/// Helper mixin to ease styling highlightable custom elements
+/// @param {string} $class Base class of the highlight properties
+/// @param {string} $control-type Determine what type of control the highlight class will apply to
+/// @param {string} $background-color Specifies the background color for the highlight class
+/// @param {string} $background-image Specifies the background image for the highlight class
+/// @param {string} $color Specifies the font color for the highlight class
+@mixin highlighted(
+  $class: null,
+  $control-type: null,
+  $background-color: null,
+  $background-image: null,
+  $color: null
+) {
+  // Any control
+  @if $control-type == null {
+    @at-root #{str-replace(#{&}, ".", "%")}#{$gx-highlighted},
+      #{&}#{$gx-highlighted-dot},
+      #{&}#{$gx-highlighted-focus-within}:focus-within {
+      @include extend-highlighted-class(
+        $class,
+        $background-color,
+        $background-image,
+        $color
+      );
+    }
+  }
+
+  // gx-form-field's controls
+  @if $control-type == attribute {
+    @at-root [area="field"]#{&},
+      // gx-edit with multiline = True, readonly = False and format = "Text"
+      textarea#{&} {
+      &#{$gx-highlighted-focus-within}:focus-within {
+        @include extend-highlighted-class(
+          $class,
+          $background-color,
+          $background-image,
+          $color
+        );
+      }
+    }
+
+    @at-root [area="field"]#{&} {
+      &#{$gx-highlighted-dot} {
+        @include extend-highlighted-class(
+          $class,
+          $background-color,
+          $background-image,
+          $color
+        );
+      }
+    }
+  }
+
+  // gx-textblock control
+  @if $control-type == text-block {
+    @at-root gx-textblock#{&}#{$gx-highlighted-dot} {
+      @include extend-highlighted-class(
+        $class,
+        $background-color,
+        $background-image,
+        $color
+      );
+    }
+  }
+
+  // gx-image control
+  @if $control-type == image {
+    @at-root .inner-image#{&}#{$gx-highlighted-dot} {
+      @include extend-highlighted-class(
+        $class,
+        $background-color,
+        $background-image,
+        $color
+      );
+    }
+  }
+
+  // TO DO: Flex container
+  // gx-canvas, gx-group and gx-table controls
+  @if $control-type == table {
+    @at-root gx-canvas#{&},
+      gx-group#{&},
+      gx-table#{&} {
+      &#{$gx-highlighted-dot} {
+        @include extend-highlighted-class(
+          $class,
+          $background-color,
+          $background-image,
+          $color
+        );
+      }
+    }
+  }
+
+  // gx-button control
+  @if $control-type == button {
+    @at-root .gx-button#{&}#{$gx-highlighted-dot} {
+      @include extend-highlighted-class(
+        $class,
+        $background-color,
+        $background-image,
+        $color
+      );
+    }
+  }
+
+  // TO DO.
+  @if $control-type == section {
   }
 }

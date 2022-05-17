@@ -1,115 +1,31 @@
 @import "../common/_base";
 @import "../common/_common-styling-config";
 
-// Used to horizontally and vertically align the text
-@mixin alignment($text-align: null, $align-items: null) {
-  @if ($text-align != null) {
-    text-align: $text-align;
-  }
+@include line-clamp();
+@include visibility-shadow-DOM(inline-flex);
 
-  .content {
-    .html-container,
-    .readonly-content-container {
-      @if ($align-items != null) {
-        align-items: $align-items;
-      }
-    }
-  }
+:host(.disabled) {
+  pointer-events: none;
 }
 
-// Used when autoGrow = false and format = HTML
-gx-table-cell[min-height][max-height] {
-  & > gx-textblock {
-    & > .content.html-content {
-      .html-container {
-        .inner-content {
-          position: absolute;
-        }
-      }
-    }
-  }
-}
+:host {
+  --elevation: 0;
+  @include elevation();
 
-gx-textblock {
-  // Default alignment which supports RTL
-  @include alignment(start, flex-start);
-
-  @include reset-variables();
-  @include container-margins();
-  @include visibility(inline-flex);
   flex: 1;
   align-self: stretch;
-
-  &[disabled]:not([disabled="false"]) {
-    pointer-events: none;
-  }
-
-  & > .content {
-    --elevation: 0;
-    @include elevation();
-    display: flex;
-    flex: 1;
-    transition: background-color $transition-delay, color $transition-delay,
-      border-color $transition-delay;
-
-    & > .readonly-content-container {
-      display: flex;
-      flex: 1;
-      position: relative;
-      overflow: hidden;
-
-      & > .text-container {
-        position: absolute;
-        width: 100%;
-
-        // Used when autoGrow = true
-        &.relative {
-          position: relative;
-        }
-      }
-    }
-
-    // Used when format = HTML
-    &.html-content {
-      text-align: start;
-
-      .html-container {
-        display: flex;
-        flex: 1;
-        position: relative;
-        height: 100%;
-        overflow: hidden;
-
-        .inner-content {
-          position: relative;
-          width: 100%;
-        }
-      }
-    }
-  }
+  text-align: start; // Default alignment which supports RTL
+  @include transition-properties();
 }
 
-// Alignments based on the direct parent control alignment
-[align="center"] {
-  & > gx-textblock {
-    @include alignment(center);
-  }
-}
+.gx-textblock-container {
+  display: flex;
+  align-items: flex-start;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
 
-[align="right"] {
-  & > gx-textblock {
-    @include alignment(end);
-  }
-}
-
-[valign="middle"] {
-  & > gx-textblock {
-    @include alignment($align-items: center);
-  }
-}
-
-[valign="bottom"] {
-  & > gx-textblock {
-    @include alignment($align-items: flex-end);
+  & > .gx-textblock-content {
+    width: 100%;
   }
 }

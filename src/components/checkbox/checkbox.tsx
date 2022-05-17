@@ -12,6 +12,9 @@ import {
 } from "@stencil/core";
 import { FormComponent } from "../common/interfaces";
 
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
+
 @Component({
   shadow: false,
   styleUrl: "checkbox.scss",
@@ -37,6 +40,11 @@ export class CheckBox implements FormComponent {
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
   @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
+
+  /**
+   * A CSS class to set as the `gx-checkbox` element class.
+   */
+  @Prop() readonly cssClass: string;
 
   /**
    * This attribute lets you specify if the element is disabled.
@@ -78,11 +86,6 @@ export class CheckBox implements FormComponent {
   @Prop() readonly unCheckedValue: string;
 
   /**
-   * A CSS class to set as the inner `input` element class.
-   */
-  @Prop() readonly cssClass: string;
-
-  /**
    * The `input` event is emitted when a change to the element's value is committed by the user.
    */
   @Event() input: EventEmitter;
@@ -121,6 +124,19 @@ export class CheckBox implements FormComponent {
   }
 
   render() {
-    return <Host>{this.renderer.render()}</Host>;
+    // Styling for gx-checkbox control.
+    const classes = getClasses(this.cssClass);
+
+    return (
+      <Host
+        class={{
+          [this.cssClass]: !!this.cssClass,
+          [classes.vars]: true,
+          [classes.highlighted]: true
+        }}
+      >
+        {this.renderer.render()}
+      </Host>
+    );
   }
 }

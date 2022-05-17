@@ -6,16 +6,13 @@ gx-table {
 
   // Support for margin with variables
   @include reset-variables();
-  @include container-margins();
   @include elevation();
   @include visibility(grid);
 
   flex: 1;
 
-  /*  gx-table must hide its content overflow to ensure that the border-radius
-      property is applied
-  */
+  // gx-table must hide its content overflow to ensure that the border-radius
+  // property is applied
   overflow: hidden;
-  transition: background-color $transition-delay, border-color $transition-delay,
-    color $transition-delay, filter $transition-delay;
+  @include transition-properties();
 }

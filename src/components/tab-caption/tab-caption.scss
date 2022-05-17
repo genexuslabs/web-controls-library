@@ -16,51 +16,6 @@
   }
 }
 
-@mixin tabsPosition(
-  $paddingTop: calc(var(--tab-caption-vertical-padding) - 3px),
-  $paddingBottom: calc(var(--tab-caption-vertical-padding) - 1px),
-  $borderTop: 3px solid transparent,
-  $borderBottom: 1px solid var(--tab-strip-separator-color),
-  $borderTopColorActive: var(--tab-strip-indicator-color),
-  $borderBottomColorActive: transparent
-) {
-  gx-tab-caption {
-    &.gx-tab-caption {
-      .gx-nav-link {
-        padding: $paddingTop var(--tab-caption-horizontal-padding)
-          $paddingBottom var(--tab-caption-horizontal-padding);
-
-        border-top: $borderTop;
-        border-bottom: $borderBottom;
-      }
-
-      &--active {
-        .gx-nav-link {
-          border-top-color: $borderTopColorActive;
-          border-bottom-color: $borderBottomColorActive;
-        }
-      }
-    }
-  }
-}
-
-// Used to show the captions in the top position
-[data-position="top"] {
-  @include tabsPosition;
-}
-
-// Used to show the captions in the bottom position
-[data-position="bottom"] {
-  @include tabsPosition(
-    calc(var(--tab-caption-vertical-padding) - 1px),
-    calc(var(--tab-caption-vertical-padding) - 3px),
-    1px solid var(--tab-strip-separator-color),
-    3px solid transparent,
-    transparent,
-    var(--tab-strip-indicator-color)
-  );
-}
-
 gx-tab-caption {
   @include visibility(table-cell);
 
@@ -83,13 +38,15 @@ gx-tab-caption {
     object-fit: contain;
   }
 
+  // Default style
+  background-color: var(--tab-strip-background-color);
   font-size: 12px;
   font-weight: 600;
 
   &.gx-tab-caption {
-    background-color: var(--tab-strip-background-color);
     height: 100%;
-    transition: background-color $transition-delay, filter $transition-delay;
+    transition: background-color $transition-duration,
+      filter $transition-duration;
 
     .image-and-link-container {
       display: inline-block;
@@ -101,9 +58,10 @@ gx-tab-caption {
         display: flex;
         height: 100%;
         color: inherit;
+        padding-inline: var(--tab-caption-horizontal-padding);
         overflow: hidden;
-        transition: background-color $transition-delay, color $transition-delay,
-          border-color $transition-delay;
+        transition: background-color $transition-duration,
+          color $transition-duration, border-color $transition-duration;
         white-space: nowrap;
 
         &:active,

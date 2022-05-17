@@ -40,20 +40,6 @@ export class EditRender implements Renderer {
     return this.component.element.querySelector("[data-native-element]");
   }
 
-  private getCssClasses() {
-    const edit = this.component;
-
-    const classList = [];
-
-    if (edit.type === "file") {
-      classList.push("input-control-file");
-    } else {
-      classList.push("input-control");
-    }
-
-    return classList.join(" ");
-  }
-
   getValueFromEvent(event: UIEvent): string {
     return event.target && (event.target as HTMLInputElement).value;
   }
@@ -117,7 +103,6 @@ export class EditRender implements Renderer {
       autocapitalize: edit.autocapitalize,
       autocomplete: edit.autocomplete,
       autocorrect: edit.autocorrect,
-      class: this.getCssClasses(),
       "data-native-element": "",
       disabled: edit.disabled,
       id: this.inputId,
@@ -153,15 +138,17 @@ export class EditRender implements Renderer {
       // If it has multiline, it sets a textarea
       if (edit.multiline) {
         editableElement = (
-          <div
-            class={{
-              container: true,
-              disabled: edit.disabled
-            }}
-            data-part="container"
-            hidden={edit.readonly}
-          >
-            <textarea {...attris} data-part="field">
+          <div class="gx-edit-container" hidden={edit.readonly}>
+            <textarea
+              class={{
+                [slots.cssClass]:
+                  !slots.shouldStyleHostElement && !!this.component.cssClass,
+                [slots.vars]: !slots.shouldStyleHostElement,
+                [slots.highlighted]: !slots.shouldStyleHostElement
+              }}
+              {...attris}
+              data-part="field"
+            >
               {edit.value}
             </textarea>
           </div>
@@ -181,12 +168,26 @@ export class EditRender implements Renderer {
           "[slot='trigger-content']"
         );
 
-        // If showTrigger == true, it also sets a trigger button
-        editableElement = (
+        editableElement = [
+          // If showTrigger == true, it sets a trigger button
+          edit.showTrigger && (
+            <div class="trigger-button-container">
+              <button
+                class={{
+                  "trigger-button": true,
+                  "not-disabled": !edit.disabled
+                }}
+                onClick={this.handleTriggerClick}
+                type="button"
+                disabled={edit.disabled}
+              >
+                {existSlotContent !== null && slots.triggerContent}
+              </button>
+            </div>
+          ),
           <div
             class={{
-              container: true,
-              disabled: edit.disabled,
+              "gx-edit-container": true,
 
               /*  Used when the gx-edit has
                     type="datetime-local" | "date" | "time"
@@ -196,45 +197,25 @@ export class EditRender implements Renderer {
                 dateTypes.includes(edit.type) &&
                 (edit.value == undefined || edit.value == "")
             }}
-            data-part="container"
             hidden={edit.readonly}
+            data-part="container"
           >
             {input}
 
             {// Implements a non-native placeholder for date types
             dateTypes.includes(edit.type) &&
               (edit.value == undefined || edit.value == "") && (
-                <div class="date-placeholder-container" data-readonly>
+                <div class="date-placeholder-container">
                   <span>{edit.placeholder}</span>
                 </div>
               )}
-
-            {edit.showTrigger && (
-              <div class="trigger-button-container">
-                <button
-                  class="trigger-button"
-                  onClick={this.handleTriggerClick}
-                  type="button"
-                  disabled={edit.disabled}
-                >
-                  {existSlotContent !== null && slots.triggerContent}
-                </button>
-              </div>
-            )}
           </div>
-        );
+        ];
       }
       // If format = HTML
     } else {
       editableElement = (
-        <div
-          class={{
-            container: true,
-            "HTML-content": true,
-            disabled: edit.disabled && !edit.readonly
-          }}
-          data-part="container"
-        >
+        <div class="gx-edit-container" data-part="container">
           <div class="html-container">
             <div data-native-element innerHTML={edit.inner}></div>
           </div>

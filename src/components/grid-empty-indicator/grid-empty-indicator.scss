@@ -7,19 +7,13 @@ gx-grid-empty-indicator {
   height: 100%;
   overflow: hidden;
 
-  > .empty-indicator-container {
+  & > .gx-empty-item {
     display: flex;
-    align-items: flex-start;
     position: absolute;
     width: 100%;
     height: 100%;
-    z-index: 1;
 
-    > .empty-indicator-text {
-      align-self: initial;
-    }
-
-    > .empty-indicator-image > img {
+    & > gx-image > .inner-image {
       max-width: fit-content;
     }
   }

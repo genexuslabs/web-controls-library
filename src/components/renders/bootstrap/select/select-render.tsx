@@ -2,6 +2,9 @@ import { h } from "@stencil/core";
 import { Renderer } from "../../../common/interfaces";
 import { Select } from "../../../select/select";
 
+// Class transforms
+import { getClasses } from "../../../common/css-transforms/css-transforms";
+
 let autoSelectId = 0;
 
 export class SelectRender implements Renderer {
@@ -25,23 +28,6 @@ export class SelectRender implements Renderer {
     return !this.component.readonly ? this.selectId : null;
   }
 
-  private getCssClasses() {
-    const select = this.component;
-    const classList = [];
-
-    if (select.cssClass) {
-      classList.push(select.cssClass);
-    }
-
-    if (select.readonly) {
-      classList.push("readonly-select");
-    } else {
-      classList.push("normal-select");
-    }
-
-    return classList.join(" ");
-  }
-
   private getReadonlyTextContent() {
     const matchingOpts = this.options.filter(
       o => o.value === this.component.value
@@ -62,9 +48,19 @@ export class SelectRender implements Renderer {
   }
 
   render(anOptionHasBeenSelected) {
+    // Styling for gx-select control.
+    const classes = getClasses(this.component.cssClass);
+
     if (this.component.readonly) {
       return (
-        <div class={this.getCssClasses()} data-readonly>
+        <div
+          class={{
+            "gx-select-control": true,
+            [this.component.cssClass]: !!this.component.cssClass,
+            [classes.vars]: true,
+            [classes.highlighted]: true
+          }}
+        >
           <span>{this.getReadonlyTextContent()}</span>
         </div>
       );
@@ -72,7 +68,12 @@ export class SelectRender implements Renderer {
       let datalistId: string;
       const attris = {
         "aria-disabled": this.component.disabled ? "true" : undefined,
-        class: this.getCssClasses(),
+        class: {
+          "gx-select-control": true,
+          [this.component.cssClass]: !!this.component.cssClass,
+          [classes.vars]: true,
+          [classes.highlighted]: true
+        },
         disabled: this.component.disabled,
         id: this.selectId,
         onChange: this.handleChange.bind(this),
@@ -104,7 +105,7 @@ export class SelectRender implements Renderer {
             </datalist>
           ]
         : [
-            <select {...attris} data-readonly>
+            <select {...attris}>
               {!anOptionHasBeenSelected && (
                 <option hidden>{this.component.placeholder}</option>
               )}

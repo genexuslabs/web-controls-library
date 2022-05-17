@@ -28,21 +28,16 @@ export class GridEmptyIndicator implements ComponentInterface {
 
   render() {
     return (
-      <Host class="empty-indicator">
+      <Host class="gx-empty-indicator">
         {this.image && (
-          <div class="empty-indicator-container">
-            <gx-image
-              src={this.image}
-              class={`${this.imageClass} empty-indicator-image`}
-            ></gx-image>
+          <div class="gx-empty-item">
+            <gx-image cssClass={this.imageClass} src={this.image}></gx-image>
           </div>
         )}
 
         {this.text && (
-          <div class="empty-indicator-container">
-            <gx-textblock class={`${this.textClass} empty-indicator-text`}>
-              {this.text}
-            </gx-textblock>
+          <div class="gx-empty-item">
+            <gx-textblock cssClass={this.textClass}>{this.text}</gx-textblock>{" "}
           </div>
         )}
       </Host>

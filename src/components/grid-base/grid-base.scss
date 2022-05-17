@@ -1,6 +1,7 @@
 @import "../common/_base";
+@import "../common/common-styling-config";
 
-$gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller), & > * > .scrollable-content";
+$grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller), & > * > .scrollable-content";
 
 // Used to horizontally and vertically align the text and image
 @mixin empty-placeholder-alignment(
@@ -8,24 +9,35 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller), & > * >
   $justify-content: null,
   $align-items: null
 ) {
-  > .grid-empty-placeholder
-    > div
-    > .empty-indicator
-    > .empty-indicator-container {
+  & > .grid-empty-placeholder > div > .gx-empty-indicator > .gx-empty-item {
+    // Alignment for the gx-textblock control
     @if $text-align != null {
-      > .empty-indicator-text {
+      > gx-textblock {
         text-align: $text-align;
       }
-
-      > .empty-indicator-image {
-        justify-content: $justify-content;
+    }
+    @if $align-items != null {
+      > gx-textblock::part(valign) {
+        align-items: $align-items;
       }
     }
 
-    @if $align-items != null {
-      align-items: $align-items;
+    // Alignment for the gx-image control
+    @if $justify-content != null or $align-items != null {
+      > gx-image {
+        @if $justify-content != null {
+          justify-content: $justify-content;
+        }
+        @if $align-items != null {
+          align-self: $align-items;
+        }
+      }
     }
   }
+}
+
+[align="left"] > .gx-grid-empty {
+  @include empty-placeholder-alignment(start, flex-start);
 }
 
 [align="center"] > .gx-grid-empty {
@@ -34,6 +46,10 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller), & > * >
 
 [align="right"] > .gx-grid-empty {
   @include empty-placeholder-alignment(end, flex-end);
+}
+
+[valign="top"] > .gx-grid-empty {
+  @include empty-placeholder-alignment($align-items: flex-start);
 }
 
 [valign="middle"] > .gx-grid-empty {
@@ -45,10 +61,11 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller), & > * >
 }
 
 .gx-grid-base {
+  @include transition-properties();
   flex: 1;
   align-self: stretch;
 
-  #{$gridContentSelector} {
+  #{$grid-content-selector} {
     flex: 1;
   }
 
@@ -76,7 +93,7 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller), & > * >
 }
 
 .gx-grid-base.gx-grid-empty {
-  #{$gridContentSelector},
+  #{$grid-content-selector},
   .gx-grid-paging {
     @include visibility(none);
   }
@@ -93,8 +110,4 @@ $gridContentSelector: "& > *[slot='grid-content']:not(virtual-scroller), & > * >
     justify-content: center;
     text-align: center;
   }
-}
-
-.gx-grid-row {
-  position: relative;
 }

@@ -1,38 +1,14 @@
 @import "../common/_base";
+@import "../common/common-styling-config";
 @import "../common/_image-position";
-@import "../renders/bootstrap/button/button-render";
 
 // Used to set the margin for different types of images
-@mixin imageMargin() {
-  &.gx-image-position {
-    &--before,
-    &--after,
-    &--above,
-    &--below,
-    &--behind {
-      [slot="main-image"],
-      [slot="disabled-image"] {
-        margin: var(--gx-button-image-margin-top)
-          var(--gx-button-image-margin-right)
-          var(--gx-button-image-margin-bottom)
-          var(--gx-button-image-margin-left);
-      }
-    }
-  }
-}
-
-// The width property does not apply when the navbar is the main container
-gx-table-cell {
-  & > gx-button {
-    width: var(--width, auto);
-  }
-}
-
-// Due to the gx-canvas-cell defines the width of the inner button, it is
-// necessary to strech the width of the gx-button
-gx-canvas-cell {
-  & > gx-button {
-    flex: 1;
+@mixin image-margin() {
+  [slot="main-image"],
+  [slot="disabled-image"] {
+    margin: var(--gx-button-image-margin-top)
+      var(--gx-button-image-margin-right) var(--gx-button-image-margin-bottom)
+      var(--gx-button-image-margin-left);
   }
 }
 
@@ -67,33 +43,53 @@ gx-button {
    */
   --gx-button-image-margin-left: 0px;
 
-  @include visibility(inline-flex);
+  --elevation: 0;
+
+  @include visibility(flex);
 
   // Used to decide the position of the image
-  @include imagePosition("button.gx-button", ".gx-button--disabled");
+  @include imagePosition("button.gx-button", ".disabled");
+  @include image-margin();
+  flex: 1;
+  align-self: stretch;
+  width: 100%;
 
-  @include imageMargin();
+  // Workaround to stop firing events when the gx-button clicked but not the
+  // inner button
+  pointer-events: none;
 
-  @include reset-variables();
-  @include container-margins();
-  height: var(--height);
-
-  vertical-align: middle;
-
-  &.stretch-height {
-    align-self: stretch;
+  &.disabled > .gx-button {
+    pointer-events: none;
   }
 
-  /*  If the button caption is empty, the inner image will stretch to the
-      container size
-  */
+  // If the button caption is empty, the inner image will stretch to the
+  // container size
   &.empty-caption {
     --gx-button-image-size: 100%;
   }
 
-  & > button.gx-button {
+  // Default appearance
+  & > button {
+    background-color: transparent;
+    border-style: none;
+
+    // Takes "flex: 1" value when the --width is not defined
+    flex: var(--width);
+
+    // Takes "align-self: stretch" value when the --height is not defined
+    align-self: var(--height);
+
+    max-width: var(--width);
+    height: var(--height);
+    padding: 0;
+    pointer-events: all;
+    user-select: none;
+  }
+
+  & > .gx-button {
+    @include elevation();
+
     display: flex;
-    flex: 1;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -101,7 +97,12 @@ gx-button {
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;
-    max-width: 100%;
+    outline: unset;
+    overflow: hidden;
+
+    // Avoid zooming on double tap
+    touch-action: manipulation;
+    @include transition-properties();
 
     & > img {
       height: var(--gx-button-image-size);
@@ -116,12 +117,46 @@ gx-button {
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
-    &:not(:disabled):not(.disabled) {
-      &:focus,
-      &:active:focus {
-        box-shadow: none;
-      }
-    }
   }
+}
+
+// Button alignment
+@mixin horizontal-alignment($justify-content) {
+  & > gx-button {
+    justify-content: $justify-content;
+  }
+}
+
+@mixin vertical-alignment($align-items) {
+  & > gx-button {
+    align-items: $align-items;
+  }
+}
+
+// Default horizontal alignment
+[align="left"],
+:not([align]) {
+  @include horizontal-alignment(flex-start);
+}
+
+[align="center"] {
+  @include horizontal-alignment(center);
+}
+
+[align="right"] {
+  @include horizontal-alignment(flex-end);
+}
+
+// Default vertical alignment
+[valign="top"],
+:not([valign]) {
+  @include vertical-alignment(flex-start);
+}
+
+[valign="middle"] {
+  @include vertical-alignment(center);
+}
+
+[valign="bottom"] {
+  @include vertical-alignment(flex-end);
 }

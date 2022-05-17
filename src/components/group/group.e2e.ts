@@ -17,7 +17,7 @@ describe("gx-group", () => {
   it("should set legend caption", async () => {
     await element.setProperty("caption", "TEST TEXT");
     await page.waitForChanges();
-    const content = await element.find("legend .content");
+    const content = await element.find("legend .gx-group-caption");
     expect(content.textContent.trim()).toEqual("TEST TEXT");
   });
 });

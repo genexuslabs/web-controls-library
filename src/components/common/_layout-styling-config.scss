@@ -1,9 +1,26 @@
-$base-z-index: 10000;
+// - - - - - - gx-navbar - - - - - -
+$gx-navbar-main-height: var(--gx-navbar-main-height, 60px);
+$gx-navbar-sub-height: 48px;
 
-:root {
-  --gx-navbar-main-height: 60px;
+// - - - - - - z-index - - - - - -
+$base-z-index: 100;
+$z-index-1: $base-z-index + 1;
+$z-index-2: $base-z-index + 2;
+$z-index-3: $base-z-index + 3;
+$z-index-4: $base-z-index + 4;
+$z-index-5: $base-z-index + 5;
+$z-index-6: $base-z-index + 6;
+$z-index-7: $base-z-index + 7;
+$z-index-8: $base-z-index + 8;
+$z-index-9: $base-z-index + 9;
+$z-index-10: $base-z-index + 10;
 
-  --gx-navbar-sub-height: 48px;
-
-  --gx-navbar-base-z-index: 100;
-}
+$z-index-gx-modal: $z-index-9;
+$z-index-gx-loading-box: $z-index-8;
+$z-index-gx-loading: $z-index-7;
+$z-index-gx-navbar-item: $z-index-6;
+$z-index-gx-navbar: $z-index-5;
+$z-index-gx-message: $z-index-4;
+$z-index-gx-layout-vertical: $z-index-3;
+$z-index-gx-layout-mask: $z-index-2;
+$z-index-gx-layout: $z-index-1;

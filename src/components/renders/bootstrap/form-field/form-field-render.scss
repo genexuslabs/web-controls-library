@@ -1,8 +1,38 @@
+@import "../../../common/_common-styling-config";
+
 gx-form-field {
   --elevation: 0;
 
-  [data-part="field"] {
-    @include elevation();
+  & > .form-field-group {
+    display: grid;
+    max-height: 100%;
+    flex: 1;
+
+    & > .gx-inner-control-container {
+      grid-area: cell-inner-control;
+      display: flex;
+      flex: 1;
+      max-height: 100%;
+    }
+  }
+
+  .gx-label-container {
+    grid-area: cell-label;
+    display: flex;
+    width: 100%;
+    text-align: start;
+
+    &.right-label {
+      text-align: end;
+    }
+
+    & > label {
+      @include transition-properties();
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   &[label-position="float"] > div {
@@ -66,87 +96,25 @@ gx-form-field {
     }
   }
 
-  .label-position-top {
-    flex-direction: column;
+  & > .label-position-top {
+    grid-template: "cell-label" 0.25fr "cell-inner-control" 0.75fr;
   }
 
-  .label-position-right {
-    flex-direction: row-reverse;
+  & > .label-position-bottom {
+    grid-template: "cell-inner-control" 0.75fr "cell-label" 0.25fr;
   }
 
-  .label-position-bottom {
-    flex-direction: column-reverse;
+  & > .label-position-left {
+    grid-template-areas: "cell-label cell-inner-control";
+    grid-template-columns: 25% 1fr;
   }
 
-  .label-position-left {
-    flex-direction: row;
+  & > .label-position-right {
+    grid-template-areas: "cell-inner-control cell-label";
+    grid-template-columns: 1fr 25%;
   }
 
-  .label-left,
-  .label-right {
-    position: relative;
-    width: 100%;
-    flex: 0 0 25%;
-    max-width: 25%;
-  }
-
-  .label-left,
-  .label-top,
-  .label-bottom {
-    text-align: start;
-  }
-
-  .label-right {
-    text-align: end;
-  }
-
-  .label-top,
-  .label-bottom,
-  .field-label-top,
-  .field-label-bottom {
-    position: relative;
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .label-top,
-  .label-bottom {
-    flex: 0;
-  }
-
-  .field-label-top,
-  .field-label-bottom {
-    flex: 1;
-  }
-
-  .field-label-left,
-  .field-label-right {
-    position: relative;
-    width: 100%;
-    flex: 0 0 75%;
-    max-width: 75%;
-  }
-
-  .label-content {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  & > .form-group {
-    max-height: 100%;
-    display: flex;
-    flex: 1;
-    flex-wrap: nowrap;
-    & > div {
-      flex: 1;
-      max-height: 100%;
-    }
-  }
-
-  .radio-group {
-    display: flex;
-    flex: 1;
-    flex-wrap: wrap;
+  & > .label-position-none {
+    grid-template-areas: "cell-inner-control";
   }
 }

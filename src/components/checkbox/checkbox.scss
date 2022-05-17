@@ -1,17 +1,11 @@
 @import "../common/_base";
+@import "../common/common-styling-config";
 
 gx-checkbox {
+  @include elevation();
   @include visibility(flex);
-  @include scss-custom-option-control();
-
-  --option-border-radius: 25%;
-
-  @include container-margins();
+  @include scss-custom-option-control(25%);
 
   flex: 1;
-
-  & > [data-readonly] {
-    display: flex;
-    flex: 1;
-  }
+  @include transition-properties();
 }

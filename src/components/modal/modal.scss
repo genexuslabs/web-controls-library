@@ -1,4 +1,6 @@
 @import "../common/_base";
+@import "../common/common-styling-config";
+@import "../common/layout-styling-config";
 
 gx-modal {
   @include visibility(block);
@@ -20,12 +22,24 @@ gx-modal {
    */
   --gx-modal-secondary-action-color: white;
 
+  z-index: $z-index-gx-modal;
+
   & .modal-header {
     background-color: var(--gx-modal-header-background-color);
     color: var(--gx-modal-header-color);
+
     & .close {
       color: var(--gx-modal-header-color);
     }
+  }
+
+  .modal {
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: opacity $transition-duration;
+
+    // WA to enable pointer event if the gx-modal is used inside another
+    // control that has "pointer-events: none", for example gx-image-picker
+    pointer-events: all;
   }
 
   .modal-footer .btn-primary {
@@ -35,4 +49,9 @@ gx-modal {
   .modal-footer .btn-secondary {
     color: var(--gx-modal-secondary-action-color);
   }
+}
+
+// WA to change the z-index property of the bootstrap class
+div.modal-backdrop {
+  display: none;
 }

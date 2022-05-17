@@ -1,121 +1,108 @@
 @import "../common/_base";
+@import "../common/common-styling-config";
+
+@mixin border-style($border-color: #ddd, $border-radius: 0.25rem) {
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+}
 
 gx-image-picker {
-  @include container-margins();
-
   display: flex;
   flex: 1;
+  align-self: stretch;
   pointer-events: none;
 
-  @mixin border-style($borderColor: #ddd, $borderRadius: 0.25rem) {
-    border: 0.075rem solid $borderColor;
-    border-radius: $borderRadius;
-  }
-  $transitionConfig: 0.2s ease;
-
-  .click-capture {
-    display: contents;
-    pointer-events: auto;
-
-    & .image-viewer-image {
-      position: relative;
-      min-width: 30px;
-      min-height: 30px;
-
-      .button-edit-container {
-        position: absolute;
-        right: 0;
-        z-index: 99;
-        pointer-events: none;
-
-        .image-edit {
-          @include border-style($borderRadius: 15px);
-          background-color: rgb(239, 239, 239);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          padding: 0 0 0 2.5px;
-          width: 30px;
-          height: 30px;
-          pointer-events: all;
-          transition: $transitionConfig;
-
-          &:not([disabled]) {
-            &:hover {
-              background-color: #ddd;
-            }
-
-            &:focus,
-            &:active {
-              outline: none;
-            }
-
-            &:active {
-              background-color: #ccc;
-            }
-          }
-
-          &[disabled] {
-            @include border-style(#aaa, 15px);
-            background-color: #ccc;
-          }
-
-          svg {
-            width: 18px;
-            height: 18px;
-          }
-        }
-      }
-    }
-
-    .action-dialog {
-      .body-container {
-        display: flex;
-        justify-content: space-around;
-
-        .file {
-          display: flex;
-          cursor: pointer;
-          width: 40%;
-          margin: 0px;
-
-          input {
-            width: 0;
-          }
-
-          .file-custom {
-            @include border-style;
-            padding: 5px 12px 5px 12px;
-            width: 100%;
-            box-shadow: inset 0 0.2rem 0.4rem rgb(0 0 0 / 5%);
-          }
-        }
-
-        .remove-button {
-          @include border-style;
-          padding: 0 12px 0 12px;
-          background-color: #eee;
-        }
-      }
-
-      div {
-        .cancel-button {
-          padding: 2px 8px 2px 12px;
-
-          & span {
-            font-weight: 500;
-          }
-        }
-      }
-    }
-  }
-
-  .uploading-file {
-    width: 30px;
-    height: 30px;
-  }
-
-  .bottom {
+  & > gx-image > .gx-image-container > .image-picker-state-container {
+    display: flex;
+    align-items: stretch;
+    position: absolute;
+    right: 0;
     bottom: 0;
+    min-width: 30px;
+    min-height: 30px;
+
+    & > .image-picker-button {
+      @include border-style($border-radius: 15px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      background-color: rgb(239, 239, 239);
+      padding: 0 0 0 2.5px;
+      pointer-events: all;
+      transition-property: background-color, color;
+      transition-duration: $transition-duration;
+
+      &:not([disabled]) {
+        &:hover {
+          background-color: #ddd;
+        }
+
+        &:focus,
+        &:active {
+          outline: none;
+        }
+
+        &:active {
+          background-color: #ccc;
+        }
+      }
+
+      &[disabled] {
+        @include border-style(#aaa, 15px);
+        background-color: #ccc;
+      }
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  .action-dialog {
+    .body-container {
+      display: flex;
+      justify-content: space-around;
+
+      .file {
+        display: flex;
+        cursor: pointer;
+        width: 40%;
+        margin: 0px;
+
+        input {
+          width: 0;
+        }
+
+        .file-custom {
+          @include border-style;
+          padding: 5px 12px 5px 12px;
+          width: 100%;
+          box-shadow: inset 0 0.2rem 0.4rem rgb(0 0 0 / 5%);
+        }
+      }
+
+      .remove-button {
+        @include border-style;
+        padding: 0 12px 0 12px;
+        background-color: #eee;
+      }
+    }
+
+    div {
+      .cancel-button {
+        padding: 2px 8px 2px 12px;
+
+        & span {
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .gx-button-fit-content {
+    flex: unset;
+    width: auto;
   }
 }

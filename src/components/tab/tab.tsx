@@ -16,7 +16,12 @@ import {
   HighlightableComponent,
   makeHighlightable
 } from "../common/highlightable";
-import { cssVariablesWatcher } from "../common/css-variables-watcher";
+
+// Class transforms
+import {
+  getClasses,
+  tTabsPosition
+} from "../common/css-transforms/css-transforms";
 
 const BASE_TABLIST_SELECTOR = ":scope > [role='tablist']";
 
@@ -27,18 +32,14 @@ const BASE_TABLIST_SELECTOR = ":scope > [role='tablist']";
 })
 export class Tab
   implements GxComponent, VisibilityComponent, HighlightableComponent {
-  constructor() {
-    cssVariablesWatcher(this, [
-      {
-        cssVariableName: "--tabs-position",
-        propertyName: "tabsPosition"
-      }
-    ]);
-  }
-
   @Element() element: HTMLGxTabElement;
 
   private lastSelectedTab: HTMLElement;
+
+  /**
+   * A CSS class to set as the `gx-tab` element class.
+   */
+  @Prop() readonly cssClass: string;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -54,11 +55,6 @@ export class Tab
    * True to highlight control when an action is fired.
    */
   @Prop() readonly highlightable = false;
-
-  /**
-   * Specifies the position to show the tabs.
-   */
-  @Prop() tabsPosition: "top" | "bottom" = "top";
 
   /**
    * Defines how the tabs will be distributed in the Strip.
@@ -158,9 +154,24 @@ export class Tab
     this.setCaptionSlotsClass();
     this.setPageSlotsClass();
 
+    // Styling for gx-tab-caption control.
+    const classes = getClasses(this.cssClass, -1);
+
+    const tabsPositionClass = !!this.cssClass
+      ? this.cssClass
+          .split(" ")
+          .map(tTabsPosition)
+          .join(" ")
+      : "";
+
     return (
-      <Host>
-        <div role="tablist" data-position={this.tabsPosition}>
+      <Host
+        class={{
+          [this.cssClass]: !!this.cssClass,
+          [classes.vars]: true
+        }}
+      >
+        <div role="tablist" class={tabsPositionClass}>
           <div class="gx-nav-tabs">
             <div class="gx-nav-tabs-table">
               <slot name="caption" />

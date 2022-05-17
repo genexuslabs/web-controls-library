@@ -1,4 +1,12 @@
-import { Component, Element, Listen, Prop, State, h } from "@stencil/core";
+import {
+  Component,
+  Element,
+  Host,
+  Listen,
+  Prop,
+  State,
+  h
+} from "@stencil/core";
 import {
   DisableableComponent,
   Component as GxComponent,
@@ -10,8 +18,11 @@ import {
 } from "../common/highlightable";
 import { LineClampComponent, makeLinesClampable } from "../common/line-clamp";
 
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
+
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "textblock.scss",
   tag: "gx-textblock"
 })
@@ -23,10 +34,20 @@ export class TextBlock
     LineClampComponent,
     HighlightableComponent {
   constructor() {
-    makeLinesClampable(this, ".readonly-content-container", ".line-measuring");
+    makeLinesClampable(
+      this,
+      ".gx-textblock-container",
+      ".line-measuring",
+      true
+    );
   }
 
   @Element() element: HTMLGxTextblockElement;
+
+  /**
+   * A CSS class to set as the `gx-textblock` element class.
+   */
+  @Prop() readonly cssClass: string;
 
   /**
    * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
@@ -86,50 +107,59 @@ export class TextBlock
       return;
     }
   }
+  private shouldLineClamp: boolean;
+
+  componentWillLoad() {
+    this.shouldLineClamp = this.format === "Text" && this.lineClamp;
+  }
 
   componentDidLoad() {
     makeHighlightable(this);
   }
 
   render() {
-    if (this.format == "Text") {
-      const body = (
-        <div class="content text-content">
-          <div class="readonly-content-container">
-            <div
-              class={{
-                "text-container": true,
-                "gx-line-clamp": this.lineClamp,
-                relative: !this.lineClamp
-              }}
-              style={{
-                "--max-lines": this.lineClamp ? this.maxLines.toString() : "0"
-              }}
-            >
-              {this.lineClamp && (
-                <div class="line-measuring" aria-hidden>
-                  {"A"}
-                </div>
-              )}
-              <slot />
-            </div>
-          </div>
-        </div>
-      );
+    // Styling for gx-textblock control.
+    const classes = getClasses(this.cssClass, -1);
 
-      if (this.href) {
-        return <a href={this.href}>{body}</a>;
-      }
+    const body = (
+      <div class="gx-textblock-container" part="valign">
+        {this.lineClamp && <div class="line-measuring">{"A"}</div>}
+        {this.format === "Text" ? (
+          <span
+            class={{
+              "gx-textblock-content": true,
+              "gx-line-clamp": this.shouldLineClamp
+            }}
+            style={{
+              "--max-lines": this.shouldLineClamp
+                ? this.maxLines.toString()
+                : undefined
+            }}
+            part="content"
+          >
+            <slot />
+          </span>
+        ) : (
+          <div
+            class="gx-textblock-content"
+            innerHTML={this.inner}
+            part="content"
+          ></div>
+        )}
+      </div>
+    );
 
-      return body;
-    } else {
-      return (
-        <div class="content html-content">
-          <div class="html-container">
-            <div class="inner-content" innerHTML={this.inner}></div>
-          </div>
-        </div>
-      );
-    }
+    return (
+      <Host
+        class={{
+          [this.cssClass]: !!this.cssClass,
+          [classes.vars]: true,
+          disabled: this.disabled
+        }}
+        data-has-action={this.highlightable ? "" : undefined}
+      >
+        {this.href ? <a href={this.href}>{body}</a> : body}
+      </Host>
+    );
   }
 }

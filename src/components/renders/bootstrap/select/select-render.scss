@@ -1,7 +1,11 @@
+@import "../../../common/base";
+@import "../../../common/common-styling-config";
+
 // Used to horizontally align the text
 @mixin alignment($text-align: start) {
   gx-select {
-    .normal-select {
+    > .gx-select-control {
+      text-align: $text-align;
       text-align-last: $text-align;
     }
 
@@ -9,40 +13,29 @@
       text-align: $text-align;
       text-align-last: $text-align;
     }
-
-    .readonly-select {
-      text-align: $text-align;
-    }
   }
 }
 
 gx-select {
-  margin-top: var(--margin-top, 0);
-  margin-right: var(--margin-right, 0);
-  margin-bottom: var(--margin-bottom, 0);
-  margin-left: var(--margin-left, 0);
+  @include visibility(flex);
+  @include elevation();
+  flex: 1;
 
-  [data-readonly] {
-    width: 100%;
-    height: 100%;
-  }
-
-  .readonly-select {
+  & > .gx-select-control {
     display: flex;
+    flex: 1;
+    @include transition-properties();
 
     & > span {
       width: 100%;
     }
   }
 
-  .normal-select {
-    border: unset;
-
-    &,
-    &:focus,
-    &:active {
-      outline: 0;
-    }
+  // Default style
+  & > select {
+    background-color: unset;
+    border: none;
+    outline: 0;
   }
 
   gx-select-option {

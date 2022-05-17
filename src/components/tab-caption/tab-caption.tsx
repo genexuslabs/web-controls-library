@@ -22,6 +22,14 @@ import {
   imagePositionRender
 } from "../common/image-position";
 
+// Class transforms
+import {
+  getClasses,
+  tSelectedTabCaption,
+  tTabsPositionCaption,
+  tUnselectedTabCaption
+} from "../common/css-transforms/css-transforms";
+
 let autoTabId = 0;
 
 @Component({
@@ -40,8 +48,13 @@ export class TabCaption
   @Element() element: HTMLGxTabCaptionElement;
 
   /**
-   * This attribute lets you specify if the tab page is disabled
-   *
+   * A CSS class to set as the `gx-tab-caption` element class when
+   * `selected = false`.
+   */
+  @Prop() readonly cssClass: string;
+
+  /**
+   * This attribute lets you specify if the tab page is disabled.
    */
   @Prop() disabled = false;
 
@@ -65,27 +78,30 @@ export class TabCaption
 
   /**
    * This attribute lets you specify if the tab page corresponding to this caption is selected
-   *
    */
   @Prop() selected = false;
 
   /**
+   * A CSS class to set as the `gx-tab-caption` element class when
+   * `selected = true`.
+   */
+  @Prop() readonly selectedCssClass: string;
+
+  /**
+   * A CSS class that is used by the `gx-tab` parent container.
+   */
+  @Prop() readonly tabCssClass: string;
+
+  /**
    * True to highlight control when an action is fired.
    */
-  @Prop() highlightable = false;
+  @Prop() highlightable = true;
 
   @Watch("selected")
   selectedHandler() {
     if (this.selected) {
       this.tabSelect.emit(event);
     }
-  }
-
-  // Used to make the caption highlightable when `disabled = false`
-  @Watch("disabled")
-  highlightableHandler() {
-    this.highlightable = !this.disabled;
-    makeHighlightable(this);
   }
 
   /**
@@ -102,20 +118,54 @@ export class TabCaption
   }
 
   componentDidLoad() {
-    this.highlightable = !this.disabled;
     makeHighlightable(this);
   }
 
   render() {
-    this.element.setAttribute("aria-selected", (!!this.selected).toString());
+    // Styling for gx-tab-caption control.
+    const selectedTabCaptionClass = tSelectedTabCaption(this.tabCssClass);
+    const unselectedTabCaptionClass = tUnselectedTabCaption(this.tabCssClass);
+
+    const selectedTabCaptionClasses = getClasses(selectedTabCaptionClass, -1);
+    const unselectedTabCaptionClasses = getClasses(
+      unselectedTabCaptionClass,
+      -1
+    );
+
+    const selectedClasses = getClasses(this.selectedCssClass, -1);
+    const unselectedClasses = getClasses(this.cssClass, -1);
+
+    const tabsPositionCaptionClass = !!this.tabCssClass
+      ? this.tabCssClass
+          .split(" ")
+          .map(tTabsPositionCaption)
+          .join(" ")
+      : "";
 
     return (
       <Host
+        aria-selected={(!!this.selected).toString()}
         role="tab"
         class={{
           "gx-tab-caption": true,
           "gx-tab-caption--active": this.selected,
           "gx-tab-caption--disabled": this.disabled,
+          // Configured by the main container gx-tab
+          [selectedTabCaptionClass]: this.selected,
+          [selectedTabCaptionClasses.vars]: this.selected,
+
+          // Configured by the gx-tab-caption control
+          [this.selectedCssClass]: !!this.selectedCssClass && this.selected,
+          [selectedClasses.vars]: this.selected,
+
+          // Configured by the main container gx-tab
+          [unselectedTabCaptionClass]: !this.selected,
+          [unselectedTabCaptionClasses.vars]: !this.selected,
+
+          // Configured by the gx-tab-caption control
+          [this.cssClass]: !!this.cssClass && !this.selected,
+          [unselectedClasses.vars]: !this.selected,
+
           [imagePositionClass(this.imagePosition)]: true,
           [hideMainImageWhenDisabledClass]:
             !this.selected && this.hasDisabledImage
@@ -124,7 +174,9 @@ export class TabCaption
         <div class="image-and-link-container">
           <a
             class={{
-              "gx-nav-link": true
+              "gx-nav-link": true,
+              "gx-nav-link--active": this.selected,
+              [tabsPositionCaptionClass]: true
             }}
             href="#"
             onClick={this.clickHandler}

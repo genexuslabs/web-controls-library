@@ -14,6 +14,24 @@ $gx-xsmall-breakpoint-plus-1: 769px;
   }
 }
 
+// Same as "visibility" mixin, but for shadow DOM components
+@mixin visibility-shadow-DOM($display) {
+  :host {
+    display: $display;
+  }
+
+  :host([hidden]) {
+    display: none !important;
+  }
+
+  :host([hidden][invisible-mode="keep-space"]) {
+    display: $display !important;
+
+    // "!important" is needed to avoid "visibility: inherit" from "hydrated" class
+    visibility: hidden !important;
+  }
+}
+
 @mixin overflowMode() {
   &[overflow-mode="clip"] {
     overflow: hidden;
@@ -30,11 +48,8 @@ $gx-xsmall-breakpoint-plus-1: 769px;
     @include overflowMode();
   }
 
-  &:not([align]),
   &[align="left"] {
-    & > * {
-      justify-content: flex-start;
-    }
+    justify-content: flex-start;
   }
 
   &[align="center"] {
@@ -54,19 +69,7 @@ $gx-xsmall-breakpoint-plus-1: 769px;
   }
 }
 
-@mixin container-margins() {
-  margin-top: var(--margin-top, 0);
-  margin-right: var(--margin-right, 0);
-  margin-bottom: var(--margin-bottom, 0);
-  margin-left: var(--margin-left, 0);
-}
-
 @mixin reset-variables($include-width: true, $include-height: true) {
-  --margin-top: initial;
-  --margin-right: initial;
-  --margin-bottom: initial;
-  --margin-left: initial;
-
   @if $include-width == true {
     --width: initial;
   }
@@ -100,57 +103,54 @@ $gx-xsmall-breakpoint-plus-1: 769px;
   );
 }
 
-.gx-line-clamp {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: var(--max-lines);
-  overflow: hidden;
+@mixin line-clamp() {
+  .gx-line-clamp {
+    display: -webkit-box;
+    position: absolute;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--max-lines);
+    overflow: hidden;
+  }
+
+  // Used to measure the line height, in order to make the lines clampable
+  .line-measuring {
+    visibility: hidden;
+    position: absolute;
+  }
 }
 
-// Used to measure the line height, in order to make the lines clampable
-.line-measuring {
-  visibility: hidden;
-  position: absolute;
-}
+@mixin scss-custom-option-control($option-border-radius: 100%) {
+  $custom-option-size: min(1em, 20px);
+  $disabled-color: #a5a8aac0;
+  $transition-duration: 0.2s;
+  $transition-function: ease-in-out;
+  $space-between-option-and-label: min(0.35em, 7px);
 
-@mixin scss-custom-option-control() {
-  $transitionConfig: 0.15s ease-in-out;
-  $disabledColor: #a5a8aac0;
+  $option-checked-color: var(--option-checked-color, #ffa7c0);
 
-  --option-checked-color: #007bff;
+  $option-border-color: var(--option-border-color, #adb5bd);
 
-  --option-border: 1px solid #adb5bd;
+  $option-highlight-color: var(--option-highlight-color, #dc354570);
 
-  --option-border-radius: 100%;
-
-  --option-highlight-border-color: #007bff40;
-
-  .container {
+  .option-and-label-container {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    flex: 1;
     overflow: hidden;
-
-    &[data-part="option-control"]:active {
-      padding: 0;
-      background-color: unset;
-      border: unset;
-    }
 
     .option-container {
       display: flex;
-      padding: 0.15rem 0.35rem 0.15rem 0.35rem;
+      padding-inline-end: $space-between-option-and-label;
 
-      .control-input {
-        width: 1rem;
-        height: 1rem;
+      .hidden-input {
+        width: $custom-option-size;
+        height: $custom-option-size;
         opacity: 0;
 
         &:checked {
           & ~ .custom-option {
-            border-color: var(--option-checked-color);
-            background-color: var(--option-checked-color);
+            border-color: $option-checked-color;
+            background-color: $option-checked-color;
           }
 
           & ~ svg {
@@ -159,52 +159,52 @@ $gx-xsmall-breakpoint-plus-1: 769px;
         }
 
         &:active:not(:disabled) {
-          &:not(:checked) ~ .custom-option {
-            border-color: var(--option-highlight-border-color);
-            background-color: var(--option-highlight-border-color);
+          &:not(:checked) + .custom-option {
+            border-color: $option-highlight-color;
+            background-color: $option-highlight-color;
           }
 
-          & ~ .custom-option {
+          & + .custom-option {
             filter: brightness(85%);
           }
         }
 
-        &:focus ~ .custom-option {
-          box-shadow: 0 0 0 0.15rem var(--option-highlight-border-color);
+        &:focus + .custom-option {
+          box-shadow: 0 0 0 min(0.15em, 4px) $option-highlight-color;
         }
 
-        &:disabled ~ .custom-option {
-          background-color: $disabledColor;
+        &:disabled + .custom-option {
+          background-color: $disabled-color;
         }
       }
 
       .custom-option {
         position: absolute;
-        width: 1rem;
-        height: 1rem;
+        width: $custom-option-size;
+        height: $custom-option-size;
+        border: 1px solid $option-border-color;
+        border-radius: $option-border-radius;
+        margin-bottom: 0;
         pointer-events: none;
-        border: var(--option-border);
-        border-radius: var(--option-border-radius);
-        content: "";
-        transition: $transitionConfig;
+        transition-property: background-color, border-color, box-shadow, filter;
+        transition-duration: $transition-duration;
+        transition-timing-function: $transition-function;
       }
 
       svg {
         position: absolute;
-        width: 1rem;
-        height: 1rem;
+        width: $custom-option-size;
+        height: $custom-option-size;
         pointer-events: none;
-        z-index: 1;
+        z-index: 1; // Necessary?
         opacity: 0;
         fill: white;
         fill-opacity: 0.75;
-        transition: $transitionConfig;
       }
     }
 
-    .custom-label {
-      margin: 0;
-      transition: $transitionConfig;
+    .label-of-the-option {
+      margin-bottom: 0;
     }
   }
 }

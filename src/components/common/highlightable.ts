@@ -28,14 +28,14 @@ export function makeHighlightable(
       HIGHLIGHT_EVENT_NAME,
       (event: CustomEvent) => {
         event.stopPropagation();
-        component.element.classList.add(HIGHLIGHT_CLASS_NAME);
+        actualHighlightableElement.classList.add(HIGHLIGHT_CLASS_NAME);
       }
     );
     actualHighlightableElement.addEventListener(
       UNHIGHTLIGHT_EVENT_NAME,
       (event: CustomEvent) => {
         event.stopPropagation();
-        component.element.classList.remove(HIGHLIGHT_CLASS_NAME);
+        actualHighlightableElement.classList.remove(HIGHLIGHT_CLASS_NAME);
       }
     );
   }

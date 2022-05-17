@@ -5,8 +5,16 @@ import {
 
 import { EventEmitter } from "@stencil/core";
 
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
+
 export interface GridBase {
   element: HTMLElement;
+
+  /**
+   * A CSS class to set as the `gx-grid` element class.
+   */
+  cssClass: string;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -56,9 +64,14 @@ export class GridBaseHelper {
   }
 
   static hostData(cmp: GridBase) {
+    // Styling for gx-grid control.
+    const classes = getClasses(cmp.cssClass, -1);
+
     return {
       class: {
         "gx-grid-base": true,
+        [cmp.cssClass]: !!cmp.cssClass,
+        [classes.vars]: true,
         "gx-grid-empty": this.isEmptyGrid(cmp),
         "gx-grid-empty-loading":
           cmp.loadingState === "loading" && cmp.recordCount <= 0,

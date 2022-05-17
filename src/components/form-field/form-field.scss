@@ -20,7 +20,7 @@ gx-form-field {
 
     gx-radio-group[direction="vertical"] [data-part="option-control"],
     gx-radio-group[direction="horizontal"],
-    gx-checkbox [data-part="option-control"],
+    gx-checkbox,
     gx-gauge {
       justify-content: flex-start;
     }
@@ -36,7 +36,7 @@ gx-form-field {
 
     gx-radio-group[direction="vertical"] [data-part="option-control"],
     gx-radio-group[direction="horizontal"],
-    gx-checkbox [data-part="option-control"],
+    gx-checkbox,
     gx-gauge {
       justify-content: center;
     }
@@ -52,7 +52,7 @@ gx-form-field {
 
     gx-radio-group[direction="vertical"] [data-part="option-control"],
     gx-radio-group[direction="horizontal"],
-    gx-checkbox [data-part="option-control"],
+    gx-checkbox,
     gx-gauge {
       justify-content: flex-end;
     }
@@ -66,7 +66,8 @@ gx-form-field {
         affected.
     */
     [data-readonly]:not([direction]),
-    [data-part="container"] {
+    [data-part="container"],
+    gx-checkbox {
       align-items: flex-start;
     }
 
@@ -89,12 +90,9 @@ gx-form-field {
 [valign="middle"],
 :not([valign]) {
   & > gx-form-field {
-    [data-part="label"] {
-      align-self: center;
-    }
-
     [data-readonly]:not([direction]),
-    [data-part="container"] {
+    [data-part="container"],
+    gx-checkbox {
       align-items: center;
     }
 
@@ -116,12 +114,9 @@ gx-form-field {
 
 [valign="bottom"] {
   & > gx-form-field {
-    [data-part="label"] {
-      align-self: flex-end;
-    }
-
     [data-readonly]:not([direction]),
-    [data-part="container"] {
+    [data-part="container"],
+    gx-checkbox {
       align-items: flex-end;
     }
 

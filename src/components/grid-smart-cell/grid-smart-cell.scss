@@ -1,11 +1,14 @@
 @import "../common/_base.scss";
 @import "../common/_common-styling-config.scss";
 
-gx-grid-smart-cell {
-  // Support for margin with variables
+.gx-grid-row {
   @include reset-variables();
-  @include container-margins();
+  display: flex;
+  position: relative;
+  min-width: max-content;
 
-  transition: background-color $transition-delay, border-color $transition-delay,
-    color $transition-delay, filter $transition-delay;
+  // gx-grid-smart-cell must hide its content overflow to ensure that the
+  // border-radius property is applied
+  overflow: hidden;
+  @include transition-properties();
 }

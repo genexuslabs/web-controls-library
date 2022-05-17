@@ -31,7 +31,7 @@ export class PasswordEdit
   @Element() element: HTMLGxPasswordEditElement;
 
   /**
-   * A CSS class to set as the inner `input` element class.
+   * A CSS class to set as the `gx-password-edit` element class.
    */
   @Prop() readonly cssClass: string;
 

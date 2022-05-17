@@ -3,6 +3,9 @@ import Popper from "popper.js";
 import { Renderer } from "../../../common/interfaces";
 import { Card } from "../../../card/card";
 
+// Class transforms
+import { getClasses } from "../../../common/css-transforms/css-transforms";
+
 export class CardRender implements Renderer {
   constructor(private component: Card) {
     this.handleDropDownToggleClick = this.handleDropDownToggleClick.bind(this);
@@ -160,6 +163,9 @@ export class CardRender implements Renderer {
       hasFooterActions ||
       card.element.querySelector("[slot='footer']") !== null;
 
+    // Styling for gx-card control.
+    const classes = getClasses(this.component.cssClass, -1);
+
     return [
       <gx-bootstrap />,
       <div
@@ -172,11 +178,15 @@ export class CardRender implements Renderer {
         <div
           class={{
             "border-0": !card.showBorder,
-            "card-header": true
+            "card-header": true,
+            [card.cssClass]: !!card.cssClass,
+            [classes.vars]: true
           }}
         >
           {slots.header}
-          <div class="float-right">{slots.highPriorityAction}</div>
+          <div class="gx-card-actions-container">
+            {slots.highPriorityAction}
+          </div>
         </div>
         {slots.body}
         {slots.default}
@@ -184,12 +194,14 @@ export class CardRender implements Renderer {
           <div
             class={{
               "border-0": !card.showBorder,
-              "card-footer": true
+              "card-footer": true,
+              [card.cssClass]: !!card.cssClass,
+              [classes.vars]: true
             }}
           >
             {slots.footer}
             {hasFooterActions && (
-              <div class="float-right">
+              <div class="gx-card-actions-container">
                 {slots.normalPriorityAction}
                 {hasLowPriorityActions && (
                   <button

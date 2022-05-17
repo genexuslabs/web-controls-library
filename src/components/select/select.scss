@@ -1,7 +1,1 @@
-@import "../common/_base";
 @import "../renders/bootstrap/select/select-render";
-
-gx-select {
-  @include visibility(block);
-  flex: 1;
-}

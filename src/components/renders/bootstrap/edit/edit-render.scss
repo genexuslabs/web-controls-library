@@ -3,7 +3,7 @@
 // Used when autoGrow = false and format = HTML
 gx-table-cell[min-height][max-height] {
   gx-edit {
-    .container[data-part="container"] {
+    .gx-edit-container {
       .html-container {
         [data-native-element] {
           position: absolute;
@@ -13,35 +13,28 @@ gx-table-cell[min-height][max-height] {
   }
 }
 
+// Used to disable the borders
+@mixin no-borders {
+  border: none;
+  outline: 0;
+}
+
+// Used to change the placeholder color in the input controls
+// Opacity property is necessary, because some browsers (e.g., mozilla) change this value
+@mixin placeholder-color {
+  $default-placeholder-text-color: #757575c0;
+  color: var(--placeholder-text-color, $default-placeholder-text-color);
+  opacity: 1;
+}
+
 gx-edit {
-  $buttonMinWidth: 2.5rem;
-  $buttonMaxWidth: 25%;
-  $defaultPlaceholderTextColor: #757575c0;
+  $trigger-button-background-color: #dddddde6;
   $trigger-button-font-color: var(--action-tint-color, black);
+  $trigger-button-width: clamp(32px, 2.5em, 64px);
 
+  position: relative;
   overflow: hidden;
-
-  // Used to disable the borders
-  @mixin no-borders {
-    border: none;
-    border-radius: 0;
-    outline: 0;
-  }
-
-  // Used to import the margins from GeneXus
-  @mixin margins {
-    margin-top: var(--margin-top, 0);
-    margin-right: var(--margin-right, 0);
-    margin-bottom: var(--margin-bottom, 0);
-    margin-left: var(--margin-left, 0);
-  }
-
-  // Used to change the placeholder color in the input controls
-  // Opacity property is necessary, because some browsers (e.g., mozilla) change this value
-  @mixin placeholder-color {
-    color: var(--placeholder-text-color, $defaultPlaceholderTextColor);
-    opacity: 1;
-  }
+  @include transition-properties();
 
   // Used to not display the "trigger-content" when show-trigger=false
   &:not([show-trigger]),
@@ -51,54 +44,90 @@ gx-edit {
     }
   }
 
-  &[disabled]:not([disabled="false"]) {
+  // Disable styling for the gx-edit when Format = Text
+  &.disabled {
+    @include disabled-style();
     pointer-events: none;
   }
 
+  // Disable styling for the gx-edit when Format = HTML
+  &.disabled-html {
+    pointer-events: none;
+  }
+
+  & > .trigger-button-container {
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+
+    // Space reserved for trigger-button that support RTL
+    & + .gx-edit-container {
+      margin-inline-end: $trigger-button-width;
+    }
+
+    & > .trigger-button {
+      @include no-borders;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: $trigger-button-width;
+      height: 100%;
+      background-color: $trigger-button-background-color;
+      color: $trigger-button-font-color;
+      transition: filter $transition-duration;
+      overflow: hidden;
+
+      &.not-disabled {
+        pointer-events: all;
+      }
+
+      &:hover {
+        @include hover-style();
+      }
+
+      & > [slot="trigger-content"] {
+        pointer-events: none;
+      }
+    }
+  }
+
   // This applies when the gx-edit is not readonly
-  .container[data-part="container"] {
-    @include margins;
+  .gx-edit-container {
     display: flex;
     flex: 1;
     overflow: hidden;
-    transition: background-color $transition-delay, color $transition-delay,
-      border-color $transition-delay, opacity $transition-delay;
 
-    &:not(.HTML-content) {
-      padding: 0;
-    }
-
-    &.disabled {
-      opacity: 50%;
-    }
-
-    /*  Used when the gx-edit has type="datetime-local" | "date" | "time"
-        and its value is null
-    */
+    // Used when the gx-edit has type="datetime-local" | "date" | "time"
+    // and its value is null
     &.null-date {
       // When the gx-edit is not focused, we hide the input
       &:not(:focus-within) {
-        input[data-native-element] {
+        & > input {
           opacity: 0;
         }
       }
 
       // When the gx-edit is focused, we hide the placeholder
       &:focus-within {
-        .date-placeholder-container {
+        & > .date-placeholder-container {
           opacity: 0;
         }
       }
     }
 
-    // This applies when the gx-edit is also multiline or when format = Text
-    textarea,
-    input[data-native-element] {
+    // This applies when the gx-edit has format = Text and multiline = False
+    & > input {
       @include no-borders;
       flex: 1;
       width: 100%;
       background-color: unset;
-      transition: inherit;
+      color: inherit;
+      transition: opacity $transition-duration;
 
       &::placeholder {
         @include placeholder-color;
@@ -106,13 +135,11 @@ gx-edit {
     }
 
     // Implements a non-native placeholder for date types
-    .date-placeholder-container[data-readonly] {
-      @include no-borders;
+    & > .date-placeholder-container {
       position: absolute;
       flex: 1;
-      background-color: unset;
       pointer-events: none;
-      transition: inherit;
+      transition: opacity $transition-duration;
 
       span {
         @include placeholder-color;
@@ -133,52 +160,15 @@ gx-edit {
         text-align: start;
       }
     }
-
-    .trigger-button-container {
-      min-width: $buttonMinWidth;
-      max-width: $buttonMaxWidth;
-      height: 100%;
-      overflow: hidden;
-
-      .trigger-button {
-        @include no-borders;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex: 1;
-        width: 100%;
-        height: 100%;
-        opacity: 0.8;
-        background-color: #ddd;
-        color: $trigger-button-font-color;
-        transition: filter $transition-delay;
-
-        &:hover {
-          filter: brightness(90%);
-        }
-
-        &:active {
-          filter: brightness(80%);
-        }
-
-        & > [slot="trigger-content"] {
-          pointer-events: none;
-          height: 1.34em;
-        }
-      }
-    }
   }
 
   // This applies when the gx-edit is readonly
   & > [data-readonly] {
-    @include margins;
     display: flex;
     flex: 1;
     position: relative;
-    white-space: break-spaces;
+    // white-space: break-spaces;
     overflow: hidden;
-    transition: background-color $transition-delay, color $transition-delay,
-      border-color $transition-delay, opacity $transition-delay;
 
     .readonly-content-container {
       display: flex;
@@ -206,5 +196,18 @@ gx-edit {
   footer {
     font-size: inherit;
     font-weight: inherit;
+  }
+}
+
+// This applies when the gx-edit has multiline = True
+textarea {
+  @include no-borders;
+  flex: 1;
+  width: 100%;
+  background-color: unset;
+  @include transition-properties();
+
+  &::placeholder {
+    @include placeholder-color;
   }
 }
