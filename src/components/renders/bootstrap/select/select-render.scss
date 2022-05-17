@@ -31,7 +31,9 @@ gx-select {
     }
   }
 
+  // Default style
   & > select {
+    background-color: unset;
     border: none;
     outline: 0;
   }
