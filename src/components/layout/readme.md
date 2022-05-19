@@ -65,7 +65,6 @@ When the left or right target is visible and floating, the center target is mask
 
 | Name                                            | Description                                    |
 | ----------------------------------------------- | ---------------------------------------------- |
-| `--gx-layout-base-z-index`                      | Base z-index for absolute positioned elements  |
 | `--gx-layout-horizontal-target-height`          | Height for horizontal targets (top and bottom) |
 | `--gx-layout-mask-background-color`             | Mask background color                          |
 | `--gx-layout-mask-opacity`                      | Mask opacity                                   |

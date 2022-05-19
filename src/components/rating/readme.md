@@ -54,15 +54,11 @@ Type: `Promise<string>`
 
 ## CSS Custom Properties
 
-| Name                                                            | Description                                                              |
-| --------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| `--active-stars-color`                                          | Set the color that will have the stars.                                  |
-| `--active-stars-shadow-color`                                   | Set the shadow color of actives stars.                                   |
-| `--inactive-stars-color`                                        | Set the color that will have the stars when are not active _(No rated)_. |
-| `--inactive-stars-hover-color`                                  | Set the color of inactive stars when the user is rating.                 |
-| `--star-heigth`                                                 | Set the heigth of each star.                                             |
-| `--star-separation This is for set the space between each star` |                                                                          |
-| `--star-width`                                                  | Set the width of each star.                                              |
+| Name                | Description                                 |
+| ------------------- | ------------------------------------------- |
+| `--star-heigth`     | Set the heigth of each star.                |
+| `--star-separation` | This is for set the space between each star |
+| `--star-width`      | Set the width of each star.                 |
 
 ---
 
