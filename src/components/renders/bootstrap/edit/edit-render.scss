@@ -55,6 +55,11 @@ gx-edit {
     pointer-events: none;
   }
 
+  // Implements the newline() command in GeneXus
+  &[readonly="true"] {
+    white-space: break-spaces;
+  }
+
   & > .trigger-button-container {
     display: flex;
     justify-content: flex-end;
@@ -167,7 +172,6 @@ gx-edit {
     display: flex;
     flex: 1;
     position: relative;
-    // white-space: break-spaces;
     overflow: hidden;
 
     .readonly-content-container {
