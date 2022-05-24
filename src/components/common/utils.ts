@@ -140,3 +140,18 @@ export function attachMouseHorizontalScrollHandler(
   scrollableContainer.addEventListener("mouseleave", stopDragging);
   scrollableContainer.addEventListener("mouseup", stopDragging);
 }
+
+export function attachHorizontalScrollWithWheelHandler(
+  scrollableContainer: HTMLElement
+) {
+  // If we are on a mobile device
+  if (window.matchMedia("(pointer: coarse)").matches) {
+    return;
+  }
+  const SCROLL_SPEED = 0.1875; // 2^(-3) + 2^(-4)
+
+  scrollableContainer.addEventListener("wheel", (event: WheelEvent) => {
+    event.preventDefault();
+    scrollableContainer.scrollLeft += event.deltaY * SCROLL_SPEED;
+  });
+}
