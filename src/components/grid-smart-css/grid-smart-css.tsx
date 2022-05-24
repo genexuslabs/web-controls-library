@@ -11,7 +11,7 @@ import {
 } from "@stencil/core";
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
-import { attachMouseHorizontalScrollHandler } from "../common/utils";
+import { attachHorizontalScrollWithDragHandler } from "../common/utils";
 
 import { VisibilityComponent } from "../common/interfaces";
 
@@ -135,7 +135,7 @@ export class GridSmartCss
         '[slot="grid-content"]'
       );
 
-      attachMouseHorizontalScrollHandler(scrollableContainer);
+      attachHorizontalScrollWithDragHandler(scrollableContainer);
     }
   }
 

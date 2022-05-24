@@ -75,7 +75,7 @@ export function getFileNameWithoutExtension(filePath: string) {
  * Implement horizontal scrolling by dragging the `scrollableContainer` element
  * @param scrollableContainer Draggable element
  */
-export function attachMouseHorizontalScrollHandler(
+export function attachHorizontalScrollWithDragHandler(
   scrollableContainer: HTMLElement
 ) {
   // If we are on a mobile device
