@@ -85,6 +85,7 @@ export function attachHorizontalScrollWithDragHandler(
   const SCROLL_SPEED = 1;
 
   let isMouseDown = false;
+  let needForRAF = true; // To prevent redundant RAF (request animation frame) calls
   let scrollableContainerHasBeenDragged = false;
 
   /** Relative to the left edge of the entire document */
@@ -102,14 +103,19 @@ export function attachHorizontalScrollWithDragHandler(
 
   scrollableContainer.addEventListener("mousemove", (event: MouseEvent) => {
     event.preventDefault();
-    if (!isMouseDown) {
+    if (!isMouseDown || !needForRAF) {
       return;
     }
-    scrollableContainerHasBeenDragged = true;
+    needForRAF = false; // No need to call RAF up until next frame
 
-    const currentXPosition = event.pageX;
-    const walk = (currentXPosition - initialXPosition) * SCROLL_SPEED;
-    scrollableContainer.scrollLeft = initialScrollLeftPosition - walk;
+    requestAnimationFrame(() => {
+      needForRAF = true; // RAF now consumes the movement instruction so a new one can come
+      scrollableContainerHasBeenDragged = true;
+
+      const currentXPosition = event.pageX;
+      const walk = (currentXPosition - initialXPosition) * SCROLL_SPEED;
+      scrollableContainer.scrollLeft = initialScrollLeftPosition - walk;
+    });
   });
 
   /*
