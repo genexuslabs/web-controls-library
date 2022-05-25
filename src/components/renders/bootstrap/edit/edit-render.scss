@@ -152,14 +152,14 @@ gx-edit {
     }
 
     // Used when format = HTML
-    .html-container {
+    & > .html-container {
       display: flex;
       flex: 1;
       position: relative;
       height: 100%;
       overflow: hidden;
 
-      [data-native-element] {
+      & > .gx-edit-content {
         position: relative;
         width: 100%;
         text-align: start;
@@ -168,28 +168,23 @@ gx-edit {
   }
 
   // This applies when the gx-edit is readonly
-  & > [data-readonly] {
+  & > [data-readonly=""] {
     display: flex;
     flex: 1;
     position: relative;
     overflow: hidden;
 
-    .readonly-content-container {
+    & > .readonly-content-container {
       display: flex;
       align-items: inherit;
       flex: 1;
       position: relative;
       height: 100%;
 
-      .readonly-content {
-        position: absolute;
+      & > .gx-edit-content {
+        position: relative;
         width: 100%;
         margin: 0;
-
-        // Used when autoGrow = true
-        &.relative {
-          position: relative;
-        }
       }
     }
   }
@@ -197,6 +192,7 @@ gx-edit {
   // Used to inherit the font properties defined in the GeneXus theme
   h1,
   h2,
+  h3,
   footer {
     font-size: inherit;
     font-weight: inherit;

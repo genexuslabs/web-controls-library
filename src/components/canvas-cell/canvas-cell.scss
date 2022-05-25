@@ -13,11 +13,13 @@ gx-canvas-cell {
   position: absolute;
   overflow: hidden;
 
-  // Used when autoGrow = false in the gx-textblock to ensure the content does
-  // not overflows
+  // Used when autoGrow = false in the gx-textblock and gx-edit controls to
+  // ensure the content does not overflows
   &[max-height] {
-    > gx-textblock::part(content) {
+    & > gx-textblock::part(content),
+    & > gx-form-field > .form-field-group .gx-edit-content {
       position: absolute;
     }
   }
+  // TODO: Improve efficiency of the last selector
 }

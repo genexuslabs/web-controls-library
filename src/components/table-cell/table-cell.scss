@@ -11,14 +11,15 @@ gx-table-cell {
 
   flex-direction: row;
 
-  // Used when autoGrow = false in the gx-textblock to ensure the content does
-  // not overflows
-  // &:not([auto-grow]) {
-  &[max-height] {
-    > gx-textblock::part(content) {
+  // Used when autoGrow = false in the gx-textblock and gx-edit controls to
+  // ensure the content does not overflows
+  &:not([auto-grow]) {
+    & > gx-textblock::part(content),
+    & > gx-form-field > .form-field-group .gx-edit-content {
       position: absolute;
     }
   }
+  // TODO: Improve efficiency of the last selector
 
   &.gx-long-content-fade {
     position: relative;
