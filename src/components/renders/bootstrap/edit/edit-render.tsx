@@ -215,8 +215,8 @@ export class EditRender implements Renderer {
       // If format = HTML
     } else {
       editableElement = (
-        <div class="gx-edit-container" data-part="container">
-          <div class="html-container">
+        <div class="gx-edit-container">
+          <div class="gx-edit-readonly-container">
             <div
               class="gx-edit-content"
               data-native-element
@@ -233,7 +233,7 @@ export class EditRender implements Renderer {
     return [
       edit.readonly && edit.format == "Text" && (
         <div data-readonly="">
-          <div class="readonly-content-container">
+          <div class="gx-line-clamp-container gx-edit-readonly-container">
             <ReadonlyTag
               key="readonly"
               class={{
