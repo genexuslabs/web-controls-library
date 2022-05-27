@@ -3,12 +3,16 @@
 
 gx-table {
   --elevation: 0;
+  --grid-template-areas: unset;
 
-  // Support for margin with variables
   @include reset-variables();
   @include elevation();
   @include visibility(grid);
 
+  // We need to split the "grid-template" properties ("grid-template-area",
+  // "grid-template-columns", "grid-template-rows") to avoid the optimization
+  // of the shorthand property "grid-template"
+  grid-template-areas: var(--grid-template-areas);
   flex: 1;
 
   // gx-table must hide its content overflow to ensure that the border-radius
