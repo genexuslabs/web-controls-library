@@ -109,9 +109,14 @@ export class GridHorizontal
   @Prop() readonly recordCount: number = null;
 
   /**
-   * Number of items per column, for multirow layout.
+   * Specifies the number of rows that will be displayed in the portrait mode.
    */
-  @Prop() readonly rows: number;
+  @Prop() readonly rows: number = 1;
+
+  /**
+   * Specifies the number of rows that will be displayed in the landscape mode.
+   */
+  @Prop() readonly rowsLandscape: number = 1;
 
   /**
    * If `true`, show the scrollbar.
@@ -601,7 +606,9 @@ export class GridHorizontal
       <Host
         {...hostData}
         style={{
-          height: height
+          height: height,
+          "--rows-portrait": this.rows.toString(),
+          "--rows-landscape": this.rowsLandscape.toString()
         }}
       >
         {[
