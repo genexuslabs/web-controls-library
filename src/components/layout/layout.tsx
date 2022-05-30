@@ -10,6 +10,7 @@ import {
   Watch
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
+import { getWindowsOrientation } from "../common/utils";
 
 @Component({
   shadow: false,
@@ -95,6 +96,18 @@ export class Layout implements GxComponent {
   componentDidLoad() {
     document.body.addEventListener("click", this.handleBodyClick, true);
     this.startMediaQueryMonitoring();
+
+    // This event fires when the orientation is changed to "portrait" or "landscape"
+    window
+      .matchMedia("(orientation: portrait")
+      .addEventListener("change", () => {
+        const grids = this.element.querySelectorAll("gx-grid-horizontal");
+        const orientation = getWindowsOrientation();
+
+        grids.forEach(grid => {
+          grid.orientation = orientation;
+        });
+      });
   }
 
   disconnectedCallback() {

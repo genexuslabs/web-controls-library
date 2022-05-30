@@ -15,16 +15,6 @@ gx-grid-horizontal {
 
 // When the grid-smart-cells have the rows-landscape or the rows-portrait
 // attribute, it means that they are inside the gx-grid-horizontal
-.gx-grid-row {
-  @media (orientation: landscape) {
-    &.swiper-slide {
-      height: calc(100% / var(--rows-landscape));
-    }
-  }
-
-  @media (orientation: portrait) {
-    &.swiper-slide {
-      height: calc(100% / var(--rows-portrait));
-    }
-  }
+.gx-grid-row.swiper-slide {
+  height: calc(100% / var(--rows));
 }
