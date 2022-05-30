@@ -93,6 +93,15 @@ export class Layout implements GxComponent {
     }
   }
 
+  private updateGridsOrientation() {
+    const grids = this.element.querySelectorAll("gx-grid-horizontal");
+    const orientation = getWindowsOrientation();
+
+    grids.forEach(grid => {
+      grid.orientation = orientation;
+    });
+  }
+
   componentDidLoad() {
     document.body.addEventListener("click", this.handleBodyClick, true);
     this.startMediaQueryMonitoring();
@@ -100,18 +109,14 @@ export class Layout implements GxComponent {
     // This event fires when the orientation is changed to "portrait" or "landscape"
     window
       .matchMedia("(orientation: portrait")
-      .addEventListener("change", () => {
-        const grids = this.element.querySelectorAll("gx-grid-horizontal");
-        const orientation = getWindowsOrientation();
-
-        grids.forEach(grid => {
-          grid.orientation = orientation;
-        });
-      });
+      .addEventListener("change", () => this.updateGridsOrientation());
   }
 
   disconnectedCallback() {
     document.body.removeEventListener("click", this.handleBodyClick);
+    window
+      .matchMedia("(orientation: portrait")
+      .removeEventListener("change", this.updateGridsOrientation);
     this.endMediaQueryMonitoring();
   }
 
