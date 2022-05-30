@@ -27,8 +27,7 @@ export class CanvasCell implements GxComponent {
   @Prop() readonly maxHeight: string = null;
 
   /**
-   * This attribute defines the minimum height of the cell when its contents
-   * are visible.
+   * This attribute defines the minimum height of the cell.
    */
   @Prop() readonly minHeight: string = "100%";
 

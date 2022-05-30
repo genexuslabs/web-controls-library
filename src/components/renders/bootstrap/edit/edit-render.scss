@@ -33,6 +33,7 @@ gx-edit {
   $trigger-button-width: clamp(32px, 2.5em, 64px);
 
   position: relative;
+  text-align: start;
   overflow: hidden;
   @include transition-properties();
 
@@ -53,6 +54,11 @@ gx-edit {
   // Disable styling for the gx-edit when Format = HTML
   &.disabled-html {
     pointer-events: none;
+  }
+
+  // Implements the newline() command in GeneXus
+  &[readonly="true"] {
+    white-space: break-spaces;
   }
 
   & > .trigger-button-container {
@@ -147,45 +153,37 @@ gx-edit {
     }
 
     // Used when format = HTML
-    .html-container {
+    & > .gx-edit-readonly-container {
       display: flex;
       flex: 1;
       position: relative;
       height: 100%;
       overflow: hidden;
 
-      [data-native-element] {
+      & > .gx-edit-content {
         position: relative;
         width: 100%;
-        text-align: start;
       }
     }
   }
 
   // This applies when the gx-edit is readonly
-  & > [data-readonly] {
+  & > [data-readonly=""] {
     display: flex;
     flex: 1;
     position: relative;
-    // white-space: break-spaces;
     overflow: hidden;
 
-    .readonly-content-container {
+    & > .gx-edit-readonly-container {
       display: flex;
-      align-items: inherit;
       flex: 1;
       position: relative;
       height: 100%;
 
-      .readonly-content {
-        position: absolute;
+      & > .gx-edit-content {
+        position: relative;
         width: 100%;
         margin: 0;
-
-        // Used when autoGrow = true
-        &.relative {
-          position: relative;
-        }
       }
     }
   }
@@ -193,6 +191,7 @@ gx-edit {
   // Used to inherit the font properties defined in the GeneXus theme
   h1,
   h2,
+  h3,
   footer {
     font-size: inherit;
     font-weight: inherit;

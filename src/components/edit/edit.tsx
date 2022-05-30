@@ -43,7 +43,7 @@ export class Edit implements FormComponent, HighlightableComponent {
       }
     ]);
 
-    makeLinesClampable(this, ".readonly-content-container", ".line-measuring");
+    makeLinesClampable(this, ".gx-line-clamp-container", ".line-measuring");
   }
 
   private renderer: EditRender;

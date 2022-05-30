@@ -14,7 +14,7 @@ gx-form-field {
 :not([align]) {
   & > gx-form-field {
     [data-part="field"],
-    [data-readonly] {
+    .gx-edit-readonly-container {
       text-align: start;
     }
 
@@ -30,7 +30,7 @@ gx-form-field {
 [align="center"] {
   & > gx-form-field {
     [data-part="field"],
-    [data-readonly] {
+    .gx-edit-readonly-container {
       text-align: center;
     }
 
@@ -46,7 +46,7 @@ gx-form-field {
 [align="right"] {
   & > gx-form-field {
     [data-part="field"],
-    [data-readonly] {
+    .gx-edit-readonly-container {
       text-align: end;
     }
 
@@ -61,13 +61,9 @@ gx-form-field {
 
 [valign="top"] {
   & > gx-form-field {
-    /*  gx-radio-group has data-readonly property in its definition, so with
-        :not([direction]) selector we make sure that gx-radio-group will not be
-        affected.
-    */
-    [data-readonly]:not([direction]),
+    .gx-edit-readonly-container,
     [data-part="container"],
-    gx-checkbox {
+    gx-checkbox > .option-and-label-container {
       align-items: flex-start;
     }
 
@@ -87,12 +83,11 @@ gx-form-field {
   }
 }
 
-[valign="middle"],
-:not([valign]) {
+[valign="middle"] {
   & > gx-form-field {
-    [data-readonly]:not([direction]),
+    .gx-edit-readonly-container,
     [data-part="container"],
-    gx-checkbox {
+    gx-checkbox > .option-and-label-container {
       align-items: center;
     }
 
@@ -114,7 +109,7 @@ gx-form-field {
 
 [valign="bottom"] {
   & > gx-form-field {
-    [data-readonly]:not([direction]),
+    .gx-edit-readonly-container,
     [data-part="container"],
     gx-checkbox {
       align-items: flex-end;
@@ -132,6 +127,35 @@ gx-form-field {
 
     gx-gauge {
       align-items: flex-end;
+    }
+  }
+}
+
+// If the inner control is readonly, the default vertical alignment might vary
+:not([valign]) {
+  & > gx-form-field {
+    // gx-checkbox's default is center
+    gx-checkbox[readonly="true"] > .option-and-label-container {
+      align-items: flex-start;
+    }
+
+    [data-part="container"] {
+      align-items: center;
+    }
+
+    // gx-radio-group's default is flex-start
+    gx-radio-group:not([readonly="true"]) {
+      &[direction="vertical"] {
+        justify-content: center;
+      }
+
+      &[direction="horizontal"] {
+        align-content: center;
+      }
+    }
+
+    gx-gauge {
+      align-items: center;
     }
   }
 }

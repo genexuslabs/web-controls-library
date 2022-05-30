@@ -1,23 +1,23 @@
 import { CssClasses } from "../interfaces";
 
 const transforms = {
-  evenRow: "-gx-even-row",
-  groupCaption: "-gx-group-caption",
-  highlighted: "-gx-highlighted",
-  highlightedFocusWithin: "-gx-highlighted-focus-within",
-  hover: "-gx-hover",
-  horizontalLine: "-gx-horizontal-line",
-  label: "-gx-label",
-  labelContainer: "-gx-label-container",
-  labelHighlighted: "-gx-label-highlighted",
-  labelPositionLeft: "-gx-label-position-left",
-  labelPositionRight: "-gx-label-position-right",
-  oddRow: "-gx-odd-row",
-  selectedTabCaption: "-gx-selected-tab-caption",
-  tabsPosition: "-gx-tabs-position",
-  tabsPositionCaption: "-gx-tabs-position-caption",
-  unselectedTabCaption: "-gx-unselected-tab-caption",
-  vars: "-gx-vars"
+  evenRow: "--even-row",
+  groupCaption: "--group-caption",
+  highlighted: "--highlighted",
+  highlightedFocusWithin: "--focus-within",
+  hover: "--hover",
+  horizontalLine: "--horizontal-line",
+  label: "--label",
+  labelContainer: "--label-container",
+  labelHighlighted: "--label-highlighted",
+  labelPositionLeft: "--label-position-left",
+  labelPositionRight: "--label-position-right",
+  oddRow: "--odd-row",
+  selectedTabCaption: "--selected-tab-page",
+  tabsPosition: "--tabs-position",
+  tabsPositionCaption: "--tabs-position-caption",
+  unselectedTabCaption: "--unselected-tab-page",
+  vars: "--vars"
 };
 
 export function tEvenRow(className: string): string {

@@ -36,6 +36,16 @@ If the main image is the only image specified, it will be displayed both when th
 | `size`          | `size`           | This attribute lets you specify the size of the button. \| Value \| Details \| \| -------- \| ------------------------------------------------------- \| \| `large` \| Large sized button. \| \| `normal` \| Standard sized button. \| \| `small` \| Small sized button. \|                                                                                                                                                                                                                            | `"large" \| "normal" \| "small"`                        | `"normal"`   |
 | `width`         | `width`          | This attribute lets you specify the width.                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `string`                                                | `""`         |
 
+## CSS Custom Properties
+
+| Name                              | Description                                 |
+| --------------------------------- | ------------------------------------------- |
+| `--gx-button-image-margin-bottom` | Button image bottom margin (0px by default) |
+| `--gx-button-image-margin-left`   | Button image left margin (0px by default)   |
+| `--gx-button-image-margin-right`  | Button image right margin (0px by default)  |
+| `--gx-button-image-margin-top`    | Button image top margin (0px by default)    |
+| `--gx-button-image-size`          | Button image size (16px by default)         |
+
 ## Dependencies
 
 ### Used by

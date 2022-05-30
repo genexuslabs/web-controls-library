@@ -13,6 +13,10 @@ import { watchForItems } from "../common/watch-items";
 
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
+import {
+  attachHorizontalScrollWithDragHandler,
+  attachHorizontalScrollWithWheelHandler
+} from "../common/utils";
 
 @Component({
   shadow: true,
@@ -95,6 +99,11 @@ export class NavBar implements GxComponent {
 
   private isTopPosition: boolean;
 
+  // Refs
+  private navbarLinks: HTMLDivElement;
+  private navbarActionsHigh: HTMLDivElement;
+  private navbarActionsNormal: HTMLDivElement;
+
   private handleToggleButtonClick = (e: MouseEvent) => {
     this.toggleButtonClick.emit(e);
   };
@@ -132,6 +141,18 @@ export class NavBar implements GxComponent {
       "gx-navbar-item",
       () => this.checkChildActions()
     );
+
+    // - - - - - - - - - -   HANDLERS   - - - - - - - - - -
+    attachHorizontalScrollWithDragHandler(this.navbarLinks);
+    attachHorizontalScrollWithWheelHandler(this.navbarLinks);
+
+    if (this.isTopPosition) {
+      attachHorizontalScrollWithDragHandler(this.navbarActionsHigh);
+      attachHorizontalScrollWithDragHandler(this.navbarActionsNormal);
+
+      attachHorizontalScrollWithWheelHandler(this.navbarActionsHigh);
+      attachHorizontalScrollWithWheelHandler(this.navbarActionsNormal);
+    }
   }
 
   disconnectedCallback() {
@@ -140,6 +161,10 @@ export class NavBar implements GxComponent {
       this.watchForItemsObserver.disconnect();
       this.watchForItemsObserver = undefined;
     }
+
+    this.navbarLinks = null;
+    this.navbarActionsHigh = null;
+    this.navbarActionsNormal = null;
   }
 
   private checkChildActions() {
@@ -214,7 +239,10 @@ export class NavBar implements GxComponent {
               </div>
             )}
 
-            <div class="gx-navbar-links">
+            <div
+              class="gx-navbar-links"
+              ref={el => (this.navbarLinks = el as HTMLDivElement)}
+            >
               <slot name="navigation" />
             </div>
 
@@ -248,7 +276,10 @@ export class NavBar implements GxComponent {
 
     return [
       <div class="gx-navbar-actions">
-        <div class="gx-navbar-actions-high">
+        <div
+          class="gx-navbar-actions-high"
+          ref={el => (this.navbarActionsHigh = el as HTMLDivElement)}
+        >
           <slot name="high-priority-action" />
         </div>
 
@@ -256,7 +287,10 @@ export class NavBar implements GxComponent {
           <span class="gx-navbar-actions--separator" />
         )}
 
-        <div class="gx-navbar-actions-normal">
+        <div
+          class="gx-navbar-actions-normal"
+          ref={el => (this.navbarActionsNormal = el as HTMLDivElement)}
+        >
           <slot name="normal-priority-action" />
         </div>
       </div>,

@@ -4,6 +4,7 @@
 .gx-grid-row {
   @include reset-variables();
   display: flex;
+  flex-direction: column;
   position: relative;
   min-width: max-content;
 

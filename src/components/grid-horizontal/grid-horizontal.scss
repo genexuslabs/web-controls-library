@@ -17,14 +17,14 @@ gx-grid-horizontal {
 // attribute, it means that they are inside the gx-grid-horizontal
 .gx-grid-row {
   @media (orientation: landscape) {
-    &[rows-landscape] {
-      height: calc(100% / var(--rows-landscape, 1));
+    &.swiper-slide {
+      height: calc(100% / var(--rows-landscape));
     }
   }
 
   @media (orientation: portrait) {
-    &[rows-portrait] {
-      height: calc(100% / var(--rows-portrait, 1));
+    &.swiper-slide {
+      height: calc(100% / var(--rows-portrait));
     }
   }
 }

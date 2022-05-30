@@ -215,9 +215,13 @@ export class EditRender implements Renderer {
       // If format = HTML
     } else {
       editableElement = (
-        <div class="gx-edit-container" data-part="container">
-          <div class="html-container">
-            <div data-native-element innerHTML={edit.inner}></div>
+        <div class="gx-edit-container">
+          <div class="gx-edit-readonly-container">
+            <div
+              class="gx-edit-content"
+              data-native-element
+              innerHTML={edit.inner}
+            ></div>
           </div>
         </div>
       );
@@ -229,13 +233,12 @@ export class EditRender implements Renderer {
     return [
       edit.readonly && edit.format == "Text" && (
         <div data-readonly="">
-          <div class="readonly-content-container">
+          <div class="gx-line-clamp-container gx-edit-readonly-container">
             <ReadonlyTag
               key="readonly"
               class={{
-                "readonly-content": true,
-                "gx-line-clamp": this.component.lineClamp,
-                relative: !this.component.lineClamp
+                "gx-edit-content": true,
+                "gx-line-clamp": this.component.lineClamp
               }}
               style={
                 this.component.lineClamp && {

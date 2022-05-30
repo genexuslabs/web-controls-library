@@ -11,6 +11,8 @@ import {
 } from "@stencil/core";
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
+import { attachHorizontalScrollWithDragHandler } from "../common/utils";
+
 import { VisibilityComponent } from "../common/interfaces";
 
 @Component({
@@ -23,8 +25,6 @@ export class GridSmartCss
   constructor() {
     this.handleGxInfinite = this.handleGxInfinite.bind(this);
   }
-
-  private CSS_NAME_MOUSE_DRAG_ACTIVE = "gx-smart-cell-drag-active";
 
   @Element() element!: HTMLGxGridSmartCssElement;
 
@@ -130,7 +130,13 @@ export class GridSmartCss
   }
 
   componentDidLoad() {
-    this.attachMouseScrollHandler();
+    if (this.isHorizontal()) {
+      const scrollableContainer: HTMLElement = this.element.querySelector(
+        '[slot="grid-content"]'
+      );
+
+      attachHorizontalScrollWithDragHandler(scrollableContainer);
+    }
   }
 
   render() {
@@ -152,51 +158,5 @@ export class GridSmartCss
     if (this.loadingState !== "loading") {
       this.gxInfiniteThresholdReached.emit();
     }
-  }
-
-  private getScrollableContainer(): HTMLElement {
-    return this.element.querySelector('[slot="grid-content"]');
-  }
-
-  private attachMouseScrollHandler() {
-    if (
-      !this.isHorizontal() ||
-      window.matchMedia("(pointer: coarse)").matches
-    ) {
-      return;
-    }
-    const slider: HTMLElement = this.getScrollableContainer();
-
-    let isDown = false;
-    let startX;
-    let scrollLeft;
-
-    slider.addEventListener("mousedown", e => {
-      isDown = true;
-      slider.classList.add(this.CSS_NAME_MOUSE_DRAG_ACTIVE);
-      startX = e.pageX - slider.offsetLeft;
-      scrollLeft = slider.scrollLeft;
-    });
-
-    slider.addEventListener("mouseleave", () => {
-      isDown = false;
-      slider.classList.remove("active");
-    });
-
-    slider.addEventListener("mouseup", () => {
-      isDown = false;
-      slider.classList.remove(this.CSS_NAME_MOUSE_DRAG_ACTIVE);
-    });
-
-    slider.addEventListener("mousemove", e => {
-      if (!isDown) {
-        return;
-      }
-      e.preventDefault();
-      const x = e.pageX - slider.offsetLeft;
-      const SCROLL_SPEED = 1;
-      const walk = (x - startX) * SCROLL_SPEED;
-      slider.scrollLeft = scrollLeft - walk;
-    });
   }
 }
