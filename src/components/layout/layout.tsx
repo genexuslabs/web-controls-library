@@ -63,6 +63,7 @@ export class Layout implements GxComponent {
   @Event() verticalTargetsBreakpointMatchChange: EventEmitter;
 
   private mediaQueryList: MediaQueryList;
+  private mediaQueryOrientation: MediaQueryList;
   private isVerticalTargetsBreakpoint = false;
 
   @Watch("rightHidden")
@@ -105,18 +106,10 @@ export class Layout implements GxComponent {
   componentDidLoad() {
     document.body.addEventListener("click", this.handleBodyClick, true);
     this.startMediaQueryMonitoring();
-
-    // This event fires when the orientation is changed to "portrait" or "landscape"
-    window
-      .matchMedia("(orientation: portrait)")
-      .addEventListener("change", () => this.updateGridsOrientation());
   }
 
   disconnectedCallback() {
     document.body.removeEventListener("click", this.handleBodyClick);
-    window
-      .matchMedia("(orientation: portrait)")
-      .removeEventListener("change", this.updateGridsOrientation);
     this.endMediaQueryMonitoring();
   }
 
@@ -129,6 +122,12 @@ export class Layout implements GxComponent {
     );
     this.updateVerticalTargetsBreakpointStatus(this.mediaQueryList.matches);
     this.mediaQueryList.addEventListener("change", this.handleMediaQueryChange);
+
+    // This event fires when the orientation is changed to "portrait" or "landscape"
+    this.mediaQueryOrientation = window.matchMedia("(orientation: portrait)");
+    this.mediaQueryOrientation.addEventListener("change", () =>
+      this.updateGridsOrientation()
+    );
   }
 
   private handleMediaQueryChange(event: MediaQueryListEvent) {
@@ -146,6 +145,11 @@ export class Layout implements GxComponent {
     this.mediaQueryList.removeEventListener(
       "change",
       this.handleMediaQueryChange
+    );
+
+    this.mediaQueryOrientation.removeEventListener(
+      "change",
+      this.updateGridsOrientation
     );
   }
 
