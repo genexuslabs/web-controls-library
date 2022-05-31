@@ -108,14 +108,14 @@ export class Layout implements GxComponent {
 
     // This event fires when the orientation is changed to "portrait" or "landscape"
     window
-      .matchMedia("(orientation: portrait")
+      .matchMedia("(orientation: portrait)")
       .addEventListener("change", () => this.updateGridsOrientation());
   }
 
   disconnectedCallback() {
     document.body.removeEventListener("click", this.handleBodyClick);
     window
-      .matchMedia("(orientation: portrait")
+      .matchMedia("(orientation: portrait)")
       .removeEventListener("change", this.updateGridsOrientation);
     this.endMediaQueryMonitoring();
   }
