@@ -114,7 +114,7 @@ export namespace Components {
      */
     maxHeight: string;
     /**
-     * This attribute defines the minimum height of the cell when its contents are visible.
+     * This attribute defines the minimum height of the cell.
      */
     minHeight: string;
     /**
@@ -548,6 +548,10 @@ export namespace Components {
      */
     options: SwiperOptions;
     /**
+     * Specifies the orientation mode.
+     */
+    orientation: "portrait" | "landscape";
+    /**
      * If `true`, show the pagination buttons.
      */
     pager: true;
@@ -556,9 +560,13 @@ export namespace Components {
      */
     recordCount: number;
     /**
-     * Number of items per column, for multirow layout.
+     * Specifies the number of rows that will be displayed in the portrait mode.
      */
     rows: number;
+    /**
+     * Specifies the number of rows that will be displayed in the landscape mode.
+     */
+    rowsLandscape: number;
     /**
      * If `true`, show the scrollbar.
      */
@@ -663,14 +671,6 @@ export namespace Components {
      * Whether this row is even position or not. This is specially required in Virtual scroll scenarios where the position in the DOM is not the real position in the collection.
      */
     isRowEven: false;
-    /**
-     * Specifies the number of rows that will be displayed in the landscape mode.
-     */
-    rowsLandscape: number;
-    /**
-     * Specifies the number of rows that will be displayed in the portrait mode.
-     */
-    rowsPortrait: number;
     /**
      * True to show horizontal line.
      */
@@ -1822,7 +1822,7 @@ export namespace Components {
   }
   interface GxTableCell {
     /**
-     * Defines the horizontal aligmnent of the content of the cell.
+     * Defines the horizontal alignment of the content of the cell.
      */
     align: "left" | "right" | "center";
     /**
@@ -1846,7 +1846,7 @@ export namespace Components {
      */
     showContentFade: false;
     /**
-     * Defines the vertical aligmnent of the content of the cell.
+     * Defines the vertical alignment of the content of the cell.
      */
     valign: "top" | "bottom" | "middle";
   }
@@ -2473,7 +2473,7 @@ declare namespace LocalJSX {
      */
     maxHeight?: string;
     /**
-     * This attribute defines the minimum height of the cell when its contents are visible.
+     * This attribute defines the minimum height of the cell.
      */
     minHeight?: string;
     /**
@@ -2985,6 +2985,10 @@ declare namespace LocalJSX {
      */
     options?: SwiperOptions;
     /**
+     * Specifies the orientation mode.
+     */
+    orientation?: "portrait" | "landscape";
+    /**
      * If `true`, show the pagination buttons.
      */
     pager?: true;
@@ -2993,9 +2997,13 @@ declare namespace LocalJSX {
      */
     recordCount?: number;
     /**
-     * Number of items per column, for multirow layout.
+     * Specifies the number of rows that will be displayed in the portrait mode.
      */
     rows?: number;
+    /**
+     * Specifies the number of rows that will be displayed in the landscape mode.
+     */
+    rowsLandscape?: number;
     /**
      * If `true`, show the scrollbar.
      */
@@ -3045,14 +3053,6 @@ declare namespace LocalJSX {
      * Whether this row is even position or not. This is specially required in Virtual scroll scenarios where the position in the DOM is not the real position in the collection.
      */
     isRowEven?: false;
-    /**
-     * Specifies the number of rows that will be displayed in the landscape mode.
-     */
-    rowsLandscape?: number;
-    /**
-     * Specifies the number of rows that will be displayed in the portrait mode.
-     */
-    rowsPortrait?: number;
     /**
      * True to show horizontal line.
      */
@@ -4352,7 +4352,7 @@ declare namespace LocalJSX {
   }
   interface GxTableCell {
     /**
-     * Defines the horizontal aligmnent of the content of the cell.
+     * Defines the horizontal alignment of the content of the cell.
      */
     align?: "left" | "right" | "center";
     /**
@@ -4376,7 +4376,7 @@ declare namespace LocalJSX {
      */
     showContentFade?: false;
     /**
-     * Defines the vertical aligmnent of the content of the cell.
+     * Defines the vertical alignment of the content of the cell.
      */
     valign?: "top" | "bottom" | "middle";
   }

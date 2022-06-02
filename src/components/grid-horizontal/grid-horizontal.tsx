@@ -15,6 +15,7 @@ import Swiper, { SwiperOptions } from "swiper";
 
 import { HighlightableComponent } from "../common/highlightable";
 import { VisibilityComponent } from "../common/interfaces";
+import { getWindowsOrientation } from "../common/utils";
 
 @Component({
   styleUrl: "grid-horizontal.scss",
@@ -96,6 +97,11 @@ export class GridHorizontal
    * See http://idangero.us/swiper/api/ for valid options
    */
   @Prop() readonly options: SwiperOptions = {};
+
+  /**
+   * Specifies the orientation mode.
+   */
+  @Prop() orientation: "portrait" | "landscape" = "portrait";
 
   /**
    * If `true`, show the pagination buttons.
@@ -236,6 +242,15 @@ export class GridHorizontal
     if (this.isInitialized()) {
       Object.assign(this.swiper.params, this.options);
     }
+  }
+
+  @Watch("orientation")
+  updateSlidesPerColumn() {
+    window.requestAnimationFrame(() => this.ensureSwiper(true));
+  }
+
+  componentWillLoad() {
+    this.orientation = getWindowsOrientation();
   }
 
   componentDidLoad() {
@@ -406,9 +421,9 @@ export class GridHorizontal
     this.swiper.allowTouchMove = !lock;
   }
 
-  private ensureSwiper(): boolean {
+  private ensureSwiper(orientationDidChange = false): boolean {
     if (
-      this.swiper === null &&
+      (this.swiper === null || orientationDidChange) &&
       this.recordCount > 0 &&
       this.loadingState !== "loading"
     ) {
@@ -438,6 +453,9 @@ export class GridHorizontal
   }
 
   private normalizeOptions(): SwiperOptions {
+    const slidesPerColumnOrientation =
+      this.orientation === "portrait" ? this.rows : this.rowsLandscape;
+
     const swiperOptions: SwiperOptions = {
       autoHeight: false,
       autoplay: false,
@@ -458,7 +476,7 @@ export class GridHorizontal
       setWrapperSize: false,
       slidesOffsetAfter: 0,
       slidesOffsetBefore: 0,
-      slidesPerColumn: this.optionValueDefault(this.rows, 1),
+      slidesPerColumn: this.optionValueDefault(slidesPerColumnOrientation, 1),
       slidesPerColumnFill: this.fillMode,
       slidesPerGroup: this.optionValueDefault(this.itemsPerGroup, 1),
       slidesPerView: this.optionValueDefault(this.columns, 1),
@@ -607,8 +625,10 @@ export class GridHorizontal
         {...hostData}
         style={{
           height: height,
-          "--rows-portrait": this.rows.toString(),
-          "--rows-landscape": this.rowsLandscape.toString()
+          "--rows":
+            this.orientation === "portrait"
+              ? this.rows.toString()
+              : this.rowsLandscape.toString()
         }}
       >
         {[

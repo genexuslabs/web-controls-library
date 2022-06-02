@@ -71,6 +71,12 @@ export function getFileNameWithoutExtension(filePath: string) {
   return fileName.substring(0, extensionIndex);
 }
 
+export function getWindowsOrientation(): "portrait" | "landscape" {
+  return window.matchMedia("(orientation: portrait)").matches
+    ? "portrait"
+    : "landscape";
+}
+
 /**
  * Implement horizontal scrolling by dragging the `scrollableContainer` element
  * @param scrollableContainer Draggable element
