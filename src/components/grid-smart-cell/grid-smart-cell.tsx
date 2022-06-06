@@ -36,7 +36,7 @@ export class GridSmartCell
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = true;
+  @Prop() readonly highlightable = false;
 
   /**
    * Whether this row is even position or not. This is specially required in Virtual scroll scenarios
@@ -74,7 +74,7 @@ export class GridSmartCell
           [classes.vars]: true,
           [horizontalLineClasses]: this.showHorizontalLine
         }}
-        data-has-action
+        data-has-action={this.highlightable ? "" : undefined}
       ></Host>
     );
   }
