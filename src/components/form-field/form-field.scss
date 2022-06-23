@@ -159,3 +159,83 @@ gx-form-field {
     }
   }
 }
+
+// Start - Refactoring for gx-form-field controls alignment
+[align="left"],
+:not([align]) {
+  & > gx-form-field {
+    [data-text-align] {
+      text-align: start;
+    }
+
+    [data-align] {
+      justify-content: flex-start;
+    }
+  }
+}
+
+[align="center"] {
+  & > gx-form-field {
+    [data-text-align] {
+      text-align: center;
+    }
+
+    [data-align] {
+      justify-content: center;
+    }
+  }
+}
+
+[align="right"] {
+  & > gx-form-field {
+    [data-text-align] {
+      text-align: end;
+    }
+
+    [data-align] {
+      justify-content: flex-end;
+    }
+  }
+}
+
+:not([valign]) {
+  & > gx-form-field {
+    // Default vertical alignment is middle when readonly="false"
+    [data-valign] {
+      align-items: center;
+    }
+
+    // Default vertical alignment is top when readonly="true"
+    [data-valign-readonly] {
+      align-items: flex-start;
+    }
+  }
+}
+
+[valign="top"] {
+  & > gx-form-field {
+    [data-valign],
+    [data-valign-readonly] {
+      align-items: flex-start;
+    }
+  }
+}
+
+[valign="middle"] {
+  & > gx-form-field {
+    [data-valign],
+    [data-valign-readonly] {
+      align-items: center;
+    }
+  }
+}
+
+[valign="bottom"] {
+  & > gx-form-field {
+    [data-valign],
+    [data-valign-readonly] {
+      align-items: flex-end;
+    }
+  }
+}
+// End - Refactoring for gx-form-field controls alignment

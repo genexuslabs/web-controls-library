@@ -136,6 +136,9 @@ export class Switch implements FormComponent {
           [classes.highlighted]: true,
           disabled: this.disabled
         }}
+        // Horizontal and vertical alignment support
+        data-align
+        data-valign
       >
         <label
           htmlFor={this.inputId}
