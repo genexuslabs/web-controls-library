@@ -1,6 +1,7 @@
 import { newE2EPage, E2EPage } from "@stencil/core/testing";
 import { ScreenshotOptions } from "@stencil/core/internal";
 import { IMAGE_NAME_SEPARATOR } from "./templates";
+import { delay } from "../src/components/common/utils";
 
 const TEST_CONFIG: ScreenshotOptions = {
   clip: { x: 0, y: 0, width: 200, height: 256 },
@@ -62,8 +63,6 @@ const VERTICAL_ALIGNS_WITH_NUMBER_MAP = {
   'valign="middle"': "2-Middle",
   'valign="bottom"': "3-Bottom"
 };
-
-const delay = ms => new Promise(res => setTimeout(res, ms));
 
 interface AlignmentTestInnerControlOptions {
   align: string;
