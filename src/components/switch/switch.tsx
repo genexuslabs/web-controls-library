@@ -10,6 +10,9 @@ import {
 } from "@stencil/core";
 import { FormComponent } from "../common/interfaces";
 
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
+
 let autoSwitchId = 0;
 
 @Component({
@@ -39,6 +42,11 @@ export class Switch implements FormComponent {
    * The value when the switch is 'on'
    */
   @Prop() readonly checkedValue: string;
+
+  /**
+   * A CSS class to set as the `gx-switch` element class.
+   */
+  @Prop() readonly cssClass: string;
 
   /**
    * This attribute allows you specify if the element is disabled.
@@ -102,6 +110,9 @@ export class Switch implements FormComponent {
   }
 
   render() {
+    // Styling for gx-switch control.
+    const classes = getClasses(this.cssClass);
+
     const checked = this.value === this.checkedValue;
 
     const inputAttrs = {
@@ -118,7 +129,14 @@ export class Switch implements FormComponent {
     };
 
     return (
-      <Host>
+      <Host
+        class={{
+          [this.cssClass]: !!this.cssClass,
+          [classes.vars]: true,
+          [classes.highlighted]: true,
+          disabled: this.disabled
+        }}
+      >
         <label
           htmlFor={this.inputId}
           class={{
