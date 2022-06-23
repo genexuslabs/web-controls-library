@@ -1,25 +1,15 @@
-import { newE2EPage } from "@stencil/core/testing";
 import { runAlignmentTest } from "../../../../../tests/alignment";
 import { Button, SHORT_TEXT } from "../../../../../tests/templates";
 
 describe("gx-button", () => {
-  const alignmentTestOptions = {
+  const alignmentTestOptionsAlign = {
     autoGrow: [false],
     shouldTestAlign: true,
-    shouldTestVAlign: true
+    shouldTestVAlign: false
   };
 
-  it("renders", async () => {
-    const page = await newE2EPage();
-
-    await page.setContent("<gx-button>Hello world!</gx-button>");
-    const element = await page.find("gx-button");
-    expect(element).toHaveClass("hydrated");
-    expect(element.textContent.trim()).toEqual("Hello world!");
-  });
-
   // + + + + + + + + + + + + + + + +
-  //        WIDTH AND HEIGHT
+  //              WIDTH
   // + + + + + + + + + + + + + + + +
   // - - - - - - - - Caption - - - - - - - -
   runAlignmentTest(
@@ -28,13 +18,12 @@ describe("gx-button", () => {
       disabled: false,
       showMainImage: false,
       showDisabledImage: false,
-      width: "100px",
-      height: "77px"
+      width: "100px"
     }),
     "Button",
-    "caption, w=100, h=77",
-    "Caption_Width100px_Height77px",
-    alignmentTestOptions
+    "caption, w=100",
+    "Caption_Width100px",
+    alignmentTestOptionsAlign
   );
 
   runAlignmentTest(
@@ -43,13 +32,12 @@ describe("gx-button", () => {
       disabled: true,
       showMainImage: false,
       showDisabledImage: false,
-      width: "100px",
-      height: "77px"
+      width: "100px"
     }),
     "Button",
-    "caption, w=100, h=77, disabled",
-    "Caption_Width100px_Height77px_Disabled",
-    alignmentTestOptions
+    "caption, w=100, disabled",
+    "Caption_Width100px_Disabled",
+    alignmentTestOptionsAlign
   );
 
   // - - - - - - - - Image - - - - - - - -
@@ -59,13 +47,12 @@ describe("gx-button", () => {
       disabled: false,
       showMainImage: true,
       showDisabledImage: true,
-      width: "100px",
-      height: "77px"
+      width: "100px"
     }),
     "Button",
-    "w=100, h=77, images",
-    "Width100px_Height77px_Image",
-    alignmentTestOptions
+    "w=100, images",
+    "Width100px_Image",
+    alignmentTestOptionsAlign
   );
 
   runAlignmentTest(
@@ -74,13 +61,12 @@ describe("gx-button", () => {
       disabled: true,
       showMainImage: true,
       showDisabledImage: true,
-      width: "100px",
-      height: "77px"
+      width: "100px"
     }),
     "Button",
-    "w=100, h=77, images, disabled",
-    "Width100px_Height77px_Image_Disabled",
-    alignmentTestOptions
+    "w=100, images, disabled",
+    "Width100px_Image_Disabled",
+    alignmentTestOptionsAlign
   );
 
   // - - - - - - - - Caption and Image - - - - - - - -
@@ -90,13 +76,12 @@ describe("gx-button", () => {
       disabled: false,
       showMainImage: true,
       showDisabledImage: true,
-      width: "100px",
-      height: "77px"
+      width: "100px"
     }),
     "Button",
-    "caption, w=100, h=77, images",
-    "Caption_Width100px_Height77px_Image",
-    alignmentTestOptions
+    "caption, w=100, images",
+    "Caption_Width100px_Image",
+    alignmentTestOptionsAlign
   );
 
   runAlignmentTest(
@@ -105,12 +90,11 @@ describe("gx-button", () => {
       disabled: true,
       showMainImage: true,
       showDisabledImage: true,
-      width: "100px",
-      height: "77px"
+      width: "100px"
     }),
     "Button",
-    "caption, w=100, h=77, images, disabled",
-    "Caption_Width100px_Height77px_Image_Disabled",
-    alignmentTestOptions
+    "caption, w=100, images, disabled",
+    "Caption_Width100px_Image_Disabled",
+    alignmentTestOptionsAlign
   );
 });
