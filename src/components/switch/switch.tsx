@@ -5,12 +5,13 @@ import {
   EventEmitter,
   Method,
   Prop,
-  Watch,
   h,
   Host
 } from "@stencil/core";
-import { SwitchRender } from "../renders/bootstrap/switch/switch-render";
 import { FormComponent } from "../common/interfaces";
+
+let autoSwitchId = 0;
+
 @Component({
   shadow: false,
   styleUrl: "switch.scss",
@@ -18,27 +19,26 @@ import { FormComponent } from "../common/interfaces";
 })
 export class Switch implements FormComponent {
   constructor() {
-    this.renderer = new SwitchRender(this);
+    if (!this.inputId) {
+      this.inputId = this.element.id
+        ? `${this.element.id}_switch`
+        : `gx-switch-auto-id-${autoSwitchId++}`;
+    }
   }
 
-  private renderer: SwitchRender;
+  private inputId: string;
 
   @Element() element: HTMLGxSwitchElement;
 
   /**
-   * Attribute that provides the caption to the control.
+   * Caption displayed when the switch is 'on'
    */
-  @Prop() readonly caption: string;
+  @Prop() readonly checkedCaption: string;
 
   /**
-   * Indicates if switch control is checked by default.
+   * The value when the switch is 'on'
    */
-  @Prop({ mutable: true }) checked: boolean;
-
-  /**
-   * The value of the control.
-   */
-  @Prop({ mutable: true }) value: string;
+  @Prop() readonly checkedValue: string;
 
   /**
    * This attribute allows you specify if the element is disabled.
@@ -58,6 +58,21 @@ export class Switch implements FormComponent {
   @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
+   * Caption displayed when the switch is 'off'
+   */
+  @Prop() readonly unCheckedCaption: string;
+
+  /**
+   * The value when the switch is 'off'
+   */
+  @Prop() readonly unCheckedValue: string;
+
+  /**
+   * The value of the control.
+   */
+  @Prop({ mutable: true }) value: string = null;
+
+  /**
    * The 'input' event is emitted when a change to the element's value is committed by the user.
    */
   @Event() input: EventEmitter;
@@ -67,15 +82,57 @@ export class Switch implements FormComponent {
    */
   @Method()
   async getNativeInputId() {
-    return this.renderer.getNativeInputId();
+    return this.inputId;
   }
 
-  @Watch("checked")
-  protected checkedChanged() {
-    this.renderer.checkedChanged();
+  private handleChange = (event: UIEvent) => {
+    const checked = event.target && (event.target as HTMLInputElement).checked;
+
+    // Toggle the value property
+    this.value = checked ? this.checkedValue : this.unCheckedValue;
+
+    this.input.emit(event);
+  };
+
+  componentWillLoad() {
+    // Set initial value to unchecked if empty
+    if (!this.value) {
+      this.value = this.unCheckedValue;
+    }
   }
 
   render() {
-    return <Host role="switch">{this.renderer.render()}</Host>;
+    const checked = this.value === this.checkedValue;
+
+    const inputAttrs = {
+      role: "switch",
+      "aria-checked": checked ? "true" : "false",
+      "aria-disabled": this.disabled ? "true" : "false",
+      "aria-valuetext": checked ? this.checkedCaption : this.unCheckedCaption,
+      checked: checked,
+      disabled: this.disabled,
+      id: this.inputId,
+      type: "checkbox",
+      value: checked ? this.checkedValue : this.unCheckedValue,
+      onchange: this.handleChange
+    };
+
+    return (
+      <Host>
+        <label
+          htmlFor={this.inputId}
+          class={{
+            "gx-switch-container": true,
+            "gx-switch-container--checked": checked
+          }}
+        >
+          <input {...inputAttrs} />
+          <span class="gx-switch-slider" aria-hidden="true"></span>
+          <span aria-hidden="true">
+            {checked ? this.checkedCaption : this.unCheckedCaption}
+          </span>
+        </label>
+      </Host>
+    );
   }
 }

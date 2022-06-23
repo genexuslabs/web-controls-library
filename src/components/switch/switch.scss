@@ -2,4 +2,106 @@
 @import "../common/common-styling-config";
 
 gx-switch {
+  // Android's defaults
+  $default-off-background-color: #b2b2b2;
+  $default-off-color: #ececec;
+  $default-on-background-color: #ffe4ec;
+  $default-on-color: var(--option-checked-color, #ffa7c0);
+
+  // Sizes are set with "em" to make the switch resizable with the font-size
+  $circle-box-shadow-size: min(0.1em, 2px);
+  $circle-highlight-color: var(--option-highlight-color, #dc354570);
+  $circle-size: min(1em, 20px);
+
+  $space-between-switch-and-text: min(0.35em, 7px);
+
+  $slider-border-radius: min(0.25em, 5px);
+  $slider-width: min(2em, 40px);
+  $slider-height: min(0.5em, 10px);
+
+  @include visibility(flex);
+  flex: 1;
+  width: 100%;
+  @include transition-properties();
+
+  &.disabled {
+    @include disabled-style();
+    pointer-events: none;
+  }
+
+  & > .gx-switch-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: fit-content;
+    margin: 0; // Remove margin from Bootstrap
+
+    // We "hide" the input, but not its area to help accessibility readers
+    & > input {
+      display: flex;
+      position: absolute;
+      font-size: inherit; // Needed to correctly use the "em" width
+      width: $slider-width;
+      height: 100%;
+      margin: 0;
+      opacity: 0;
+    }
+
+    & > .gx-switch-slider {
+      display: flex;
+      position: relative;
+      background-color: var(
+        --gx-switch-off-background-color,
+        $default-off-background-color
+      );
+      border-radius: $slider-border-radius;
+      width: $slider-width;
+      height: $slider-height;
+
+      // Switch slider has more priority to display in the width if there is
+      // not enough space to display switch and label at the same time
+      min-width: $slider-width;
+      margin-inline-end: $space-between-switch-and-text;
+      transition: background-color $transition-duration;
+
+      &::before {
+        content: "";
+        position: absolute;
+        background-color: var(--gx-switch-off-color, $default-off-color);
+        border-radius: 50%;
+        width: $circle-size;
+        height: $circle-size;
+
+        // Due to we transition the box-shadow when the control is on focus, we
+        // must keep the same number of shadows between the transitions, even
+        // if there are "dummy" shadows.
+        box-shadow: 0 0 0 0 transparent, 0 2px 3px -1px #939498d0;
+        transition-property: background-color, box-shadow, margin;
+        transition-duration: $transition-duration;
+
+        // Center the circle vertically
+        transform: translate3d(0, -25%, 0);
+      }
+    }
+
+    &--checked > .gx-switch-slider {
+      background-color: var(
+        --gx-switch-on-background-color,
+        $default-on-background-color
+      );
+
+      &::before {
+        background-color: var(--gx-switch-on-color, $default-on-color);
+
+        // We move the circle using margin-inline-start to support RTL
+        margin-inline-start: 50%;
+      }
+    }
+
+    // Focus style
+    &:focus-within > .gx-switch-slider::before {
+      box-shadow: 0 0 0 $circle-box-shadow-size $circle-highlight-color,
+        0 2px 3px -1px #939498d0;
+    }
+  }
 }
