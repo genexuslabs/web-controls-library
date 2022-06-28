@@ -24,6 +24,11 @@ const transforms = {
   vars: "--vars"
 };
 
+// - - - - - - - - -  CACHE  - - - - - - - - -
+const classesCache = new Map<string, CssClasses>();
+const classesWoFocusCache = new Map<string, CssClassesWithoutFocus>();
+
+// - - - - - - - -  Transforms  - - - - - - - -
 export function tEvenRow(className: string): string {
   return className + transforms["evenRow"];
 }
@@ -107,11 +112,20 @@ export function getClasses(cssClass: string): CssClasses {
   if (!cssClass) {
     return { highlighted: "", vars: "" };
   }
-  const splittedClasses = cssClass.split(" ");
-  const highlighted = splittedClasses.map(tHighlightedFocusWithin).join(" ");
-  const vars = splittedClasses.map(tVars).join(" ");
+  let result: CssClasses = classesCache.get(cssClass);
 
-  return { highlighted, vars };
+  // If the value has not yet been calculated
+  if (result === undefined) {
+    const splittedClasses = cssClass.split(" ");
+    const highlighted = splittedClasses.map(tHighlightedFocusWithin).join(" ");
+    const vars = splittedClasses.map(tVars).join(" ");
+
+    // Cache for the corresponding value
+    result = { highlighted, vars };
+    classesCache.set(cssClass, result);
+  }
+
+  return result;
 }
 
 /**
@@ -125,12 +139,21 @@ export function getClassesWithoutFocus(
   if (!cssClass) {
     return { vars: "" };
   }
-  const vars = cssClass
-    .split(" ")
-    .map(tVars)
-    .join(" ");
+  let result: CssClassesWithoutFocus = classesWoFocusCache.get(cssClass);
 
-  return { vars };
+  // If the value has not yet been calculated
+  if (result === undefined) {
+    const vars = cssClass
+      .split(" ")
+      .map(tVars)
+      .join(" ");
+
+    // Cache for the corresponding value
+    result = { vars };
+    classesWoFocusCache.set(cssClass, result);
+  }
+
+  return result;
 }
 
 /**
