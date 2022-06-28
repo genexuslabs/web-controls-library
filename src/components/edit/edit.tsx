@@ -290,10 +290,7 @@ export class Edit implements FormComponent, HighlightableComponent {
         If the gx-edit is (readonly || format == "HTML"), we do not add 
         highlighted classes
     */
-    const classes = getClasses(
-      this.cssClass,
-      this.shouldAddHighlightedClasses ? 1 : -1
-    );
+    const classes = getClasses(this.cssClass);
 
     return (
       <Host

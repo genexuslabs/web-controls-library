@@ -19,7 +19,7 @@ import {
 import { LineClampComponent, makeLinesClampable } from "../common/line-clamp";
 
 // Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
+import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
 
 @Component({
   shadow: true,
@@ -119,7 +119,7 @@ export class TextBlock
 
   render() {
     // Styling for gx-textblock control.
-    const classes = getClasses(this.cssClass, -1);
+    const classes = getClassesWithoutFocus(this.cssClass);
 
     const body = (
       <div class="gx-textblock-container" part="valign">

@@ -14,7 +14,7 @@ import {
 
 // Class transforms
 import {
-  getClasses,
+  getTransformedClassesWithoutFocus,
   tEvenRow,
   tHorizontalLine,
   tOddRow
@@ -57,7 +57,7 @@ export class GridSmartCell
     const tClass = this.isRowEven ? tEvenRow : tOddRow;
 
     // Styling for gx-grid-smart-cell control.
-    const classes = getClasses(this.cssClass, -1, tClass);
+    const classes = getTransformedClassesWithoutFocus(this.cssClass, tClass);
 
     const horizontalLineClasses = !!this.cssClass
       ? this.cssClass
