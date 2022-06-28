@@ -5,9 +5,16 @@ export interface ClickableComponent {
 }
 
 export interface CssClasses {
-  transformedCssClass: string;
   highlighted: string;
-  hover: string;
+  vars: string;
+}
+
+export interface CssClassesWithoutFocus {
+  vars: string;
+}
+
+export interface CssTransformedClassesWithoutFocus {
+  transformedCssClass: string;
   vars: string;
 }
 
