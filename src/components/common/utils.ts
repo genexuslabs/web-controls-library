@@ -124,10 +124,12 @@ export function attachHorizontalScrollWithDragHandler(
 
     requestAnimationFrame(() => {
       needForRAF = true; // RAF now consumes the movement instruction so a new one can come
-      scrollableContainerHasBeenDragged = true;
 
       const walk = (currentXPosition - initialXPosition) * SCROLL_SPEED;
       scrollableContainer.scrollLeft = initialScrollLeftPosition - walk;
+      scrollableContainerHasBeenDragged =
+        scrollableContainerHasBeenDragged ||
+        initialScrollLeftPosition != scrollableContainer.scrollLeft;
     });
   });
 
