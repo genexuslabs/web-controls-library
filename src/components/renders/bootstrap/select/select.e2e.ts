@@ -1,8 +1,16 @@
 import { E2EElement, E2EPage, newE2EPage } from "@stencil/core/testing";
+import { runAlignmentTest } from "../../../../../tests/alignment";
+import { Select } from "../../../../../tests/templates";
 
 describe("gx-select", () => {
   let element: E2EElement;
   let page: E2EPage;
+  const alignmentTestOptions = {
+    autoGrow: [false],
+    shouldTestAlign: true,
+    shouldTestVAlign: true
+  };
+
   beforeEach(async () => {
     page = await newE2EPage();
     await page.setContent(
@@ -59,4 +67,30 @@ describe("gx-select", () => {
     expect(dataList).toBeTruthy();
     expect(input.getAttribute("list")).toEqual(dataList.getAttribute("id"));
   });
+
+  runAlignmentTest(Select({}), "Select", "", "", alignmentTestOptions);
+
+  runAlignmentTest(
+    Select({ readonly: true }),
+    "Select",
+    "readonly",
+    "Readonly",
+    alignmentTestOptions
+  );
+
+  runAlignmentTest(
+    Select({ disabled: true }),
+    "Select",
+    "disabled",
+    "Disabled",
+    alignmentTestOptions
+  );
+
+  runAlignmentTest(
+    Select({ disabled: true, readonly: true }),
+    "Select",
+    "readonly, disabled",
+    "Readonly_Disabled",
+    alignmentTestOptions
+  );
 });
