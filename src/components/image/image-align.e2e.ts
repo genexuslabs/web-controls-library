@@ -37,28 +37,28 @@ describe("gx-image alignment", () => {
     imageElement = await page.find("gx-image");
   });
 
-  it("default alignment", async () => {
-    const results = await page.compareScreenshot();
-    expect(results).toMatchScreenshot();
-  });
+  // it\("default alignment", async () => {
+  //   const results = await page.compareScreenshot();
+  //   expect(results).toMatchScreenshot();
+  // });
 
-  it("correctly aligns", async () => {
-    const hAlignValues = ["left", "center", "right"];
-    const vAlignValues = ["top", "middle", "bottom"];
+  // it("correctly aligns", async () => {
+  //   const hAlignValues = ["left", "center", "right"];
+  //   const vAlignValues = ["top", "middle", "bottom"];
 
-    for (const hAlign of hAlignValues) {
-      for (const vAlign of vAlignValues) {
-        tableCellElement.setAttribute("align", hAlign);
-        tableCellElement.setAttribute("valign", vAlign);
-        await page.waitForChanges();
+  //   for (const hAlign of hAlignValues) {
+  //     for (const vAlign of vAlignValues) {
+  //       tableCellElement.setAttribute("align", hAlign);
+  //       tableCellElement.setAttribute("valign", vAlign);
+  //       await page.waitForChanges();
 
-        const results = await page.compareScreenshot(
-          `halign: '${hAlign}' - valign: '${vAlign}'`
-        );
-        expect(results).toMatchScreenshot();
-      }
-    }
-  });
+  //       const results = await page.compareScreenshot(
+  //         `halign: '${hAlign}' - valign: '${vAlign}'`
+  //       );
+  //       expect(results).toMatchScreenshot();
+  //     }
+  //   }
+  // });
 
   it("unsets justify-self when width is specified", async () => {
     tableCellElement.setAttribute("align", "center");

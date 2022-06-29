@@ -167,3 +167,5 @@ export function attachHorizontalScrollWithWheelHandler(
     scrollableContainer.scrollLeft += event.deltaY * SCROLL_SPEED;
   });
 }
+
+export const delay = ms => new Promise(res => setTimeout(res, ms));
