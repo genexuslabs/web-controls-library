@@ -77,6 +77,10 @@ export function getWindowsOrientation(): "portrait" | "landscape" {
     : "landscape";
 }
 
+export function onMobileDevice(): boolean {
+  return window.matchMedia("(pointer: coarse)").matches;
+}
+
 /**
  * Implement horizontal scrolling by dragging the `scrollableContainer` element
  * @param scrollableContainer Draggable element
@@ -85,7 +89,7 @@ export function attachHorizontalScrollWithDragHandler(
   scrollableContainer: HTMLElement
 ) {
   // If we are on a mobile device
-  if (window.matchMedia("(pointer: coarse)").matches) {
+  if (onMobileDevice()) {
     return;
   }
   const SCROLL_SPEED = 1;
@@ -95,7 +99,10 @@ export function attachHorizontalScrollWithDragHandler(
   let scrollableContainerHasBeenDragged = false;
 
   /** Relative to the left edge of the entire document */
-  let initialXPosition;
+  let currentXPosition: number;
+
+  /** Relative to the left edge of the entire document */
+  let initialXPosition: number;
   let initialScrollLeftPosition;
 
   scrollableContainer.addEventListener("mousedown", (event: MouseEvent) => {
@@ -112,13 +119,13 @@ export function attachHorizontalScrollWithDragHandler(
     if (!isMouseDown || !needForRAF) {
       return;
     }
+    currentXPosition = event.pageX;
     needForRAF = false; // No need to call RAF up until next frame
 
     requestAnimationFrame(() => {
       needForRAF = true; // RAF now consumes the movement instruction so a new one can come
       scrollableContainerHasBeenDragged = true;
 
-      const currentXPosition = event.pageX;
       const walk = (currentXPosition - initialXPosition) * SCROLL_SPEED;
       scrollableContainer.scrollLeft = initialScrollLeftPosition - walk;
     });
@@ -157,7 +164,7 @@ export function attachHorizontalScrollWithWheelHandler(
   scrollableContainer: HTMLElement
 ) {
   // If we are on a mobile device
-  if (window.matchMedia("(pointer: coarse)").matches) {
+  if (onMobileDevice()) {
     return;
   }
   const SCROLL_SPEED = 0.1875; // 2^(-3) + 2^(-4)
