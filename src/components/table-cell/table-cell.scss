@@ -9,7 +9,7 @@ gx-table-cell {
   overflow: auto;
   @include containerCell();
 
-  flex-direction: row;
+  flex-direction: column; // Required for header row pattern marker
 
   // Used when autoGrow = false in the gx-textblock and gx-edit controls to
   // ensure the content does not overflows
