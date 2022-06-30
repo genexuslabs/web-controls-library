@@ -9,7 +9,7 @@ import {
 import { getFileNameWithoutExtension } from "../../../common/utils";
 
 // Class transforms
-import { getClasses } from "../../../common/css-transforms/css-transforms";
+import { getClassesWithoutFocus } from "../../../common/css-transforms/css-transforms";
 
 export class ButtonRender implements Renderer {
   constructor(private component: Button, handlers: { handleClick }) {
@@ -49,7 +49,7 @@ export class ButtonRender implements Renderer {
     });
 
     // Styling for gx-button control.
-    const classes = getClasses(button.cssClass, -1);
+    const classes = getClassesWithoutFocus(button.cssClass);
 
     return (
       <Host

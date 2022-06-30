@@ -57,8 +57,7 @@ export class SelectRender implements Renderer {
           class={{
             "gx-select-control": true,
             [this.component.cssClass]: !!this.component.cssClass,
-            [classes.vars]: true,
-            [classes.highlighted]: true
+            [classes.vars]: true
           }}
         >
           <span>{this.getReadonlyTextContent()}</span>

@@ -13,7 +13,7 @@ import { cssVariablesWatcher } from "../common/css-variables-watcher";
 import lazySizes from "lazysizes";
 
 // Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
+import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
 
 const LAZY_LOAD_CLASS = "gx-lazyload";
 const LAZY_LOADING_CLASS = "gx-lazyloading";
@@ -168,7 +168,7 @@ export class Image
     const shouldLazyLoad = this.shouldLazyLoad();
 
     // Styling for gx-image control.
-    const classes = getClasses(this.cssClass, -1);
+    const classes = getClassesWithoutFocus(this.cssClass);
 
     const withoutAutogrow = this.scaleType !== "tile" && !this.autoGrow;
 

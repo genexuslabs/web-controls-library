@@ -1,4 +1,8 @@
-import { CssClasses } from "../interfaces";
+import {
+  CssClasses,
+  CssClassesWithoutFocus,
+  CssTransformedClassesWithoutFocus
+} from "../interfaces";
 
 const transforms = {
   evenRow: "--even-row",
@@ -20,6 +24,11 @@ const transforms = {
   vars: "--vars"
 };
 
+// - - - - - - - - -  CACHE  - - - - - - - - -
+const classesCache = new Map<string, CssClasses>();
+const classesWoFocusCache = new Map<string, CssClassesWithoutFocus>();
+
+// - - - - - - - -  Transforms  - - - - - - - -
 export function tEvenRow(className: string): string {
   return className + transforms["evenRow"];
 }
@@ -96,29 +105,74 @@ export function tVars(className: string): string {
 
 /**
  * @param cssClass Classes of the control
- * @param highlightOption Function type to be applied in the second return value
- * @param tClass Function to transform the cssClass param. Useful for gx-grid cells
- * @returns For each class in the `cssClass` param, return two string that match the variables and highlighted classes of the control.
+ * @returns For each class in the `cssClass` param, return two strings that match the variable and highlighted classes of the control.
  */
-export function getClasses(
-  cssClass: string,
-  highlightOption = 1,
-  tClass?: (x: string) => string
-): CssClasses {
+export function getClasses(cssClass: string): CssClasses {
   // If the cssClass is empty, we return empty classes
   if (!cssClass) {
-    return { transformedCssClass: "", highlighted: "", hover: "", vars: "" };
+    return { highlighted: "", vars: "" };
   }
-  const splittedClasses =
-    tClass == undefined ? cssClass.split(" ") : cssClass.split(" ").map(tClass);
+  let result: CssClasses = classesCache.get(cssClass);
+
+  // If the value has not yet been calculated
+  if (result === undefined) {
+    const splittedClasses = cssClass.split(" ");
+    const highlighted = splittedClasses.map(tHighlightedFocusWithin).join(" ");
+    const vars = splittedClasses.map(tVars).join(" ");
+
+    // Cache for the corresponding value
+    result = { highlighted, vars };
+    classesCache.set(cssClass, result);
+  }
+
+  return result;
+}
+
+/**
+ * @param cssClass Classes of the control
+ * @returns For each class in the `cssClass` param, return one string that match the variable classes of the control.
+ */
+export function getClassesWithoutFocus(
+  cssClass: string
+): CssClassesWithoutFocus {
+  // If the cssClass is empty, we return empty classes
+  if (!cssClass) {
+    return { vars: "" };
+  }
+  let result: CssClassesWithoutFocus = classesWoFocusCache.get(cssClass);
+
+  // If the value has not yet been calculated
+  if (result === undefined) {
+    const vars = cssClass
+      .split(" ")
+      .map(tVars)
+      .join(" ");
+
+    // Cache for the corresponding value
+    result = { vars };
+    classesWoFocusCache.set(cssClass, result);
+  }
+
+  return result;
+}
+
+/**
+ * @param cssClass Classes of the control
+ * @param tClass Function to transform the cssClass param. Useful for gx-grid cells
+ * @returns For each class in the `cssClass` param, return two strings that match the variable and transformed classes of the control.
+ */
+export function getTransformedClassesWithoutFocus(
+  cssClass: string,
+  tClass: (x: string) => string
+): CssTransformedClassesWithoutFocus {
+  // If the cssClass is empty, we return empty classes
+  if (!cssClass) {
+    return { transformedCssClass: "", vars: "" };
+  }
+  const splittedClasses = cssClass.split(" ").map(tClass);
 
   const transformedCssClass = splittedClasses.join(" ");
-  const highlighted =
-    highlightOption === 1
-      ? splittedClasses.map(tHighlightedFocusWithin).join(" ")
-      : "";
-  const hover = splittedClasses.map(tHover).join(" ");
   const vars = splittedClasses.map(tVars).join(" ");
 
-  return { transformedCssClass, highlighted, hover, vars };
+  return { transformedCssClass, vars };
 }

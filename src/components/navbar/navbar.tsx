@@ -12,7 +12,7 @@ import { Component as GxComponent } from "../common/interfaces";
 import { watchForItems } from "../common/watch-items";
 
 // Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
+import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
 import {
   attachHorizontalScrollWithDragHandler,
   attachHorizontalScrollWithWheelHandler
@@ -47,6 +47,20 @@ export class NavBar implements GxComponent {
   @Prop() readonly cssClass: string;
 
   /**
+   * This attribute lets you specify if the header row pattern is enabled.
+   * If enabled, the control will switch between the `cssClass` and
+   * `headerRowPatternCssClass` classes depending on the value of the
+   * `showHeaderRowPatternClass` property.
+   * This property only works when `position="top"`.
+   */
+  @Prop() readonly enableHeaderRowPattern: boolean = false;
+
+  /**
+   * A CSS class to set as the `gx-navbar` element class when using the header row pattern.
+   */
+  @Prop() readonly headerRowPatternCssClass: string;
+
+  /**
    * This attribute lets you specify if one or two lines will be used to render the navigation bar.
    * Useful when there are links and also actions, to have links in the first line, and actions in the second
    */
@@ -55,7 +69,13 @@ export class NavBar implements GxComponent {
   /**
    * True to show the back button
    */
-  @Prop() readonly showBackButton: false;
+  @Prop() readonly showBackButton: boolean = false;
+
+  /**
+   * True to use the `headerRowPatternCssClass` property as the `gx-navbar`
+   * element class. False to use the `cssClass` property instead.
+   */
+  @Prop() readonly showHeaderRowPatternClass: boolean = false;
 
   /**
    * This attribute lets you specify the position of the navbar in the
@@ -97,6 +117,7 @@ export class NavBar implements GxComponent {
 
   private watchForItemsObserver: MutationObserver;
 
+  private isHeaderRowPatternEnabled: boolean;
   private isTopPosition: boolean;
 
   // Refs
@@ -127,11 +148,13 @@ export class NavBar implements GxComponent {
     }
   };
 
-  /*  Before the first render, we store the result of this.position === "top",
-      because it won't change at runtime.
+  /*  Before the first render, we store some results that will not change at
+      runtime.
   */
   componentWillLoad() {
     this.isTopPosition = this.position === "top";
+    this.isHeaderRowPatternEnabled =
+      this.isTopPosition && this.enableHeaderRowPattern;
   }
 
   componentDidLoad() {
@@ -175,7 +198,11 @@ export class NavBar implements GxComponent {
 
   render() {
     //  Styling for gx-navbar control.
-    const classes = getClasses(this.cssClass, -1);
+    const currentClass =
+      this.isHeaderRowPatternEnabled && this.showHeaderRowPatternClass
+        ? this.headerRowPatternCssClass
+        : this.cssClass;
+    const classes = getClassesWithoutFocus(currentClass);
 
     let amountOfActionTypes = 0;
 
@@ -190,9 +217,10 @@ export class NavBar implements GxComponent {
     return (
       <Host
         class={{
-          [this.cssClass]: !!this.cssClass,
+          [currentClass]: !!currentClass,
           [classes.vars]: true,
-          "gx-navbar-actions-active": this.showLowActions
+          "gx-navbar-actions-active": this.showLowActions,
+          "gx-navbar-header-row-pattern": this.isHeaderRowPatternEnabled
         }}
       >
         <nav class="gx-navbar">

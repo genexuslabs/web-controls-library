@@ -27,7 +27,7 @@ gx-layout {
   /**
    * @prop --gx-layout-target-transition-duration: Vertical target's transition duration
    */
-  --gx-layout-target-transition-duration: 0.3s;
+  --gx-layout-target-transition-duration: 0.25s;
   /**
    * @prop --gx-layout-target-transition-timing-function: Vertical target's transition timing function
    */
@@ -63,6 +63,7 @@ gx-layout {
     justify-content: stretch;
     align-items: stretch;
     flex-direction: column;
+    overflow: auto; // Each target implements its own scrollable content
 
     &[hidden] {
       display: none !important;
@@ -96,18 +97,25 @@ gx-layout {
 
     & > .mask {
       display: none;
-      position: absolute;
+      position: fixed;
       top: 0;
       right: 0;
       bottom: 0;
       left: 0;
-      background-color: var(--gx-layout-mask-background-color);
       opacity: var(--gx-layout-mask-opacity);
       z-index: $z-index-gx-layout-mask;
 
       @media screen and (max-width: $gx-layout-vertical-targets-breakpoint) {
         &--active {
           display: block;
+          animation: mask-fade-in var(--gx-layout-target-transition-duration)
+            forwards;
+        }
+      }
+
+      @keyframes mask-fade-in {
+        to {
+          background-color: var(--gx-layout-mask-background-color);
         }
       }
     }

@@ -2,7 +2,7 @@
 @import "../common/common-styling-config";
 @import "../common/layout-styling-config";
 
-$gx-navbar-main-background-color: rgb(87, 89, 101);
+$gx-navbar-main-background-color: var(--primary-color, #212121);
 
 $gx-navbar-active-background-color: #e0e0e0e0;
 
@@ -95,6 +95,11 @@ $gx-navbar-active-color: black;
       }
     }
   }
+}
+
+// We override the default value "position: sticky"
+:host(.gx-navbar-header-row-pattern) {
+  position: fixed;
 }
 
 @include visibility-shadow-DOM(block);

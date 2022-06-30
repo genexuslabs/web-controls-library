@@ -6,7 +6,7 @@ import {
 import { EventEmitter } from "@stencil/core";
 
 // Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
+import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
 
 export interface GridBase {
   element: HTMLElement;
@@ -65,7 +65,7 @@ export class GridBaseHelper {
 
   static hostData(cmp: GridBase) {
     // Styling for gx-grid control.
-    const classes = getClasses(cmp.cssClass, -1);
+    const classes = getClassesWithoutFocus(cmp.cssClass);
 
     return {
       class: {
