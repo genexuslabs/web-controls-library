@@ -64,6 +64,7 @@ gx-layout {
     justify-content: stretch;
     align-items: stretch;
     flex-direction: column;
+    overflow: auto; // Each target implements its own scrollable content
 
     &[hidden] {
       display: none !important;
@@ -97,7 +98,7 @@ gx-layout {
 
     & > .mask {
       display: none;
-      position: absolute;
+      position: fixed;
       top: 0;
       right: 0;
       bottom: 0;
