@@ -1,3 +1,4 @@
+@import "../common/common-styling-config";
 @import "../common/layout-styling-config.scss";
 
 $gx-layout-vertical-targets-breakpoint: 1200px;
@@ -101,13 +102,19 @@ gx-layout {
       right: 0;
       bottom: 0;
       left: 0;
-      background-color: var(--gx-layout-mask-background-color);
       opacity: var(--gx-layout-mask-opacity);
       z-index: $z-index-gx-layout-mask;
 
       @media screen and (max-width: $gx-layout-vertical-targets-breakpoint) {
         &--active {
           display: block;
+          animation: mask-fade-in $transition-duration forwards;
+        }
+      }
+
+      @keyframes mask-fade-in {
+        to {
+          background-color: var(--gx-layout-mask-background-color);
         }
       }
     }
