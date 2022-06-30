@@ -1,4 +1,3 @@
-@import "../common/common-styling-config";
 @import "../common/layout-styling-config.scss";
 
 $gx-layout-vertical-targets-breakpoint: 1200px;
@@ -28,7 +27,7 @@ gx-layout {
   /**
    * @prop --gx-layout-target-transition-duration: Vertical target's transition duration
    */
-  --gx-layout-target-transition-duration: 0.3s;
+  --gx-layout-target-transition-duration: 0.25s;
   /**
    * @prop --gx-layout-target-transition-timing-function: Vertical target's transition timing function
    */
@@ -109,7 +108,8 @@ gx-layout {
       @media screen and (max-width: $gx-layout-vertical-targets-breakpoint) {
         &--active {
           display: block;
-          animation: mask-fade-in $transition-duration forwards;
+          animation: mask-fade-in var(--gx-layout-target-transition-duration)
+            forwards;
         }
       }
 
