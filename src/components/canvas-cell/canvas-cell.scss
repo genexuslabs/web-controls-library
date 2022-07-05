@@ -11,7 +11,7 @@ gx-canvas-cell {
   // auto-grow = True
   @include containerCell(false);
   position: absolute;
-  flex-direction: column; // Required for header row pattern marker
+  flex-direction: row; // Do not change flex-direction. All alignments will break
   overflow: hidden;
 
   // Used when autoGrow = false in the gx-textblock and gx-edit controls to
