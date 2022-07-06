@@ -27,6 +27,10 @@ const transforms = {
 // - - - - - - - - -  CACHE  - - - - - - - - -
 const classesCache = new Map<string, CssClasses>();
 const classesWoFocusCache = new Map<string, CssClassesWithoutFocus>();
+const transformedClassesWoFocusCache = new Map<
+  string,
+  CssTransformedClassesWithoutFocus
+>();
 
 // - - - - - - - -  Transforms  - - - - - - - -
 export function tEvenRow(className: string): string {
@@ -169,10 +173,22 @@ export function getTransformedClassesWithoutFocus(
   if (!cssClass) {
     return { transformedCssClass: "", vars: "" };
   }
-  const splittedClasses = cssClass.split(" ").map(tClass);
+  const cacheKey = `${tClass.name}_${cssClass}`;
+  let result: CssTransformedClassesWithoutFocus = transformedClassesWoFocusCache.get(
+    cacheKey
+  );
 
-  const transformedCssClass = splittedClasses.join(" ");
-  const vars = splittedClasses.map(tVars).join(" ");
+  // If the value has not yet been calculated
+  if (result == undefined) {
+    const splittedClasses = cssClass.split(" ").map(tClass);
 
-  return { transformedCssClass, vars };
+    const transformedCssClass = splittedClasses.join(" ");
+    const vars = splittedClasses.map(tVars).join(" ");
+
+    // Cache for the corresponding value
+    result = { transformedCssClass, vars };
+    transformedClassesWoFocusCache.set(cacheKey, result);
+  }
+
+  return result;
 }
