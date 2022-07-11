@@ -117,7 +117,6 @@ export class NavBar implements GxComponent {
 
   private watchForItemsObserver: MutationObserver;
 
-  private isHeaderRowPatternEnabled: boolean;
   private isTopPosition: boolean;
 
   // Refs
@@ -153,8 +152,6 @@ export class NavBar implements GxComponent {
   */
   componentWillLoad() {
     this.isTopPosition = this.position === "top";
-    this.isHeaderRowPatternEnabled =
-      this.isTopPosition && this.enableHeaderRowPattern;
   }
 
   componentDidLoad() {
@@ -197,9 +194,12 @@ export class NavBar implements GxComponent {
   }
 
   render() {
+    const isHeaderRowPatternEnabled =
+      this.isTopPosition && this.enableHeaderRowPattern;
+
     //  Styling for gx-navbar control.
     const currentClass =
-      this.isHeaderRowPatternEnabled && this.showHeaderRowPatternClass
+      isHeaderRowPatternEnabled && this.showHeaderRowPatternClass
         ? this.headerRowPatternCssClass
         : this.cssClass;
     const classes = getClassesWithoutFocus(currentClass);
@@ -220,7 +220,7 @@ export class NavBar implements GxComponent {
           [currentClass]: !!currentClass,
           [classes.vars]: true,
           "gx-navbar-actions-active": this.showLowActions,
-          "gx-navbar-header-row-pattern": this.isHeaderRowPatternEnabled
+          "gx-navbar-header-row-pattern": isHeaderRowPatternEnabled
         }}
       >
         <nav class="gx-navbar">
