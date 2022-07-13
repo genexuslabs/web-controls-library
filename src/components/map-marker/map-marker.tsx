@@ -33,7 +33,7 @@ export class MapMarker implements GxComponent {
    * Set the `background-image` property to use it as icon of the marker.
    *
    */
-  @Prop() iconImage = "gx-default-icon";
+  @Prop() iconImageClass = "gx-default-icon";
 
   /**
    * The marker image height.
@@ -82,7 +82,7 @@ export class MapMarker implements GxComponent {
   private setupMarker(coords) {
     this.markerInstance = marker(coords, {
       icon: divIcon({
-        className: this.iconImage,
+        className: this.iconImageClass,
         iconAnchor: [this.getHalfSizes().width, this.iconHeight],
         popupAnchor: [0, -this.getHalfSizes().height],
         iconSize: [this.iconWidth, this.iconHeight],
@@ -144,7 +144,7 @@ export class MapMarker implements GxComponent {
     }
     this.markerInstance.setIcon(
       divIcon({
-        className: this.iconImage,
+        className: this.iconImageClass,
         iconAnchor: [this.getHalfSizes().width, this.iconHeight],
         popupAnchor: [0, -this.getHalfSizes().height],
         iconSize: [this.iconWidth, this.iconHeight],
