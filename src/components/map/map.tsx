@@ -14,8 +14,10 @@ import { Component as GxComponent } from "../common/interfaces";
 import {
   FeatureGroup,
   Marker,
+  marker as LMarker,
   map as LFMap,
   tileLayer,
+  divIcon,
   polyline
 } from "leaflet/dist/leaflet-src.esm";
 import { parseCoords } from "../common/coordsValidate";
@@ -56,6 +58,9 @@ export class Map implements GxComponent {
     this.userLocationChange.emit(this.userLocationCoords);
   }
 
+  @Prop() ShowMyLocation: boolean;
+
+  @Prop() markerClassIcon = "gx-default-icon";
   /**
    * The coord of initial center of the map.
    *
@@ -374,6 +379,27 @@ export class Map implements GxComponent {
     this.setMapProvider();
     this.map.setMaxZoom(this.maxZoom);
     this.fitBounds();
+
+    if (this.ShowMyLocation) {
+      this.map.locate({ enableHighAccuracy: true });
+      this.map.on("locationfound", e => {
+        console.log("Resultado location" + e.latlng.lat + "-" + e.latlng.lng);
+
+        LMarker(coords, {
+          icon: divIcon({
+            className: this.markerClassIcon,
+            iconAnchor: [40, 30],
+            popupAnchor: [0, 10],
+            iconSize: [40, 40],
+            tooltipAnchor: [0, 10]
+          })
+        })
+          .bindPopup("<i>Ubicacion Actual! </i>")
+          .addTo(this.map);
+        //LMarker([e.latlng.lat, e.latlng.lng], this.markerClassIcon).bindPopup("<i>Estas aqui! </i>").addTo(this.map);
+      });
+    }
+
     this.gxMapDidLoad.emit(this);
 
     if (this.selectionLayer) {
@@ -412,8 +438,8 @@ export class Map implements GxComponent {
         {this.watchPosition && (
           <gx-map-marker
             marker-class="gx-default-user-location-icon"
-            icon-width="15"
-            icon-height="15"
+            icon-width="65"
+            icon-height="55"
             coords={this.userLocationCoords}
           ></gx-map-marker>
         )}
