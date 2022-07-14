@@ -61,6 +61,16 @@ export class NavBar implements GxComponent {
   @Prop() readonly headerRowPatternCssClass: string;
 
   /**
+   * `true` if the left target of the gx-layout is visible in the application.
+   */
+  @Prop() readonly leftTargetVisible: boolean = false;
+
+  /**
+   * `true` if the right target of the gx-layout is visible in the application.
+   */
+  @Prop() readonly rightTargetVisible: boolean = false;
+
+  /**
    * This attribute lets you specify if one or two lines will be used to render the navigation bar.
    * Useful when there are links and also actions, to have links in the first line, and actions in the second
    */
@@ -220,7 +230,11 @@ export class NavBar implements GxComponent {
           [currentClass]: !!currentClass,
           [classes.vars]: true,
           "gx-navbar-actions-active": this.showLowActions,
-          "gx-navbar-header-row-pattern": isHeaderRowPatternEnabled
+          "gx-navbar-header-row-pattern": isHeaderRowPatternEnabled,
+          "left-target-visible":
+            isHeaderRowPatternEnabled && this.leftTargetVisible,
+          "right-target-visible":
+            isHeaderRowPatternEnabled && this.rightTargetVisible
         }}
       >
         <nav class="gx-navbar">

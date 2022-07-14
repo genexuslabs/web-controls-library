@@ -8,6 +8,9 @@ $gx-xsmall-breakpoint-plus-1: 769px;
 $gx-vertical-targets-breakpoint: 1200px;
 $gx-vertical-targets-breakpoint-plus-1: $gx-vertical-targets-breakpoint + 1px;
 
+// - - - - - -  Layout  - - - - - -
+$gx-vertical-target-width: 320px;
+
 // - - - - - - z-index - - - - - -
 $base-z-index: 100;
 $z-index-1: $base-z-index + 1;

@@ -26,6 +26,11 @@ export class Layout implements GxComponent {
   @Element() element: HTMLGxLayoutElement;
 
   /**
+   * `true` if the bottom navbar is visible in the application.
+   */
+  @Prop() readonly bottomNavbarVisible: boolean = false;
+
+  /**
    * True to hide the top target
    */
   @Prop() readonly topHidden = false;
@@ -155,7 +160,7 @@ export class Layout implements GxComponent {
 
   render() {
     return (
-      <Host>
+      <Host data-bottom-navbar={this.bottomNavbarVisible ? "" : undefined}>
         <main class="target center">
           <div
             class={{
