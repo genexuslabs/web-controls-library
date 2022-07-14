@@ -1,5 +1,17 @@
 @import "./css-transforms/scss-transforms";
 
+/// Helper mixin to ease styling animations of the custom elements
+/// @param {string} $class Base class of the animation
+@mixin animation($class) {
+  &#{$gx-loading} {
+    @extend #{$class} !optional;
+  }
+
+  &#{$gx-loading-vars} {
+    @extend #{$class}#{$gx-vars} !optional;
+  }
+}
+
 /// Helper mixin to ease styling custom vars of the custom elements
 /// @param {string} $class Base class of the custom vars properties
 @mixin custom-vars($class) {

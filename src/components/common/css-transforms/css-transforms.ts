@@ -16,6 +16,7 @@ const transforms = {
   labelHighlighted: "--label-highlighted",
   labelPositionLeft: "--label-position-left",
   labelPositionRight: "--label-position-right",
+  loading: "--loading",
   oddRow: "--odd-row",
   selectedTabCaption: "--selected-tab-page",
   tabsPosition: "--tabs-position",
@@ -75,6 +76,10 @@ export function tLabelPositionLeft(className: string): string {
 
 export function tLabelPositionRight(className: string): string {
   return className + transforms["labelPositionRight"];
+}
+
+export function tLoading(className: string): string {
+  return className + transforms["loading"];
 }
 
 export function tOddRow(className: string): string {

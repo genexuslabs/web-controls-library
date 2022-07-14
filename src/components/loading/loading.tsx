@@ -1,5 +1,11 @@
-import { Component, Element, Host, Prop, State, h } from "@stencil/core";
+import { Component, Element, Host, Prop, h } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
+
+// Class transforms
+import {
+  getTransformedClassesWithoutFocus,
+  tLoading
+} from "../common/css-transforms/css-transforms";
 
 @Component({
   shadow: true,
@@ -8,6 +14,26 @@ import { Component as GxComponent } from "../common/interfaces";
 })
 export class Loading implements GxComponent {
   @Element() element: HTMLGxLoadingElement;
+
+  /**
+   * A CSS class to set as the `gx-loading` element class.
+   */
+  @Prop() readonly cssClass: string;
+
+  /**
+   * `true` if the `componentDidLoad()` method was called.
+   * This property is not used as a state due to the following issue:
+   * https://github.com/ionic-team/stencil/issues/3158
+   */
+  @Prop({ mutable: true }) didLoad = false;
+
+  /**
+   * This attribute lets you specify the lottie path to use for the lottie
+   * animation.
+   * This property is not used as a state due to the following issue:
+   * https://github.com/ionic-team/stencil/issues/3158
+   */
+  @Prop({ mutable: true }) lottiePath = "";
 
   /**
    * This attribute lets you specify if the loading is presented.
@@ -29,9 +55,7 @@ export class Loading implements GxComponent {
   //   }
   // }
 
-  @State() private lottiePath = "";
-
-  private present() {
+  private updateLottiePath() {
     const rawLottiePath = window
       .getComputedStyle(this.element)
       .getPropertyValue("--gx-lottie-file-path");
@@ -45,12 +69,34 @@ export class Loading implements GxComponent {
     }
   }
 
+  componentDidLoad(): void {
+    this.didLoad = true;
+
+    // Check if a lottie path exists
+    this.updateLottiePath();
+  }
+
   render() {
-    const shouldShowContent = this.presented;
+    const loadingClasses = getTransformedClassesWithoutFocus(
+      this.cssClass,
+      tLoading
+    );
+
+    const shouldShowContent = this.presented && this.didLoad;
 
     return (
-      <Host aria-hidden={!shouldShowContent ? "true" : undefined}>
-        {// Default loading animation if no gx-lottie
+      <Host
+        class={{
+          [loadingClasses.transformedCssClass]: true,
+          [loadingClasses.vars]: true
+        }}
+        aria-hidden={!shouldShowContent ? "true" : undefined}
+      >
+        {shouldShowContent && this.lottiePath != "" && (
+          <gx-lottie autoPlay loop path={this.lottiePath} />
+        )}
+
+        {// Default loading animation if no gx-lottie and slots animation
         shouldShowContent && this.lottiePath == "" && (
           <div class="gx-loading-rotate-container">
             <div class="circle circle-1" />
