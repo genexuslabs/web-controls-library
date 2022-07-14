@@ -40,6 +40,12 @@ export class Loading implements GxComponent {
    */
   @Prop() readonly presented: boolean = false;
 
+  /**
+   * `true` to display the animation defined in the default `<slot>` instead
+   * the native (default) animation.
+   */
+  @Prop() readonly showSlotAnimation: boolean = false;
+
   // @Watch("value")
   // valueWatchHandler(newValue: number, oldValue: number) {
   //   if (newValue === oldValue) {
@@ -96,8 +102,12 @@ export class Loading implements GxComponent {
           <gx-lottie autoPlay loop path={this.lottiePath} />
         )}
 
+        {shouldShowContent &&
+          this.lottiePath == "" &&
+          this.showSlotAnimation && <slot />}
+
         {// Default loading animation if no gx-lottie and slots animation
-        shouldShowContent && this.lottiePath == "" && (
+        shouldShowContent && this.lottiePath == "" && !this.showSlotAnimation && (
           <div class="gx-loading-rotate-container">
             <div class="circle circle-1" />
             <div class="circle circle-2" />
