@@ -97,6 +97,8 @@ export class ProgressBar implements GxComponent {
       tDescription
     );
 
+    const shouldSetValueNow = this.type === "determinate";
+
     // Max value should not be negative
     const calculatedMaxValue = Math.max(this.maxValue, 0);
 
@@ -110,6 +112,17 @@ export class ProgressBar implements GxComponent {
         ? Math.round((calculatedValue * 100) / calculatedMaxValue)
         : 100;
 
+    const accessibilityAttributes = {
+      role: "progressbar",
+      "aria-labelledby": !!this.caption ? "title" : undefined,
+      "aria-describedby": !!this.description ? "description" : undefined,
+      "aria-valuemin": "0",
+      "aria-valuemax": calculatedMaxValue.toString(),
+      "aria-valuenow": shouldSetValueNow
+        ? calculatedValue.toString()
+        : undefined
+    };
+
     return (
       <Host
         class={{ presented: this.presented, [loadingClasses.vars]: true }}
@@ -117,6 +130,10 @@ export class ProgressBar implements GxComponent {
       >
         {this.presented && (
           <div
+            role="dialog"
+            aria-labelledby={!!this.caption ? "title" : undefined}
+            aria-describedby={!!this.description ? "description" : undefined}
+            tabindex="-1"
             class={{
               "gx-progress-dialog": true,
               "gx-progress-dialog--indeterminate":
@@ -129,6 +146,7 @@ export class ProgressBar implements GxComponent {
           >
             {!!this.caption && (
               <span
+                id="title"
                 class={{
                   [titleClasses.transformedCssClass]: true,
                   "gx-progress-title": true
@@ -140,6 +158,7 @@ export class ProgressBar implements GxComponent {
 
             {!!this.description && (
               <span
+                id="description"
                 class={{
                   [descriptionClasses.transformedCssClass]: true,
                   "gx-progress-description": true
@@ -151,6 +170,7 @@ export class ProgressBar implements GxComponent {
 
             {this.didLoad && this.lottiePath == "" && (
               <div
+                {...accessibilityAttributes}
                 class={{
                   [this.cssClass]: !!this.cssClass,
                   [classes.vars]: true,
@@ -186,6 +206,7 @@ export class ProgressBar implements GxComponent {
 
             {this.didLoad && this.lottiePath != "" && (
               <gx-lottie
+                {...accessibilityAttributes}
                 class={{
                   [loadingClasses.transformedCssClass]: true,
                   [`gx-progress-lottie--${this.type}`]: true
