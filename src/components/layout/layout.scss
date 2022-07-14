@@ -47,7 +47,6 @@ gx-layout {
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  z-index: $z-index-gx-layout;
   overflow: hidden;
 
   grid-template-columns:
@@ -75,11 +74,13 @@ gx-layout {
   & > .top {
     grid-area: 1 / 1 / 2 / 4;
     flex-direction: row;
+    z-index: $z-index-gx-layout;
   }
 
   & > .bottom {
     grid-area: 3 / 1 / 4 / 4;
     flex-direction: row;
+    z-index: $z-index-gx-layout;
   }
 
   & > .left {
@@ -99,6 +100,7 @@ gx-layout {
   & > .center {
     grid-area: 2 / 2 / 3 / 3;
     position: relative;
+    z-index: $z-index-gx-layout;
 
     & > .mask {
       display: none;
@@ -176,6 +178,12 @@ gx-layout {
     @media screen and (max-width: $gx-vertical-targets-breakpoint) {
       width: 0; // It works due to the overflow on the aside is visible
       z-index: $z-index-gx-layout-vertical;
+
+      // Vertical targets will be above the top navbar when Header Row Pattern
+      // is enabled
+      .gx-navbar-header-row-pattern ~ & {
+        z-index: $z-index-gx-layout-vertical-header-row-pattern;
+      }
 
       &[hidden] {
         display: flex !important;

@@ -24,8 +24,9 @@ $z-index-8: $base-z-index + 8;
 $z-index-9: $base-z-index + 9;
 $z-index-10: $base-z-index + 10;
 
-$z-index-gx-loading-box: $z-index-9;
-$z-index-gx-loading: $z-index-8;
+$z-index-gx-loading-box: $z-index-10;
+$z-index-gx-loading: $z-index-9;
+$z-index-gx-layout-vertical-header-row-pattern: $z-index-8;
 $z-index-gx-navbar-item: $z-index-7;
 $z-index-gx-navbar: $z-index-6;
 $z-index-gx-message: $z-index-5;
