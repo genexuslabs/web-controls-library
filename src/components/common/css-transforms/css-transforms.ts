@@ -5,6 +5,7 @@ import {
 } from "../interfaces";
 
 const transforms = {
+  description: "--description",
   evenRow: "--even-row",
   groupCaption: "--group-caption",
   highlighted: "--highlighted",
@@ -21,6 +22,7 @@ const transforms = {
   selectedTabCaption: "--selected-tab-page",
   tabsPosition: "--tabs-position",
   tabsPositionCaption: "--tabs-position-caption",
+  title: "--title",
   unselectedTabCaption: "--unselected-tab-page",
   vars: "--vars"
 };
@@ -34,6 +36,10 @@ const transformedClassesWoFocusCache = new Map<
 >();
 
 // - - - - - - - -  Transforms  - - - - - - - -
+export function tDescription(className: string): string {
+  return className + transforms["description"];
+}
+
 export function tEvenRow(className: string): string {
   return className + transforms["evenRow"];
 }
@@ -99,6 +105,10 @@ export function tTabsPosition(className: string): string {
 
 export function tTabsPositionCaption(className: string): string {
   return className + transforms["tabsPositionCaption"];
+}
+
+export function tTitle(className: string): string {
+  return className + transforms["title"];
 }
 
 export function tUnselectedTabCaption(className: string): string {

@@ -1,5 +1,14 @@
 import { Component, Element, Host, Prop, State, h } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
+
+// Class transforms
+import {
+  getClassesWithoutFocus,
+  getTransformedClassesWithoutFocus,
+  tDescription,
+  tTitle
+} from "../common/css-transforms/css-transforms";
+
 @Component({
   shadow: false,
   styleUrl: "progress-bar.scss",
@@ -12,6 +21,11 @@ export class ProgressBar implements GxComponent {
    * It specifies the main text that is shown on the dialog.
    */
   @Prop() readonly caption: string = null;
+
+  /**
+   * A CSS class to set as the `gx-progress-bar` element class.
+   */
+  @Prop() readonly cssClass: string;
 
   /**
    * It specifies more information that is shown on the dialog.
@@ -49,6 +63,16 @@ export class ProgressBar implements GxComponent {
   }
 
   render() {
+    const classes = getClassesWithoutFocus(this.cssClass);
+    const titleClasses = getTransformedClassesWithoutFocus(
+      this.cssClass,
+      tTitle
+    );
+    const descriptionClasses = getTransformedClassesWithoutFocus(
+      this.cssClass,
+      tDescription
+    );
+
     // Max value should not be negative
     const calculatedMaxValue = Math.max(this.maxValue, 0);
 
@@ -80,16 +104,32 @@ export class ProgressBar implements GxComponent {
             }}
           >
             {!!this.caption && (
-              <span class="gx-progress-title">{this.caption}</span>
+              <span
+                class={{
+                  [titleClasses.transformedCssClass]: true,
+                  "gx-progress-title": true
+                }}
+              >
+                {this.caption}
+              </span>
             )}
 
             {!!this.description && (
-              <span class="gx-progress-description">{this.description}</span>
+              <span
+                class={{
+                  [descriptionClasses.transformedCssClass]: true,
+                  "gx-progress-description": true
+                }}
+              >
+                {this.description}
+              </span>
             )}
 
             {this.didLoad && this.lottiePath == "" && (
               <div
                 class={{
+                  [this.cssClass]: !!this.cssClass,
+                  [classes.vars]: true,
                   "gx-progress-bar-container": true,
                   "gx-progress-bar-container--determinate":
                     this.type === "determinate",
