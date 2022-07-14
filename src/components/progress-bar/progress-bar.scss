@@ -22,8 +22,23 @@ gx-progress-bar {
    */
   --gx-progress-bar-mask-background-color: #333; // Android's mask
 
+  /**
+   * @prop --gx-progress-bar-primary-color: Background color used on 
+   * `type = "determinate"` to style the first half of the progress bar
+   */
   --gx-progress-bar-primary-color: #f27ca6;
+
+  /**
+   * @prop --gx-progress-bar-primary-color: Background color used on 
+   * `type = "determinate"` to style the second half of the progress bar
+   */
   --gx-progress-bar-primary-color-dark: #9f0039;
+
+  /**
+   * @prop --gx-progress-bar-accent-color: Background color used on
+   * `type = "indeterminate"` to style the circle. Also, this color is used to
+   * highlight the progress bar loading animation when `type = "determinate"`
+   */
   --gx-progress-bar-accent-color: #ffa7c0;
 
   &.presented {
