@@ -1,4 +1,4 @@
-import { Component, Element, Prop, State, Watch, h, Host } from "@stencil/core";
+import { Component, Element, State, h, Host } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
@@ -9,142 +9,38 @@ import { Component as GxComponent } from "../common/interfaces";
 export class Loading implements GxComponent {
   @Element() element: HTMLGxLoadingElement;
 
+  // @Watch("value")
+  // valueWatchHandler(newValue: number, oldValue: number) {
+  //   if (newValue === oldValue) {
+  //     return;
+  //   }
+
+  //   if (this.lottiePath) {
+  //     const gxLottie = this.element.querySelector("gx-lottie");
+  //     if (gxLottie !== null) {
+  //       const from = oldValue > newValue ? 0 : oldValue;
+  //       gxLottie.play(from, newValue);
+  //     }
+  //   }
+  // }
+
   @State() private lottiePath = "";
-
-  /**
-   * Sets the description text.
-   */
-  @Prop() readonly description: string;
-
-  /**
-   * Sets the caption text.
-   */
-  @Prop() readonly caption: string;
-
-  /**
-   * Sets if the loading dialog is presented.
-   */
-  @Prop() readonly presented = false;
-
-  /**
-   * Sets if the loading will be separated from the main content of the page.
-   * If `dialog = true` the `gx-loading` will be displayed separately from the
-   * main content the web page in a dialog box.
-   * If `dialog = false` the `gx-loading` will be displayed inside its
-   * container and will not be separated from the web page.
-   */
-  @Prop() readonly dialog = false;
-
-  /**
-   * Sets the value.
-   */
-  @Prop() readonly type: "determinate" | "indeterminate";
-
-  /**
-   * Sets the value when type is determinate. Must be a value between 0 and 1.
-   */
-  @Prop() readonly value = 0;
-
-  @Watch("value")
-  valueWatchHandler(newValue: number, oldValue: number) {
-    if (newValue === oldValue) {
-      return;
-    }
-
-    if (this.lottiePath) {
-      const gxLottie = this.element.querySelector("gx-lottie");
-      if (gxLottie !== null) {
-        const from = oldValue > newValue ? 0 : oldValue;
-        gxLottie.play(from, newValue);
-      }
-    }
-  }
-
-  @Watch("presented")
-  presentedWatchHandler(newValue: boolean, oldValue = false) {
-    if (newValue === oldValue) {
-      return;
-    }
-
-    if (newValue) {
-      this.present();
-    } else {
-      this.dismiss();
-    }
-  }
 
   private present() {
     const rawLottiePath = window
-      .getComputedStyle(this.element.querySelector(".gx-lottie-test"))
+      .getComputedStyle(this.element)
       .getPropertyValue("--gx-lottie-file-path");
 
+    // Remove quotes from the string
     if (rawLottiePath) {
       this.lottiePath = rawLottiePath
         .trim()
         .replace(/^"/, "")
         .replace(/"$/, "");
     }
-
-    this.element.style.display = "block";
-  }
-
-  private dismiss() {
-    this.element.style.display = "none";
   }
 
   render() {
-    this.element.style.display = this.presented ? "block" : "none";
-
-    // Accessibility
-    const title = this.dialog ? "dialogTitle" : null;
-    const description = this.dialog ? "dialogDescription" : null;
-
-    return (
-      <Host class={{ dialog: this.dialog }}>
-        <div
-          class="box"
-          role={this.dialog ? "dialog" : null}
-          aria-labelledby={title}
-          aria-describedby={description}
-        >
-          <div class="gx-lottie-test" />
-
-          {this.lottiePath ? (
-            <gx-lottie
-              path={this.lottiePath}
-              loop={this.type === "indeterminate"}
-              autoPlay={this.type === "indeterminate"}
-            />
-          ) : this.dialog ? (
-            <div
-              class={{
-                [this.type]: true,
-                loader: true
-              }}
-            >
-              <div
-                class="loader-inner"
-                style={{
-                  width: `${this.value * 100}%`
-                }}
-              />
-            </div>
-          ) : (
-            // Default loading animation if no gx-lottie
-            <div class="loading-rotate-container">
-              <div class="circle circle-1" />
-              <div class="circle circle-2" />
-              <div class="circle circle-3" />
-            </div>
-          )}
-          <div id={title} class="title">
-            {this.caption}
-          </div>
-          <div id={description} class="description">
-            {this.description}
-          </div>
-        </div>
-      </Host>
-    );
+    return <Host></Host>;
   }
 }
