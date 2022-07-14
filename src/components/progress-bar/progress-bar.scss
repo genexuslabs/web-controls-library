@@ -5,6 +5,8 @@ $determinate-progress-border-radius: 0.125em;
 $determinate-progress-width: min(768px, 70vw);
 $determinate-progress-height: 0.25em;
 
+$indeterminate-progress-size: min(64px, 8.75vw);
+
 $dialog-horizontal-padding: 20px;
 $dialog-vertical-padding: 18px;
 $dialog-total-horizontal-padding: $dialog-horizontal-padding +
@@ -113,10 +115,54 @@ gx-progress-bar {
           $two-times-transition-delay infinite;
       }
     }
+
+    // - - - - - - - - - - - - - - - -
+    //     Indeterminate indicator
+    // - - - - - - - - - - - - - - - -
+    &--indeterminate {
+      display: grid;
+      grid-template: "cell-progress-title" min-content "cell-progress-container" 1fr / 1fr;
+      align-items: center;
+      column-gap: 32px; // Space between progress-bar and description
+
+      &-with-title {
+        row-gap: 24px; // Space between progress-bar and title
+      }
+
+      &-with-description {
+        grid-template: "cell-progress-title cell-progress-title" min-content "cell-progress-container cell-progress-description" 1fr / min-content 1fr;
+      }
+    }
+
+    & > .gx-progress-lottie--indeterminate {
+      grid-area: cell-progress-container;
+    }
+
+    & > .gx-progress-bar-container--indeterminate {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      & > .gx-progress-bar {
+        width: 100%;
+        fill: none;
+        animation: indeterminate-progress-bar-rotate
+          $six-times-transition-duration linear $half-transition-delay infinite;
+
+        & > circle {
+          stroke: var(--gx-progress-bar-accent-color);
+          stroke-dasharray: 1, 200;
+          stroke-linecap: round;
+          animation: indeterminate-progress-bar-load
+            $five-times-transition-duration ease-in-out $half-transition-delay
+            infinite;
+        }
+      }
+    }
   }
 
   @keyframes fade-in {
-    100% {
+    to {
       opacity: 1;
     }
   }
@@ -124,6 +170,23 @@ gx-progress-bar {
   @keyframes determinate-progress-bar-load-effect {
     to {
       background-position: 300% 0%;
+    }
+  }
+
+  @keyframes indeterminate-progress-bar-rotate {
+    100% {
+      transform: rotate(1turn);
+    }
+  }
+
+  @keyframes indeterminate-progress-bar-load {
+    50%,
+    60% {
+      stroke-dasharray: 90, 200;
+      stroke-dashoffset: -35px;
+    }
+    100% {
+      stroke-dashoffset: -124px;
     }
   }
 }
@@ -139,6 +202,11 @@ gx-progress-bar {
     width: $determinate-progress-width;
     height: $determinate-progress-height;
     margin-bottom: 1.25em;
+  }
+
+  &--indeterminate {
+    width: $indeterminate-progress-size;
+    height: $indeterminate-progress-size;
   }
 }
 

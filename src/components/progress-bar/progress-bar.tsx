@@ -68,7 +68,17 @@ export class ProgressBar implements GxComponent {
         aria-hidden={!this.presented ? "true" : undefined}
       >
         {this.presented && (
-          <div class="gx-progress-dialog">
+          <div
+            class={{
+              "gx-progress-dialog": true,
+              "gx-progress-dialog--indeterminate":
+                this.type === "indeterminate",
+              "gx-progress-dialog--indeterminate-with-title":
+                this.type === "indeterminate" && !!this.caption,
+              "gx-progress-dialog--indeterminate-with-description":
+                this.type === "indeterminate" && !!this.description
+            }}
+          >
             {!!this.caption && (
               <span class="gx-progress-title">{this.caption}</span>
             )}
@@ -82,7 +92,9 @@ export class ProgressBar implements GxComponent {
                 class={{
                   "gx-progress-bar-container": true,
                   "gx-progress-bar-container--determinate":
-                    this.type === "determinate"
+                    this.type === "determinate",
+                  "gx-progress-bar-container--indeterminate":
+                    this.type === "indeterminate"
                 }}
               >
                 {this.type === "determinate" ? (
@@ -101,7 +113,9 @@ export class ProgressBar implements GxComponent {
                     </div>
                   ]
                 ) : (
-                  <svg class="gx-progress-bar" viewBox="25 25 50 50"></svg>
+                  <svg class="gx-progress-bar" viewBox="25 25 50 50">
+                    <circle cx="50" cy="50" r="20" stroke-width="5"></circle>
+                  </svg>
                 )}
               </div>
             )}
