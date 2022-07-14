@@ -1,13 +1,18 @@
-import { Component, Element, State, h, Host } from "@stencil/core";
+import { Component, Element, Host, Prop, State, h } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "loading.scss",
   tag: "gx-loading"
 })
 export class Loading implements GxComponent {
   @Element() element: HTMLGxLoadingElement;
+
+  /**
+   * This attribute lets you specify if the loading is presented.
+   */
+  @Prop() readonly presented: boolean = false;
 
   // @Watch("value")
   // valueWatchHandler(newValue: number, oldValue: number) {
@@ -41,6 +46,19 @@ export class Loading implements GxComponent {
   }
 
   render() {
-    return <Host></Host>;
+    const shouldShowContent = this.presented;
+
+    return (
+      <Host aria-hidden={!shouldShowContent ? "true" : undefined}>
+        {// Default loading animation if no gx-lottie
+        shouldShowContent && this.lottiePath == "" && (
+          <div class="gx-loading-rotate-container">
+            <div class="circle circle-1" />
+            <div class="circle circle-2" />
+            <div class="circle circle-3" />
+          </div>
+        )}
+      </Host>
+    );
   }
 }
