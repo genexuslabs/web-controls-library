@@ -6,6 +6,7 @@ import {
   getClassesWithoutFocus,
   getTransformedClassesWithoutFocus,
   tDescription,
+  tLoading,
   tTitle
 } from "../common/css-transforms/css-transforms";
 
@@ -54,9 +55,28 @@ export class ProgressBar implements GxComponent {
    */
   @Prop() readonly value: number = 0;
 
+  /**
+   * Specify the lottie path to use for the lottie animation.
+   */
   @State() lottiePath = "";
 
   private didLoad = false;
+
+  private updateLottiePath() {
+    const rawLottiePath = window
+      .getComputedStyle(this.element)
+      .getPropertyValue("--gx-lottie-file-path");
+
+    // Remove quotes from the string
+    this.lottiePath = rawLottiePath
+      .trim()
+      .replace(/^"/, "")
+      .replace(/"$/, "");
+  }
+
+  componentDidRender() {
+    this.updateLottiePath();
+  }
 
   componentDidLoad() {
     this.didLoad = true;
@@ -64,6 +84,10 @@ export class ProgressBar implements GxComponent {
 
   render() {
     const classes = getClassesWithoutFocus(this.cssClass);
+    const loadingClasses = getTransformedClassesWithoutFocus(
+      this.cssClass,
+      tLoading
+    );
     const titleClasses = getTransformedClassesWithoutFocus(
       this.cssClass,
       tTitle
@@ -88,7 +112,7 @@ export class ProgressBar implements GxComponent {
 
     return (
       <Host
-        class={{ presented: this.presented }}
+        class={{ presented: this.presented, [loadingClasses.vars]: true }}
         aria-hidden={!this.presented ? "true" : undefined}
       >
         {this.presented && (
@@ -158,6 +182,18 @@ export class ProgressBar implements GxComponent {
                   </svg>
                 )}
               </div>
+            )}
+
+            {this.didLoad && this.lottiePath != "" && (
+              <gx-lottie
+                class={{
+                  [loadingClasses.transformedCssClass]: true,
+                  [`gx-progress-lottie--${this.type}`]: true
+                }}
+                autoPlay
+                loop
+                path={this.lottiePath}
+              />
             )}
           </div>
         )}
