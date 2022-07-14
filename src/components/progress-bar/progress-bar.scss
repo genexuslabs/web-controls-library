@@ -1,2 +1,170 @@
+@import "../common/common-styling-config";
+@import "../common/layout-styling-config";
+
+$determinate-progress-border-radius: 0.125em;
+$determinate-progress-width: min(768px, 70vw);
+$determinate-progress-height: 0.25em;
+
+$dialog-horizontal-padding: 20px;
+$dialog-vertical-padding: 18px;
+$dialog-total-horizontal-padding: $dialog-horizontal-padding +
+  $dialog-horizontal-padding;
+$dialog-max-width: calc(
+  $determinate-progress-width + $dialog-total-horizontal-padding
+);
+$dialog-min-height: 4em;
+
 gx-progress-bar {
+  /**
+   * @prop --gx-progress-bar-mask-background-color: Mask background color
+   */
+  --gx-progress-bar-mask-background-color: #333; // Android's mask
+
+  --gx-progress-bar-primary-color: #f27ca6;
+  --gx-progress-bar-primary-color-dark: #9f0039;
+  --gx-progress-bar-accent-color: #ffa7c0;
+
+  &.presented {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--gx-progress-bar-mask-background-color);
+    opacity: 0; // Initial opacity when the animation starts
+    z-index: $z-index-gx-progress-bar;
+    animation: fade-in $half-transition-duration ease forwards;
+  }
+
+  & > .gx-progress-dialog {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: white;
+    border-radius: 2px;
+    box-shadow: 0 0 30px 0px #00000060, inset 0 0 10px -2px #00000040;
+    width: max-content;
+    height: min-content;
+    max-width: $dialog-max-width;
+    min-height: $dialog-min-height;
+    opacity: 0; // Initial opacity when the animation starts
+    overflow: hidden;
+    padding: $dialog-vertical-padding $dialog-horizontal-padding;
+    animation: fade-in $half-transition-duration ease $half-transition-delay
+      forwards;
+
+    // - - - - - - - - - - - - - - - -
+    //      Determinate indicator
+    // - - - - - - - - - - - - - - - -
+    & > span + .gx-progress-bar-container--determinate,
+    & > span + .gx-progress-lottie--determinate {
+      margin-top: 32px; // Space between progress-bar and captions
+    }
+
+    & > .gx-progress-bar-container--determinate > .gx-progress-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(
+        90deg,
+        var(--gx-progress-bar-primary-color) calc(100% - var(--width)),
+        var(--gx-progress-bar-primary-color-dark) calc(200% - var(--width))
+      );
+      border-radius: $determinate-progress-border-radius;
+      width: var(--width);
+      height: 100%;
+      margin-bottom: 4px; // Separation between the values
+      overflow: hidden;
+      transition-property: background-color, width;
+      transition-duration: $transition-duration;
+
+      // Properties to animate the determinate progress bar
+      &::after {
+        --gx-progress-bar-accent-color: inherit;
+        content: "";
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(
+            90deg,
+            transparent,
+            var(--gx-progress-bar-accent-color),
+            transparent
+          ),
+          linear-gradient(
+            90deg,
+            transparent,
+            var(--gx-progress-bar-accent-color),
+            transparent
+          ),
+          linear-gradient(
+            90deg,
+            transparent,
+            var(--gx-progress-bar-accent-color),
+            transparent
+          );
+        background-position: -200% 0%;
+        background-repeat: no-repeat;
+        background-size: 60%;
+        text-align: center;
+        animation: determinate-progress-bar-load-effect 3s ease
+          $two-times-transition-delay infinite;
+      }
+    }
+  }
+
+  @keyframes fade-in {
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes determinate-progress-bar-load-effect {
+    to {
+      background-position: 300% 0%;
+    }
+  }
+}
+
+// - - - - - - - - - Default values - - - - - - - - -
+.gx-progress-bar-container {
+  grid-area: cell-progress-container;
+  @include transition-properties();
+
+  &--determinate {
+    background-color: #e7e7e7;
+    border-radius: $determinate-progress-border-radius;
+    width: $determinate-progress-width;
+    height: $determinate-progress-height;
+    margin-bottom: 1.25em;
+  }
+}
+
+.gx-progress-bar-values {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75em;
+}
+
+.gx-progress-bar-valuenow {
+  font-weight: 600;
+}
+
+.gx-progress-title,
+.gx-progress-description {
+  // Implements the newline() command in GeneXus
+  white-space: break-spaces;
+  @include transition-properties();
+}
+
+.gx-progress-title {
+  grid-area: cell-progress-title;
+  font-weight: 600;
+}
+
+.gx-progress-description {
+  grid-area: cell-progress-description;
+  font-size: 0.85em;
 }
