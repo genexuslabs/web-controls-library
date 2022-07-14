@@ -10,25 +10,30 @@ gx-layout {
    * @prop --gx-layout-vertical-target-width: Width for vertical targets (left and right)
    */
   --gx-layout-vertical-target-width: auto;
+
   /**
-   * @prop --gx-layout-horizontal-target-height: Height for horizontal targets (top and bottom)
-   */
+    * @prop --gx-layout-horizontal-target-height: Height for horizontal targets (top and bottom)
+    */
   --gx-layout-horizontal-target-height: auto;
+
   /**
-   * @prop --gx-layout-mask-background-color: Mask background color
-   */
-  --gx-layout-mask-background-color: #575965;
+    * @prop --gx-layout-mask-background-color: Mask background color
+    */
+  --gx-layout-mask-background-color: #333;
+
   /**
-   * @prop --gx-layout-mask-opacity: Mask opacity
-   */
-  --gx-layout-mask-opacity: 0.5;
+    * @prop --gx-layout-mask-opacity: Mask opacity
+    */
+  --gx-layout-mask-opacity: 0.749; // Same as Android
+
   /**
-   * @prop --gx-layout-target-transition-duration: Vertical target's transition duration
-   */
+    * @prop --gx-layout-target-transition-duration: Vertical target's transition duration
+    */
   --gx-layout-target-transition-duration: 0.25s;
+
   /**
-   * @prop --gx-layout-target-transition-timing-function: Vertical target's transition timing function
-   */
+    * @prop --gx-layout-target-transition-timing-function: Vertical target's transition timing function
+    */
   --gx-layout-target-transition-timing-function: ease-in-out;
 
   /**
@@ -100,20 +105,21 @@ gx-layout {
       right: 0;
       bottom: 0;
       left: 0;
-      opacity: var(--gx-layout-mask-opacity);
+      background-color: var(--gx-layout-mask-background-color);
+      opacity: 0;
       z-index: $z-index-gx-layout-mask;
 
       @media screen and (max-width: $gx-vertical-targets-breakpoint) {
         &--active {
           display: block;
           animation: mask-fade-in var(--gx-layout-target-transition-duration)
-            forwards;
+            var(--gx-layout-target-transition-timing-function) forwards;
         }
       }
 
       @keyframes mask-fade-in {
         to {
-          background-color: var(--gx-layout-mask-background-color);
+          opacity: var(--gx-layout-mask-opacity);
         }
       }
     }
