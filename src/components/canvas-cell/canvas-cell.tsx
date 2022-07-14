@@ -74,6 +74,13 @@ export class CanvasCell implements GxComponent {
     this.setupObserver(this.element.firstElementChild);
   }
 
+  disconnectedCallback() {
+    if (this.observer !== undefined) {
+      this.observer.disconnect();
+      this.observer = undefined;
+    }
+  }
+
   render() {
     return (
       <Host
