@@ -2,6 +2,12 @@
 $gx-navbar-main-height: var(--gx-navbar-main-height, 60px);
 $gx-navbar-sub-height: 48px;
 
+// - - - - -  Breakpoints  - - - - -
+$gx-xsmall-breakpoint: 768px;
+$gx-xsmall-breakpoint-plus-1: 769px;
+$gx-vertical-targets-breakpoint: 1200px;
+$gx-vertical-targets-breakpoint-plus-1: $gx-vertical-targets-breakpoint + 1px;
+
 // - - - - - - z-index - - - - - -
 $base-z-index: 100;
 $z-index-1: $base-z-index + 1;
