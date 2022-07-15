@@ -112,6 +112,10 @@ export function attachHorizontalScrollWithDragHandler(
     isMouseDown = true;
     initialXPosition = event.pageX;
     initialScrollLeftPosition = scrollableContainer.scrollLeft;
+
+    // We disable the scroll-snap-type property during the dragging. Otherwise
+    // drag will not work
+    scrollableContainer.style.scrollSnapType = "none";
   });
 
   scrollableContainer.addEventListener("mousemove", (event: MouseEvent) => {
@@ -154,7 +158,12 @@ export function attachHorizontalScrollWithDragHandler(
   );
 
   const stopDragging = () => {
-    isMouseDown = false;
+    requestAnimationFrame(() => {
+      isMouseDown = false;
+
+      // We re-enable the scroll-snap-type property to the default value
+      scrollableContainer.style.scrollSnapType = null;
+    });
   };
 
   // Stop dragging events
