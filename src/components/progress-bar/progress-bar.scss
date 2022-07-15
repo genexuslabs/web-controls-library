@@ -18,6 +18,18 @@ $dialog-min-height: 4em;
 
 gx-progress-bar {
   /**
+   * @prop --gx-progress-bar-accent-color: Background color used on
+   * `type = "indeterminate"` to style the circle. Also, this color is used to
+   * highlight the progress bar loading animation when `type = "determinate"`
+   */
+  --gx-progress-bar-accent-color: #ffa7c0;
+
+  /**
+   * @prop --gx-progress-bar-dialog-background-color: Dialog background color
+   */
+  --gx-progress-bar-dialog-background-color: #fff;
+
+  /**
    * @prop --gx-progress-bar-mask-background-color: Mask background color
    */
   --gx-progress-bar-mask-background-color: #333; // Android's mask
@@ -33,13 +45,6 @@ gx-progress-bar {
    * `type = "determinate"` to style the second half of the progress bar
    */
   --gx-progress-bar-primary-color-dark: #9f0039;
-
-  /**
-   * @prop --gx-progress-bar-accent-color: Background color used on
-   * `type = "indeterminate"` to style the circle. Also, this color is used to
-   * highlight the progress bar loading animation when `type = "determinate"`
-   */
-  --gx-progress-bar-accent-color: #ffa7c0;
 
   &.presented {
     display: flex;
@@ -60,7 +65,7 @@ gx-progress-bar {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-color: white;
+    background-color: var(--gx-progress-bar-dialog-background-color);
     border-radius: 2px;
     box-shadow: 0 0 30px 0px #00000060, inset 0 0 10px -2px #00000040;
     width: max-content;
