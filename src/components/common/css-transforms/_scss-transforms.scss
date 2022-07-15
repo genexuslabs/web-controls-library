@@ -1,3 +1,4 @@
+$gx-description: "--description";
 $gx-even-row: "--even-row";
 $gx-group-caption: "--group-caption";
 $gx-highlighted: "--highlighted";
@@ -10,10 +11,13 @@ $gx-label-container: "--label-container";
 $gx-label-highlighted: "--label-highlighted";
 $gx-label-position-left: "--label-position-left";
 $gx-label-position-right: "--label-position-right";
+$gx-loading: "--loading";
+$gx-loading-vars: "--loading--vars"; // In this case, we add the variable mapping, because it contains the lottie path
 $gx-odd-row: "--odd-row";
 $gx-selected-tab-caption: "--selected-tab-page";
 $gx-tabs-position: "--tabs-position";
 $gx-tabs-position-caption: "--tabs-position-caption";
+$gx-title: "--title";
 $gx-unselected-tab-caption: "--unselected-tab-page";
 
 $gx-vars: "--vars";

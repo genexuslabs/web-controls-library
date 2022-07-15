@@ -9,12 +9,13 @@ $grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller) >, & > 
 /// Helper mixin to ease styling gx-grid-base custom elements
 /// @param {string} $odd-row Class for styling the Odd row
 /// @param {string} $even-row Class for styling the Odd even
-/// @param {string} loading-animation Class for styling the grid loading animation
+/// @param {string} loading-animation Class for styling the grid loading animation. WA to temporarily maintain backwards compatibility with CSS generation
 /// @param {string} group-separator Class for styling the grid group-separator
 @mixin gx-grid-base(
   $odd-row: null,
   $even-row: null,
-  $loading-animation: null,
+  // WA to temporarily maintain backwards compatibility with CSS generation
+    $loading-animation: null,
   $group-separator: null
 ) {
   // - - - - - - - - - - Odd row - - - - - - - - - -
@@ -49,9 +50,10 @@ $grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller) >, & > 
     }
   }
 
+  // WA to temporarily maintain backwards compatibility with CSS generation
   @if $loading-animation != null {
-    .loading-container > gx-loading {
-      @extend #{$loading-animation} !optional;
+    &#{$gx-loading} {
+      @extend #{$loading-animation}#{$gx-vars} !optional;
     }
   }
 }

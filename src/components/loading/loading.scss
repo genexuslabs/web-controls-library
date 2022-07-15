@@ -1,18 +1,4 @@
-@import "../common/_base";
-@import "../common/_common-styling-config";
-@import "../common/_layout-styling-config";
-@import "_loading-rotate-animation";
-
-$animation-duration: 1.5s;
-$box-padding: 30px 20px;
-$box-background-color: rgba(228, 228, 228, 0.75);
-$box-shadow-color: rgba(114, 114, 114, 0.5);
-$box-max-width: 30%;
-$box-min-width: 200px;
-$title-font-size: 16px;
-$description-font-size: $title-font-size - 2;
-
-gx-loading {
+:host {
   /**
    * @prop --rotate-animation-container-size:
    * Define the size of the rotate animation container.
@@ -48,114 +34,63 @@ gx-loading {
   */
   --rotate-animation-circle-3-color: rgb(200, 10, 70);
 
-  @include visibility(block);
-  z-index: $z-index-gx-loading;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+}
 
-  // Style applied when the gx-loading is displayed as a dialog
-  &[dialog],
-  &[dialog="true"] {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+.gx-loading-rotate-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: end;
+  position: relative;
+  border-radius: 50%;
 
-    .box {
-      position: fixed;
-      left: 50%;
-      top: 50%;
-      background-color: $box-background-color;
-      border-radius: 4px;
-      box-shadow: 0px 8px 16px 4px $box-shadow-color;
-      max-width: $box-max-width;
-      min-width: $box-min-width;
-      padding: $box-padding;
-      overflow: hidden;
-      transform: translate(-50%, -50%);
-      z-index: $z-index-gx-loading-box;
-    }
-  }
+  width: var(--rotate-animation-container-size);
+  height: var(--rotate-animation-container-size);
+  animation: rotate-origin calc(var(--rotate-animation-duration) * 2.5) linear
+    infinite;
 
-  .gx-lottie-test {
-    display: none !important;
-  }
+  > .circle {
+    width: 42%;
+    height: 42%;
+    border-radius: 50%;
+    transform: scale(0);
+    filter: opacity(0.75);
+    animation: grow var(--rotate-animation-duration) ease-in-out infinite;
 
-  .box {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-
-    @include rotate-animation-styling;
-  }
-
-  .title {
-    font-size: $title-font-size;
-    font-weight: bold;
-    text-align: center;
-  }
-
-  .description {
-    padding-top: 5px;
-    font-size: $description-font-size;
-    text-align: center;
-  }
-
-  .loader {
-    height: 4px;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-
-    .loader-inner {
-      display: block;
-      position: absolute;
-      width: 0;
-      height: 4px;
-      background-color: #2980b9;
+    &-1 {
+      background-color: var(--rotate-animation-circle-2-color);
+      animation-delay: calc(var(--rotate-animation-duration) * (1 / 3));
     }
 
-    &.determinate {
-      .loader-inner {
-        transition: width linear $transition-duration;
-      }
+    &-2 {
+      background-color: var(--rotate-animation-circle-1-color);
     }
 
-    &.indeterminate {
-      .loader-inner {
-        animation: gx-loading-animation $animation-duration linear infinite;
-      }
+    &-3 {
+      background-color: var(--rotate-animation-circle-3-color);
+      animation-delay: calc(var(--rotate-animation-duration) * (2 / 3));
     }
   }
 }
 
-@keyframes gx-loading-animation {
-  0% {
-    left: -100%;
-    width: 30%;
+@keyframes rotate-origin {
+  to {
+    transform: rotate(360deg);
   }
+}
 
+@keyframes grow {
   50% {
-    width: 30%;
-  }
-
-  70% {
-    width: 70%;
-  }
-
-  80% {
-    left: 50%;
-  }
-
-  95% {
-    left: 120%;
-  }
-
-  100% {
-    left: 100%;
-    width: 70%;
+    filter: opacity(1);
+    transform: scale(1);
   }
 }

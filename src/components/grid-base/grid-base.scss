@@ -64,6 +64,7 @@ $grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller), & > * 
   @include transition-properties();
   flex: 1;
   align-self: stretch;
+  position: relative; // Required for gx-loading's positioning
 
   #{$grid-content-selector} {
     flex: 1;

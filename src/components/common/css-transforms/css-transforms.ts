@@ -5,6 +5,7 @@ import {
 } from "../interfaces";
 
 const transforms = {
+  description: "--description",
   evenRow: "--even-row",
   groupCaption: "--group-caption",
   highlighted: "--highlighted",
@@ -16,10 +17,12 @@ const transforms = {
   labelHighlighted: "--label-highlighted",
   labelPositionLeft: "--label-position-left",
   labelPositionRight: "--label-position-right",
+  loading: "--loading",
   oddRow: "--odd-row",
   selectedTabCaption: "--selected-tab-page",
   tabsPosition: "--tabs-position",
   tabsPositionCaption: "--tabs-position-caption",
+  title: "--title",
   unselectedTabCaption: "--unselected-tab-page",
   vars: "--vars"
 };
@@ -27,8 +30,16 @@ const transforms = {
 // - - - - - - - - -  CACHE  - - - - - - - - -
 const classesCache = new Map<string, CssClasses>();
 const classesWoFocusCache = new Map<string, CssClassesWithoutFocus>();
+const transformedClassesWoFocusCache = new Map<
+  string,
+  CssTransformedClassesWithoutFocus
+>();
 
 // - - - - - - - -  Transforms  - - - - - - - -
+export function tDescription(className: string): string {
+  return className + transforms["description"];
+}
+
 export function tEvenRow(className: string): string {
   return className + transforms["evenRow"];
 }
@@ -73,6 +84,10 @@ export function tLabelPositionRight(className: string): string {
   return className + transforms["labelPositionRight"];
 }
 
+export function tLoading(className: string): string {
+  return className + transforms["loading"];
+}
+
 export function tOddRow(className: string): string {
   return className + transforms["oddRow"];
 }
@@ -90,6 +105,10 @@ export function tTabsPosition(className: string): string {
 
 export function tTabsPositionCaption(className: string): string {
   return className + transforms["tabsPositionCaption"];
+}
+
+export function tTitle(className: string): string {
+  return className + transforms["title"];
 }
 
 export function tUnselectedTabCaption(className: string): string {
@@ -169,10 +188,22 @@ export function getTransformedClassesWithoutFocus(
   if (!cssClass) {
     return { transformedCssClass: "", vars: "" };
   }
-  const splittedClasses = cssClass.split(" ").map(tClass);
+  const cacheKey = `${tClass.name}_${cssClass}`;
+  let result: CssTransformedClassesWithoutFocus = transformedClassesWoFocusCache.get(
+    cacheKey
+  );
 
-  const transformedCssClass = splittedClasses.join(" ");
-  const vars = splittedClasses.map(tVars).join(" ");
+  // If the value has not yet been calculated
+  if (result == undefined) {
+    const splittedClasses = cssClass.split(" ").map(tClass);
 
-  return { transformedCssClass, vars };
+    const transformedCssClass = splittedClasses.join(" ");
+    const vars = splittedClasses.map(tVars).join(" ");
+
+    // Cache for the corresponding value
+    result = { transformedCssClass, vars };
+    transformedClassesWoFocusCache.set(cacheKey, result);
+  }
+
+  return result;
 }
