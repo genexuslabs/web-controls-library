@@ -30,8 +30,6 @@ export class MapMarker implements GxComponent {
   /**
    * The class that the marker will have.
    *
-   * Set the `background-image` property to use it as icon of the marker.
-   *
    */
   @Prop() iconImageClass = "gx-default-icon";
 
