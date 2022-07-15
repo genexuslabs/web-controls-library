@@ -58,8 +58,14 @@ export class Map implements GxComponent {
     this.userLocationChange.emit(this.userLocationCoords);
   }
 
-  @Prop() ShowMyLocation: boolean;
+  /**
+   * `true` to indicate if the current location marker is shown on the map.
+   */
+  @Prop() showMyLocation: boolean;
 
+  /**
+   * The class that the marker will have.
+   */
   @Prop() markerClassIcon = "gx-default-icon";
   /**
    * The coord of initial center of the map.
@@ -380,12 +386,10 @@ export class Map implements GxComponent {
     this.map.setMaxZoom(this.maxZoom);
     this.fitBounds();
 
-    if (this.ShowMyLocation) {
+    if (this.showMyLocation) {
       this.map.locate({ enableHighAccuracy: true });
       this.map.on("locationfound", e => {
-        console.log("Resultado location" + e.latlng.lat + "-" + e.latlng.lng);
-
-        LMarker(coords, {
+        LMarker([e.latlng.lat, e.latlng.lng], {
           icon: divIcon({
             className: this.markerClassIcon,
             iconAnchor: [40, 30],
@@ -393,10 +397,7 @@ export class Map implements GxComponent {
             iconSize: [40, 40],
             tooltipAnchor: [0, 10]
           })
-        })
-          .bindPopup("<i>Ubicacion Actual! </i>")
-          .addTo(this.map);
-        //LMarker([e.latlng.lat, e.latlng.lng], this.markerClassIcon).bindPopup("<i>Estas aqui! </i>").addTo(this.map);
+        }).addTo(this.map);
       });
     }
 
