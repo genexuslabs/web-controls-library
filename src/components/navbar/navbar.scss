@@ -102,6 +102,20 @@ $gx-navbar-active-color: black;
   position: fixed;
 }
 
+// These classes apply when the Header Row Pattern is enabled. When HRP is
+// enabled and the asides are visible, we have to reposition the navbar so it
+// does not overlap the asides. If we do not do this, the burger button won't
+// be reached.
+@media screen and (min-width: $gx-vertical-targets-breakpoint-plus-1) {
+  :host(.left-target-visible) {
+    left: $gx-vertical-target-width;
+  }
+
+  :host(.right-target-visible) {
+    right: $gx-vertical-target-width;
+  }
+}
+
 @include visibility-shadow-DOM(block);
 
 :host {

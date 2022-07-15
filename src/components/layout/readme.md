@@ -46,12 +46,13 @@ When the left or right target is visible and floating, the center target is mask
 
 ## Properties
 
-| Property       | Attribute       | Description                    | Type      | Default |
-| -------------- | --------------- | ------------------------------ | --------- | ------- |
-| `bottomHidden` | `bottom-hidden` | True to hide the bottom target | `boolean` | `false` |
-| `leftHidden`   | `left-hidden`   | True to hide the left target   | `boolean` | `false` |
-| `rightHidden`  | `right-hidden`  | True to hide the right target  | `boolean` | `false` |
-| `topHidden`    | `top-hidden`    | True to hide the top target    | `boolean` | `false` |
+| Property              | Attribute               | Description                                                | Type      | Default |
+| --------------------- | ----------------------- | ---------------------------------------------------------- | --------- | ------- |
+| `bottomHidden`        | `bottom-hidden`         | True to hide the bottom target                             | `boolean` | `false` |
+| `bottomNavbarVisible` | `bottom-navbar-visible` | `true` if the bottom navbar is visible in the application. | `boolean` | `false` |
+| `leftHidden`          | `left-hidden`           | True to hide the left target                               | `boolean` | `false` |
+| `rightHidden`         | `right-hidden`          | True to hide the right target                              | `boolean` | `false` |
+| `topHidden`           | `top-hidden`            | True to hide the top target                                | `boolean` | `false` |
 
 ## Events
 

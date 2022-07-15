@@ -1,6 +1,7 @@
 @import "../common/_base";
 @import "../common/css-transforms/scss-transforms";
 @import "../common/_common-styling-config";
+@import "../common/layout-styling-config.scss";
 
 @include visibility-shadow-DOM(inline-flex);
 
