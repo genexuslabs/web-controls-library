@@ -27,8 +27,7 @@ export class CanvasCell implements GxComponent {
   @Prop() readonly maxHeight: string = null;
 
   /**
-   * This attribute defines the minimum height of the cell when its contents
-   * are visible.
+   * This attribute defines the minimum height of the cell.
    */
   @Prop() readonly minHeight: string = "100%";
 
@@ -73,6 +72,13 @@ export class CanvasCell implements GxComponent {
 
   componentDidLoad() {
     this.setupObserver(this.element.firstElementChild);
+  }
+
+  disconnectedCallback() {
+    if (this.observer !== undefined) {
+      this.observer.disconnect();
+      this.observer = undefined;
+    }
   }
 
   render() {

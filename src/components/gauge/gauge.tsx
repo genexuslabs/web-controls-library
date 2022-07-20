@@ -14,7 +14,7 @@ import {
 import { Component as GxComponent } from "../common/interfaces";
 
 // Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
+import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
 
 @Component({
   shadow: false,
@@ -481,7 +481,7 @@ export class Gauge implements GxComponent {
             ROTATION_FIX}deg)`;
 
     // Styling for gx-gauge control.
-    const classes = getClasses(this.cssClass, -1);
+    const classes = getClassesWithoutFocus(this.cssClass);
 
     return (
       <Host
@@ -560,7 +560,7 @@ export class Gauge implements GxComponent {
       this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
 
     // Styling for gx-gauge control.
-    const classes = getClasses(this.cssClass, -1);
+    const classes = getClassesWithoutFocus(this.cssClass);
 
     return (
       <Host

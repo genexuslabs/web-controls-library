@@ -13,5 +13,11 @@ gx-radio-group {
 
   &[direction="horizontal"] {
     flex-wrap: wrap;
+
+    // WA to override the default vertical alignment when readonly="true".
+    // Default values must be configured in one file and not be separated into
+    // multiple scss files. For example, some defaults are set in the
+    // _base.scss and components/form-field/form-field.scss files
+    align-content: flex-start;
   }
 }

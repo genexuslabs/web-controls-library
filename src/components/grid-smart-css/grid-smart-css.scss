@@ -83,13 +83,12 @@ gx-grid-smart-css {
   }
 }
 
-/*
-  Vertical Orientation
-*/
+// - - - - - - - - - - - - - - - - - -
+//        Vertical Orientation
+// - - - - - - - - - - - - - - - - - -
 
-/*  This ensures that the rows will only set their height based on the height
-    of the content.
-*/
+// This ensures that the rows will only set their height based on the height
+// of the content.
 gx-grid-smart-css[direction="vertical"] {
   & > div {
     grid-auto-rows: var(--gx-table-row-autogrow);
@@ -127,9 +126,9 @@ gx-grid-smart-css[direction="vertical"][item-layout-mode="mbys"] {
   }
 }
 
-/*
-  Horizontal Orientation
-*/
+// - - - - - - - - - - - - - - - - - -
+//       Horizontal Orientation
+// - - - - - - - - - - - - - - - - - -
 
 gx-grid-smart-css[direction="horizontal"] {
   #{$grid-content-selector} {

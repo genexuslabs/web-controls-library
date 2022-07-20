@@ -1,24 +1,44 @@
-import { CssClasses } from "../interfaces";
+import {
+  CssClasses,
+  CssClassesWithoutFocus,
+  CssTransformedClassesWithoutFocus
+} from "../interfaces";
 
 const transforms = {
-  evenRow: "-gx-even-row",
-  groupCaption: "-gx-group-caption",
-  highlighted: "-gx-highlighted",
-  highlightedFocusWithin: "-gx-highlighted-focus-within",
-  hover: "-gx-hover",
-  horizontalLine: "-gx-horizontal-line",
-  label: "-gx-label",
-  labelContainer: "-gx-label-container",
-  labelHighlighted: "-gx-label-highlighted",
-  labelPositionLeft: "-gx-label-position-left",
-  labelPositionRight: "-gx-label-position-right",
-  oddRow: "-gx-odd-row",
-  selectedTabCaption: "-gx-selected-tab-caption",
-  tabsPosition: "-gx-tabs-position",
-  tabsPositionCaption: "-gx-tabs-position-caption",
-  unselectedTabCaption: "-gx-unselected-tab-caption",
-  vars: "-gx-vars"
+  description: "--description",
+  evenRow: "--even-row",
+  groupCaption: "--group-caption",
+  highlighted: "--highlighted",
+  highlightedFocusWithin: "--focus-within",
+  hover: "--hover",
+  horizontalLine: "--horizontal-line",
+  label: "--label",
+  labelContainer: "--label-container",
+  labelHighlighted: "--label-highlighted",
+  labelPositionLeft: "--label-position-left",
+  labelPositionRight: "--label-position-right",
+  loading: "--loading",
+  oddRow: "--odd-row",
+  selectedTabCaption: "--selected-tab-page",
+  tabsPosition: "--tabs-position",
+  tabsPositionCaption: "--tabs-position-caption",
+  title: "--title",
+  unselectedTabCaption: "--unselected-tab-page",
+  vars: "--vars"
 };
+
+// - - - - - - - - -  CACHE  - - - - - - - - -
+const classesCache = new Map<string, CssClasses>();
+const classesWoFocusCache = new Map<string, CssClassesWithoutFocus>();
+const transformedClassesWoFocusCache = new Map<
+  string,
+  CssTransformedClassesWithoutFocus
+>();
+
+// - - - - - - - -  Transforms  - - - - - - - -
+export function tDescription(className: string): string {
+  return className + transforms["description"];
+}
 
 export function tEvenRow(className: string): string {
   return className + transforms["evenRow"];
@@ -64,6 +84,10 @@ export function tLabelPositionRight(className: string): string {
   return className + transforms["labelPositionRight"];
 }
 
+export function tLoading(className: string): string {
+  return className + transforms["loading"];
+}
+
 export function tOddRow(className: string): string {
   return className + transforms["oddRow"];
 }
@@ -83,6 +107,10 @@ export function tTabsPositionCaption(className: string): string {
   return className + transforms["tabsPositionCaption"];
 }
 
+export function tTitle(className: string): string {
+  return className + transforms["title"];
+}
+
 export function tUnselectedTabCaption(className: string): string {
   if (!className) {
     return "";
@@ -96,29 +124,86 @@ export function tVars(className: string): string {
 
 /**
  * @param cssClass Classes of the control
- * @param highlightOption Function type to be applied in the second return value
- * @param tClass Function to transform the cssClass param. Useful for gx-grid cells
- * @returns For each class in the `cssClass` param, return two string that match the variables and highlighted classes of the control.
+ * @returns For each class in the `cssClass` param, return two strings that match the variable and highlighted classes of the control.
  */
-export function getClasses(
-  cssClass: string,
-  highlightOption = 1,
-  tClass?: (x: string) => string
-): CssClasses {
+export function getClasses(cssClass: string): CssClasses {
   // If the cssClass is empty, we return empty classes
   if (!cssClass) {
-    return { transformedCssClass: "", highlighted: "", hover: "", vars: "" };
+    return { highlighted: "", vars: "" };
   }
-  const splittedClasses =
-    tClass == undefined ? cssClass.split(" ") : cssClass.split(" ").map(tClass);
+  let result: CssClasses = classesCache.get(cssClass);
 
-  const transformedCssClass = splittedClasses.join(" ");
-  const highlighted =
-    highlightOption === 1
-      ? splittedClasses.map(tHighlightedFocusWithin).join(" ")
-      : "";
-  const hover = splittedClasses.map(tHover).join(" ");
-  const vars = splittedClasses.map(tVars).join(" ");
+  // If the value has not yet been calculated
+  if (result === undefined) {
+    const splittedClasses = cssClass.split(" ");
+    const highlighted = splittedClasses.map(tHighlightedFocusWithin).join(" ");
+    const vars = splittedClasses.map(tVars).join(" ");
 
-  return { transformedCssClass, highlighted, hover, vars };
+    // Cache for the corresponding value
+    result = { highlighted, vars };
+    classesCache.set(cssClass, result);
+  }
+
+  return result;
+}
+
+/**
+ * @param cssClass Classes of the control
+ * @returns For each class in the `cssClass` param, return one string that match the variable classes of the control.
+ */
+export function getClassesWithoutFocus(
+  cssClass: string
+): CssClassesWithoutFocus {
+  // If the cssClass is empty, we return empty classes
+  if (!cssClass) {
+    return { vars: "" };
+  }
+  let result: CssClassesWithoutFocus = classesWoFocusCache.get(cssClass);
+
+  // If the value has not yet been calculated
+  if (result === undefined) {
+    const vars = cssClass
+      .split(" ")
+      .map(tVars)
+      .join(" ");
+
+    // Cache for the corresponding value
+    result = { vars };
+    classesWoFocusCache.set(cssClass, result);
+  }
+
+  return result;
+}
+
+/**
+ * @param cssClass Classes of the control
+ * @param tClass Function to transform the cssClass param. Useful for gx-grid cells
+ * @returns For each class in the `cssClass` param, return two strings that match the variable and transformed classes of the control.
+ */
+export function getTransformedClassesWithoutFocus(
+  cssClass: string,
+  tClass: (x: string) => string
+): CssTransformedClassesWithoutFocus {
+  // If the cssClass is empty, we return empty classes
+  if (!cssClass) {
+    return { transformedCssClass: "", vars: "" };
+  }
+  const cacheKey = `${tClass.name}_${cssClass}`;
+  let result: CssTransformedClassesWithoutFocus = transformedClassesWoFocusCache.get(
+    cacheKey
+  );
+
+  // If the value has not yet been calculated
+  if (result == undefined) {
+    const splittedClasses = cssClass.split(" ").map(tClass);
+
+    const transformedCssClass = splittedClasses.join(" ");
+    const vars = splittedClasses.map(tVars).join(" ");
+
+    // Cache for the corresponding value
+    result = { transformedCssClass, vars };
+    transformedClassesWoFocusCache.set(cacheKey, result);
+  }
+
+  return result;
 }

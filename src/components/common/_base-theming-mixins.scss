@@ -1,5 +1,17 @@
 @import "./css-transforms/scss-transforms";
 
+/// Helper mixin to ease styling animations of the custom elements
+/// @param {string} $class Base class of the animation
+@mixin animation($class) {
+  &#{$gx-loading} {
+    @extend #{$class} !optional;
+  }
+
+  &#{$gx-loading-vars} {
+    @extend #{$class}#{$gx-vars} !optional;
+  }
+}
+
 /// Helper mixin to ease styling custom vars of the custom elements
 /// @param {string} $class Base class of the custom vars properties
 @mixin custom-vars($class) {
@@ -75,17 +87,18 @@
     @if $show-horizontal-line == true {
       content: "";
       display: block;
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      background-color: #cfcfcf;
       height: 1px;
+
+      // Default background-color when no class is set
+      @if $class == null {
+        background-color: #cfcfcf;
+      }
     } @else {
       content: none;
     }
   }
 
+  // This selector needs more specificity to overcome the default height value
   @if $show-horizontal-line == true and $class != null {
     @at-root gx-grid-smart-cell#{&}#{$gx-horizontal-line}::after {
       @extend #{$class} !optional;

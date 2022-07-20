@@ -20,7 +20,7 @@ import {
 import { Swipeable, makeSwipeable } from "../common/swipeable";
 
 // Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
+import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
 
 @Component({
   shadow: false,
@@ -66,7 +66,7 @@ export class Table
    * empty cell. The syntax itself provides a visualization of the structure of
    * the grid.
    */
-  @Prop() readonly areasTemplate: string;
+  @Prop() readonly areasTemplate: string = null;
 
   /**
    * Like the `grid-templates-columns` CSS property, this attribute defines
@@ -74,14 +74,14 @@ export class Table
    * represent the width of column.
    */
 
-  @Prop() readonly columnsTemplate: string;
+  @Prop() readonly columnsTemplate: string = null;
 
   /**
    * Like the `grid-templates-rows` CSS property, this attribute defines the
    * rows of the grid with a space-separated list of values. The values
    * represent the height of each row.
    */
-  @Prop() readonly rowsTemplate: string;
+  @Prop() readonly rowsTemplate: string = null;
 
   /**
    * True to highlight control when an action is fired.
@@ -128,15 +128,15 @@ export class Table
 
   render() {
     // Styling for gx-table control.
-    const classes = getClasses(this.cssClass, -1);
+    const classes = getClassesWithoutFocus(this.cssClass);
 
     return (
       <Host
         class={{ [this.cssClass]: !!this.cssClass, [classes.vars]: true }}
         style={{
-          gridTemplateAreas: this.areasTemplate,
-          gridTemplateColumns: this.columnsTemplate,
-          gridTemplateRows: this.rowsTemplate
+          "--grid-template-areas": this.areasTemplate,
+          "grid-template-columns": this.columnsTemplate,
+          "grid-template-rows": this.rowsTemplate
         }}
         data-has-action={this.highlightable ? "" : undefined}
       >

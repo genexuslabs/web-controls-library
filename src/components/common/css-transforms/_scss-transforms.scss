@@ -1,22 +1,26 @@
-$gx-even-row: "-gx-even-row";
-$gx-group-caption: "-gx-group-caption";
-$gx-highlighted: "-gx-highlighted";
+$gx-description: "--description";
+$gx-even-row: "--even-row";
+$gx-group-caption: "--group-caption";
+$gx-highlighted: "--highlighted";
 $gx-highlighted-dot: ".gx-highlighted";
-$gx-highlighted-focus-within: "-gx-highlighted-focus-within";
-$gx-hover: "-gx-hover";
-$gx-horizontal-line: "-gx-horizontal-line";
-$gx-label: "-gx-label";
-$gx-label-container: "-gx-label-container";
-$gx-label-highlighted: "-gx-label-highlighted";
-$gx-label-position-left: "-gx-label-position-left";
-$gx-label-position-right: "-gx-label-position-right";
-$gx-odd-row: "-gx-odd-row";
-$gx-selected-tab-caption: "-gx-selected-tab-caption";
-$gx-tabs-position: "-gx-tabs-position";
-$gx-tabs-position-caption: "-gx-tabs-position-caption";
-$gx-unselected-tab-caption: "-gx-unselected-tab-caption";
+$gx-highlighted-focus-within: "--focus-within";
+$gx-hover: "--hover";
+$gx-horizontal-line: "--horizontal-line";
+$gx-label: "--label";
+$gx-label-container: "--label-container";
+$gx-label-highlighted: "--label-highlighted";
+$gx-label-position-left: "--label-position-left";
+$gx-label-position-right: "--label-position-right";
+$gx-loading: "--loading";
+$gx-loading-vars: "--loading--vars"; // In this case, we add the variable mapping, because it contains the lottie path
+$gx-odd-row: "--odd-row";
+$gx-selected-tab-caption: "--selected-tab-page";
+$gx-tabs-position: "--tabs-position";
+$gx-tabs-position-caption: "--tabs-position-caption";
+$gx-title: "--title";
+$gx-unselected-tab-caption: "--unselected-tab-page";
 
-$gx-vars: "-gx-vars";
+$gx-vars: "--vars";
 
 /// Replace `$search` with `$replace` in `$string`
 /// @param {String} $string - Initial string

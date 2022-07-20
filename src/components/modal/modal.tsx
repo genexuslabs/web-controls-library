@@ -82,6 +82,13 @@ export class Modal implements GxComponent {
 
   componentDidLoad() {
     this.renderer.componentDidLoad();
+
+    // The modal might be opened when it is first rendered, due to in some
+    // cases it was open when the UI was refreshed.
+    if (this.opened) {
+      this.renderer.open();
+      this.open.emit();
+    }
   }
 
   render() {

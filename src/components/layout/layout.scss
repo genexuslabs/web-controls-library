@@ -1,28 +1,36 @@
 @import "../common/layout-styling-config.scss";
 
-$gx-layout-vertical-targets-breakpoint: 1200px;
+// WA to remove "line-height: 1.5" property from Bootstrap's selector
+html > body {
+  line-height: normal;
+}
 
 gx-layout {
   /**
    * @prop --gx-layout-vertical-target-width: Width for vertical targets (left and right)
    */
   --gx-layout-vertical-target-width: auto;
+
   /**
    * @prop --gx-layout-horizontal-target-height: Height for horizontal targets (top and bottom)
    */
   --gx-layout-horizontal-target-height: auto;
+
   /**
    * @prop --gx-layout-mask-background-color: Mask background color
    */
-  --gx-layout-mask-background-color: #575965;
+  --gx-layout-mask-background-color: #333;
+
   /**
    * @prop --gx-layout-mask-opacity: Mask opacity
    */
-  --gx-layout-mask-opacity: 0.5;
+  --gx-layout-mask-opacity: 0.749; // Same as Android
+
   /**
    * @prop --gx-layout-target-transition-duration: Vertical target's transition duration
    */
-  --gx-layout-target-transition-duration: 0.3s;
+  --gx-layout-target-transition-duration: 0.25s;
+
   /**
    * @prop --gx-layout-target-transition-timing-function: Vertical target's transition timing function
    */
@@ -31,7 +39,7 @@ gx-layout {
   /**
    * @prop --gx-layout-vertical-targets-breakpoint: Vertical targets breakpoint
   */
-  --gx-layout-vertical-targets-breakpoint: #{$gx-layout-vertical-targets-breakpoint};
+  --gx-layout-vertical-targets-breakpoint: #{$gx-vertical-targets-breakpoint};
 
   display: grid;
   position: relative;
@@ -39,7 +47,6 @@ gx-layout {
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  z-index: $z-index-gx-layout;
   overflow: hidden;
 
   grid-template-columns:
@@ -67,19 +74,24 @@ gx-layout {
   & > .top {
     grid-area: 1 / 1 / 2 / 4;
     flex-direction: row;
+    z-index: $z-index-gx-layout;
   }
 
   & > .bottom {
     grid-area: 3 / 1 / 4 / 4;
     flex-direction: row;
+    z-index: $z-index-gx-layout;
   }
 
   & > .left {
     grid-area: 2 / 1 / 3 / 2;
 
-    @media screen and (max-width: $gx-layout-vertical-targets-breakpoint) {
-      transform: translateX(0);
-      &[hidden] {
+    @media screen and (max-width: $gx-vertical-targets-breakpoint) {
+      & > gx-component-host {
+        transform: translateX(0);
+      }
+
+      &[hidden] > gx-component-host {
         transform: translateX(-100%);
       }
     }
@@ -88,21 +100,30 @@ gx-layout {
   & > .center {
     grid-area: 2 / 2 / 3 / 3;
     position: relative;
+    z-index: $z-index-gx-layout;
 
     & > .mask {
       display: none;
-      position: absolute;
+      position: fixed;
       top: 0;
       right: 0;
       bottom: 0;
       left: 0;
       background-color: var(--gx-layout-mask-background-color);
-      opacity: var(--gx-layout-mask-opacity);
+      opacity: 0;
       z-index: $z-index-gx-layout-mask;
 
-      @media screen and (max-width: $gx-layout-vertical-targets-breakpoint) {
+      @media screen and (max-width: $gx-vertical-targets-breakpoint) {
         &--active {
           display: block;
+          animation: mask-fade-in var(--gx-layout-target-transition-duration)
+            var(--gx-layout-target-transition-timing-function) forwards;
+        }
+      }
+
+      @keyframes mask-fade-in {
+        to {
+          opacity: var(--gx-layout-mask-opacity);
         }
       }
     }
@@ -111,31 +132,66 @@ gx-layout {
   & > .right {
     grid-area: 2 / 3 / 3 / 4;
 
-    @media screen and (max-width: $gx-layout-vertical-targets-breakpoint) {
-      transform: translateX(-100%);
-      &[hidden] {
+    @media screen and (max-width: $gx-vertical-targets-breakpoint) {
+      & > gx-component-host {
+        transform: translateX(-100%);
+      }
+
+      &[hidden] > gx-component-host {
         transform: translateX(0%);
       }
     }
   }
 
+  // If the top navbar is visible, we change the top of the asides. This only
+  // applies if Header Row Pattern is not enabled
+  gx-navbar:not(.gx-navbar-header-row-pattern)
+    ~ &
+    > .vertical
+    > gx-component-host {
+    top: $gx-navbar-main-height;
+  }
+
+  // If the top navbar is visible, we limit the height of the asides.
+  @media screen and (max-width: $gx-xsmall-breakpoint) {
+    &[data-bottom-navbar] > .vertical > gx-component-host {
+      bottom: $gx-navbar-main-height;
+    }
+  }
+
   & > .vertical {
     display: flex;
-    min-width: 320px;
+    width: $gx-vertical-target-width;
 
-    @media screen and (max-width: $gx-layout-vertical-targets-breakpoint) {
-      position: absolute;
-      z-index: $z-index-gx-layout-vertical;
-      bottom: 0;
+    // Each vertical target implements its own scrollable content
+    & > gx-component-host {
+      position: fixed;
       top: 0;
-      transition-property: transform;
-      transition-duration: var(--gx-layout-target-transition-duration);
-      transition-timing-function: var(
-        --gx-layout-target-transition-timing-function
-      );
+      bottom: 0;
+      width: $gx-vertical-target-width;
+      overflow: auto;
+    }
+
+    // In this breakpoint, the vertical target no longer takes up any space in
+    // the layout. Despite this, its content (gx-component-host) will float
+    // above the layout
+    @media screen and (max-width: $gx-vertical-targets-breakpoint) {
+      width: 0; // It works due to the overflow on the aside is visible
+      z-index: $z-index-gx-layout-vertical;
+
+      // Vertical targets will be above the top navbar when Header Row Pattern
+      // is enabled
+      .gx-navbar-header-row-pattern ~ & {
+        z-index: $z-index-gx-layout-vertical-header-row-pattern;
+      }
 
       &[hidden] {
         display: flex !important;
+      }
+
+      & > gx-component-host {
+        transition: transform var(--gx-layout-target-transition-duration)
+          var(--gx-layout-target-transition-timing-function);
       }
     }
   }

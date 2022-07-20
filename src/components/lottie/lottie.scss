@@ -1,8 +1,8 @@
 @import "../common/_base";
 
-gx-lottie {
-  @include visibility(flex);
+@include visibility-shadow-DOM(flex);
 
+:host {
   & > div {
     flex-grow: 1;
   }

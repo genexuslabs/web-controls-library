@@ -1,6 +1,24 @@
 $transition-delay: 0.25s;
 $transition-duration: 0.25s;
 
+$half-transition-delay: 0.125s;
+$half-transition-duration: 0.125s;
+
+$two-times-transition-delay: 0.5s;
+$two-times-transition-duration: 0.5s;
+
+$three-times-transition-delay: 0.75s;
+$three-times-transition-duration: 0.75s;
+
+$four-times-transition-duration: 1s;
+$four-times-transition-delay: 1s;
+
+$five-times-transition-duration: 1.25s;
+$five-times-transition-delay: 1.25s;
+
+$six-times-transition-duration: 1.5s;
+$six-times-transition-delay: 1.5s;
+
 @mixin disabled-style() {
   filter: opacity(0.5);
 }

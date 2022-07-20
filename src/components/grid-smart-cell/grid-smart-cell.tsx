@@ -14,7 +14,7 @@ import {
 
 // Class transforms
 import {
-  getClasses,
+  getTransformedClassesWithoutFocus,
   tEvenRow,
   tHorizontalLine,
   tOddRow
@@ -36,23 +36,13 @@ export class GridSmartCell
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = true;
+  @Prop() readonly highlightable = false;
 
   /**
    * Whether this row is even position or not. This is specially required in Virtual scroll scenarios
    * where the position in the DOM is not the real position in the collection.
    */
   @Prop({ reflect: true }) readonly isRowEven = false;
-
-  /**
-   * Specifies the number of rows that will be displayed in the landscape mode.
-   */
-  @Prop() rowsLandscape: number = null;
-
-  /**
-   * Specifies the number of rows that will be displayed in the portrait mode.
-   */
-  @Prop() rowsPortrait: number = null;
 
   /**
    * True to show horizontal line.
@@ -67,7 +57,7 @@ export class GridSmartCell
     const tClass = this.isRowEven ? tEvenRow : tOddRow;
 
     // Styling for gx-grid-smart-cell control.
-    const classes = getClasses(this.cssClass, -1, tClass);
+    const classes = getTransformedClassesWithoutFocus(this.cssClass, tClass);
 
     const horizontalLineClasses = !!this.cssClass
       ? this.cssClass
@@ -84,13 +74,7 @@ export class GridSmartCell
           [classes.vars]: true,
           [horizontalLineClasses]: this.showHorizontalLine
         }}
-        style={{
-          "--rows-landscape":
-            this.rowsLandscape != null ? this.rowsLandscape.toString() : null,
-          "--rows-portrait":
-            this.rowsPortrait != null ? this.rowsPortrait.toString() : null
-        }}
-        data-has-action
+        data-has-action={this.highlightable ? "" : undefined}
       ></Host>
     );
   }

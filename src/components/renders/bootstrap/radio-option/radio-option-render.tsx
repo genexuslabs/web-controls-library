@@ -83,10 +83,7 @@ export class RadioOptionRender implements Renderer {
     };
 
     return (
-      <div
-        class="option-and-label-container"
-        data-part={!radioOption.disabled ? "option-control" : ""}
-      >
+      <div class="option-and-label-container" data-part="option-control">
         <div class="option-container">
           <input {...attris} type="radio" checked={radioOption.checked} />
 

@@ -12,7 +12,11 @@ import { Component as GxComponent } from "../common/interfaces";
 import { watchForItems } from "../common/watch-items";
 
 // Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
+import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
+import {
+  attachHorizontalScrollWithDragHandler,
+  attachHorizontalScrollWithWheelHandler
+} from "../common/utils";
 
 @Component({
   shadow: true,
@@ -43,6 +47,30 @@ export class NavBar implements GxComponent {
   @Prop() readonly cssClass: string;
 
   /**
+   * This attribute lets you specify if the header row pattern is enabled.
+   * If enabled, the control will switch between the `cssClass` and
+   * `headerRowPatternCssClass` classes depending on the value of the
+   * `showHeaderRowPatternClass` property.
+   * This property only works when `position="top"`.
+   */
+  @Prop() readonly enableHeaderRowPattern: boolean = false;
+
+  /**
+   * A CSS class to set as the `gx-navbar` element class when using the header row pattern.
+   */
+  @Prop() readonly headerRowPatternCssClass: string;
+
+  /**
+   * `true` if the left target of the gx-layout is visible in the application.
+   */
+  @Prop() readonly leftTargetVisible: boolean = false;
+
+  /**
+   * `true` if the right target of the gx-layout is visible in the application.
+   */
+  @Prop() readonly rightTargetVisible: boolean = false;
+
+  /**
    * This attribute lets you specify if one or two lines will be used to render the navigation bar.
    * Useful when there are links and also actions, to have links in the first line, and actions in the second
    */
@@ -51,7 +79,13 @@ export class NavBar implements GxComponent {
   /**
    * True to show the back button
    */
-  @Prop() readonly showBackButton: false;
+  @Prop() readonly showBackButton: boolean = false;
+
+  /**
+   * True to use the `headerRowPatternCssClass` property as the `gx-navbar`
+   * element class. False to use the `cssClass` property instead.
+   */
+  @Prop() readonly showHeaderRowPatternClass: boolean = false;
 
   /**
    * This attribute lets you specify the position of the navbar in the
@@ -95,6 +129,11 @@ export class NavBar implements GxComponent {
 
   private isTopPosition: boolean;
 
+  // Refs
+  private navbarLinks: HTMLDivElement;
+  private navbarActionsHigh: HTMLDivElement;
+  private navbarActionsNormal: HTMLDivElement;
+
   private handleToggleButtonClick = (e: MouseEvent) => {
     this.toggleButtonClick.emit(e);
   };
@@ -118,8 +157,8 @@ export class NavBar implements GxComponent {
     }
   };
 
-  /*  Before the first render, we store the result of this.position === "top",
-      because it won't change at runtime.
+  /*  Before the first render, we store some results that will not change at
+      runtime.
   */
   componentWillLoad() {
     this.isTopPosition = this.position === "top";
@@ -132,6 +171,18 @@ export class NavBar implements GxComponent {
       "gx-navbar-item",
       () => this.checkChildActions()
     );
+
+    // - - - - - - - - - -   HANDLERS   - - - - - - - - - -
+    attachHorizontalScrollWithDragHandler(this.navbarLinks);
+    attachHorizontalScrollWithWheelHandler(this.navbarLinks);
+
+    if (this.isTopPosition) {
+      attachHorizontalScrollWithDragHandler(this.navbarActionsHigh);
+      attachHorizontalScrollWithDragHandler(this.navbarActionsNormal);
+
+      attachHorizontalScrollWithWheelHandler(this.navbarActionsHigh);
+      attachHorizontalScrollWithWheelHandler(this.navbarActionsNormal);
+    }
   }
 
   disconnectedCallback() {
@@ -140,6 +191,10 @@ export class NavBar implements GxComponent {
       this.watchForItemsObserver.disconnect();
       this.watchForItemsObserver = undefined;
     }
+
+    this.navbarLinks = null;
+    this.navbarActionsHigh = null;
+    this.navbarActionsNormal = null;
   }
 
   private checkChildActions() {
@@ -149,8 +204,15 @@ export class NavBar implements GxComponent {
   }
 
   render() {
+    const isHeaderRowPatternEnabled =
+      this.isTopPosition && this.enableHeaderRowPattern;
+
     //  Styling for gx-navbar control.
-    const classes = getClasses(this.cssClass, -1);
+    const currentClass =
+      isHeaderRowPatternEnabled && this.showHeaderRowPatternClass
+        ? this.headerRowPatternCssClass
+        : this.cssClass;
+    const classes = getClassesWithoutFocus(currentClass);
 
     let amountOfActionTypes = 0;
 
@@ -165,9 +227,14 @@ export class NavBar implements GxComponent {
     return (
       <Host
         class={{
-          [this.cssClass]: !!this.cssClass,
+          [currentClass]: !!currentClass,
           [classes.vars]: true,
-          "gx-navbar-actions-active": this.showLowActions
+          "gx-navbar-actions-active": this.showLowActions,
+          "gx-navbar-header-row-pattern": isHeaderRowPatternEnabled,
+          "left-target-visible":
+            isHeaderRowPatternEnabled && this.leftTargetVisible,
+          "right-target-visible":
+            isHeaderRowPatternEnabled && this.rightTargetVisible
         }}
       >
         <nav class="gx-navbar">
@@ -214,7 +281,10 @@ export class NavBar implements GxComponent {
               </div>
             )}
 
-            <div class="gx-navbar-links">
+            <div
+              class="gx-navbar-links"
+              ref={el => (this.navbarLinks = el as HTMLDivElement)}
+            >
               <slot name="navigation" />
             </div>
 
@@ -248,7 +318,10 @@ export class NavBar implements GxComponent {
 
     return [
       <div class="gx-navbar-actions">
-        <div class="gx-navbar-actions-high">
+        <div
+          class="gx-navbar-actions-high"
+          ref={el => (this.navbarActionsHigh = el as HTMLDivElement)}
+        >
           <slot name="high-priority-action" />
         </div>
 
@@ -256,7 +329,10 @@ export class NavBar implements GxComponent {
           <span class="gx-navbar-actions--separator" />
         )}
 
-        <div class="gx-navbar-actions-normal">
+        <div
+          class="gx-navbar-actions-normal"
+          ref={el => (this.navbarActionsNormal = el as HTMLDivElement)}
+        >
           <slot name="normal-priority-action" />
         </div>
       </div>,
