@@ -62,7 +62,6 @@ export class Map implements GxComponent {
    * `true` to indicate if the current location marker is shown on the map.
    */
   @Prop() showMyLocation: boolean;
-
   /**
    * The class that the marker will have.
    */
@@ -98,7 +97,10 @@ export class Map implements GxComponent {
    * _Note: 20 is the best value to be used, only lower values are allowed. Is highly recommended to no change this value if you are not sure about the `maxZoom` supported by the map._
    */
   @Prop({ mutable: true }) maxZoom: number = RECOMMENDED_MAX_ZOOM;
-
+  /**
+   * The class that the marker My Location will have.
+   */
+  @Prop() pinShowMyLocation = "gx-default-user-location-icon";
   /**
    * Enables the possibility to navigate the map and select a location point using the map center.
    */
@@ -391,7 +393,7 @@ export class Map implements GxComponent {
       this.map.on("locationfound", e => {
         LMarker([e.latlng.lat, e.latlng.lng], {
           icon: divIcon({
-            className: this.markerClassIcon,
+            className: this.pinShowMyLocation,
             iconAnchor: [40, 30],
             popupAnchor: [0, 10],
             iconSize: [40, 40],
