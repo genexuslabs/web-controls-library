@@ -94,7 +94,8 @@ export class Loading implements GxComponent {
       <Host
         class={{
           [loadingClasses.transformedCssClass]: true,
-          [loadingClasses.vars]: true
+          [loadingClasses.vars]: true,
+          "slot-animation": this.showSlotAnimation
         }}
         aria-hidden={!shouldShowContent ? "true" : undefined}
       >
