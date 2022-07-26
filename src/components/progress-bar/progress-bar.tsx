@@ -1,5 +1,6 @@
 import { Component, Element, Host, Prop, State, h } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
+import { getLottiePath } from "../common/utils";
 
 // Class transforms
 import {
@@ -63,15 +64,7 @@ export class ProgressBar implements GxComponent {
   private didLoad = false;
 
   private updateLottiePath() {
-    const rawLottiePath = window
-      .getComputedStyle(this.element)
-      .getPropertyValue("--gx-lottie-file-path");
-
-    // Remove quotes from the string
-    this.lottiePath = rawLottiePath
-      .trim()
-      .replace(/^"/, "")
-      .replace(/"$/, "");
+    this.lottiePath = getLottiePath(window.getComputedStyle(this.element));
   }
 
   componentDidRender() {
