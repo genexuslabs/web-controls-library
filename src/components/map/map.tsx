@@ -14,10 +14,8 @@ import { Component as GxComponent } from "../common/interfaces";
 import {
   FeatureGroup,
   Marker,
-  marker as LMarker,
   map as LFMap,
   tileLayer,
-  divIcon,
   polyline
 } from "leaflet/dist/leaflet-src.esm";
 import { parseCoords } from "../common/coordsValidate";
@@ -57,11 +55,6 @@ export class Map implements GxComponent {
   userLocationHandler() {
     this.userLocationChange.emit(this.userLocationCoords);
   }
-
-  /**
-   * `true` to indicate if the current location marker is shown on the map.
-   */
-  @Prop() showMyLocation: boolean;
 
   /**
    * The class that the marker will have.
@@ -385,21 +378,6 @@ export class Map implements GxComponent {
     this.setMapProvider();
     this.map.setMaxZoom(this.maxZoom);
     this.fitBounds();
-
-    if (this.showMyLocation) {
-      this.map.locate({ enableHighAccuracy: true });
-      this.map.on("locationfound", e => {
-        LMarker([e.latlng.lat, e.latlng.lng], {
-          icon: divIcon({
-            className: this.markerClassIcon,
-            iconAnchor: [40, 30],
-            popupAnchor: [0, 10],
-            iconSize: [40, 40],
-            tooltipAnchor: [0, 10]
-          })
-        }).addTo(this.map);
-      });
-    }
 
     this.gxMapDidLoad.emit(this);
 
