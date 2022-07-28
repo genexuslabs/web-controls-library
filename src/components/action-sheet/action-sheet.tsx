@@ -5,12 +5,13 @@ import {
   EventEmitter,
   Prop,
   h,
-  Host
+  Host,
+  Listen
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "action-sheet.scss",
   tag: "gx-action-sheet"
 })
@@ -42,12 +43,17 @@ export class ActionSheet implements GxComponent {
    */
   @Event() open: EventEmitter;
 
-  private handleItemClick(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-    if (target.matches("gx-action-sheet-item")) {
-      this.opened = false;
-    }
+  @Listen("actionSheetItemClick")
+  handleItemClick(e: UIEvent) {
+    e.stopPropagation();
+    this.opened = false;
+    this.close.emit(e);
   }
+
+  private closeActionSheet = (e: UIEvent) => {
+    this.opened = false;
+    this.close.emit(e);
+  };
 
   private handleOnClose(e: CustomEvent) {
     this.opened = false;
@@ -59,20 +65,33 @@ export class ActionSheet implements GxComponent {
     this.open.emit(e);
   }
 
+  componentWillLoad() {
+    // Since the "close-item" element is in the Shadow Root and not in the
+    // Light DOM, `lastAction` will be the last child of the body.
+    const lastAction = this.element.querySelector(
+      ":scope > gx-action-sheet-item:last-child"
+    );
+    lastAction?.classList.add("last-action");
+  }
+
   render() {
     return (
       <Host>
         <gx-modal
           showHeader={false}
+          type={"popup"}
           opened={this.opened}
           onClose={this.handleOnClose}
           onOpen={this.handleOnOpen}
-          onClick={this.handleItemClick}
         >
-          <div class="gx-action-sheet" slot="body">
+          <div class="body" slot="body">
             <slot />
           </div>
-          <gx-action-sheet-item class="gx-action-sheet-close-item" slot="body">
+          <gx-action-sheet-item
+            class="close-item"
+            slot="primary-action"
+            onClick={this.closeActionSheet}
+          >
             {this.closeButtonLabel}
           </gx-action-sheet-item>
         </gx-modal>

@@ -17,17 +17,13 @@ describe("gx-action-sheet-item", () => {
 
   it("should render disabled actions", async () => {
     const disabledAction = await page.find("gx-action-sheet-item[disabled]");
-    expect(
-      disabledAction.className.indexOf("gx-as-item--disabled")
-    ).toBeGreaterThan(-1);
+    expect(disabledAction.className.indexOf("disabled")).toBeGreaterThan(-1);
   });
 
   it("should render destructive actions", async () => {
     const destructiveAction = await page.find(
       "gx-action-sheet-item[action-type='destructive']"
     );
-    expect(
-      destructiveAction.className.indexOf("gx-as-item--danger")
-    ).toBeGreaterThan(-1);
+    expect(destructiveAction.className.indexOf("danger")).toBeGreaterThan(-1);
   });
 });

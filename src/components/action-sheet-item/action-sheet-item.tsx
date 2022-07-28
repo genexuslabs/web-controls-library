@@ -1,8 +1,16 @@
-import { Component, Element, Prop, h, Host, Listen } from "@stencil/core";
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Prop,
+  h,
+  Host
+} from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "action-sheet-item.scss",
   tag: "gx-action-sheet-item"
 })
@@ -24,23 +32,24 @@ export class ActionSheetItem implements GxComponent {
    */
   @Prop() readonly disabled = false;
 
-  @Listen("click", { capture: true })
-  private handleClick(event: UIEvent) {
-    if (this.disabled) {
-      event.stopPropagation();
-    }
+  /**
+   * Fired when the action sheet item is clicked
+   */
+  @Event() actionSheetItemClick: EventEmitter<any>;
 
-    event.preventDefault();
-  }
+  private handleClick = (e: UIEvent) => {
+    e.stopPropagation();
+    this.actionSheetItemClick.emit();
+  };
 
   render() {
     return (
       <Host
         class={{
-          "gx-as-item": true,
-          "gx-as-item--danger": this.actionType === "destructive",
-          "gx-as-item--disabled": this.disabled
+          danger: this.actionType === "destructive",
+          disabled: this.disabled
         }}
+        onClick={this.handleClick}
       >
         <slot />
       </Host>
