@@ -19,7 +19,6 @@ import { getWindowsOrientation } from "../common/utils";
 })
 export class Layout implements GxComponent {
   constructor() {
-    this.handleBodyClick = this.handleBodyClick.bind(this);
     this.handleMediaQueryChange = this.handleMediaQueryChange.bind(this);
   }
 
@@ -69,7 +68,6 @@ export class Layout implements GxComponent {
 
   private mediaQueryList: MediaQueryList;
   private mediaQueryOrientation: MediaQueryList;
-  private isVerticalTargetsBreakpoint = false;
 
   @Watch("rightHidden")
   handleRightHiddenChange() {
@@ -87,17 +85,14 @@ export class Layout implements GxComponent {
     this.isMaskVisible = !this.rightHidden || !this.leftHidden;
   }
 
-  private handleBodyClick(e: MouseEvent) {
-    if (this.isMaskVisible && this.isVerticalTargetsBreakpoint) {
-      const target = e.target as HTMLElement;
-      if (!target.matches(`gx-layout .vertical ${target.tagName}`)) {
-        setTimeout(() => {
-          this.rightHidden = true;
-          this.leftHidden = true;
-        }, 50);
-      }
-    }
-  }
+  /**
+   * Close gx-layout's targets when the mask is clicked.
+   */
+  private closeTargets = (e: MouseEvent) => {
+    e.stopPropagation();
+    this.rightHidden = true;
+    this.leftHidden = true;
+  };
 
   private updateGridsOrientation() {
     const grids = this.element.querySelectorAll("gx-grid-horizontal");
@@ -109,12 +104,10 @@ export class Layout implements GxComponent {
   }
 
   componentDidLoad() {
-    document.body.addEventListener("click", this.handleBodyClick, true);
     this.startMediaQueryMonitoring();
   }
 
   disconnectedCallback() {
-    document.body.removeEventListener("click", this.handleBodyClick);
     this.endMediaQueryMonitoring();
   }
 
@@ -140,7 +133,6 @@ export class Layout implements GxComponent {
   }
 
   private updateVerticalTargetsBreakpointStatus(matches: boolean) {
-    this.isVerticalTargetsBreakpoint = matches;
     this.verticalTargetsBreakpointMatchChange.emit({
       matches
     });
@@ -167,6 +159,7 @@ export class Layout implements GxComponent {
               mask: true,
               "mask--active": this.isMaskVisible
             }}
+            onClick={this.closeTargets}
           ></div>
           <slot />
         </main>
