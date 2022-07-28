@@ -17,7 +17,7 @@ import {
   HighlightableComponent,
   makeHighlightable
 } from "../common/highlightable";
-import { Swipeable, makeSwipeable } from "../common/swipeable";
+import { Swipeable, makeSwipeable } from "../common/events/swipeable";
 
 // Class transforms
 import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
