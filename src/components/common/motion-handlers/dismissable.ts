@@ -28,9 +28,8 @@ export function makeDismissable(component: DismissableComponent) {
   /** Relative to the left edge of the entire document */
   let initialXPosition: number;
 
-  const startDragging = (event: MouseEvent) => {
+  const startDragging = () => {
     isMouseDown = true;
-    initialXPosition = event.pageX;
     elemWidth = elem.offsetWidth; // Store element's width as it won't change when dragging
 
     // Since we will change the transform property of the element, we disable
@@ -39,10 +38,19 @@ export function makeDismissable(component: DismissableComponent) {
     elem.classList.add(STOP_DISMISS);
   };
 
-  const dragging = (event: MouseEvent) => {
-    event.preventDefault();
-    currentXPosition = event.pageX; // Store last pageX
+  // Web
+  const startDraggingWeb = (e: MouseEvent) => {
+    initialXPosition = e.pageX;
+    startDragging();
+  };
 
+  // Mobile
+  const startDraggingMobile = (e: TouchEvent) => {
+    initialXPosition = e.touches[0].clientX;
+    startDragging();
+  };
+
+  const draggingRAF = () => {
     if (!isMouseDown || !needForRAF) {
       return;
     }
@@ -56,6 +64,22 @@ export function makeDismissable(component: DismissableComponent) {
       elem.style.transform = `translateX(${walk}px)`;
       elem.style.opacity = (1 - Math.abs(walk) / elemWidth).toFixed(2);
     });
+  };
+
+  // Web
+  const draggingWeb = (e: MouseEvent) => {
+    e.preventDefault();
+    currentXPosition = e.pageX; // Store last pageX
+
+    draggingRAF();
+  };
+
+  // Mobile
+  const draggingMobile = (e: TouchEvent) => {
+    e.preventDefault();
+    currentXPosition = e.touches[0].clientX; // Store last clientX
+
+    draggingRAF();
   };
 
   const stopDragging = () => {
@@ -97,16 +121,16 @@ export function makeDismissable(component: DismissableComponent) {
 
   // Dragging events
   if (onMobileDevice()) {
-    elem.addEventListener("touchstart", startDragging);
+    elem.addEventListener("touchstart", startDraggingMobile);
 
-    elem.addEventListener("touchmove", dragging);
+    elem.addEventListener("touchmove", draggingMobile);
 
     elem.addEventListener("touchcancel", stopDragging);
     elem.addEventListener("touchend", stopDragging);
   } else {
-    elem.addEventListener("mousedown", startDragging);
+    elem.addEventListener("mousedown", startDraggingWeb);
 
-    elem.addEventListener("mousemove", dragging);
+    elem.addEventListener("mousemove", draggingWeb);
 
     elem.addEventListener("mouseleave", stopDragging);
     elem.addEventListener("mouseup", stopDragging);
