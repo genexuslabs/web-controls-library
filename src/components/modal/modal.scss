@@ -121,6 +121,7 @@ $close-button-size: $close-vector-size + $close-button-padding +
   align-items: center;
   justify-content: space-between;
   background-color: #212121;
+  color: var(--header-contrast-color, inherit);
   min-height: 3em;
   padding: 6px 12px 6px 24px;
 }
@@ -152,7 +153,7 @@ h5 {
     height: $close-vector-size;
 
     & > .vector {
-      stroke: var(--gx-modal-accent-color);
+      stroke: var(--header-contrast-color, var(--body-contrast-color));
       stroke-width: 2px;
       stroke-linecap: round;
       stroke-linejoin: round;

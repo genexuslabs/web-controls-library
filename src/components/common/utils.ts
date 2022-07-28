@@ -1,5 +1,12 @@
 import { Component } from "./interfaces";
 
+// - - - - - - - - -  CACHE  - - - - - - - - -
+/**
+ * - Input: CSS color.
+ * - Output: Contrast color (`"#000"` or `"#fff"`) of the input.
+ */
+const contrastColorCache = new Map<string, string>();
+
 export function debounce(
   func: () => void,
   wait: number,
@@ -46,6 +53,16 @@ export function overrideMethod(
   };
 }
 
+/**
+ * @returns `true` if the application body has a vertical scroll. In other words, it returns `true` if the vertical content is not fully visible
+ */
+export function bodyOverflowsY() {
+  return (
+    document.documentElement.clientHeight !=
+    document.documentElement.scrollHeight
+  );
+}
+
 export function getFileNameWithoutExtension(filePath: string) {
   /*  If the function is called in the same folder as the file, 
       lastIndexOf("/") might return -1, but since we add 1 to the result, the
@@ -69,6 +86,53 @@ export function getFileNameWithoutExtension(filePath: string) {
 
   // Returns the name between the last "/" and the last "." of the `fileName`
   return fileName.substring(0, extensionIndex);
+}
+
+/**
+ * Find the contrast color (white or black) for the `rgb` parameter following the WCAG 2.0.
+ * @param rgb An RGB string that represents a color.
+ * @returns The contrast color (`"#000"` or `"#fff"`) for the `rgb` parameter.
+ */
+export function getContrastColor(rgb: string): string {
+  let result = contrastColorCache.get(rgb);
+
+  // TODO: Parse all kinds of colors, not just RGB colors
+
+  // If the value has not yet been calculated
+  if (result === undefined) {
+    const colors: any = rgb.replace(/[^\d\s]/g, "").split(" ");
+
+    for (let i = 0; i < 3; i++) {
+      colors[i] /= 255.0;
+
+      if (colors[i] <= 0.04045) {
+        colors[i] /= 12.92;
+      } else {
+        colors[i] = ((colors[i] + 0.055) / 1.055) ** 2.4;
+      }
+    }
+    const L = 0.2126 * colors[0] + 0.7152 * colors[1] + 0.0722 * colors[2];
+
+    // Cache for the corresponding value
+    result = L > 0.179 ? "#000" : "#fff";
+    contrastColorCache.set(rgb, result);
+  }
+
+  return result;
+}
+
+export function setContrastColor(
+  elemToRead: HTMLElement,
+  elemToSet: HTMLElement,
+  propName: string,
+  cssVarName: string
+) {
+  const color = getComputedStyle(elemToRead).getPropertyValue(propName);
+
+  if (color != undefined) {
+    const contrast = getContrastColor(color);
+    elemToSet.style.setProperty(cssVarName, contrast);
+  }
 }
 
 export function getWindowsOrientation(): "portrait" | "landscape" {

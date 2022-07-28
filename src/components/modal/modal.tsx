@@ -10,7 +10,7 @@ import {
   State
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
-import { bodyOverflowsY } from "../common/utils";
+import { bodyOverflowsY, setContrastColor } from "../common/utils";
 
 const WAIT_TO_REMOVE_MODAL = 300; // 300ms
 const bodyId = "body";
@@ -40,6 +40,10 @@ export class Modal implements GxComponent {
 
   private contentOverflowsX = false;
   private contentOverflowsY = false;
+
+  // Refs
+  private bodyDiv: HTMLDivElement = null;
+  private headerDiv: HTMLDivElement = null;
 
   @Element() element: HTMLGxModalElement;
 
@@ -218,11 +222,6 @@ export class Modal implements GxComponent {
     }
   }
 
-  componentDidRender() {
-    // Check if should connect the ResizeObserver
-    this.connectObserver();
-  }
-
   componentWillLoad() {
     this.shouldSetResizeObserver = this.type == "popup";
     this.presented = this.opened;
@@ -231,6 +230,44 @@ export class Modal implements GxComponent {
       displayedModals++;
       this.updateHtmlOverflow();
     }
+  }
+
+  componentDidRender() {
+    // Check if should connect the ResizeObserver
+    this.connectObserver();
+
+    // No need to set contrast colors
+    if (this.type == "popup" || !this.presented) {
+      return;
+    }
+
+    // Contrast for header's background-color
+    if (this.showHeader) {
+      setContrastColor(
+        this.headerDiv,
+        this.element,
+        "background-color",
+        "--header-contrast-color"
+      );
+    } else {
+      this.element.style.removeProperty("--header-contrast-color");
+    }
+
+    // Contrast for body's background-color
+    setContrastColor(
+      this.bodyDiv,
+      this.element,
+      "background-color",
+      "--body-contrast-color"
+    );
+
+    // Contrast for accent color
+    setContrastColor(
+      this.element,
+      this.element,
+      "--gx-modal-accent-color",
+      "--accent-contrast-color"
+    );
   }
 
   componentDidLoad() {
@@ -286,7 +323,11 @@ export class Modal implements GxComponent {
                 </button>
               )}
               {this.showHeader && (
-                <div part="header" class="header">
+                <div
+                  part="header"
+                  class="header"
+                  ref={el => (this.headerDiv = el as HTMLDivElement)}
+                >
                   <h5 id={headerId}>
                     <slot name="header" />
                   </h5>
@@ -297,6 +338,7 @@ export class Modal implements GxComponent {
                   id={this.type === "alert" ? bodyId : undefined}
                   part="body"
                   class={{ body: true, "custom-body": customDialog }}
+                  ref={el => (this.bodyDiv = el as HTMLDivElement)}
                 >
                   <slot name="body" />
                 </div>
