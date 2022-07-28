@@ -4,13 +4,21 @@ import {
   Event,
   EventEmitter,
   Prop,
+  Watch,
   h,
   Host
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
+import { bodyOverflowsY } from "../common/utils";
+
+/**
+ * Number of modals displayed. Useful to block the scroll in the html only once.
+ */
+let displayedModals = 0;
+const DISABLE_HTML_SCROLL = "gx-disable-scroll";
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "modal.scss",
   tag: "gx-modal"
 })
@@ -38,9 +46,26 @@ export class Modal implements GxComponent {
   @Prop({ mutable: true }) opened = false;
 
   /**
-   * This attribute lets you specify if a header is renderd on top of the modal dialog.
+   * This attribute lets you specify if a body is rendered in the middle of the modal dialog.
    */
-  @Prop() showHeader = true;
+  @Prop() readonly showBody: boolean = true;
+
+  /**
+   * This attribute lets you specify if a footer is rendered at the bottom of the modal dialog.
+   */
+  @Prop() readonly showFooter: boolean = true;
+
+  /**
+   * This attribute lets you specify if a header is rendered on top of the modal dialog.
+   */
+  @Prop() readonly showHeader: boolean = true;
+
+  /**
+   * If `type != "popup"`, the modal dialog will render with more advanced
+   * styling, including `box-shadow`, `border-radius` and `padding`.
+   */
+  @Prop({ reflect: true }) readonly type: "alert" | "dialog" | "popup" =
+    "dialog";
 
   /**
    * This attribute lets you specify the width of the control.
@@ -57,7 +82,135 @@ export class Modal implements GxComponent {
    */
   @Event() open: EventEmitter;
 
+  @Watch("opened")
+  openedHandler(newValue: boolean, oldValue = false) {
+    if (newValue === oldValue) {
+      return;
+    }
+
+    if (newValue) {
+      displayedModals++;
+      this.updateHtmlOverflow();
+
+      // Emit the event
+      this.open.emit();
+    } else {
+      // Check if should re-enable the scroll on the html
+      displayedModals--;
+      this.updateHtmlOverflow();
+
+      // Emit the event
+      this.close.emit();
+    }
+  }
+
+  private updateHtmlOverflow() {
+    // If the modal is displayed, but another modal component disabled the
+    // scroll on the html (displayedModals > 1), we don't have to disable it
+    if (displayedModals == 1 && bodyOverflowsY()) {
+      document.documentElement.classList.add(DISABLE_HTML_SCROLL);
+    }
+
+    if (displayedModals == 0) {
+      document.documentElement.classList.remove(DISABLE_HTML_SCROLL);
+    }
+  }
+
+  private closeModal = (e: UIEvent) => {
+    e.stopPropagation();
+
+    if (!this.opened) {
+      return;
+    }
+    this.opened = false;
+  };
+
+  private stopPropagation = (e: UIEvent) => {
+    e.stopPropagation();
+  };
+
+  disconnectedCallback() {
+    // Check if should re-enable the scroll on the html
+    if (this.opened) {
+      displayedModals--;
+      this.updateHtmlOverflow();
+    }
+  }
+
+  componentWillLoad() {
+    if (this.opened) {
+      displayedModals++;
+      this.updateHtmlOverflow();
+    }
+  }
+
+  componentDidLoad() {
+    // The modal might be opened when it is first rendered, due to in some
+    // cases it was open when the UI was refreshed.
+    if (this.opened) {
+      this.updateHtmlOverflow();
+      this.open.emit();
+    }
+  }
+
   render() {
-    return <Host></Host>;
+    const customDialog = this.type != "popup";
+
+    return (
+      <Host class={{ presented: this.opened }} onClick={this.closeModal}>
+        {this.opened && (
+          <div
+            part="dialog"
+            class={{
+              "gx-modal-dialog": true,
+              "custom-dialog": customDialog
+            }}
+            style={{
+              width: this.width,
+              height: this.height,
+              "min-width": this.width
+            }}
+            onClick={this.stopPropagation}
+          >
+            <div class="gx-modal-content">
+              {customDialog && (
+                <button
+                  part="close-button"
+                  class="close-button"
+                  type="button"
+                  onClick={this.closeModal}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14">
+                    <path d="M13 1L1 13" class="vector" />
+                    <path d="M1 1L13 13" class="vector" />
+                  </svg>
+                </button>
+              )}
+              {this.showHeader && (
+                <div part="header" class="header">
+                  <h5>
+                    <slot name="header" />
+                  </h5>
+                </div>
+              )}
+              {this.showBody && (
+                <div
+                  part="body"
+                  class={{ body: true, "custom-body": customDialog }}
+                >
+                  <slot name="body" />
+                </div>
+              )}
+              {this.showFooter && (
+                <div part="footer" class="footer">
+                  <slot name="secondary-action" />
+                  <slot name="primary-action" />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </Host>
+    );
   }
 }
