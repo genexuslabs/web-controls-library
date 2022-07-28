@@ -10,7 +10,11 @@ import {
   State
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
-import { bodyOverflowsY, setContrastColor } from "../common/utils";
+import {
+  bodyOverflowsY,
+  onMobileDevice,
+  setContrastColor
+} from "../common/utils";
 
 const WAIT_TO_REMOVE_MODAL = 300; // 300ms
 const bodyId = "body";
@@ -21,6 +25,9 @@ const headerId = "header";
  */
 let displayedModals = 0;
 const DISABLE_HTML_SCROLL = "gx-disable-scroll";
+const DISABLE_HTML_SCROLL_MOBILE = "gx-disable-scroll-mobile";
+
+let DISABLE_SCROLL_CLASS = "";
 
 @Component({
   shadow: true,
@@ -141,11 +148,11 @@ export class Modal implements GxComponent {
     // If the modal is displayed, but another modal component disabled the
     // scroll on the html (displayedModals > 1), we don't have to disable it
     if (displayedModals == 1 && bodyOverflowsY()) {
-      document.documentElement.classList.add(DISABLE_HTML_SCROLL);
+      document.documentElement.classList.add(DISABLE_SCROLL_CLASS);
     }
 
     if (displayedModals == 0) {
-      document.documentElement.classList.remove(DISABLE_HTML_SCROLL);
+      document.documentElement.classList.remove(DISABLE_SCROLL_CLASS);
     }
   }
 
@@ -229,6 +236,13 @@ export class Modal implements GxComponent {
     if (this.opened) {
       displayedModals++;
       this.updateHtmlOverflow();
+    }
+
+    // Set the class to disable the scrolling if not defined
+    if (DISABLE_SCROLL_CLASS == "") {
+      DISABLE_SCROLL_CLASS = onMobileDevice()
+        ? DISABLE_HTML_SCROLL_MOBILE
+        : DISABLE_HTML_SCROLL;
     }
   }
 

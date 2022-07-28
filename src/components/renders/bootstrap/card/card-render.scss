@@ -1,3 +1,5 @@
+@import "../../../common/layout-styling-config.scss";
+
 gx-card {
   display: flex;
   flex: 1;
@@ -37,5 +39,14 @@ gx-card {
       flex: 1;
       display: flex;
     }
+  }
+
+  // WA to display gx-action-sheet on top of gx-layout's targets. As the
+  // gx-action-sheets are inside the gx-layout (in particular, inside the
+  // gx-card) but they have to be displayed above the gx-navbar, we have to
+  // "delay" the inheritance of the gx-layout's z-index, to make
+  // gx-action-sheet z-index work the in the main app layer.
+  [slot="body"] {
+    z-index: $z-index-gx-layout;
   }
 }
