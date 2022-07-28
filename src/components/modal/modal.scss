@@ -74,6 +74,19 @@ $close-button-size: $close-vector-size + $close-button-padding +
   pointer-events: all;
 }
 
+:host(.dismiss-animation) {
+  opacity: 1; // Initial opacity when the animation starts
+  animation: dismiss-modal $transition-duration ease-in-out forwards;
+
+  & > .gx-modal-dialog {
+    // Defaults when the animation starts
+    opacity: 1;
+    transform: translateY(0);
+
+    animation: dismiss-dialog $transition-duration ease-in-out forwards;
+  }
+}
+
 .gx-modal-dialog {
   // Defaults when the animation starts
   opacity: 0;
@@ -195,6 +208,19 @@ h5 {
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes dismiss-dialog {
+  to {
+    transform: translateY(-25%);
+    opacity: 0;
+  }
+}
+
+@keyframes dismiss-modal {
+  to {
+    opacity: 0;
   }
 }
 

@@ -197,6 +197,10 @@ gx-layout {
   }
 }
 
+gx-navbar + gx-message {
+  top: $gx-navbar-main-height;
+}
+
 // Disable html's scrollbars when a gx-modal presented
 html.gx-disable-scroll {
   overflow: hidden;

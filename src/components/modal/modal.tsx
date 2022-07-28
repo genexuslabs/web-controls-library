@@ -6,11 +6,13 @@ import {
   Prop,
   Watch,
   h,
-  Host
+  Host,
+  State
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 import { bodyOverflowsY } from "../common/utils";
 
+const WAIT_TO_REMOVE_MODAL = 300; // 300ms
 const bodyId = "body";
 const headerId = "header";
 
@@ -26,6 +28,8 @@ const DISABLE_HTML_SCROLL = "gx-disable-scroll";
   tag: "gx-modal"
 })
 export class Modal implements GxComponent {
+  private dismissTimer: NodeJS.Timeout = null;
+
   @Element() element: HTMLGxModalElement;
 
   /**
@@ -85,6 +89,8 @@ export class Modal implements GxComponent {
    */
   @Event() open: EventEmitter;
 
+  @State() presented: boolean;
+
   @Watch("opened")
   openedHandler(newValue: boolean, oldValue = false) {
     if (newValue === oldValue) {
@@ -92,18 +98,24 @@ export class Modal implements GxComponent {
     }
 
     if (newValue) {
+      clearTimeout(this.dismissTimer);
+      this.presented = true;
       displayedModals++;
       this.updateHtmlOverflow();
 
       // Emit the event
       this.open.emit();
     } else {
-      // Check if should re-enable the scroll on the html
-      displayedModals--;
-      this.updateHtmlOverflow();
+      this.dismissTimer = setTimeout(() => {
+        this.presented = false;
 
-      // Emit the event
-      this.close.emit();
+        // Check if should re-enable the scroll on the html
+        displayedModals--;
+        this.updateHtmlOverflow();
+
+        // Emit the event after the dismiss animation has finished
+        this.close.emit();
+      }, WAIT_TO_REMOVE_MODAL);
     }
   }
 
@@ -133,14 +145,18 @@ export class Modal implements GxComponent {
   };
 
   disconnectedCallback() {
+    clearTimeout(this.dismissTimer);
+
     // Check if should re-enable the scroll on the html
-    if (this.opened) {
+    if (this.presented) {
       displayedModals--;
       this.updateHtmlOverflow();
     }
   }
 
   componentWillLoad() {
+    this.presented = this.opened;
+
     if (this.opened) {
       displayedModals++;
       this.updateHtmlOverflow();
@@ -160,8 +176,11 @@ export class Modal implements GxComponent {
     const customDialog = this.type != "popup";
 
     return (
-      <Host class={{ presented: this.opened }} onClick={this.closeModal}>
-        {this.opened && (
+      <Host
+        class={{ presented: this.presented, "dismiss-animation": !this.opened }}
+        onClick={this.closeModal}
+      >
+        {this.presented && (
           <div
             role={this.type === "alert" ? "alertdialog" : "dialog"}
             aria-modal="true"
