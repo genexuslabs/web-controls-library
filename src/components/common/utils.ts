@@ -156,7 +156,6 @@ export function attachHorizontalScrollWithDragHandler(
   if (onMobileDevice()) {
     return;
   }
-  const SCROLL_SPEED = 1;
 
   let isMouseDown = false;
   let needForRAF = true; // To prevent redundant RAF (request animation frame) calls
@@ -180,16 +179,18 @@ export function attachHorizontalScrollWithDragHandler(
 
   scrollableContainer.addEventListener("mousemove", (event: MouseEvent) => {
     event.preventDefault();
+    currentXPosition = event.pageX; // Store last pageX
+
     if (!isMouseDown || !needForRAF) {
       return;
     }
-    currentXPosition = event.pageX;
     needForRAF = false; // No need to call RAF up until next frame
 
     requestAnimationFrame(() => {
       needForRAF = true; // RAF now consumes the movement instruction so a new one can come
 
-      const walk = (currentXPosition - initialXPosition) * SCROLL_SPEED;
+      // To reduce the drag's speed, multiply walk with a constant
+      const walk = currentXPosition - initialXPosition;
       scrollableContainer.scrollLeft = initialScrollLeftPosition - walk;
       scrollableContainerHasBeenDragged =
         scrollableContainerHasBeenDragged ||
