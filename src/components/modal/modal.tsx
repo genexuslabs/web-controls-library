@@ -11,6 +11,9 @@ import {
 import { Component as GxComponent } from "../common/interfaces";
 import { bodyOverflowsY } from "../common/utils";
 
+const bodyId = "body";
+const headerId = "header";
+
 /**
  * Number of modals displayed. Useful to block the scroll in the html only once.
  */
@@ -160,6 +163,11 @@ export class Modal implements GxComponent {
       <Host class={{ presented: this.opened }} onClick={this.closeModal}>
         {this.opened && (
           <div
+            role={this.type === "alert" ? "alertdialog" : "dialog"}
+            aria-modal="true"
+            aria-labelledby={this.showHeader ? headerId : undefined}
+            aria-describedby={this.type === "alert" ? bodyId : undefined}
+            tabindex="-1"
             part="dialog"
             class={{
               "gx-modal-dialog": true,
@@ -172,9 +180,10 @@ export class Modal implements GxComponent {
             }}
             onClick={this.stopPropagation}
           >
-            <div class="gx-modal-content">
+            <div role="document" tabindex="0" class="gx-modal-content">
               {customDialog && (
                 <button
+                  aria-label={this.closeButtonLabel}
                   part="close-button"
                   class="close-button"
                   type="button"
@@ -188,13 +197,14 @@ export class Modal implements GxComponent {
               )}
               {this.showHeader && (
                 <div part="header" class="header">
-                  <h5>
+                  <h5 id={headerId}>
                     <slot name="header" />
                   </h5>
                 </div>
               )}
               {this.showBody && (
                 <div
+                  id={this.type === "alert" ? bodyId : undefined}
                   part="body"
                   class={{ body: true, "custom-body": customDialog }}
                 >

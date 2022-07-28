@@ -196,3 +196,18 @@ gx-layout {
     }
   }
 }
+
+// Disable html's scrollbars when a gx-modal presented
+html.gx-disable-scroll {
+  overflow: hidden;
+
+  & > body {
+    padding-right: 8px;
+  }
+}
+
+// Hide gx-modal's scrollbars
+gx-modal::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
