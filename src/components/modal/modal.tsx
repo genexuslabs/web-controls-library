@@ -30,6 +30,17 @@ const DISABLE_HTML_SCROLL = "gx-disable-scroll";
 export class Modal implements GxComponent {
   private dismissTimer: NodeJS.Timeout = null;
 
+  // To prevent redundant RAF (request animation frame) calls
+  private needForRAF = true;
+
+  /** `true` if the modal has `type = "popup"` */
+  private shouldSetResizeObserver: boolean;
+  private observer: ResizeObserver = null;
+  private modalContent: HTMLDivElement;
+
+  private contentOverflowsX = false;
+  private contentOverflowsY = false;
+
   @Element() element: HTMLGxModalElement;
 
   /**
@@ -107,6 +118,9 @@ export class Modal implements GxComponent {
       this.open.emit();
     } else {
       this.dismissTimer = setTimeout(() => {
+        // Disconnect the observer before the modalContent's reference is null
+        this.disconnectObserver();
+
         this.presented = false;
 
         // Check if should re-enable the scroll on the html
@@ -131,6 +145,55 @@ export class Modal implements GxComponent {
     }
   }
 
+  private connectObserver() {
+    if (
+      !this.shouldSetResizeObserver ||
+      this.observer != undefined ||
+      !this.opened
+    ) {
+      return;
+    }
+
+    this.observer = new ResizeObserver(() => {
+      if (!this.needForRAF) {
+        return;
+      }
+      this.needForRAF = false; // No need to call RAF up until next frame
+
+      requestAnimationFrame(() => {
+        this.needForRAF = true; // RAF now consumes the movement instruction so a new one can come
+
+        const overflowX = this.element.offsetWidth != this.element.scrollWidth;
+        const overflowY =
+          this.element.offsetHeight != this.element.scrollHeight;
+
+        // Check if the position of the dialog should be adjusted
+        if (this.contentOverflowsX != overflowX) {
+          this.contentOverflowsX = overflowX;
+          this.element.style.justifyContent = overflowX ? "flex-start" : null;
+        }
+        if (this.contentOverflowsY != overflowY) {
+          this.contentOverflowsY = overflowY;
+          this.element.style.alignItems = overflowY ? "flex-start" : null;
+        }
+      });
+    });
+
+    // Observe size changes for the document's body and modal's content
+    this.observer.observe(this.modalContent);
+    this.observer.observe(document.body);
+  }
+
+  private disconnectObserver() {
+    if (!this.shouldSetResizeObserver || this.observer != undefined) {
+      return;
+    }
+    this.observer.disconnect();
+    this.observer = undefined;
+    this.contentOverflowsX = false;
+    this.contentOverflowsY = false;
+  }
+
   private closeModal = (e: UIEvent) => {
     e.stopPropagation();
 
@@ -146,6 +209,7 @@ export class Modal implements GxComponent {
 
   disconnectedCallback() {
     clearTimeout(this.dismissTimer);
+    this.disconnectObserver();
 
     // Check if should re-enable the scroll on the html
     if (this.presented) {
@@ -154,7 +218,13 @@ export class Modal implements GxComponent {
     }
   }
 
+  componentDidRender() {
+    // Check if should connect the ResizeObserver
+    this.connectObserver();
+  }
+
   componentWillLoad() {
+    this.shouldSetResizeObserver = this.type == "popup";
     this.presented = this.opened;
 
     if (this.opened) {
@@ -198,6 +268,7 @@ export class Modal implements GxComponent {
               "min-width": this.width
             }}
             onClick={this.stopPropagation}
+            ref={el => (this.modalContent = el as HTMLDivElement)}
           >
             <div role="document" tabindex="0" class="gx-modal-content">
               {customDialog && (
