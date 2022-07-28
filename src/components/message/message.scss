@@ -1,0 +1,44 @@
+@import "../common/layout-styling-config";
+@import "../common/common-styling-config";
+
+:host(:not(.presented)) {
+  display: none;
+}
+
+:host(.presented) {
+  $animation-duration: $transition-duration + $half-transition-duration; // 375ms
+  $default-background-color: #eee;
+
+  $margin: 8px;
+  $horizontal-margin: $margin + $margin;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  width: calc(100% - $horizontal-margin);
+  min-height: 50px;
+  background-color: $default-background-color;
+  border-radius: 14px;
+  border: 1px solid #00000040;
+  box-shadow: 0 4px 8px #0000004f, inset 0 0 6px -3px #00000040;
+  color: var(--contrast-color, inherit);
+  padding: 14px;
+  margin: $margin;
+  text-align: center;
+  z-index: $z-index-gx-message;
+  animation: fade-in $animation-duration ease-in-out;
+
+  @include transition-properties();
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
