@@ -4,11 +4,9 @@ import {
   Event,
   EventEmitter,
   Prop,
-  Watch,
   h,
   Host
 } from "@stencil/core";
-import { ModalRender } from "../renders/bootstrap/modal/modal-render";
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
@@ -17,12 +15,6 @@ import { Component as GxComponent } from "../common/interfaces";
   tag: "gx-modal"
 })
 export class Modal implements GxComponent {
-  constructor() {
-    this.renderer = new ModalRender(this);
-  }
-
-  private renderer: ModalRender;
-
   @Element() element: HTMLGxModalElement;
 
   /**
@@ -65,42 +57,7 @@ export class Modal implements GxComponent {
    */
   @Event() open: EventEmitter;
 
-  @Watch("opened")
-  openedHandler(newValue: boolean, oldValue = false) {
-    if (newValue === oldValue) {
-      return;
-    }
-
-    if (newValue) {
-      this.renderer.open();
-      this.open.emit();
-    } else {
-      this.renderer.close();
-      this.close.emit();
-    }
-  }
-
-  componentDidLoad() {
-    this.renderer.componentDidLoad();
-
-    // The modal might be opened when it is first rendered, due to in some
-    // cases it was open when the UI was refreshed.
-    if (this.opened) {
-      this.renderer.open();
-      this.open.emit();
-    }
-  }
-
   render() {
-    return (
-      <Host>
-        {this.renderer.render({
-          body: <slot name="body" />,
-          header: <slot name="header" />,
-          primaryAction: <slot name="primary-action" />,
-          secondaryAction: <slot name="secondary-action" />
-        })}
-      </Host>
-    );
+    return <Host></Host>;
   }
 }
