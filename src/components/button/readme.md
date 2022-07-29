@@ -46,20 +46,6 @@ If the main image is the only image specified, it will be displayed both when th
 | `--gx-button-image-margin-top`    | Button image top margin (0px by default)    |
 | `--gx-button-image-size`          | Button image size (16px by default)         |
 
-## Dependencies
-
-### Used by
-
-- [gx-image-picker](../image-picker)
-
-### Graph
-
-```mermaid
-graph TD;
-  gx-image-picker --> gx-button
-  style gx-button fill:#f9f,stroke:#333,stroke-width:4px
-```
-
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_

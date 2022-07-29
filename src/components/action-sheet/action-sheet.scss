@@ -1,13 +1,6 @@
-@import "../common/_base";
+$border-radius: 8px;
 
-@mixin box-properties() {
-  background-color: var(--gx-action-sheet-background-color);
-  border-radius: var(--gx-action-sheet-border-radius);
-  box-shadow: var(--gx-action-sheet-shadow);
-}
-
-gx-action-sheet {
-  @include visibility(block);
+:host {
   /**
    * @prop --gx-action-sheet-shadow:Box shadow
    */
@@ -17,60 +10,57 @@ gx-action-sheet {
    * @prop --gx-action-sheet-background-color: Background color
    */
   --gx-action-sheet-background-color: white;
-  /**
-   * @prop --gx-action-sheet-border-radius: Borders radius
-   */
-  --gx-action-sheet-border-radius: 6px;
-  /**
-   * @prop --gx-action-sheet-padding: Padding
-   */
-  --gx-action-sheet-padding: 0 20px;
+
   /**
    * @prop --gx-action-sheet-color: Text color
    */
   --gx-action-sheet-color: black;
+
   /**
    * @prop --gx-action-sheet-color-close: Close button text color
    */
   --gx-action-sheet-color-close: rgb(105, 110, 242);
+
   /**
    * @prop --gx-action-sheet-color-danger: Text color for items where `actionType="danger"`
    */
   --gx-action-sheet-color-danger: #f02031;
+
   /**
    * @prop --gx-action-sheet-color-disabled: Text color for disabled items
    */
   --gx-action-sheet-color-disabled: #c3c4c8;
+
   /**
    * @prop --gx-action-sheet-item-border-color: Color for the bottom border of items
    */
   --gx-action-sheet-item-border-color: rgb(224, 224, 224);
 
-  .gx-action-sheet {
-    @include box-properties();
+  display: block;
+}
 
-    display: flex;
-    flex-direction: column;
-    padding: var(--gx-action-sheet-padding);
-    color: var(--gx-action-sheet-color);
+.body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  color: var(--gx-action-sheet-color);
+  padding-inline: 20px;
+}
 
-    &-close-item {
-      @include box-properties();
+.close-item {
+  margin-top: 8px;
+  text-transform: uppercase;
+  color: var(--gx-action-sheet-color-close);
+  padding: 13px 0;
+}
 
-      margin-top: 8px;
-      text-transform: uppercase;
-      color: var(--gx-action-sheet-color-close);
-      font-size: 11px;
-      padding: 13px 0;
-    }
-  }
+.body,
+.close-item {
+  background-color: var(--gx-action-sheet-background-color);
+  border-radius: $border-radius;
+  box-shadow: var(--gx-action-sheet-shadow);
+}
 
-  .modal-body {
-    padding: 0;
-  }
-
-  .modal-content {
-    border: 0;
-    background-color: transparent;
-  }
+gx-modal::part(dialog) {
+  width: min(768px, 66.7vw);
 }
