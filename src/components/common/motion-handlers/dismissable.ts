@@ -24,7 +24,7 @@ export function makeDismissable(component: DismissableComponent) {
   let isMouseDown = false;
 
   /** Used to calculate the deltaT */
-  let initialT: number;
+  let initialTimestamp: number;
 
   let needForRAF = true; // To prevent redundant RAF (request animation frame) calls
 
@@ -36,7 +36,7 @@ export function makeDismissable(component: DismissableComponent) {
 
   const startDragging = () => {
     requestAnimationFrame(t => {
-      initialT = t; // Initialize timestamp
+      initialTimestamp = t; // Initialize timestamp
 
       currentX = initialX;
 
@@ -101,7 +101,7 @@ export function makeDismissable(component: DismissableComponent) {
     }
 
     requestAnimationFrame(t => {
-      const deltaT = t - initialT;
+      const deltaT = t - initialTimestamp;
       const deltaX = currentX - initialX;
       const speed = deltaT != 0 ? Math.abs(deltaX / deltaT) : 0;
 
