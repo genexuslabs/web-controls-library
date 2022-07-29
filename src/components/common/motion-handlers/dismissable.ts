@@ -13,9 +13,9 @@ export const STOP_DISMISS = "gx-stop-dismiss";
  * @param component Draggable element
  */
 export function makeDismissable(component: DismissableComponent) {
-  const SPEED_THRESHOLD = 2.0;
+  const SPEED_THRESHOLD = 1.4;
   const THRESHOLD_TO_DISMISS = 0.5; // 50% of dragging
-  const THRESHOLD_TO_DISMISS_2 = 0.15; // 15% of dragging
+  const THRESHOLD_TO_DISMISS_2 = 0.1; // 10% of dragging
   const WAIT_FOR_DISMISS = 250; // 250ms
 
   const elem = component.element;
@@ -24,21 +24,21 @@ export function makeDismissable(component: DismissableComponent) {
   let isMouseDown = false;
 
   /** Used to calculate the deltaT */
-  let initialTimestamp: number;
+  let initialT: number;
 
   let needForRAF = true; // To prevent redundant RAF (request animation frame) calls
 
   /** Relative to the left edge of the entire document */
-  let currentXPosition: number;
+  let currentX: number;
 
   /** Relative to the left edge of the entire document */
-  let initialXPosition: number;
+  let initialX: number;
 
   const startDragging = () => {
     requestAnimationFrame(t => {
-      initialTimestamp = t; // Initialize timestamp
+      initialT = t; // Initialize timestamp
 
-      currentXPosition = initialXPosition;
+      currentX = initialX;
 
       isMouseDown = true;
       elemWidth = elem.offsetWidth; // Store element's width as it won't change when dragging
@@ -52,13 +52,13 @@ export function makeDismissable(component: DismissableComponent) {
 
   // Web
   const startDraggingWeb = (e: MouseEvent) => {
-    initialXPosition = e.pageX;
+    initialX = e.pageX;
     startDragging();
   };
 
   // Mobile
   const startDraggingMobile = (e: TouchEvent) => {
-    initialXPosition = e.touches[0].clientX;
+    initialX = e.touches[0].clientX;
     startDragging();
   };
 
@@ -72,7 +72,7 @@ export function makeDismissable(component: DismissableComponent) {
       needForRAF = true; // RAF now consumes the movement instruction so a new one can come
 
       // To reduce the drag's speed, multiply walk with a constant
-      const walk = currentXPosition - initialXPosition;
+      const walk = currentX - initialX;
       elem.style.transform = `translateX(${walk}px)`;
       elem.style.opacity = (1 - Math.abs(walk) / elemWidth).toFixed(2);
     });
@@ -81,7 +81,7 @@ export function makeDismissable(component: DismissableComponent) {
   // Web
   const draggingWeb = (e: MouseEvent) => {
     e.preventDefault();
-    currentXPosition = e.pageX; // Store current pageX
+    currentX = e.pageX; // Store current pageX
 
     draggingRAF();
   };
@@ -89,7 +89,7 @@ export function makeDismissable(component: DismissableComponent) {
   // Mobile
   const draggingMobile = (e: TouchEvent) => {
     e.preventDefault();
-    currentXPosition = e.touches[0].clientX; // Store current clientX
+    currentX = e.touches[0].clientX; // Store current clientX
 
     draggingRAF();
   };
@@ -101,8 +101,8 @@ export function makeDismissable(component: DismissableComponent) {
     }
 
     requestAnimationFrame(t => {
-      const deltaT = t - initialTimestamp;
-      const deltaX = currentXPosition - initialXPosition;
+      const deltaT = t - initialT;
+      const deltaX = currentX - initialX;
       const speed = deltaT != 0 ? Math.abs(deltaX / deltaT) : 0;
 
       isMouseDown = false;
