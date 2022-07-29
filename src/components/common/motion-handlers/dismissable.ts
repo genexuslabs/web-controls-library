@@ -13,13 +13,19 @@ export const STOP_DISMISS = "gx-stop-dismiss";
  * @param component Draggable element
  */
 export function makeDismissable(component: DismissableComponent) {
+  const SPEED_THRESHOLD = 2.0;
   const THRESHOLD_TO_DISMISS = 0.5; // 50% of dragging
+  const THRESHOLD_TO_DISMISS_2 = 0.15; // 15% of dragging
   const WAIT_FOR_DISMISS = 250; // 250ms
 
   const elem = component.element;
 
   let elemWidth: number;
   let isMouseDown = false;
+
+  /** Used to calculate the deltaT */
+  let initialTimestamp: number;
+
   let needForRAF = true; // To prevent redundant RAF (request animation frame) calls
 
   /** Relative to the left edge of the entire document */
@@ -29,13 +35,19 @@ export function makeDismissable(component: DismissableComponent) {
   let initialXPosition: number;
 
   const startDragging = () => {
-    isMouseDown = true;
-    elemWidth = elem.offsetWidth; // Store element's width as it won't change when dragging
+    requestAnimationFrame(t => {
+      initialTimestamp = t; // Initialize timestamp
 
-    // Since we will change the transform property of the element, we disable
-    // the transition duration to avoid delays
-    elem.style.transitionDuration = "unset";
-    elem.classList.add(STOP_DISMISS);
+      currentXPosition = initialXPosition;
+
+      isMouseDown = true;
+      elemWidth = elem.offsetWidth; // Store element's width as it won't change when dragging
+
+      // Since we will change the transform property of the element, we disable
+      // the transition duration to avoid delays
+      elem.style.transitionDuration = "unset";
+      elem.classList.add(STOP_DISMISS);
+    });
   };
 
   // Web
@@ -69,7 +81,7 @@ export function makeDismissable(component: DismissableComponent) {
   // Web
   const draggingWeb = (e: MouseEvent) => {
     e.preventDefault();
-    currentXPosition = e.pageX; // Store last pageX
+    currentXPosition = e.pageX; // Store current pageX
 
     draggingRAF();
   };
@@ -77,13 +89,22 @@ export function makeDismissable(component: DismissableComponent) {
   // Mobile
   const draggingMobile = (e: TouchEvent) => {
     e.preventDefault();
-    currentXPosition = e.touches[0].clientX; // Store last clientX
+    currentXPosition = e.touches[0].clientX; // Store current clientX
 
     draggingRAF();
   };
 
   const stopDragging = () => {
-    requestAnimationFrame(() => {
+    // Only stop dragging if the mouse was clicked
+    if (!isMouseDown) {
+      return;
+    }
+
+    requestAnimationFrame(t => {
+      const deltaT = t - initialTimestamp;
+      const deltaX = currentXPosition - initialXPosition;
+      const speed = deltaT != 0 ? Math.abs(deltaX / deltaT) : 0;
+
       isMouseDown = false;
 
       // Re-enable transition duration property
@@ -91,7 +112,9 @@ export function makeDismissable(component: DismissableComponent) {
 
       const { left } = elem.getBoundingClientRect();
       const elemShouldDismiss =
-        Math.abs(left) > elemWidth * THRESHOLD_TO_DISMISS;
+        Math.abs(left) > elemWidth * THRESHOLD_TO_DISMISS ||
+        (Math.abs(left) > elemWidth * THRESHOLD_TO_DISMISS_2 &&
+          speed > SPEED_THRESHOLD);
 
       if (elemShouldDismiss) {
         // Depending of the gesture of dismissing, we dismiss to the right or
@@ -121,7 +144,7 @@ export function makeDismissable(component: DismissableComponent) {
 
   // Dragging events
   if (onMobileDevice()) {
-    elem.addEventListener("touchstart", startDraggingMobile);
+    elem.addEventListener("touchstart", startDraggingMobile, { passive: true });
 
     elem.addEventListener("touchmove", draggingMobile);
 
