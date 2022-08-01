@@ -1,30 +1,26 @@
-@import "../common/_base";
+@import "../common/common-styling-config";
 
-gx-action-sheet-item {
-  @include visibility(block);
-
+:host {
+  display: block;
   border-bottom: 1px solid var(--gx-action-sheet-item-border-color);
   padding: 10px 0;
-  font-size: 12px;
-  font-weight: 600;
+  flex: 1;
   text-align: center;
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
 
-  &:last-child {
-    border-bottom-width: 0;
-  }
+:host(.last-action) {
+  border-bottom-width: 0;
+}
 
-  &.gx-as-item {
-    &--danger {
-      color: var(--gx-action-sheet-color-danger);
-    }
+:host(.danger) {
+  color: var(--gx-action-sheet-color-danger);
+}
 
-    &--disabled {
-      color: var(--gx-action-sheet-color-disabled);
-      cursor: default;
-    }
-  }
+:host(.disabled) {
+  pointer-events: none;
+  @include disabled-style();
 }

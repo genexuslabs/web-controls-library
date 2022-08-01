@@ -1,77 +1,44 @@
-@import "../common/_base";
 @import "../common/layout-styling-config";
+@import "../common/common-styling-config";
 
-/// Helper mixin to ease styling gx-message
-/// @param {string} $class Base class of the component
-@mixin gx-message-color(
-  $message-type: null,
-  $color: null,
-  $background-color: null,
-  $border-color: null
-) {
-  & .alert-#{$message-type} {
-    color: $color;
-    background-color: $background-color;
-    border-color: $border-color;
-  }
+:host(:not(.presented)) {
+  display: none;
 }
 
-gx-message {
-  @include visibility(block);
+:host(.presented) {
+  $animation-duration: $transition-duration + $half-transition-duration; // 375ms
+  $default-background-color: #eee;
 
-  /**
-   * @prop --gx-message-info-color: Info text color
-   */
-  --gx-message-info-color: #0c5460;
-  /**
-   * @prop --gx-message-info-background-color: Info background color
-   */
-  --gx-message-info-background-color: #d1ecf1;
-  /**
-   * @prop --gx-message-warning-color: Warning text color
-   */
-  --gx-message-warning-color: #856404;
-  /**
-   * @prop --gx-message-warning-background-color: Warning background color
-   */
-  --gx-message-warning-background-color: #fff3cd;
+  $margin: 8px;
+  $horizontal-margin: $margin + $margin;
 
-  /**
-   * @prop --gx-message-error-color: Error text color
-   */
-  --gx-message-error-color: #721c24;
-  /**
-   * @prop --gx-message-error-background-color: Error background color
-   */
-  --gx-message-error-background-color: #f8d7da;
-
-  @include gx-message-color(
-    "info",
-    var(--gx-message-info-color),
-    var(--gx-message-info-background-color),
-    var(--gx-message-info-background-color)
-  );
-  @include gx-message-color(
-    warning,
-    var(--gx-message-warning-color),
-    var(--gx-message-warning-background-color),
-    var(--gx-message-warning-background-color)
-  );
-  @include gx-message-color(
-    danger,
-    var(--gx-message-error-color),
-    var(--gx-message-error-background-color),
-    var(--gx-message-error-background-color)
-  );
-}
-
-#messageBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
   top: 0;
+  width: calc(100% - $horizontal-margin);
+  min-height: 50px;
+  background-color: $default-background-color;
+  border-radius: 14px;
+  border: 1px solid #00000040;
+  box-shadow: 0 4px 8px #0000004f, inset 0 0 6px -3px #00000040;
+  color: var(--contrast-color, inherit);
+  padding: 14px;
+  margin: $margin;
+  text-align: center;
   z-index: $z-index-gx-message;
+  animation: fade-in $animation-duration ease-in-out;
+
+  @include transition-properties();
 }
 
-gx-navbar + gx-messages {
-  & > #messageBar {
-    top: $gx-navbar-main-height;
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  50% {
+    opacity: 0.4;
   }
 }

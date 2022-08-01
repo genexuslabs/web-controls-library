@@ -19,6 +19,10 @@ $five-times-transition-delay: 1.25s;
 $six-times-transition-duration: 1.5s;
 $six-times-transition-delay: 1.5s;
 
+@mixin active-style() {
+  filter: brightness(80%);
+}
+
 @mixin disabled-style() {
   filter: opacity(0.5);
 }
