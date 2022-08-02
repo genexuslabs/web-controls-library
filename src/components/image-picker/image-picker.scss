@@ -58,6 +58,15 @@ gx-image-picker {
         height: 18px;
       }
     }
+
+    & > .loading-image {
+      width: 100%;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: #60606080;
+      border-left-color: #60606080;
+      animation: rotate-loading-image 0.6s linear infinite;
+    }
   }
 
   & > gx-modal {
@@ -152,5 +161,14 @@ gx-image-picker {
         @include active-style();
       }
     }
+  }
+}
+
+// - - - - - - - - - - - - - - - -
+//           Key frames
+// - - - - - - - - - - - - - - - -
+@keyframes rotate-loading-image {
+  to {
+    transform: rotate(360deg);
   }
 }

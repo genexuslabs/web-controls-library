@@ -145,6 +145,20 @@ export function onMobileDevice(): boolean {
   return window.matchMedia("(pointer: coarse)").matches;
 }
 
+export function getLottiePath(computed: CSSStyleDeclaration): string {
+  // Anything other than "--gx-animation-type: lottie" is considered a native animation
+  if (computed.getPropertyValue("--gx-animation-type").trim() != "lottie") {
+    return "";
+  }
+
+  // Remove quotes from the lottie path
+  return computed
+    .getPropertyValue("--gx-lottie-file-path")
+    .trim()
+    .replace(/^"/, "")
+    .replace(/"$/, "");
+}
+
 /**
  * Implement horizontal scrolling by dragging the `scrollableContainer` element
  * @param scrollableContainer Draggable element

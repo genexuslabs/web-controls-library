@@ -30,6 +30,12 @@ gx-progress-bar {
   --gx-progress-bar-dialog-background-color: #fff;
 
   /**
+   * @prop --gx-progress-bar-dialog-box-shadow: Dialog box shadow
+   */
+  --gx-progress-bar-dialog-box-shadow: 0 0 30px 0px #00000060,
+    inset 0 0 10px -2px #00000040;
+
+  /**
    * @prop --gx-progress-bar-mask-background-color: Mask background color
    */
   --gx-progress-bar-mask-background-color: #333333bf; // Android's mask
@@ -67,16 +73,19 @@ gx-progress-bar {
     justify-content: center;
     background-color: var(--gx-progress-bar-dialog-background-color);
     border-radius: 2px;
-    box-shadow: 0 0 30px 0px #00000060, inset 0 0 10px -2px #00000040;
+    box-shadow: var(--gx-progress-bar-dialog-box-shadow);
     width: max-content;
     height: min-content;
     max-width: $dialog-max-width;
     min-height: $dialog-min-height;
-    opacity: 0; // Initial opacity when the animation starts
     overflow: hidden;
     padding: $dialog-vertical-padding $dialog-horizontal-padding;
-    animation: fade-in $half-transition-duration ease $half-transition-delay
-      forwards;
+
+    // Defaults when the animation starts
+    opacity: 0;
+    transform: scale(0);
+    animation: progress-fade-in $half-transition-duration ease
+      $half-transition-delay forwards;
 
     // - - - - - - - - - - - - - - - -
     //      Determinate indicator
@@ -184,6 +193,13 @@ gx-progress-bar {
   @keyframes fade-in {
     to {
       opacity: 1;
+    }
+  }
+
+  @keyframes progress-fade-in {
+    to {
+      opacity: 1;
+      transform: scale(1);
     }
   }
 

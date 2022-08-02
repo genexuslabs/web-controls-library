@@ -1,48 +1,56 @@
 :host {
   /**
+   * @prop --height: Minimum height of the gx-loading when showing slot animations.
+   * (64px by default)
+   */
+  --height: 64px;
+
+  /**
    * @prop --rotate-animation-container-size:
    * Define the size of the rotate animation container.
    * (48px by default)
-  */
+   */
   --rotate-animation-container-size: 48px;
 
   /**
    * @prop --rotate-animation-duration:
    * Define the duration of the rotate animation container.
    * (1.5s by default)
-  */
+   */
   --rotate-animation-duration: 1.5s;
 
   /**
    * @prop --rotate-animation-circle-1-color:
    * Define the color of the first child of the rotate animation container.
    * (rgb(71, 109, 255) by default)
-  */
+   */
   --rotate-animation-circle-1-color: rgb(71, 109, 255);
 
   /**
    * @prop --rotate-animation-circle-2-color:
    * Define the color of the second child of the rotate animation container.
    * (rgb(0, 0, 0) by default)
-  */
+   */
   --rotate-animation-circle-2-color: rgb(0, 0, 0);
 
   /**
    * @prop --rotate-animation-circle-3-color:
    * Define the color of the third child of the rotate animation container.
    * (rgb(200, 10, 70) by default)
-  */
+   */
   --rotate-animation-circle-3-color: rgb(200, 10, 70);
 
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   width: 100%;
   height: 100%;
+  margin: auto; // Center the gx-loading control
+}
+
+:host(.slot-animation) {
+  min-height: var(--height);
 }
 
 .gx-loading-rotate-container {
@@ -57,28 +65,28 @@
   height: var(--rotate-animation-container-size);
   animation: rotate-origin calc(var(--rotate-animation-duration) * 2.5) linear
     infinite;
+}
 
-  > .circle {
-    width: 42%;
-    height: 42%;
-    border-radius: 50%;
-    transform: scale(0);
-    filter: opacity(0.75);
-    animation: grow var(--rotate-animation-duration) ease-in-out infinite;
+.circle {
+  width: 42%;
+  height: 42%;
+  border-radius: 50%;
+  transform: scale(0);
+  opacity: 0.75;
+  animation: grow var(--rotate-animation-duration) ease-in-out infinite;
 
-    &-1 {
-      background-color: var(--rotate-animation-circle-2-color);
-      animation-delay: calc(var(--rotate-animation-duration) * (1 / 3));
-    }
+  &-1 {
+    background-color: var(--rotate-animation-circle-2-color);
+    animation-delay: calc(var(--rotate-animation-duration) * (1 / 3));
+  }
 
-    &-2 {
-      background-color: var(--rotate-animation-circle-1-color);
-    }
+  &-2 {
+    background-color: var(--rotate-animation-circle-1-color);
+  }
 
-    &-3 {
-      background-color: var(--rotate-animation-circle-3-color);
-      animation-delay: calc(var(--rotate-animation-duration) * (2 / 3));
-    }
+  &-3 {
+    background-color: var(--rotate-animation-circle-3-color);
+    animation-delay: calc(var(--rotate-animation-duration) * (2 / 3));
   }
 }
 
@@ -90,7 +98,7 @@
 
 @keyframes grow {
   50% {
-    filter: opacity(1);
+    opacity: 1;
     transform: scale(1);
   }
 }

@@ -9,7 +9,7 @@ gx-grid-infinite-scroll {
 }
 
 gx-grid-infinite-scroll-content {
-  position: relative; // Required for gx-loading's positioning
+  overflow: hidden; // Required for gx-loading's positioning
 }
 
 gx-grid-infinite-scroll-content,

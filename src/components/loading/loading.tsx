@@ -1,5 +1,6 @@
 import { Component, Element, Host, Prop, h } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
+import { getLottiePath } from "../common/utils";
 
 // Class transforms
 import {
@@ -62,17 +63,7 @@ export class Loading implements GxComponent {
   // }
 
   private updateLottiePath() {
-    const rawLottiePath = window
-      .getComputedStyle(this.element)
-      .getPropertyValue("--gx-lottie-file-path");
-
-    // Remove quotes from the string
-    if (rawLottiePath) {
-      this.lottiePath = rawLottiePath
-        .trim()
-        .replace(/^"/, "")
-        .replace(/"$/, "");
-    }
+    this.lottiePath = getLottiePath(window.getComputedStyle(this.element));
   }
 
   componentDidLoad(): void {
@@ -94,7 +85,8 @@ export class Loading implements GxComponent {
       <Host
         class={{
           [loadingClasses.transformedCssClass]: true,
-          [loadingClasses.vars]: true
+          [loadingClasses.vars]: true,
+          "slot-animation": this.showSlotAnimation
         }}
         aria-hidden={!shouldShowContent ? "true" : undefined}
       >

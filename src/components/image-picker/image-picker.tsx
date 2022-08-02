@@ -129,16 +129,14 @@ export class ImagePicker implements GxComponent {
   /**
    * This attribute lets you specify the current state of the gx-image-picker.
    *
-   * | Value               | Details                                                                                      |
-   * | ------------------- | -------------------------------------------------------------------------------------------- |
-   * | `readyToUse`        | Allows you to choose, change or remove an image.                                             |
-   * | `fileReadyToUpload` | It is set only after an image has been selected or changed, not removed.                     |
-   * | `uploadingFile`     | It is set by the parent control to specifies when the image is being uploaded to the server. |
+   * | Value               | Details                                                                                   |
+   * | ------------------- | ----------------------------------------------------------------------------------------- |
+   * | `readyToUse`        | Allows you to choose, change or remove an image.                                          |
+   * | `uploadingFile`     | It is set by the gx-image-picker control when the `reader` is loading the selected image. |
    *
-   * `fileReadyToUpload` and `uploadingFile` will not allow you to change or remove the current image.
+   * `uploadingFile` will not allow you to change or remove the current image.
    */
-  @Prop() state: "readyToUse" | "fileReadyToUpload" | "uploadingFile" =
-    "readyToUse";
+  @Prop() state: "readyToUse" | "uploadingFile" = "readyToUse";
 
   /**
    * Fired when the image is clicked
@@ -203,7 +201,6 @@ export class ImagePicker implements GxComponent {
 
   // When the file is selected
   private fileSelectedAction = () => {
-    const elem = this.element;
     const file = this.input.files[0];
 
     // This allows to catch an error when the user select a filename, but then
@@ -211,17 +208,9 @@ export class ImagePicker implements GxComponent {
     if (file == null) {
       return;
     }
-    this.state = "fileReadyToUpload";
-    this.alt = this.getFileNameWithoutExtension(file.name);
+    this.state = "uploadingFile";
 
-    this.reader.addEventListener(
-      "load",
-      function() {
-        // Convert image file to base64 string
-        elem.src = this.result.toString();
-      },
-      false
-    );
+    this.alt = this.getFileNameWithoutExtension(file.name);
     this.reader.readAsDataURL(file);
 
     this.closeAction();
@@ -250,30 +239,22 @@ export class ImagePicker implements GxComponent {
     );
   }
 
-  // SVG used to display when an image is being uploaded to the server
-  private getLoadingSVG(): any {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="5 5 40 40">
-        <path
-          fill="rgba(96, 96, 96, 0.6)"
-          d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z"
-        >
-          <animateTransform
-            attributeType="xml"
-            attributeName="transform"
-            type="rotate"
-            from="0 25 25"
-            to="360 25 25"
-            dur="0.6s"
-            repeatCount="indefinite"
-          />
-        </path>
-      </svg>
-    );
-  }
-
   componentWillLoad() {
     this.shouldShowImagePickerButton = !this.readonly;
+  }
+
+  componentDidLoad() {
+    const elem = this.element;
+
+    this.reader.addEventListener(
+      "load",
+      function() {
+        // Convert image file to base64 string
+        elem.src = this.result.toString();
+        elem.state = "readyToUse";
+      },
+      false
+    );
   }
 
   render() {
@@ -301,7 +282,7 @@ export class ImagePicker implements GxComponent {
               {this.state != "uploadingFile" ? (
                 <button
                   class="image-picker-button"
-                  disabled={this.disabled || this.state == "fileReadyToUpload"}
+                  disabled={this.disabled}
                   onClick={this.triggerAction}
                 >
                   {this.src === ""
@@ -309,7 +290,7 @@ export class ImagePicker implements GxComponent {
                     : this.getPencilAltSolidSVG()}
                 </button>
               ) : (
-                this.getLoadingSVG()
+                <div class="loading-image"></div>
               )}
             </div>
           )}

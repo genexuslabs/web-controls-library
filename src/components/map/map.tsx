@@ -47,6 +47,9 @@ export class Map implements GxComponent {
   private tileLayerApplied: tileLayer;
   private watchPositionId: number;
 
+  // Refs
+  private divMapView: HTMLDivElement;
+
   @Element() element: HTMLGxMapElement;
 
   @State() userLocationCoords: string;
@@ -96,6 +99,11 @@ export class Map implements GxComponent {
    * Enables the possibility to navigate the map and select a location point using the map center.
    */
   @Prop() selectionLayer = false;
+
+  /**
+   * Whether the map can be zoomed by using the mouse wheel.
+   */
+  @Prop() readonly scrollWheelZoom: boolean = true;
 
   /**
    * Indicates if the current location of the device is displayed on the map.
@@ -361,20 +369,22 @@ export class Map implements GxComponent {
   }
 
   componentDidLoad() {
-    const elementVar = this.element.querySelector(".gxMap");
     const coords = parseCoords(this.center);
 
     this.maxZoom = this.checkForMaxZoom();
     this.zoom = this.getZoom();
+
+    // Depending on the coordinates, set different view types
     if (coords !== null) {
-      this.map = LFMap(elementVar).setView(coords, this.zoom, this.maxZoom);
+      this.map = LFMap(this.divMapView, {
+        scrollWheelZoom: this.scrollWheelZoom
+      }).setView(coords, this.zoom, this.maxZoom);
     } else {
-      console.warn(
-        "GX warning: Can not read 'center' attribute, default center set (gx-map)",
-        this.element
-      );
-      this.map = LFMap(elementVar).setView([0, 0], this.getZoom());
+      this.map = LFMap(this.divMapView, {
+        scrollWheelZoom: this.scrollWheelZoom
+      }).setView([0, 0], this.getZoom());
     }
+
     this.setMapProvider();
     this.map.setMaxZoom(this.maxZoom);
     this.fitBounds();
@@ -434,7 +444,10 @@ export class Map implements GxComponent {
             ></gx-map-marker>
           ))}
         <div class="gxMapContainer">
-          <div class="gxMap"></div>
+          <div
+            class="gxMap"
+            ref={el => (this.divMapView = el as HTMLDivElement)}
+          ></div>
         </div>
       </Host>
     );
