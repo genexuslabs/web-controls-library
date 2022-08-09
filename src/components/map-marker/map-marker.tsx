@@ -52,6 +52,13 @@ export class MapMarker implements GxComponent {
   @Prop() readonly tooltipCaption: string;
 
   /**
+   * This attribute lets you specify the marker type. Each marker type has
+   * different images and sizes depending on its use.
+   */
+  @Prop() readonly type: "default" | "selection-layer" | "user-location" =
+    "default";
+
+  /**
    * Emmits when the element is added to a `<gx-map>`.
    */
   @Event() gxMapMarkerDidLoad: EventEmitter;
@@ -86,7 +93,7 @@ export class MapMarker implements GxComponent {
    */
   private getDivIcon(): DivIcon {
     return divIcon({
-      className: this.iconImageClass,
+      className: `gx-map-marker-${this.type}-icon`,
       iconAnchor: [this.getHalfSizes().width, this.iconHeight],
       popupAnchor: [0, -this.getHalfSizes().height],
       iconSize: [this.iconWidth, this.iconHeight],
@@ -104,6 +111,7 @@ export class MapMarker implements GxComponent {
   }
 
   private setPopup() {
+    // TODO: In which case does this condition occur?
     if (this.popupContainer.firstElementChild !== null) {
       const maxPopupSize = {
         height:
@@ -134,8 +142,10 @@ export class MapMarker implements GxComponent {
   }
 
   componentDidUpdate() {
+    // Update lat and lng
     this.markerInstance.setLatLng(this.getParsedCoords());
 
+    // Update icon
     this.markerInstance.setIcon(this.getDivIcon());
     this.setPopup();
   }
