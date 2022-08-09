@@ -7,9 +7,10 @@ import {
   Prop
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
-import { divIcon, marker } from "leaflet/dist/leaflet-src.esm";
 import { parseCoords } from "../common/coordsValidate";
+import { divIcon, marker, DivIcon, LatLngTuple } from "leaflet";
 
+const DEFAULT_COORDS: LatLngTuple = [0, 0];
 const MAX_POPUP_SIZE_FACTOR = 0.83;
 
 @Component({
@@ -79,13 +80,21 @@ export class MapMarker implements GxComponent {
 
   private setupMarker(coords) {
     this.markerInstance = marker(coords, {
-      icon: divIcon({
-        className: this.iconImageClass,
-        iconAnchor: [this.getHalfSizes().width, this.iconHeight],
-        popupAnchor: [0, -this.getHalfSizes().height],
-        iconSize: [this.iconWidth, this.iconHeight],
-        tooltipAnchor: [0, -this.getHalfSizes().height]
-      })
+      icon: this.getDivIcon()
+    });
+  }
+
+  /**
+   * Given the current state of the `gx-marker`'s properties it returns its `DivIcon`.
+   * @returns The current `DivIcon` of the marker.
+   */
+  private getDivIcon(): DivIcon {
+    return divIcon({
+      className: this.iconImageClass,
+      iconAnchor: [this.getHalfSizes().width, this.iconHeight],
+      popupAnchor: [0, -this.getHalfSizes().height],
+      iconSize: [this.iconWidth, this.iconHeight],
+      tooltipAnchor: [0, -this.getHalfSizes().height]
     });
   }
 
@@ -118,7 +127,7 @@ export class MapMarker implements GxComponent {
         "GX warning: Can not read 'coords' attribute, default coords set (gx-map-marker)",
         this.element
       );
-      this.setupMarker([0, 0]);
+      this.setupMarker(DEFAULT_COORDS);
     }
     this.setPopup();
     if (this.tooltipCaption) {
@@ -138,17 +147,10 @@ export class MapMarker implements GxComponent {
         "GX warning: Can not read 'coords' attribute, default coords set (gx-map-marker)",
         this.element
       );
-      this.markerInstance.setLatLng([0, 0]);
+      this.markerInstance.setLatLng(DEFAULT_COORDS);
     }
-    this.markerInstance.setIcon(
-      divIcon({
-        className: this.iconImageClass,
-        iconAnchor: [this.getHalfSizes().width, this.iconHeight],
-        popupAnchor: [0, -this.getHalfSizes().height],
-        iconSize: [this.iconWidth, this.iconHeight],
-        tooltipAnchor: [0, -this.getHalfSizes().height]
-      })
-    );
+
+    this.markerInstance.setIcon(this.getDivIcon());
     this.setPopup();
   }
 
