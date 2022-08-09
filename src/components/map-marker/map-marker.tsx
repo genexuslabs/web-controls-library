@@ -19,54 +19,50 @@ const MAX_POPUP_SIZE_FACTOR = 0.83;
   tag: "gx-map-marker"
 })
 export class MapMarker implements GxComponent {
-  @Element() element: HTMLGxMapMarkerElement;
   private markerInstance: any;
+
+  // Refs
+  private popupContainer: HTMLDivElement = null;
+
+  @Element() element: HTMLGxMapMarkerElement;
 
   /**
    * The coordinates where the marker will appear in the map.
-   *
    */
   @Prop({ mutable: true }) coords = "0, 0";
 
   /**
    * The class that the marker will have.
-   *
    */
   @Prop() iconImageClass = "gx-default-icon";
 
   /**
    * The marker image height.
-   *
    */
   @Prop() iconHeight = 30;
 
   /**
    * The marker image width.
-   *
    */
   @Prop() iconWidth = 30;
 
   /**
    * The tooltip caption of the marker.
-   *
    */
   @Prop() readonly tooltipCaption: string;
 
   /**
    * Emmits when the element is added to a `<gx-map>`.
-   *
    */
   @Event() gxMapMarkerDidLoad: EventEmitter;
 
   /**
    * Emmits when the element update its data.
-   *
    */
   @Event() gxMapMarkerUpdate: EventEmitter;
 
   /**
    * Emmits when the element is deleted from a `<gx-map>`.
-   *
    */
   @Event() gxMapMarkerDeleted: EventEmitter;
 
@@ -99,17 +95,15 @@ export class MapMarker implements GxComponent {
   }
 
   private setPopup() {
-    const popupContainerEl = this.element.querySelector(
-      "[class='popup-data-container']"
-    );
-    if (popupContainerEl.firstElementChild !== null) {
+    if (this.popupContainer.firstElementChild !== null) {
       const maxPopupSize = {
         height:
           document.querySelector(".gxMap").clientHeight * MAX_POPUP_SIZE_FACTOR,
         width:
           document.querySelector(".gxMap").clientWidth * MAX_POPUP_SIZE_FACTOR
       };
-      this.markerInstance.bindPopup(popupContainerEl, {
+
+      this.markerInstance.bindPopup(this.popupContainer, {
         keepInView: true,
         maxHeight: maxPopupSize.height,
         maxWidth: maxPopupSize.width,
@@ -153,7 +147,10 @@ export class MapMarker implements GxComponent {
 
   render() {
     return (
-      <div class="popup-data-container">
+      <div
+        class="popup-data-container"
+        ref={el => (this.popupContainer = el as HTMLDivElement)}
+      >
         <slot />
       </div>
     );
