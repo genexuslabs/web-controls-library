@@ -94,6 +94,15 @@ export class MapMarker implements GxComponent {
     });
   }
 
+  /**
+   * Given the current coords of the `gx-marker` it returns its parsed coords or the default value if they are null.
+   * @returns The parsed coords of the marker.
+   */
+  private getParsedCoords(): string[] | LatLngTuple {
+    const coords = parseCoords(this.coords);
+    return coords !== null ? coords : DEFAULT_COORDS;
+  }
+
   private setPopup() {
     if (this.popupContainer.firstElementChild !== null) {
       const maxPopupSize = {
@@ -113,12 +122,7 @@ export class MapMarker implements GxComponent {
   }
 
   componentDidLoad() {
-    const coords = parseCoords(this.coords);
-    if (coords !== null) {
-      this.setupMarker(coords);
-    } else {
-      this.setupMarker(DEFAULT_COORDS);
-    }
+    this.setupMarker(this.getParsedCoords());
 
     this.setPopup();
     if (this.tooltipCaption) {
@@ -130,12 +134,7 @@ export class MapMarker implements GxComponent {
   }
 
   componentDidUpdate() {
-    const coords = parseCoords(this.coords);
-    if (coords !== null) {
-      this.markerInstance.setLatLng(coords);
-    } else {
-      this.markerInstance.setLatLng(DEFAULT_COORDS);
-    }
+    this.markerInstance.setLatLng(this.getParsedCoords());
 
     this.markerInstance.setIcon(this.getDivIcon());
     this.setPopup();
