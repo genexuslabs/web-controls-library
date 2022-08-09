@@ -123,12 +123,9 @@ export class MapMarker implements GxComponent {
     if (coords !== null) {
       this.setupMarker(coords);
     } else {
-      console.warn(
-        "GX warning: Can not read 'coords' attribute, default coords set (gx-map-marker)",
-        this.element
-      );
       this.setupMarker(DEFAULT_COORDS);
     }
+
     this.setPopup();
     if (this.tooltipCaption) {
       this.markerInstance.bindTooltip(this.tooltipCaption, {
@@ -143,10 +140,6 @@ export class MapMarker implements GxComponent {
     if (coords !== null) {
       this.markerInstance.setLatLng(coords);
     } else {
-      console.warn(
-        "GX warning: Can not read 'coords' attribute, default coords set (gx-map-marker)",
-        this.element
-      );
       this.markerInstance.setLatLng(DEFAULT_COORDS);
     }
 
