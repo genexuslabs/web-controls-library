@@ -63,9 +63,9 @@ export class Map implements GxComponent {
    * The class that the marker will have.
    */
   @Prop() markerClassIcon = "gx-default-icon";
+
   /**
    * The coord of initial center of the map.
-   *
    */
   @Prop({ mutable: true }) center = "0, 0";
 
@@ -85,7 +85,6 @@ export class Map implements GxComponent {
   /**
    * Map type to be used.
    * _Note: If you set a map provider, the selected map type will be ignored._
-   *
    */
   @Prop() mapType: "standard" | "satellite" | "hybrid" = "standard";
 
@@ -155,6 +154,7 @@ export class Map implements GxComponent {
   onMapMarkerDidLoad(event: CustomEvent) {
     const markerElement = event.target;
     const markerV = event.detail;
+
     if (this.map) {
       markerV.addTo(this.map);
     } else {
@@ -162,13 +162,14 @@ export class Map implements GxComponent {
         markerV.addTo(this.map);
       });
     }
+
     if (this.selectionLayer) {
       const slot = this.getSelectionMarkerSlot();
       if (slot.exist) {
         this.selectionMarker = slot.elem;
       } else {
         this.selectionMarker = this.element.querySelector(
-          "[marker-class='gx-default-selection-layer-icon']"
+          "[type='selection-layer']"
         );
       }
       if (markerElement !== this.selectionMarker) {
@@ -426,9 +427,9 @@ export class Map implements GxComponent {
       <Host>
         {this.watchPosition && (
           <gx-map-marker
-            marker-class="gx-default-user-location-icon"
             icon-width="65"
             icon-height="55"
+            type="user-location"
             coords={this.userLocationCoords}
           ></gx-map-marker>
         )}
@@ -437,9 +438,9 @@ export class Map implements GxComponent {
             <slot name="selection-layer-marker" />
           ) : (
             <gx-map-marker
-              marker-class="gx-default-selection-layer-icon"
               icon-width="30"
               icon-height="30"
+              type="selection-layer"
               coords={this.centerCoords}
             ></gx-map-marker>
           ))}
