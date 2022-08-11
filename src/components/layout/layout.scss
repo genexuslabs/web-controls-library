@@ -195,32 +195,6 @@ gx-layout {
   }
 }
 
-// Improve gx-message's position when gx-navbar is in the DOM
-gx-navbar + gx-message {
-  top: $gx-navbar-main-height;
-}
-
-// Disable html's scrollbars when a gx-modal presented and the html has content
-// that overflows vertically. Does not apply to mobile devices
-html.gx-disable-scroll {
-  overflow: hidden;
-
-  gx-navbar,
-  gx-layout {
-    padding-right: 8px;
-  }
-}
-
-html.gx-disable-scroll-mobile {
-  overflow: hidden;
-}
-
-// Hide gx-modal's scrollbars
-gx-modal::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
-}
-
 gx-navbar + gx-message {
   top: $gx-navbar-main-height;
 }
