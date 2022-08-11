@@ -46,21 +46,21 @@ When the left or right target is visible and floating, the center target is mask
 
 ## Properties
 
-| Property              | Attribute               | Description                                                | Type      | Default |
-| --------------------- | ----------------------- | ---------------------------------------------------------- | --------- | ------- |
-| `bottomHidden`        | `bottom-hidden`         | True to hide the bottom target                             | `boolean` | `false` |
-| `bottomNavbarVisible` | `bottom-navbar-visible` | `true` if the bottom navbar is visible in the application. | `boolean` | `false` |
-| `leftHidden`          | `left-hidden`           | True to hide the left target                               | `boolean` | `false` |
-| `rightHidden`         | `right-hidden`          | True to hide the right target                              | `boolean` | `false` |
-| `topHidden`           | `top-hidden`            | True to hide the top target                                | `boolean` | `false` |
+| Property              | Attribute               | Description                                                                                                                                 | Type                             | Default   |
+| --------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | --------- |
+| `bottomHidden`        | `bottom-hidden`         | True to hide the bottom target                                                                                                              | `boolean`                        | `false`   |
+| `bottomNavbarVisible` | `bottom-navbar-visible` | `true` if the bottom navbar is visible in the application.                                                                                  | `boolean`                        | `false`   |
+| `layoutSize`          | `layout-size`           | This attribute lets you specify the layout size of the application. Each layout size will set different behaviors in the gx-layout control. | `"large" \| "medium" \| "small"` | `"large"` |
+| `leftHidden`          | `left-hidden`           | True to hide the left target                                                                                                                | `boolean`                        | `false`   |
+| `rightHidden`         | `right-hidden`          | True to hide the right target                                                                                                               | `boolean`                        | `false`   |
+| `topHidden`           | `top-hidden`            | True to hide the top target                                                                                                                 | `boolean`                        | `false`   |
 
 ## Events
 
-| Event                                  | Description                                                                | Type               |
-| -------------------------------------- | -------------------------------------------------------------------------- | ------------------ |
-| `leftHiddenChange`                     | Fired when the leftHidden property is changed                              | `CustomEvent<any>` |
-| `rightHiddenChange`                    | Fired when the rightHidden property is changed                             | `CustomEvent<any>` |
-| `verticalTargetsBreakpointMatchChange` | Fired when the viewport size is less than the vertical targets breakpoint. | `CustomEvent<any>` |
+| Event               | Description                                    | Type               |
+| ------------------- | ---------------------------------------------- | ------------------ |
+| `leftHiddenChange`  | Fired when the leftHidden property is changed  | `CustomEvent<any>` |
+| `rightHiddenChange` | Fired when the rightHidden property is changed | `CustomEvent<any>` |
 
 ## CSS Custom Properties
 
@@ -72,7 +72,6 @@ When the left or right target is visible and floating, the center target is mask
 | `--gx-layout-target-transition-duration`        | Vertical target's transition duration          |
 | `--gx-layout-target-transition-timing-function` | Vertical target's transition timing function   |
 | `--gx-layout-vertical-target-width`             | Width for vertical targets (left and right)    |
-| `--gx-layout-vertical-targets-breakpoint`       | Vertical targets breakpoint                    |
 
 ---
 

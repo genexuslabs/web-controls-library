@@ -13,90 +13,87 @@ $gx-navbar-active-color: black;
   color: $gx-navbar-active-color;
 }
 
+// - - - - - - - - - - - - - - - -
+//          Bottom navbar
+// - - - - - - - - - - - - - - - -
+// When the width of the screen is <= $gx-xsmall-breakpoint, the bottom navbar
+// is rendered in the DOM
 :host([position="bottom"]) {
   bottom: 0;
 
-  // If the width of the screen >= $gx-xsmall-breakpoint-plus-1, we hide
-  // the bottom navbar
-  @media screen and (min-width: $gx-xsmall-breakpoint-plus-1) {
-    display: none;
+  // We display the links at the bottom navbar
+  .gx-navbar-line {
+    grid-template: "cell-links" 100% / 100%;
   }
 
-  // We display the links at the bottom navbar, when the width of the
-  // screen is <= $gx-xsmall-breakpoint
-  @media screen and (max-width: $gx-xsmall-breakpoint) {
-    .gx-navbar-line {
-      grid-template: "cell-links" 100% / 100%;
-    }
-
-    .gx-navbar-links {
-      display: grid;
-      grid-auto-flow: column;
-      grid-auto-columns: minmax(max-content, 1fr);
-      width: 100%;
-    }
+  .gx-navbar-links {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(max-content, 1fr);
+    width: 100%;
   }
 }
 
-// The layout of the top navbar adjusts based on the breakpoints and actions
+// - - - - - - - - - - - - - - - -
+//           Top navbar
+// - - - - - - - - - - - - - - - -
+// The layout of the top navbar adjusts based on the layout size and actions
 // displayed
-:host(:not([position="bottom"])) {
-  @media screen and (min-width: $gx-xsmall-breakpoint-plus-1) {
-    .gx-navbar-line {
-      grid-template: "cell-left-side-container cell-links cell-actions cell-show-more-btn" 100% / 25% 50% 1fr max-content;
-    }
+:host(.not-small-layout-size) {
+  // Default distribution of items when the layout size is not "small"
+  .gx-navbar-line {
+    grid-template: "cell-left-side-container cell-links cell-actions cell-show-more-btn" 100% / 25% 50% 1fr max-content;
+  }
 
-    // We display the links at the top navbar, when the width of the screen
-    // is >= $gx-xsmall-breakpoint-plus-1
-    .gx-navbar-links {
-      display: flex;
+  // We display the links at the top navbar, when the layout size is not "small"
+  .gx-navbar-links {
+    display: flex;
+  }
+}
+
+:host(.small-layout-size) {
+  .gx-navbar-0-action-types {
+    grid-template: "cell-left-side-container" 100% / 100%;
+
+    &-low-action {
+      grid-template: "cell-left-side-container cell-show-more-btn" 100% / 1fr max-content;
     }
   }
 
-  @media screen and (max-width: $gx-xsmall-breakpoint) {
-    .gx-navbar-0-action-types {
-      grid-template: "cell-left-side-container" 100% / 100%;
+  .gx-navbar-1-action-types {
+    grid-template:
+      "cell-left-side-container cell-actions" 100% / minmax(min-content, 2fr)
+      minmax(10%, max-content);
 
-      &-low-action {
-        grid-template: "cell-left-side-container cell-show-more-btn" 100% / 1fr max-content;
-      }
-    }
-
-    .gx-navbar-1-action-types {
+    &-low-action {
       grid-template:
-        "cell-left-side-container cell-actions" 100% / minmax(min-content, 2fr)
-        minmax(10%, max-content);
-
-      &-low-action {
-        grid-template:
-          "cell-left-side-container cell-actions cell-show-more-btn" 100% / minmax(
-            min-content,
-            2fr
-          )
-          minmax(10%, max-content) max-content;
-      }
+        "cell-left-side-container cell-actions cell-show-more-btn" 100% / minmax(
+          min-content,
+          2fr
+        )
+        minmax(10%, max-content) max-content;
     }
+  }
 
-    .gx-navbar-2-action-types {
+  .gx-navbar-2-action-types {
+    grid-template:
+      "cell-left-side-container cell-actions" 100% / minmax(min-content, 1.25fr)
+      minmax(20%, max-content);
+
+    &-low-action {
       grid-template:
-        "cell-left-side-container cell-actions" 100% / minmax(
+        "cell-left-side-container cell-actions cell-show-more-btn" 100% / minmax(
           min-content,
           1.25fr
         )
-        minmax(20%, max-content);
-
-      &-low-action {
-        grid-template:
-          "cell-left-side-container cell-actions cell-show-more-btn" 100% / minmax(
-            min-content,
-            1.25fr
-          )
-          minmax(20%, max-content) max-content;
-      }
+        minmax(20%, max-content) max-content;
     }
   }
 }
 
+// - - - - - - - - - - - - - - - -
+//       Header Row Pattern
+// - - - - - - - - - - - - - - - -
 // We override the default value "position: sticky"
 :host(.gx-navbar-header-row-pattern) {
   position: fixed;
@@ -106,14 +103,12 @@ $gx-navbar-active-color: black;
 // enabled and the asides are visible, we have to reposition the navbar so it
 // does not overlap the asides. If we do not do this, the burger button won't
 // be reached.
-@media screen and (min-width: $gx-vertical-targets-breakpoint-plus-1) {
-  :host(.left-target-visible) {
-    left: $gx-vertical-target-width;
-  }
+:host(.left-target-visible) {
+  left: $gx-vertical-target-width;
+}
 
-  :host(.right-target-visible) {
-    right: $gx-vertical-target-width;
-  }
+:host(.right-target-visible) {
+  right: $gx-vertical-target-width;
 }
 
 @include visibility-shadow-DOM(block);

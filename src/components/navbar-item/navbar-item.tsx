@@ -46,6 +46,12 @@ export class NavBarItem implements GxComponent, HighlightableComponent {
    */
   @Prop() readonly iconSrc = "";
 
+  /**
+   * This attribute lets you specify the layout size of the application.
+   * Each layout size will set different behaviors in the gx-navbar-item control.
+   */
+  @Prop() readonly layoutSize: "small" | "medium" | "large" = "large";
+
   componentDidLoad() {
     makeHighlightable(this);
   }
@@ -66,10 +72,11 @@ export class NavBarItem implements GxComponent, HighlightableComponent {
     return (
       <Host
         class={{
-          "gx-navbar-item-empty": !this.cssClass,
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,
-          [classes.highlighted]: this.active
+          [classes.highlighted]: this.active,
+          "gx-navbar-item-empty": !this.cssClass,
+          "small-layout-size": this.layoutSize === "small"
         }}
         data-has-action
       >

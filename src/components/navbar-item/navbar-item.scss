@@ -18,6 +18,23 @@ $gx-navbar-active-color: black;
   color: $gx-navbar-active-color;
 }
 
+:host(.small-layout-size) {
+  flex: 1;
+  justify-content: center;
+
+  & > .navbar-item {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    &-icon {
+      margin-bottom: 5px;
+      margin-inline-end: 0;
+    }
+  }
+}
+
 :host {
   --gx-navbar-item-icon-size-big: 24px;
   --gx-navbar-item-icon-size-small: 18px;
@@ -28,11 +45,6 @@ $gx-navbar-active-color: black;
   padding-inline: 12px;
   @include transition-properties();
 
-  @media screen and (max-width: $gx-xsmall-breakpoint) {
-    flex: 1;
-    justify-content: center;
-  }
-
   button {
     appearance: none;
     border: 0;
@@ -41,7 +53,7 @@ $gx-navbar-active-color: black;
     font: inherit;
   }
 
-  .navbar-item {
+  & > .navbar-item {
     display: inline-flex;
     align-items: center;
     flex: 1;
@@ -62,18 +74,6 @@ $gx-navbar-active-color: black;
       width: var(--gx-navbar-item-icon-size-small);
       object-fit: contain;
       margin-inline-end: 12px;
-    }
-
-    @media screen and (max-width: $gx-xsmall-breakpoint) {
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-
-      &-icon {
-        margin-bottom: 5px;
-        margin-inline-end: 0;
-      }
     }
   }
 }

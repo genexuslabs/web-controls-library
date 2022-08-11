@@ -18,9 +18,8 @@ import { getWindowsOrientation } from "../common/utils";
   tag: "gx-layout"
 })
 export class Layout implements GxComponent {
-  constructor() {
-    this.handleMediaQueryChange = this.handleMediaQueryChange.bind(this);
-  }
+  // Media queries
+  private mediaQueryOrientation: MediaQueryList;
 
   @Element() element: HTMLGxLayoutElement;
 
@@ -28,6 +27,12 @@ export class Layout implements GxComponent {
    * `true` if the bottom navbar is visible in the application.
    */
   @Prop() readonly bottomNavbarVisible: boolean = false;
+
+  /**
+   * This attribute lets you specify the layout size of the application.
+   * Each layout size will set different behaviors in the gx-layout control.
+   */
+  @Prop() readonly layoutSize: "small" | "medium" | "large" = "large";
 
   /**
    * True to hide the top target
@@ -60,14 +65,6 @@ export class Layout implements GxComponent {
    * Fired when the rightHidden property is changed
    */
   @Event() rightHiddenChange: EventEmitter;
-
-  /**
-   * Fired when the viewport size is less than the vertical targets breakpoint.
-   */
-  @Event() verticalTargetsBreakpointMatchChange: EventEmitter;
-
-  private mediaQueryList: MediaQueryList;
-  private mediaQueryOrientation: MediaQueryList;
 
   @Watch("rightHidden")
   handleRightHiddenChange() {
@@ -103,6 +100,21 @@ export class Layout implements GxComponent {
     });
   }
 
+  private startMediaQueryMonitoring() {
+    // This event fires when the orientation is changed to "portrait" or "landscape"
+    this.mediaQueryOrientation = window.matchMedia("(orientation: portrait)");
+    this.mediaQueryOrientation.addEventListener("change", () =>
+      this.updateGridsOrientation()
+    );
+  }
+
+  private endMediaQueryMonitoring() {
+    this.mediaQueryOrientation.removeEventListener(
+      "change",
+      this.updateGridsOrientation
+    );
+  }
+
   componentDidLoad() {
     this.startMediaQueryMonitoring();
   }
@@ -111,53 +123,18 @@ export class Layout implements GxComponent {
     this.endMediaQueryMonitoring();
   }
 
-  private startMediaQueryMonitoring() {
-    const targetsBreakpoint = getComputedStyle(this.element).getPropertyValue(
-      "--gx-layout-vertical-targets-breakpoint"
-    );
-    this.mediaQueryList = window.matchMedia(
-      `(max-width: ${targetsBreakpoint})`
-    );
-    this.updateVerticalTargetsBreakpointStatus(this.mediaQueryList.matches);
-    this.mediaQueryList.addEventListener("change", this.handleMediaQueryChange);
-
-    // This event fires when the orientation is changed to "portrait" or "landscape"
-    this.mediaQueryOrientation = window.matchMedia("(orientation: portrait)");
-    this.mediaQueryOrientation.addEventListener("change", () =>
-      this.updateGridsOrientation()
-    );
-  }
-
-  private handleMediaQueryChange(event: MediaQueryListEvent) {
-    this.updateVerticalTargetsBreakpointStatus(event.matches);
-  }
-
-  private updateVerticalTargetsBreakpointStatus(matches: boolean) {
-    this.verticalTargetsBreakpointMatchChange.emit({
-      matches
-    });
-  }
-
-  private endMediaQueryMonitoring() {
-    this.mediaQueryList.removeEventListener(
-      "change",
-      this.handleMediaQueryChange
-    );
-
-    this.mediaQueryOrientation.removeEventListener(
-      "change",
-      this.updateGridsOrientation
-    );
-  }
-
   render() {
+    const bottomNavbarAndSmallLayoutSize =
+      this.bottomNavbarVisible && this.layoutSize === "small";
+    const notLargeLayoutSize = this.layoutSize !== "large";
+
     return (
-      <Host data-bottom-navbar={this.bottomNavbarVisible ? "" : undefined}>
+      <Host>
         <main class="target center">
           <div
             class={{
               mask: true,
-              "mask--active": this.isMaskVisible
+              "mask--active": this.isMaskVisible && notLargeLayoutSize
             }}
             onClick={this.closeTargets}
           ></div>
@@ -166,10 +143,24 @@ export class Layout implements GxComponent {
         <header class="target top" hidden={this.topHidden}>
           <slot name="top" />
         </header>
-        <aside class="target vertical left" hidden={this.leftHidden}>
+        <aside
+          class={{
+            "target vertical left": true,
+            "bottom-navbar-and-small-layout-size": bottomNavbarAndSmallLayoutSize,
+            "not-large-layout-size": notLargeLayoutSize
+          }}
+          hidden={this.leftHidden}
+        >
           <slot name="left" />
         </aside>
-        <aside class="target vertical right" hidden={this.rightHidden}>
+        <aside
+          class={{
+            "target vertical right": true,
+            "bottom-navbar-and-small-layout-size": bottomNavbarAndSmallLayoutSize,
+            "not-large-layout-size": notLargeLayoutSize
+          }}
+          hidden={this.rightHidden}
+        >
           <slot name="right" />
         </aside>
         <footer class="target bottom" hidden={this.bottomHidden}>
