@@ -511,9 +511,59 @@ export class Canvas
     }
   }
 
+  /**
+   * In the following scenario:
+   * ```
+   *   <gx-canvas-cell min-height="680px">
+   *     <gx-canvas min-height="90%">
+   *        ...
+   *     </gx-canvas>
+   *   </gx-canvas-cell>
+   * ```
+   * Change the height of the `gx-canvas` to `calc(0.9 * 680px)`
+   */
+  private adjustHeightIfParentElementIsACanvasCell() {
+    // Only applies when the canvas has a percentage height, not calc or px
+    if (this.minHeight.includes("px") || this.minHeight.includes("calc")) {
+      return;
+    }
+    const parentCell = this.element.parentElement;
+
+    // The parent element must be a canvas cell
+    if (parentCell.tagName.toLowerCase() !== "gx-canvas-cell") {
+      return;
+    }
+    const parentCellHeight = (parentCell as HTMLGxCanvasCellElement).minHeight.trim();
+
+    // The parent canvas cell must have an absolute height, not calc or %
+    if (parentCellHeight.includes("%")) {
+      return;
+    }
+
+    /**
+     * If `this.minHeight = 90%` --> `canvasPercentageHeightValue = 0.9`
+     */
+    const canvasPercentageHeightValue =
+      Number(this.minHeight.replace("%", "")) / 100;
+
+    this.element.style.setProperty(
+      "height",
+      `calc(${canvasPercentageHeightValue} * ${parentCellHeight})`
+    );
+  }
+
   componentDidLoad() {
     makeSwipeable(this);
     this.didLoad = true;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // WA to adjust the height of the canvas in a certain scenario (nested canvas):
+    //  - Canvas with relative value (%)
+    //  - Parent element is a gx-canvas-cell with an absolute height (px)
+    //
+    // This WA won't solve the issue if the gx-canvas-cell has relative value.
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    this.adjustHeightIfParentElementIsACanvasCell();
 
     // The layout could be ready after the gx-canvas is rendered for the first time
     if (this.layoutIsReady) {
