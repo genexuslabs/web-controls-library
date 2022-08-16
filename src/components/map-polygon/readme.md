@@ -6,7 +6,21 @@ This element represents a polygon inside a `<gx-map>` element.
 ## Usage Sample
 
 ```HTML
-<gx-map-polygon coords='[
+<style>
+    .map-polygon-class {
+        opacity: 0.9;
+    }
+
+    .map-polygon-class--vars {
+        --gx-fill-color: #5261ff23;
+        --gx-stroke-color: #2a179a;
+        --gx-line-width: 4;
+        --gx-line-join: miter;
+        --gx-line-cap: butt;
+    }
+</style>
+
+<gx-map-polygon css-class="map-polygon-class" coords='[
     [-34.906381, -56.215217],
     [-34.903460, -56.206870],
     [-34.902809, -56.206141],
@@ -33,16 +47,17 @@ This element represents a polygon inside a `<gx-map>` element.
 
 ## Properties
 
-| Property | Attribute | Description                                               | Type     | Default  |
-| -------- | --------- | --------------------------------------------------------- | -------- | -------- |
-| `coords` | `coords`  | The coordinates where the polygon will appear in the map. | `string` | `"0, 0"` |
+| Property   | Attribute   | Description                                               | Type     | Default     |
+| ---------- | ----------- | --------------------------------------------------------- | -------- | ----------- |
+| `coords`   | `coords`    | The coordinates where the polygon will appear in the map. | `string` | `"0, 0"`    |
+| `cssClass` | `css-class` | A CSS class to set as the `gx-map-polygon` element class. | `string` | `undefined` |
 
 ## Events
 
-| Event                 | Description                                           | Type               |
-| --------------------- | ----------------------------------------------------- | ------------------ |
-| `gxMapPolygonDeleted` | Emmits when the element is deleted from a `<gx-map>`. | `CustomEvent<any>` |
-| `gxMapPolygonDidLoad` | Emmits when the element is added to a `<gx-map>`.     | `CustomEvent<any>` |
+| Event                 | Description                                            | Type               |
+| --------------------- | ------------------------------------------------------ | ------------------ |
+| `gxMapPolygonDeleted` | Emitted when the element is deleted from a `<gx-map>`. | `CustomEvent<any>` |
+| `gxMapPolygonDidLoad` | Emitted when the element is added to a `<gx-map>`.     | `CustomEvent<any>` |
 
 ---
 
