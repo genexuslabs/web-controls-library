@@ -9,12 +9,77 @@ import {
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
+interface GxDynamicForm {
+  id: string;
+  version: string;
+  name: string;
+  Elements: DynamicFormElement[];
+}
+
+interface DynamicFormElement {
+  id: number;
+  version: number;
+  name: string;
+  type:
+    | "character"
+    | "numeric"
+    | "boolean"
+    | "date"
+    | "datetime"
+    | "email"
+    | "password"
+    | "upload"
+    | "group";
+  display: "default" | "slider" | "rating" | "switch" | "radio" | "textarea";
+  value: string;
+  dftValue: string;
+  length: number;
+  rows: number;
+  cols: number;
+  Groups?: DynamicFormElement[];
+  Values?: ElementValue[];
+  Rules?: DynamicFormElementRule[];
+}
+
+interface ElementValue {
+  id: number;
+  description: string;
+}
+
+interface DynamicFormElementRule {
+  id: number;
+  function:
+    | "show"
+    | "hide"
+    | "disable"
+    | "enable"
+    | "disable"
+    | "msg"
+    | "error"
+    | "assign";
+  Conditions?: DynamicFormRuleCondition[];
+}
+
+interface DynamicFormRuleCondition {
+  id: number;
+  cndElemId: number;
+  operator: number;
+  cndValue: string;
+  cndEval: number;
+}
+
+interface FormMessages {
+  id: string;
+  type: Messages;
+  message: string;
+}
+
 const enum LogicalOperators {
   AND = "&&",
   OR = "||"
 }
 
-const enum AritmeticalOperators {
+const enum ArithmeticalOperators {
   GREAT = ">",
   LESS = "<",
   GREATOREQUAL = ">=",
@@ -34,6 +99,35 @@ const enum RuleTypes {
   ASSIGN = "assign"
 }
 
+const logicalDictionary = {
+  0: LogicalOperators.OR,
+  1: LogicalOperators.AND
+};
+
+const arithmeticalDictionary = {
+  1: ArithmeticalOperators.EQUAL,
+  2: ArithmeticalOperators.DISTINCT,
+  3: ArithmeticalOperators.GREAT,
+  4: ArithmeticalOperators.GREATOREQUAL,
+  5: ArithmeticalOperators.LESS,
+  6: ArithmeticalOperators.LESSOREQUAL
+};
+
+const typeDictionary = {
+  character: "text",
+  date: "date",
+  datetime: "datetime-local",
+  password: "password",
+  email: "email",
+  numeric: "number",
+  upload: "file"
+};
+
+const enum Messages {
+  ERROR = "error",
+  WARNING = "warning"
+}
+
 @Component({
   tag: "gx-dynamic-form",
   styleUrl: "dynamic-form.scss",
@@ -42,7 +136,8 @@ const enum RuleTypes {
 export class DynamicForm implements GxComponent {
   private dynamicElements: any = {};
   private inputs: any[] = [];
-  private JSONForm = [];
+  private JSONForm: GxDynamicForm[];
+  private messages: FormMessages[] = [];
 
   @Element() element: HTMLGxDynamicFormElement;
 
@@ -52,9 +147,9 @@ export class DynamicForm implements GxComponent {
   @Prop() readonly elements: string;
 
   /**
-   * This attribute let you specify if this dynamic form is a subgroup of another dynamic form
+   * A css class to set to attributes when a error occurs
    */
-  @Prop() readonly subgroup: boolean = false;
+  @Prop() readonly errorCssClass: string;
 
   /**
    * A css class to set to attributes
@@ -62,14 +157,9 @@ export class DynamicForm implements GxComponent {
   @Prop() readonly inputCssClass: string;
 
   /**
-   * A css class to set to attributes when a error occurs
+   *  This attribute let you specify the entry point to upload files
    */
-  @Prop() readonly errorCssClass: string;
-
-  /**
-   * A css class to set to attributes when a warning occurs
-   */
-  @Prop() readonly warningCssClass: string;
+  @Prop() readonly point: string;
 
   /**
    *  This attribute let you specify if the dynamic form is readonly
@@ -77,19 +167,34 @@ export class DynamicForm implements GxComponent {
   @Prop() readonly readonly: boolean = false;
 
   /**
-   *  This attribute let you specify the entry point to upload files
+   * This attribute let you specify if this dynamic form is a subgroup of another dynamic form
    */
-  @Prop() readonly point: string;
+  @Prop() readonly subgroup: boolean = false;
+
+  /**
+   * A css class to set to attributes when a warning occurs
+   */
+  @Prop() readonly warningCssClass: string;
+
+  /**
+   * Emitted when a message is shown
+   */
+  @Event() onMessage: EventEmitter;
+
+  /**
+   * Emitted when the form is submitted
+   */
+  @Event() onSubmitForm: EventEmitter;
 
   componentWillLoad() {
     let rules = [];
     this.JSONForm = JSON.parse(this.elements);
     this.JSONForm[0].Elements.forEach(element => {
       element.name = this.replaceSpecialChars(element.name);
-      if (element.Rules) {
+      if (element.Rules != null) {
         element.Rules.forEach(rule => {
           rules.push({
-            action: this.decodeFunction(rule.function),
+            action: rule.function,
             conditions: this.parseRules(rule.Conditions)
           });
         });
@@ -114,49 +219,64 @@ export class DynamicForm implements GxComponent {
       });
     });
 
-    this.element.querySelectorAll("input").forEach(element => {
-      element.classList.add(this.inputCssClass);
-    });
-
     this.JSONForm[0].Elements.forEach(element => {
-      if (element.type == "character" || element.type == "numeric") {
-        const input = document.getElementById(element.id + "__edit");
-        input?.setAttribute("maxlength", element.length);
-        if (element.display == "textarea") {
-          input?.setAttribute("rows", element.rows);
-          input?.setAttribute("cols", element.cols);
-        }
-      }
+      this.setElementAttributes(element);
     });
 
-    document.getElementById("SUBMIT_FORM")?.addEventListener("click", () => {
-      this.getFormValues();
-      this.onSubmitForm.emit(this.JSONForm[0]);
-    });
+    this.element
+      .querySelector("[id='SUBMIT_FORM']")
+      ?.addEventListener("click", this.handleData);
   }
 
-  /**
-   * Emited when the form is submitted
-   */
-  @Event() onSubmitForm: EventEmitter;
+  disconnectedCallback() {
+    this.element
+      .querySelector("[id='SUBMIT_FORM']")
+      .removeEventListener("click", this.handleData);
+  }
 
-  private replaceSpecialChars(name) {
+  private setElementAttributes(element: DynamicFormElement) {
+    if (element.type !== "character" && element.type !== "numeric") {
+      return;
+    }
+
+    const input = this.element.querySelector('[id="' + element.id + '__edit"]');
+
+    if (input == undefined) {
+      return;
+    }
+
+    input.setAttribute("maxlength", element.length.toString());
+
+    if (element.display == "textarea") {
+      input.setAttribute("rows", element.rows.toString());
+      input.setAttribute("cols", element.cols.toString());
+    }
+  }
+
+  private replaceSpecialChars(name: string) {
     return name.replace(/\/nbsp\//g, " ");
   }
 
+  /**
+   * This method parse each rule of the form and evaluate the conditions
+   */
   private checkRules() {
-    for (const i in this.dynamicElements) {
-      for (const j in this.dynamicElements[i]) {
+    for (const id in this.dynamicElements) {
+      for (const rule in this.dynamicElements[id]) {
         const targeted = this.inputs.find(
-          input => input.id.toString() === i.toString()
+          input => input.id.toString() === id.toString()
         );
-        const input = document.getElementById(i.toString() + "__edit");
-        const gxEditForm = this.getEditFormParentNode(targeted);
+        const input = this.element.querySelector(
+          '[id="' + id + '__edit"]'
+        ) as HTMLInputElement;
+        const gxEditForm = this.getEditFormParentNode(
+          targeted
+        ) as HTMLGxEditElement;
         const condition = this.buildCondition(
-          this.dynamicElements[i][j].conditions
+          this.dynamicElements[id][rule].conditions
         );
         const result = eval(condition);
-        switch (this.dynamicElements[i][j].action) {
+        switch (this.dynamicElements[id][rule].action) {
           case RuleTypes.ASSIGN:
           //not implemented yet
           case RuleTypes.DISABLE:
@@ -170,10 +290,16 @@ export class DynamicForm implements GxComponent {
               targeted.element.classList.add(this.errorCssClass);
               input.classList.remove(this.inputCssClass);
               input.classList.add(this.errorCssClass);
+              this.addMessage(
+                Messages.ERROR,
+                this.dynamicElements[id][rule].conditions,
+                id
+              );
             } else {
               targeted.element.classList.remove(this.errorCssClass);
               input.classList.add(this.inputCssClass);
               input.classList.remove(this.errorCssClass);
+              this.removeMessage(id);
             }
             break;
           case RuleTypes.HIDE:
@@ -186,10 +312,16 @@ export class DynamicForm implements GxComponent {
               targeted.element.classList.add(this.warningCssClass);
               input.classList.remove(this.inputCssClass);
               input.classList.add(this.warningCssClass);
+              this.addMessage(
+                Messages.WARNING,
+                this.dynamicElements[id][rule].conditions,
+                id
+              );
             } else {
               targeted.element.classList.remove(this.warningCssClass);
               input.classList.add(this.inputCssClass);
               input.classList.remove(this.warningCssClass);
+              this.removeMessage(id);
             }
             break;
           case RuleTypes.RELOAD:
@@ -205,10 +337,61 @@ export class DynamicForm implements GxComponent {
     }
   }
 
-  private parseRules(conditions) {
-    let cond = "";
+  /**
+   * This method add a message to message list
+   * @param {Messages} type - the type of message
+   * @param {string} conditional - the condition that caused the message
+   * @param {string} id - the id of the element that caused the message
+   */
+  private addMessage(type: Messages, conditional: string, id: string) {
+    console.log(this.JSONForm[0].Elements, "JSONForm");
+    console.log(id, "id");
+    conditional.split("&&|\\||").forEach(condition => {
+      const parsedCondition = this.buildCondition(condition);
+      const result = eval(parsedCondition);
+      const elemName = this.replaceSpecialChars(
+        this.JSONForm[0].Elements.find(
+          element => element.id.toString() === id.toString()
+        ).name
+      );
+      if (
+        result &&
+        this.messages.find(
+          message => message.id.toString() === id.toString()
+        ) === undefined
+      ) {
+        this.messages.push({
+          id: id,
+          type: type,
+          message:
+            elemName +
+            " " +
+            condition
+              .split(" ")
+              .slice(1, 3)
+              .join(" ")
+        });
+      }
+    });
+    console.log(this.messages, "messages");
+    this.onMessage.emit(this.messages);
+  }
+
+  /**
+   * This method remove a message from message list
+   * @param {string} id - the id of the element that caused the message
+   */
+  private removeMessage(id: string) {
+    this.messages = this.messages.filter(
+      message => message.id.toString() !== id.toString()
+    );
+    this.onMessage.emit(this.messages);
+  }
+
+  private parseRules(conditions: DynamicFormRuleCondition[]) {
+    let parsedCond = "";
     conditions.forEach(condition => {
-      cond +=
+      parsedCond +=
         condition.cndElemId +
         " " +
         this.decodeOperator(condition.operator) +
@@ -218,16 +401,32 @@ export class DynamicForm implements GxComponent {
           ? " " + this.decodeLogical(condition.cndEval) + " "
           : "");
     });
-    return cond;
+    return parsedCond;
   }
 
-  // Get all form form values and concatenate them into a string
-  // elements      | Elem1ToFind || ArithmeticOperator || ValueToCompare || LogicalOperator || Elem2ToFind || ArithmeticOperator || ValueToCompare || LogicalOperator ||     ...
-  // array index   |      0      ||          1         ||       2        ||        3        ||      4      ||          5         ||        6       ||        7        ||     ...
-  // Example       | Only Uruguayan citizens older than 18 years old can vote
-  // Example array |     Id_1    ||          1         ||   'Uruguayan'  ||        1        ||    Id_2     ||          4         ||       '18'     ||
-  private buildCondition(cond) {
-    const splited = cond.split(" ");
+  /**
+   * Get all form values and concatenate them into a string.
+   *
+   * | Array index  | Element            |
+   * | ------------ | ------------------ |
+   * | `0`          | Elem1ToFind        |
+   * | `1`          | ArithmeticOperator |
+   * | `2`          | ValueToCompare     |
+   * | `3`          | LogicalOperator    |
+   * | `4`          | Elem2ToFind        |
+   * | `5`          | ArithmeticOperator |
+   * | `6`          | ValueToCompare     |
+   * | `7`          | LogicalOperator    |
+   * | `8`          | ...                |
+   *
+   * @example <caption>Only Uruguayan citizens older than 18 years old can vote.</caption>
+   * Array: |  Id_1  |  1  |  'Uruguayan'  |  1  |  Id_2  |  4  |  '18'  |
+   *
+   * @param condition - the condition to parse
+   * @returns {string} - the parsed condition
+   */
+  private buildCondition(condition: string) {
+    const splited = condition.split(" ");
     for (let i = 0; i < splited.length; i += 4) {
       splited[i] =
         "'" +
@@ -244,7 +443,15 @@ export class DynamicForm implements GxComponent {
   }
 
   private getEditFormParentNode(element) {
-    return document.getElementById("form-field-" + element.id);
+    return this.element.querySelector('[id = "form-field-' + element.id + '"]');
+  }
+
+  /**
+   * this method makes the response when a form is submitted
+   */
+  private handleData() {
+    this.getFormValues();
+    this.onSubmitForm.emit(this.JSONForm[0]);
   }
 
   private getFormValues() {
@@ -253,9 +460,9 @@ export class DynamicForm implements GxComponent {
         input => input.id.toString() === element.id.toString()
       );
       if (element.type === "upload") {
-        const file = document.getElementById(
-          element.id + "__edit"
-        )[0] as HTMLInputElement;
+        const file = this.element.querySelector(
+          "[id =" + element.id + '__edit"]'
+        );
         if (input.element.value) {
           this.postFormData(file, element);
         } else element.value = "";
@@ -263,7 +470,12 @@ export class DynamicForm implements GxComponent {
     });
   }
 
-  private postFormData(file, element) {
+  /**
+   * This method makes a post to the entry point of the form to upload a file
+   * @param file - the file to upload
+   * @param {DynamicFormElement} element - the element in the JSON
+   */
+  private postFormData(file, element: DynamicFormElement) {
     const url =
       location.pathname.substring(0, location.pathname.lastIndexOf("/") + 1) +
       this.point;
@@ -285,54 +497,15 @@ export class DynamicForm implements GxComponent {
       });
   }
 
-  private decodeFunction(func) {
-    switch (func) {
-      case "assign":
-        return RuleTypes.ASSIGN;
-      case "disable":
-        return RuleTypes.DISABLE;
-      case "enable":
-        return RuleTypes.ENABLE;
-      case "error":
-        return RuleTypes.ERROR;
-      case "hide":
-        return RuleTypes.HIDE;
-      case "msg":
-        return RuleTypes.MSG;
-      case "reload":
-        return RuleTypes.RELOAD;
-      case "show":
-        return RuleTypes.SHOW;
-    }
+  private decodeOperator(operator: number) {
+    return arithmeticalDictionary[operator];
   }
 
-  private decodeOperator(operator) {
-    switch (operator) {
-      case 1:
-        return AritmeticalOperators.EQUAL;
-      case 2:
-        return AritmeticalOperators.DISTINCT;
-      case 3:
-        return AritmeticalOperators.GREAT;
-      case 4:
-        return AritmeticalOperators.GREATOREQUAL;
-      case 5:
-        return AritmeticalOperators.LESS;
-      case 6:
-        return AritmeticalOperators.LESSOREQUAL;
-    }
+  private decodeLogical(condition: number) {
+    return logicalDictionary[condition];
   }
 
-  private decodeLogical(cond) {
-    switch (cond) {
-      case 0:
-        return LogicalOperators.OR;
-      case 1:
-        return LogicalOperators.AND;
-    }
-  }
-
-  private getElementValue(element) {
+  private getElementValue(element: DynamicFormElement) {
     if (element.type != "boolean") {
       return element.value
         ? this.replaceSpecialChars(element.value)
@@ -348,7 +521,7 @@ export class DynamicForm implements GxComponent {
     }
   }
 
-  private getComponentType(type, display) {
+  private getComponentType(type: string, display: string) {
     switch (type) {
       case "numeric":
         switch (display) {
@@ -370,26 +543,11 @@ export class DynamicForm implements GxComponent {
     }
   }
 
-  private getEditType(type) {
-    switch (type) {
-      case "character":
-        return "text";
-      case "date":
-        return "date";
-      case "dateTime":
-        return "datetime-local";
-      case "password":
-        return "password";
-      case "email":
-        return "email";
-      case "numeric":
-        return "number";
-      case "upload":
-        return "file";
-    }
+  private getEditType(type: string) {
+    return typeDictionary[type];
   }
 
-  private renderGxEdit(element) {
+  private renderGxEdit(element: DynamicFormElement) {
     return (
       <gx-form-field
         cssClass={this.inputCssClass}
@@ -401,7 +559,7 @@ export class DynamicForm implements GxComponent {
           cssClass={this.inputCssClass}
           type={this.getEditType(element.type)}
           multiline={element.display === "textarea"}
-          id={element.id}
+          id={element.id.toString()}
           disabled={false}
           readonly={this.readonly}
           value={this.getElementValue(element)}
@@ -410,7 +568,7 @@ export class DynamicForm implements GxComponent {
     );
   }
 
-  private renderGxRadioGroup(element) {
+  private renderGxRadioGroup(element: DynamicFormElement) {
     return (
       <gx-form-field
         cssClass={this.inputCssClass}
@@ -421,7 +579,7 @@ export class DynamicForm implements GxComponent {
         <gx-radio-group
           cssClass={this.inputCssClass}
           direction="vertical"
-          id={element.id}
+          id={element.id.toString()}
           disabled={false}
           readonly={this.readonly}
           value={this.getElementValue(element)}
@@ -430,7 +588,7 @@ export class DynamicForm implements GxComponent {
             return (
               <gx-radio-option
                 caption={this.replaceSpecialChars(value.description)}
-                value={value.id}
+                value={value.id.toString()}
               ></gx-radio-option>
             );
           })}
@@ -439,7 +597,7 @@ export class DynamicForm implements GxComponent {
     );
   }
 
-  private renderGxDynamicForm(element) {
+  private renderGxDynamicForm(element: DynamicFormElement) {
     return (
       <gx-dynamic-form
         subgroup={true}
@@ -448,7 +606,7 @@ export class DynamicForm implements GxComponent {
     );
   }
 
-  private renderGxSelect(element) {
+  private renderGxSelect(element: DynamicFormElement) {
     return (
       <gx-form-field
         cssClass={this.inputCssClass}
@@ -458,7 +616,7 @@ export class DynamicForm implements GxComponent {
       >
         <gx-select
           cssClass={this.inputCssClass}
-          id={element.id}
+          id={element.id.toString()}
           disabled={false}
           placeholder="-"
           readonly={this.readonly}
@@ -466,7 +624,7 @@ export class DynamicForm implements GxComponent {
         >
           {element.Values.map(value => {
             return (
-              <gx-select-option value={value.id}>
+              <gx-select-option value={value.id.toString()}>
                 {this.replaceSpecialChars(value.description)}
               </gx-select-option>
             );
@@ -476,7 +634,7 @@ export class DynamicForm implements GxComponent {
     );
   }
 
-  private renderGxCheckbox(element) {
+  private renderGxCheckbox(element: DynamicFormElement) {
     return (
       <gx-form-field
         cssClass={this.inputCssClass}
@@ -486,7 +644,7 @@ export class DynamicForm implements GxComponent {
       >
         <gx-checkbox
           cssClass={this.inputCssClass}
-          id={element.id}
+          id={element.id.toString()}
           disabled={false}
           value={this.getElementValue(element)}
           checkedValue={"true"}
@@ -496,7 +654,7 @@ export class DynamicForm implements GxComponent {
     );
   }
 
-  private renderGxSwitch(element) {
+  private renderGxSwitch(element: DynamicFormElement) {
     return (
       <gx-form-field
         cssClass={this.inputCssClass}
@@ -506,7 +664,7 @@ export class DynamicForm implements GxComponent {
       >
         <gx-switch
           cssClass={this.inputCssClass}
-          id={element.id}
+          id={element.id.toString()}
           checkedValue={"true"}
           unCheckedValue={"false"}
           disabled={false}

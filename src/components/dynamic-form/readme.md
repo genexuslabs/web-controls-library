@@ -1,6 +1,14 @@
 # dynamic-form
 
+An element for generate dynamic forms.
+You can define a set of elements and rules that they must follow 
 
+## Example
+
+```HTML
+    <gx-dynamic-form elements='[{"id":1,"version":1,"name":"Example form","Elements":[{"id":1,"version":1,"name":"Name","type":"character","display":"default","value":"","dftValue":"","regex":"","length":20,"rows":0,"cols":0,"Values":[]},{"id":2,"version":1,"name":"Lastname","type":"character","display":"default","value":"","dftValue":"","regex":"","length":20,"rows":0,"cols":0,"Values":[]},{"id":3,"version":1,"name":"Age","type":"numeric","display":"default","value":"","dftValue":"","regex":"","length":4,"rows":0,"cols":0,"Values":[],"Rules":[{"id":1,"function":"error","Conditions":[{"id":1,"cndElemId":3,"operator":5,"cndValue":"18","cndEval":0}]}]}]}]' readonly="true" subgroup="false" input-css-class="Attribute" error-css-class="ErrorAttribute" warning-css-class="WarningAttribute" point="example/entrypoint">
+    </gx-dynamic-form>
+```
 
 <!-- Auto Generated Below -->
 
@@ -22,6 +30,7 @@
 
 | Event          | Description                       | Type               |
 | -------------- | --------------------------------- | ------------------ |
+| `onMessage`    | Emited when a message is shown    | `CustomEvent<any>` |
 | `onSubmitForm` | Emited when the form is submitted | `CustomEvent<any>` |
 
 
