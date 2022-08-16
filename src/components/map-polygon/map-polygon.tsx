@@ -8,8 +8,18 @@ import {
   Prop
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
-import { LatLngTuple, Polygon, polygon } from "leaflet";
+import {
+  LatLngTuple,
+  LineCapShape,
+  LineJoinShape,
+  PathOptions,
+  Polygon,
+  polygon
+} from "leaflet";
 import { parseCoords } from "../common/coordsValidate";
+
+// Class transforms
+import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
 
 const DEFAULT_COORDS: LatLngTuple = [0, 0];
 
@@ -27,6 +37,11 @@ export class MapPolygon implements GxComponent {
   @Prop({ mutable: true }) coords = "0, 0";
 
   /**
+   * A CSS class to set as the `gx-map-polygon` element class.
+   */
+  @Prop() readonly cssClass: string;
+
+  /**
    * Emitted when the element is added to a `<gx-map>`.
    */
   @Event() gxMapPolygonDidLoad: EventEmitter;
@@ -37,10 +52,41 @@ export class MapPolygon implements GxComponent {
   @Event() gxMapPolygonDeleted: EventEmitter;
 
   private setupPolygon(coords) {
-    this.polygonInstance = polygon(coords, {
-      color: "#e4364f", // Same default color as Web
-      weight: 3
-    });
+    const options = this.getMapPolygonStyle();
+
+    // Create the polygon instance
+    this.polygonInstance = polygon(coords, options);
+  }
+
+  private getMapPolygonStyle(): PathOptions {
+    // The values of the custom properties are retrieved from the computed
+    // style of the host
+    const computed = getComputedStyle(this.element);
+
+    // Default colors are taken from Web
+    const options: PathOptions = { fillOpacity: 1 };
+
+    options["fillColor"] =
+      computed.getPropertyValue("--gx-fill-color") || "#e4364f33";
+
+    options["color"] =
+      computed.getPropertyValue("--gx-stroke-color") || "#e4364f";
+
+    options["weight"] = Number(
+      computed.getPropertyValue("--gx-line-width") || 3
+    );
+
+    options["lineJoin"] = (computed.getPropertyValue("--gx-line-join") ||
+      "round") as LineJoinShape;
+
+    options["lineCap"] = (computed.getPropertyValue("--gx-line-cap") ||
+      "round") as LineCapShape;
+
+    if (!!this.cssClass) {
+      options["className"] = this.cssClass;
+    }
+
+    return options;
   }
 
   componentDidLoad() {
@@ -54,13 +100,23 @@ export class MapPolygon implements GxComponent {
     this.gxMapPolygonDidLoad.emit(this.polygonInstance);
   }
 
+  componentDidUpdate() {
+    const options = this.getMapPolygonStyle();
+
+    // Update the polygon instance
+    this.polygonInstance.setStyle(options);
+  }
+
   disconnectedCallback() {
     this.gxMapPolygonDeleted.emit(this.polygonInstance);
   }
 
   render() {
+    // Styling for gx-map-polygon control.
+    const classes = getClassesWithoutFocus(this.cssClass);
+
     return (
-      <Host aria-hidden="true">
+      <Host aria-hidden="true" class={classes.vars}>
         <slot />
       </Host>
     );

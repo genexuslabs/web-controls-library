@@ -1,0 +1,43 @@
+////
+/// @group theming-mixins
+////
+
+/// Helper mixin to ease styling the gx-map-polygon and gx-map-line custom elements
+/// @param {string} $fill-color Determine the fill color to use for the path.
+/// @param {string} $stroke-color Determine the stroke color to use for the path.
+/// @param {string} $line-width Determine the stroke width to use for the path.
+/// @param {string} $line-join Determine the join style to apply to corners of the path.
+/// @param {string} $line-cap Determine the line cap style to apply to the open ends of the path.
+/// @param {string} $line-dash-pattern Determine an array of numbers (separated by spaces) specifying the dash pattern to use for the path.
+/// @param {string} $line-dash-phase Determine the offset (in points) at which to start drawing the dash pattern.
+/// @param {string} $miter-limit Determine the limiting value that helps avoid spikes at junctions between connected line segments.
+@mixin gx-map-polygon-and-line(
+  $fill-color: null,
+  $stroke-color: null,
+  $line-width: null,
+  $line-join: null,
+  $line-cap: null,
+  $line-dash-pattern: null,
+  $line-dash-phase: null,
+  $miter-limit: null
+) {
+  @if $fill-color != null {
+    --gx-fill-color: $fill-color;
+  }
+
+  @if $stroke-color != null {
+    --gx-stroke-color: $stroke-color;
+  }
+
+  @if $line-width != null {
+    --gx-line-width: $line-width;
+  }
+
+  @if $line-join != null {
+    --gx-line-join: $line-join;
+  }
+
+  @if $line-cap != null {
+    --gx-line-cap: $line-cap;
+  }
+}
