@@ -7,34 +7,23 @@ let autoCheckBoxId = 0;
 export class CheckBoxRender implements Renderer {
   constructor(private component: CheckBox, handlers: { handleChange }) {
     this.handleChange = handlers.handleChange;
+
+    // ID for gx-checkbox's Label
+    if (!this.inputId && !this.component.readonly) {
+      this.inputId = this.component.element.id
+        ? `${this.component.element.id}__checkbox`
+        : `gx-checkbox-auto-id-${autoCheckBoxId++}`;
+    }
   }
   private inputId: string;
   private handleChange: (event: UIEvent) => void;
 
   getNativeInputId() {
-    return this.getNativeInput().id;
+    return this.inputId;
   }
 
   private getNativeInput(): HTMLInputElement {
     return this.component.element.querySelector("[data-native-element]");
-  }
-
-  private getCssClasses() {
-    const checkbox = this.component;
-
-    const classList = [];
-
-    classList.push("custom-control-input");
-
-    if (checkbox.cssClass) {
-      classList.push(checkbox.cssClass);
-    }
-
-    if (!checkbox.caption) {
-      classList.push("position-static");
-    }
-
-    return classList.join(" ");
   }
 
   getValueFromEvent(event: UIEvent): boolean {
@@ -54,17 +43,11 @@ export class CheckBoxRender implements Renderer {
   render() {
     const checkbox = this.component;
 
-    if (!this.inputId) {
-      this.inputId = checkbox.element.id
-        ? `${checkbox.element.id}__checkbox`
-        : `gx-checkbox-auto-id-${autoCheckBoxId++}`;
-    }
-
     const attris = {
       "aria-disabled": checkbox.disabled ? "true" : undefined,
-      class: this.getCssClasses(),
+      class: "hidden-input",
       "data-native-element": "",
-      disabled: checkbox.disabled,
+      disabled: checkbox.disabled || checkbox.readonly,
       id: this.inputId,
       onInput: this.handleChange
     };
@@ -73,25 +56,33 @@ export class CheckBoxRender implements Renderer {
       for: attris.id
     };
 
-    return [
-      <gx-bootstrap />,
-      <div class="custom-control custom-checkbox">
-        <input
-          {...attris}
-          type="checkbox"
-          checked={checkbox.checked}
-          value={
-            checkbox.checked ? checkbox.checkedValue : checkbox.unCheckedValue
-          }
-        />
+    return (
+      <div class="option-and-label-container">
+        <div class="option-container">
+          <input
+            {...attris}
+            type="checkbox"
+            checked={checkbox.checked}
+            value={
+              checkbox.checked ? checkbox.checkedValue : checkbox.unCheckedValue
+            }
+          />
+
+          <label class="custom-option"></label>
+
+          <svg viewBox="-4 -4 16 16">
+            <path d="M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z" />
+          </svg>
+        </div>
+
         <label
-          class="custom-control-label"
+          class="label-of-the-option"
           {...forAttris}
           aria-hidden={(!checkbox.caption).toString()}
         >
           {checkbox.caption}
         </label>
       </div>
-    ];
+    );
   }
 }

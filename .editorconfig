@@ -11,5 +11,6 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 
 [*.md]
+end_of_line = crlf
 insert_final_newline = false
 trim_trailing_whitespace = false

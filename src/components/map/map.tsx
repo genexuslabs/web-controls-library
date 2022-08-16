@@ -16,6 +16,7 @@ import {
   Marker,
   map as LFMap,
   polygon,
+  polyline,
   tileLayer
 } from "leaflet/dist/leaflet-src.esm";
 import { parseCoords } from "../common/coordsValidate";
@@ -35,6 +36,7 @@ export class Map implements GxComponent {
   private map: LFMap;
   private markersList = [];
   private polygonsList = [];
+  private linesList = [];
   private mapProviderApplied: string;
   private mapTypesProviders = {
     hybrid:
@@ -47,6 +49,9 @@ export class Map implements GxComponent {
   private tileLayerApplied: tileLayer;
   private watchPositionId: number;
 
+  // Refs
+  private divMapView: HTMLDivElement;
+
   @Element() element: HTMLGxMapElement;
 
   @State() userLocationCoords: string;
@@ -57,8 +62,12 @@ export class Map implements GxComponent {
   }
 
   /**
+   * The class that the marker will have.
+   */
+  @Prop() markerClassIcon = "gx-default-icon";
+
+  /**
    * The coord of initial center of the map.
-   *
    */
   @Prop({ mutable: true }) center = "0, 0";
 
@@ -78,7 +87,6 @@ export class Map implements GxComponent {
   /**
    * Map type to be used.
    * _Note: If you set a map provider, the selected map type will be ignored._
-   *
    */
   @Prop() mapType: "standard" | "satellite" | "hybrid" = "standard";
 
@@ -92,6 +100,11 @@ export class Map implements GxComponent {
    * Enables the possibility to navigate the map and select a location point using the map center.
    */
   @Prop() selectionLayer = false;
+
+  /**
+   * Whether the map can be zoomed by using the mouse wheel.
+   */
+  @Prop() readonly scrollWheelZoom: boolean = true;
 
   /**
    * Indicates if the current location of the device is displayed on the map.
@@ -143,6 +156,7 @@ export class Map implements GxComponent {
   onMapMarkerDidLoad(event: CustomEvent) {
     const markerElement = event.target;
     const markerV = event.detail;
+
     if (this.map) {
       markerV.addTo(this.map);
     } else {
@@ -150,13 +164,14 @@ export class Map implements GxComponent {
         markerV.addTo(this.map);
       });
     }
+
     if (this.selectionLayer) {
       const slot = this.getSelectionMarkerSlot();
       if (slot.exist) {
         this.selectionMarker = slot.elem;
       } else {
         this.selectionMarker = this.element.querySelector(
-          "[marker-class='gx-default-selection-layer-icon']"
+          "[type='selection-layer']"
         );
       }
       if (markerElement !== this.selectionMarker) {
@@ -185,6 +200,23 @@ export class Map implements GxComponent {
 
     polygonElement.addEventListener("gxMapPolygonDeleted", () => {
       this.onMapPolygonDeleted(polygonV);
+    });
+  }
+
+  @Listen("gxMapLineDidLoad")
+  onMapLineDidLoad(event: CustomEvent) {
+    const lineElement = event.target;
+    const lineV = event.detail;
+    if (this.map) {
+      lineV.addTo(this.map);
+    } else {
+      this.element.addEventListener("gxMapDidLoad", () => {
+        lineV.addTo(this.map);
+      });
+    }
+
+    lineElement.addEventListener("gxMapLineDeleted", () => {
+      this.onMapLineDeleted(lineV);
     });
   }
 
@@ -233,7 +265,7 @@ export class Map implements GxComponent {
     let i = 0;
     marker.remove();
     while (
-      i <= this.markersList.length &&
+      i < this.markersList.length &&
       this.markersList[i]._leaflet_id !== marker._leaflet_id
     ) {
       i++;
@@ -258,6 +290,22 @@ export class Map implements GxComponent {
       this.polygonsList.splice(i, 1);
     } else {
       console.warn("There was an error in the polygon list!");
+    }
+  }
+
+  private onMapLineDeleted(line: polyline) {
+    let i = 0;
+    line.remove();
+    while (
+      i <= this.linesList.length &&
+      this.linesList[i]._leaflet_id !== line._leaflet_id
+    ) {
+      i++;
+    }
+    if (i <= this.linesList.length) {
+      this.linesList.splice(i, 1);
+    } else {
+      console.warn("There was an error in the line list!");
     }
   }
 
@@ -357,23 +405,26 @@ export class Map implements GxComponent {
   }
 
   componentDidLoad() {
-    const elementVar = this.element.querySelector(".gxMap");
     const coords = parseCoords(this.center);
 
     this.maxZoom = this.checkForMaxZoom();
     this.zoom = this.getZoom();
+
+    // Depending on the coordinates, set different view types
     if (coords !== null) {
-      this.map = LFMap(elementVar).setView(coords, this.zoom, this.maxZoom);
+      this.map = LFMap(this.divMapView, {
+        scrollWheelZoom: this.scrollWheelZoom
+      }).setView(coords, this.zoom, this.maxZoom);
     } else {
-      console.warn(
-        "GX warning: Can not read 'center' attribute, default center set (gx-map)",
-        this.element
-      );
-      this.map = LFMap(elementVar).setView([0, 0], this.getZoom());
+      this.map = LFMap(this.divMapView, {
+        scrollWheelZoom: this.scrollWheelZoom
+      }).setView([0, 0], this.getZoom());
     }
+
     this.setMapProvider();
     this.map.setMaxZoom(this.maxZoom);
     this.fitBounds();
+
     this.gxMapDidLoad.emit(this);
 
     if (this.selectionLayer) {
@@ -395,12 +446,14 @@ export class Map implements GxComponent {
   componentDidUpdate() {
     const maxZoom = this.checkForMaxZoom();
     this.setMapProvider();
-    this.fitBounds();
+    if (this.selectionLayer) {
+      this.fitBounds();
+    }
     this.map.setMaxZoom(maxZoom);
     this.userLocationChange.emit(this.userLocationCoords);
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     navigator.geolocation.clearWatch(this.watchPositionId);
   }
 
@@ -409,9 +462,9 @@ export class Map implements GxComponent {
       <Host>
         {this.watchPosition && (
           <gx-map-marker
-            marker-class="gx-default-user-location-icon"
-            icon-width="15"
-            icon-height="15"
+            icon-width="65"
+            icon-height="55"
+            type="user-location"
             coords={this.userLocationCoords}
           ></gx-map-marker>
         )}
@@ -420,14 +473,17 @@ export class Map implements GxComponent {
             <slot name="selection-layer-marker" />
           ) : (
             <gx-map-marker
-              marker-class="gx-default-selection-layer-icon"
               icon-width="30"
               icon-height="30"
+              type="selection-layer"
               coords={this.centerCoords}
             ></gx-map-marker>
           ))}
         <div class="gxMapContainer">
-          <div class="gxMap"></div>
+          <div
+            class="gxMap"
+            ref={el => (this.divMapView = el as HTMLDivElement)}
+          ></div>
         </div>
       </Host>
     );

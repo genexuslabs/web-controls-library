@@ -1,4 +1,4 @@
-import { Component, Element, Prop, h } from "@stencil/core";
+import { Component, Element, Prop, h, Host } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
@@ -10,27 +10,94 @@ export class CanvasCell implements GxComponent {
   @Element() element: HTMLGxCanvasCellElement;
 
   /**
-   * Defines the horizontal aligmnent of the content of the cell.
+   * Defines the horizontal alignment of the content of the cell.
    */
-  @Prop() readonly align: "left" | "right" | "center" = "left";
+  @Prop({ reflect: true }) readonly align: "left" | "right" | "center";
 
   /**
-   * This attribute defines how the control behaves when the content overflows.
-   *
-   * | Value    | Details                                                     |
-   * | -------- | ----------------------------------------------------------- |
-   * | `scroll` | The overflowin content is hidden, but scrollbars are shown  |
-   * | `clip`   | The overflowing content is hidden, without scrollbars       |
-   *
+   * Defines the left position of the control which is relative to the position
+   * of its `gx-canvas` container.
+   * This attribute maps directly to the `left` CSS property.
    */
-  @Prop() readonly overflowMode: "scroll" | "clip";
+  @Prop() readonly left: string = "0px";
 
   /**
-   * Defines the vertical aligmnent of the content of the cell.
+   * This attribute defines the maximum height of the cell.
    */
-  @Prop() readonly valign: "top" | "bottom" | "medium" = "top";
+  @Prop() readonly maxHeight: string = null;
+
+  /**
+   * This attribute defines the minimum height of the cell.
+   */
+  @Prop() readonly minHeight: string = "100%";
+
+  /**
+   * Defines the top position of the control which is relative to the position
+   * of its `gx-canvas` container.
+   * This attribute maps directly to the `top` CSS property.
+   */
+  @Prop() readonly top: string = "0px";
+
+  /**
+   * Defines the vertical alignment of the content of the cell.
+   */
+  @Prop({ reflect: true }) readonly valign: "top" | "bottom" | "middle";
+
+  /**
+   * This attribute lets you specify the width of the control.
+   */
+  @Prop() readonly width: string = "100%";
+
+  private observer: MutationObserver;
+
+  private setupObserver(childElement: any) {
+    if (childElement && childElement.invisibleMode === "collapse") {
+      this.observer = new MutationObserver(() => {
+        this.changeVisibility(childElement);
+      });
+
+      this.observer.observe(childElement, {
+        attributes: true,
+        attributeFilter: ["hidden"],
+        childList: false,
+        subtree: false
+      });
+    }
+  }
+
+  private changeVisibility(childElement: any) {
+    // "null" will fallback to the default visibility, which is "flex"
+    this.element.style.display = childElement.hidden ? "none" : null;
+  }
+
+  componentDidLoad() {
+    this.setupObserver(this.element.firstElementChild);
+  }
+
+  disconnectedCallback() {
+    if (this.observer !== undefined) {
+      this.observer.disconnect();
+      this.observer = undefined;
+    }
+  }
 
   render() {
-    return <slot />;
+    return (
+      <Host
+        class={{
+          "auto-grow-cell": this.maxHeight == null,
+          "without-auto-grow-cell": this.maxHeight != null
+        }}
+        style={{
+          top: this.top,
+          left: this.left,
+          width: this.width,
+          "min-height": this.minHeight,
+          "max-height": this.maxHeight
+        }}
+      >
+        <slot />
+      </Host>
+    );
   }
 }

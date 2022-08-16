@@ -1,47 +1,56 @@
 @import "../common/_base";
+@import "../common/common-styling-config";
+
+$grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller), & > * > .scrollable-content";
 
 .gx-grid-base {
+  @include transition-properties();
   flex: 1;
-  & > [slot="grid-content"] {
+  align-self: stretch;
+  overflow: hidden; // Required for gx-loading's positioning
+
+  #{$grid-content-selector} {
     flex: 1;
   }
 
-  & > .grid-empty-placeholder,
-  & > [slot="grid-empty-loading-placeholder"] {
+  & > .grid-empty-placeholder {
     @include visibility(none);
+  }
+
+  & > .grid-empty-placeholder > [slot="grid-content-empty"] {
+    flex: 1;
+    align-self: stretch;
   }
 }
 
+// Show the empty placeholder if the grid was loaded with no items
 .gx-grid-base.gx-grid-empty:not(.gx-grid-loading) {
+  & > :first-child {
+    @include visibility(none);
+  }
+
   .grid-empty-placeholder {
     @include visibility(flex);
     flex: 1;
     height: 100%;
-    align-items: center;
-    justify-content: center;
   }
 }
 
 .gx-grid-base.gx-grid-empty {
-  & > [slot="grid-content"],
+  #{$grid-content-selector},
   .gx-grid-paging {
     @include visibility(none);
   }
 }
 
+// The grid is loading
 .gx-grid-base.gx-grid-empty-loading {
-  & [slot="grid-content"] {
+  & > :first-child {
     @include visibility(none);
-  }
-  & [slot="grid-empty-loading-placeholder"] {
-    @include visibility(flex);
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
   }
 }
 
-.gx-grid-row {
-  position: relative;
+// If the grid loaded, hide the loader (slot="grid-empty-loading-placeholder")
+.gx-grid-base:not(.gx-grid-empty-loading) > gx-loading {
+  display: none;
 }

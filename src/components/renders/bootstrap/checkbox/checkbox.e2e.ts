@@ -1,8 +1,15 @@
 import { E2EElement, E2EPage, newE2EPage } from "@stencil/core/testing";
+import { runAlignmentTest } from "../../../../../tests/alignment";
+import { Checkbox, SHORT_TEXT } from "../../../../../tests/templates";
 
 describe("gx-checkbox", () => {
   let page: E2EPage;
   let element: E2EElement;
+  const alignmentTestOptions = {
+    autoGrow: [false],
+    shouldTestAlign: true,
+    shouldTestVAlign: true
+  };
 
   beforeEach(async () => {
     page = await newE2EPage();
@@ -49,4 +56,52 @@ describe("gx-checkbox", () => {
     expect(spy).toHaveReceivedEvent();
     expect(await element.getProperty("value")).toBe(checkedValue);
   });
+
+  runAlignmentTest(
+    Checkbox({
+      caption: SHORT_TEXT,
+      value: "1"
+    }),
+    "CheckBox",
+    "",
+    "Checked",
+    alignmentTestOptions
+  );
+
+  runAlignmentTest(
+    Checkbox({
+      caption: SHORT_TEXT,
+      readonly: true,
+      value: "1"
+    }),
+    "CheckBox",
+    "readonly",
+    "Checked_Readonly",
+    alignmentTestOptions
+  );
+
+  runAlignmentTest(
+    Checkbox({
+      caption: SHORT_TEXT,
+      disabled: true,
+      value: "1"
+    }),
+    "CheckBox",
+    "disabled",
+    "Checked_Disabled",
+    alignmentTestOptions
+  );
+
+  runAlignmentTest(
+    Checkbox({
+      caption: SHORT_TEXT,
+      disabled: true,
+      readonly: true,
+      value: "1"
+    }),
+    "CheckBox",
+    "readonly, disabled",
+    "Checked_Readonly_Disabled",
+    alignmentTestOptions
+  );
 });

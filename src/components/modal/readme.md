@@ -34,12 +34,17 @@ predefined slots:
 
 ## Properties
 
-| Property           | Attribute            | Description                                                                                            | Type      | Default     |
-| ------------------ | -------------------- | ------------------------------------------------------------------------------------------------------ | --------- | ----------- |
-| `autoClose`        | `auto-close`         | This attribute lets you specify if the modal dialog is automatically closed when an action is clicked. | `boolean` | `undefined` |
-| `closeButtonLabel` | `close-button-label` | This attribute lets you specify the label for the close button. Important for accessibility.           | `string`  | `undefined` |
-| `opened`           | `opened`             | This attribute lets you specify if the modal dialog is opened or closed.                               | `boolean` | `false`     |
-| `showHeader`       | `show-header`        | This attribute lets you specify if a header is renderd on top of the modal dialog.                     | `boolean` | `true`      |
+| Property           | Attribute            | Description                                                                                                                           | Type                             | Default     |
+| ------------------ | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | ----------- |
+| `autoClose`        | `auto-close`         | This attribute lets you specify if the modal dialog is automatically closed when an action is clicked.                                | `boolean`                        | `undefined` |
+| `closeButtonLabel` | `close-button-label` | This attribute lets you specify the label for the close button. Important for accessibility.                                          | `string`                         | `undefined` |
+| `height`           | `height`             | This attribute lets you specify the height of the control.                                                                            | `string`                         | `null`      |
+| `opened`           | `opened`             | This attribute lets you specify if the modal dialog is opened or closed.                                                              | `boolean`                        | `false`     |
+| `showBody`         | `show-body`          | This attribute lets you specify if a body is rendered in the middle of the modal dialog.                                              | `boolean`                        | `true`      |
+| `showFooter`       | `show-footer`        | This attribute lets you specify if a footer is rendered at the bottom of the modal dialog.                                            | `boolean`                        | `true`      |
+| `showHeader`       | `show-header`        | This attribute lets you specify if a header is rendered on top of the modal dialog.                                                   | `boolean`                        | `true`      |
+| `type`             | `type`               | If `type != "popup"`, the modal dialog will render with more advanced styling, including `box-shadow`, `border-radius` and `padding`. | `"alert" \| "dialog" \| "popup"` | `"dialog"`  |
+| `width`            | `width`              | This attribute lets you specify the width of the control.                                                                             | `string`                         | `null`      |
 
 ## Events
 
@@ -48,17 +53,29 @@ predefined slots:
 | `close` | Fired when the modal dialog is closed | `CustomEvent<any>` |
 | `open`  | Fired when the modal dialog is opened | `CustomEvent<any>` |
 
+## Shadow Parts
+
+| Part             | Description |
+| ---------------- | ----------- |
+| `"body"`         |             |
+| `"close-button"` |             |
+| `"dialog"`       |             |
+| `"footer"`       |             |
+| `"header"`       |             |
+
 ## Dependencies
 
 ### Used by
 
 - [gx-action-sheet](../action-sheet)
+- [gx-image-picker](../image-picker)
 
 ### Graph
 
 ```mermaid
 graph TD;
   gx-action-sheet --> gx-modal
+  gx-image-picker --> gx-modal
   style gx-modal fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

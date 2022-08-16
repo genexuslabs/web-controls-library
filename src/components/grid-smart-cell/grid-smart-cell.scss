@@ -1,0 +1,15 @@
+@import "../common/_base.scss";
+@import "../common/_common-styling-config.scss";
+
+.gx-grid-row {
+  @include reset-variables();
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-width: max-content;
+
+  // gx-grid-smart-cell must hide its content overflow to ensure that the
+  // border-radius property is applied
+  overflow: hidden;
+  @include transition-properties();
+}

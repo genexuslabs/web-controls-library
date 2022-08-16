@@ -36,9 +36,12 @@ tab content, using the `gx-tab-page` element.
 
 ## Properties
 
-| Property        | Attribute        | Description                                                                                                                                                                                                                                                                                                                                                                                  | Type                         | Default      |
-| --------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------ |
-| `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \| | `"collapse" \| "keep-space"` | `"collapse"` |
+| Property           | Attribute           | Description                                                                                                                                                                                                                                                                                                                                                                                  | Type                         | Default      |
+| ------------------ | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------ |
+| `cssClass`         | `css-class`         | A CSS class to set as the `gx-tab` element class.                                                                                                                                                                                                                                                                                                                                            | `string`                     | `undefined`  |
+| `highlightable`    | `highlightable`     | True to highlight control when an action is fired.                                                                                                                                                                                                                                                                                                                                           | `boolean`                    | `false`      |
+| `invisibleMode`    | `invisible-mode`    | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \| | `"collapse" \| "keep-space"` | `"collapse"` |
+| `tabsDistribution` | `tabs-distribution` | Defines how the tabs will be distributed in the Strip. \| Value \| Details \| \| ------------ \| ---------------------------------------------------------------------------------- \| \| `scoll` \| Allows scrolling the tab control when the number of tabs exceeds the screen width. \| \| `fixed-size` \| Tabs are fixed size. Used with any amount of tabs. \|                          | `"fixed-size" \| "scroll"`   | `"scroll"`   |
 
 ## Events
 
@@ -48,19 +51,18 @@ tab content, using the `gx-tab-page` element.
 
 ## CSS Custom Properties
 
-| Name                                    | Description                                  |
-| --------------------------------------- | -------------------------------------------- |
-| `--elevation`                           | The size of the shadow for the tab component |
-| `--tab-caption-active-border-color`     | Active tab caption border color              |
-| `--tab-caption-border-color`            | Tab captions border color                    |
-| `--tab-caption-disabled-color`          | Disabled tab caption text color              |
-| `--tab-caption-fous-border-color`       | Focused tab caption border color             |
-| `--tab-caption-horizontal-padding`      | Tab caption horizontal padding               |
-| `--tab-caption-hover-border-color`      | Hovered tab caption border color             |
-| `--tab-caption-image-horizontal-margin` | Tab caption image horizontal margin          |
-| `--tab-caption-image-vertical-margin`   | Tab caption image vertical margin            |
-| `--tab-caption-vertical-padding`        | Tab caption vertical padding                 |
-| `--tab-strip-elevation`                 | The size of the shadow for the tab strip     |
+| Name                                    | Description                                                            |
+| --------------------------------------- | ---------------------------------------------------------------------- |
+| `--elevation`                           | The size of the shadow for the tab component                           |
+| `--tab-caption-horizontal-padding`      | Tab caption horizontal padding                                         |
+| `--tab-caption-image-horizontal-margin` | Tab caption image horizontal margin                                    |
+| `--tab-caption-image-vertical-margin`   | Tab caption image vertical margin                                      |
+| `--tab-caption-vertical-padding`        | Tab caption vertical padding                                           |
+| `--tab-strip-background-color`          | Tab strip background color                                             |
+| `--tab-strip-elevation`                 | The size of the shadow for the tab strip                               |
+| `--tab-strip-height`                    | Tab strip height                                                       |
+| `--tab-strip-indicator-color`           | Background color of the indicator. Used when a tab caption is selected |
+| `--tab-strip-separator-color`           | Color to underline the entire tab strip                                |
 
 ---
 

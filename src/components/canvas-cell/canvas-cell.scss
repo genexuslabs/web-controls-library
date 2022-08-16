@@ -1,6 +1,26 @@
-@import "../common/_base";
+@import "../common/alignment-with-shadow-dom";
+@import "../common/_base.scss";
 
 gx-canvas-cell {
+  @include text-align-with-shadow-DOM();
+  @include valign-with-shadow-DOM();
+
+  // The include "overflowMode()" from the mixin
+  //   @mixin containerCell()
+  // does not apply in this case, because the gx-canvas control always has
+  // auto-grow = True
+  @include containerCell(false);
   position: absolute;
-  @include containerCell();
+  flex-direction: row; // Do not change flex-direction. All alignments will break
+  overflow: hidden;
+
+  // Used when autoGrow = false in the gx-textblock and gx-edit controls to
+  // ensure the content does not overflows
+  &[max-height] {
+    & > gx-textblock::part(content),
+    & > gx-form-field > .form-field-group .gx-edit-content {
+      position: absolute;
+    }
+  }
+  // TODO: Improve efficiency of the last selector
 }

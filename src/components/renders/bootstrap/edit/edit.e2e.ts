@@ -1,8 +1,11 @@
 import { newE2EPage } from "@stencil/core/testing";
+import { delay } from "../../../common/utils";
 
 describe("gx-edit", () => {
   let element;
   let page;
+  const readonlySelector = ".gx-edit-content";
+
   beforeEach(async () => {
     page = await newE2EPage();
     await page.setContent("<gx-edit></gx-edit>");
@@ -24,9 +27,9 @@ describe("gx-edit", () => {
   });
 
   it("should render as read only", async () => {
-    element.readonly = true;
+    await element.setProperty("readonly", true);
     await page.waitForChanges();
-    const readonlyElement = await element.find("[data-readonly]");
+    const readonlyElement = await element.find(readonlySelector);
     expect(readonlyElement).toBeTruthy();
   });
 
@@ -34,7 +37,7 @@ describe("gx-edit", () => {
     await element.setProperty("readonly", true);
     await element.setProperty("fontCategory", "headline");
     await page.waitForChanges();
-    const readonlyElement = await element.find("[data-readonly]");
+    const readonlyElement = await element.find(readonlySelector);
     expect(readonlyElement.tagName).toBe("H1");
   });
 
@@ -42,7 +45,8 @@ describe("gx-edit", () => {
     await element.setProperty("readonly", true);
     await element.setProperty("style", "--font-category: headline");
     await page.waitForChanges();
-    const readonlyElement = await element.find("[data-readonly]");
+    await delay(32); // Wait for next render
+    const readonlyElement = await element.find(readonlySelector);
     expect(readonlyElement.tagName).toBe("H1");
   });
 
@@ -50,7 +54,8 @@ describe("gx-edit", () => {
     await element.setProperty("readonly", true);
     await element.setProperty("style", "--font-category: body");
     await page.waitForChanges();
-    const readonlyElement = await element.find("[data-readonly]");
+    await delay(32); // Wait for next render
+    const readonlyElement = await element.find(readonlySelector);
     expect(readonlyElement.tagName).toBe("P");
   });
 });

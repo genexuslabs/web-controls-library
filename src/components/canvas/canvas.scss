@@ -1,7 +1,16 @@
 @import "../common/_base";
+@import "../common/_common-styling-config";
 
 gx-canvas {
   @include visibility(block);
 
   position: relative;
+  height: fit-content;
+  @include transition-properties();
+
+  > .canvas-cells-container {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+  }
 }

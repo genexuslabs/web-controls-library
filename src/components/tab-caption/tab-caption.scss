@@ -1,4 +1,5 @@
 @import "../common/_base";
+@import "../common/_common-styling-config";
 @import "../common/_image-position";
 
 @mixin imageMargin($position, $value) {
@@ -16,72 +17,80 @@
 }
 
 gx-tab-caption {
-  @include visibility(flex);
+  @include visibility(table-cell);
 
-  @include imagePosition("a", ":not(.gx-tab-caption--active)");
+  @include imageMargin("before", var(--tab-caption-image-vertical-margin));
+  @include imageMargin("after", var(--tab-caption-image-vertical-margin));
+  @include imageMargin("above", var(--tab-caption-image-horizontal-margin));
+  @include imageMargin("below", var(--tab-caption-image-horizontal-margin));
 
+  // Used to decide the position of the image
+  @include imagePosition(
+    ".image-and-link-container a",
+    ":not(.gx-tab-caption--active)"
+  );
+
+  // Used to limit the sizes of the images
   [slot="main-image"],
   [slot="disabled-image"] {
     max-height: 18px;
     max-width: 18px;
     object-fit: contain;
   }
-  @include imageMargin("before", var(--tab-caption-image-vertical-margin));
-  @include imageMargin("after", var(--tab-caption-image-vertical-margin));
-  @include imageMargin("above", var(--tab-caption-image-horizontal-margin));
-  @include imageMargin("below", var(--tab-caption-image-horizontal-margin));
 
+  // Default style
+  background-color: var(--tab-strip-background-color);
   font-size: 12px;
   font-weight: 600;
-  text-transform: uppercase;
 
   &.gx-tab-caption {
-    .gx-nav-link {
-      display: flex;
-      padding: var(--tab-caption-vertical-padding)
-        var(--tab-caption-horizontal-padding);
-      white-space: nowrap;
-      border-color: transparent;
-      border-style: solid;
-      border-bottom-color: var(--tab-caption-border-color);
-      border-width: 1px;
+    height: 100%;
+    transition: background-color $transition-duration,
+      filter $transition-duration;
 
-      &,
-      &:active,
-      &:focus,
-      &:hover,
-      &:visited {
+    .image-and-link-container {
+      display: inline-block;
+      vertical-align: top;
+      width: 100%;
+      height: 100%;
+
+      .gx-nav-link {
+        display: flex;
+        height: 100%;
         color: inherit;
-        text-decoration: none;
-        outline: 0;
-      }
+        padding-inline: var(--tab-caption-horizontal-padding);
+        overflow: hidden;
+        transition: background-color $transition-duration,
+          color $transition-duration, border-color $transition-duration;
+        white-space: nowrap;
 
-      &:focus {
-        border: 1px solid var(--tab-caption-focus-border-color);
-      }
+        &:active,
+        &:focus,
+        &:hover,
+        &:visited {
+          color: none;
+          text-decoration: none;
+          outline: 0;
+        }
 
-      &:hover {
-        border-bottom: 2px solid var(--tab-caption-hover-border-color);
-        padding-bottom: calc(var(--tab-caption-vertical-padding) - 1px);
-      }
-
-      &:active {
-        border-bottom: 2px solid var(--tab-caption-active-border-color);
-        padding-bottom: calc(var(--tab-caption-vertical-padding) - 1px);
+        & > span {
+          display: flex;
+          align-items: center;
+          height: 100%;
+          max-width: 100%;
+          min-height: 1em;
+          padding-top: 0.125em;
+        }
       }
     }
 
-    &--active {
-      .gx-nav-link {
-        border-top-color: var(--tab-caption-border-color);
-        border-right-color: var(--tab-caption-border-color);
-        border-bottom-color: transparent;
-        border-left-color: var(--tab-caption-border-color);
-      }
+    &[aria-selected="false"]:hover:not(:active) {
+      @include hover-style;
     }
 
     &--disabled {
-      color: var(--tab-caption-disabled-color);
+      @include disabled-style;
+      pointer-events: none;
     }
   }
 }

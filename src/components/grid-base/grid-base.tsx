@@ -1,7 +1,20 @@
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+
 import { EventEmitter } from "@stencil/core";
 
+// Class transforms
+import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
+
 export interface GridBase {
-  el: HTMLElement;
+  element: HTMLElement;
+
+  /**
+   * A CSS class to set as the `gx-grid` element class.
+   */
+  cssClass: string;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -46,10 +59,19 @@ export interface GridBase {
 export class GridBaseHelper {
   static GRID_BASE_CLASSNAME = "gx-grid-base";
 
+  static init(component: HighlightableComponent) {
+    makeHighlightable(component);
+  }
+
   static hostData(cmp: GridBase) {
+    // Styling for gx-grid control.
+    const classes = getClassesWithoutFocus(cmp.cssClass);
+
     return {
       class: {
         "gx-grid-base": true,
+        [cmp.cssClass]: !!cmp.cssClass,
+        [classes.vars]: true,
         "gx-grid-empty": this.isEmptyGrid(cmp),
         "gx-grid-empty-loading":
           cmp.loadingState === "loading" && cmp.recordCount <= 0,

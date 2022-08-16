@@ -12,6 +12,9 @@ import {
 } from "@stencil/core";
 import { FormComponent } from "../common/interfaces";
 
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
+
 @Component({
   shadow: false,
   styleUrl: "checkbox.scss",
@@ -39,11 +42,23 @@ export class CheckBox implements FormComponent {
   @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
+   * A CSS class to set as the `gx-checkbox` element class.
+   */
+  @Prop() readonly cssClass: string;
+
+  /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
   @Prop() readonly disabled = false;
+
+  /**
+   * This attribute indicates that the user cannot modify the value of the control.
+   * Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly)
+   * attribute for `input` elements.
+   */
+  @Prop() readonly readonly = false;
 
   /**
    * Specifies the label of the checkbox.
@@ -69,11 +84,6 @@ export class CheckBox implements FormComponent {
    * The value when the checkbox is 'off'
    */
   @Prop() readonly unCheckedValue: string;
-
-  /**
-   * A CSS class to set as the inner `input` element class.
-   */
-  @Prop() readonly cssClass: string;
 
   /**
    * The `input` event is emitted when a change to the element's value is committed by the user.
@@ -114,6 +124,19 @@ export class CheckBox implements FormComponent {
   }
 
   render() {
-    return <Host>{this.renderer.render()}</Host>;
+    // Styling for gx-checkbox control.
+    const classes = getClasses(this.cssClass);
+
+    return (
+      <Host
+        class={{
+          [this.cssClass]: !!this.cssClass,
+          [classes.vars]: true,
+          [classes.highlighted]: true
+        }}
+      >
+        {this.renderer.render()}
+      </Host>
+    );
   }
 }

@@ -25,7 +25,9 @@ describe("gx-navbar", () => {
 
     await page.waitForChanges();
 
-    const backButtonElement = await page.find(".gx-navbar-back-button");
+    const backButtonElement = await page.find(
+      "gx-navbar >>> .gx-navbar-back-button"
+    );
 
     await backButtonElement.press("Enter");
 

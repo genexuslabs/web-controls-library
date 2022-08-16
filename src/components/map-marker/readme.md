@@ -31,13 +31,14 @@ This element represents a marker inside a `<gx-map>` element.
 
 ## Properties
 
-| Property         | Attribute         | Description                                                                                               | Type     | Default             |
-| ---------------- | ----------------- | --------------------------------------------------------------------------------------------------------- | -------- | ------------------- |
-| `coords`         | `coords`          | The coordinates where the marker will appear in the map.                                                  | `string` | `"0, 0"`            |
-| `iconHeight`     | `icon-height`     | The marker image height.                                                                                  | `number` | `30`                |
-| `iconWidth`      | `icon-width`      | The marker image width.                                                                                   | `number` | `30`                |
-| `markerClass`    | `marker-class`    | The class that the marker will have. Set the `background-image` property to use it as icon of the marker. | `string` | `"gx-default-icon"` |
-| `tooltipCaption` | `tooltip-caption` | The tooltip caption of the marker.                                                                        | `string` | `undefined`         |
+| Property         | Attribute          | Description                                                                                                            | Type                                                | Default             |
+| ---------------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- | ------------------- |
+| `coords`         | `coords`           | The coordinates where the marker will appear in the map.                                                               | `string`                                            | `"0, 0"`            |
+| `iconHeight`     | `icon-height`      | The marker image height.                                                                                               | `number`                                            | `30`                |
+| `iconImageClass` | `icon-image-class` | The class that the marker will have.                                                                                   | `string`                                            | `"gx-default-icon"` |
+| `iconWidth`      | `icon-width`       | The marker image width.                                                                                                | `number`                                            | `30`                |
+| `tooltipCaption` | `tooltip-caption`  | The tooltip caption of the marker.                                                                                     | `string`                                            | `undefined`         |
+| `type`           | `type`             | This attribute lets you specify the marker type. Each marker type has different images and sizes depending on its use. | `"default" \| "selection-layer" \| "user-location"` | `"default"`         |
 
 ## Events
 

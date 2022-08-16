@@ -4,6 +4,20 @@ export interface ClickableComponent {
   gxClick: EventEmitter;
 }
 
+export interface CssClasses {
+  highlighted: string;
+  vars: string;
+}
+
+export interface CssClassesWithoutFocus {
+  vars: string;
+}
+
+export interface CssTransformedClassesWithoutFocus {
+  transformedCssClass: string;
+  vars: string;
+}
+
 export interface VisibilityComponent {
   invisibleMode: "collapse" | "keep-space";
 }
@@ -13,7 +27,7 @@ export interface DisableableComponent {
 }
 
 export interface Component extends ComponentInterface {
-  element: HTMLElement;
+  element: any;
   render: () => void;
 }
 
@@ -35,7 +49,7 @@ export interface Renderer {
   componentDidLoad?: () => void;
   componentWillUpdate?: () => void;
   componentDidUpdate?: () => void;
-  componentDidUnload?: () => void;
+  disconnectedCallback?: () => void;
 }
 
 export interface RendererConstructor {

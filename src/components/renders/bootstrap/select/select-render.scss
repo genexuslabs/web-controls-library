@@ -1,5 +1,56 @@
+@import "../../../common/base";
+@import "../../../common/common-styling-config";
+
+// Used to horizontally align the text
+@mixin alignment($text-align: start) {
+  gx-select {
+    > .gx-select-control {
+      text-align: $text-align;
+      text-align-last: $text-align;
+    }
+
+    option {
+      text-align: $text-align;
+      text-align-last: $text-align;
+    }
+  }
+}
+
 gx-select {
+  @include visibility(flex);
+  @include elevation();
+  flex: 1;
+
+  & > .gx-select-control {
+    display: flex;
+    flex: 1;
+    @include transition-properties();
+
+    & > span {
+      width: 100%;
+    }
+  }
+
+  // Default style
+  & > select {
+    background-color: unset;
+    border: none;
+    outline: 0;
+  }
+
   gx-select-option {
     display: none !important;
   }
+}
+
+// Default alignment which supports RTL
+@include alignment();
+
+// Alignments based on parent control alignment
+[align="center"] {
+  @include alignment(center);
+}
+
+[align="right"] {
+  @include alignment(end);
 }

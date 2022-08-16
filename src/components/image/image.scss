@@ -1,52 +1,28 @@
-@import "../common/_base";
+@import "../common/base";
+@import "../common/common-styling-config";
 
 gx-image {
   --elevation: 0;
+  @include elevation();
+  @include visibility(flex);
+  // It emulates "flex: 1" when the --width variable is not defined
+  --width: 1;
 
-  @include visibility(inline-flex);
+  // It emulates "align-self: stretch" when the --height variable is not defined
+  --height: stretch;
 
-  justify-content: stretch;
-  align-items: stretch;
   flex: 1;
+  align-self: stretch;
+  width: 100%;
+  overflow-x: hidden; // Horizontal overflow is always hidden
 
-  &.gx-img-no-auto-grow {
-    width: var(--width);
-    height: var(--height);
-    margin-top: var(--margin-top);
-    margin-right: var(--margin-right);
-    margin-bottom: var(--margin-bottom);
-    margin-left: var(--margin-left);
+  // Workaround to stop firing events when the gx-image clicked but not the
+  // inner img
+  pointer-events: none;
 
-    position: relative;
-
-    & > img {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      object-position: left top;
-    }
-  }
-
-  &:not(.gx-img-no-auto-grow) {
-    & > img {
-      width: var(--width);
-      height: var(--height);
-      margin-top: var(--margin-top);
-      margin-right: var(--margin-right);
-      margin-bottom: var(--margin-bottom);
-      margin-left: var(--margin-left);
-
-      max-height: calc(
-        100% - var(--margin-top, 0px) - var(--margin-bottom, 0px)
-      );
-      max-width: calc(
-        100% - var(--margin-right, 0px) - var(--margin-left, 0px)
-      );
-      flex: 1;
+  &:not(.disabled) {
+    > .gx-image-container {
+      pointer-events: all;
     }
   }
 
@@ -54,17 +30,51 @@ gx-image {
     overflow: hidden;
   }
 
-  & > img {
-    @include elevation();
+  // gx-image with auto-grow = FALSE
+  &.gx-img-no-auto-grow {
+    overflow-y: hidden; // Vertical overflow is hidden if auto-grow = False
+
+    & > .gx-image-container > .gx-image-no-auto-grow-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+
+      > .inner-image {
+        position: absolute;
+        left: 0;
+      }
+    }
+  }
+
+  > .gx-image-container {
+    // To adjust the position of the image picker button
+    position: relative;
+
+    // Takes "flex: 1" value when the --width is not defined
+    flex: var(--width);
+
+    // Takes "align-self: stretch" value when the --height is not defined
+    align-self: var(--height);
+
+    height: var(--height);
+    min-width: var(--width);
+    max-width: var(--width);
+    overflow: hidden;
+    @include transition-properties();
+  }
+
+  .inner-image {
+    width: 100%;
+    height: 100%;
+
+    // Default Scale Type = Fit
     object-fit: var(--image-scale-type, contain);
   }
 
-  .gx-image-tile {
-    width: 100% !important;
-    height: 100% !important;
+  > .gx-image-container > .gx-image-tile {
+    display: inline-block !important;
     padding-left: 100% !important;
     box-sizing: border-box !important;
-    display: inline-block !important;
     background-position: 0 !important;
     background-repeat: repeat;
   }
@@ -77,17 +87,21 @@ gx-image {
     display: none;
   }
 
-  .gx-lazyloading + span,
-  .gx-lazyloading + span:after {
-    border-radius: 50%;
+  .gx-lazyloading + .gx-image-loading-indicator,
+  .gx-lazyloading + .gx-image-loading-indicator:after {
+    display: var(--image-loading-indicator, inline-block);
     width: 2em;
     height: 2em;
-    display: var(--image-loading-indicator, inline-block);
+    border-radius: 50%;
   }
 
-  .gx-lazyloading + span {
-    font-size: 10px;
-    position: relative;
+  .gx-lazyloading + .gx-image-loading-indicator {
+    $center-loading: calc(50% - 1em);
+
+    position: absolute;
+    top: $center-loading;
+    left: $center-loading;
+    font-size: 0.625em; // Used to set the default size of the loading indicator
     text-indent: -9999em;
     border-top: 0.3em solid rgba(0, 0, 0, 0.2);
     border-right: 0.3em solid rgba(0, 0, 0, 0.2);
@@ -97,61 +111,119 @@ gx-image {
     animation: gx-image-loading 1.1s infinite linear;
   }
 
-  .gx-lazyloaded + span {
+  .gx-lazyloaded + .gx-image-loading-indicator {
     display: none;
   }
 }
 
-[align="center"] {
+[align="left"] {
+  & > gx-form-field gx-image,
   & > gx-image {
-    justify-self: stretch;
+    justify-content: flex-start;
+  }
+}
+
+// Default horizontal alignment
+[align="center"],
+:not([align]) {
+  & > gx-form-field gx-image,
+  & > gx-image {
     justify-content: center;
   }
 }
 
 [align="right"] {
+  & > gx-form-field gx-image,
   & > gx-image {
-    justify-self: stretch;
     justify-content: flex-end;
   }
 }
 
-[valign="middle"] {
+[valign="top"] {
+  & > gx-form-field gx-image,
   & > gx-image {
-    align-self: stretch;
+    align-items: flex-start;
+  }
+}
+
+// Default vertical alignment
+[valign="middle"],
+:not([valign]) {
+  & > gx-form-field gx-image,
+  & > gx-image {
     align-items: center;
   }
 }
 
 [valign="bottom"] {
+  & > gx-form-field gx-image,
   & > gx-image {
-    align-self: stretch;
     align-items: flex-end;
   }
 }
 
-@mixin cellAlignmentNoAutoGrow($halign, $valign) {
-  $valignValue: if($valign == middle, center, $valign);
-  [align="#{$halign}"][valign="#{$valign}"] {
-    & > gx-image {
-      &.gx-img-no-auto-grow {
-        img {
-          object-position: $halign $valignValue;
-        }
+// Allow inner image positioning even when auto-grow is enabled
+@mixin inner-image-alignment($halign, $valign) {
+  $inner-image-control-selector: "& > gx-image .inner-image";
+  $inner-image-variable-selector: "& > gx-form-field .inner-image";
+
+  $valign-value: if($valign == middle, center, $valign);
+
+  // Default horizontal and vertical alignment
+  @if $halign == null and $valign == null {
+    :not([align]):not([valign]) {
+      #{$inner-image-control-selector},
+      #{$inner-image-variable-selector} {
+        object-position: center center;
+      }
+    }
+  }
+  // Default horizontal alignment
+  @else if $halign == null {
+    [valign="#{$valign}"]:not([align]) {
+      #{$inner-image-control-selector},
+      #{$inner-image-variable-selector} {
+        object-position: center $valign-value;
+      }
+    }
+  }
+  // Default vertical alignment
+  @else if $valign == null {
+    [align="#{$halign}"]:not([valign]) {
+      #{$inner-image-control-selector},
+      #{$inner-image-variable-selector} {
+        object-position: $halign center;
+      }
+    }
+  }
+  // Horizontal and vertical alignment specified
+  @else {
+    [align="#{$halign}"][valign="#{$valign}"] {
+      #{$inner-image-control-selector},
+      #{$inner-image-variable-selector} {
+        object-position: $halign $valign-value;
       }
     }
   }
 }
 
-@include cellAlignmentNoAutoGrow(left, top);
-@include cellAlignmentNoAutoGrow(left, middle);
-@include cellAlignmentNoAutoGrow(left, bottom);
-@include cellAlignmentNoAutoGrow(center, top);
-@include cellAlignmentNoAutoGrow(center, middle);
-@include cellAlignmentNoAutoGrow(center, bottom);
-@include cellAlignmentNoAutoGrow(right, top);
-@include cellAlignmentNoAutoGrow(right, middle);
-@include cellAlignmentNoAutoGrow(right, bottom);
+// Alignment for the image inside the img tag
+@include inner-image-alignment(null, null);
+@include inner-image-alignment(null, top);
+@include inner-image-alignment(null, middle);
+@include inner-image-alignment(null, bottom);
+@include inner-image-alignment(left, null);
+@include inner-image-alignment(center, null);
+@include inner-image-alignment(right, null);
+@include inner-image-alignment(left, top);
+@include inner-image-alignment(left, middle);
+@include inner-image-alignment(left, bottom);
+@include inner-image-alignment(center, top);
+@include inner-image-alignment(center, middle);
+@include inner-image-alignment(center, bottom);
+@include inner-image-alignment(right, top);
+@include inner-image-alignment(right, middle);
+@include inner-image-alignment(right, bottom);
 
 @keyframes gx-image-loading {
   0% {

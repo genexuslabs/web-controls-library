@@ -1,20 +1,19 @@
+import { Component, Element, Host, Listen, Prop, h } from "@stencil/core";
 import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Prop,
-  h,
-  Host
-} from "@stencil/core";
-import lazySizes from "lazysizes";
-import {
-  ClickableComponent,
-  Component as GxComponent,
   DisableableComponent,
+  Component as GxComponent,
   VisibilityComponent
 } from "../common/interfaces";
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
+import lazySizes from "lazysizes";
+
+// Class transforms
+import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
 
 const LAZY_LOAD_CLASS = "gx-lazyload";
 const LAZY_LOADING_CLASS = "gx-lazyloading";
@@ -32,22 +31,19 @@ export class Image
     GxComponent,
     DisableableComponent,
     VisibilityComponent,
-    ClickableComponent {
+    HighlightableComponent {
   constructor() {
-    cssVariablesWatcher(this, [
-      {
-        cssVariableName: "--image-scale-type",
-        propertyName: "scaleType"
-      },
-      {
-        cssVariableName: "--height",
-        propertyName: "height"
-      },
-      {
-        cssVariableName: "--width",
-        propertyName: "width"
-      }
-    ]);
+    cssVariablesWatcher(
+      this,
+      [
+        {
+          cssVariableName: "--image-scale-type",
+          propertyName: "scaleType",
+          defaultPropertyValue: "contain"
+        }
+      ],
+      0
+    );
 
     this.handleClick = this.handleClick.bind(this);
     this.handleImageLoad = this.handleImageLoad.bind(this);
@@ -61,7 +57,7 @@ export class Image
   /**
    * This attribute lets you specify the alternative text.
    */
-  @Prop() readonly alt = "";
+  @Prop() readonly alt: string = "";
 
   /**
    * If true, the component will be sized to match the image's intrinsic size when not constrained
@@ -72,16 +68,16 @@ export class Image
   @Prop() readonly autoGrow = true;
 
   /**
+   * A CSS class to set as the `gx-image` element class.
+   */
+  @Prop() readonly cssClass: string;
+
+  /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
   @Prop() readonly disabled = false;
-
-  /**
-   * This attribute lets you specify the height.
-   */
-  @Prop() readonly height: string;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -116,88 +112,114 @@ export class Image
     | "tile";
 
   /**
+   * True to show the image picker button.
+   */
+  @Prop() showImagePickerButton = false;
+
+  /**
    * This attribute lets you specify the SRC.
    */
-  @Prop() readonly src = "";
+  @Prop() readonly src: string = "";
 
   /**
-   * This attribute lets you specify the width.
+   * True to highlight control when an action is fired.
    */
-  @Prop({ mutable: true }) width: string;
+  @Prop() readonly highlightable = false;
 
-  /**
-   * Emitted when the element is clicked.
-   */
-  @Event() gxClick: EventEmitter;
-
-  private handleClick(event: UIEvent) {
+  @Listen("click", { capture: true })
+  handleClick(event: UIEvent) {
     if (this.disabled) {
       event.stopPropagation();
       return;
     }
-    this.gxClick.emit(event);
-    event.preventDefault();
   }
 
+  /**
+   * `true` if the image has been loaded
+   */
+  private imageDidLoad = false;
+
+  private innerImageContainer: HTMLDivElement = null;
+
   private handleImageLoad(event: UIEvent) {
-    if (!this.autoGrow) {
-      const img = event.target as HTMLImageElement;
-      // Some image formats do not specify intrinsic dimensions. The naturalWidth property returns 0 in those cases.
-      if (img.naturalWidth !== 0) {
-        this.width = `${img.naturalWidth}px`;
-      }
+    const img = event.target as HTMLImageElement;
+    // if (!this.autoGrow) {
+    //   // Some image formats do not specify intrinsic dimensions. The naturalWidth property returns 0 in those cases.
+    //   if (img.naturalWidth !== 0) {
+    //   }
+    // }
+    img.style.setProperty("display", "block");
+    img.style.removeProperty("opacity");
+    this.imageDidLoad = true;
+  }
+
+  componentDidLoad() {
+    if (this.src) {
+      makeHighlightable(this, this.innerImageContainer);
     }
   }
 
   disconnectedCallback() {
     document.removeEventListener("lazyloaded", this.handleLazyLoaded);
+    this.innerImageContainer = null;
   }
 
   render() {
     const shouldLazyLoad = this.shouldLazyLoad();
 
+    // Styling for gx-image control.
+    const classes = getClassesWithoutFocus(this.cssClass);
+
+    const withoutAutogrow = this.scaleType !== "tile" && !this.autoGrow;
+
     const body = this.src
       ? [
           <img
             class={{
+              "inner-image": true,
               [LAZY_LOAD_CLASS]: shouldLazyLoad,
               "gx-image-tile": this.scaleType === "tile"
             }}
-            style={
-              this.scaleType === "tile"
-                ? { backgroundImage: `url(${this.src})` }
-                : { objectFit: this.scaleType }
-            }
+            style={{
+              backgroundImage:
+                this.scaleType === "tile" ? `url(${this.src})` : null,
+              opacity: !this.imageDidLoad ? "0" : null
+            }}
             onClick={this.handleClick}
             onLoad={this.handleImageLoad}
             data-src={shouldLazyLoad ? this.src : undefined}
             src={!shouldLazyLoad ? this.src : undefined}
             alt={this.alt}
           />,
-          <span />
+          <span class="gx-image-loading-indicator" />
         ]
       : [];
 
-    const isHeightSpecified = !!this.height;
-    const isWidthSpecified = !!this.width;
     return (
       <Host
         class={{
+          [classes.vars]: true,
+          disabled: this.disabled,
           "gx-img-lazyloading": shouldLazyLoad,
-          "gx-img-no-auto-grow": !this.autoGrow
-        }}
-        style={{
-          alignSelf: isHeightSpecified ? "unset" : null,
-          justifySelf: isWidthSpecified ? "unset" : null,
-          height: isHeightSpecified
-            ? `calc(${this.height} + var(--margin-top, 0px) + var(--margin-bottom, 0px))`
-            : null,
-          width: isWidthSpecified
-            ? `calc(${this.width} + var(--margin-left, 0px) + var(--margin-right, 0px))`
-            : null
+          "gx-img-no-auto-grow": withoutAutogrow
         }}
       >
-        {body}
+        <div
+          class={{
+            "gx-image-container": true,
+            [this.cssClass]: !!this.cssClass
+          }}
+          // Mouse pointer to indicate action
+          data-has-action={this.highlightable ? "" : undefined}
+          ref={el => (this.innerImageContainer = el as HTMLDivElement)}
+        >
+          {withoutAutogrow ? (
+            <div class="gx-image-no-auto-grow-container">{body}</div>
+          ) : (
+            body
+          )}
+          {this.showImagePickerButton && <slot />}
+        </div>
       </Host>
     );
   }

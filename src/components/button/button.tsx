@@ -1,18 +1,15 @@
-import { ButtonRender } from "../renders/bootstrap/button/button-render";
+import { Component, Element, Listen, Prop, h } from "@stencil/core";
 import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Prop,
-  h
-} from "@stencil/core";
-import {
-  ClickableComponent,
-  Component as GxComponent,
   DisableableComponent,
+  Component as GxComponent,
   VisibilityComponent
 } from "../common/interfaces";
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+
+import { ButtonRender } from "../renders/bootstrap/button/button-render";
 
 @Component({
   shadow: false,
@@ -22,9 +19,9 @@ import {
 export class Button
   implements
     GxComponent,
-    ClickableComponent,
     DisableableComponent,
-    VisibilityComponent {
+    VisibilityComponent,
+    HighlightableComponent {
   constructor() {
     this.renderer = new ButtonRender(this, {
       handleClick: this.handleClick.bind(this)
@@ -36,7 +33,7 @@ export class Button
   @Element() element: HTMLGxButtonElement;
 
   /**
-   * A CSS class to set as the inner `input` element class.
+   * A CSS class to set as the `gx-button` element class.
    */
   @Prop() readonly cssClass: string;
 
@@ -88,20 +85,36 @@ export class Button
   @Prop() readonly size: "large" | "normal" | "small" = "normal";
 
   /**
-   * Emitted when the element is clicked.
+   * True to highlight control when an action is fired.
    */
-  @Event() gxClick: EventEmitter;
+  @Prop() readonly highlightable = true;
 
-  private handleClick(event: UIEvent) {
+  /**
+   * This attribute lets you specify the width.
+   */
+  @Prop() readonly width: string = "";
+
+  /**
+   * This attribute lets you specify the height.
+   */
+  @Prop() readonly height: string = "";
+
+  @Listen("click", { capture: true })
+  handleClick(event: UIEvent) {
     if (this.disabled) {
+      event.stopPropagation();
       return;
     }
-
-    this.gxClick.emit(event);
   }
 
   componentWillLoad() {
     this.renderer.componentWillLoad();
+  }
+
+  componentDidLoad() {
+    const innerButton = this.element.querySelector("button");
+
+    makeHighlightable(this, innerButton);
   }
 
   render() {

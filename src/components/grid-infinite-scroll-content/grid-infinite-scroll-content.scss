@@ -8,6 +8,10 @@ gx-grid-infinite-scroll {
   flex: 1;
 }
 
+gx-grid-infinite-scroll-content {
+  overflow: hidden; // Required for gx-loading's positioning
+}
+
 gx-grid-infinite-scroll-content,
 .gx-grid-empty:not(.gx-grid-loading) gx-grid-infinite-scroll {
   @include visibility(none);

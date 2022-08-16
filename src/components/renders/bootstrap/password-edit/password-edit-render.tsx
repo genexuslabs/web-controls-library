@@ -38,7 +38,7 @@ export class PasswordEditRender implements Renderer {
     }
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.innerEdit = null;
   }
 
@@ -47,9 +47,9 @@ export class PasswordEditRender implements Renderer {
     return (
       <gx-edit
         ref={input => (this.innerEdit = input as any)}
+        area="field"
         css-class={passwordEdit.cssClass}
         disabled={passwordEdit.disabled}
-        id={`gx-password-edit-${passwordEdit.element.id}`}
         placeholder={passwordEdit.placeholder}
         readonly={passwordEdit.readonly}
         show-trigger={!passwordEdit.readonly && passwordEdit.showRevealButton}

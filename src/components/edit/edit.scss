@@ -3,6 +3,22 @@
 
 gx-edit {
   @include visibility(flex);
+  @include elevation();
+  @include line-clamp();
+
+  &[multiline][readonly="false"] {
+    @include visibility(block);
+  }
   align-items: stretch;
   flex: 1;
+
+  &.gx-edit {
+    &--single-line {
+      [data-readonly] {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
 }

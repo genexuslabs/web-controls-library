@@ -10,6 +10,7 @@ import {
   Watch
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
+import { getWindowsOrientation } from "../common/utils";
 
 @Component({
   shadow: false,
@@ -18,11 +19,15 @@ import { Component as GxComponent } from "../common/interfaces";
 })
 export class Layout implements GxComponent {
   constructor() {
-    this.handleBodyClick = this.handleBodyClick.bind(this);
     this.handleMediaQueryChange = this.handleMediaQueryChange.bind(this);
   }
 
   @Element() element: HTMLGxLayoutElement;
+
+  /**
+   * `true` if the bottom navbar is visible in the application.
+   */
+  @Prop() readonly bottomNavbarVisible: boolean = false;
 
   /**
    * True to hide the top target
@@ -62,7 +67,7 @@ export class Layout implements GxComponent {
   @Event() verticalTargetsBreakpointMatchChange: EventEmitter;
 
   private mediaQueryList: MediaQueryList;
-  private isVerticalTargetsBreakpoint = false;
+  private mediaQueryOrientation: MediaQueryList;
 
   @Watch("rightHidden")
   handleRightHiddenChange() {
@@ -80,25 +85,29 @@ export class Layout implements GxComponent {
     this.isMaskVisible = !this.rightHidden || !this.leftHidden;
   }
 
-  private handleBodyClick(e: MouseEvent) {
-    if (this.isMaskVisible && this.isVerticalTargetsBreakpoint) {
-      const target = e.target as HTMLElement;
-      if (!target.matches(`gx-layout .vertical ${target.tagName}`)) {
-        setTimeout(() => {
-          this.rightHidden = true;
-          this.leftHidden = true;
-        }, 50);
-      }
-    }
+  /**
+   * Close gx-layout's targets when the mask is clicked.
+   */
+  private closeTargets = (e: MouseEvent) => {
+    e.stopPropagation();
+    this.rightHidden = true;
+    this.leftHidden = true;
+  };
+
+  private updateGridsOrientation() {
+    const grids = this.element.querySelectorAll("gx-grid-horizontal");
+    const orientation = getWindowsOrientation();
+
+    grids.forEach(grid => {
+      grid.orientation = orientation;
+    });
   }
 
   componentDidLoad() {
-    document.body.addEventListener("click", this.handleBodyClick, true);
     this.startMediaQueryMonitoring();
   }
 
   disconnectedCallback() {
-    document.body.removeEventListener("click", this.handleBodyClick);
     this.endMediaQueryMonitoring();
   }
 
@@ -111,6 +120,12 @@ export class Layout implements GxComponent {
     );
     this.updateVerticalTargetsBreakpointStatus(this.mediaQueryList.matches);
     this.mediaQueryList.addEventListener("change", this.handleMediaQueryChange);
+
+    // This event fires when the orientation is changed to "portrait" or "landscape"
+    this.mediaQueryOrientation = window.matchMedia("(orientation: portrait)");
+    this.mediaQueryOrientation.addEventListener("change", () =>
+      this.updateGridsOrientation()
+    );
   }
 
   private handleMediaQueryChange(event: MediaQueryListEvent) {
@@ -118,7 +133,6 @@ export class Layout implements GxComponent {
   }
 
   private updateVerticalTargetsBreakpointStatus(matches: boolean) {
-    this.isVerticalTargetsBreakpoint = matches;
     this.verticalTargetsBreakpointMatchChange.emit({
       matches
     });
@@ -129,17 +143,23 @@ export class Layout implements GxComponent {
       "change",
       this.handleMediaQueryChange
     );
+
+    this.mediaQueryOrientation.removeEventListener(
+      "change",
+      this.updateGridsOrientation
+    );
   }
 
   render() {
     return (
-      <Host>
+      <Host data-bottom-navbar={this.bottomNavbarVisible ? "" : undefined}>
         <main class="target center">
           <div
             class={{
               mask: true,
               "mask--active": this.isMaskVisible
             }}
+            onClick={this.closeTargets}
           ></div>
           <slot />
         </main>

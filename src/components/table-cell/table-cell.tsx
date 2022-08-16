@@ -14,12 +14,12 @@ export class TableCell implements GxComponent {
    * so it can be used from the [areas-template attributes](../table/readme.md#areas-template)
    * of the gx-table element.
    */
-  @Prop() readonly area: string;
+  @Prop() readonly area: string = null;
 
   /**
-   * Defines the horizontal aligmnent of the content of the cell.
+   * Defines the horizontal alignment of the content of the cell.
    */
-  @Prop({ reflect: true }) readonly align: "left" | "right" | "center" = "left";
+  @Prop({ reflect: true }) readonly align: "left" | "right" | "center";
 
   /**
    * This attribute defines how the control behaves when the content overflows.
@@ -34,14 +34,12 @@ export class TableCell implements GxComponent {
 
   /**
    * This attribute defines the maximum height of the cell.
-   *
    */
-  @Prop() readonly maxHeight: string;
+  @Prop() readonly maxHeight: string = null;
 
   /**
    * This attribute defines the minimum height of the cell when its contents are visible.
    * Ignored if its content has `invisible-mode` = `collapse` and is hidden.
-   *
    */
   @Prop() readonly minHeight: string;
 
@@ -52,15 +50,14 @@ export class TableCell implements GxComponent {
   @Prop() readonly showContentFade = false;
 
   /**
-   * Defines the vertical aligmnent of the content of the cell.
+   * Defines the vertical alignment of the content of the cell.
    */
-  @Prop({ reflect: true }) readonly valign: "top" | "bottom" | "medium" = "top";
+  @Prop({ reflect: true }) readonly valign: "top" | "bottom" | "middle";
 
   private observer: MutationObserver;
 
   componentDidRender() {
     this.setMinHeight(this.element.firstElementChild);
-    this.setMaxHeight();
   }
 
   componentDidLoad() {
@@ -69,21 +66,13 @@ export class TableCell implements GxComponent {
 
   private setupObserver(childElement: any) {
     if (childElement && childElement.invisibleMode === "collapse") {
-      this.observer = new MutationObserver(
-        (mutationsList: MutationRecord[]) => {
-          for (const mutation of mutationsList) {
-            if (
-              mutation.type === "attributes" &&
-              mutation.attributeName === "hidden"
-            ) {
-              this.setMinHeight(childElement);
-            }
-          }
-        }
-      );
+      this.observer = new MutationObserver(() => {
+        this.setMinHeight(childElement);
+      });
 
       this.observer.observe(childElement, {
         attributes: true,
+        attributeFilter: ["hidden"],
         childList: false,
         subtree: false
       });
@@ -99,10 +88,6 @@ export class TableCell implements GxComponent {
     }
   }
 
-  private setMaxHeight() {
-    this.element.style.maxHeight = this.maxHeight;
-  }
-
   disconnectedCallback() {
     if (this.observer !== undefined) {
       this.observer.disconnect();
@@ -110,14 +95,14 @@ export class TableCell implements GxComponent {
   }
 
   render() {
-    if (this.area) {
-      this.element.style["gridArea"] = this.area;
-    }
-
     return (
       <Host
         class={{
           "gx-long-content-fade": this.showContentFade
+        }}
+        style={{
+          "grid-area": this.area,
+          "max-height": this.maxHeight
         }}
       >
         <slot />

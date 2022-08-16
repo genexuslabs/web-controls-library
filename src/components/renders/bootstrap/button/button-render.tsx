@@ -6,6 +6,10 @@ import {
   imagePositionClass,
   hideMainImageWhenDisabledClass
 } from "../../../common/image-position";
+import { getFileNameWithoutExtension } from "../../../common/utils";
+
+// Class transforms
+import { getClassesWithoutFocus } from "../../../common/css-transforms/css-transforms";
 
 export class ButtonRender implements Renderer {
   constructor(private component: Button, handlers: { handleClick }) {
@@ -24,37 +28,54 @@ export class ButtonRender implements Renderer {
   render(slots: { default; disabledImage; mainImage }) {
     const button = this.component;
 
-    // Main image and disabled image are set an empty alt as they are decorative images.
+    // True if the button does not have any text
+    const isEmptyCaption = button.element.textContent.trim() === "";
+
+    /*  Main image and disabled image are set with an empty alt as they are
+        decorative images, but if the button has no caption, the alt property
+        will take the name of the image.
+    */
     const images = button.element.querySelectorAll(
       "[slot='main-image'], [slot='disabled-image']"
     );
+
     Array.from(images).forEach((img: HTMLImageElement) => {
       if (!img.alt) {
-        img.setAttribute("alt", "");
+        // The src image property always contains a path to the image file
+        const alt = isEmptyCaption ? getFileNameWithoutExtension(img.src) : "";
+
+        img.setAttribute("alt", alt);
       }
     });
+
+    // Styling for gx-button control.
+    const classes = getClassesWithoutFocus(button.cssClass);
 
     return (
       <Host
         role="button"
         class={{
-          "gx-button--disabled": this.component.disabled,
-          [imagePositionClass(this.component.imagePosition)]: true,
+          disabled: button.disabled,
+          [imagePositionClass(button.imagePosition)]: true,
           [hideMainImageWhenDisabledClass]:
-            this.component.disabled && this.hasDisabledImage
+            button.disabled && this.hasDisabledImage,
+
+          // Strings with only white spaces are taken as null captions
+          "empty-caption": isEmptyCaption
+        }}
+        style={{
+          "--width": button.width !== "" ? button.width : "1",
+          "--height": button.height !== "" ? button.height : "stretch"
         }}
       >
-        <gx-bootstrap />
         <button
           class={{
-            btn: true,
-            "btn-lg": button.size === "large",
-            "btn-outline-secondary": true,
-            "btn-sm": button.size === "small",
             "gx-button": true,
-            [button.cssClass]: !!button.cssClass
+            [button.cssClass]: !!button.cssClass,
+            [classes.vars]: true
           }}
-          disabled={this.component.disabled}
+          data-has-action
+          disabled={button.disabled}
           onClick={this.handleClick}
           tabindex="0"
         >

@@ -6,11 +6,12 @@ import {
   EventEmitter,
   Method,
   Prop,
-  QueueApi,
   State,
   Watch,
   Host,
-  h
+  h,
+  readTask,
+  writeTask
 } from "@stencil/core";
 
 @Component({
@@ -31,6 +32,7 @@ export class GridInfiniteScroll implements ComponentInterface {
   private isBusy = false;
   private attachedToWindow = false;
   private attached = false;
+  private supported = true;
 
   @Element() el!: HTMLGxGridInfiniteScrollElement;
   @State() isLoading = false;
@@ -40,11 +42,6 @@ export class GridInfiniteScroll implements ComponentInterface {
    * It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the intial batch does not overflow the main container
    */
   @Prop() readonly itemCount: number = 0;
-
-  /**
-   * A QueueAPI object
-   */
-  @Prop({ context: "queue" }) readonly queue!: QueueApi;
 
   /**
    * The threshold distance from the bottom
@@ -100,10 +97,11 @@ export class GridInfiniteScroll implements ComponentInterface {
 
     setTimeout(() => {
       let emitInfinite = false;
-      this.ensure();
-      emitInfinite = this.isVisibleInViewport(this.el);
-      if (emitInfinite) {
-        this.gxInfinite.emit();
+      if (this.ensure()) {
+        emitInfinite = this.isVisibleInViewport(this.el);
+        if (emitInfinite) {
+          this.gxInfinite.emit();
+        }
       }
     }, 100);
   }
@@ -166,9 +164,19 @@ export class GridInfiniteScroll implements ComponentInterface {
     return this.getScrollParent(node.parentNode);
   }
 
-  private ensure() {
+  private ensure(): boolean {
     if (this.disabled || this.attached || this.itemCount === 0) {
-      return;
+      return this.supported;
+    }
+
+    //Horizontal Orientation not supported
+    const gridComponent = this.el.closest(".gx-grid-base");
+    if (
+      gridComponent &&
+      gridComponent.getAttribute("direction") === "horizontal"
+    ) {
+      this.supported = false;
+      return this.supported;
     }
 
     let contentEl = this.getScrollParent(this.el);
@@ -187,7 +195,7 @@ export class GridInfiniteScroll implements ComponentInterface {
       this.enableScrollEvents(!this.disabled);
       this.attached = !this.disabled;
       if (this.position === "top") {
-        this.queue.write(() => {
+        writeTask(() => {
           if (this.scrollEl !== null) {
             this.scrollEl.scrollTop =
               this.scrollEl.scrollHeight - this.scrollEl.clientHeight;
@@ -195,13 +203,14 @@ export class GridInfiniteScroll implements ComponentInterface {
         });
       }
     }
+    return this.supported;
   }
 
   async componentDidLoad() {
     this.ensure();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.scrollEl = null;
     this.attachedToWindow = false;
     this.attached = false;
@@ -286,7 +295,7 @@ export class GridInfiniteScroll implements ComponentInterface {
 
       // ******** DOM READ ****************
       requestAnimationFrame(() => {
-        this.queue.read(() => {
+        readTask(() => {
           // UI has updated, save the new content dimensions
           const scrollHeight = scrollEl.scrollHeight;
           // New content was added on top, so the scroll position should be changed immediately to prevent it from jumping around
@@ -294,7 +303,7 @@ export class GridInfiniteScroll implements ComponentInterface {
 
           // ******** DOM WRITE ****************
           requestAnimationFrame(() => {
-            this.queue.write(() => {
+            writeTask(() => {
               scrollEl.scrollTop = newScrollTop;
               this.isBusy = false;
             });
@@ -309,7 +318,8 @@ export class GridInfiniteScroll implements ComponentInterface {
       !this.disabled &&
       !this.isBusy &&
       this.scrollEl !== null &&
-      !this.isLoading
+      !this.isLoading &&
+      this.supported
     );
   }
 

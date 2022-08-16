@@ -1,35 +1,103 @@
+@import "../common/base";
+@import "../common/css-transforms/scss-transforms";
+
 ////
 /// @group theming-mixins
 ////
 
 /// Helper mixin to ease styling gx-tab custom elements
-/// @param {string} $class Base class of the component
-/// @param {string} $highlighted Class to be used when the tab is active
+/// @param {string} $tabs-position Determine the tab position (top or bottom).
 /// @param {string} $selected-tab-caption Class for styling the selected tab caption
 /// @param {string} $unselected-tab-caption Class for styling unselected tab caption
 @mixin gx-tab(
-  $class,
-  $highlighted: null,
+  $tabs-position: null,
   $selected-tab-caption: null,
   $unselected-tab-caption: null
 ) {
-  @extend #{$class} !optional;
-
-  @if ($highlighted != null) {
-    &:active {
-      @extend #{$highlighted} !optional;
-    }
-  }
-
   @if ($unselected-tab-caption != null) {
-    gx-tab-caption[aria-selected="false"] {
+    &#{$gx-unselected-tab-caption} {
       @extend #{$unselected-tab-caption} !optional;
+    }
+
+    // Highlighted class
+    &#{$gx-unselected-tab-caption}#{$gx-highlighted-dot} {
+      @extend #{$unselected-tab-caption}#{$gx-highlighted} !optional;
     }
   }
 
   @if ($selected-tab-caption != null) {
-    gx-tab-caption[aria-selected="true"] {
+    &#{$gx-selected-tab-caption} {
       @extend #{$selected-tab-caption} !optional;
+    }
+
+    // Highlighted class
+    &#{$gx-selected-tab-caption}#{$gx-highlighted-dot} {
+      @extend #{$selected-tab-caption}#{$gx-highlighted} !optional;
+    }
+  }
+
+  // - - - - - - - - - - - - - Tabs position - - - - - - - - - - - - -
+  $padding-top: calc(var(--tab-caption-vertical-padding) - 3px);
+  $padding-bottom: calc(var(--tab-caption-vertical-padding) - 1px);
+  $border-top: 3px solid transparent;
+  $border-bottom: 1px solid var(--tab-strip-separator-color);
+  $border-top-color-active: var(--tab-strip-indicator-color);
+  $border-bottom-color-active: transparent;
+
+  // Used to show the captions in the top position
+  @if $tabs-position != bottom {
+    &#{$gx-tabs-position} {
+      grid-template-rows: minmax(auto, max-content);
+
+      & > .gx-nav-tabs {
+        @include elevation();
+
+        & > .gx-nav-tabs-table {
+          &-filler {
+            border-bottom-color: var(--tab-strip-separator-color);
+          }
+        }
+      }
+    }
+
+    // Styling for top captions
+    &#{$gx-tabs-position-caption} {
+      padding-block: $padding-top $padding-bottom;
+      border-top: $border-top;
+      border-bottom: $border-bottom;
+    }
+
+    &#{$gx-tabs-position-caption}.gx-nav-link--active {
+      border-block-color: $border-top-color-active $border-bottom-color-active;
+    }
+  }
+
+  // Used to show the captions in the bottom position
+  @if $tabs-position == bottom {
+    &#{$gx-tabs-position} {
+      grid-template-rows: auto minmax(auto, max-content);
+
+      & > .gx-nav-tabs {
+        @include elevation(top);
+        order: 1;
+
+        & > .gx-nav-tabs-table {
+          &-filler {
+            border-top-color: var(--tab-strip-separator-color);
+          }
+        }
+      }
+    }
+
+    // Styling for bottom captions
+    &#{$gx-tabs-position-caption} {
+      padding-block: $padding-bottom $padding-top;
+      border-top: $border-bottom;
+      border-bottom: $border-top;
+    }
+
+    &#{$gx-tabs-position-caption}.gx-nav-link--active {
+      border-block-color: $border-bottom-color-active $border-top-color-active;
     }
   }
 }

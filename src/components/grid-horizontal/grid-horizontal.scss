@@ -1,0 +1,20 @@
+@import "../grid-base/grid-base.scss";
+@import "../../../node_modules/swiper/swiper.min.css";
+
+gx-grid-horizontal {
+  & > [slot="grid-empty-loading-placeholder"] {
+    height: 100%;
+  }
+
+  .swiper-slide {
+    //Reset CSS required properties.
+    flex-grow: 0;
+    flex-basis: auto;
+  }
+}
+
+// When the grid-smart-cells have the rows-landscape or the rows-portrait
+// attribute, it means that they are inside the gx-grid-horizontal
+.gx-grid-row.swiper-slide {
+  height: calc(100% / var(--rows));
+}

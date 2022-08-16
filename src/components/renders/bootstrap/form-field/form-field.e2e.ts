@@ -20,22 +20,15 @@ describe("gx-form-field", () => {
   });
 
   it("should should use flex column for laying out label and field", async () => {
-    const positions = [
-      ["top", true],
-      ["bottom", true],
-      ["left", false],
-      ["right", false]
-    ];
+    const positions = ["top", "bottom", "left", "right"];
 
-    const groupElement = await element.find(".form-group");
-    for (const [position, hasFlexColumn] of positions) {
+    const groupElement = await element.find(".form-field-group");
+    for (const position of positions) {
       element.setAttribute("label-position", position);
       await page.waitForChanges();
-      if (hasFlexColumn) {
-        expect(groupElement).toHaveClass("flex-column");
-      } else {
-        expect(groupElement).not.toHaveClass("flex-column");
-      }
+
+      const labelPositionClassName = `label-position-${position}`;
+      expect(groupElement).toHaveClass(labelPositionClassName);
     }
   });
   // it("should link the label and the input field", async () => {

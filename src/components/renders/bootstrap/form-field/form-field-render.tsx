@@ -1,6 +1,15 @@
-import { h } from "@stencil/core";
+import { h, Host } from "@stencil/core";
 import { Renderer } from "../../../common/interfaces";
 import { FormField } from "../../../form-field/form-field";
+
+// Class transforms
+import {
+  tLabel,
+  tLabelContainer,
+  tLabelHighlighted,
+  tLabelPositionLeft,
+  tLabelPositionRight
+} from "../../../common/css-transforms/css-transforms";
 
 let autoFormFieldId = 0;
 
@@ -8,57 +17,7 @@ export class FormFieldRender implements Renderer {
   constructor(private component: FormField) {}
 
   private formFieldId: string;
-
-  private LABEL_WIDTH_BY_POSITION = {
-    bottom: "label-bottom",
-    float: "",
-    left: "label-left",
-    none: "sr-only",
-    right: "label-right",
-    top: "label-top"
-  };
-
-  private INNER_CONTROL_WIDTH_BY_LABEL_POSITION = {
-    bottom: "field-label-bottom",
-    float: "",
-    left: "field-label-left",
-    none: "field-label-top",
-    right: "field-label-right",
-    top: "field-label-top"
-  };
-
-  private getLabelCssClass() {
-    const classList = [];
-
-    classList.push(this.LABEL_WIDTH_BY_POSITION[this.component.labelPosition]);
-
-    if (this.component.labelPosition !== "float") {
-      classList.push("col-form-label");
-    }
-
-    return classList.join(" ");
-  }
-
-  private getInnerControlContainerClass() {
-    const className = this.INNER_CONTROL_WIDTH_BY_LABEL_POSITION[
-      this.component.labelPosition
-    ];
-    return {
-      [className]: true,
-      "d-flex": true
-    };
-  }
-
-  private shouldRenderLabelBefore() {
-    const formField = this.component;
-
-    return (
-      !formField.labelPosition ||
-      formField.labelPosition === "top" ||
-      formField.labelPosition === "left" ||
-      formField.labelPosition === "none"
-    );
-  }
+  private innerLabel: HTMLLabelElement = null;
 
   async componentDidLoad() {
     const formField = this.component;
@@ -66,46 +25,108 @@ export class FormFieldRender implements Renderer {
     const innerControl: any = formField.element.querySelector("[area='field']");
     if (innerControl && innerControl.getNativeInputId) {
       const nativeInputId = await innerControl.getNativeInputId();
+
       if (nativeInputId) {
         const nativeInput = formField.element.querySelector(
           `#${nativeInputId}`
         );
+
         if (nativeInput !== null) {
           nativeInput.setAttribute("data-part", "field");
         }
-        const innerLabel: any = formField.element.querySelector("label");
-        if (nativeInputId && innerLabel) {
-          innerLabel.setAttribute("for", nativeInputId);
+
+        if (formField.labelPosition === "none" || this.innerLabel == null) {
+          return;
         }
+
+        this.innerLabel.setAttribute("for", nativeInputId);
+        this.innerLabel = null;
       }
     }
   }
 
-  renderForRadio(renderLabel: boolean, renderLabelBefore: boolean, slot) {
+  renderForRadio(
+    renderLabel: boolean,
+    labelBaseClass: string,
+    labelHighlightedClass: string,
+    labelContainerClass: string,
+    labelLeftOrRightPositionClass: string,
+    slot
+  ) {
     const labelId = `${this.formFieldId}-label`;
+    const formField = this.component;
+    const labelPosition = formField.labelPosition;
+
     const label = (
-      <div class={this.getLabelCssClass()} id={labelId} data-part="label">
-        <div class="label-content">{this.component.labelCaption}</div>
+      <div
+        class={{
+          "gx-label-container": true,
+          [labelContainerClass]: true,
+          "right-label": labelPosition === "right"
+        }}
+        data-part={!!formField.cssClass ? "label-container" : undefined}
+      >
+        <label
+          class={{
+            [labelBaseClass]: !!formField.cssClass,
+            [labelHighlightedClass]: true
+          }}
+          id={labelId}
+        >
+          {formField.labelCaption}
+        </label>
       </div>
     );
+
+    const labelPositionClassName = `label-position-${labelPosition}`;
+    const shouldCustomLabelPosition =
+      !!formField.cssClass &&
+      (labelPosition === "left" || labelPosition === "right");
+
     return (
-      <div class="form-group mb-0" aria-labelledby={labelId} role="group">
-        <div class="radio-group no-gutters">
-          {renderLabel && renderLabelBefore ? label : null}
-          <div class={this.getInnerControlContainerClass()}>{slot}</div>
-          {renderLabel && !renderLabelBefore ? label : null}
-        </div>
+      <div
+        class={{
+          "form-field-group": true,
+          [labelPositionClassName]: true,
+          [labelLeftOrRightPositionClass]: shouldCustomLabelPosition
+        }}
+        aria-labelledby={labelId}
+        role="group"
+      >
+        <div class="gx-inner-control-container">{slot}</div>
+        {renderLabel && label}
       </div>
     );
   }
 
   render(slots) {
     const formField = this.component;
+    const labelPosition = formField.labelPosition;
 
     const isRadioGroup =
       formField.element.querySelector("gx-radio-group[area='field']") !== null;
-    const renderLabelBefore = this.shouldRenderLabelBefore();
-    const renderLabel = formField.labelPosition !== "none";
+    const renderLabel = labelPosition !== "none";
+
+    /*  Since the control can receive more than one class, we apply the
+        "tLabel" and "tLabelHighlighted" transforms for each class.
+    */
+    const labelSplitClasses =
+      renderLabel && !!formField.cssClass ? formField.cssClass.split(" ") : [];
+
+    const labelBaseClass = labelSplitClasses.map(tLabel).join(" ");
+
+    const labelHighlightedClass = labelSplitClasses
+      .map(tLabelHighlighted)
+      .join(" ");
+
+    const labelContainerClass = labelSplitClasses
+      .map(tLabelContainer)
+      .join(" ");
+
+    const labelLeftOrRightPositionClass =
+      labelPosition === "left"
+        ? labelSplitClasses.map(tLabelPositionLeft).join(" ")
+        : labelSplitClasses.map(tLabelPositionRight).join(" ");
 
     if (!this.formFieldId) {
       this.formFieldId =
@@ -113,16 +134,43 @@ export class FormFieldRender implements Renderer {
     }
 
     if (isRadioGroup) {
-      return this.renderForRadio(renderLabel, renderLabelBefore, slots.default);
+      return this.renderForRadio(
+        renderLabel,
+        labelBaseClass,
+        labelHighlightedClass,
+        labelContainerClass,
+        labelLeftOrRightPositionClass,
+        slots.default
+      );
     } else {
       const label = (
-        <label class={this.getLabelCssClass()} data-part="label">
-          <div class="label-content">{formField.labelCaption}</div>
-        </label>
+        <div
+          class={{
+            "gx-label-container": true,
+            [labelContainerClass]: true,
+            "right-label": labelPosition === "right"
+          }}
+          data-part={!!formField.cssClass ? "label-container" : undefined}
+        >
+          <label
+            class={{
+              [labelBaseClass]: !!formField.cssClass,
+              [labelHighlightedClass]: true
+            }}
+            ref={el => (this.innerLabel = el as HTMLLabelElement)}
+          >
+            {formField.labelCaption}
+          </label>
+        </div>
       );
 
+      const labelPositionClassName = `label-position-${labelPosition}`;
+      const shouldCustomLabelPosition =
+        !!formField.cssClass &&
+        (labelPosition === "left" || labelPosition === "right");
+
       const result =
-        formField.labelPosition === "float" ? (
+        labelPosition === "float" ? (
           <div>
             {slots.default}
             {label}
@@ -130,23 +178,17 @@ export class FormFieldRender implements Renderer {
         ) : (
           <div
             class={{
-              "form-group": true,
-              "no-gutters": true,
-              "mb-0": true,
-              "flex-column":
-                formField.labelPosition === "top" ||
-                formField.labelPosition === "bottom"
+              "form-field-group": true,
+              [labelPositionClassName]: true,
+              [labelLeftOrRightPositionClass]: shouldCustomLabelPosition
             }}
           >
-            {renderLabel && renderLabelBefore ? label : null}
-            <div class={this.getInnerControlContainerClass()}>
-              {slots.default}
-            </div>
-            {renderLabel && !renderLabelBefore ? label : null}
+            <div class="gx-inner-control-container">{slots.default}</div>
+            {renderLabel && label}
           </div>
         );
 
-      return [<gx-bootstrap />, result];
+      return <Host>{result}</Host>;
     }
   }
 }

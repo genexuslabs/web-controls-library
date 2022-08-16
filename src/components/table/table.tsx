@@ -3,16 +3,24 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
+  Listen,
   Prop,
-  h,
-  Host
+  h
 } from "@stencil/core";
 import {
-  Component as GxComponent,
   DisableableComponent,
+  Component as GxComponent,
   VisibilityComponent
 } from "../common/interfaces";
-import { Swipeable, makeSwipeable } from "../common/swipeable";
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+import { Swipeable, makeSwipeable } from "../common/events/swipeable";
+
+// Class transforms
+import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
 
 @Component({
   shadow: false,
@@ -20,7 +28,12 @@ import { Swipeable, makeSwipeable } from "../common/swipeable";
   tag: "gx-table"
 })
 export class Table
-  implements GxComponent, DisableableComponent, Swipeable, VisibilityComponent {
+  implements
+    GxComponent,
+    DisableableComponent,
+    Swipeable,
+    VisibilityComponent,
+    HighlightableComponent {
   @Element() element: HTMLGxTableElement;
 
   /**
@@ -41,6 +54,11 @@ export class Table
   @Prop() readonly disabled = false;
 
   /**
+   * A CSS class to set as the `gx-table` element class.
+   */
+  @Prop() readonly cssClass: string;
+
+  /**
    * Like the `grid-templates-areas` CSS property, this attribute defines a grid
    * template by referencing the names of the areas which are specified with the
    * cells [area attribute](../table-cell/readme.md#area). Repeating the name of
@@ -48,7 +66,7 @@ export class Table
    * empty cell. The syntax itself provides a visualization of the structure of
    * the grid.
    */
-  @Prop() readonly areasTemplate: string;
+  @Prop() readonly areasTemplate: string = null;
 
   /**
    * Like the `grid-templates-columns` CSS property, this attribute defines
@@ -56,53 +74,72 @@ export class Table
    * represent the width of column.
    */
 
-  @Prop() readonly columnsTemplate: string;
+  @Prop() readonly columnsTemplate: string = null;
 
   /**
    * Like the `grid-templates-rows` CSS property, this attribute defines the
    * rows of the grid with a space-separated list of values. The values
    * represent the height of each row.
    */
-  @Prop() readonly rowsTemplate: string;
+  @Prop() readonly rowsTemplate: string = null;
+
+  /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
 
   /**
    * Emitted when the element is swiped.
    */
   @Event() swipe: EventEmitter;
+
   /**
    * Emitted when the element is swiped in upward direction.
    */
   @Event() swipeUp: EventEmitter;
+
   /**
    * Emitted when the element is swiped right direction.
    */
   @Event() swipeRight: EventEmitter;
+
   /**
    * Emitted when the element is swiped downward direction.
    */
   @Event() swipeDown: EventEmitter;
+
   /**
    * Emitted when the element is swiped left direction..
    */
   @Event() swipeLeft: EventEmitter;
 
+  @Listen("click", { capture: true })
+  handleClick(event: UIEvent) {
+    if (this.disabled) {
+      event.stopPropagation();
+      return;
+    }
+  }
+
   componentDidLoad() {
     makeSwipeable(this);
+    makeHighlightable(this);
   }
 
   render() {
-    if (this.areasTemplate) {
-      this.element.style["gridTemplateAreas"] = this.areasTemplate;
-    }
-    if (this.columnsTemplate) {
-      this.element.style["gridTemplateColumns"] = this.columnsTemplate;
-    }
-    if (this.rowsTemplate) {
-      this.element.style["gridTemplateRows"] = this.rowsTemplate;
-    }
+    // Styling for gx-table control.
+    const classes = getClassesWithoutFocus(this.cssClass);
 
     return (
-      <Host>
+      <Host
+        class={{ [this.cssClass]: !!this.cssClass, [classes.vars]: true }}
+        style={{
+          "--grid-template-areas": this.areasTemplate,
+          "grid-template-columns": this.columnsTemplate,
+          "grid-template-rows": this.rowsTemplate
+        }}
+        data-has-action={this.highlightable ? "" : undefined}
+      >
         <slot />
       </Host>
     );

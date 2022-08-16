@@ -14,6 +14,7 @@ import { FormComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
+  styleUrl: "select.scss",
   tag: "gx-select"
 })
 export class Select implements FormComponent {
@@ -23,13 +24,16 @@ export class Select implements FormComponent {
 
   private renderer: SelectRender;
 
+  // Used to show the placeholder when no options are selected
+  private anOptionHasBeenSelected = false;
+
   @State() protected options: any[] = [];
   private didLoad: boolean;
 
   @Element() element: HTMLGxSelectElement;
 
   /**
-   * A CSS class to set as the inner `input` element class.
+   * A CSS class to set as the `gx-select` element class.
    */
   @Prop() readonly cssClass: string;
 
@@ -59,9 +63,13 @@ export class Select implements FormComponent {
 
   /**
    * Render a text input showing a list of suggested elements.
-
    */
   @Prop() suggest: boolean;
+
+  /**
+   * Text that appears in the form control when it has no value set
+   */
+  @Prop() placeholder: string;
 
   /**
    * The initial value of the control. Setting the value automatically selects
@@ -77,12 +85,14 @@ export class Select implements FormComponent {
 
   private getChildOptions() {
     return Array.from(this.element.querySelectorAll("gx-select-option")).map(
-      (option: any) => ({
-        disabled: option.getAttribute("disabled") !== null,
-        innerText: option.innerText,
-        selected: option.getAttribute("selected") !== null,
-        value: option.value
-      })
+      (option: any) => {
+        return {
+          disabled: option.disabled,
+          innerText: option.innerText,
+          selected: option.selected,
+          value: option.value
+        };
+      }
     );
   }
 
@@ -93,43 +103,42 @@ export class Select implements FormComponent {
 
   @Watch("value")
   valueChanged() {
-    // this select's value just changed
-    // double check the option with this value is selected
-    if (this.value === undefined) {
-      // set to undefined
-      // ensure all that are checked become unchecked
-      this.options
-        .filter(o => o.selected)
-        .forEach(option => {
-          option.selected = false;
-        });
-    } else {
-      let hasSelected = false;
+    // the select value just changed
+    this.anOptionHasBeenSelected = false;
 
-      this.options.forEach(option => {
-        if (option.value === this.value) {
-          if (!option.selected && !hasSelected) {
-            // correct value for this option
-            // but this option isn't selected yet
-            // and we haven't found a selected yet
-            // so SELECT IT!
-            option.selected = true;
-          } else if (hasSelected && option.selected) {
-            // somehow we've got multiple options
-            // with the same value, but only one can be selected
-            option.selected = false;
-          }
-
-          // remember we've got a selected option now
-          hasSelected = true;
-        } else if (option.selected) {
-          // this option doesn't have the correct value
-          // and it's also selected, so let's unselect it
-          option.selected = false;
-        }
-      });
-    }
-
+    const optionsElement = Array.from(
+      this.element.querySelectorAll("gx-select-option")
+    );
+    // let's set the new check state to all options
+    // regardless if it is checked or not
+    optionsElement.forEach(option => {
+      if (option.value === this.value) {
+        // the option value matches with the new select value
+        // let's check this option
+        option.selected = true;
+        this.anOptionHasBeenSelected = true;
+      } else {
+        // the option value doesn't match
+        // with the new select value
+        // let's uncheck this option
+        option.selected = false;
+      }
+      // if the new select value doesn't
+      // match with any option, all options
+      // will be unchecked
+    });
+    // after set the new check state to all options
+    // let's update the options list
+    this.updateOptions(
+      optionsElement.map((option: any) => {
+        return {
+          disabled: option.disabled,
+          innerText: option.innerText,
+          selected: option.selected,
+          value: option.value
+        };
+      })
+    );
     if (this.didLoad) {
       // emit the new value
       this.input.emit({ value: this.value });
@@ -139,23 +148,36 @@ export class Select implements FormComponent {
   @Listen("gxSelectDidLoad")
   onSelectOptionDidLoad(ev: HTMLSelectOptionElementEvent) {
     const option = ev.target;
-    this.updateOptions(this.getChildOptions());
-
-    if (this.value !== undefined && option.value === this.value) {
-      // this select has a value and this
-      // option equals the correct select value
-      // so let's check this option
-      option.selected = true;
-    } else if (this.value === undefined && option.selected) {
-      // this select does not have a value
-      // but this option is checked, so let's set the
-      // select's value from the checked option
-      this.value = option.value;
-    } else if (option.selected) {
-      // if it doesn't match one of the above cases, but the
-      // option is still checked, then we need to uncheck it
-      option.selected = false;
+    if (this.value) {
+      // check if the select has a setted value
+      if (this.value === option.value) {
+        // this select has a value and this
+        // option equals the correct select value
+        // so let's set this option as checked
+        option.selected = true;
+      } else {
+        // if the option value does not match
+        // with the select value,
+        // the option will be unchecked
+        // regardless if the option was
+        // initialized as checked
+        option.selected = false;
+      }
+    } else {
+      // if the select does not have a value
+      // let's look for options initialized as checked
+      if (option.selected) {
+        // this option was initialized as checked,
+        // so let's set the select's value
+        // equals to the checked option value
+        this.value = option.value;
+      }
+      // If there is no option checked
+      // and no value was set in the select,
+      // it will keep undefined until any
+      // change or checked option
     }
+    this.updateOptions(this.getChildOptions());
   }
 
   @Listen("gxSelectDidUnload")
@@ -194,19 +216,12 @@ export class Select implements FormComponent {
     return this.renderer.getNativeInputId();
   }
 
-  private setDisabled() {
-    this.options.forEach(option => {
-      option.disabled = this.disabled;
-    });
-  }
-
   componentDidLoad() {
-    this.setDisabled();
     this.didLoad = true;
   }
 
   render() {
-    return this.renderer.render();
+    return this.renderer.render(this.anOptionHasBeenSelected);
   }
 }
 

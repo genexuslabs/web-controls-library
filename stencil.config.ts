@@ -1,5 +1,6 @@
 import { Config } from "@stencil/core";
 import { sass } from "@stencil/sass";
+import { reactOutputTarget } from "@stencil/react-output-target";
 
 export const config: Config = {
   bundles: [
@@ -36,9 +37,12 @@ export const config: Config = {
     {
       components: [
         "gx-grid-fs",
-        "gx-grid-smart",
+        "gx-grid-horizontal",
+        "gx-grid-smart-css",
+        "gx-grid-smart-cell",
         "gx-grid-infinite-scroll",
-        "gx-grid-infinite-scroll-content"
+        "gx-grid-infinite-scroll-content",
+        "gx-grid-empty-indicator"
       ]
     }
   ],
@@ -54,7 +58,11 @@ export const config: Config = {
     {
       type: "www",
       serviceWorker: null
-    }
+    },
+    reactOutputTarget({
+      componentCorePackage: "@genexus/web-controls-library",
+      proxiesFile: "../web-controls-library-react/src/components.ts"
+    })
   ],
   plugins: [sass()]
 };

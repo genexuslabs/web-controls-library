@@ -3,15 +3,25 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Listen,
   Prop,
-  h,
-  Host
+  h
 } from "@stencil/core";
 import {
   Component as GxComponent,
   VisibilityComponent
 } from "../common/interfaces";
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+
+// Class transforms
+import {
+  getClassesWithoutFocus,
+  tTabsPosition
+} from "../common/css-transforms/css-transforms";
 
 const BASE_TABLIST_SELECTOR = ":scope > [role='tablist']";
 
@@ -20,10 +30,16 @@ const BASE_TABLIST_SELECTOR = ":scope > [role='tablist']";
   styleUrl: "tab.scss",
   tag: "gx-tab"
 })
-export class Tab implements GxComponent, VisibilityComponent {
+export class Tab
+  implements GxComponent, VisibilityComponent, HighlightableComponent {
   @Element() element: HTMLGxTabElement;
 
   private lastSelectedTab: HTMLElement;
+
+  /**
+   * A CSS class to set as the `gx-tab` element class.
+   */
+  @Prop() readonly cssClass: string;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -36,8 +52,22 @@ export class Tab implements GxComponent, VisibilityComponent {
   @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
-   * Fired when the active tab is changed
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
+
+  /**
+   * Defines how the tabs will be distributed in the Strip.
    *
+   * | Value        | Details                                                                            |
+   * | ------------ | ---------------------------------------------------------------------------------- |
+   * | `scoll`      | Allows scrolling the tab control when the number of tabs exceeds the screen width. |
+   * | `fixed-size` | Tabs are fixed size. Used with any amount of tabs.                                 |
+   */
+  @Prop() tabsDistribution: "scroll" | "fixed-size" = "scroll";
+
+  /**
+   * Fired when the active tab is changed
    */
   @Event() tabChange: EventEmitter;
 
@@ -57,6 +87,7 @@ export class Tab implements GxComponent, VisibilityComponent {
 
   private setSelectedTab(captionElement: HTMLElement) {
     this.lastSelectedTab = captionElement;
+
     this.getCaptionSlots().forEach((slotElement: any, i) => {
       slotElement.selected = slotElement === captionElement;
       const nthChild = i + 1;
@@ -72,7 +103,7 @@ export class Tab implements GxComponent, VisibilityComponent {
     return Array.from(
       this.element.querySelectorAll(
         `:scope > [slot='caption'], 
-         ${BASE_TABLIST_SELECTOR} > .gx-nav-tabs > [slot='caption']`
+         ${BASE_TABLIST_SELECTOR} > .gx-nav-tabs > .gx-nav-tabs-table > [slot='caption']`
       )
     );
   }
@@ -81,13 +112,14 @@ export class Tab implements GxComponent, VisibilityComponent {
     captionElement: any,
     pageElement: HTMLElement
   ) {
-    pageElement.classList.toggle(
+    pageElement?.classList.toggle(
       "gx-tab-page--active",
       !!captionElement.selected
     );
   }
 
   componentDidLoad() {
+    makeHighlightable(this);
     this.linkTabs(true);
   }
 
@@ -121,12 +153,32 @@ export class Tab implements GxComponent, VisibilityComponent {
   render() {
     this.setCaptionSlotsClass();
     this.setPageSlotsClass();
+
+    // Styling for gx-tab-caption control.
+    const classes = getClassesWithoutFocus(this.cssClass);
+
+    const tabsPositionClass = !!this.cssClass
+      ? this.cssClass
+          .split(" ")
+          .map(tTabsPosition)
+          .join(" ")
+      : "";
+
     return (
-      <Host>
-        <div role="tablist">
+      <Host
+        class={{
+          [this.cssClass]: !!this.cssClass,
+          [classes.vars]: true
+        }}
+      >
+        <div role="tablist" class={tabsPositionClass}>
           <div class="gx-nav-tabs">
-            <slot name="caption" />
-            <div aria-hidden="true" class="gx-nav-tabs-filler"></div>
+            <div class="gx-nav-tabs-table">
+              <slot name="caption" />
+              {this.tabsDistribution === "scroll" && (
+                <div aria-hidden="true" class="gx-nav-tabs-table-filler"></div>
+              )}
+            </div>
           </div>
           <div class="gx-tab-content">
             <slot name="page" />

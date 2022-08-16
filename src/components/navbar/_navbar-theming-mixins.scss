@@ -1,35 +1,48 @@
+@import "../common/css-transforms/scss-transforms";
+
 ////
 /// @group theming-mixins
 ////
 
 /// Helper mixin to ease styling gx-navbar custom elements
-/// @param {string} $class Base class of the component
-/// @param {string} $action Class for styling the actions of the navigation bar
-/// @param {string} $back-button Class for styling the back button of the navigation bar
 /// @param {string} $default-button Class for styling buttons of the navigation bar
-@mixin gx-navbar(
-  $class,
-  $action: null,
-  $back-button: null,
-  $default-button: null
-) {
-  @extend #{$class} !optional;
-
-  @if ($action != null) {
-    gx-navbar-item {
-      @extend #{$action} !optional;
-    }
-  }
-
+/// @param {string} $back-button Class for styling the back button of the navigation bar
+@mixin gx-navbar($default-button: null, $back-button: null) {
   @if ($default-button != null) {
-    button {
+    &::part(action-low),
+    &::part(action-low-popup),
+    &::part(default-button) {
       @extend #{$default-button} !optional;
+    }
+
+    // WORKAROUND for styling action groups that do not have a class.
+    // I should try using exportparts or ::slotted, but I did not figure out
+    // how to do it
+    @at-root gx-navbar-item.gx-navbar-item-empty {
+      @extend #{$default-button} !optional;
+    }
+
+    // When the default-button or action-low are active or they have :active pseudo-class it will
+    // be highlighted.
+    @at-root .gx-navbar-actions-active::part(action-low),
+      .gx-navbar-actions-active::part(action-low-popup),
+      #{&}::part(default-button):active,
+      #{&}::part(action-low):active,
+      gx-navbar-item.gx-navbar-item-empty:active {
+      @extend #{str-replace($default-button, ".", "%")}#{$gx-highlighted}
+          !optional;
     }
   }
 
   @if ($back-button != null) {
-    .gx-navbar-back-button {
+    &::part(back-button) {
       @extend #{$back-button} !optional;
+    }
+
+    // When the back-button has :active pseudo-class it will be highlighted
+    &::part(back-button):active {
+      @extend #{str-replace($back-button, ".", "%")}#{$gx-highlighted}
+          !optional;
     }
   }
 }

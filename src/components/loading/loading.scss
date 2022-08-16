@@ -1,110 +1,104 @@
-@import "../common/_base";
+:host {
+  /**
+   * @prop --height: Minimum height of the gx-loading when showing slot animations.
+   * (64px by default)
+   */
+  --height: 64px;
 
-$animation-duration: 1.4s;
-$box-padding: 30px 20px;
-$box-background-color: rgba(200, 200, 200, 0.8);
-$box-max-width: 30%;
-$box-min-width: 200px;
-$title-font-size: 16px;
-$description-font-size: $title-font-size - 2;
-$base-z-index: 10000;
+  /**
+   * @prop --rotate-animation-container-size:
+   * Define the size of the rotate animation container.
+   * (48px by default)
+   */
+  --rotate-animation-container-size: 48px;
 
-gx-loading {
-  @include visibility(block);
+  /**
+   * @prop --rotate-animation-duration:
+   * Define the duration of the rotate animation container.
+   * (1.5s by default)
+   */
+  --rotate-animation-duration: 1.5s;
 
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: $base-z-index;
+  /**
+   * @prop --rotate-animation-circle-1-color:
+   * Define the color of the first child of the rotate animation container.
+   * (rgb(71, 109, 255) by default)
+   */
+  --rotate-animation-circle-1-color: rgb(71, 109, 255);
 
-  .gx-lottie-test {
-    display: none !important;
+  /**
+   * @prop --rotate-animation-circle-2-color:
+   * Define the color of the second child of the rotate animation container.
+   * (rgb(0, 0, 0) by default)
+   */
+  --rotate-animation-circle-2-color: rgb(0, 0, 0);
+
+  /**
+   * @prop --rotate-animation-circle-3-color:
+   * Define the color of the third child of the rotate animation container.
+   * (rgb(200, 10, 70) by default)
+   */
+  --rotate-animation-circle-3-color: rgb(200, 10, 70);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: auto; // Center the gx-loading control
+}
+
+:host(.slot-animation) {
+  min-height: var(--height);
+}
+
+.gx-loading-rotate-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: end;
+  position: relative;
+  border-radius: 50%;
+
+  width: var(--rotate-animation-container-size);
+  height: var(--rotate-animation-container-size);
+  animation: rotate-origin calc(var(--rotate-animation-duration) * 2.5) linear
+    infinite;
+}
+
+.circle {
+  width: 42%;
+  height: 42%;
+  border-radius: 50%;
+  transform: scale(0);
+  opacity: 0.75;
+  animation: grow var(--rotate-animation-duration) ease-in-out infinite;
+
+  &-1 {
+    background-color: var(--rotate-animation-circle-2-color);
+    animation-delay: calc(var(--rotate-animation-duration) * (1 / 3));
   }
 
-  .box {
-    position: fixed;
-    padding: $box-padding;
-    border-radius: 3px;
-    overflow: hidden;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background-color: $box-background-color;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    flex-wrap: wrap;
-    align-items: center;
-    max-width: $box-max-width;
-    min-width: $box-min-width;
-    z-index: $base-z-index + 1;
+  &-2 {
+    background-color: var(--rotate-animation-circle-1-color);
   }
 
-  .title {
-    font-size: $title-font-size;
-    font-weight: bold;
-    text-align: center;
-  }
-
-  .description {
-    padding-top: 5px;
-    font-size: $description-font-size;
-    text-align: center;
-  }
-
-  .loader {
-    height: 4px;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-
-    .loader-inner {
-      display: block;
-      position: absolute;
-      width: 0;
-      height: 4px;
-      background-color: #2980b9;
-    }
-
-    &.determinate {
-      .loader-inner {
-        transition: width linear 0.2s;
-      }
-    }
-
-    &.indeterminate {
-      .loader-inner {
-        content: "";
-        left: -100%;
-        width: 10%;
-        animation: gx-loading-animation $animation-duration linear infinite;
-      }
-    }
+  &-3 {
+    background-color: var(--rotate-animation-circle-3-color);
+    animation-delay: calc(var(--rotate-animation-duration) * (2 / 3));
   }
 }
 
-@keyframes gx-loading-animation {
-  from {
-    left: -100%;
-    width: 30%;
-  }
-  50% {
-    width: 30%;
-  }
-  70% {
-    width: 70%;
-  }
-  80% {
-    left: 50%;
-  }
-  95% {
-    left: 120%;
-  }
+@keyframes rotate-origin {
   to {
-    left: 100%;
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes grow {
+  50% {
+    opacity: 1;
+    transform: scale(1);
   }
 }
