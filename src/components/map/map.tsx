@@ -188,18 +188,23 @@ export class Map implements GxComponent {
 
   @Listen("gxMapPolygonDidLoad")
   onMapPolygonDidLoad(event: CustomEvent) {
-    const polygonElement = event.target;
-    const polygonV = event.detail;
+    const polygonElement = event.target as HTMLGxMapPolygonElement;
+    const polygonInstance = event.detail as polygon;
+
+    // If the leaflet map has been created, add the polygon instance. Otherwise,
+    // wait for the leaflet map to load
     if (this.map) {
-      polygonV.addTo(this.map);
+      polygonInstance.addTo(this.map);
     } else {
       this.element.addEventListener("gxMapDidLoad", () => {
-        polygonV.addTo(this.map);
+        polygonInstance.addTo(this.map);
       });
     }
 
+    // When the polygon element is removed from the DOM, remove the polygon
+    // instance in the gx-map
     polygonElement.addEventListener("gxMapPolygonDeleted", () => {
-      this.onMapPolygonDeleted(polygonV);
+      this.onMapPolygonDeleted(polygonInstance);
     });
   }
 
@@ -277,35 +282,35 @@ export class Map implements GxComponent {
     }
   }
 
-  private onMapPolygonDeleted(pPolygon: polygon) {
-    let i = 0;
-    pPolygon.remove();
-    while (
-      i <= this.polygonsList.length &&
-      this.polygonsList[i]._leaflet_id !== pPolygon._leaflet_id
-    ) {
-      i++;
-    }
-    if (i <= this.polygonsList.length) {
-      this.polygonsList.splice(i, 1);
-    } else {
-      console.warn("There was an error in the polygon list!");
-    }
+  private onMapPolygonDeleted(polygonInstance: polygon) {
+    polygonInstance.remove();
+
+    this.searchAndRemoveMapElement(polygonInstance, this.polygonsList);
   }
 
-  private onMapLineDeleted(line: polyline) {
-    let i = 0;
-    line.remove();
+  private onMapLineDeleted(lineInstance: polyline) {
+    lineInstance.remove();
+
+    this.searchAndRemoveMapElement(lineInstance, this.linesList);
+  }
+
+  private searchAndRemoveMapElement(
+    mapElement: polygon | polyline,
+    listOfElements: any[]
+  ) {
+    let elementIndex = 0;
+
+    // Try to find in the list the element id
     while (
-      i <= this.linesList.length &&
-      this.linesList[i]._leaflet_id !== line._leaflet_id
+      elementIndex <= listOfElements.length &&
+      listOfElements[elementIndex]._leaflet_id !== mapElement._leaflet_id
     ) {
-      i++;
+      elementIndex++;
     }
-    if (i <= this.linesList.length) {
-      this.linesList.splice(i, 1);
-    } else {
-      console.warn("There was an error in the line list!");
+
+    // Remove element if found in list
+    if (elementIndex <= listOfElements.length) {
+      listOfElements.splice(elementIndex, 1);
     }
   }
 

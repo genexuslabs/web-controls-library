@@ -3,42 +3,42 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   h,
   Prop
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
-import { polygon } from "leaflet/dist/leaflet-src.esm";
+import { LatLngTuple, Polygon, polygon } from "leaflet";
 import { parseCoords } from "../common/coordsValidate";
 
+const DEFAULT_COORDS: LatLngTuple = [0, 0];
+
 @Component({
-  shadow: false,
+  shadow: true,
   tag: "gx-map-polygon"
 })
 export class MapPolygon implements GxComponent {
   @Element() element: HTMLGxMapPolygonElement;
-  private polygonInstance: any;
+  private polygonInstance: Polygon;
 
   /**
    * The coordinates where the polygon will appear in the map.
-   *
    */
   @Prop({ mutable: true }) coords = "0, 0";
 
   /**
-   * Emmits when the element is added to a `<gx-map>`.
-   *
+   * Emitted when the element is added to a `<gx-map>`.
    */
   @Event() gxMapPolygonDidLoad: EventEmitter;
 
   /**
-   * Emmits when the element is deleted from a `<gx-map>`.
-   *
+   * Emitted when the element is deleted from a `<gx-map>`.
    */
   @Event() gxMapPolygonDeleted: EventEmitter;
 
   private setupPolygon(coords) {
     this.polygonInstance = polygon(coords, {
-      color: "blue",
+      color: "#e4364f", // Same default color as Web
       weight: 3
     });
   }
@@ -48,25 +48,21 @@ export class MapPolygon implements GxComponent {
     if (coords !== null) {
       this.setupPolygon(coords);
     } else {
-      console.warn(
-        "GX warning: Cannot read 'coords' attribute, default coords set (gx-map-polygon)",
-        this.element
-      );
-      this.setupPolygon([0, 0]);
+      this.setupPolygon(DEFAULT_COORDS);
     }
 
     this.gxMapPolygonDidLoad.emit(this.polygonInstance);
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.gxMapPolygonDeleted.emit(this.polygonInstance);
   }
 
   render() {
     return (
-      <div>
+      <Host aria-hidden="true">
         <slot />
-      </div>
+      </Host>
     );
   }
 }
