@@ -1026,6 +1026,12 @@ export namespace Components {
      */
     tooltipCaption: string;
   }
+  interface GxMapPolygon {
+    /**
+     * The coordinates where the polygon will appear in the map.
+     */
+    coords: string;
+  }
   interface GxMessage {
     /**
      * Text for the close button.
@@ -2115,6 +2121,13 @@ declare global {
     prototype: HTMLGxMapMarkerElement;
     new (): HTMLGxMapMarkerElement;
   };
+  interface HTMLGxMapPolygonElement
+    extends Components.GxMapPolygon,
+      HTMLStencilElement {}
+  var HTMLGxMapPolygonElement: {
+    prototype: HTMLGxMapPolygonElement;
+    new (): HTMLGxMapPolygonElement;
+  };
   interface HTMLGxMessageElement
     extends Components.GxMessage,
       HTMLStencilElement {}
@@ -2309,6 +2322,7 @@ declare global {
     "gx-map": HTMLGxMapElement;
     "gx-map-line": HTMLGxMapLineElement;
     "gx-map-marker": HTMLGxMapMarkerElement;
+    "gx-map-polygon": HTMLGxMapPolygonElement;
     "gx-message": HTMLGxMessageElement;
     "gx-modal": HTMLGxModalElement;
     "gx-navbar": HTMLGxNavbarElement;
@@ -3462,6 +3476,20 @@ declare namespace LocalJSX {
      */
     tooltipCaption?: string;
   }
+  interface GxMapPolygon {
+    /**
+     * The coordinates where the polygon will appear in the map.
+     */
+    coords?: string;
+    /**
+     * Emmits when the element is deleted from a `<gx-map>`.
+     */
+    onGxMapPolygonDeleted?: (event: CustomEvent<any>) => void;
+    /**
+     * Emmits when the element is added to a `<gx-map>`.
+     */
+    onGxMapPolygonDidLoad?: (event: CustomEvent<any>) => void;
+  }
   interface GxMessage {
     /**
      * Text for the close button.
@@ -4466,6 +4494,7 @@ declare namespace LocalJSX {
     "gx-map": GxMap;
     "gx-map-line": GxMapLine;
     "gx-map-marker": GxMapMarker;
+    "gx-map-polygon": GxMapPolygon;
     "gx-message": GxMessage;
     "gx-modal": GxModal;
     "gx-navbar": GxNavbar;
@@ -4554,6 +4583,8 @@ declare module "@stencil/core" {
         JSXBase.HTMLAttributes<HTMLGxMapLineElement>;
       "gx-map-marker": LocalJSX.GxMapMarker &
         JSXBase.HTMLAttributes<HTMLGxMapMarkerElement>;
+      "gx-map-polygon": LocalJSX.GxMapPolygon &
+        JSXBase.HTMLAttributes<HTMLGxMapPolygonElement>;
       "gx-message": LocalJSX.GxMessage &
         JSXBase.HTMLAttributes<HTMLGxMessageElement>;
       "gx-modal": LocalJSX.GxModal & JSXBase.HTMLAttributes<HTMLGxModalElement>;
