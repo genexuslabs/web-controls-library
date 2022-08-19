@@ -20,7 +20,6 @@ You can define a set of elements and rules that they must follow
 | `elements`        | `elements`          | This attribute let you specify the elements, rules and conditions of the dynamic form. Must be a JSON string, based on DynamicForm SDT | `string`  | `undefined` |
 | `errorCssClass`   | `error-css-class`   | A css class to set to attributes when a error occurs                                                                                   | `string`  | `undefined` |
 | `inputCssClass`   | `input-css-class`   | A css class to set to attributes                                                                                                       | `string`  | `undefined` |
-| `point`           | `point`             | This attribute let you specify the entry point to upload files                                                                         | `string`  | `undefined` |
 | `readonly`        | `readonly`          | This attribute let you specify if the dynamic form is readonly                                                                         | `boolean` | `false`     |
 | `subgroup`        | `subgroup`          | This attribute let you specify if this dynamic form is a subgroup of another dynamic form                                              | `boolean` | `false`     |
 | `warningCssClass` | `warning-css-class` | A css class to set to attributes when a warning occurs                                                                                 | `string`  | `undefined` |
@@ -28,10 +27,10 @@ You can define a set of elements and rules that they must follow
 
 ## Events
 
-| Event          | Description                       | Type               |
-| -------------- | --------------------------------- | ------------------ |
-| `onMessage`    | Emited when a message is shown    | `CustomEvent<any>` |
-| `onSubmitForm` | Emited when the form is submitted | `CustomEvent<any>` |
+| Event          | Description                        | Type               |
+| -------------- | ---------------------------------- | ------------------ |
+| `onMessage`    | Emitted when a message is shown    | `CustomEvent<any>` |
+| `onSubmitForm` | Emitted when the form is submitted | `CustomEvent<any>` |
 
 
 ## Dependencies
@@ -42,7 +41,6 @@ You can define a set of elements and rules that they must follow
 
 ### Depends on
 
-- [gx-form-field](../form-field)
 - [gx-edit](../edit)
 - [gx-radio-group](../radio-group)
 - [gx-radio-option](../radio-option)
@@ -51,6 +49,7 @@ You can define a set of elements and rules that they must follow
 - [gx-select-option](../select-option)
 - [gx-checkbox](../checkbox)
 - [gx-switch](../switch)
+- [gx-form-field](../form-field)
 
 ### Graph
 ```mermaid

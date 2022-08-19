@@ -1,3 +1,7 @@
 gx-dynamic-form {
   display: block;
+
+  [hidden] {
+    display: none !important;
+  }
 }
