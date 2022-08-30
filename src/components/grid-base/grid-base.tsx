@@ -27,6 +27,13 @@ export interface GridBase {
   invisibleMode: "collapse" | "keep-space";
 
   /**
+   * When set to `true`, the grid items will be loaded in inverse order, with
+   * the first element at the bottom and the "Loading" message (infinite-scroll)
+   * at the top.
+   */
+  inverseLoading?: boolean;
+
+  /**
    * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.
    *
    * | Value        | Details                                                                                        |
@@ -72,6 +79,7 @@ export class GridBaseHelper {
         "gx-grid-base": true,
         [cmp.cssClass]: !!cmp.cssClass,
         [classes.vars]: true,
+        "gx-grid-inverse-loading": !!cmp.inverseLoading,
         "gx-grid-empty": this.isEmptyGrid(cmp),
         "gx-grid-empty-loading":
           cmp.loadingState === "loading" && cmp.recordCount <= 0,
