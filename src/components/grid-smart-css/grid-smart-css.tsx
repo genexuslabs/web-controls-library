@@ -52,6 +52,16 @@ export class GridSmartCss
   @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
+   * When set to `true`, the grid items will be loaded in inverse order, with
+   * the first element at the bottom and the "Loading" message (infinite-scroll)
+   * at the top.
+   * Inverse Loading is currently supported when:
+   *  - `direction = "vertical"`
+   *  - `itemLayoutMode = "single" | "mbyq"`
+   */
+  @Prop() readonly inverseLoading: boolean = false;
+
+  /**
    * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.
    *
    * | Value        | Details                                                                                        |
@@ -101,7 +111,7 @@ export class GridSmartCss
    */
   @Event({ bubbles: false }) gxInfiniteThresholdReached: EventEmitter<void>;
 
-  /*
+  /**
    * This method must be called after new grid data was fetched by the infinite scroller.
    */
   @Method()
@@ -141,6 +151,7 @@ export class GridSmartCss
 
   render() {
     this.ensureViewPort();
+
     return (
       <Host {...GridBaseHelper.hostData(this)}>
         {[

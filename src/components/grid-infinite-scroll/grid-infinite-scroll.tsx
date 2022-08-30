@@ -9,9 +9,7 @@ import {
   State,
   Watch,
   Host,
-  h,
-  readTask,
-  writeTask
+  h
 } from "@stencil/core";
 
 @Component({
@@ -20,19 +18,7 @@ import {
   tag: "gx-grid-infinite-scroll"
 })
 export class GridInfiniteScroll implements ComponentInterface {
-  constructor() {
-    this.onScroll = this.onScroll.bind(this);
-  }
-
-  private thrPx = 0;
-  private thrPc = 0;
   private scrollEl?: HTMLElement = null;
-  private scrollListenerEl?: HTMLElement;
-  private didFire = false;
-  private isBusy = false;
-  private attachedToWindow = false;
-  private attached = false;
-  private supported = true;
 
   @Element() el!: HTMLGxGridInfiniteScrollElement;
   @State() isLoading = false;
@@ -85,57 +71,11 @@ export class GridInfiniteScroll implements ComponentInterface {
    */
   @Event({ bubbles: false }) gxInfinite!: EventEmitter<void>;
 
-  componentWillLoad() {
-    this.itemCountChanged();
-  }
-
-  @Watch("itemCount")
-  public itemCountChanged() {
-    if (this.disabled || this.itemCount === 0) {
-      return;
-    }
-
-    setTimeout(() => {
-      let emitInfinite = false;
-      if (this.ensure()) {
-        emitInfinite = this.isVisibleInViewport(this.el);
-        if (emitInfinite) {
-          this.gxInfinite.emit();
-        }
-      }
-    }, 100);
-  }
-
   @Watch("disabled")
-  protected disabledChanged(val: boolean) {
+  protected disabledChanged() {
     if (this.disabled) {
       this.isLoading = false;
-      this.isBusy = false;
     }
-    this.enableScrollEvents(!val);
-  }
-
-  @Watch("threshold")
-  protected thresholdChanged(val: string) {
-    if (val.lastIndexOf("%") > -1) {
-      this.thrPx = 0;
-      this.thrPc = parseFloat(val) / 100;
-    } else {
-      this.thrPx = parseFloat(val);
-      this.thrPc = 0;
-    }
-  }
-
-  private isVisibleInViewport(el: HTMLElement): boolean {
-    const rect = el.getBoundingClientRect();
-    const elemTop = rect.top;
-    const element = this.getScrollListener();
-
-    return (
-      el.style.display !== "none" &&
-      elemTop >= 0 &&
-      elemTop <= (element["clientHeight"] || element["innerHeight"])
-    );
   }
 
   private getScrollParent(node: any): HTMLElement {
@@ -164,90 +104,8 @@ export class GridInfiniteScroll implements ComponentInterface {
     return this.getScrollParent(node.parentNode);
   }
 
-  private ensure(): boolean {
-    if (this.disabled || this.attached || this.itemCount === 0) {
-      return this.supported;
-    }
-
-    //Horizontal Orientation not supported
-    const gridComponent = this.el.closest(".gx-grid-base");
-    if (
-      gridComponent &&
-      gridComponent.getAttribute("direction") === "horizontal"
-    ) {
-      this.supported = false;
-      return this.supported;
-    }
-
-    let contentEl = this.getScrollParent(this.el);
-
-    if (contentEl !== null) {
-      if (contentEl === window.document.documentElement) {
-        this.scrollListenerEl = null;
-        contentEl = window.document.body;
-        this.attachedToWindow = true;
-      } else {
-        this.scrollListenerEl = contentEl;
-      }
-
-      this.scrollEl = contentEl as HTMLElement;
-      this.thresholdChanged(this.threshold);
-      this.enableScrollEvents(!this.disabled);
-      this.attached = !this.disabled;
-      if (this.position === "top") {
-        writeTask(() => {
-          if (this.scrollEl !== null) {
-            this.scrollEl.scrollTop =
-              this.scrollEl.scrollHeight - this.scrollEl.clientHeight;
-          }
-        });
-      }
-    }
-    return this.supported;
-  }
-
-  async componentDidLoad() {
-    this.ensure();
-  }
-
   disconnectedCallback() {
     this.scrollEl = null;
-    this.attachedToWindow = false;
-    this.attached = false;
-    this.scrollListenerEl = null;
-  }
-
-  private onScroll() {
-    const scrollEl = this.scrollEl;
-    if (scrollEl === null || !this.canStart()) {
-      return 1;
-    }
-    const infiniteHeight = this.el.offsetHeight;
-    const scrollTop = !this.attachedToWindow
-      ? scrollEl.scrollTop
-      : window.scrollY;
-    const scrollHeight = scrollEl.scrollHeight;
-    const height = !this.attachedToWindow
-      ? scrollEl.offsetHeight
-      : window.innerHeight;
-    const threshold = this.thrPc !== 0 ? height * this.thrPc : this.thrPx;
-
-    const distanceFromInfinite =
-      this.position === "bottom"
-        ? scrollHeight - infiniteHeight - scrollTop - threshold - height
-        : scrollTop - infiniteHeight - threshold;
-    if (distanceFromInfinite < 0) {
-      if (!this.didFire) {
-        this.isLoading = true;
-        this.didFire = true;
-        this.gxInfinite.emit();
-        return 3;
-      }
-    } else {
-      this.didFire = false;
-    }
-
-    return 4;
   }
 
   /**
@@ -267,79 +125,6 @@ export class GridInfiniteScroll implements ComponentInterface {
       return;
     }
     this.isLoading = false;
-
-    if (this.position === "top") {
-      /**
-       * New content is being added at the top, but the scrollTop position stays the same,
-       * which causes a scroll jump visually. This algorithm makes sure to prevent this.
-       * (Frame 1)
-       *    - complete() is called, but the UI hasn't had time to update yet.
-       *    - Save the current content dimensions.
-       *    - Wait for the next frame using _dom.read, so the UI will be updated.
-       * (Frame 2)
-       *    - Read the new content dimensions.
-       *    - Calculate the height difference and the new scroll position.
-       *    - Delay the scroll position change until other possible dom reads are done using _dom.write to be performant.
-       * (Still frame 2, if I'm correct)
-       *    - Change the scroll position (= visually maintain the scroll position).
-       *    - Change the state to re-enable the InfiniteScroll.
-       *    - This should be after changing the scroll position, or it could
-       *    cause the InfiniteScroll to be triggered again immediately.
-       * (Frame 3)
-       *    Done.
-       */
-      this.isBusy = true;
-      // ******** DOM READ ****************
-      // Save the current content dimensions before the UI updates
-      const prev = scrollEl.scrollHeight - scrollEl.scrollTop;
-
-      // ******** DOM READ ****************
-      requestAnimationFrame(() => {
-        readTask(() => {
-          // UI has updated, save the new content dimensions
-          const scrollHeight = scrollEl.scrollHeight;
-          // New content was added on top, so the scroll position should be changed immediately to prevent it from jumping around
-          const newScrollTop = scrollHeight - prev;
-
-          // ******** DOM WRITE ****************
-          requestAnimationFrame(() => {
-            writeTask(() => {
-              scrollEl.scrollTop = newScrollTop;
-              this.isBusy = false;
-            });
-          });
-        });
-      });
-    }
-  }
-
-  private canStart(): boolean {
-    return (
-      !this.disabled &&
-      !this.isBusy &&
-      this.scrollEl !== null &&
-      !this.isLoading &&
-      this.supported
-    );
-  }
-
-  private getScrollListener() {
-    if (this.attachedToWindow) {
-      return window;
-    } else {
-      return this.scrollListenerEl;
-    }
-  }
-
-  private enableScrollEvents(shouldListen: boolean) {
-    const scrollListener = this.getScrollListener();
-    if (scrollListener !== null) {
-      if (shouldListen) {
-        scrollListener.addEventListener("scroll", this.onScroll);
-      } else {
-        scrollListener.removeEventListener("scroll", this.onScroll);
-      }
-    }
   }
 
   render() {
