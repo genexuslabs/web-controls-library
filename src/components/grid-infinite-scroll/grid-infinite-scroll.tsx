@@ -381,7 +381,7 @@ export class GridInfiniteScroll implements ComponentInterface {
   }
 
   private connectResizeObserver() {
-    if (!this.infiniteScrollSupport || this.resizeObserver != null) {
+    if (this.resizeObserver != null) {
       return;
     }
 
@@ -391,6 +391,7 @@ export class GridInfiniteScroll implements ComponentInterface {
     // data, unexpected behaviors will occur.
     // Also, Android does not support Inverse Loading in this scenario either.
     if (
+      this.infiniteScrollSupport &&
       this.position == "top" &&
       this.typeOfParentElementAttached !== "window"
     ) {
@@ -536,17 +537,19 @@ export class GridInfiniteScroll implements ComponentInterface {
     this.needForRAF = false; // No need to call RAF up until next frame
 
     requestAnimationFrame(() => {
-      this.needForRAF = true; // RAF now consumes the movement instruction so a new one can come
+      readTask(() => {
+        this.needForRAF = true; // RAF now consumes the movement instruction so a new one can come
 
-      if (this.isBusyWaitingForCompleteEvent) {
-        return;
-      }
-      const shouldFetchMoreItems = this.infiniteScrollIsVisibleInViewport();
+        if (this.isBusyWaitingForCompleteEvent) {
+          return;
+        }
+        const shouldFetchMoreItems = this.infiniteScrollIsVisibleInViewport();
 
-      if (shouldFetchMoreItems) {
-        this.isBusyWaitingForCompleteEvent = true;
-        this.gxInfinite.emit();
-      }
+        if (shouldFetchMoreItems) {
+          this.isBusyWaitingForCompleteEvent = true;
+          this.gxInfinite.emit();
+        }
+      });
     });
   };
 
@@ -560,7 +563,9 @@ export class GridInfiniteScroll implements ComponentInterface {
     }
     // Remove the event
     else {
-      this.scrollListenerElement.removeEventListener(
+      // If the component is disconnected before the `getScrollableParentToAttachInfiniteScroll()`
+      // method is performed, the variable reference will be undefined
+      this.scrollListenerElement?.removeEventListener(
         "scroll",
         this.handleScrollChange
       );
@@ -604,29 +609,38 @@ export class GridInfiniteScroll implements ComponentInterface {
     this.infiniteScrollSupport =
       gridComponent && gridComponent.direction === "vertical";
 
-    // Initialize the scrollTop value as soon as possible
-    if (this.infiniteScrollSupport && this.position == "top") {
+    // Read at the best moment the scrollHeight and clientHeight values
+    readTask(() => {
       const currentScrollHeight = this.getScrollableParentScrollHeight();
       const currentClientHeight = this.getScrollableParentClientHeight();
 
-      this.scrollableParentElement.scrollTop =
-        currentScrollHeight - currentClientHeight;
-    }
+      requestAnimationFrame(() => {
+        writeTask(() => {
+          // Update at the best moment the initial scrollTop
+          if (this.infiniteScrollSupport && this.position == "top") {
+            this.scrollableParentElement.scrollTop =
+              currentScrollHeight - currentClientHeight;
+          }
 
-    this.didLoad = true;
-    this.handleItemCountChanged(this.itemCount, this.itemCount);
+          // After the scrollTop update, set algorithms to check the grid state
+          requestAnimationFrame(() => {
+            this.didLoad = true;
 
-    if (!this.disabled) {
-      this.connectResizeObserver();
-      this.setScrollListener(true);
-    }
+            if (!this.disabled) {
+              this.handleItemCountChanged(this.itemCount, this.itemCount);
+              this.connectResizeObserver();
+
+              this.setScrollListener(true);
+            }
+          });
+        });
+      });
+    });
   }
 
   disconnectedCallback() {
-    this.scrollableParentElement = null;
     this.scrollEventWasNotCauseByTheUser = false;
     this.isBusyWaitingForCompleteEvent = false;
-    this.scrollListenerElement = null;
 
     this.disconnectResizeObserver();
 
