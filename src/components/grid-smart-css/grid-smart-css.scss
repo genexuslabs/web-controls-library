@@ -22,8 +22,8 @@ gx-grid-smart-css {
 
   @include visibility(flex);
 
-  > div {
-    flex: 1;
+  #{$grid-content-selector} {
+    display: grid;
   }
 
   // - - - - - - - - - - - - - - - - - -
@@ -41,34 +41,11 @@ gx-grid-smart-css {
     }
   }
 
-  #{$grid-content-selector} {
-    @include visibility(grid);
-  }
-
   &[snap-to-grid][direction="vertical"] {
     #{$grid-content-selector} {
       scroll-snap-type: y mandatory;
       & > gx-grid-smart-cell {
         scroll-snap-align: start;
-      }
-    }
-  }
-
-  &[direction="horizontal"] {
-    #{$grid-content-selector} {
-      max-width: var(--gx-grid-css-viewport-size);
-      overflow-x: hidden;
-    }
-    @media (pointer: coarse) {
-      #{$grid-content-selector} {
-        overflow-x: auto; // Fix for Mozilla, because it only accepts: visible, hidden, auto or scroll
-        overflow-x: overlay;
-        scrollbar-width: none;
-
-        &::-webkit-scrollbar {
-          width: 0px;
-          height: 0px;
-        }
       }
     }
   }
@@ -90,24 +67,18 @@ gx-grid-smart-css {
 //        Vertical Orientation
 // - - - - - - - - - - - - - - - - - -
 gx-grid-smart-css[direction="vertical"] {
-  // &:not([auto-grow]) {
-  //   // max-height: var(--gx-grid-css-viewport-size);
-
-  //   #{$grid-content-selector} {
-  //     overflow-y: auto;
-  //   }
-  // }
-
   // This ensures that the rows will only set their height based on the height
   // of the content.
   #{$grid-content-selector} {
     grid-auto-rows: min-content;
-  }
 
-  #{$grid-content-selector} {
+    // The relative height of the inner content will determine the height of
+    // the cell. In this case, the inner height is "relative" to the grid
+    // viewport height
     & > gx-grid-smart-cell[relative-size] {
       min-height: calc(
-        var(--gx-grid-css-viewport-size) * var(--gx-grid-item-relative-size)
+        var(--gx-grid-smart-css-viewport-size) *
+          var(--gx-grid-item-relative-size)
       );
     }
   }
@@ -177,10 +148,29 @@ gx-grid-smart-css[direction="vertical"] {
 //       Horizontal Orientation
 // - - - - - - - - - - - - - - - - - -
 gx-grid-smart-css[direction="horizontal"] {
+  max-width: 100%;
+
   #{$grid-content-selector} {
+    grid-auto-flow: column;
+    overflow-x: auto;
+
+    // Hide the scrollbars by default.
+    // TODO: In the future, these values must be configured with the
+    // "Scroll Indicators Visibility" property of GeneXus
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      width: 0px;
+      height: 0px;
+    }
+
+    // The relative width of the inner content will determine the width of
+    // the cell. In this case, the inner width is "relative" to the grid
+    // viewport width
     & > gx-grid-smart-cell[relative-size] {
       width: calc(
-        var(--gx-grid-css-viewport-size) * var(--gx-grid-item-relative-size)
+        var(--gx-grid-smart-css-viewport-size) *
+          var(--gx-grid-item-relative-size)
       );
     }
   }
@@ -189,7 +179,6 @@ gx-grid-smart-css[direction="horizontal"] {
   &[item-layout-mode="single"] {
     #{$grid-content-selector} {
       grid-template-rows: 1fr;
-      grid-auto-flow: column;
     }
   }
 
@@ -197,14 +186,12 @@ gx-grid-smart-css[direction="horizontal"] {
   &[item-layout-mode="mbyq"] {
     #{$grid-content-selector} {
       grid-template-rows: repeat(var(--gx-grid-css-items), 1fr);
-      grid-auto-flow: column;
     }
   }
 
   // - - - - - - - Multiple by Size - - - - - - -
   &[item-layout-mode="mbys"] {
     #{$grid-content-selector} {
-      grid-auto-flow: column;
       grid-template-rows: repeat(
         auto-fill,
         minmax(var(--gx-grid-css-min-size), 1fr)

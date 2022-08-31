@@ -91,7 +91,7 @@ export class GridFlex
    */
   @Event({ bubbles: false }) gxInfiniteThresholdReached: EventEmitter<void>;
 
-  /*
+  /**
    * This method must be called after new grid data was fetched by the infinite scroller.
    */
   @Method()
