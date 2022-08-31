@@ -47,7 +47,7 @@ gx-grid-smart-css {
   &[snap-to-grid] {
     // Default setting
     #{$grid-content-selector} {
-      & > gx-grid-smart-cell {
+      & > .gx-grid-row {
         scroll-snap-align: start;
       }
     }
@@ -80,7 +80,7 @@ gx-grid-smart-css[direction="vertical"] {
     // The relative height of the inner content will determine the height of
     // the cell. In this case, the inner height is "relative" to the grid
     // viewport height
-    & > gx-grid-smart-cell[relative-size] {
+    & > .gx-grid-row[relative-size] {
       min-height: calc(
         var(--gx-grid-smart-css-viewport-size) *
           var(--gx-grid-item-relative-size)
@@ -116,7 +116,7 @@ gx-grid-smart-css[direction="vertical"] {
 
     &.gx-grid-inverse-loading {
       #{$grid-content-selector} {
-        & > gx-grid-smart-cell {
+        & > .gx-grid-row {
           grid-row-start: var(--gx-cell-index--single);
         }
       }
@@ -131,7 +131,7 @@ gx-grid-smart-css[direction="vertical"] {
 
     &.gx-grid-inverse-loading {
       #{$grid-content-selector} {
-        & > gx-grid-smart-cell {
+        & > .gx-grid-row {
           grid-row-start: var(--gx-cell-index--mbyq);
         }
       }
@@ -172,7 +172,7 @@ gx-grid-smart-css[direction="horizontal"] {
     // The relative width of the inner content will determine the width of
     // the cell. In this case, the inner width is "relative" to the grid
     // viewport width
-    & > gx-grid-smart-cell[relative-size] {
+    & > .gx-grid-row[relative-size] {
       width: calc(
         var(--gx-grid-smart-css-viewport-size) *
           var(--gx-grid-item-relative-size)
