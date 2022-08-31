@@ -41,24 +41,29 @@ gx-grid-smart-css {
     }
   }
 
-  &[snap-to-grid][direction="vertical"] {
+  // - - - - - - - - - - - - - - - - - -
+  //            Snap to Grid
+  // - - - - - - - - - - - - - - - - - -
+  &[snap-to-grid] {
+    // Default setting
     #{$grid-content-selector} {
-      scroll-snap-type: y mandatory;
       & > gx-grid-smart-cell {
         scroll-snap-align: start;
       }
     }
-  }
 
-  &[snap-to-grid][direction="horizontal"] {
-    #{$grid-content-selector} {
-      scroll-snap-type: x mandatory;
-      & > gx-grid-smart-cell {
-        scroll-snap-align: start;
+    // Vertical orientation
+    &[direction="vertical"] {
+      #{$grid-content-selector} {
+        scroll-snap-type: y mandatory;
       }
     }
-    .gx-smart-cell-drag-active {
-      scroll-snap-type: unset !important;
+
+    // Horizontal orientation
+    &[direction="horizontal"] {
+      #{$grid-content-selector} {
+        scroll-snap-type: x mandatory;
+      }
     }
   }
 }
