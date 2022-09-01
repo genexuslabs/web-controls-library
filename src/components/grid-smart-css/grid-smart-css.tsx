@@ -7,7 +7,8 @@ import {
   Host,
   Method,
   Prop,
-  h
+  h,
+  Watch
 } from "@stencil/core";
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
@@ -26,6 +27,15 @@ export class GridSmartCss
     this.handleGxInfinite = this.handleGxInfinite.bind(this);
   }
 
+  /** `true` if the `componentDidLoad()` method was called */
+  private didLoad = false;
+
+  private needForRAF = true; // To prevent redundant RAF (request animation frame) calls
+  private resizeObserver: ResizeObserver = null;
+
+  // Refs
+  private scrollableContainer: HTMLElement = null;
+
   @Element() element!: HTMLGxGridSmartCssElement;
 
   /**
@@ -42,6 +52,12 @@ export class GridSmartCss
   @Prop() readonly cssClass: string;
 
   /**
+   * Specifies the direction of the flexible items.
+   */
+  @Prop({ reflect: true }) readonly direction: "vertical" | "horizontal" =
+    "vertical";
+
+  /**
    * This attribute lets you specify how this element will behave when hidden.
    *
    * | Value        | Details                                                                     |
@@ -52,14 +68,29 @@ export class GridSmartCss
   @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
+   * When set to `true`, the grid items will be loaded in inverse order, with
+   * the first element at the bottom and the "Loading" message (infinite-scroll)
+   * at the top.
+   * Inverse Loading is currently supported when:
+   *  - `direction = "vertical"`
+   *  - `itemLayoutMode = "single" | "mbyq"`
+   */
+  @Prop() readonly inverseLoading: boolean = false;
+
+  /**
+   * Grid Item Layout Mode: Single, Multiple by quantity, multiple by size.
+   */
+  @Prop({ reflect: true }) readonly itemLayoutMode: "single" | "mbyq" | "mbys" =
+    "single";
+
+  /**
    * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.
    *
-   * | Value        | Details                                                                                        |
-   * | ------------ | ---------------------------------------------------------------------------------------------- |
-   * | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                |
-   * | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
+   * | Value        | Details                                                                                          |
+   * | ------------ | ------------------------------------------------------------------------------------------------ |
+   * | `loading`    | The grid is waiting the server for the grid data. Grid loading mask will be shown.               |
+   * | `loaded`     | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
    */
-
   @Prop() readonly loadingState: "loading" | "loaded";
 
   /**
@@ -80,19 +111,7 @@ export class GridSmartCss
   @Prop() readonly threshold: string = "150px";
 
   /**
-    Specifies the direction of the flexible items.
-   */
-  @Prop({ reflect: true }) readonly direction: "vertical" | "horizontal" =
-    "vertical";
-
-  /**
-    Grid Item Layout Mode: Single, Multiple by quantity, multiple by size.
-   */
-  @Prop({ reflect: true }) readonly itemLayoutMode: "single" | "mbyq" | "mbys" =
-    "single";
-
-  /**
-    Scroll snapping allows to lock the viewport to certain elements or locations after a user has finished scrolling
+   * Scroll snapping allows to lock the viewport to certain elements or locations after a user has finished scrolling
    */
   @Prop({ reflect: true }) readonly snapToGrid = false;
 
@@ -101,7 +120,21 @@ export class GridSmartCss
    */
   @Event({ bubbles: false }) gxInfiniteThresholdReached: EventEmitter<void>;
 
-  /*
+  @Watch("direction")
+  handleDirectionChange(newValue: "vertical" | "horizontal") {
+    if (!this.didLoad) {
+      return;
+    }
+    this.needForRAF = true;
+
+    // Disconnect the previous observer since the callback will change
+    this.disconnectResizeObserver();
+
+    // Connect the observer with the new callback
+    this.connectResizeObserver(newValue);
+  }
+
+  /**
    * This method must be called after new grid data was fetched by the infinite scroller.
    */
   @Method()
@@ -115,32 +148,95 @@ export class GridSmartCss
     return this.direction === "horizontal";
   }
 
-  private ensureViewPort() {
-    const directionSize = this.isHorizontal()
-      ? this.element.parentElement.offsetWidth
-      : this.element.parentElement.offsetHeight;
+  /**
+   * When `direction = "horizontal"` set a resizeObserver to update a CSS
+   * variable with the grid's width value. When any grid cell has a relative
+   * width, its width must be relative to the grid width. For that to be
+   * possible, we have to sync the grid viewport width with a CSS variable.
+   *
+   * The same concept applies for `direction = "vertical"` and the grid's height.
+   */
+  private connectResizeObserver(direction: "vertical" | "horizontal") {
+    if (this.resizeObserver != null) {
+      return;
+    }
 
-    if (directionSize > 0) {
-      const elementStyle = this.element.style;
-      elementStyle.setProperty(
-        "--gx-grid-css-viewport-size",
-        directionSize + "px"
+    if (direction == "vertical") {
+      this.resizeObserver = new ResizeObserver(
+        this.resizeObserverVerticalDirectionCallback
       );
+    } else {
+      this.resizeObserver = new ResizeObserver(
+        this.resizeObserverHorizontalDirectionCallback
+      );
+    }
+
+    this.resizeObserver.observe(this.scrollableContainer);
+  }
+
+  // Callback for direction = "vertical"
+  private resizeObserverVerticalDirectionCallback = () => {
+    if (!this.needForRAF) {
+      return;
+    }
+    this.needForRAF = false; // No need to call RAF up until next frame
+
+    // Update CSS variable in the best moment
+    requestAnimationFrame(() => {
+      this.needForRAF = true; // RAF now consumes the movement instruction so a new one can come
+
+      this.element.style.setProperty(
+        "--gx-grid-smart-css-viewport-size",
+        `${this.scrollableContainer.clientHeight}px`
+      );
+    });
+  };
+
+  // Callback for direction = "horizontal"
+  private resizeObserverHorizontalDirectionCallback = () => {
+    if (!this.needForRAF) {
+      return;
+    }
+    this.needForRAF = false; // No need to call RAF up until next frame
+
+    // Update CSS variable in the best moment
+    requestAnimationFrame(() => {
+      this.needForRAF = true; // RAF now consumes the movement instruction so a new one can come
+
+      this.element.style.setProperty(
+        "--gx-grid-smart-css-viewport-size",
+        `${this.scrollableContainer.clientWidth}px`
+      );
+    });
+  };
+
+  private disconnectResizeObserver() {
+    if (this.resizeObserver != null) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
     }
   }
 
   componentDidLoad() {
-    if (this.isHorizontal()) {
-      const scrollableContainer: HTMLElement = this.element.querySelector(
-        '[slot="grid-content"]'
-      );
+    // Store the ref as it is needed in the resize observer
+    this.scrollableContainer = this.element.querySelector(
+      '[slot="grid-content"]'
+    );
 
-      attachHorizontalScrollWithDragHandler(scrollableContainer);
+    if (this.isHorizontal()) {
+      attachHorizontalScrollWithDragHandler(this.scrollableContainer);
     }
+    this.connectResizeObserver(this.direction);
+
+    this.didLoad = true;
+  }
+
+  disconnectedCallback() {
+    this.scrollableContainer = null;
+    this.disconnectResizeObserver();
   }
 
   render() {
-    this.ensureViewPort();
     return (
       <Host {...GridBaseHelper.hostData(this)}>
         {[
