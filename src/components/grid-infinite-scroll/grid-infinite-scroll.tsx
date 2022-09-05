@@ -164,17 +164,6 @@ export class GridInfiniteScroll implements ComponentInterface {
     this.tryToFetchMoreItems();
   }
 
-  @Watch("disabled")
-  protected disabledChanged(newDisabledValue: boolean) {
-    // Enable/disable scroll events since the disabled value has changed
-    this.setScrollListener(!newDisabledValue);
-
-    // If the grid has new data, connect the resize observer
-    if (!newDisabledValue) {
-      this.connectResizeObserver();
-    }
-  }
-
   @Watch("threshold")
   protected thresholdChanged(newValue: string) {
     // Threshold in percentage
@@ -221,10 +210,7 @@ export class GridInfiniteScroll implements ComponentInterface {
       this.scrollTopIsGoingToBeUpdated = false;
       this.needForRAF = true;
       this.needForRAFResizeObserver = true;
-
-      this.disconnectResizeObserver();
     }
-
     // If the grid has not fully loaded, try to fetch more data
     else if (!this.isBusyWaitingForCompleteEvent) {
       this.tryToFetchMoreItems();
@@ -531,7 +517,11 @@ export class GridInfiniteScroll implements ComponentInterface {
       this.lastScrollTop = this.getScrollableParentScrollTop();
     }
 
-    if (!this.needForRAF || this.isBusyWaitingForCompleteEvent) {
+    if (
+      this.disabled ||
+      !this.needForRAF ||
+      this.isBusyWaitingForCompleteEvent
+    ) {
       return;
     }
     this.needForRAF = false; // No need to call RAF up until next frame
@@ -626,12 +616,10 @@ export class GridInfiniteScroll implements ComponentInterface {
           requestAnimationFrame(() => {
             this.didLoad = true;
 
-            if (!this.disabled) {
-              this.handleItemCountChanged(this.itemCount, this.itemCount);
-              this.connectResizeObserver();
+            this.handleItemCountChanged(this.itemCount, this.itemCount);
+            this.connectResizeObserver();
 
-              this.setScrollListener(true);
-            }
+            this.setScrollListener(true);
           });
         });
       });
