@@ -4,10 +4,10 @@
 $grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller), & > * > .scrollable-content";
 
 .gx-grid-base {
-  @include transition-properties();
   flex: 1;
   align-self: stretch;
   overflow: hidden; // Required for gx-loading's positioning
+  @include transition-properties();
 
   #{$grid-content-selector} {
     flex: 1;
