@@ -81,6 +81,16 @@ export class Table
   @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
+   * This attribute lets you determine whether the gx-table control has a scroll or not.
+   *
+   * | Value    | Details                                                                                                           |
+   * | -------- | ----------------------------------------------------------------------------------------------------------------- |
+   * | `scroll` | The table provides scrollable behavior. When the table height exceeds the space available, a scroll bar is shown. |
+   * | `clip`   | The table doesn't provide scroll in any case; content is clipped at the bottom.                                   |
+   */
+  @Prop() readonly overflowBehavior: "scroll" | "clip" = "clip";
+
+  /**
    * Like the `grid-templates-rows` CSS property, this attribute defines the
    * rows of the grid with a space-separated list of values. The values
    * represent the height of each row.
@@ -131,7 +141,14 @@ export class Table
 
     return (
       <Host
-        class={{ [this.cssClass]: !!this.cssClass, [classes.vars]: true }}
+        class={{
+          [this.cssClass]: !!this.cssClass,
+          [classes.vars]: true,
+
+          // Overflow Behavior
+          "overflow-behavior--default": this.overflowBehavior === "clip",
+          "overflow-behavior--scroll": this.overflowBehavior === "scroll"
+        }}
         style={{
           "--grid-template-areas": this.areasTemplate,
           "grid-template-columns": this.columnsTemplate,

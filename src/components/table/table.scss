@@ -5,6 +5,13 @@ gx-table {
   --elevation: 0;
   --grid-template-areas: unset;
 
+  /**
+   * @prop --gx-overflow-style: Determine if the overflow will be hidden or visible.
+   * By default, the gx-table hide its content overflow to ensure that the border-radius
+   * property is applied.
+   */
+  --gx-overflow-style: hidden;
+
   @include reset-variables();
   @include elevation();
   @include visibility(grid);
@@ -14,9 +21,17 @@ gx-table {
   // of the shorthand property "grid-template"
   grid-template-areas: var(--grid-template-areas);
   flex: 1;
-
-  // gx-table must hide its content overflow to ensure that the border-radius
-  // property is applied
-  overflow: hidden;
   @include transition-properties();
+
+  // - - - - - - - - - - - - - - - -
+  //   Overflow Behavior and Style
+  // - - - - - - - - - - - - - - - -
+  &.overflow-behavior--default,
+  &.overflow-behavior--default > gx-table-cell {
+    overflow: var(--gx-overflow-style);
+  }
+
+  &.overflow-behavior--scroll {
+    overflow-y: auto;
+  }
 }

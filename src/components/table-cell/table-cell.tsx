@@ -22,17 +22,6 @@ export class TableCell implements GxComponent {
   @Prop({ reflect: true }) readonly align: "left" | "right" | "center";
 
   /**
-   * This attribute defines how the control behaves when the content overflows.
-   *
-   * | Value    | Details                                                     |
-   * | -------- | ----------------------------------------------------------- |
-   * | `scroll` | The overflowin content is hidden, but scrollbars are shown  |
-   * | `clip`   | The overflowing content is hidden, without scrollbars       |
-   *
-   */
-  @Prop() readonly overflowMode: "scroll" | "clip";
-
-  /**
    * This attribute defines the maximum height of the cell.
    */
   @Prop() readonly maxHeight: string = null;
