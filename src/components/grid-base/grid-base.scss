@@ -13,10 +13,12 @@ $grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller), & > * 
     flex: 1;
   }
 
+  & > pinch-zoom > .grid-empty-placeholder, // Used by gx-grid-image-map
   & > .grid-empty-placeholder {
     @include visibility(none);
   }
 
+  & > pinch-zoom > .grid-empty-placeholder > [slot="grid-content-empty"], // Used by gx-grid-image-map
   & > .grid-empty-placeholder > [slot="grid-content-empty"] {
     flex: 1;
     align-self: stretch;
@@ -24,6 +26,7 @@ $grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller), & > * 
 }
 
 // Show the empty placeholder if the grid was loaded with no items
+.gx-grid-base.gx-grid-empty:not(.gx-grid-loading) > pinch-zoom, // Used by gx-grid-image-map
 .gx-grid-base.gx-grid-empty:not(.gx-grid-loading) {
   & > :first-child {
     @include visibility(none);
@@ -43,14 +46,18 @@ $grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller), & > * 
   }
 }
 
-// The grid is loading
+// The grid is loading, hide its content
+.gx-grid-base.gx-grid-empty-loading > pinch-zoom > .gx-image-map-container, // Used by gx-grid-image-map
 .gx-grid-base.gx-grid-empty-loading {
-  & > :first-child {
+  // WA to not hide gx-loading on gx-grid-image-map load. This is needed since,
+  // the gx-loading is inside the pinch-zoom element, but it should be outside
+  & > :not(pinch-zoom):first-child {
     @include visibility(none);
   }
 }
 
 // If the grid loaded, hide the loader (slot="grid-empty-loading-placeholder")
+.gx-grid-base:not(.gx-grid-empty-loading) > pinch-zoom > gx-loading, // Used by gx-grid-image-map
 .gx-grid-base:not(.gx-grid-empty-loading) > gx-loading {
   display: none;
 }
