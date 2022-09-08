@@ -57,6 +57,7 @@ loadingEl.value = 1;
 
 | Name                                | Description                                                                                           |
 | ----------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `--height`                          | Minimum height of the gx-loading when showing slot animations. (64px by default)                      |
 | `--rotate-animation-circle-1-color` | Define the color of the first child of the rotate animation container. (rgb(71, 109, 255) by default) |
 | `--rotate-animation-circle-2-color` | Define the color of the second child of the rotate animation container. (rgb(0, 0, 0) by default)     |
 | `--rotate-animation-circle-3-color` | Define the color of the third child of the rotate animation container. (rgb(200, 10, 70) by default)  |

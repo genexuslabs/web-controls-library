@@ -2,12 +2,11 @@
 @import "../common/_base";
 
 gx-table-cell {
+  @include align-inner-control-in-cell();
   @include text-align-with-shadow-DOM();
   @include valign-with-shadow-DOM();
 
   direction: var(--direction);
-  overflow: auto;
-  @include containerCell();
 
   flex-direction: row; // Do not change flex-direction. All alignments will break
 

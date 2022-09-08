@@ -37,28 +37,6 @@ export class Table
   @Element() element: HTMLGxTableElement;
 
   /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
-
-  /**
-   * This attribute lets you specify if the element is disabled.
-   * If disabled, it will not fire any user interaction related event
-   * (for example, click event).
-   */
-  @Prop() readonly disabled = false;
-
-  /**
-   * A CSS class to set as the `gx-table` element class.
-   */
-  @Prop() readonly cssClass: string;
-
-  /**
    * Like the `grid-templates-areas` CSS property, this attribute defines a grid
    * template by referencing the names of the areas which are specified with the
    * cells [area attribute](../table-cell/readme.md#area). Repeating the name of
@@ -73,8 +51,44 @@ export class Table
    * the columns of the grid with a space-separated list of values. The values
    * represent the width of column.
    */
-
   @Prop() readonly columnsTemplate: string = null;
+
+  /**
+   * A CSS class to set as the `gx-table` element class.
+   */
+  @Prop() readonly cssClass: string;
+
+  /**
+   * This attribute lets you specify if the element is disabled.
+   * If disabled, it will not fire any user interaction related event
+   * (for example, click event).
+   */
+  @Prop() readonly disabled = false;
+
+  /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
+
+  /**
+   * This attribute lets you specify how this element will behave when hidden.
+   *
+   * | Value        | Details                                                                     |
+   * | ------------ | --------------------------------------------------------------------------- |
+   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
+   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+   */
+  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
+
+  /**
+   * This attribute lets you determine whether the gx-table control has a scroll or not.
+   *
+   * | Value    | Details                                                                                                           |
+   * | -------- | ----------------------------------------------------------------------------------------------------------------- |
+   * | `scroll` | The table provides scrollable behavior. When the table height exceeds the space available, a scroll bar is shown. |
+   * | `clip`   | The table doesn't provide scroll in any case; content is clipped at the bottom.                                   |
+   */
+  @Prop() readonly overflowBehavior: "scroll" | "clip" = "clip";
 
   /**
    * Like the `grid-templates-rows` CSS property, this attribute defines the
@@ -82,11 +96,6 @@ export class Table
    * represent the height of each row.
    */
   @Prop() readonly rowsTemplate: string = null;
-
-  /**
-   * True to highlight control when an action is fired.
-   */
-  @Prop() readonly highlightable = false;
 
   /**
    * Emitted when the element is swiped.
@@ -132,7 +141,14 @@ export class Table
 
     return (
       <Host
-        class={{ [this.cssClass]: !!this.cssClass, [classes.vars]: true }}
+        class={{
+          [this.cssClass]: !!this.cssClass,
+          [classes.vars]: true,
+
+          // Overflow Behavior
+          "overflow-behavior--default": this.overflowBehavior === "clip",
+          "overflow-behavior--scroll": this.overflowBehavior === "scroll"
+        }}
         style={{
           "--grid-template-areas": this.areasTemplate,
           "grid-template-columns": this.columnsTemplate,
