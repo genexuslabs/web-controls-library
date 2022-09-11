@@ -68,6 +68,12 @@ interface DynamicFormRuleCondition {
   cndEval: number;
 }
 
+interface DynamicFormCondition {
+  id: number;
+  function: string;
+  conditions: string;
+}
+
 interface FormMessages {
   id: string;
   type: Messages;
@@ -127,7 +133,7 @@ const componentTypeDictionary = {
   "numeric-slider": "GX-SLIDER",
   "numeric-rating": "GX-RATING",
   "boolean-switch": "GX-SWITCH",
-  "boolean-default": "GX-SWITCH",
+  "boolean-default": "GX-CHECKBOX",
   "enum-radio": "GX-RADIO-GROUP",
   "enum-default": "GX-SELECT",
   "group-default": "GX-DYNAMIC-FORM"
@@ -147,8 +153,8 @@ const FORM_FIELD_BY_ID = (id: string) => `#form-field-${id}`;
   shadow: false
 })
 export class DynamicForm implements GxComponent {
-  private conditions: any[] = [];
-  private formFieldElements: any[] = [];
+  private conditions: DynamicFormCondition[] = [];
+  private formFieldElements = new Map<string, any>();
   private JSONForm: GxDynamicForm[];
   private messages: FormMessages[] = [];
 
@@ -195,50 +201,60 @@ export class DynamicForm implements GxComponent {
   @Event() onSubmitForm: EventEmitter;
 
   componentWillLoad() {
-    // let rules = [];
     this.JSONForm = JSON.parse(this.elements);
+
     this.JSONForm[0].Elements.forEach(element => {
       element.name = this.replaceSpecialChars(element.name);
-      if (element.Rules != null) {
-        element.Rules.forEach(rule => {
-          this.conditions.push({
-            id: element.id,
-            action: rule.function,
-            conditions: this.parseRules(rule.Conditions)
-          });
-        });
-      }
+      this.addConditionsOfElement(element);
     });
   }
 
   componentDidLoad() {
-    const docs = this.element.querySelectorAll(
+    const elements = this.element.querySelectorAll(
       "gx-checkbox, gx-switch, gx-edit, gx-radio-group, gx-select"
     );
-    docs.forEach(element => {
+
+    // Store element references
+    elements.forEach(element => {
       element.addEventListener("change", () => {
         this.checkRules();
       });
-      this.formFieldElements.push({
-        id: element.id,
-        tagName: element.tagName,
-        element: element
-      });
+
+      this.formFieldElements.set(element.id, element);
     });
 
+    // Set element maxlength
     this.JSONForm[0].Elements.forEach(element => {
       this.setElementAttributes(element);
     });
 
     this.element
       .querySelector("#SUBMIT_FORM")
-      ?.addEventListener("click", this.handleData);
+      ?.addEventListener("click", () => {
+        this.handleData();
+      });
   }
 
   disconnectedCallback() {
     this.element
       .querySelector("#SUBMIT_FORM")
-      .removeEventListener("click", this.handleData);
+      ?.removeEventListener("click", () => {
+        this.handleData;
+      });
+  }
+
+  private addConditionsOfElement(element: DynamicFormElement) {
+    if (element.Rules == null) {
+      return;
+    }
+
+    element.Rules.forEach(rule => {
+      this.conditions.push({
+        id: element.id,
+        function: rule.function,
+        conditions: this.parseRules(rule.Conditions)
+      });
+    });
   }
 
   private setElementAttributes(element: DynamicFormElement) {
@@ -264,8 +280,8 @@ export class DynamicForm implements GxComponent {
     return name.replace(/\/nbsp\//g, " ");
   }
 
-  private getEditFormParentNode(element) {
-    return this.element.querySelector(FORM_FIELD_BY_ID(element.id));
+  private getEditFormParentNode(id: string) {
+    return this.element.querySelector(FORM_FIELD_BY_ID(id));
   }
 
   /**
@@ -276,63 +292,60 @@ export class DynamicForm implements GxComponent {
       const id = element.id;
       const conditions = element.conditions;
 
-      // The element that may be affected by the rule
-      const targeted = this.formFieldElements.find(
-        input => input.id.toString() === id.toString()
-      );
+      /** The element that may be affected by the rule */
+      const targeted = this.formFieldElements.get(id.toString());
 
-      // The parent node of the element that may be affected by the rule
+      //** The parent node of the element that may be affected by the rule */
       const gxEditForm = this.getEditFormParentNode(
-        targeted
+        id.toString()
       ) as HTMLGxEditElement;
 
       const parsedCondition = this.buildCondition(conditions);
       const result = eval(parsedCondition);
 
-      switch (element.action) {
+      switch (element.function) {
         // If the condition is true, the element is disabled
         case RuleTypes.DISABLE:
-          targeted.element.disabled = result;
+          targeted.disabled = result;
           break;
 
         // If the condition is true, the element is enabled
         case RuleTypes.ENABLE:
-          targeted.element.disabled = !result;
+          targeted.disabled = !result;
           break;
 
         // If the condition is true, the element shows with error class and emit a message
         case RuleTypes.ERROR:
           if (result) {
-            targeted.element.cssClass = this.errorCssClass;
-            this.addMessage(Messages.ERROR, conditions, id);
+            targeted.cssClass = this.errorCssClass;
+            this.addMessage(Messages.ERROR, conditions, id.toString());
           } else {
-            targeted.element.cssClass = this.inputCssClass;
-            this.removeMessage(id);
+            targeted.cssClass = this.inputCssClass;
+            this.removeMessage(id.toString());
           }
           break;
 
         // If the condition is true, the element shows with warning class and emit a message
         case RuleTypes.MSG:
           if (result) {
-            targeted.element.cssClass = this.warningCssClass;
-            this.addMessage(Messages.WARNING, conditions, id);
+            targeted.cssClass = this.warningCssClass;
+            this.addMessage(Messages.WARNING, conditions, id.toString());
           } else {
-            targeted.element.cssClass = this.inputCssClass;
-            this.removeMessage(id);
+            targeted.cssClass = this.inputCssClass;
+            this.removeMessage(id.toString());
           }
           break;
 
         // If the condition is true, the element clear they value
         case RuleTypes.RELOAD:
-          if (result) targeted.element.value = "";
+          if (result) targeted.value = "";
           break;
 
         // If the condition is true, the element is hidden, otherwise it is shown
         case RuleTypes.HIDE:
         case RuleTypes.SHOW:
-          gxEditForm.hidden = !result;
+          gxEditForm.hidden = result;
       }
-      // }
     });
     this.onMessage.emit(this.messages);
   }
@@ -361,7 +374,7 @@ export class DynamicForm implements GxComponent {
           ).name
         );
 
-        const indexCondition = condition.indexOf(" ");
+        const indexCondition = condition.indexOf("");
         const msgCondition = condition.substring(indexCondition + 1);
 
         this.messages.push({
@@ -425,17 +438,19 @@ export class DynamicForm implements GxComponent {
    */
   private buildCondition(condition: string) {
     const splited = condition.split(" ");
+
     for (let i = 0; i < splited.length; i += 4) {
-      splited[i] =
-        "'" +
-        this.formFieldElements.find(
-          input => input.id.toString() == splited[i].toString()
-        )?.element.value +
-        "'";
+      const formFieldElement = this.formFieldElements.get(
+        splited[i].toString()
+      );
+
+      if (formFieldElement != undefined) {
+        splited[i] = `'${formFieldElement.value}'`;
+      }
     }
 
     for (let i = 2; i < splited.length; i += 4) {
-      splited[i] = "'" + splited[i] + "'";
+      splited[i] = `'${splited[i]}'`;
     }
 
     return splited.join(" ");
@@ -445,17 +460,11 @@ export class DynamicForm implements GxComponent {
    * this method makes the response when a form is submitted
    */
   private handleData() {
-    this.getFormValues();
-    this.onSubmitForm.emit(this.JSONForm[0]);
-  }
-
-  private getFormValues() {
     this.JSONForm[0].Elements.forEach(element => {
-      const input = this.formFieldElements.find(
-        input => input.id.toString() === element.id.toString()
-      );
-      element.value = input.element.value;
+      const input = this.formFieldElements.get(element.id.toString());
+      element.value = input.value;
     });
+    this.onSubmitForm.emit(this.JSONForm[0]);
   }
 
   private decodeOperator(operator: number) {
