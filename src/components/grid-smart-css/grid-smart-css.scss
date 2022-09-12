@@ -20,6 +20,12 @@ gx-grid-smart-css {
    */
   --gx-grid-css-max-size: 0;
 
+  /**
+   * @prop --gx-overflow-style: Determine if the overflow will be hidden or visible.
+   * By default, the gx-grid-smart-css hide its content overflow.
+   */
+  --gx-overflow-style: hidden;
+
   @include visibility(flex);
 
   #{$grid-content-selector} {

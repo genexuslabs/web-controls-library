@@ -62,7 +62,9 @@ gx-grid-empty-indicator {
   position: relative;
   flex: 1;
   height: 100%;
-  overflow: hidden;
+
+  // Inherit from the parent element
+  overflow: var(--gx-overflow-style);
 
   & > .gx-empty-item {
     display: flex;

@@ -6,8 +6,19 @@ $grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller), & > * 
 .gx-grid-base {
   flex: 1;
   align-self: stretch;
-  overflow: hidden; // Required for gx-loading's positioning
+
   @include transition-properties();
+
+  // This custom var is defined in each grid (gx-grid-flex, gx-grid-horizontal
+  // and gx-grid-smart-css), and those grids always have the "gx-grid-base" class.
+  overflow: var(--gx-overflow-style); // Required for gx-loading's positioning
+
+  // When the grid has horizontal scroll (overflow-x: auto), there is no need
+  // to allow "overflow: visible", since it won't be visible
+  // (due to overflow-x: auto)
+  &[direction="horizontal"] {
+    overflow: hidden;
+  }
 
   #{$grid-content-selector} {
     flex: 1;
