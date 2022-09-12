@@ -217,3 +217,13 @@
   @if $control-type == section {
   }
 }
+
+/// Helper mixin to ease styling the overflow style of the custom elements
+/// @param {string} $overflow-style Determine if the overflow style will be hidden or visible
+@mixin overflow-style($overflow-style: hide) {
+  @if $overflow-style == hide {
+    --gx-overflow-style: hidden;
+  } @else {
+    --gx-overflow-style: visible;
+  }
+}
