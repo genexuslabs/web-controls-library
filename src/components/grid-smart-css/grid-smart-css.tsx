@@ -31,6 +31,11 @@ export class GridSmartCss
   private didLoad = false;
 
   private needForRAF = true; // To prevent redundant RAF (request animation frame) calls
+
+  /**
+   * WA to avoid infinite resizing loop
+   */
+  private ignoreNextResizeInterruption = false;
   private resizeObserver: ResizeObserver = null;
 
   // Refs
@@ -176,7 +181,10 @@ export class GridSmartCss
 
   // Callback for direction = "vertical"
   private resizeObserverVerticalDirectionCallback = () => {
-    if (!this.needForRAF) {
+    // The resizeObserver must not be set when Auto Grow = True. Otherwise,
+    // since the grid's height will always change, the resize observer will
+    // enter in loop
+    if (!this.needForRAF || this.autoGrow) {
       return;
     }
     this.needForRAF = false; // No need to call RAF up until next frame
@@ -197,15 +205,25 @@ export class GridSmartCss
     if (!this.needForRAF) {
       return;
     }
+    if (this.ignoreNextResizeInterruption) {
+      this.ignoreNextResizeInterruption = false;
+      return;
+    }
     this.needForRAF = false; // No need to call RAF up until next frame
 
     // Update CSS variable in the best moment
     requestAnimationFrame(() => {
+      const clientHeight = this.scrollableContainer.clientWidth;
+
+      // If the grid is not hidden, the next resize triggered by the cell
+      // resize should not trigger the resize observer callback
+      this.ignoreNextResizeInterruption = clientHeight != 0;
+
       this.needForRAF = true; // RAF now consumes the movement instruction so a new one can come
 
       this.element.style.setProperty(
         "--gx-grid-smart-css-viewport-size",
-        `${this.scrollableContainer.clientWidth}px`
+        `${clientHeight}px`
       );
     });
   };
