@@ -2,15 +2,23 @@
 @import "../common/_common-styling-config";
 
 gx-canvas {
+  /**
+   * @prop --gx-overflow-style: Determine if the overflow will be hidden or visible.
+   * By default, the gx-canvas hide its content overflow to ensure that the border-radius
+   * property is applied.
+   */
+  --gx-overflow-style: hidden;
+
   @include visibility(block);
 
   position: relative;
   height: fit-content;
+  overflow: var(--gx-overflow-style);
   @include transition-properties();
 
   > .canvas-cells-container {
     position: relative;
     height: 100%;
-    overflow: hidden;
+    overflow: var(--gx-overflow-style);
   }
 }

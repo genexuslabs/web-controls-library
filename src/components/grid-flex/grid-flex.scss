@@ -31,6 +31,12 @@ gx-grid-flex {
    */
   --gx-grid-flex-align-content: normal;
 
+  /**
+   * @prop --gx-overflow-style: Determine if the overflow will be hidden or visible.
+   * By default, the gx-grid-flex hide its content overflow.
+   */
+  --gx-overflow-style: hidden;
+
   @include visibility(flex);
 
   > div {

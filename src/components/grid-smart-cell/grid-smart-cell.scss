@@ -6,8 +6,10 @@
   position: relative;
   min-width: min-content;
 
+  // Inherit from the parent element
   // gx-grid-smart-cell must hide its content overflow to ensure that the
   // border-radius property is applied
-  overflow: hidden;
+  overflow: var(--gx-overflow-style);
+
   @include transition-properties();
 }

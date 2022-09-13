@@ -1,0 +1,16 @@
+////
+/// @group theming-mixins
+////
+
+/// Helper mixin to ease styling gx-rating custom elements
+/// @param {string} $selected-color Determine the selected color of the gx-rating stars.
+/// @param {string} $unselected-color Determine the unselected color of the gx-rating stars.
+@mixin gx-rating($selected-color: null, $unselected-color: null) {
+  @if $selected-color != null {
+    --rating-selected-color: #{$selected-color};
+  }
+
+  @if $unselected-color != null {
+    --rating-unselected-color: #{$unselected-color};
+  }
+}

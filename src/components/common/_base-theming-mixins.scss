@@ -76,9 +76,49 @@
 
 /// Helper mixin to ease styling hoverable custom elements
 /// @param {string} $class Base class of the hover properties
-@mixin hover($class) {
-  &#{$gx-hover}:hover {
-    @extend #{$class} !optional;
+@mixin hovered($class, $control-type: null) {
+  // gx-form-field's controls
+  @if $control-type == attribute {
+    @at-root [area="field"]#{&}:hover,
+      gx-chronometer#{&}:hover,
+
+      // Used by gx-select control and gx-edit with multiline = True
+      [area="field"] #{&}:hover {
+      @extend #{$class} !optional;
+    }
+  }
+
+  // gx-button control
+  @if $control-type == button {
+    @at-root .gx-button#{&}:hover {
+      @extend #{$class} !optional;
+    }
+  }
+
+  // gx-textblock control
+  @else if $control-type == textblock {
+    @at-root gx-textblock#{&}:hover {
+      @extend #{$class} !optional;
+    }
+  }
+
+  // Image
+  @else if $control-type == image {
+    @at-root .gx-image-container#{&}:hover {
+      @extend #{$class} !optional;
+    }
+  }
+
+  // TO DO: Flex container
+  // gx-canvas, gx-group and gx-table controls
+  @else if $control-type == table {
+    @at-root gx-canvas#{&},
+      fieldset#{&}, // gx-group
+      gx-table#{&} {
+      &:hover {
+        @extend #{$class} !optional;
+      }
+    }
   }
 }
 
@@ -215,5 +255,15 @@
 
   // TO DO.
   @if $control-type == section {
+  }
+}
+
+/// Helper mixin to ease styling the overflow style of the custom elements
+/// @param {string} $overflow-style Determine if the overflow style will be hidden or visible
+@mixin overflow-style($overflow-style: hide) {
+  @if $overflow-style == hide {
+    --gx-overflow-style: hidden;
+  } @else {
+    --gx-overflow-style: visible;
   }
 }
