@@ -182,7 +182,7 @@ export class Edit implements FormComponent, HighlightableComponent {
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = false;
+  @Prop({ reflect: true }) readonly highlightable = false;
 
   /**
    * It specifies the format that will have the edit control.
