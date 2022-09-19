@@ -74,8 +74,54 @@
   }
 }
 
+/// Helper mixin to ease styling focusable custom elements
+/// @param {string} $class Base class of the focus properties
+/// @param {string} $control-type Determine what type of control the focus class will apply to
+@mixin focused($class, $control-type: null) {
+  // Any control
+  @if $control-type == null {
+    @at-root #{&}:focus-within {
+      @extend #{$class} !optional;
+    }
+  }
+
+  // gx-form-field's controls
+  @else if $control-type == attribute {
+    @at-root [area="field"]#{&}:focus-within,
+
+      // Used by gx-select control and gx-edit with multiline = True
+      [area="field"] #{&}:focus-within {
+      @extend #{$class} !optional;
+    }
+  }
+
+  // gx-button control
+  @if $control-type == button {
+    @at-root .gx-button#{&}:focus-within {
+      @extend #{$class} !optional;
+    }
+  }
+
+  // gx-textblock control
+  @else if $control-type == text-block {
+    @at-root gx-textblock#{&}:focus-within {
+      @extend #{$class} !optional;
+    }
+  }
+
+  // Image
+  @else if $control-type == image {
+    @at-root .gx-image-container#{&}:focus-within {
+      @extend #{$class} !optional;
+    }
+  }
+
+  // TO DO: Tab Caption
+}
+
 /// Helper mixin to ease styling hoverable custom elements
 /// @param {string} $class Base class of the hover properties
+/// @param {string} $control-type Determine what type of control the hover class will apply to
 @mixin hovered($class, $control-type: null) {
   // gx-form-field's controls
   @if $control-type == attribute {
