@@ -13,7 +13,7 @@ import { cssVariablesWatcher } from "../common/css-variables-watcher";
 import lazySizes from "lazysizes";
 
 // Class transforms
-import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
+import { getClasses } from "../common/css-transforms/css-transforms";
 
 const LAZY_LOAD_CLASS = "gx-lazyload";
 const LAZY_LOADING_CLASS = "gx-lazyloading";
@@ -168,7 +168,7 @@ export class Image
     const shouldLazyLoad = this.shouldLazyLoad();
 
     // Styling for gx-image control.
-    const classes = getClassesWithoutFocus(this.cssClass);
+    const classes = getClasses(this.cssClass);
 
     const withoutAutogrow = this.scaleType !== "tile" && !this.autoGrow;
 
@@ -211,6 +211,8 @@ export class Image
           }}
           // Mouse pointer to indicate action
           data-has-action={this.highlightable ? "" : undefined}
+          // Add focus to the control through sequential keyboard navigation and visually clicking
+          tabindex={this.highlightable && !this.disabled ? "0" : undefined}
           ref={el => (this.innerImageContainer = el as HTMLDivElement)}
         >
           {withoutAutogrow ? (

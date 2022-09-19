@@ -10,7 +10,6 @@ const transforms = {
   description: "--description",
   evenRow: "--even-row",
   groupCaption: "--group-caption",
-  hover: "--hover",
   horizontalLine: "--horizontal-line",
   label: "--label",
   labelContainer: "--label-container",
@@ -45,10 +44,6 @@ export function tEvenRow(className: string): string {
 
 export function tGroupCaption(className): string {
   return className + transforms["groupCaption"];
-}
-
-export function tHover(className: string): string {
-  return className + transforms["hover"];
 }
 
 export function tHorizontalLine(className: string): string {

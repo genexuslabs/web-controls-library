@@ -116,6 +116,12 @@ gx-image {
   }
 }
 
+// Remove outline of the focus state. This selector must not have higher
+// specificity, since it should be overridden  by the class applied to the control
+.gx-image-container {
+  outline: none;
+}
+
 [align="left"] {
   & > gx-form-field gx-image,
   & > gx-image {
