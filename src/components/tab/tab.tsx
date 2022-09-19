@@ -19,7 +19,7 @@ import {
 
 // Class transforms
 import {
-  getClassesWithoutFocus,
+  getClasses,
   tTabsPosition
 } from "../common/css-transforms/css-transforms";
 
@@ -155,7 +155,7 @@ export class Tab
     this.setPageSlotsClass();
 
     // Styling for gx-tab-caption control.
-    const classes = getClassesWithoutFocus(this.cssClass);
+    const classes = getClasses(this.cssClass);
 
     const tabsPositionClass = !!this.cssClass
       ? this.cssClass

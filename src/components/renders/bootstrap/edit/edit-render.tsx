@@ -143,8 +143,7 @@ export class EditRender implements Renderer {
               class={{
                 [slots.cssClass]:
                   !slots.shouldStyleHostElement && !!this.component.cssClass,
-                [slots.vars]: !slots.shouldStyleHostElement,
-                [slots.highlighted]: !slots.shouldStyleHostElement
+                [slots.vars]: !slots.shouldStyleHostElement
               }}
               {...attris}
               data-part="field"

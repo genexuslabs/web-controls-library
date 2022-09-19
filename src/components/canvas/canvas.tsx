@@ -18,7 +18,7 @@ import {
 import { Swipeable, makeSwipeable } from "../common/events/swipeable";
 
 // Class transforms
-import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
+import { getClasses } from "../common/css-transforms/css-transforms";
 
 const CANVAS_THRESHOLD = 1.75;
 
@@ -582,7 +582,7 @@ export class Canvas
 
   render() {
     // Styling for gx-canvas control.
-    const classes = getClassesWithoutFocus(this.cssClass);
+    const classes = getClasses(this.cssClass);
 
     this.element.addEventListener("click", this.handleClick);
 

@@ -5,11 +5,6 @@ export interface ClickableComponent {
 }
 
 export interface CssClasses {
-  highlighted: string;
-  vars: string;
-}
-
-export interface CssClassesWithoutFocus {
   vars: string;
 }
 

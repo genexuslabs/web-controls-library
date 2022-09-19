@@ -20,7 +20,7 @@ import {
 import { Swipeable, makeSwipeable } from "../common/events/swipeable";
 
 // Class transforms
-import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
+import { getClasses } from "../common/css-transforms/css-transforms";
 
 @Component({
   shadow: false,
@@ -137,7 +137,7 @@ export class Table
 
   render() {
     // Styling for gx-table control.
-    const classes = getClassesWithoutFocus(this.cssClass);
+    const classes = getClasses(this.cssClass);
 
     return (
       <Host

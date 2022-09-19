@@ -19,7 +19,7 @@ import {
 import { parseCoords } from "../common/coordsValidate";
 
 // Class transforms
-import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
+import { getClasses } from "../common/css-transforms/css-transforms";
 
 const DEFAULT_COORDS: LatLngTuple = [0, 0];
 
@@ -113,7 +113,7 @@ export class MapPolygon implements GxComponent {
 
   render() {
     // Styling for gx-map-polygon control.
-    const classes = getClassesWithoutFocus(this.cssClass);
+    const classes = getClasses(this.cssClass);
 
     return (
       <Host aria-hidden="true" class={classes.vars}>

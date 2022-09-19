@@ -4,7 +4,7 @@ import { getLottiePath } from "../common/utils";
 
 // Class transforms
 import {
-  getClassesWithoutFocus,
+  getClasses,
   getTransformedClassesWithoutFocus,
   tDescription,
   tLoading,
@@ -76,7 +76,7 @@ export class ProgressBar implements GxComponent {
   }
 
   render() {
-    const classes = getClassesWithoutFocus(this.cssClass);
+    const classes = getClasses(this.cssClass);
     const loadingClasses = getTransformedClassesWithoutFocus(
       this.cssClass,
       tLoading

@@ -299,17 +299,14 @@ export class Edit implements FormComponent, HighlightableComponent {
             this.type === "date" || this.type === "datetime-local",
           [this.disabledClass]: this.disabled && !this.readonly,
           [this.cssClass]: this.shouldStyleHostElement && !!this.cssClass,
-          [classes.vars]: this.shouldStyleHostElement,
-          [classes.highlighted]:
-            this.shouldStyleHostElement && this.shouldAddHighlightedClasses
+          [classes.vars]: this.shouldStyleHostElement
         }}
       >
         {this.renderer.render({
           triggerContent: <slot name="trigger-content" />,
           shouldStyleHostElement: this.shouldStyleHostElement,
           cssClass: this.cssClass,
-          vars: classes.vars,
-          highlighted: classes.highlighted
+          vars: classes.vars
         })}
       </Host>
     );

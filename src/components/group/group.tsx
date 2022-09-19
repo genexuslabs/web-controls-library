@@ -8,7 +8,7 @@ import { Component as GxComponent } from "../common/interfaces";
 
 // Class transforms
 import {
-  getClassesWithoutFocus,
+  getClasses,
   tGroupCaption
 } from "../common/css-transforms/css-transforms";
 
@@ -51,7 +51,7 @@ export class Group implements GxComponent, HighlightableComponent {
 
   render() {
     // Styling for gx-group control.
-    const classes = getClassesWithoutFocus(this.cssClass);
+    const classes = getClasses(this.cssClass);
     const captionClass = !!this.cssClass ? tGroupCaption(this.cssClass) : "";
 
     return (

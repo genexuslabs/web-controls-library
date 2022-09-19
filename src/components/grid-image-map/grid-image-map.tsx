@@ -24,7 +24,7 @@ import {
 import { getFileNameWithoutExtension } from "../common/utils";
 
 // Class transforms
-import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
+import { getClasses } from "../common/css-transforms/css-transforms";
 
 @Component({
   tag: "gx-grid-image-map",
@@ -253,7 +253,7 @@ export class GridImageMap
         ];
 
     const hostData = GridBaseHelper.hostData(this);
-    const classes = getClassesWithoutFocus(this.cssClass);
+    const classes = getClasses(this.cssClass);
 
     // Add extra styles if the cssClass is set
     if (!!this.cssClass) {

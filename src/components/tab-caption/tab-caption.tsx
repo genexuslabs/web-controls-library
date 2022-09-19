@@ -24,7 +24,7 @@ import {
 
 // Class transforms
 import {
-  getClassesWithoutFocus,
+  getClasses,
   tSelectedTabCaption,
   tTabsPositionCaption,
   tUnselectedTabCaption
@@ -126,15 +126,11 @@ export class TabCaption
     const selectedTabCaptionClass = tSelectedTabCaption(this.tabCssClass);
     const unselectedTabCaptionClass = tUnselectedTabCaption(this.tabCssClass);
 
-    const selectedTabCaptionClasses = getClassesWithoutFocus(
-      selectedTabCaptionClass
-    );
-    const unselectedTabCaptionClasses = getClassesWithoutFocus(
-      unselectedTabCaptionClass
-    );
+    const selectedTabCaptionClasses = getClasses(selectedTabCaptionClass);
+    const unselectedTabCaptionClasses = getClasses(unselectedTabCaptionClass);
 
-    const selectedClasses = getClassesWithoutFocus(this.selectedCssClass);
-    const unselectedClasses = getClassesWithoutFocus(this.cssClass);
+    const selectedClasses = getClasses(this.selectedCssClass);
+    const unselectedClasses = getClasses(this.cssClass);
 
     const tabsPositionCaptionClass = !!this.tabCssClass
       ? this.tabCssClass

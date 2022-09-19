@@ -1,6 +1,9 @@
-const HIGHLIGHT_EVENT_NAME = "highlight";
-const UNHIGHTLIGHT_EVENT_NAME = "unhighlight";
-const HIGHLIGHT_CLASS_NAME = "gx-highlighted";
+import {
+  HIGHLIGHT_CLASS_NAME,
+  HIGHLIGHT_EVENT_NAME,
+  UNHIGHTLIGHT_EVENT_NAME
+} from "./css-transforms/css-transforms";
+
 let isSetup = false;
 
 export interface HighlightableComponent {

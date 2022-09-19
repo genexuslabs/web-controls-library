@@ -16,7 +16,7 @@ import {
 } from "../common/highlightable";
 
 // Class transforms
-import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
+import { getClasses } from "../common/css-transforms/css-transforms";
 
 @Component({
   tag: "gx-grid-image-map-item",
@@ -103,7 +103,7 @@ export class GridImageMapItem implements GxComponent, HighlightableComponent {
   }
 
   render() {
-    const classes = getClassesWithoutFocus(this.cssClass);
+    const classes = getClasses(this.cssClass);
     this.element.addEventListener("click", this.handleClick);
 
     return (

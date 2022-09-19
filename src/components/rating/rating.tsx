@@ -11,7 +11,7 @@ import {
 import { FormComponent } from "../common/interfaces";
 
 // Class transforms
-import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
+import { getClasses } from "../common/css-transforms/css-transforms";
 
 let autoRatingId = 0;
 
@@ -98,7 +98,7 @@ export class Rating implements FormComponent {
     );
 
     // Styling for gx-rating control.
-    const classes = getClassesWithoutFocus(this.cssClass);
+    const classes = getClasses(this.cssClass);
 
     return (
       <Host

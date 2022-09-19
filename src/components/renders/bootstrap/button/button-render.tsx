@@ -9,7 +9,7 @@ import {
 import { getFileNameWithoutExtension } from "../../../common/utils";
 
 // Class transforms
-import { getClassesWithoutFocus } from "../../../common/css-transforms/css-transforms";
+import { getClasses } from "../../../common/css-transforms/css-transforms";
 
 export class ButtonRender implements Renderer {
   constructor(private component: Button, handlers: { handleClick }) {
@@ -49,7 +49,7 @@ export class ButtonRender implements Renderer {
     });
 
     // Styling for gx-button control.
-    const classes = getClassesWithoutFocus(button.cssClass);
+    const classes = getClasses(button.cssClass);
 
     return (
       <Host
@@ -77,7 +77,6 @@ export class ButtonRender implements Renderer {
           data-has-action
           disabled={button.disabled}
           onClick={this.handleClick}
-          tabindex="0"
         >
           {imagePositionRender(slots)}
         </button>
