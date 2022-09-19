@@ -207,8 +207,7 @@
   // Any control
   @if $control-type == null {
     @at-root #{str-replace(#{&}, ".", "%")}#{$gx-highlighted},
-      #{&}#{$gx-highlighted-dot},
-      #{&}#{$gx-highlighted-focus-within}:focus-within {
+      #{&}#{$gx-highlighted-dot} {
       @include extend-highlighted-class(
         $class,
         $background-color,
@@ -220,19 +219,6 @@
 
   // gx-form-field's controls
   @if $control-type == attribute {
-    @at-root [area="field"]#{&},
-      // gx-edit with multiline = True, readonly = False and format = "Text"
-      textarea#{&} {
-      &#{$gx-highlighted-focus-within}:focus-within {
-        @include extend-highlighted-class(
-          $class,
-          $background-color,
-          $background-image,
-          $color
-        );
-      }
-    }
-
     @at-root [area="field"]#{&} {
       &#{$gx-highlighted-dot} {
         @include extend-highlighted-class(
@@ -298,9 +284,9 @@
     }
   }
 
-  // TO DO.
-  @if $control-type == section {
-  }
+  // TODO.
+  // @if $control-type == section {
+  // }
 }
 
 /// Helper mixin to ease styling the overflow style of the custom elements
