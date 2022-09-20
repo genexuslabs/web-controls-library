@@ -26,6 +26,10 @@ gx-select {
     flex: 1;
     @include transition-properties();
 
+    &.disabled {
+      pointer-events: none;
+    }
+
     & > span {
       width: 100%;
     }

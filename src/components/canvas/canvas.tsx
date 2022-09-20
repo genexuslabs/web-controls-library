@@ -588,7 +588,11 @@ export class Canvas
 
     return (
       <Host
-        class={{ [this.cssClass]: !!this.cssClass, [classes.vars]: true }}
+        class={{
+          [this.cssClass]: !!this.cssClass,
+          [classes.vars]: true,
+          disabled: this.disabled
+        }}
         style={{
           width: this.width,
           height: this.canvasFixedHeight == null ? this.minHeight : null,

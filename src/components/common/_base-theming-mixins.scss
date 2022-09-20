@@ -131,10 +131,10 @@
 @mixin hovered($class, $control-type: null) {
   // gx-form-field's controls
   @if $control-type == attribute {
-    @at-root [area="field"][highlightable]#{&}:hover,
+    @at-root [area="field"]#{&}:hover,
 
       // Used by gx-select control and gx-edit with multiline = True
-      [area="field"][highlightable] #{&}:hover {
+      [area="field"] #{&}:hover {
       @extend #{$class} !optional;
     }
   }
@@ -148,14 +148,14 @@
 
   // gx-textblock control
   @else if $control-type == text-block {
-    @at-root gx-textblock[highlightable]#{&}:hover {
+    @at-root gx-textblock#{&}:hover {
       @extend #{$class} !optional;
     }
   }
 
   // Image
   @else if $control-type == image {
-    @at-root .gx-image-container[data-has-action]#{&}:hover {
+    @at-root .gx-image-container#{&}:hover {
       @extend #{$class} !optional;
     }
   }
@@ -163,9 +163,9 @@
   // TO DO: Flex container
   // gx-canvas, gx-group and gx-table controls
   @else if $control-type == table {
-    @at-root gx-canvas[highlightable]#{&},
-      [highlightable] > fieldset#{&}, // gx-group
-      gx-table[highlightable]#{&} {
+    @at-root gx-canvas#{&},
+      fieldset#{&}, // gx-group
+      gx-table#{&} {
       &:hover {
         @extend #{$class} !optional;
       }

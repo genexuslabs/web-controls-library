@@ -46,13 +46,13 @@ gx-edit {
   }
 
   // Disable styling for the gx-edit when Format = Text
-  &.disabled {
+  &.disabled-custom {
     @include disabled-style();
     pointer-events: none;
   }
 
-  // Disable styling for the gx-edit when Format = HTML
-  &.disabled-html {
+  // Disable styling for the gx-edit when Format = HTML || Readonly = True
+  &.disabled {
     pointer-events: none;
   }
 

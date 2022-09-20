@@ -144,6 +144,7 @@ export class Table
         class={{
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,
+          disabled: this.disabled,
 
           // Overflow Behavior
           "overflow-behavior--default": this.overflowBehavior === "clip",

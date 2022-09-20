@@ -182,7 +182,7 @@ export class Edit implements FormComponent, HighlightableComponent {
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop({ reflect: true }) readonly highlightable = false;
+  @Prop() readonly highlightable = false;
 
   /**
    * It specifies the format that will have the edit control.
@@ -232,7 +232,7 @@ export class Edit implements FormComponent, HighlightableComponent {
   private shouldStyleHostElement = false;
   private shouldAddHighlightedClasses = true;
 
-  private disabledClass = "disabled";
+  private disabledClass = "disabled-custom";
 
   componentWillLoad() {
     this.shouldStyleHostElement = !this.multiline || this.readonly;
@@ -242,8 +242,8 @@ export class Edit implements FormComponent, HighlightableComponent {
       this.readonly || this.format === "HTML"
     );
 
-    if (this.format === "HTML") {
-      this.disabledClass = "disabled-html";
+    if (this.format === "HTML" || this.readonly) {
+      this.disabledClass = "disabled";
     }
   }
 
@@ -297,7 +297,7 @@ export class Edit implements FormComponent, HighlightableComponent {
         class={{
           "gx-edit--single-line":
             this.type === "date" || this.type === "datetime-local",
-          [this.disabledClass]: this.disabled && !this.readonly,
+          [this.disabledClass]: this.disabled,
           [this.cssClass]: this.shouldStyleHostElement && !!this.cssClass,
           [classes.vars]: this.shouldStyleHostElement
         }}

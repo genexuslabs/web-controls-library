@@ -16,6 +16,10 @@ gx-canvas {
   overflow: var(--gx-overflow-style);
   @include transition-properties();
 
+  &.disabled {
+    pointer-events: none;
+  }
+
   > .canvas-cells-container {
     position: relative;
     height: 100%;
