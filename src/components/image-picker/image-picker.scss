@@ -1,12 +1,57 @@
 @import "../common/_base";
 @import "../common/common-styling-config";
 
-@mixin border-style($border-color: #ddd, $border-radius: 0.25rem) {
-  border: 1px solid $border-color;
-  border-radius: $border-radius;
-}
-
 gx-image-picker {
+  /**
+   * @prop --gx-image-picker-icon-background-color: Icon background color of the image picker button.
+   */
+  --gx-image-picker-icon-background-color: #efefefc0;
+
+  /**
+   * @prop --gx-image-picker-icon-background-color: Icon background color of the image picker button in light mode.
+   */
+  --gx-image-picker-icon-background-color--light: #efefefc0;
+
+  /**
+   * @prop --gx-image-picker-icon-background-color: Icon background color of the image picker button in dark mode.
+   */
+  --gx-image-picker-icon-background-color--dark: #22222280;
+
+  /**
+   * @prop --gx-image-picker-icon-color: Icon color of the image picker button.
+   */
+  --gx-image-picker-icon-color: black;
+
+  /**
+   * @prop --gx-image-picker-icon-color: Icon color of the image picker button in light mode.
+   */
+  --gx-image-picker-icon-color--light: black;
+
+  /**
+   * @prop --gx-image-picker-icon-color: Icon color of the image picker button in dark mode.
+   */
+  --gx-image-picker-icon-color--dark: #fff;
+
+  @media (prefers-color-scheme: light) {
+    // Color
+    --gx-image-picker-icon-color: var(--gx-image-picker-icon-color--light);
+
+    // Background color
+    --gx-image-picker-icon-background-color: var(
+      --gx-image-picker-icon-background-color--light
+    );
+  }
+
+  @media (prefers-color-scheme: dark) {
+    // Color
+    --gx-image-picker-icon-color: var(--gx-image-picker-icon-color--dark);
+
+    // Background color
+    --gx-image-picker-icon-background-color: var(
+      --gx-image-picker-icon-background-color--dark
+    );
+  }
+
   display: flex;
   flex: 1;
   align-self: stretch;
@@ -16,46 +61,47 @@ gx-image-picker {
     display: flex;
     align-items: stretch;
     position: absolute;
-    right: 0;
-    bottom: 0;
+    right: 2px; // Neecessary since the button has box-shadow when focused
+    bottom: 2px;
     min-width: 30px;
     min-height: 30px;
+    border-radius: 50%;
 
     & > .image-picker-button {
-      @include border-style($border-radius: 15px);
       display: flex;
       justify-content: center;
       align-items: center;
       width: 100%;
-      background-color: rgb(239, 239, 239);
-      padding: 0 0 0 2.5px;
+      background-color: var(--gx-image-picker-icon-background-color);
+      border: unset;
+      border-radius: 50%;
+      padding: 0;
       pointer-events: all;
-      transition-property: background-color, color;
+      outline: none;
+      transition-property: background-color, color, box-shadow, filter;
       transition-duration: $transition-duration;
 
-      &:not([disabled]) {
-        &:hover {
-          background-color: #ddd;
-        }
+      &:hover {
+        @include hover-style();
+      }
 
-        &:focus,
-        &:active {
-          outline: none;
-        }
+      &:focus {
+        box-shadow: 0 0 0px 2px #000000c0;
+      }
 
-        &:active {
-          background-color: #ccc;
-        }
+      &:active {
+        @include active-style();
       }
 
       &[disabled] {
-        @include border-style(#aaa, 15px);
-        background-color: #ccc;
+        @include disabled-style();
+        pointer-events: none;
       }
 
-      svg {
-        width: 18px;
-        height: 18px;
+      & > .image-icon {
+        width: 24px;
+        height: 24px;
+        fill: var(--gx-image-picker-icon-color);
       }
     }
 
