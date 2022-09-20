@@ -210,7 +210,10 @@ export class Image
             [this.cssClass]: !!this.cssClass
           }}
           // Mouse pointer to indicate action
-          data-has-action={this.highlightable ? "" : undefined}
+          data-has-action={
+            this.highlightable && !this.disabled ? "" : undefined
+          }
+          data-no-action={!this.highlightable}
           // Add focus to the control through sequential keyboard navigation and visually clicking
           tabindex={this.highlightable && !this.disabled ? "0" : undefined}
           ref={el => (this.innerImageContainer = el as HTMLDivElement)}

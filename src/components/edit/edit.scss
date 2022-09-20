@@ -12,6 +12,10 @@ gx-edit {
   align-items: stretch;
   flex: 1;
 
+  // Remove outline of the focus state. This selector must not have higher
+  // specificity, since it should be overridden by the class applied to the control
+  outline: unset;
+
   &.gx-edit {
     &--single-line {
       [data-readonly] {

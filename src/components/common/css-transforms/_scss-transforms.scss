@@ -20,6 +20,8 @@ $gx-unselected-tab-caption: "--unselected-tab-page";
 
 $gx-vars: "--vars";
 
+$gx-no-action: "data-no-action";
+
 /// Replace `$search` with `$replace` in `$string`
 /// @param {String} $string - Initial string
 /// @param {String} $search - Substring to replace

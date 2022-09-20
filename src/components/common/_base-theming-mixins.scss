@@ -80,7 +80,13 @@
 @mixin focused($class, $control-type: null) {
   // Any control
   @if $control-type == null {
-    @at-root #{&}:focus-within {
+    // We need to check the absence of the attribute [data-no-action], since
+    // the focused pseudo-class is implemented with focus-within, there are
+    // some scenarios when the focus-within is triggered by an unwanted focus
+    // on a inner control. For example, the gx-image-picker with
+    // highlight = false and picker button (readonly = false and disabled = false)
+    // triggers this undesired state
+    @at-root :not([#{$gx-no-action}])#{&}:focus-within {
       @extend #{$class} !optional;
     }
   }
@@ -167,6 +173,9 @@
   }
 }
 
+/// Helper mixin to ease styling the horizontal line in grid elements
+/// @param {string} $class Base class of the horizontal line properties
+/// @param {string} $show-horizontal-line True to show the horizontal line
 @mixin horizontal-line($class: null, $show-horizontal-line: true) {
   &#{$gx-horizontal-line}::after {
     @if $show-horizontal-line == true {

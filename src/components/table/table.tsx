@@ -154,7 +154,8 @@ export class Table
           "grid-template-columns": this.columnsTemplate,
           "grid-template-rows": this.rowsTemplate
         }}
-        data-has-action={this.highlightable ? "" : undefined}
+        // Mouse pointer to indicate action
+        data-has-action={this.highlightable && !this.disabled ? "" : undefined}
       >
         <slot />
       </Host>

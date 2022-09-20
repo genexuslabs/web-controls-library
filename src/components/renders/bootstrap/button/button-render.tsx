@@ -74,7 +74,8 @@ export class ButtonRender implements Renderer {
             [button.cssClass]: !!button.cssClass,
             [classes.vars]: true
           }}
-          data-has-action
+          // Mouse pointer to indicate action
+          data-has-action={!button.disabled ? "" : undefined}
           disabled={button.disabled}
           onClick={this.handleClick}
         >

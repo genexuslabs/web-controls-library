@@ -59,6 +59,11 @@ export class CheckBox implements FormComponent {
   @Prop() readonly disabled = false;
 
   /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
+
+  /**
    * This attribute lets you specify how this element will behave when hidden.
    *
    * | Value        | Details                                                                     |
@@ -131,8 +136,17 @@ export class CheckBox implements FormComponent {
       <Host
         class={{
           [this.cssClass]: !!this.cssClass,
-          [classes.vars]: true
+          [classes.vars]: true,
+          disabled: this.disabled
         }}
+        // Mouse pointer to indicate action
+        data-has-action={this.highlightable && !this.disabled ? "" : undefined}
+        // Add focus to the control through sequential keyboard navigation and visually clicking
+        tabindex={
+          this.highlightable && this.readonly && !this.disabled
+            ? "0"
+            : undefined
+        }
       >
         {this.renderer.render()}
       </Host>

@@ -301,6 +301,16 @@ export class Edit implements FormComponent, HighlightableComponent {
           [this.cssClass]: this.shouldStyleHostElement && !!this.cssClass,
           [classes.vars]: this.shouldStyleHostElement
         }}
+        // Mouse pointer to indicate action
+        data-has-action={this.highlightable && !this.disabled ? "" : undefined}
+        // Add focus to the control through sequential keyboard navigation and visually clicking
+        tabindex={
+          this.highlightable &&
+          (this.readonly || this.format == "HTML") &&
+          !this.disabled
+            ? "0"
+            : undefined
+        }
       >
         {this.renderer.render({
           triggerContent: <slot name="trigger-content" />,

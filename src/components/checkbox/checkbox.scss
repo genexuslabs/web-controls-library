@@ -7,5 +7,14 @@ gx-checkbox {
   @include scss-custom-option-control(25%);
 
   flex: 1;
+
+  // Remove outline of the focus state. This selector must not have higher
+  // specificity, since it should be overridden by the class applied to the control
+  outline: unset;
+
+  &.disabled {
+    pointer-events: none;
+  }
+
   @include transition-properties();
 }
