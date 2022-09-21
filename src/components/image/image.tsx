@@ -95,11 +95,6 @@ export class Image
   @Prop() readonly lazyLoad = true;
 
   /**
-   * This attribute lets you specify the low resolution image SRC.
-   */
-  @Prop() readonly lowResolutionSrc = "";
-
-  /**
    * This attribute allows specifing how the image is sized according to its container.
    * `contain`, `cover`, `fill` and `none` map directly to the values of the CSS `object-fit` property.
    * The `tile` value repeats the image, both vertically and horizontally, creating a tile effect.
@@ -117,9 +112,17 @@ export class Image
   @Prop() showImagePickerButton = false;
 
   /**
-   * This attribute lets you specify the SRC.
+   * This attribute lets you specify the `src` of the `img`.
    */
   @Prop() readonly src: string = "";
+
+  /**
+   * This attribute lets you specify the `srcset` of the `img`. The `srcset`
+   * attribute defines the set of images we will allow the browser to choose
+   * between, and what size each image is. Each set of image information is
+   * separated from the previous one by a comma.
+   */
+  @Prop() readonly srcset: string = "";
 
   /**
    * True to highlight control when an action is fired.
@@ -172,7 +175,9 @@ export class Image
 
     const withoutAutogrow = this.scaleType !== "tile" && !this.autoGrow;
 
-    const body = this.src
+    const shouldRenderTheImg = this.src || this.srcset;
+
+    const body = shouldRenderTheImg
       ? [
           <img
             class={{
@@ -187,8 +192,14 @@ export class Image
             }}
             onClick={this.handleClick}
             onLoad={this.handleImageLoad}
-            data-src={shouldLazyLoad ? this.src : undefined}
-            src={!shouldLazyLoad ? this.src : undefined}
+            // With lazy loading
+            data-src={shouldLazyLoad && this.src ? this.src : undefined}
+            data-srcset={
+              shouldLazyLoad && this.srcset ? this.srcset : undefined
+            }
+            // Without lazy loading
+            src={!shouldLazyLoad && this.src ? this.src : undefined}
+            srcset={!shouldLazyLoad && this.srcset ? this.src : undefined}
             alt={this.alt}
           />,
           <span class="gx-image-loading-indicator" />

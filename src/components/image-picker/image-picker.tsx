@@ -70,11 +70,6 @@ export class ImagePicker implements GxComponent {
   @Prop() readonly lazyLoad = true;
 
   /**
-   * This attribute lets you specify the low resolution image SRC.
-   */
-  @Prop() readonly lowResolutionSrc = "";
-
-  /**
    * This attribute allows specifing how the image is sized according to its container.
    * `contain`, `cover`, `fill` and `none` map directly to the values of the CSS `object-fit` property.
    * The `tile` value repeats the image, both vertically and horizontally, creating a tile effect.
@@ -87,7 +82,7 @@ export class ImagePicker implements GxComponent {
     | "tile";
 
   /**
-   * This attribute lets you specify the SRC.
+   * This attribute lets you specify the `src` of the `img`.
    */
   @Prop({ mutable: true }) src = "";
 
@@ -125,6 +120,14 @@ export class ImagePicker implements GxComponent {
    * cancel action button in the modal.
    */
   @Prop() readonly cancelButtonText = "CANCEL";
+
+  /**
+   * This attribute lets you specify the `srcset` of the `img`. The `srcset`
+   * attribute defines the set of images we will allow the browser to choose
+   * between, and what size each image is. Each set of image information is
+   * separated from the previous one by a comma.
+   */
+  @Prop() readonly srcset: string = "";
 
   /**
    * This attribute lets you specify the current state of the gx-image-picker.
@@ -271,10 +274,10 @@ export class ImagePicker implements GxComponent {
           disabled={this.disabled}
           invisibleMode={this.invisibleMode}
           lazyLoad={this.lazyLoad}
-          lowResolutionSrc={this.lowResolutionSrc}
           scaleType={this.scaleType}
           showImagePickerButton={this.shouldShowImagePickerButton}
           src={this.src}
+          srcset={this.srcset}
           highlightable={this.highlightable}
           onClick={this.clickImageAction}
         >
