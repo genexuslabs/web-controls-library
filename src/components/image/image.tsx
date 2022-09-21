@@ -213,7 +213,8 @@ export class Image
           data-has-action={
             this.highlightable && !this.disabled ? "" : undefined
           }
-          data-no-action={!this.highlightable}
+          // Necessary to avoid the focus-within state when clicking the picker-button
+          data-no-action={this.showImagePickerButton && !this.highlightable}
           // Add focus to the control through sequential keyboard navigation and visually clicking
           tabindex={this.highlightable && !this.disabled ? "0" : undefined}
           ref={el => (this.innerImageContainer = el as HTMLDivElement)}
