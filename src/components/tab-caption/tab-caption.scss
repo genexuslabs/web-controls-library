@@ -1,96 +1,107 @@
 @import "../common/_base";
 @import "../common/_common-styling-config";
-@import "../common/_image-position";
 
-@mixin imageMargin($position, $value) {
-  &.gx-image-position--#{$position} {
-    [slot="main-image"],
-    [slot="disabled-image"] {
-      @if ($position == "before" or $position == "after") {
-        margin: 0 $value;
-      }
-      @if ($position == "above" or $position == "below") {
-        margin: $value 0;
-      }
-    }
+:host {
+  // Necessary to implement tabs distribution with fixed size using
+  // "table-layout: fixed" in the tabs container
+  display: table-cell;
+  vertical-align: middle;
+  position: relative;
+
+  // Tab strip separator
+  border-top: 1px solid #00000000; // transparent color
+  border-bottom: 1px solid #00000000; // transparent color
+
+  // Default style
+  min-height: 1em;
+  background-color: var(--tab-strip-background-color);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  padding: calc(2px + 0.125em) 23px;
+  transition-property: background-color, box-shadow, color, filter, opacity,
+    transform;
+  transition-duration: $transition-duration;
+}
+
+// Tab strip separator
+:host(.unselected) {
+  border-bottom-color: var(--tab-strip-separator-color);
+}
+
+// Hover style for unselected tab captions
+:host(.unselected:hover:not(:active)) {
+  @include hover-style;
+}
+
+:host(.disabled) {
+  @include disabled-style;
+  pointer-events: none;
+}
+
+// Used to limit the sizes of the gx-tab-caption images
+::slotted(img) {
+  height: 18px;
+  width: 18px;
+  object-fit: contain;
+}
+
+.link {
+  display: grid;
+  row-gap: var(--gx-tab-caption-vertical-separation);
+  column-gap: var(--gx-tab-caption-horizontal-separation);
+  align-items: center;
+  justify-items: center;
+
+  // Horizontally center the content
+  width: fit-content;
+  margin: 0 auto;
+
+  color: inherit;
+  text-decoration: none;
+  overflow: hidden;
+  outline: unset;
+  white-space: nowrap;
+
+  &:active,
+  &:focus,
+  &:hover,
+  &:visited {
+    color: inherit;
   }
 }
 
-gx-tab-caption {
-  @include visibility(table-cell);
+.caption {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  max-width: 100%;
+}
 
-  @include imageMargin("before", var(--tab-caption-image-vertical-margin));
-  @include imageMargin("after", var(--tab-caption-image-vertical-margin));
-  @include imageMargin("above", var(--tab-caption-image-horizontal-margin));
-  @include imageMargin("below", var(--tab-caption-image-horizontal-margin));
+.indicator {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 3px;
+  background-color: var(--tab-strip-indicator-color);
+  transition: background-color $transition-duration;
+}
 
-  // Used to decide the position of the image
-  @include imagePosition(
-    ".image-and-link-container a",
-    ":not(.gx-tab-caption--active)"
-  );
-
-  // Used to limit the sizes of the images
-  [slot="main-image"],
-  [slot="disabled-image"] {
-    max-height: 18px;
-    max-width: 18px;
-    object-fit: contain;
+// - - - - - - - - - - - - - - - -
+//        Image positioning
+// - - - - - - - - - - - - - - - -
+.gx-image-position {
+  &--after,
+  &--before {
+    grid-auto-flow: column;
   }
 
-  // Default style
-  background-color: var(--tab-strip-background-color);
-  font-size: 12px;
-  font-weight: 600;
-
-  &.gx-tab-caption {
-    height: 100%;
-    transition: background-color $transition-duration,
-      filter $transition-duration;
-
-    .image-and-link-container {
-      display: inline-block;
-      vertical-align: top;
-      width: 100%;
-      height: 100%;
-
-      .gx-nav-link {
-        display: flex;
-        height: 100%;
-        color: inherit;
-        padding-inline: var(--tab-caption-horizontal-padding);
-        overflow: hidden;
-        transition: background-color $transition-duration,
-          color $transition-duration, border-color $transition-duration;
-        white-space: nowrap;
-
-        &:active,
-        &:focus,
-        &:hover,
-        &:visited {
-          color: none;
-          text-decoration: none;
-          outline: 0;
-        }
-
-        & > span {
-          display: flex;
-          align-items: center;
-          height: 100%;
-          max-width: 100%;
-          min-height: 1em;
-          padding-top: 0.125em;
-        }
-      }
-    }
-
-    &[aria-selected="false"]:hover:not(:active) {
-      @include hover-style;
-    }
-
-    &--disabled {
-      @include disabled-style;
-      pointer-events: none;
+  // Correctly place the caption
+  &--after,
+  &--below {
+    & > .caption {
+      order: -1;
     }
   }
 }

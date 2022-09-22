@@ -20,7 +20,6 @@ const transforms = {
   oddRow: "--odd-row",
   selectedTabCaption: "--selected-tab-page",
   tabsPosition: "--tabs-position",
-  tabsPositionCaption: "--tabs-position-caption",
   title: "--title",
   unselectedTabCaption: "--unselected-tab-page",
   vars: "--vars"
@@ -87,10 +86,6 @@ export function tSelectedTabCaption(className: string): string {
 
 export function tTabsPosition(className: string): string {
   return className + transforms["tabsPosition"];
-}
-
-export function tTabsPositionCaption(className: string): string {
-  return className + transforms["tabsPositionCaption"];
 }
 
 export function tTitle(className: string): string {

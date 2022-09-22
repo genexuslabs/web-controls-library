@@ -33,9 +33,24 @@ If the main image is the only image specified, it will be displayed both when th
 
 ## Events
 
-| Event       | Description                            | Type               |
-| ----------- | -------------------------------------- | ------------------ |
-| `tabSelect` | Fired when the tab caption is selected | `CustomEvent<any>` |
+| Event       | Description                             | Type               |
+| ----------- | --------------------------------------- | ------------------ |
+| `tabSelect` | Fired when the tab caption is selected. | `CustomEvent<any>` |
+
+## Slots
+
+| Slot               | Description                      |
+| ------------------ | -------------------------------- |
+| `"disabled-image"` | The slot for the disabled `img`. |
+| `"main-image"`     | The slot for the main `img`.     |
+
+## Shadow Parts
+
+| Part          | Description                                                                      |
+| ------------- | -------------------------------------------------------------------------------- |
+| `"caption"`   | The caption displayed at the center of the control.                              |
+| `"indicator"` | The indicator bar displayed at the bottom of the control when `selected = true`. |
+| `"link"`      | The `a` tag of the control.                                                      |
 
 ---
 
