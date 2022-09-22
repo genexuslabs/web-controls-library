@@ -133,7 +133,6 @@ export class Switch implements FormComponent {
         class={{
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,
-          [classes.highlighted]: true,
           disabled: this.disabled
         }}
         // Horizontal and vertical alignment support

@@ -20,7 +20,7 @@ import {
 import { Swipeable, makeSwipeable } from "../common/events/swipeable";
 
 // Class transforms
-import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
+import { getClasses } from "../common/css-transforms/css-transforms";
 
 @Component({
   shadow: false,
@@ -137,13 +137,14 @@ export class Table
 
   render() {
     // Styling for gx-table control.
-    const classes = getClassesWithoutFocus(this.cssClass);
+    const classes = getClasses(this.cssClass);
 
     return (
       <Host
         class={{
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,
+          disabled: this.disabled,
 
           // Overflow Behavior
           "overflow-behavior--default": this.overflowBehavior === "clip",
@@ -154,7 +155,8 @@ export class Table
           "grid-template-columns": this.columnsTemplate,
           "grid-template-rows": this.rowsTemplate
         }}
-        data-has-action={this.highlightable ? "" : undefined}
+        // Mouse pointer to indicate action
+        data-has-action={this.highlightable && !this.disabled ? "" : undefined}
       >
         <slot />
       </Host>

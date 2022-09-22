@@ -12,7 +12,7 @@ import { Component as GxComponent } from "../common/interfaces";
 import { watchForItems } from "../common/watch-items";
 
 // Class transforms
-import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
+import { getClasses } from "../common/css-transforms/css-transforms";
 import {
   attachHorizontalScrollWithDragHandler,
   attachHorizontalScrollWithWheelHandler
@@ -212,7 +212,7 @@ export class NavBar implements GxComponent {
       isHeaderRowPatternEnabled && this.showHeaderRowPatternClass
         ? this.headerRowPatternCssClass
         : this.cssClass;
-    const classes = getClassesWithoutFocus(currentClass);
+    const classes = getClasses(currentClass);
 
     let amountOfActionTypes = 0;
 

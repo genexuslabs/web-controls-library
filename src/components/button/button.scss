@@ -70,6 +70,8 @@ gx-button {
 
   // Default appearance
   & > button {
+    @include elevation();
+
     background-color: transparent;
     border-style: none;
 
@@ -83,13 +85,12 @@ gx-button {
     height: var(--height);
     line-height: 1.5em;
     padding: 0;
+    outline: unset;
     pointer-events: all;
     user-select: none;
   }
 
   & > .gx-button {
-    @include elevation();
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -98,7 +99,6 @@ gx-button {
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;
-    outline: unset;
     overflow: hidden;
 
     // Avoid zooming on double tap

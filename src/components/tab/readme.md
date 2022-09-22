@@ -51,18 +51,23 @@ tab content, using the `gx-tab-page` element.
 
 ## CSS Custom Properties
 
-| Name                                    | Description                                                            |
-| --------------------------------------- | ---------------------------------------------------------------------- |
-| `--elevation`                           | The size of the shadow for the tab component                           |
-| `--tab-caption-horizontal-padding`      | Tab caption horizontal padding                                         |
-| `--tab-caption-image-horizontal-margin` | Tab caption image horizontal margin                                    |
-| `--tab-caption-image-vertical-margin`   | Tab caption image vertical margin                                      |
-| `--tab-caption-vertical-padding`        | Tab caption vertical padding                                           |
-| `--tab-strip-background-color`          | Tab strip background color                                             |
-| `--tab-strip-elevation`                 | The size of the shadow for the tab strip                               |
-| `--tab-strip-height`                    | Tab strip height                                                       |
-| `--tab-strip-indicator-color`           | Background color of the indicator. Used when a tab caption is selected |
-| `--tab-strip-separator-color`           | Color to underline the entire tab strip                                |
+| Name                                     | Description                                                            |
+| ---------------------------------------- | ---------------------------------------------------------------------- |
+| `--elevation`                            | The size of the shadow for the tab component                           |
+| `--gx-tab-caption-horizontal-separation` | Tab caption horizontal separation between image and text               |
+| `--gx-tab-caption-vertical-separation`   | Tab caption vertical separation between image and text                 |
+| `--tab-strip-background-color`           | Tab strip background color                                             |
+| `--tab-strip-elevation`                  | The size of the shadow for the tab strip                               |
+| `--tab-strip-height`                     | Tab strip height                                                       |
+| `--tab-strip-indicator-color`            | Background color of the indicator. Used when a tab caption is selected |
+| `--tab-strip-separator-color`            | Color to underline the entire tab strip                                |
+
+## Slots
+
+| Slot        | Description                    |
+| ----------- | ------------------------------ |
+| `"caption"` | The slot for the tab captions. |
+| `"page"`    | The slot for the tab pages.    |
 
 ---
 

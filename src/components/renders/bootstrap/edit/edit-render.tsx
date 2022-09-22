@@ -143,8 +143,7 @@ export class EditRender implements Renderer {
               class={{
                 [slots.cssClass]:
                   !slots.shouldStyleHostElement && !!this.component.cssClass,
-                [slots.vars]: !slots.shouldStyleHostElement,
-                [slots.highlighted]: !slots.shouldStyleHostElement
+                [slots.vars]: !slots.shouldStyleHostElement
               }}
               {...attris}
               data-part="field"
@@ -169,22 +168,6 @@ export class EditRender implements Renderer {
         );
 
         editableElement = [
-          // If showTrigger == true, it sets a trigger button
-          edit.showTrigger && (
-            <div class="trigger-button-container">
-              <button
-                class={{
-                  "trigger-button": true,
-                  "not-disabled": !edit.disabled
-                }}
-                onClick={this.handleTriggerClick}
-                type="button"
-                disabled={edit.disabled}
-              >
-                {existSlotContent !== null && slots.triggerContent}
-              </button>
-            </div>
-          ),
           <div
             class={{
               "gx-edit-container": true,
@@ -209,7 +192,23 @@ export class EditRender implements Renderer {
                   <span>{edit.placeholder}</span>
                 </div>
               )}
-          </div>
+          </div>,
+          // If showTrigger == true, it sets a trigger button
+          edit.showTrigger && (
+            <div class="trigger-button-container">
+              <button
+                class={{
+                  "trigger-button": true,
+                  "not-disabled": !edit.disabled
+                }}
+                onClick={this.handleTriggerClick}
+                type="button"
+                disabled={edit.disabled}
+              >
+                {existSlotContent !== null && slots.triggerContent}
+              </button>
+            </div>
+          )
         ];
       }
       // If format = HTML

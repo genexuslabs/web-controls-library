@@ -57,7 +57,8 @@ export class SelectRender implements Renderer {
           class={{
             "gx-select-control": true,
             [this.component.cssClass]: !!this.component.cssClass,
-            [classes.vars]: true
+            [classes.vars]: true,
+            disabled: this.component.disabled
           }}
         >
           <span>{this.getReadonlyTextContent()}</span>
@@ -65,13 +66,14 @@ export class SelectRender implements Renderer {
       );
     } else {
       let datalistId: string;
+
       const attris = {
         "aria-disabled": this.component.disabled ? "true" : undefined,
         class: {
           "gx-select-control": true,
           [this.component.cssClass]: !!this.component.cssClass,
           [classes.vars]: true,
-          [classes.highlighted]: true
+          disabled: this.component.disabled
         },
         disabled: this.component.disabled,
         id: this.selectId,
@@ -80,6 +82,7 @@ export class SelectRender implements Renderer {
           select.value = this.component.value;
         }
       };
+
       if (this.component.suggest) {
         datalistId = `${this.selectId}__datalist`;
       }

@@ -19,7 +19,7 @@ import {
 import { LineClampComponent, makeLinesClampable } from "../common/line-clamp";
 
 // Class transforms
-import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
+import { getClasses } from "../common/css-transforms/css-transforms";
 
 @Component({
   shadow: true,
@@ -119,7 +119,7 @@ export class TextBlock
 
   render() {
     // Styling for gx-textblock control.
-    const classes = getClassesWithoutFocus(this.cssClass);
+    const classes = getClasses(this.cssClass);
 
     const body = (
       <div class="gx-textblock-container" part="valign">
@@ -157,6 +157,8 @@ export class TextBlock
           disabled: this.disabled
         }}
         data-has-action={this.highlightable ? "" : undefined}
+        // Add focus to the control through sequential keyboard navigation and visually clicking
+        tabindex={this.highlightable && !this.disabled ? "0" : undefined}
       >
         {this.href ? <a href={this.href}>{body}</a> : body}
       </Host>

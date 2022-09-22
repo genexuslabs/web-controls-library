@@ -4,7 +4,7 @@ import { Renderer } from "../../../common/interfaces";
 import { Card } from "../../../card/card";
 
 // Class transforms
-import { getClassesWithoutFocus } from "../../../common/css-transforms/css-transforms";
+import { getClasses } from "../../../common/css-transforms/css-transforms";
 
 export class CardRender implements Renderer {
   constructor(private component: Card) {
@@ -164,7 +164,7 @@ export class CardRender implements Renderer {
       card.element.querySelector("[slot='footer']") !== null;
 
     // Styling for gx-card control.
-    const classes = getClassesWithoutFocus(this.component.cssClass);
+    const classes = getClasses(this.component.cssClass);
 
     return [
       <gx-bootstrap />,

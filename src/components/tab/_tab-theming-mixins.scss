@@ -37,67 +37,28 @@
   }
 
   // - - - - - - - - - - - - - Tabs position - - - - - - - - - - - - -
-  $padding-top: calc(var(--tab-caption-vertical-padding) - 3px);
-  $padding-bottom: calc(var(--tab-caption-vertical-padding) - 1px);
-  $border-top: 3px solid transparent;
-  $border-bottom: 1px solid var(--tab-strip-separator-color);
-  $border-top-color-active: var(--tab-strip-indicator-color);
-  $border-bottom-color-active: transparent;
-
-  // Used to show the captions in the top position
-  @if $tabs-position != bottom {
-    &#{$gx-tabs-position} {
-      grid-template-rows: minmax(auto, max-content);
-
-      & > .gx-nav-tabs {
-        @include elevation();
-
-        & > .gx-nav-tabs-table {
-          &-filler {
-            border-bottom-color: var(--tab-strip-separator-color);
-          }
-        }
-      }
-    }
-
-    // Styling for top captions
-    &#{$gx-tabs-position-caption} {
-      padding-block: $padding-top $padding-bottom;
-      border-top: $border-top;
-      border-bottom: $border-bottom;
-    }
-
-    &#{$gx-tabs-position-caption}.gx-nav-link--active {
-      border-block-color: $border-top-color-active $border-bottom-color-active;
-    }
-  }
-
   // Used to show the captions in the bottom position
   @if $tabs-position == bottom {
+    // Implement tabs position
+    grid-template-rows: auto minmax(auto, max-content);
+    --gx-tabs-position--order: 1;
+
+    // WA to implement elevation when tabs-position = bottom
+    & > .gx-nav-tabs {
+      @include elevation(top);
+    }
+
     &#{$gx-tabs-position} {
-      grid-template-rows: auto minmax(auto, max-content);
-
-      & > .gx-nav-tabs {
-        @include elevation(top);
-        order: 1;
-
-        & > .gx-nav-tabs-table {
-          &-filler {
-            border-top-color: var(--tab-strip-separator-color);
-          }
-        }
+      & > .gx-nav-tabs-table-filler {
+        border-top-color: var(--tab-strip-separator-color);
+        border-bottom-color: #00000000; // transparent
       }
-    }
 
-    // Styling for bottom captions
-    &#{$gx-tabs-position-caption} {
-      padding-block: $padding-bottom $padding-top;
-      border-top: $border-bottom;
-      border-bottom: $border-top;
-    }
-
-    &#{$gx-tabs-position-caption}.gx-nav-link--active {
-      border-block-color: $border-bottom-color-active $border-top-color-active;
+      // Styling for bottom captions
+      & > gx-tab-caption {
+        border-top-color: var(--tab-strip-separator-color);
+        border-bottom-color: transparent;
+      }
     }
   }
 }

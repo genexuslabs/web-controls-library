@@ -18,31 +18,33 @@ import {
 } from "../common/highlightable";
 import {
   hideMainImageWhenDisabledClass,
-  imagePositionClass,
-  imagePositionRender
+  imagePositionClass
 } from "../common/image-position";
 
 // Class transforms
 import {
-  getClassesWithoutFocus,
+  getClasses,
   tSelectedTabCaption,
-  tTabsPositionCaption,
   tUnselectedTabCaption
 } from "../common/css-transforms/css-transforms";
 
 let autoTabId = 0;
 
+/**
+ * @part caption - The caption displayed at the center of the control.
+ * @part indicator - The indicator bar displayed at the bottom of the control when `selected = true`.
+ * @part link - The `a` tag of the control.
+ *
+ * @slot main-image - The slot for the main `img`.
+ * @slot disabled-image - The slot for the disabled `img`.
+ */
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "tab-caption.scss",
   tag: "gx-tab-caption"
 })
 export class TabCaption
   implements GxComponent, DisableableComponent, HighlightableComponent {
-  constructor() {
-    this.clickHandler = this.clickHandler.bind(this);
-  }
-
   private hasDisabledImage = false;
 
   @Element() element: HTMLGxTabCaptionElement;
@@ -100,21 +102,30 @@ export class TabCaption
   @Watch("selected")
   selectedHandler() {
     if (this.selected) {
-      this.tabSelect.emit(event);
+      this.tabSelect.emit();
     }
   }
 
   /**
-   * Fired when the tab caption is selected
+   * Fired when the tab caption is selected.
    */
   @Event() tabSelect: EventEmitter;
+
+  private clickHandler = (event: UIEvent) => {
+    event.preventDefault();
+
+    if (!this.disabled) {
+      event.stopPropagation();
+      this.selected = true;
+    }
+  };
 
   componentWillLoad() {
     if (!this.element.id) {
       this.element.id = `gx-tab-caption-auto-id-${autoTabId++}`;
     }
     this.hasDisabledImage =
-      this.element.querySelector("[slot='disabled-image']") !== null;
+      this.element.querySelector(":scope > [slot='disabled-image']") !== null;
   }
 
   componentDidLoad() {
@@ -126,31 +137,21 @@ export class TabCaption
     const selectedTabCaptionClass = tSelectedTabCaption(this.tabCssClass);
     const unselectedTabCaptionClass = tUnselectedTabCaption(this.tabCssClass);
 
-    const selectedTabCaptionClasses = getClassesWithoutFocus(
-      selectedTabCaptionClass
-    );
-    const unselectedTabCaptionClasses = getClassesWithoutFocus(
-      unselectedTabCaptionClass
-    );
+    const selectedTabCaptionClasses = getClasses(selectedTabCaptionClass);
+    const unselectedTabCaptionClasses = getClasses(unselectedTabCaptionClass);
 
-    const selectedClasses = getClassesWithoutFocus(this.selectedCssClass);
-    const unselectedClasses = getClassesWithoutFocus(this.cssClass);
-
-    const tabsPositionCaptionClass = !!this.tabCssClass
-      ? this.tabCssClass
-          .split(" ")
-          .map(tTabsPositionCaption)
-          .join(" ")
-      : "";
+    const selectedClasses = getClasses(this.selectedCssClass);
+    const unselectedClasses = getClasses(this.cssClass);
 
     return (
       <Host
-        aria-selected={(!!this.selected).toString()}
         role="tab"
+        aria-disabled={this.disabled ? "true" : undefined}
+        aria-selected={(!!this.selected).toString()}
         class={{
-          "gx-tab-caption": true,
-          "gx-tab-caption--active": this.selected,
-          "gx-tab-caption--disabled": this.disabled,
+          disabled: this.disabled,
+          unselected: !this.selected,
+
           // Configured by the main container gx-tab
           [selectedTabCaptionClass]: this.selected,
           [selectedTabCaptionClasses.vars]: this.selected,
@@ -167,36 +168,34 @@ export class TabCaption
           [this.cssClass]: !!this.cssClass && !this.selected,
           [unselectedClasses.vars]: !this.selected,
 
-          [imagePositionClass(this.imagePosition)]: true,
           [hideMainImageWhenDisabledClass]:
             !this.selected && this.hasDisabledImage
         }}
+        onClick={this.clickHandler}
       >
-        <div class="image-and-link-container">
-          <a
-            class={{
-              "gx-nav-link": true,
-              "gx-nav-link--active": this.selected,
-              [tabsPositionCaptionClass]: true
-            }}
-            href="#"
-            onClick={this.clickHandler}
-          >
-            {imagePositionRender({
-              default: <slot />,
-              disabledImage: <slot name="disabled-image" />,
-              mainImage: <slot name="main-image" />
-            })}
-          </a>
-        </div>
+        <a
+          class={`link ${[imagePositionClass(this.imagePosition)]}`}
+          part="link"
+          href="#"
+          onClick={this.clickHandler}
+        >
+          {// Main image
+          (this.selected || !this.hasDisabledImage) && (
+            <slot name="main-image" />
+          )}
+
+          {// Disabled image
+          !this.selected && this.hasDisabledImage && (
+            <slot name="disabled-image" />
+          )}
+
+          <span class="caption" part="caption">
+            <slot />
+          </span>
+        </a>
+
+        {this.selected && <div class="indicator" part="indicator"></div>}
       </Host>
     );
-  }
-
-  private clickHandler(event: UIEvent) {
-    event.preventDefault();
-    if (!this.disabled) {
-      this.selected = true;
-    }
   }
 }

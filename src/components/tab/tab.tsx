@@ -19,12 +19,16 @@ import {
 
 // Class transforms
 import {
-  getClassesWithoutFocus,
+  getClasses,
   tTabsPosition
 } from "../common/css-transforms/css-transforms";
 
-const BASE_TABLIST_SELECTOR = ":scope > [role='tablist']";
+const BASE_TABLIST_SELECTOR = ":scope";
 
+/**
+ * @slot caption - The slot for the tab captions.
+ * @slot page - The slot for the tab pages.
+ */
 @Component({
   shadow: false,
   styleUrl: "tab.scss",
@@ -151,11 +155,10 @@ export class Tab
   }
 
   render() {
-    this.setCaptionSlotsClass();
     this.setPageSlotsClass();
 
     // Styling for gx-tab-caption control.
-    const classes = getClassesWithoutFocus(this.cssClass);
+    const classes = getClasses(this.cssClass);
 
     const tabsPositionClass = !!this.cssClass
       ? this.cssClass
@@ -166,34 +169,25 @@ export class Tab
 
     return (
       <Host
+        role="tablist"
         class={{
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true
         }}
       >
-        <div role="tablist" class={tabsPositionClass}>
-          <div class="gx-nav-tabs">
-            <div class="gx-nav-tabs-table">
-              <slot name="caption" />
-              {this.tabsDistribution === "scroll" && (
-                <div aria-hidden="true" class="gx-nav-tabs-table-filler"></div>
-              )}
-            </div>
+        <div class="gx-nav-tabs">
+          <div class={{ "gx-nav-tabs-table": true, [tabsPositionClass]: true }}>
+            <slot name="caption" />
+            {this.tabsDistribution === "scroll" && (
+              <div aria-hidden="true" class="gx-nav-tabs-table-filler"></div>
+            )}
           </div>
-          <div class="gx-tab-content">
-            <slot name="page" />
-          </div>
+        </div>
+        <div class="gx-tab-content">
+          <slot name="page" />
         </div>
       </Host>
     );
-  }
-
-  private setCaptionSlotsClass() {
-    this.getCaptionSlots().forEach(captionElement => {
-      if (!captionElement.classList.contains("gx-nav-item")) {
-        captionElement.classList.add("gx-nav-item");
-      }
-    });
   }
 
   private setPageSlotsClass() {

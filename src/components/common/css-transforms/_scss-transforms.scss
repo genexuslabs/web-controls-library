@@ -3,8 +3,6 @@ $gx-even-row: "--even-row";
 $gx-group-caption: "--group-caption";
 $gx-highlighted: "--highlighted";
 $gx-highlighted-dot: ".gx-highlighted";
-$gx-highlighted-focus-within: "--focus-within";
-$gx-hover: "--hover";
 $gx-horizontal-line: "--horizontal-line";
 $gx-label: "--label";
 $gx-label-container: "--label-container";
@@ -16,11 +14,12 @@ $gx-loading-vars: "--loading--vars"; // In this case, we add the variable mappin
 $gx-odd-row: "--odd-row";
 $gx-selected-tab-caption: "--selected-tab-page";
 $gx-tabs-position: "--tabs-position";
-$gx-tabs-position-caption: "--tabs-position-caption";
 $gx-title: "--title";
 $gx-unselected-tab-caption: "--unselected-tab-page";
 
 $gx-vars: "--vars";
+
+$gx-no-action: "data-no-action";
 
 /// Replace `$search` with `$replace` in `$string`
 /// @param {String} $string - Initial string

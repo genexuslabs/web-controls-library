@@ -23,7 +23,7 @@
     }
 
     // - - - - - - - - - - Highlighted Label - - - - - - - - - -
-    *:focus-within + .gx-label-container > &#{$gx-label-highlighted} {
+    &#{$gx-label-highlighted}:active {
       @extend #{str-replace($label, ".", "%")}#{$gx-highlighted} !optional;
     }
   }

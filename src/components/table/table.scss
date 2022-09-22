@@ -23,6 +23,10 @@ gx-table {
   flex: 1;
   @include transition-properties();
 
+  &.disabled {
+    pointer-events: none;
+  }
+
   // - - - - - - - - - - - - - - - -
   //   Overflow Behavior and Style
   // - - - - - - - - - - - - - - - -

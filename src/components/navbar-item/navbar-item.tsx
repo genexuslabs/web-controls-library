@@ -6,7 +6,10 @@ import {
 } from "../common/highlightable";
 
 // Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
+import {
+  getClasses,
+  HIGHLIGHT_CLASS_NAME
+} from "../common/css-transforms/css-transforms";
 
 @Component({
   shadow: true,
@@ -69,7 +72,7 @@ export class NavBarItem implements GxComponent, HighlightableComponent {
           "gx-navbar-item-empty": !this.cssClass,
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,
-          [classes.highlighted]: this.active
+          [HIGHLIGHT_CLASS_NAME]: this.active
         }}
         data-has-action
       >

@@ -28,6 +28,10 @@ $close-button-size: $close-vector-size + $close-button-padding +
    * @prop --gx-modal-mask-background-color: Mask background color
    */
   --gx-modal-mask-background-color: #333333bf; // Android's mask
+
+  // Reset requiered when the control is used inside of a highlightable control.
+  // For example, gx-image-picker
+  cursor: auto;
 }
 
 // - - - - - - - - - - - - - - - -
