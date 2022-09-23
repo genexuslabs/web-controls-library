@@ -1,3 +1,4 @@
+@import "../common/layout-styling-config";
 @import "../grid-base/grid-base.scss";
 
 gx-grid-smart-css {
@@ -24,7 +25,7 @@ gx-grid-smart-css {
    * @prop --gx-overflow-style: Determine if the overflow will be hidden or visible.
    * By default, the gx-grid-smart-css hide its content overflow.
    */
-  --gx-overflow-style: hidden;
+  --gx-overflow-style: #{$default-overflow-style};
 
   @include visibility(flex);
 

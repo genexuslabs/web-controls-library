@@ -1,5 +1,6 @@
 @import "../common/_base";
 @import "../common/_common-styling-config.scss";
+@import "../common/layout-styling-config";
 
 gx-table {
   --elevation: 0;
@@ -10,7 +11,7 @@ gx-table {
    * By default, the gx-table hide its content overflow to ensure that the border-radius
    * property is applied.
    */
-  --gx-overflow-style: hidden;
+  --gx-overflow-style: #{$default-overflow-style};
 
   @include reset-variables();
   @include elevation();

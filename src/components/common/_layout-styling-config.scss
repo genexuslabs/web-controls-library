@@ -11,6 +11,9 @@ $gx-vertical-targets-breakpoint-plus-1: $gx-vertical-targets-breakpoint + 1px;
 // - - - - - -  Layout  - - - - - -
 $gx-vertical-target-width: 320px;
 
+// - - - -  Overflow Style  - - - -
+$default-overflow-style: visible;
+
 // - - - - - - z-index - - - - - -
 $base-z-index: 100;
 $z-index-1: $base-z-index + 1;

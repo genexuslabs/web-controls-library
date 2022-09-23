@@ -1,3 +1,4 @@
+@import "../common/layout-styling-config";
 @import "../grid-base/grid-base.scss";
 @import "../../../node_modules/swiper/swiper.min.css";
 
@@ -6,7 +7,7 @@ gx-grid-horizontal {
    * @prop --gx-overflow-style: Determine if the overflow will be hidden or visible.
    * By default, the gx-grid-horizontal hide its content overflow.
    */
-  --gx-overflow-style: hidden;
+  --gx-overflow-style: #{$default-overflow-style};
 
   & > [slot="grid-empty-loading-placeholder"] {
     height: 100%;
