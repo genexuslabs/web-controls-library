@@ -157,9 +157,7 @@ export class Image
   }
 
   componentDidLoad() {
-    if (this.src) {
-      makeHighlightable(this, this.innerImageContainer);
-    }
+    makeHighlightable(this, this.innerImageContainer);
   }
 
   disconnectedCallback() {
@@ -175,7 +173,7 @@ export class Image
 
     const withoutAutogrow = this.scaleType !== "tile" && !this.autoGrow;
 
-    const shouldRenderTheImg = this.src || this.srcset;
+    const shouldRenderTheImg = this.srcset || this.src;
 
     const body = shouldRenderTheImg
       ? [
@@ -199,7 +197,7 @@ export class Image
             }
             // Without lazy loading
             src={!shouldLazyLoad && this.src ? this.src : undefined}
-            srcset={!shouldLazyLoad && this.srcset ? this.src : undefined}
+            srcset={!shouldLazyLoad && this.srcset ? this.srcset : undefined}
             alt={this.alt}
           />,
           <span class="gx-image-loading-indicator" />
@@ -242,11 +240,13 @@ export class Image
   }
 
   private shouldLazyLoad(): boolean {
+    // Lazy load is disabled
     if (!this.lazyLoad) {
       return false;
     }
 
-    if (lazyLoadedImages.has(this.src)) {
+    // Do not lazy load already loaded images
+    if (lazyLoadedImages.has(this.srcset) || lazyLoadedImages.has(this.src)) {
       return false;
     }
 
@@ -256,9 +256,14 @@ export class Image
 
   private handleLazyLoaded(event: CustomEvent) {
     const img: HTMLImageElement = this.element.querySelector("img");
+
     if (event.target === img) {
       this.element.classList.remove("gx-img-lazyloading");
-      lazyLoadedImages.add(this.src);
+
+      const imageSrc = this.srcset || this.src;
+
+      // Store the srcset or src of the lazy loaded image
+      lazyLoadedImages.add(imageSrc);
     }
   }
 }
