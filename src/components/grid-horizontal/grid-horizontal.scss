@@ -1,3 +1,4 @@
+@import "../common/base";
 @import "../common/layout-styling-config";
 @import "../grid-base/grid-base.scss";
 @import "../../../node_modules/swiper/swiper.min.css";
@@ -9,10 +10,24 @@ gx-grid-horizontal {
    */
   --gx-overflow-style: #{$default-overflow-style};
 
+  @include visibility(flex);
+
+  & > .gx-grid-horizontal-content {
+    display: flex;
+    position: relative;
+    flex: 1;
+
+    & > .swiper-wrapper {
+      position: absolute;
+      height: fit-content;
+    }
+  }
+
   & > [slot="grid-empty-loading-placeholder"] {
     height: 100%;
   }
 
+  // grid cell
   .swiper-slide {
     //Reset CSS required properties.
     flex-grow: 0;

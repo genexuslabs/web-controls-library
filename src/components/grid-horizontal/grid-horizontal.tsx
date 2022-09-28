@@ -34,6 +34,14 @@ export class GridHorizontal
   private swiper: Swiper = null;
   private fillMode: "column" | "row" = "row";
 
+  private needForRAF = true; // To prevent redundant RAF (request animation frame) calls
+
+  private resizeObserver: ResizeObserver = null;
+
+  // Refs
+  private horizontalGridContent: HTMLDivElement = null;
+  private scrollableContainer: HTMLElement = null;
+
   /**
    * This attribute defines if the control size will grow automatically,
    * to adjust to its content size.
@@ -254,8 +262,18 @@ export class GridHorizontal
   }
 
   componentDidLoad() {
+    this.scrollableContainer = this.element.querySelector(
+      ":scope > .gx-grid-horizontal-content > [slot='grid-content']"
+    );
+    this.scrollableContainer.classList.add("swiper-wrapper");
+
     window.requestAnimationFrame(() => this.ensureSwiper());
     GridBaseHelper.init(this);
+
+    // Implement auto grow
+    if (this.autoGrow) {
+      this.connectResizeObserver();
+    }
   }
 
   componentDidUpdate() {
@@ -265,6 +283,11 @@ export class GridHorizontal
   disconnectedCallback() {
     if (this.isInitialized()) {
       this.swiper.destroy(true, true);
+    }
+
+    if (this.resizeObserver != null) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
     }
   }
 
@@ -421,6 +444,26 @@ export class GridHorizontal
     this.swiper.allowTouchMove = !lock;
   }
 
+  private connectResizeObserver() {
+    this.resizeObserver = new ResizeObserver(() => {
+      if (!this.needForRAF) {
+        return;
+      }
+      this.needForRAF = false; // No need to call RAF up until next frame
+
+      // Update the height in the best moment
+      requestAnimationFrame(() => {
+        this.needForRAF = true; // RAF now consumes the movement instruction so a new one can come
+
+        // Update the height of the horizontal content container, because the
+        // scrollableContainer has "position: absolute"
+        this.horizontalGridContent.style.height = `${this.scrollableContainer.scrollHeight}px`;
+      });
+    });
+
+    this.resizeObserver.observe(this.scrollableContainer);
+  }
+
   private ensureSwiper(orientationDidChange = false): boolean {
     if (
       (this.swiper === null || orientationDidChange) &&
@@ -428,12 +471,10 @@ export class GridHorizontal
       this.loadingState !== "loading"
     ) {
       const opts: SwiperOptions = this.normalizeOptions();
-      const container: HTMLElement = this.element;
-      container
-        .querySelector("[slot='grid-content']")
-        .classList.add("swiper-wrapper");
+
       this.log("Initializing Swiper..");
-      this.swiper = new Swiper(container, opts);
+
+      this.swiper = new Swiper(this.horizontalGridContent, opts);
     }
     return this.isInitialized();
   }
@@ -613,12 +654,6 @@ export class GridHorizontal
   render() {
     const height = this.getViewPortHeightIfColumnFill();
     const hostData = GridBaseHelper.hostData(this);
-    hostData.class = {
-      ...hostData.class,
-      ...{
-        "swiper-container": true
-      }
-    };
 
     return (
       <Host
@@ -632,7 +667,12 @@ export class GridHorizontal
         }}
       >
         {[
-          <slot name="grid-content" />,
+          <div
+            class="gx-grid-horizontal-content swiper-container"
+            ref={el => (this.horizontalGridContent = el as HTMLDivElement)}
+          >
+            <slot name="grid-content" />
+          </div>,
           this.pager && (
             <div
               class="gx-grid-paging swiper-pagination"
