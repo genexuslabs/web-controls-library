@@ -1,6 +1,8 @@
 @import "../common/layout-styling-config";
 @import "../grid-base/grid-base.scss";
 
+$grid-horizontal-content-selector: "& > .gx-grid-horizontal-content > [slot='grid-content']";
+
 gx-grid-smart-css {
   /**
    * @prop --gx-grid-css-items: Number of Columns or Rows to be shown in the Main axis direction.
@@ -79,6 +81,10 @@ gx-grid-smart-css {
 //        Vertical Orientation
 // - - - - - - - - - - - - - - - - - -
 gx-grid-smart-css[direction="vertical"] {
+  &[auto-grow] {
+    overflow: visible; // Override default behavior in this case
+  }
+
   // This ensures that the rows will only set their height based on the height
   // of the content.
   #{$grid-content-selector} {
@@ -160,9 +166,17 @@ gx-grid-smart-css[direction="vertical"] {
 //       Horizontal Orientation
 // - - - - - - - - - - - - - - - - - -
 gx-grid-smart-css[direction="horizontal"] {
-  max-width: 100%;
+  & > .gx-grid-horizontal-content {
+    display: flex;
+    position: relative;
+    flex: 1;
+  }
 
-  #{$grid-content-selector} {
+  #{$grid-horizontal-content-selector} {
+    display: grid;
+    position: absolute;
+    flex: 1;
+    max-width: 100%;
     grid-auto-flow: column;
     overflow-x: auto;
 
@@ -189,21 +203,21 @@ gx-grid-smart-css[direction="horizontal"] {
 
   // - - - - - - - - -  Single  - - - - - - - - -
   &[item-layout-mode="single"] {
-    #{$grid-content-selector} {
+    #{$grid-horizontal-content-selector} {
       grid-template-rows: 1fr;
     }
   }
 
   // - - - - - - Multiple by Quantity - - - - - -
   &[item-layout-mode="mbyq"] {
-    #{$grid-content-selector} {
+    #{$grid-horizontal-content-selector} {
       grid-template-rows: repeat(var(--gx-grid-css-items), 1fr);
     }
   }
 
   // - - - - - - - Multiple by Size - - - - - - -
   &[item-layout-mode="mbys"] {
-    #{$grid-content-selector} {
+    #{$grid-horizontal-content-selector} {
       grid-template-rows: repeat(
         auto-fill,
         minmax(var(--gx-grid-css-min-size), 1fr)
