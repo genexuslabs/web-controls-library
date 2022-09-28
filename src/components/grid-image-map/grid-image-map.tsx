@@ -114,6 +114,11 @@ export class GridImageMap
   @Prop() src: string;
 
   /**
+   * This attribute lets you specify the srcset of the background image.
+   */
+  @Prop() srcset: string;
+
+  /**
    * This property lets you specify a user tip that will be displayed as
    * a message on the image map when the mouse is over it.
    * This hint is used to indicate the image map can be zoomed.
@@ -231,11 +236,11 @@ export class GridImageMap
               <img
                 class="inner-img"
                 style={{
-                  src: `url(${this.src})`,
                   opacity: !this.imageDidLoad ? "0" : null
                 }}
                 onLoad={this.handleImageLoad}
                 src={this.src}
+                srcset={this.srcset}
                 alt={alt}
               />
               {this.shouldShowTooltip && this.mouseIsOverImageMap && (

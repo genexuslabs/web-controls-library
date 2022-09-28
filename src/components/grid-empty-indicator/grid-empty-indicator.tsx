@@ -17,9 +17,14 @@ export class GridEmptyIndicator implements ComponentInterface {
   @Prop() readonly textClass = "";
 
   /**
-   * Image url to be shown
+   * This attribute lets you specify the `src` of the image to be shown.
    */
   @Prop() readonly image = "";
+
+  /**
+   * This attribute lets you specify the `srcset` of the image to be shown.
+   */
+  @Prop() readonly imageSet = "";
 
   /**
    * A CSS class to set as the inner `image` element class.
@@ -29,15 +34,19 @@ export class GridEmptyIndicator implements ComponentInterface {
   render() {
     return (
       <Host class="gx-empty-indicator">
-        {this.image && (
+        {(this.imageSet || this.image) && (
           <div class="gx-empty-item">
-            <gx-image cssClass={this.imageClass} src={this.image}></gx-image>
+            <gx-image
+              cssClass={this.imageClass}
+              src={this.image}
+              srcset={this.imageSet}
+            ></gx-image>
           </div>
         )}
 
         {this.text && (
           <div class="gx-empty-item">
-            <gx-textblock cssClass={this.textClass}>{this.text}</gx-textblock>{" "}
+            <gx-textblock cssClass={this.textClass}>{this.text}</gx-textblock>
           </div>
         )}
       </Host>
