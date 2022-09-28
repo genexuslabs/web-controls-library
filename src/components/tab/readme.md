@@ -49,19 +49,6 @@ tab content, using the `gx-tab-page` element.
 | ----------- | ------------------------------------ | ------------------ |
 | `tabChange` | Fired when the active tab is changed | `CustomEvent<any>` |
 
-## CSS Custom Properties
-
-| Name                                     | Description                                                            |
-| ---------------------------------------- | ---------------------------------------------------------------------- |
-| `--elevation`                            | The size of the shadow for the tab component                           |
-| `--gx-tab-caption-horizontal-separation` | Tab caption horizontal separation between image and text               |
-| `--gx-tab-caption-vertical-separation`   | Tab caption vertical separation between image and text                 |
-| `--tab-strip-background-color`           | Tab strip background color                                             |
-| `--tab-strip-elevation`                  | The size of the shadow for the tab strip                               |
-| `--tab-strip-height`                     | Tab strip height                                                       |
-| `--tab-strip-indicator-color`            | Background color of the indicator. Used when a tab caption is selected |
-| `--tab-strip-separator-color`            | Color to underline the entire tab strip                                |
-
 ## Slots
 
 | Slot        | Description                    |

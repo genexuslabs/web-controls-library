@@ -52,14 +52,6 @@ Returns the id of the inner `input` element (if set).
 
 Type: `Promise<string>`
 
-## CSS Custom Properties
-
-| Name                | Description                                 |
-| ------------------- | ------------------------------------------- |
-| `--star-heigth`     | Set the heigth of each star.                |
-| `--star-separation` | This is for set the space between each star |
-| `--star-width`      | Set the width of each star.                 |
-
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_

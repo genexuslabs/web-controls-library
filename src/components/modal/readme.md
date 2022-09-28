@@ -63,14 +63,6 @@ predefined slots:
 | `"footer"`       |             |
 | `"header"`       |             |
 
-## CSS Custom Properties
-
-| Name                                  | Description                          |
-| ------------------------------------- | ------------------------------------ |
-| `--gx-modal-accent-color`             | Accent color for gx-modal's actions. |
-| `--gx-modal-content-background-color` | Background color for body and footer |
-| `--gx-modal-mask-background-color`    | Mask background color                |
-
 ## Dependencies
 
 ### Used by
