@@ -53,6 +53,17 @@ loadingEl.value = 1;
 | `presented`         | `presented`           | This attribute lets you specify if the loading is presented.                                                                                                                                        | `boolean` | `false`     |
 | `showSlotAnimation` | `show-slot-animation` | `true` to display the animation defined in the default `<slot>` instead the native (default) animation.                                                                                             | `boolean` | `false`     |
 
+## CSS Custom Properties
+
+| Name                                | Description                                                                                           |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `--height`                          | Minimum height of the gx-loading when showing slot animations. (64px by default)                      |
+| `--rotate-animation-circle-1-color` | Define the color of the first child of the rotate animation container. (rgb(71, 109, 255) by default) |
+| `--rotate-animation-circle-2-color` | Define the color of the second child of the rotate animation container. (rgb(0, 0, 0) by default)     |
+| `--rotate-animation-circle-3-color` | Define the color of the third child of the rotate animation container. (rgb(200, 10, 70) by default)  |
+| `--rotate-animation-container-size` | Define the size of the rotate animation container. (48px by default)                                  |
+| `--rotate-animation-duration`       | Define the duration of the rotate animation container. (1.5s by default)                              |
+
 ## Dependencies
 
 ### Depends on
