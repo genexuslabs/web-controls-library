@@ -1,5 +1,6 @@
 @import "../common/_base";
 @import "../common/_common-styling-config";
+@import "../common/layout-styling-config";
 
 gx-canvas {
   /**
@@ -7,7 +8,7 @@ gx-canvas {
    * By default, the gx-canvas hide its content overflow to ensure that the border-radius
    * property is applied.
    */
-  --gx-overflow-style: hidden;
+  --gx-overflow-style: #{$default-overflow-style};
 
   @include visibility(block);
 

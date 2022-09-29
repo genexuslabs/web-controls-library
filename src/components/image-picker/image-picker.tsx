@@ -127,7 +127,7 @@ export class ImagePicker implements GxComponent {
    * between, and what size each image is. Each set of image information is
    * separated from the previous one by a comma.
    */
-  @Prop() readonly srcset: string = "";
+  @Prop({ mutable: true }) srcset = "";
 
   /**
    * This attribute lets you specify the current state of the gx-image-picker.
@@ -162,10 +162,12 @@ export class ImagePicker implements GxComponent {
     this.click.emit(event);
   };
 
-  // If there is no image, this directly opens the File System to select an image.
-  // In othercase, this allows to change or remove the image
+  /**
+   * If there is no image, this directly opens the File System to select an image.
+   * Otherwise, this allows to change or remove the image.
+   */
   private triggerAction = (event: MouseEvent) => {
-    if (this.src === "") {
+    if (this.emptySrc()) {
       this.input.click();
     } else {
       clearTimeout(this.dismissTimer);
@@ -175,9 +177,14 @@ export class ImagePicker implements GxComponent {
     event.stopPropagation();
   };
 
+  private emptySrc(): boolean {
+    return this.srcset === "" && this.src === "";
+  }
+
   private clearImageAction = () => {
     this.input.value = "";
     this.src = "";
+    this.srcset = "";
     this.alt = "";
 
     this.onImageChanged.emit(null);
@@ -211,6 +218,7 @@ export class ImagePicker implements GxComponent {
     if (file == null) {
       return;
     }
+    // Start converting the image file to base64
     this.state = "uploadingFile";
 
     this.alt = this.getFileNameWithoutExtension(file.name);
@@ -258,6 +266,11 @@ export class ImagePicker implements GxComponent {
       function() {
         // Convert image file to base64 string
         elem.src = this.result.toString();
+
+        // Remove srcset to start using the image loaded in the src
+        elem.srcset = "";
+
+        // Conversion of image file to base64 has ended
         elem.state = "readyToUse";
       },
       false
@@ -292,7 +305,7 @@ export class ImagePicker implements GxComponent {
                   disabled={this.disabled}
                   onClick={this.triggerAction}
                 >
-                  {this.src === ""
+                  {this.emptySrc()
                     ? this.getSearchPlusSolidSVG()
                     : this.getPencilAltSolidSVG()}
                 </button>
