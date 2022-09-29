@@ -229,7 +229,7 @@
   // gx-form-field's controls
   @if $control-type == attribute {
     @at-root [area="field"]#{&} {
-      [data-has-action]&#{$gx-highlighted-dot} {
+      &[data-has-action]#{$gx-highlighted-dot} {
         @include extend-highlighted-class(
           $class,
           $background-color,
@@ -270,7 +270,7 @@
     @at-root gx-canvas#{&},
       gx-group#{&},
       gx-table#{&} {
-      [data-has-action]&#{$gx-highlighted-dot} {
+      &[data-has-action]#{$gx-highlighted-dot} {
         @include extend-highlighted-class(
           $class,
           $background-color,
