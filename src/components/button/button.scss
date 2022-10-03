@@ -47,8 +47,6 @@ gx-button {
 
   @include visibility(flex);
 
-  // Used to decide the position of the image
-  @include imagePosition("button.gx-button", ".disabled");
   @include image-margin();
   flex: 1;
   align-self: stretch;
@@ -88,14 +86,13 @@ gx-button {
     outline: unset;
     pointer-events: all;
     user-select: none;
+
+    @include transition-properties();
   }
 
   & > .gx-button {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;
@@ -103,20 +100,42 @@ gx-button {
 
     // Avoid zooming on double tap
     touch-action: manipulation;
-    @include transition-properties();
 
-    & > img {
-      height: var(--gx-button-image-size);
-      width: var(--gx-button-image-size);
-      object-fit: contain;
-    }
+    // Used to decide the position of the image
+    @include imagePosition(
+      ".gx-button-content > .gx-button-content--absolute",
+      ".disabled"
+    );
 
-    & > span {
-      display: block;
-      max-width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    & > .gx-button-content {
+      display: flex;
+      position: relative;
+      width: 100%;
+      height: 100%;
+
+      // Content must have position: absolute to limit the width
+      & > .gx-button-content--absolute {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+
+        & > img {
+          height: var(--gx-button-image-size);
+          width: var(--gx-button-image-size);
+          object-fit: contain;
+        }
+
+        & > span {
+          display: block;
+          max-width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
     }
   }
 }

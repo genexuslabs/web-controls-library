@@ -178,7 +178,7 @@ export class ImagePicker implements GxComponent {
   };
 
   private emptySrc(): boolean {
-    return this.srcset === "" && this.src === "";
+    return !this.srcset && !this.src;
   }
 
   private clearImageAction = () => {
