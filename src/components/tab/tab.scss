@@ -82,9 +82,7 @@ gx-tab {
     order: var(--gx-tabs-position--order);
 
     height: var(--tab-strip-height);
-    overflow-x: hidden;
-    overflow-y: auto; // Fix for Mozilla, because it only accepts: visible, hidden, auto or scroll
-    overflow-y: overlay;
+    overflow: hidden;
     white-space: nowrap;
     transition: box-shadow $transition-duration;
 
@@ -116,10 +114,9 @@ gx-tab {
     }
   }
 
-  .gx-tab-content {
+  & > .gx-tab-content {
     display: flex;
     height: 100%;
-    overflow: auto;
   }
 }
 
