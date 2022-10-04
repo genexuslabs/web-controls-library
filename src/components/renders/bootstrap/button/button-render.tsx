@@ -57,6 +57,11 @@ export class ButtonRender implements Renderer {
         class={{
           disabled: button.disabled,
 
+          // Image position
+          [hideMainImageWhenDisabledClass]:
+            button.disabled && this.hasDisabledImage,
+          [imagePositionClass(button.imagePosition)]: true,
+
           // Strings with only white spaces are taken as null captions
           "empty-caption": isEmptyCaption
         }}
@@ -69,23 +74,14 @@ export class ButtonRender implements Renderer {
           class={{
             "gx-button": true,
             [button.cssClass]: !!button.cssClass,
-            [classes.vars]: true,
-
-            // Image position
-            [hideMainImageWhenDisabledClass]:
-              button.disabled && this.hasDisabledImage,
-            [imagePositionClass(button.imagePosition)]: true
+            [classes.vars]: true
           }}
           // Mouse pointer to indicate action
           data-has-action={!button.disabled ? "" : undefined}
           disabled={button.disabled}
           onClick={this.handleClick}
         >
-          <div class="gx-button-content">
-            <div class="gx-button-content--absolute">
-              {imagePositionRender(slots)}
-            </div>
-          </div>
+          {imagePositionRender(slots)}
         </button>
       </Host>
     );
