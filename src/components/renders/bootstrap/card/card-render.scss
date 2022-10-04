@@ -4,16 +4,11 @@ gx-card {
   display: flex;
   flex: 1;
 
-  gx-button {
-    &[slot="high-priority-action"],
-    &[slot="normal-priority-action"] {
-      margin-inline-start: 5px;
-    }
-  }
-
   .gx-card-actions-container {
-    display: flex;
-    float: right;
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 5px;
+    justify-content: flex-end;
   }
 
   .gx-dropdown-toggle::after {
