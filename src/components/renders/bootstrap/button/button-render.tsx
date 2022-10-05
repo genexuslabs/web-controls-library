@@ -63,7 +63,13 @@ export class ButtonRender implements Renderer {
           [imagePositionClass(button.imagePosition)]: true,
 
           // Strings with only white spaces are taken as null captions
-          "empty-caption": isEmptyCaption
+          "empty-caption": isEmptyCaption,
+
+          // Horizontal alignment must only be set if width is defined.
+          // Otherwise, the default stretch to parent's width won't work
+          "should-align": button.width !== "",
+
+          "should-valign": button.height !== ""
         }}
         style={{
           "--width": button.width !== "" ? button.width : "1",

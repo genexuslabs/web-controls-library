@@ -120,18 +120,23 @@ gx-button {
       text-overflow: ellipsis;
     }
   }
-}
 
-// Button alignment
-@mixin horizontal-alignment($justify-content) {
-  & > gx-button {
-    justify-content: $justify-content;
+  // If width is set, add "width: 100%" to ensure horizontal alignment works
+  &.should-align > .gx-button {
+    width: 100%;
   }
 }
 
-@mixin vertical-alignment($align-items) {
-  & > gx-button {
-    align-items: $align-items;
+// Button alignment
+@mixin horizontal-alignment($place-items) {
+  & > gx-button.should-align {
+    place-items: $place-items;
+  }
+}
+
+@mixin vertical-alignment($align-content) {
+  & > gx-button.should-valign {
+    align-content: $align-content;
   }
 }
 
