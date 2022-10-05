@@ -6,6 +6,7 @@ import {
   Host,
   Prop,
   State,
+  Watch,
   h
 } from "@stencil/core";
 
@@ -152,6 +153,22 @@ export class ImagePicker implements GxComponent {
   @Event() onImageChanged: EventEmitter<File>;
 
   @State() renderModalElements = false;
+
+  /**
+   * When the src changes its value, the input value is no longer valid
+   */
+  @Watch("src")
+  handleSrcChange() {
+    this.input.value = "";
+  }
+
+  /**
+   * When the srcset changes its value, the input value is no longer valid
+   */
+  @Watch("srcset")
+  handleSrcsetChange() {
+    this.input.value = "";
+  }
 
   private stopPropagation(event: UIEvent) {
     event.stopPropagation();
