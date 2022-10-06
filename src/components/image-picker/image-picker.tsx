@@ -159,7 +159,11 @@ export class ImagePicker implements GxComponent {
    */
   @Watch("src")
   handleSrcChange() {
-    this.input.value = "";
+    // In some cases the Watch method is executed before the component renders,
+    // so we need to check the definition of "this.input"
+    if (this.input != undefined) {
+      this.input.value = "";
+    }
   }
 
   /**
@@ -167,7 +171,9 @@ export class ImagePicker implements GxComponent {
    */
   @Watch("srcset")
   handleSrcsetChange() {
-    this.input.value = "";
+    if (this.input != undefined) {
+      this.input.value = "";
+    }
   }
 
   private stopPropagation(event: UIEvent) {
