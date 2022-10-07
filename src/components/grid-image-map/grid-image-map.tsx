@@ -21,7 +21,6 @@ import {
   LongPressComponent,
   makeLongPressable
 } from "../common/events/long-press";
-import { getFileNameWithoutExtension } from "../common/utils";
 
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
@@ -227,13 +226,16 @@ export class GridImageMap
 
   render() {
     // The src property always contains a path to the image file
-    const alt = this.src ? getFileNameWithoutExtension(this.src) : "";
+    // const alt = this.src ? getFileNameWithoutExtension(this.src) : "";
 
-    const body = this.src
+    const shouldRenderTheContent = this.srcset || this.src;
+
+    const body = shouldRenderTheContent
       ? [
           <pinch-zoom class="pinch-zoom" min-scale={1}>
             <div class="gx-image-map-container">
               <img
+                aria-hidden="true"
                 class="inner-img"
                 style={{
                   opacity: !this.imageDidLoad ? "0" : null
@@ -241,7 +243,7 @@ export class GridImageMap
                 onLoad={this.handleImageLoad}
                 src={this.src}
                 srcset={this.srcset}
-                alt={alt}
+                alt=""
               />
               {this.shouldShowTooltip && this.mouseIsOverImageMap && (
                 <span class="tooltip-text">{this.tooltipText}</span>
