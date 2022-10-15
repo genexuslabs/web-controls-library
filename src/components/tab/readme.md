@@ -49,6 +49,13 @@ tab content, using the `gx-tab-page` element.
 | ----------- | ------------------------------------ | ------------------ |
 | `tabChange` | Fired when the active tab is changed | `CustomEvent<any>` |
 
+## Slots
+
+| Slot        | Description                    |
+| ----------- | ------------------------------ |
+| `"caption"` | The slot for the tab captions. |
+| `"page"`    | The slot for the tab pages.    |
+
 ## CSS Custom Properties
 
 | Name                                     | Description                                                            |
@@ -61,13 +68,6 @@ tab content, using the `gx-tab-page` element.
 | `--tab-strip-height`                     | Tab strip height                                                       |
 | `--tab-strip-indicator-color`            | Background color of the indicator. Used when a tab caption is selected |
 | `--tab-strip-separator-color`            | Color to underline the entire tab strip                                |
-
-## Slots
-
-| Slot        | Description                    |
-| ----------- | ------------------------------ |
-| `"caption"` | The slot for the tab captions. |
-| `"page"`    | The slot for the tab pages.    |
 
 ---
 

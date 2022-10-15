@@ -175,6 +175,12 @@ equal to 'speed' parameter.
 
 Type: `Promise<void>`
 
+## CSS Custom Properties
+
+| Name                  | Description                                                                                                        |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `--gx-overflow-style` | Determine if the overflow will be hidden or visible. By default, the gx-grid-horizontal hide its content overflow. |
+
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_
