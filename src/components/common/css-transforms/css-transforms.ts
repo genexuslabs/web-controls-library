@@ -14,8 +14,7 @@ const transforms = {
   label: "--label",
   labelContainer: "--label-container",
   labelHighlighted: "--label-highlighted",
-  labelPositionLeft: "--label-position-left",
-  labelPositionRight: "--label-position-right",
+  labelWidth: "--label-width",
   loading: "--loading",
   oddRow: "--odd-row",
   selectedTabCaption: "--selected-tab-page",
@@ -61,12 +60,8 @@ export function tLabelHighlighted(className: string): string {
   return className + transforms["labelHighlighted"];
 }
 
-export function tLabelPositionLeft(className: string): string {
-  return className + transforms["labelPositionLeft"];
-}
-
-export function tLabelPositionRight(className: string): string {
-  return className + transforms["labelPositionRight"];
+export function tLabelWidth(className: string): string {
+  return className + transforms["labelWidth"];
 }
 
 export function tLoading(className: string): string {
