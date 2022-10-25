@@ -2,7 +2,9 @@
 @import "../common/_common-styling-config.scss";
 @import "../common/layout-styling-config";
 
-gx-table {
+@include visibility-shadow-DOM(grid);
+
+:host {
   --elevation: 0;
   --grid-template-areas: unset;
 
@@ -13,9 +15,7 @@ gx-table {
    */
   --gx-overflow-style: #{$default-overflow-style};
 
-  @include reset-variables();
   @include elevation();
-  @include visibility(grid);
 
   // We need to split the "grid-template" properties ("grid-template-area",
   // "grid-template-columns", "grid-template-rows") to avoid the optimization
@@ -23,20 +23,20 @@ gx-table {
   grid-template-areas: var(--grid-template-areas);
   flex: 1;
   @include transition-properties();
+}
 
-  &.disabled {
-    pointer-events: none;
-  }
+:host(.disabled) {
+  pointer-events: none;
+}
 
-  // - - - - - - - - - - - - - - - -
-  //   Overflow Behavior and Style
-  // - - - - - - - - - - - - - - - -
-  &.overflow-behavior--default,
-  &.overflow-behavior--default > gx-table-cell {
-    overflow: var(--gx-overflow-style);
-  }
+// - - - - - - - - - - - - - - - -
+//   Overflow Behavior and Style
+// - - - - - - - - - - - - - - - -
+:host(.overflow-behavior--default),
+:host(.overflow-behavior--default) ::slotted(gx-table-cell) {
+  overflow: var(--gx-overflow-style);
+}
 
-  &.overflow-behavior--scroll {
-    overflow-y: auto;
-  }
+:host(.overflow-behavior--scroll) {
+  overflow-y: auto;
 }

@@ -11,6 +11,7 @@ import {
 import {
   DisableableComponent,
   Component as GxComponent,
+  CustomizableComponent,
   VisibilityComponent
 } from "../common/interfaces";
 import {
@@ -19,11 +20,8 @@ import {
 } from "../common/highlightable";
 import { Swipeable, makeSwipeable } from "../common/events/swipeable";
 
-// Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
-
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "table.scss",
   tag: "gx-table"
 })
@@ -31,9 +29,10 @@ export class Table
   implements
     GxComponent,
     DisableableComponent,
-    Swipeable,
+    CustomizableComponent,
     VisibilityComponent,
-    HighlightableComponent {
+    HighlightableComponent,
+    Swipeable {
   @Element() element: HTMLGxTableElement;
 
   /**
@@ -136,14 +135,10 @@ export class Table
   }
 
   render() {
-    // Styling for gx-table control.
-    const classes = getClasses(this.cssClass);
-
     return (
       <Host
         class={{
           [this.cssClass]: !!this.cssClass,
-          [classes.vars]: true,
           disabled: this.disabled,
 
           // Overflow Behavior
