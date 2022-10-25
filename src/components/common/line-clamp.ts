@@ -7,6 +7,10 @@ export function makeLinesClampable(
   lineMeasuringElementSelector: string,
   componentHasShadowDOM = false
 ) {
+  if (!component.lineClamp) {
+    return;
+  }
+
   // Used to know the sizes of the `content-container`
   let contentContainerElement;
 
@@ -52,44 +56,42 @@ export function makeLinesClampable(
 
   let resizeObserverContainer: ResizeObserver = null;
 
-  if (component.lineClamp) {
-    overrideMethod(component, "componentDidLoad", {
-      before: () => {
-        if (componentHasShadowDOM) {
-          contentContainerElement = component.element.shadowRoot.querySelector(
-            contentContainerElementSelector
-          ) as HTMLElement;
+  overrideMethod(component, "componentDidLoad", {
+    before: () => {
+      if (componentHasShadowDOM) {
+        contentContainerElement = component.element.shadowRoot.querySelector(
+          contentContainerElementSelector
+        ) as HTMLElement;
 
-          lineMeasuringElement = component.element.shadowRoot.querySelector(
-            lineMeasuringElementSelector
-          ) as HTMLElement;
-        } else {
-          contentContainerElement = component.element.querySelector(
-            contentContainerElementSelector
-          ) as HTMLElement;
+        lineMeasuringElement = component.element.shadowRoot.querySelector(
+          lineMeasuringElementSelector
+        ) as HTMLElement;
+      } else {
+        contentContainerElement = component.element.querySelector(
+          contentContainerElementSelector
+        ) as HTMLElement;
 
-          lineMeasuringElement = component.element.querySelector(
-            lineMeasuringElementSelector
-          ) as HTMLElement;
-        }
+        lineMeasuringElement = component.element.querySelector(
+          lineMeasuringElementSelector
+        ) as HTMLElement;
+      }
 
-        if (contentContainerElement === null || lineMeasuringElement === null) {
-          return;
-        }
+      if (contentContainerElement === null || lineMeasuringElement === null) {
+        return;
+      }
 
-        /*  If the `content-container` resizes or the `font-size` changes, it
+      /*  If the `content-container` resizes or the `font-size` changes, it
             checks if it is necessary to update `component.maxLines`
         */
-        resizeObserverContainer = new ResizeObserver(() => {
-          applyLineClamp();
-        });
+      resizeObserverContainer = new ResizeObserver(() => {
+        applyLineClamp();
+      });
 
-        // Observe the `content-container` and line height
-        resizeObserverContainer.observe(component.element);
-        resizeObserverContainer.observe(lineMeasuringElement);
-      }
-    });
-  }
+      // Observe the `content-container` and line height
+      resizeObserverContainer.observe(component.element);
+      resizeObserverContainer.observe(lineMeasuringElement);
+    }
+  });
 
   overrideMethod(component, "disconnectedCallback", {
     before: () => {
