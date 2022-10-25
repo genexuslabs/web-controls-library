@@ -1,18 +1,9 @@
 @import "../common/_base";
 @import "../common/common-styling-config";
-@import "../common/_image-position";
 
-// Used to set the margin for different types of images
-@mixin image-margin() {
-  [slot="main-image"],
-  [slot="disabled-image"] {
-    margin: var(--gx-button-image-margin-top)
-      var(--gx-button-image-margin-right) var(--gx-button-image-margin-bottom)
-      var(--gx-button-image-margin-left);
-  }
-}
+@include visibility-shadow-DOM(grid);
 
-gx-button {
+:host {
   /**
    * @prop --gx-button-image-size: Button image size
    * (16px by default)
@@ -20,150 +11,99 @@ gx-button {
   --gx-button-image-size: 16px;
 
   /**
-   * @prop --gx-button-image-margin-top: Button image top margin
+   * @prop --gx-button-image-margin: Button image margin
    * (0px by default)
    */
-  --gx-button-image-margin-top: 0px;
-
-  /**
-   * @prop --gx-button-image-margin-right: Button image right margin
-   * (0px by default)
-   */
-  --gx-button-image-margin-right: 0px;
-
-  /**
-   * @prop --gx-button-image-margin-bottom: Button image bottom margin
-   * (0px by default)
-   */
-  --gx-button-image-margin-bottom: 0px;
-
-  /**
-   * @prop --gx-button-image-margin-left: Button image left margin
-   * (0px by default)
-   */
-  --gx-button-image-margin-left: 0px;
+  --gx-button-image-margin: 0px;
 
   --elevation: 0;
 
-  @include visibility(grid);
+  // Default width and height (flex: 1 and align-self: stretch)
+  --width: 1;
+  --height: stretch;
 
-  // Used to decide the position of the image
-  @include imagePosition("button.gx-button", ".disabled");
-  @include image-margin();
-  grid-template-columns: 1fr;
-  flex: 1;
-  align-self: stretch;
-  width: 100%;
+  @include elevation();
+  place-items: center;
+  align-content: center;
+  justify-content: center;
+  line-height: 1.5em;
 
-  // Workaround to stop firing events when the gx-button clicked but not the
-  // inner button
+  // Takes "flex: 1" value when the --width is not defined
+  flex: var(--width);
+
+  // Takes "align-self: stretch" value when the --height is not defined
+  align-self: var(--height);
+
+  max-width: var(--width);
+  height: var(--height);
+
+  // Background image properties
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  overflow: hidden;
+
+  // Remove outline of the focus state
+  outline: none;
+
+  // Reset inherited "pointer-events: none" from gx-canvas-cell
+  pointer-events: auto;
+
+  // Avoid zooming on double tap
+  touch-action: manipulation;
+
+  // Remove text selection on double click
+  user-select: none;
+
+  @include transition-properties();
+}
+
+:host(.empty-caption) {
+  --gx-button-image-size: 100%;
+}
+
+:host(.disabled) {
   pointer-events: none;
+}
 
-  &.disabled > .gx-button {
-    pointer-events: none;
-  }
+// - - - - - - - - - - - - - - - -
+//        Image positioning
+// - - - - - - - - - - - - - - - -
+:host(.gx-image-position--before),
+:host(.gx-image-position--after) {
+  grid-auto-flow: column;
+}
 
-  // If the button caption is empty, the inner image will stretch to the
-  // container size
-  &.empty-caption {
-    --gx-button-image-size: 100%;
-  }
-
-  // Default appearance
-  & > button {
-    @include elevation();
-
-    background-color: transparent;
-    border-style: none;
-
-    // Takes "flex: 1" value when the --width is not defined
-    flex: var(--width);
-
-    // Takes "align-self: stretch" value when the --height is not defined
-    align-self: var(--height);
-
-    max-width: var(--width);
-    height: var(--height);
-    line-height: 1.5em;
-    padding: 0;
-    outline: unset;
-    pointer-events: all;
-    user-select: none;
-  }
-
-  & > .gx-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: contain;
-    overflow: hidden;
-
-    // Avoid zooming on double tap
-    touch-action: manipulation;
-    @include transition-properties();
-
-    & > img {
-      height: var(--gx-button-image-size);
-      width: var(--gx-button-image-size);
-      object-fit: contain;
-    }
-
-    & > span {
-      display: block;
-      max-width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  }
-
-  // If width is set, add "width: 100%" to ensure horizontal alignment works
-  &.should-align > .gx-button {
-    width: 100%;
+// Correctly place the caption
+:host(.gx-image-position--before),
+:host(.gx-image-position--above) {
+  & > .caption {
+    order: 1;
   }
 }
 
-// Button alignment
-@mixin horizontal-alignment($place-items) {
-  & > gx-button.should-align {
-    place-items: $place-items;
+:host(.gx-image-position--behind) {
+  ::slotted(img) {
+    position: absolute;
+  }
+
+  > .caption {
+    z-index: 1;
   }
 }
 
-@mixin vertical-alignment($align-content) {
-  & > gx-button.should-valign {
-    align-content: $align-content;
-  }
+.caption {
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-// Default horizontal alignment
-[align="left"],
-:not([align]) {
-  @include horizontal-alignment(flex-start);
-}
-
-[align="center"] {
-  @include horizontal-alignment(center);
-}
-
-[align="right"] {
-  @include horizontal-alignment(flex-end);
-}
-
-// Default vertical alignment
-[valign="top"],
-:not([valign]) {
-  @include vertical-alignment(flex-start);
-}
-
-[valign="middle"] {
-  @include vertical-alignment(center);
-}
-
-[valign="bottom"] {
-  @include vertical-alignment(flex-end);
+// Customize images
+::slotted(img) {
+  width: var(--gx-button-image-size);
+  height: var(--gx-button-image-size);
+  margin: var(--gx-button-image-margin);
+  object-fit: contain;
 }
