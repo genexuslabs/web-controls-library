@@ -10,15 +10,13 @@ import {
   Watch
 } from "@stencil/core";
 import {
-  ClickableComponent,
   Component as GxComponent,
+  ClickableComponent,
   DisableableComponent,
-  VisibilityComponent
+  VisibilityComponent,
+  CustomizableComponent
 } from "../common/interfaces";
 import { Swipeable, makeSwipeable } from "../common/events/swipeable";
-
-// Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
 
 const CANVAS_THRESHOLD = 1.75;
 
@@ -42,17 +40,18 @@ const WITHOUT_AUTOGROW_CANVAS_CELLS =
   ":scope > .canvas-cells-container > .without-auto-grow-cell";
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "canvas.scss",
   tag: "gx-canvas"
 })
 export class Canvas
   implements
     GxComponent,
-    VisibilityComponent,
+    ClickableComponent,
+    CustomizableComponent,
     DisableableComponent,
     Swipeable,
-    ClickableComponent {
+    VisibilityComponent {
   constructor() {
     this.handleClick = this.handleClick.bind(this);
   }
@@ -581,16 +580,12 @@ export class Canvas
   }
 
   render() {
-    // Styling for gx-canvas control.
-    const classes = getClasses(this.cssClass);
-
     this.element.addEventListener("click", this.handleClick);
 
     return (
       <Host
         class={{
           [this.cssClass]: !!this.cssClass,
-          [classes.vars]: true,
           disabled: this.disabled
         }}
         style={{
