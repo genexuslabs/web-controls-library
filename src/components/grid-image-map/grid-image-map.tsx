@@ -219,7 +219,8 @@ export class GridImageMap
   }
 
   disconnectedCallback() {
-    if (this.resizeObserver != null) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.resizeObserver) {
       this.resizeObserver.disconnect();
       this.resizeObserver = null;
     }

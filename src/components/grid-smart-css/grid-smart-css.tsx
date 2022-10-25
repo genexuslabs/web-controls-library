@@ -159,7 +159,8 @@ export class GridSmartCss
    * The same concept applies for `direction = "vertical"` and the grid's height.
    */
   private connectResizeObserver(direction: "vertical" | "horizontal") {
-    if (this.resizeObserver != null) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.resizeObserver) {
       return;
     }
 
@@ -244,7 +245,8 @@ export class GridSmartCss
   };
 
   private disconnectResizeObserver() {
-    if (this.resizeObserver != null) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.resizeObserver) {
       this.resizeObserver.disconnect();
       this.resizeObserver = null;
     }

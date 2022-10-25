@@ -367,7 +367,8 @@ export class GridInfiniteScroll implements ComponentInterface {
   }
 
   private connectResizeObserver() {
-    if (this.resizeObserver != null) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.resizeObserver) {
       return;
     }
 
@@ -499,7 +500,8 @@ export class GridInfiniteScroll implements ComponentInterface {
   };
 
   private disconnectResizeObserver() {
-    if (this.resizeObserver != null) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.resizeObserver) {
       this.resizeObserver.disconnect();
       this.resizeObserver = null;
     }

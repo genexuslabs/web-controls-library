@@ -504,7 +504,8 @@ export class Canvas
   }
 
   private disconnectCanvasObserver() {
-    if (this.watchForCanvasObserver !== undefined) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.watchForCanvasObserver) {
       this.watchForCanvasObserver.disconnect();
       this.watchForCanvasObserver = undefined;
     }
@@ -571,7 +572,8 @@ export class Canvas
   }
 
   disconnectedCallback() {
-    if (this.watchForItemsObserver !== undefined) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.watchForItemsObserver) {
       this.watchForItemsObserver.disconnect();
       this.watchForItemsObserver = undefined;
     }

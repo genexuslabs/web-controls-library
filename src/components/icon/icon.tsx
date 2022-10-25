@@ -59,7 +59,8 @@ export class Icon {
   }
 
   disconnectedCallback() {
-    if (this.io !== undefined) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.io) {
       this.io.disconnect();
       this.io = undefined;
     }

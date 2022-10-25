@@ -285,7 +285,8 @@ export class GridHorizontal
       this.swiper.destroy(true, true);
     }
 
-    if (this.resizeObserver != null) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.resizeObserver) {
       this.resizeObserver.disconnect();
       this.resizeObserver = null;
     }

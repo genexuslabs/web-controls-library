@@ -24,7 +24,7 @@ export function cssVariablesWatcher(
   // properties are updated with their corresponding CSS variables values.
   // The properties will be kept in sync with the CSS variables values.
   // The properties must have the mutable flag set to true.
-  const classObserver = new MutationObserver(() => {
+  let classObserver = new MutationObserver(() => {
     updatePropertiesFromCss();
   });
 
@@ -41,7 +41,13 @@ export function cssVariablesWatcher(
   });
 
   overrideMethod(component, "disconnectedCallback", {
-    before: () => classObserver.disconnect()
+    before: () => {
+      // eslint-disable-next-line @stencil/strict-boolean-conditions
+      if (classObserver) {
+        classObserver.disconnect();
+        classObserver = undefined;
+      }
+    }
   });
 }
 

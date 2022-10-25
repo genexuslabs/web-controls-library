@@ -95,8 +95,10 @@ export function makeLinesClampable(
 
   overrideMethod(component, "disconnectedCallback", {
     before: () => {
-      if (resizeObserverContainer !== null) {
+      // eslint-disable-next-line @stencil/strict-boolean-conditions
+      if (resizeObserverContainer) {
         resizeObserverContainer.disconnect();
+        resizeObserverContainer = undefined;
       }
     }
   });

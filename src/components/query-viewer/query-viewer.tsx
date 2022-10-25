@@ -295,7 +295,11 @@ export class QueryViewer implements GxComponent {
   }
 
   disconnectedCallback() {
-    this.configurationObserver.disconnect();
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.configurationObserver) {
+      this.configurationObserver.disconnect();
+      this.configurationObserver = undefined;
+    }
   }
 
   private parseObjectToObjectcall() {

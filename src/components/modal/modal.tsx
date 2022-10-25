@@ -157,11 +157,7 @@ export class Modal implements GxComponent {
   }
 
   private connectObserver() {
-    if (
-      !this.shouldSetResizeObserver ||
-      this.observer != undefined ||
-      !this.opened
-    ) {
+    if (!this.shouldSetResizeObserver || this.observer || !this.opened) {
       return;
     }
 
@@ -196,7 +192,8 @@ export class Modal implements GxComponent {
   }
 
   private disconnectObserver() {
-    if (!this.shouldSetResizeObserver || this.observer != undefined) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (!this.shouldSetResizeObserver || !this.observer) {
       return;
     }
     this.observer.disconnect();
