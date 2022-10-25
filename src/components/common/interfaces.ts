@@ -4,6 +4,10 @@ export interface ClickableComponent {
   gxClick: EventEmitter;
 }
 
+export interface CustomizableComponent {
+  cssClass: string;
+}
+
 export interface CssClasses {
   vars: string;
 }
