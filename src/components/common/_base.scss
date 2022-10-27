@@ -53,16 +53,6 @@
   }
 }
 
-@mixin reset-variables($include-width: true, $include-height: true) {
-  @if $include-width == true {
-    --width: initial;
-  }
-
-  @if $include-height == true {
-    --height: initial;
-  }
-}
-
 @mixin elevation($shadowPosition: bottom) {
   @if $shadowPosition == bottom {
     box-shadow: 0
