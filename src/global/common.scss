@@ -1,0 +1,36 @@
+@import "../components/common/layout-styling-config";
+
+// Style applied to the highlightable controls
+[data-has-action] {
+  cursor: pointer;
+}
+
+// - - - - - - - - - - - - - - - - - - - -
+//                 Message
+// - - - - - - - - - - - - - - - - - - - -
+gx-navbar + gx-message {
+  top: $gx-navbar-main-height;
+}
+
+// - - - - - - - - - - - - - - - - - - - -
+//                  Modal
+// - - - - - - - - - - - - - - - - - - - -
+// Disable html's scrollbars when a gx-modal presented and the html has content
+// that overflows vertically. Does not apply to mobile devices
+html.gx-disable-scroll {
+  gx-navbar,
+  gx-layout {
+    padding-right: 8px;
+  }
+}
+
+html.gx-disable-scroll,
+html.gx-disable-scroll-mobile {
+  overflow: hidden;
+}
+
+// Hide gx-modal's scrollbars
+gx-modal::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}

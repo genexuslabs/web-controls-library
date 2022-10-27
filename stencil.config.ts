@@ -47,6 +47,7 @@ export const config: Config = {
     }
   ],
   namespace: "gx-web-controls",
+  globalStyle: "src/global/common.scss",
   outputTargets: [
     {
       type: "dist",
