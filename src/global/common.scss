@@ -1,4 +1,27 @@
+@import "../components/common/alignment-with-shadow-dom";
+@import "../components/common/base";
 @import "../components/common/layout-styling-config";
+
+// - - - - - - - - - - - - - - - - - - - -
+//          Cells (table, canvas)
+// - - - - - - - - - - - - - - - - - - - -
+.gx-cell {
+  @include align-inner-control-in-cell();
+  @include text-align-with-shadow-DOM();
+  @include valign-with-shadow-DOM();
+
+  flex-direction: row; // Do not change flex-direction. All alignments will break
+
+  // Used when autoGrow = false in the gx-textblock and gx-edit controls to
+  // ensure the content does not overflows
+  &[max-height],
+  &:not([auto-grow]) {
+    & > gx-textblock::part(content),
+    & > gx-form-field .gx-edit-content {
+      position: absolute;
+    }
+  }
+}
 
 // Style applied to the highlightable controls
 [data-has-action] {
@@ -15,8 +38,8 @@ gx-navbar + gx-message {
 // - - - - - - - - - - - - - - - - - - - -
 //                  Modal
 // - - - - - - - - - - - - - - - - - - - -
-// Disable html's scrollbars when a gx-modal presented and the html has content
-// that overflows vertically. Does not apply to mobile devices
+// Disable html's scrollbars when a gx-modal is presented and the html has
+// content that overflows vertically. Does not apply to mobile devices
 html.gx-disable-scroll {
   gx-navbar,
   gx-layout {

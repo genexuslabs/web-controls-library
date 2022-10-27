@@ -97,6 +97,7 @@ export class TableCell implements GxComponent {
     return (
       <Host
         class={{
+          "gx-cell": true,
           "gx-long-content-fade": this.showContentFade
         }}
         style={{
