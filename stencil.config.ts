@@ -35,7 +35,11 @@ export const config: Config = {
       components: ["gx-form-field", "gx-edit"]
     },
     {
+      components: ["gx-gauge", "gx-gauge-range"]
+    },
+    {
       components: [
+        "gx-grid-flex",
         "gx-grid-fs",
         "gx-grid-horizontal",
         "gx-grid-smart-css",
