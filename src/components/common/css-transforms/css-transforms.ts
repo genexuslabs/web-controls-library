@@ -31,67 +31,47 @@ const transformedClassesWoFocusCache = new Map<
 >();
 
 // - - - - - - - -  Transforms  - - - - - - - -
-export function tDescription(className: string): string {
-  return className + transforms["description"];
-}
+export const tDescription = (className: string): string =>
+  className + transforms["description"];
 
-export function tEvenRow(className: string): string {
-  return className + transforms["evenRow"];
-}
+export const tEvenRow = (className: string): string =>
+  className + transforms["evenRow"];
 
-export function tGroupCaption(className): string {
-  return className + transforms["groupCaption"];
-}
+export const tGroupCaption = (className: string): string =>
+  className + transforms["groupCaption"];
 
-export function tHorizontalLine(className: string): string {
-  return className + transforms["horizontalLine"];
-}
+export const tHorizontalLine = (className: string): string =>
+  className + transforms["horizontalLine"];
 
-export function tLabel(className: string): string {
-  return className + transforms["label"];
-}
+export const tLabel = (className: string): string =>
+  className + transforms["label"];
 
-export function tLabelContainer(className: string): string {
-  return className + transforms["labelContainer"];
-}
+export const tLabelContainer = (className: string): string =>
+  className + transforms["labelContainer"];
 
-export function tLabelHighlighted(className: string): string {
-  return className + transforms["labelHighlighted"];
-}
+export const tLabelHighlighted = (className: string): string =>
+  className + transforms["labelHighlighted"];
 
-export function tLabelWidth(className: string): string {
-  return className + transforms["labelWidth"];
-}
+export const tLabelWidth = (className: string): string =>
+  className + transforms["labelWidth"];
 
-export function tLoading(className: string): string {
-  return className + transforms["loading"];
-}
+export const tLoading = (className: string): string =>
+  className + transforms["loading"];
 
-export function tOddRow(className: string): string {
-  return className + transforms["oddRow"];
-}
+export const tOddRow = (className: string): string =>
+  className + transforms["oddRow"];
 
-export function tSelectedTabCaption(className: string): string {
-  if (!className) {
-    return "";
-  }
-  return className + transforms["selectedTabCaption"];
-}
+export const tSelectedTabCaption = (className: string): string =>
+  !className ? "" : className + transforms["selectedTabCaption"];
 
-export function tTitle(className: string): string {
-  return className + transforms["title"];
-}
+export const tTitle = (className: string): string =>
+  className + transforms["title"];
 
-export function tUnselectedTabCaption(className: string): string {
-  if (!className) {
-    return "";
-  }
-  return className + transforms["unselectedTabCaption"];
-}
+export const tUnselectedTabCaption = (className: string): string =>
+  !className ? "" : className + transforms["unselectedTabCaption"];
 
-export function tVars(className: string): string {
-  return className + transforms["vars"];
-}
+export const tVars = (className: string): string =>
+  className + transforms["vars"];
 
 /**
  * @param cssClass Classes of the control
