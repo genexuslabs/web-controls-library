@@ -56,12 +56,22 @@ tab content, using the `gx-tab-page` element.
 | `"caption"` | The slot for the tab captions. |
 | `"page"`    | The slot for the tab pages.    |
 
+## Shadow Parts
+
+| Part                      | Description                                                 |
+| ------------------------- | ----------------------------------------------------------- |
+| `"nav-tabs"`              | The main parent of the container of the tab captions.       |
+| `"nav-tabs-table"`        | The main parent container of the tab captions.              |
+| `"nav-tabs-table-filler"` | The tab strip filler when the `tabs-distribution="scroll"`. |
+| `"tab-content"`           | The main parent container of the tab pages.                 |
+
 ## CSS Custom Properties
 
 | Name                                     | Description                                                            |
 | ---------------------------------------- | ---------------------------------------------------------------------- |
 | `--elevation`                            | The size of the shadow for the tab component                           |
 | `--gx-tab-caption-horizontal-separation` | Tab caption horizontal separation between image and text               |
+| `--gx-tab-caption-overflow`              | The caption overflow for gx-tab-caption control                        |
 | `--gx-tab-caption-vertical-separation`   | Tab caption vertical separation between image and text                 |
 | `--tab-strip-background-color`           | Tab strip background color                                             |
 | `--tab-strip-elevation`                  | The size of the shadow for the tab strip                               |

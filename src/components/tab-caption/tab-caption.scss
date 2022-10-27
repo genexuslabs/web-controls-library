@@ -76,6 +76,9 @@
   align-items: center;
   height: 100%;
   max-width: 100%;
+
+  // Defined in the gx-tab parent
+  overflow: var(--gx-tab-caption-overflow);
 }
 
 .indicator {

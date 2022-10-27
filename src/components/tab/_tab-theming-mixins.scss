@@ -44,21 +44,19 @@
     --gx-tabs-position--order: 1;
 
     // WA to implement elevation when tabs-position = bottom
-    & > .gx-nav-tabs {
+    &::part(nav-tabs) {
       @include elevation(top);
     }
 
-    &#{$gx-tabs-position} {
-      & > .gx-nav-tabs-table-filler {
-        border-top-color: var(--tab-strip-separator-color);
-        border-bottom-color: #00000000; // transparent
-      }
+    &::part(nav-tabs-table-filler) {
+      border-top-color: var(--tab-strip-separator-color);
+      border-bottom-color: #00000000; // transparent
+    }
 
-      // Styling for bottom captions
-      & > gx-tab-caption {
-        border-top-color: var(--tab-strip-separator-color);
-        border-bottom-color: transparent;
-      }
+    // Styling for bottom captions
+    & > gx-tab-caption {
+      border-top-color: var(--tab-strip-separator-color);
+      border-bottom-color: transparent;
     }
   }
 }

@@ -1,7 +1,9 @@
 @import "../common/_base";
 @import "../common/_common-styling-config";
 
-gx-tab {
+@include visibility-shadow-DOM(grid);
+
+:host {
   /**
    * @prop --elevation: The size of the shadow for the tab component
    */
@@ -42,10 +44,14 @@ gx-tab {
    */
   --gx-tab-caption-horizontal-separation: 3px;
 
+  /**
+   * @prop --gx-tab-caption-overflow: The caption overflow for gx-tab-caption control
+   */
+  --gx-tab-caption-overflow: visible;
+
   --gx-tabs-position--order: 0;
 
   @include elevation();
-  @include visibility(grid);
 
   // Implement tabs position
   grid-template-rows: minmax(auto, max-content);
@@ -55,85 +61,78 @@ gx-tab {
   overflow: hidden;
   @include transition-properties();
 
-  &[tabs-distribution="fixed-size"] {
-    .gx-nav-tabs {
-      .gx-nav-tabs-table {
-        table-layout: fixed;
-        width: 100%;
-
-        gx-tab-caption::part(caption) {
-          overflow: hidden;
-        }
-      }
-    }
-  }
-
   --tab-scrollbar-background-color: var(
     --gx-scrollbar-background-color,
     #f5f5f5
   );
   --tab-scrollbar-thumb-color: var(--gx-scrollbar-thumb-color, #555);
+}
 
-  & > .gx-nav-tabs {
-    --elevation: var(--tab-strip-elevation);
-    @include elevation();
+.gx-nav-tabs {
+  --elevation: var(--tab-strip-elevation);
+  @include elevation();
 
-    // Implement tabs position
-    order: var(--gx-tabs-position--order);
+  // Implement tabs position
+  order: var(--gx-tabs-position--order);
 
-    height: var(--tab-strip-height);
-    overflow: hidden;
-    white-space: nowrap;
-    transition: box-shadow $transition-duration;
+  height: var(--tab-strip-height);
+  overflow: hidden;
+  white-space: nowrap;
+  transition: box-shadow $transition-duration;
 
-    &:hover {
-      overflow-x: auto; // Fix for Mozilla, because it only accepts: visible, hidden, auto or scroll
-      overflow-x: overlay;
-    }
-
-    // - - - - - - - - - - - - - - - -
-    //     Scrollbar customization
-    // - - - - - - - - - - - - - - - -
-    scrollbar-width: thin;
-    scrollbar-color: var(--tab-scrollbar-thumb-color)
-      var(--tab-scrollbar-background-color);
-
-    &::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: var(--tab-scrollbar-background-color);
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: var(--tab-scrollbar-thumb-color);
-      border-radius: 6px;
-      border: 1px solid var(--tab-scrollbar-background-color);
-    }
+  &:hover {
+    overflow-x: auto; // Fix for Mozilla, because it only accepts: visible, hidden, auto or scroll
+    overflow-x: overlay;
   }
 
-  & > .gx-tab-content {
-    display: flex;
-    height: 100%;
+  // - - - - - - - - - - - - - - - -
+  //     Scrollbar customization
+  // - - - - - - - - - - - - - - - -
+  scrollbar-width: thin;
+  scrollbar-color: var(--tab-scrollbar-thumb-color)
+    var(--tab-scrollbar-background-color);
+
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--tab-scrollbar-background-color);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--tab-scrollbar-thumb-color);
+    border-radius: 6px;
+    border: 1px solid var(--tab-scrollbar-background-color);
   }
 }
 
+.gx-tab-content {
+  display: flex;
+  height: 100%;
+}
+
 // - - - - - - - - - - - - - - - -
-//        Tab strip filler
+//            Tab strip
 // - - - - - - - - - - - - - - - -
 .gx-nav-tabs-table {
   display: table;
   height: 100%;
+}
 
-  & > .gx-nav-tabs-table-filler {
-    display: table-cell;
-    width: 100%;
-    background-color: var(--tab-strip-background-color);
-    border-top: 1px solid transparent;
-    border-bottom: 1px solid var(--tab-strip-separator-color);
-    transition-property: background-color, box-shadow, filter, opacity;
-    transition-duration: $transition-duration;
-  }
+.gx-fixed-tabs {
+  table-layout: fixed;
+  width: 100%;
+  --gx-tab-caption-overflow: hidden;
+}
+
+.gx-nav-tabs-table-filler {
+  display: table-cell;
+  width: 100%;
+  background-color: var(--tab-strip-background-color);
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid var(--tab-strip-separator-color);
+  transition-property: background-color, box-shadow, filter, opacity;
+  transition-duration: $transition-duration;
 }
