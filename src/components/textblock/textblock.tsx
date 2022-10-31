@@ -130,11 +130,13 @@ export class TextBlock
               "gx-textblock-content": true,
               "gx-line-clamp": this.shouldLineClamp
             }}
-            style={{
-              "--max-lines": this.shouldLineClamp
-                ? this.maxLines.toString()
+            style={
+              this.shouldLineClamp
+                ? {
+                    "--max-lines": this.maxLines.toString()
+                  }
                 : undefined
-            }}
+            }
             part="content"
           >
             <slot />
