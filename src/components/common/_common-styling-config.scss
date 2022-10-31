@@ -1,3 +1,26 @@
+// - - - - - - - - - - - - - - - -
+//              Icons
+// - - - - - - - - - - - - - - - -
+$gx-icon-size: 24px;
+
+// - - - - - - - - - - - - - - - -
+//    States and pseudo classes
+// - - - - - - - - - - - - - - - -
+@mixin active-style() {
+  filter: brightness(80%);
+}
+
+@mixin disabled-style() {
+  filter: opacity(0.5);
+}
+
+@mixin hover-style() {
+  filter: brightness(90%);
+}
+
+// - - - - - - - - - - - - - - - -
+//      Transition properties
+// - - - - - - - - - - - - - - - -
 $transition-delay: 0.25s;
 $transition-duration: 0.25s;
 
@@ -18,18 +41,6 @@ $five-times-transition-delay: 1.25s;
 
 $six-times-transition-duration: 1.5s;
 $six-times-transition-delay: 1.5s;
-
-@mixin active-style() {
-  filter: brightness(80%);
-}
-
-@mixin disabled-style() {
-  filter: opacity(0.5);
-}
-
-@mixin hover-style() {
-  filter: brightness(90%);
-}
 
 @mixin transition-properties() {
   transition-property: background-color, border-color, box-shadow, color, filter,

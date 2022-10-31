@@ -127,9 +127,7 @@ export class Icon {
     return (
       <Host aria-label={this.label || this.type}>
         <div
-          class={{
-            "svg-icon-native": true
-          }}
+          class="svg-icon-native"
           style={
             this.color && {
               "--gx-icon-color": this.color
