@@ -24,14 +24,16 @@ export function cssVariablesWatcher(
   // properties are updated with their corresponding CSS variables values.
   // The properties will be kept in sync with the CSS variables values.
   // The properties must have the mutable flag set to true.
-  let classObserver = new MutationObserver(() => {
-    updatePropertiesFromCss();
-  });
+  let classObserver: MutationObserver;
 
-  // componentWillLoad and disconnectedCallback are overriden
+  // componentWillLoad and disconnectedCallback are overridden
   // to start and end observing the mutations, and to update the properties values.
   overrideMethod(component, "componentWillLoad", {
     before: () => {
+      classObserver = new MutationObserver(() => {
+        updatePropertiesFromCss();
+      });
+
       classObserver.observe(component.element, {
         attributeFilter: ["class"],
         childList: false,
