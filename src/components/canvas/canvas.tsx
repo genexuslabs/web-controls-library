@@ -21,23 +21,16 @@ import { Swipeable, makeSwipeable } from "../common/events/swipeable";
 const CANVAS_THRESHOLD = 1.75;
 
 /* - - - - - - - - SELECTORS - - - - - - - - */
-const ALL_CANVAS_CELLS = ":scope > .canvas-cells-container > gx-canvas-cell";
+const ALL_CANVAS_CELLS = ":scope > gx-canvas-cell";
 
-const AUTOGROW_CANVAS_CELLS =
-  ":scope > .canvas-cells-container > .auto-grow-cell";
+const AUTOGROW_CANVAS_CELLS = ":scope > .auto-grow-cell";
 
-const AUTOGROW_CANVAS_CELL_CLASS = (id: string) => {
-  return `auto-grow-cell-${id}`;
-};
+const AUTOGROW_CANVAS_CELL_CLASS = (id: string) => `auto-grow-cell-${id}`;
 
-const AUTOGROW_CANVAS_CELL_BY_ID = (id: string) => {
-  return `:scope > .canvas-cells-container > .${AUTOGROW_CANVAS_CELL_CLASS(
-    id
-  )}`;
-};
+const AUTOGROW_CANVAS_CELL_BY_ID = (id: string) =>
+  `:scope > .${AUTOGROW_CANVAS_CELL_CLASS(id)}`;
 
-const WITHOUT_AUTOGROW_CANVAS_CELLS =
-  ":scope > .canvas-cells-container > .without-auto-grow-cell";
+const WITHOUT_AUTOGROW_CANVAS_CELLS = ":scope > .without-auto-grow-cell";
 
 @Component({
   shadow: true,
