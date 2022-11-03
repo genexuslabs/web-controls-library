@@ -5,6 +5,9 @@ import { reactOutputTarget } from "@stencil/react-output-target";
 export const config: Config = {
   bundles: [
     {
+      components: ["gx-action-sheet", "gx-action-sheet-item"]
+    },
+    {
       components: [
         "gx-bootstrap",
         "gx-layout",
@@ -48,6 +51,9 @@ export const config: Config = {
         "gx-grid-infinite-scroll-content",
         "gx-grid-empty-indicator"
       ]
+    },
+    {
+      components: ["gx-grid-image-map", "gx-grid-image-map-item"]
     }
   ],
   namespace: "gx-web-controls",
