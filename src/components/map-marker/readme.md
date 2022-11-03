@@ -6,7 +6,7 @@ This element represents a marker inside a `<gx-map>` element.
 ## Usage Sample
 
 ```HTML
-<gx-map-marker coords="-34.87845241095968, -56.07882142066956" tooltip-caption="Some title here"></gx-map-marker>
+<gx-map-marker coords="-34.87845241095968, -56.07882142066956" tooltip-caption="Some title here"  icon-src="Url or path Icon" icon-src-name="IconName"></gx-map-marker>
 ```
 
 > ### Sample with Popup Content

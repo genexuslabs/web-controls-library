@@ -8,10 +8,14 @@ import {
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 import { parseCoords } from "../common/coordsValidate";
+import { getFileNameWithoutExtension } from "../common/utils";
 import { divIcon, marker, DivIcon, LatLngTuple } from "leaflet";
 
 const DEFAULT_COORDS: LatLngTuple = [0, 0];
 const MAX_POPUP_SIZE_FACTOR = 0.83;
+const DefaultLocationIconSrc =
+  "data:image/x-icon;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48dGl0bGU+bWFwLXBvaW50ZXItZ2x5cGg8L3RpdGxlPjxwYXRoIGQ9Ik0xNDcuNjcsMzc0LjI3YzExLDE1LjY2LDIyLjM3LDMxLDM0LDQ2LjIyLDEwLjI2LDEzLjQsMjAuNzEsMjYuNjgsMzEuMTYsMzkuODgsMTMuNjMsMTcuMjMsMjcuMywzNC4zOSw0MC42MSw1MS42M0gyNTljMTMuMTQtMTcuNDYsMjYuNzEtMzQuNzcsNDAuMzItNTIuMTIsMTAuNDQtMTMuMjcsMjAuODctMjYuNTgsMzEuMTUtNDAsMTEuNTctMTUuMDgsMjIuOTItMzAuMjksMzMuODItNDUuOCwzMi40Ni00Ni4xNSw2MC45NS05NC43OSw3OC43Mi0xNDkuMjhDNDcwLjI0LDExNi44LDM3Ni42NSw1LjYsMjY4LjYyLDBIMjQzQzEzMi42NSw1LjYsMzcuNDQsMTIyLjQsNzEuMDYsMjMxLjIsODkuMjMsMjgzLDExNi41OSwzMjkuODIsMTQ3LjY3LDM3NC4yN1pNMjU0Ljc4LDU2LjhjLjQxLDAsLjgxLDAsMS4yMSwwLDcwLjY4LjY2LDEyOCw1OC4zMywxMjgsMTI5LjE2UzMyNi42OCwzMTQuNTEsMjU2LDMxNS4xN2MtLjQxLDAtLjgsMC0xLjIxLDBBMTI5LjM0LDEyOS4zNCwwLDAsMSwxMjUuNTksMTg2QzEyNS41OSwxMTQuNzcsMTgzLjU0LDU2LjgsMjU0Ljc4LDU2LjhaIiBmaWxsPSIjNDM0MDQwIi8+PC9zdmc+";
+let DefaultLocationIconName = "MarkerSvg";
 
 @Component({
   shadow: false,
@@ -59,6 +63,16 @@ export class MapMarker implements GxComponent {
     "default";
 
   /**
+   * The path of the icon, that the marker will have.
+   */
+  @Prop() iconSrc = null;
+
+  /**
+   * The name of the icon, that the marker will have.
+   */
+  @Prop() iconSrcName = null;
+
+  /**
    * Emmits when the element is added to a `<gx-map>`.
    */
   @Event() gxMapMarkerDidLoad: EventEmitter;
@@ -92,12 +106,20 @@ export class MapMarker implements GxComponent {
    * @returns The current `DivIcon` of the marker.
    */
   private getDivIcon(): DivIcon {
+    const locationIconSrc = this.iconSrc || DefaultLocationIconSrc;
+    if (this.iconSrc != null)
+      DefaultLocationIconName = getFileNameWithoutExtension(this.iconSrc);
+    const LocationIconName = this.iconSrcName || DefaultLocationIconName;
+    console.log(LocationIconName);
+    const HtmlLocationIcon = `<img alt="${LocationIconName}" src="${locationIconSrc}" />`;
+
     return divIcon({
       className: `gx-map-marker-${this.type}-icon`,
       iconAnchor: [this.getHalfSizes().width, this.iconHeight],
       popupAnchor: [0, -this.getHalfSizes().height],
       iconSize: [this.iconWidth, this.iconHeight],
-      tooltipAnchor: [0, -this.getHalfSizes().height]
+      tooltipAnchor: [0, -this.getHalfSizes().height],
+      html: HtmlLocationIcon
     });
   }
 
@@ -135,7 +157,7 @@ export class MapMarker implements GxComponent {
     this.setPopup();
     if (this.tooltipCaption) {
       this.markerInstance.bindTooltip(this.tooltipCaption, {
-        direction: "top"
+           direction: "top"
       });
     }
     this.gxMapMarkerDidLoad.emit(this.markerInstance);
