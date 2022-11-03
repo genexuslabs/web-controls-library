@@ -9,26 +9,24 @@
 /// @param {string} $back-button Class for styling the back button of the navigation bar
 @mixin gx-navbar($default-button: null, $back-button: null) {
   @if ($default-button != null) {
-    &::part(action-low),
-    &::part(action-low-popup),
+    &::part(low-actions-toggle),
+    &::part(low-actions-dropdown),
     &::part(default-button) {
       @extend #{$default-button} !optional;
     }
 
-    // WORKAROUND for styling action groups that do not have a class.
-    // I should try using exportparts or ::slotted, but I did not figure out
-    // how to do it
-    @at-root gx-navbar-item.gx-navbar-item-empty {
+    // Styling for action groups that do not have a class.
+    @at-root #{&} > .gx-default-button {
       @extend #{$default-button} !optional;
     }
 
-    // When the default-button or action-low are active or they have :active pseudo-class it will
-    // be highlighted.
-    @at-root .gx-navbar-actions-active::part(action-low),
-      .gx-navbar-actions-active::part(action-low-popup),
+    // When the default-button or low-actions-toggle are active or they have
+    // :active pseudo-class it will be highlighted.
+    @at-root #{&}.gx-navbar-actions-active::part(low-actions-toggle),
+      #{&}.gx-navbar-actions-active::part(low-actions-dropdown),
       #{&}::part(default-button):active,
-      #{&}::part(action-low):active,
-      gx-navbar-item.gx-navbar-item-empty:active {
+      #{&}::part(low-actions-toggle):active,
+      #{&} > .gx-default-button:active {
       @extend #{str-replace($default-button, ".", "%")}#{$gx-highlighted}
           !optional;
     }
