@@ -40,6 +40,12 @@ export const config: Config = {
       components: ["gx-gauge", "gx-gauge-range"]
     },
     {
+      components: ["gx-radio-group", "gx-radio-option"]
+    },
+    {
+      components: ["gx-select", "gx-select-option"]
+    },
+    {
       components: [
         "gx-grid-flex",
         "gx-grid-fs",
