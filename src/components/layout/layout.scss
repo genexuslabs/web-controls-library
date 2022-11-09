@@ -1,9 +1,4 @@
-@import "../common/layout-styling-config.scss";
-
-// WA to remove "line-height: 1.5" property from Bootstrap's selector
-html > body {
-  line-height: normal;
-}
+@import "../common/layout-styling-config";
 
 gx-layout {
   /**

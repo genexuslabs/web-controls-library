@@ -9,7 +9,6 @@ export const config: Config = {
     },
     {
       components: [
-        "gx-bootstrap",
         "gx-layout",
         "gx-icon",
         "gx-navbar",
