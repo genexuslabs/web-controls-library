@@ -1,6 +1,9 @@
 @import "../components/common/alignment-with-shadow-dom";
 @import "../components/common/base";
+@import "../components/common/common-styling-config";
 @import "../components/common/layout-styling-config";
+
+@include base-styling-for-application();
 
 // - - - - - - - - - - - - - - - - - - - -
 //               Card header

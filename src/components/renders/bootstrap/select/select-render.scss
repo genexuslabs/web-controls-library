@@ -35,13 +35,6 @@ gx-select {
     }
   }
 
-  // Default style
-  & > select {
-    background-color: unset;
-    border: none;
-    outline: 0;
-  }
-
   gx-select-option {
     display: none !important;
   }
