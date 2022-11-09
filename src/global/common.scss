@@ -3,6 +3,14 @@
 @import "../components/common/layout-styling-config";
 
 // - - - - - - - - - - - - - - - - - - - -
+//               Card header
+// - - - - - - - - - - - - - - - - - - - -
+// Needed to stretch the dropdown width to the width of the buttons
+gx-card-header > li > gx-button::part(caption) {
+  overflow: unset;
+}
+
+// - - - - - - - - - - - - - - - - - - - -
 //          Cells (table, canvas)
 // - - - - - - - - - - - - - - - - - - - -
 .gx-cell {
