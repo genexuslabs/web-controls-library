@@ -45,9 +45,16 @@ export class NavBarItem implements GxComponent, HighlightableComponent {
   @Prop() readonly iconAltText = "";
 
   /**
-   * This attribute lets you specify the URL of an icon for the navbar item.
+   * This attribute lets you specify the src attribute of an icon for the
+   * navbar item.
    */
-  @Prop() readonly iconSrc = "";
+  @Prop() readonly iconSrc: string;
+
+  /**
+   * This attribute lets you specify the srcset attribute of an icon for the
+   * navbar item.
+   */
+  @Prop() readonly iconSrcset: string;
 
   componentDidLoad() {
     makeHighlightable(this);
@@ -66,6 +73,8 @@ export class NavBarItem implements GxComponent, HighlightableComponent {
     // Styling for gx-navbar-item control.
     const classes = getClasses(this.cssClass);
 
+    const shouldRenderImg = this.iconSrcset || this.iconSrc;
+
     return (
       <Host
         class={{
@@ -79,14 +88,15 @@ export class NavBarItem implements GxComponent, HighlightableComponent {
         <TagName
           class={{
             "navbar-item": true,
-            "navbar-item-with-icon": !!this.iconSrc
+            "navbar-item-with-icon": !!shouldRenderImg
           }}
           {...attris}
         >
-          {this.iconSrc && (
+          {shouldRenderImg && (
             <img
               class="navbar-item-icon"
-              src={this.iconSrc}
+              src={this.iconSrc || undefined}
+              srcset={this.iconSrcset || undefined}
               alt={this.iconAltText}
             />
           )}
