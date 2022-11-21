@@ -22,22 +22,22 @@
   $miter-limit: null
 ) {
   @if $fill-color != null {
-    --gx-fill-color: $fill-color;
+    --gx-fill-color: #{$fill-color};
   }
 
   @if $stroke-color != null {
-    --gx-stroke-color: $stroke-color;
+    --gx-stroke-color: #{$stroke-color};
   }
 
   @if $line-width != null {
-    --gx-line-width: $line-width;
+    --gx-line-width: #{$line-width};
   }
 
   @if $line-join != null {
-    --gx-line-join: $line-join;
+    --gx-line-join: #{$line-join};
   }
 
   @if $line-cap != null {
-    --gx-line-cap: $line-cap;
+    --gx-line-cap: #{$line-cap};
   }
 }
