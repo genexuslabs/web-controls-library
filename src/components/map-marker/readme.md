@@ -31,22 +31,23 @@ This element represents a marker inside a `<gx-map>` element.
 
 ## Properties
 
-| Property         | Attribute          | Description                                                                                                            | Type                                                | Default             |
-| ---------------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- | ------------------- |
-| `coords`         | `coords`           | The coordinates where the marker will appear in the map.                                                               | `string`                                            | `"0, 0"`            |
-| `iconHeight`     | `icon-height`      | The marker image height.                                                                                               | `number`                                            | `30`                |
-| `iconImageClass` | `icon-image-class` | The class that the marker will have.                                                                                   | `string`                                            | `"gx-default-icon"` |
-| `iconWidth`      | `icon-width`       | The marker image width.                                                                                                | `number`                                            | `30`                |
-| `tooltipCaption` | `tooltip-caption`  | The tooltip caption of the marker.                                                                                     | `string`                                            | `undefined`         |
-| `type`           | `type`             | This attribute lets you specify the marker type. Each marker type has different images and sizes depending on its use. | `"default" \| "selection-layer" \| "user-location"` | `"default"`         |
+| Property         | Attribute         | Description                                                                                                            | Type                                                | Default     |
+| ---------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- | ----------- |
+| `alt`            | `alt`             | This attribute lets you specify the alternative text of the marker image.                                              | `string`                                            | `undefined` |
+| `coords`         | `coords`          | The coordinates where the marker will appear in the map.                                                               | `string`                                            | `"0, 0"`    |
+| `cssClass`       | `css-class`       | The class that the marker will have.                                                                                   | `string`                                            | `undefined` |
+| `src`            | `src`             | This attribute lets you specify the src of the marker image.                                                           | `string`                                            | `undefined` |
+| `srcset`         | `srcset`          | This attribute lets you specify the srcset of the marker image.                                                        | `string`                                            | `undefined` |
+| `tooltipCaption` | `tooltip-caption` | The tooltip caption of the marker.                                                                                     | `string`                                            | `undefined` |
+| `type`           | `type`            | This attribute lets you specify the marker type. Each marker type has different images and sizes depending on its use. | `"default" \| "selection-layer" \| "user-location"` | `"default"` |
 
 ## Events
 
-| Event                | Description                                           | Type               |
-| -------------------- | ----------------------------------------------------- | ------------------ |
-| `gxMapMarkerDeleted` | Emmits when the element is deleted from a `<gx-map>`. | `CustomEvent<any>` |
-| `gxMapMarkerDidLoad` | Emmits when the element is added to a `<gx-map>`.     | `CustomEvent<any>` |
-| `gxMapMarkerUpdate`  | Emmits when the element update its data.              | `CustomEvent<any>` |
+| Event                | Description                                            | Type               |
+| -------------------- | ------------------------------------------------------ | ------------------ |
+| `gxMapMarkerDeleted` | Emitted when the element is deleted from a `<gx-map>`. | `CustomEvent<any>` |
+| `gxMapMarkerDidLoad` | Emitted when the element is added to a `<gx-map>`.     | `CustomEvent<any>` |
+| `gxMapMarkerUpdate`  | Emitted when the element update its data.              | `CustomEvent<any>` |
 
 ## Dependencies
 
