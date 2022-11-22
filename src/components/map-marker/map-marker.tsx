@@ -47,8 +47,7 @@ const iconDictionary = {
 @Component({
   shadow: false,
   styleUrl: "map-marker.scss",
-  tag: "gx-map-marker",
-  assetsDirs: ["../icon/assets"]
+  tag: "gx-map-marker"
 })
 export class MapMarker implements GxComponent {
   private markerInstance: any;
