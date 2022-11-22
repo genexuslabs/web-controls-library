@@ -1,20 +1,40 @@
 @import "../common/_base";
 @import "../../../node_modules/leaflet/dist/leaflet.css";
 
-$mapHeight: 568px;
-
-@mixin size($width, $height) {
-  height: $height;
-  width: $width;
-}
-
 gx-map {
-  @include visibility(block);
+  /**
+   * @prop --gx-fill-color:
+   * The fill color to use for the path.
+   * (white by default)
+   */
+  --gx-fill-color: white;
 
-  .gxMapContainer {
-    @include size(100%, $mapHeight);
-    .gxMap {
-      @include size(100%, 100%);
+  /**
+   * @prop --gx-stroke-color:
+   * The stroke color to use for the path.
+   * (currentColor by default)
+   */
+  --gx-stroke-color: currentColor;
+
+  /**
+   * @prop --gx-stroke-width:
+   * Yhe stroke width to use for the path.
+   * (2.5 by default)
+   */
+  --gx-stroke-width: 2.5;
+
+  @include visibility(flex);
+  height: 100%;
+
+  & > .gxMapContainer {
+    display: flex;
+    height: 100%;
+    width: 100%;
+
+    & > .gxMap {
+      display: flex;
+      height: 100%;
+      width: 100%;
     }
   }
 }

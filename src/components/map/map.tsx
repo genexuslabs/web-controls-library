@@ -47,7 +47,7 @@ export class Map implements GxComponent {
   };
   private selectionMarker: HTMLGxMapMarkerElement;
   private tileLayerApplied: tileLayer;
-  private watchPositionId: number;
+  private showMyLocationId: number;
 
   // Refs
   private divMapView: HTMLDivElement;
@@ -55,16 +55,6 @@ export class Map implements GxComponent {
   @Element() element: HTMLGxMapElement;
 
   @State() userLocationCoords: string;
-
-  @Watch("userLocationCoords")
-  userLocationHandler() {
-    this.userLocationChange.emit(this.userLocationCoords);
-  }
-
-  /**
-   * The class that the marker will have.
-   */
-  @Prop() markerClassIcon = "gx-default-icon";
 
   /**
    * The coord of initial center of the map.
@@ -97,6 +87,27 @@ export class Map implements GxComponent {
   @Prop({ mutable: true }) maxZoom: number = RECOMMENDED_MAX_ZOOM;
 
   /**
+   * A CSS class to set as the `showMyLocation` icon class.
+   */
+  @Prop() pinImageCssClass: string;
+
+  /**
+   * This attribute lets you specify the srcset attribute for the
+   * `showMyLocation` icon when the `pinShowMyLocationSrcset` property is not
+   * specified.
+   */
+  @Prop() pinImageSrcset: string;
+
+  /**
+   * This attribute lets you specify the srcset attribute for the
+   * `showMyLocation` icon. If not set the `pinImageSrcset` property will be
+   * used to specify the srcset attribute for the icon.
+   * If none of the properties are specified, a default icon will be used
+   * when `showMyLocation = true`
+   */
+  @Prop() pinShowMyLocationSrcset: string;
+
+  /**
    * Enables the possibility to navigate the map and select a location point using the map center.
    */
   @Prop() selectionLayer = false;
@@ -109,12 +120,7 @@ export class Map implements GxComponent {
   /**
    * Indicates if the current location of the device is displayed on the map.
    */
-  @Prop() watchPosition = false;
-
-  @Watch("selectionLayer")
-  selectionLayerHandler() {
-    this.registerSelectionLayerEvents();
-  }
+  @Prop() showMyLocation = false;
 
   /**
    * The initial zoom level in the map.
@@ -151,6 +157,16 @@ export class Map implements GxComponent {
    *
    */
   @Event() userLocationChange: EventEmitter;
+
+  @Watch("selectionLayer")
+  selectionLayerHandler() {
+    this.registerSelectionLayerEvents();
+  }
+
+  @Watch("userLocationCoords")
+  userLocationHandler() {
+    this.userLocationChange.emit(this.userLocationCoords);
+  }
 
   @Listen("gxMapMarkerDidLoad")
   onMapMarkerDidLoad(event: CustomEvent) {
@@ -395,8 +411,8 @@ export class Map implements GxComponent {
   }
 
   componentWillLoad() {
-    if (this.watchPosition) {
-      this.watchPositionId = watchPosition(
+    if (this.showMyLocation) {
+      this.showMyLocationId = watchPosition(
         this.setUserLocation.bind(this),
         err => console.error(err),
         {
@@ -459,18 +475,18 @@ export class Map implements GxComponent {
   }
 
   disconnectedCallback() {
-    navigator.geolocation.clearWatch(this.watchPositionId);
+    navigator.geolocation.clearWatch(this.showMyLocationId);
   }
 
   render() {
     return (
       <Host>
-        {this.watchPosition && (
+        {this.showMyLocation && (
           <gx-map-marker
-            icon-width="65"
-            icon-height="55"
-            type="user-location"
             coords={this.userLocationCoords}
+            css-class={this.pinImageCssClass}
+            srcset={this.pinShowMyLocationSrcset || this.pinImageSrcset}
+            type="user-location"
           ></gx-map-marker>
         )}
         {this.selectionLayer &&
@@ -478,8 +494,6 @@ export class Map implements GxComponent {
             <slot name="selection-layer-marker" />
           ) : (
             <gx-map-marker
-              icon-width="30"
-              icon-height="30"
               type="selection-layer"
               coords={this.centerCoords}
             ></gx-map-marker>
