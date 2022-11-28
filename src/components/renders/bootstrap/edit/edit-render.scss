@@ -28,6 +28,8 @@ gx-table-cell[min-height][max-height] {
 }
 
 gx-edit {
+  $auto-fill-background-color: rgb(232, 240, 254);
+
   $trigger-button-background-color: #dddddde6;
   $trigger-button-font-color: var(--action-tint-color, black);
   $trigger-button-width: clamp(32px, 2.5em, 64px);
@@ -195,6 +197,38 @@ gx-edit {
   footer {
     font-size: inherit;
     font-weight: inherit;
+  }
+
+  // - - - - - - - - - - - - - - - -
+  //            Auto Fill
+  // - - - - - - - - - - - - - - - -
+  input,
+  textarea {
+    // Dummy animation to trigger the onAnimationStart event
+    &:-webkit-autofill {
+      animation: AutoFillStart 0.000001s;
+    }
+
+    // Dummy animation to trigger the onAnimationStart event
+    &:not(:-webkit-autofill) {
+      animation: AutoFillCancel 0.000001s;
+    }
+  }
+
+  @keyframes AutoFillStart {
+    0% {
+      visibility: inherit;
+    }
+  }
+  @keyframes AutoFillCancel {
+    0% {
+      visibility: inherit;
+    }
+  }
+
+  &.gx-edit--auto-fill {
+    background-color: $auto-fill-background-color;
+    transition: unset; // Auto-fill background-color must not have transition
   }
 }
 
