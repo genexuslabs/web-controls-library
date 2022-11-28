@@ -48,7 +48,6 @@ export const config: Config = {
     {
       components: [
         "gx-grid-flex",
-        "gx-grid-fs",
         "gx-grid-horizontal",
         "gx-grid-smart-css",
         "gx-grid-smart-cell",
