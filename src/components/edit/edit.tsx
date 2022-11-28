@@ -23,6 +23,8 @@ import { makeLinesClampable } from "../common/line-clamp";
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
 
+const AUTOFILL_START_ANIMATION_NAME = "AutoFillStart";
+
 @Component({
   shadow: false,
   styleUrl: "edit.scss",
@@ -49,6 +51,11 @@ export class Edit implements FormComponent, HighlightableComponent {
   private renderer: EditRender;
 
   @Element() element: HTMLGxEditElement;
+
+  /**
+   * Determine if the gx-edit's value was auto-completed
+   */
+  @State() autoFilled = false;
 
   /**
    * Allows to specify the role of the element when inside a `gx-form-field` element
@@ -268,6 +275,10 @@ export class Edit implements FormComponent, HighlightableComponent {
     }
   }
 
+  private handleAutoFill = (event: AnimationEvent) => {
+    this.autoFilled = event.animationName == AUTOFILL_START_ANIMATION_NAME;
+  };
+
   private handleChange(event: UIEvent) {
     this.value = this.renderer.getValueFromEvent(event);
     this.change.emit(event);
@@ -295,6 +306,7 @@ export class Edit implements FormComponent, HighlightableComponent {
     return (
       <Host
         class={{
+          "gx-edit--auto-fill": this.autoFilled,
           "gx-edit--single-line":
             this.type === "date" || this.type === "datetime-local",
           [this.disabledClass]: this.disabled,
@@ -311,6 +323,7 @@ export class Edit implements FormComponent, HighlightableComponent {
             ? "0"
             : undefined
         }
+        onAnimationStart={this.handleAutoFill}
       >
         {this.renderer.render({
           triggerContent: <slot name="trigger-content" />,

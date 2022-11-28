@@ -26,6 +26,20 @@ An `gx-radio-group` can be used to group a set of radios. When radios are inside
 | `gxRadioDidUnload` | Emitted when the radio unloads.                                                              | `CustomEvent<any>` |
 | `gxSelect`         | Emitted when the radio button is selected.                                                   | `CustomEvent<any>` |
 
+## Dependencies
+
+### Used by
+
+- [gx-dynamic-form](../dynamic-form)
+
+### Graph
+
+```mermaid
+graph TD;
+  gx-dynamic-form --> gx-radio-option
+  style gx-radio-option fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_

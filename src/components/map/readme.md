@@ -54,6 +54,14 @@ Example: `-34.87945241095968, -56.078210142066956`
 | `selectionInput`     | Emmited when the map is being moved, if selection layer is active.         | `CustomEvent<any>` |
 | `userLocationChange` | Emmited when the user location coords change.                              | `CustomEvent<any>` |
 
+## CSS Custom Properties
+
+| Name                | Description                                                     |
+| ------------------- | --------------------------------------------------------------- |
+| `--gx-fill-color`   | The fill color to use for the path. (white by default)          |
+| `--gx-stroke-color` | The stroke color to use for the path. (currentColor by default) |
+| `--gx-stroke-width` | Yhe stroke width to use for the path. (2.5 by default)          |
+
 ## Dependencies
 
 ### Depends on

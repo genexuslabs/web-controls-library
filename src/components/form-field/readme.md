@@ -56,6 +56,20 @@ A SASS mixin called `gx-form-field` is provided in `./_form-field-label-theming-
 | `--gx-form-field-label-width-column` | Define the label width when the label position is left or right. (100% by default) |
 | `--gx-form-field-label-width-row`    | Define the label width when the label position is top or bottom. (100% by default) |
 
+## Dependencies
+
+### Used by
+
+- [gx-dynamic-form](../dynamic-form)
+
+### Graph
+
+```mermaid
+graph TD;
+  gx-dynamic-form --> gx-form-field
+  style gx-form-field fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_
