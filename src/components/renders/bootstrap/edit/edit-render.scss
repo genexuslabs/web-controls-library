@@ -207,6 +207,7 @@ gx-edit {
     // Dummy animation to trigger the onAnimationStart event
     &:-webkit-autofill {
       animation: AutoFillStart 0.000001s;
+      transition: background-color 99999999s 0s;
     }
 
     // Dummy animation to trigger the onAnimationStart event
@@ -226,9 +227,10 @@ gx-edit {
     }
   }
 
-  &.gx-edit--auto-fill {
+  &.gx-edit--auto-fill,
+  &:not([data-no-action]).gx-edit--auto-fill:focus-within,
+  &:not([data-no-action]).gx-edit--auto-fill:hover {
     background-color: $auto-fill-background-color;
-    transition: unset; // Auto-fill background-color must not have transition
   }
 }
 
