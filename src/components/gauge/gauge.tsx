@@ -271,7 +271,8 @@ export class Gauge implements GxComponent {
   }
 
   private disconnectObserver() {
-    if (this.watchForItemsObserver !== undefined) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.watchForItemsObserver) {
       this.watchForItemsObserver.disconnect();
       this.watchForItemsObserver = undefined;
     }

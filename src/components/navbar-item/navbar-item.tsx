@@ -78,7 +78,7 @@ export class NavBarItem implements GxComponent, HighlightableComponent {
     return (
       <Host
         class={{
-          "gx-navbar-item-empty": !this.cssClass,
+          "gx-default-button": !this.cssClass,
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,
           [HIGHLIGHT_CLASS_NAME]: this.active

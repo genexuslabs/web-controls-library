@@ -59,7 +59,8 @@ export class Icon {
   }
 
   disconnectedCallback() {
-    if (this.io !== undefined) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.io) {
       this.io.disconnect();
       this.io = undefined;
     }
@@ -126,9 +127,7 @@ export class Icon {
     return (
       <Host aria-label={this.label || this.type}>
         <div
-          class={{
-            "svg-icon-native": true
-          }}
+          class="svg-icon-native"
           style={
             this.color && {
               "--gx-icon-color": this.color

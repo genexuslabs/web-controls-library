@@ -30,6 +30,13 @@
 | `click`          | Fired when the image is clicked | `CustomEvent<any>`  |
 | `onImageChanged` | Fired when the image is changed | `CustomEvent<File>` |
 
+## CSS Custom Properties
+
+| Name                                      | Description                                       |
+| ----------------------------------------- | ------------------------------------------------- |
+| `--gx-image-picker-icon-background-color` | Icon background color of the image picker button. |
+| `--gx-image-picker-icon-color`            | Icon color of the image picker button.            |
+
 ## Dependencies
 
 ### Depends on

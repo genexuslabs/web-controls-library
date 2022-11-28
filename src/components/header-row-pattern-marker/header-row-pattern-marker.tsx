@@ -49,7 +49,8 @@ export class HeaderRowPatternMarker implements GxComponent {
   }
 
   disconnectedCallback() {
-    if (this.observer !== undefined) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.observer) {
       this.observer.disconnect();
       this.observer = undefined;
     }

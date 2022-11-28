@@ -89,7 +89,6 @@ export class SelectRender implements Renderer {
 
       return this.component.suggest
         ? [
-            <gx-bootstrap />,
             <input
               list={datalistId}
               disabled={this.component.disabled}

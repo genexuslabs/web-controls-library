@@ -1,13 +1,85 @@
 @import "../common/_base";
-@import "../renders/bootstrap/form-field/form-field-render";
+@import "../common/common-styling-config";
 
 gx-form-field {
-  @include reset-variables();
-  @include visibility(flex);
+  --elevation: 0;
 
+  /**
+   * @prop --gx-form-field-label-width-row:
+   * Define the label width when the label position is top or bottom.
+   * (100% by default)
+   */
+  --gx-form-field-label-width-row: 100%;
+
+  /**
+   * @prop --gx-form-field-label-width-column:
+   * Define the label width when the label position is left or right.
+   * (100% by default)
+   */
+  --gx-form-field-label-width-column: 25%;
+
+  @include visibility(grid);
   justify-self: stretch;
   align-self: stretch;
+  max-height: 100%;
   flex: 1;
+
+  &.gx-label-position {
+    // Adjust label position to the opposite cell
+    &-top,
+    &-left {
+      & > .gx-label-container {
+        order: -1;
+      }
+    }
+
+    // Label width when position is top or bottom
+    &-top,
+    &-bottom {
+      & > .gx-label-container {
+        width: var(--gx-form-field-label-width-row);
+      }
+    }
+
+    &-left,
+    &-right {
+      grid-auto-flow: column;
+    }
+
+    &-top {
+      grid-template-rows: 0.25fr 1fr;
+    }
+
+    &-bottom {
+      grid-template-rows: 1fr 0.25fr;
+    }
+
+    &-left {
+      grid-template-columns: var(--gx-form-field-label-width-column) 1fr;
+    }
+
+    &-right {
+      grid-template-columns: 1fr var(--gx-form-field-label-width-column);
+    }
+  }
+
+  & > .gx-label-container {
+    display: flex;
+    width: 100%;
+    text-align: start;
+
+    & > label {
+      @include transition-properties();
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  & > .gx-label-right {
+    text-align: end;
+  }
 }
 
 [align="left"],

@@ -2,7 +2,7 @@ import { Component, Element, Prop, h, Host } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "canvas-cell.scss",
   tag: "gx-canvas-cell"
 })
@@ -75,7 +75,8 @@ export class CanvasCell implements GxComponent {
   }
 
   disconnectedCallback() {
-    if (this.observer !== undefined) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.observer) {
       this.observer.disconnect();
       this.observer = undefined;
     }
@@ -85,6 +86,7 @@ export class CanvasCell implements GxComponent {
     return (
       <Host
         class={{
+          "gx-cell": true,
           "auto-grow-cell": this.maxHeight == null,
           "without-auto-grow-cell": this.maxHeight != null
         }}

@@ -5,8 +5,10 @@ import { reactOutputTarget } from "@stencil/react-output-target";
 export const config: Config = {
   bundles: [
     {
+      components: ["gx-action-sheet", "gx-action-sheet-item"]
+    },
+    {
       components: [
-        "gx-bootstrap",
         "gx-layout",
         "gx-icon",
         "gx-navbar",
@@ -35,8 +37,17 @@ export const config: Config = {
       components: ["gx-form-field", "gx-edit"]
     },
     {
+      components: ["gx-gauge", "gx-gauge-range"]
+    },
+    {
+      components: ["gx-radio-group", "gx-radio-option"]
+    },
+    {
+      components: ["gx-select", "gx-select-option"]
+    },
+    {
       components: [
-        "gx-grid-fs",
+        "gx-grid-flex",
         "gx-grid-horizontal",
         "gx-grid-smart-css",
         "gx-grid-smart-cell",
@@ -44,9 +55,13 @@ export const config: Config = {
         "gx-grid-infinite-scroll-content",
         "gx-grid-empty-indicator"
       ]
+    },
+    {
+      components: ["gx-grid-image-map", "gx-grid-image-map-item"]
     }
   ],
   namespace: "gx-web-controls",
+  globalStyle: "src/global/common.scss",
   outputTargets: [
     {
       type: "dist",

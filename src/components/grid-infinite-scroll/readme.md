@@ -39,6 +39,12 @@ to `enabled`.
 
 Type: `Promise<void>`
 
+## CSS Custom Properties
+
+| Name                  | Description                                               |
+| --------------------- | --------------------------------------------------------- |
+| `--gx-grid-css-items` | Number of Columns to be shown in the Main axis direction. |
+
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_

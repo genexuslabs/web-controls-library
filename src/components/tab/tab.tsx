@@ -18,27 +18,35 @@ import {
 } from "../common/highlightable";
 
 // Class transforms
-import {
-  getClasses,
-  tTabsPosition
-} from "../common/css-transforms/css-transforms";
-
-const BASE_TABLIST_SELECTOR = ":scope";
+import { getClasses } from "../common/css-transforms/css-transforms";
 
 /**
+ * @part nav-tabs - The main parent of the container of the tab captions.
+ * @part nav-tabs-table - The main parent container of the tab captions.
+ * @part nav-tabs-table-filler - The tab strip filler when the `tabs-distribution="scroll"`.
+ * @part tab-content - The main parent container of the tab pages.
+ *
  * @slot caption - The slot for the tab captions.
  * @slot page - The slot for the tab pages.
  */
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "tab.scss",
   tag: "gx-tab"
 })
 export class Tab
   implements GxComponent, VisibilityComponent, HighlightableComponent {
-  @Element() element: HTMLGxTabElement;
+  /**
+   *  - Input: Caption Id
+   *  - Output: Corresponding tabPage Id
+   */
+  private tabCaptionIdToTabPageId = new Map<string, string>();
 
-  private lastSelectedTab: HTMLElement;
+  // Refs
+  private lastSelectedTabCaption: HTMLGxTabCaptionElement;
+  private lastSelectedTabPage: HTMLGxTabPageElement;
+
+  @Element() element: HTMLGxTabElement;
 
   /**
    * A CSS class to set as the `gx-tab` element class.
@@ -77,95 +85,82 @@ export class Tab
 
   @Listen("tabSelect")
   tabClickHandler(event: CustomEvent) {
-    const targetElement = event.target as HTMLElement;
-    if (targetElement.closest("gx-tab") !== this.element) {
+    const tabCaptionElement = event.target as HTMLGxTabCaptionElement;
+
+    if (
+      tabCaptionElement.closest("gx-tab") !== this.element ||
+      tabCaptionElement == this.lastSelectedTabCaption
+    ) {
+      return;
+    }
+    this.setSelectedTab(tabCaptionElement);
+
+    this.tabChange.emit(event);
+  }
+
+  private setSelectedTab(tabCaptionElement: HTMLGxTabCaptionElement) {
+    // Unselect last tabCaption and tabPage elements
+    this.lastSelectedTabCaption.selected = false;
+    this.lastSelectedTabPage.selected = false;
+
+    // Update last tabCaption and tabPage elements
+    const tabPageId = this.tabCaptionIdToTabPageId.get(tabCaptionElement.id);
+    this.lastSelectedTabCaption = tabCaptionElement;
+    this.lastSelectedTabPage = this.element.querySelector(`#${tabPageId}`);
+
+    // Select new tabCaption and tabPage elements
+    this.lastSelectedTabCaption.selected = true;
+    this.lastSelectedTabPage.selected = true;
+  }
+
+  private linkCaptionsWithTabPages() {
+    const captionSlots = this.getCaptionSlots();
+    const pageSlots = this.getPageSlots();
+
+    if (captionSlots.length !== pageSlots.length) {
       return;
     }
 
-    const oldSelectedTab = this.lastSelectedTab;
-    this.setSelectedTab(targetElement);
-    if (oldSelectedTab !== this.lastSelectedTab) {
-      this.tabChange.emit(event);
-    }
-  }
+    captionSlots.forEach((captionElement, i) => {
+      const pageElement = pageSlots[i];
 
-  private setSelectedTab(captionElement: HTMLElement) {
-    this.lastSelectedTab = captionElement;
+      captionElement.setAttribute("aria-controls", pageElement.id);
+      pageElement.setAttribute("aria-labelledby", captionElement.id);
 
-    this.getCaptionSlots().forEach((slotElement: any, i) => {
-      slotElement.selected = slotElement === captionElement;
-      const nthChild = i + 1;
-      const pageElement = this.element.querySelector(
-        `:scope > gx-tab-page:nth-child(${nthChild}), 
-        ${BASE_TABLIST_SELECTOR} > .gx-tab-content > gx-tab-page:nth-child(${nthChild})`
-      ) as HTMLElement;
-      this.mapPageToCaptionSelection(slotElement, pageElement);
+      this.tabCaptionIdToTabPageId.set(captionElement.id, pageElement.id);
+
+      // Determine which tab page is selected
+      if (captionElement.selected) {
+        this.lastSelectedTabCaption = captionElement;
+        this.lastSelectedTabPage = pageElement;
+
+        this.lastSelectedTabPage.selected = true;
+      }
     });
   }
 
-  private getCaptionSlots(): HTMLElement[] {
+  private getCaptionSlots(): HTMLGxTabCaptionElement[] {
     return Array.from(
-      this.element.querySelectorAll(
-        `:scope > [slot='caption'], 
-         ${BASE_TABLIST_SELECTOR} > .gx-nav-tabs > .gx-nav-tabs-table > [slot='caption']`
-      )
+      this.element.querySelectorAll(":scope > [slot='caption']")
     );
   }
 
-  private mapPageToCaptionSelection(
-    captionElement: any,
-    pageElement: HTMLElement
-  ) {
-    pageElement?.classList.toggle(
-      "gx-tab-page--active",
-      !!captionElement.selected
-    );
+  private getPageSlots(): HTMLGxTabPageElement[] {
+    return Array.from(this.element.querySelectorAll(":scope > [slot='page']"));
   }
 
   componentDidLoad() {
     makeHighlightable(this);
-    this.linkTabs(true);
-  }
-
-  componentDidUpdate() {
-    this.linkTabs();
+    this.linkCaptionsWithTabPages();
   }
 
   disconnectedCallback() {
-    this.lastSelectedTab = null;
-  }
-
-  private linkTabs(resolveSelected = false) {
-    const captionSlots = this.getCaptionSlots();
-    const pageSlots = this.getPageSlots();
-
-    if (captionSlots.length === pageSlots.length) {
-      captionSlots.forEach((captionElement: any, i) => {
-        const pageElement: any = pageSlots[i];
-        captionElement.setAttribute("aria-controls", pageElement.id);
-        pageElement.setAttribute("aria-labelledby", captionElement.id);
-        if (resolveSelected) {
-          this.mapPageToCaptionSelection(captionElement, pageElement);
-          if (captionElement.selected) {
-            this.lastSelectedTab = captionElement;
-          }
-        }
-      });
-    }
+    this.lastSelectedTabCaption = null;
   }
 
   render() {
-    this.setPageSlotsClass();
-
     // Styling for gx-tab-caption control.
     const classes = getClasses(this.cssClass);
-
-    const tabsPositionClass = !!this.cssClass
-      ? this.cssClass
-          .split(" ")
-          .map(tTabsPosition)
-          .join(" ")
-      : "";
 
     return (
       <Host
@@ -175,35 +170,28 @@ export class Tab
           [classes.vars]: true
         }}
       >
-        <div class="gx-nav-tabs">
-          <div class={{ "gx-nav-tabs-table": true, [tabsPositionClass]: true }}>
+        <div class="gx-nav-tabs" part="nav-tabs">
+          <div
+            class={{
+              "gx-nav-tabs-table": true,
+              "gx-fixed-tabs": this.tabsDistribution === "fixed-size"
+            }}
+            part="nav-tabs-table"
+          >
             <slot name="caption" />
             {this.tabsDistribution === "scroll" && (
-              <div aria-hidden="true" class="gx-nav-tabs-table-filler"></div>
+              <div
+                aria-hidden="true"
+                class="gx-nav-tabs-table-filler"
+                part="nav-tabs-table-filler"
+              ></div>
             )}
           </div>
         </div>
-        <div class="gx-tab-content">
+        <div class="gx-tab-content" part="tab-content">
           <slot name="page" />
         </div>
       </Host>
-    );
-  }
-
-  private setPageSlotsClass() {
-    this.getPageSlots().forEach(pageElement => {
-      if (!pageElement.classList.contains("gx-tab-page")) {
-        pageElement.classList.add("gx-tab-page");
-      }
-    });
-  }
-
-  private getPageSlots(): HTMLElement[] {
-    return Array.from(
-      this.element.querySelectorAll(
-        `:scope > [slot='page'], 
-         ${BASE_TABLIST_SELECTOR} > .gx-tab-content > [slot='page']`
-      )
     );
   }
 }

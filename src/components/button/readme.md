@@ -33,18 +33,34 @@ If the main image is the only image specified, it will be displayed both when th
 | `highlightable` | `highlightable`  | True to highlight control when an action is fired.                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `boolean`                                               | `true`       |
 | `imagePosition` | `image-position` | This attribute lets you specify the relative location of the image to the text. \| Value \| Details \| \| -------- \| ------------------------------------------------------- \| \| `above` \| The image is located above the text. \| \| `before` \| The image is located before the text, in the same line. \| \| `after` \| The image is located after the text, in the same line. \| \| `below` \| The image is located below the text. \| \| `behind` \| The image is located behind the text. \| | `"above" \| "after" \| "before" \| "behind" \| "below"` | `"above"`    |
 | `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \|                                                                                                           | `"collapse" \| "keep-space"`                            | `"collapse"` |
-| `size`          | `size`           | This attribute lets you specify the size of the button. \| Value \| Details \| \| -------- \| ------------------------------------------------------- \| \| `large` \| Large sized button. \| \| `normal` \| Standard sized button. \| \| `small` \| Small sized button. \|                                                                                                                                                                                                                            | `"large" \| "normal" \| "small"`                        | `"normal"`   |
 | `width`         | `width`          | This attribute lets you specify the width.                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `string`                                                | `""`         |
+
+## Events
+
+| Event   | Description                                                                                             | Type               |
+| ------- | ------------------------------------------------------------------------------------------------------- | ------------------ |
+| `click` | Emitted when the element is clicked, the enter key is pressed or the space key is pressed and released. | `CustomEvent<any>` |
+
+## Slots
+
+| Slot               | Description                         |
+| ------------------ | ----------------------------------- |
+|                    | The slot for the caption displayed. |
+| `"disabled-image"` | The slot for the disabled `img`.    |
+| `"main-image"`     | The slot for the main `img`.        |
+
+## Shadow Parts
+
+| Part        | Description                                         |
+| ----------- | --------------------------------------------------- |
+| `"caption"` | The caption displayed at the center of the control. |
 
 ## CSS Custom Properties
 
-| Name                              | Description                                 |
-| --------------------------------- | ------------------------------------------- |
-| `--gx-button-image-margin-bottom` | Button image bottom margin (0px by default) |
-| `--gx-button-image-margin-left`   | Button image left margin (0px by default)   |
-| `--gx-button-image-margin-right`  | Button image right margin (0px by default)  |
-| `--gx-button-image-margin-top`    | Button image top margin (0px by default)    |
-| `--gx-button-image-size`          | Button image size (16px by default)         |
+| Name                       | Description                          |
+| -------------------------- | ------------------------------------ |
+| `--gx-button-image-margin` | Button image margin (0px by default) |
+| `--gx-button-image-size`   | Button image size (16px by default)  |
 
 ---
 

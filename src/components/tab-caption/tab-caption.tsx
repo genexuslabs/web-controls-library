@@ -16,10 +16,7 @@ import {
   HighlightableComponent,
   makeHighlightable
 } from "../common/highlightable";
-import {
-  hideMainImageWhenDisabledClass,
-  imagePositionClass
-} from "../common/image-position";
+import { imagePositionClass } from "../common/image-position";
 
 // Class transforms
 import {
@@ -46,6 +43,12 @@ let autoTabId = 0;
 export class TabCaption
   implements GxComponent, DisableableComponent, HighlightableComponent {
   private hasDisabledImage = false;
+  private hasMainImage = false;
+
+  /**
+   * `true` if the `componentDidLoad()` method was called
+   */
+  private didLoad = false;
 
   @Element() element: HTMLGxTabCaptionElement;
 
@@ -101,7 +104,7 @@ export class TabCaption
 
   @Watch("selected")
   selectedHandler() {
-    if (this.selected) {
+    if (this.didLoad && this.selected) {
       this.tabSelect.emit();
     }
   }
@@ -124,12 +127,17 @@ export class TabCaption
     if (!this.element.id) {
       this.element.id = `gx-tab-caption-auto-id-${autoTabId++}`;
     }
+
+    this.hasMainImage =
+      this.element.querySelector(":scope > [slot='main-image']") !== null;
+
     this.hasDisabledImage =
       this.element.querySelector(":scope > [slot='disabled-image']") !== null;
   }
 
   componentDidLoad() {
     makeHighlightable(this);
+    this.didLoad = true;
   }
 
   render() {
@@ -166,10 +174,7 @@ export class TabCaption
 
           // Configured by the gx-tab-caption control
           [this.cssClass]: !!this.cssClass && !this.selected,
-          [unselectedClasses.vars]: !this.selected,
-
-          [hideMainImageWhenDisabledClass]:
-            !this.selected && this.hasDisabledImage
+          [unselectedClasses.vars]: !this.selected
         }}
         onClick={this.clickHandler}
       >
@@ -180,12 +185,12 @@ export class TabCaption
           onClick={this.clickHandler}
         >
           {// Main image
-          (this.selected || !this.hasDisabledImage) && (
+          this.hasMainImage && (this.selected || !this.hasDisabledImage) && (
             <slot name="main-image" />
           )}
 
           {// Disabled image
-          !this.selected && this.hasDisabledImage && (
+          this.hasDisabledImage && !this.selected && (
             <slot name="disabled-image" />
           )}
 

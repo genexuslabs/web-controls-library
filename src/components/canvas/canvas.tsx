@@ -10,49 +10,41 @@ import {
   Watch
 } from "@stencil/core";
 import {
-  ClickableComponent,
   Component as GxComponent,
+  ClickableComponent,
   DisableableComponent,
-  VisibilityComponent
+  VisibilityComponent,
+  CustomizableComponent
 } from "../common/interfaces";
 import { Swipeable, makeSwipeable } from "../common/events/swipeable";
-
-// Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
 
 const CANVAS_THRESHOLD = 1.75;
 
 /* - - - - - - - - SELECTORS - - - - - - - - */
-const ALL_CANVAS_CELLS = ":scope > .canvas-cells-container > gx-canvas-cell";
+const ALL_CANVAS_CELLS = ":scope > gx-canvas-cell";
 
-const AUTOGROW_CANVAS_CELLS =
-  ":scope > .canvas-cells-container > .auto-grow-cell";
+const AUTOGROW_CANVAS_CELLS = ":scope > .auto-grow-cell";
 
-const AUTOGROW_CANVAS_CELL_CLASS = (id: string) => {
-  return `auto-grow-cell-${id}`;
-};
+const AUTOGROW_CANVAS_CELL_CLASS = (id: string) => `auto-grow-cell-${id}`;
 
-const AUTOGROW_CANVAS_CELL_BY_ID = (id: string) => {
-  return `:scope > .canvas-cells-container > .${AUTOGROW_CANVAS_CELL_CLASS(
-    id
-  )}`;
-};
+const AUTOGROW_CANVAS_CELL_BY_ID = (id: string) =>
+  `:scope > .${AUTOGROW_CANVAS_CELL_CLASS(id)}`;
 
-const WITHOUT_AUTOGROW_CANVAS_CELLS =
-  ":scope > .canvas-cells-container > .without-auto-grow-cell";
+const WITHOUT_AUTOGROW_CANVAS_CELLS = ":scope > .without-auto-grow-cell";
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "canvas.scss",
   tag: "gx-canvas"
 })
 export class Canvas
   implements
     GxComponent,
-    VisibilityComponent,
+    ClickableComponent,
+    CustomizableComponent,
     DisableableComponent,
     Swipeable,
-    ClickableComponent {
+    VisibilityComponent {
   constructor() {
     this.handleClick = this.handleClick.bind(this);
   }
@@ -505,7 +497,8 @@ export class Canvas
   }
 
   private disconnectCanvasObserver() {
-    if (this.watchForCanvasObserver !== undefined) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.watchForCanvasObserver) {
       this.watchForCanvasObserver.disconnect();
       this.watchForCanvasObserver = undefined;
     }
@@ -572,7 +565,8 @@ export class Canvas
   }
 
   disconnectedCallback() {
-    if (this.watchForItemsObserver !== undefined) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.watchForItemsObserver) {
       this.watchForItemsObserver.disconnect();
       this.watchForItemsObserver = undefined;
     }
@@ -581,16 +575,12 @@ export class Canvas
   }
 
   render() {
-    // Styling for gx-canvas control.
-    const classes = getClasses(this.cssClass);
-
     this.element.addEventListener("click", this.handleClick);
 
     return (
       <Host
         class={{
           [this.cssClass]: !!this.cssClass,
-          [classes.vars]: true,
           disabled: this.disabled
         }}
         style={{
