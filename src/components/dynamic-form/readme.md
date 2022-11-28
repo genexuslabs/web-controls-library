@@ -1,7 +1,7 @@
 # dynamic-form
 
 An element for generate dynamic forms.
-You can define a set of elements and rules that they must follow 
+You can define a set of elements and rules that they must follow
 
 ## Example
 
@@ -11,7 +11,6 @@ You can define a set of elements and rules that they must follow
 ```
 
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -24,7 +23,6 @@ You can define a set of elements and rules that they must follow
 | `subgroup`        | `subgroup`          | This attribute let you specify if this dynamic form is a subgroup of another dynamic form                                              | `boolean` | `false`     |
 | `warningCssClass` | `warning-css-class` | A css class to set to attributes when a warning occurs                                                                                 | `string`  | `undefined` |
 
-
 ## Events
 
 | Event          | Description                        | Type               |
@@ -32,15 +30,15 @@ You can define a set of elements and rules that they must follow
 | `onMessage`    | Emitted when a message is shown    | `CustomEvent<any>` |
 | `onSubmitForm` | Emitted when the form is submitted | `CustomEvent<any>` |
 
-
 ## Dependencies
 
 ### Used by
 
- - [gx-dynamic-form](.)
+- [gx-dynamic-form](.)
 
 ### Depends on
 
+- [gx-form-field](../form-field)
 - [gx-edit](../edit)
 - [gx-radio-group](../radio-group)
 - [gx-radio-option](../radio-option)
@@ -49,15 +47,15 @@ You can define a set of elements and rules that they must follow
 - [gx-select-option](../select-option)
 - [gx-checkbox](../checkbox)
 - [gx-switch](../switch)
-- [gx-form-field](../form-field)
 
 ### Graph
+
 ```mermaid
 graph TD;
   gx-dynamic-form --> gx-dynamic-form
   style gx-dynamic-form fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

@@ -33,6 +33,20 @@ Returns the id of the inner `input` element (if set).
 
 Type: `Promise<string>`
 
+## Dependencies
+
+### Used by
+
+- [gx-dynamic-form](../dynamic-form)
+
+### Graph
+
+```mermaid
+graph TD;
+  gx-dynamic-form --> gx-checkbox
+  style gx-checkbox fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_
