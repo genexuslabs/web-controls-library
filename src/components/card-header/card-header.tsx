@@ -133,7 +133,10 @@ export class CardHeader implements GxComponent, CustomizableComponent {
             )}
 
             {this.hasLowPriorityActions && (
-              <li class="low-actions-container">
+              // The listitem role is a WA to avoid a browser bug when setting
+              // "display: contents" on elements. Without the role, the element
+              // would be removed from the accessibility tree
+              <li role="listitem" class="low-actions-container">
                 <button
                   aria-controls={this.cardHeaderId}
                   aria-expanded={this.showLowActions.toString()}

@@ -13,6 +13,17 @@ gx-card-header > li > gx-button::part(caption) {
   overflow: unset;
 }
 
+gx-card-header > li > gx-button {
+  // The default width of the gx-buttons in the gx-card-header must be
+  // "fit-content". Otherwise, they will take all the available width
+  --width: fit-content;
+
+  // Default separation between gx-card-header elements.
+  // This margin is applied on the buttons (and not in the <li>) to allow the
+  // user to override this CSS when setting a cssClass on the buttons
+  margin-inline-start: 5px;
+}
+
 // - - - - - - - - - - - - - - - - - - - -
 //          Cells (table, canvas)
 // - - - - - - - - - - - - - - - - - - - -

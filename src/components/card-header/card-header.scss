@@ -8,10 +8,10 @@
   z-index: $z-index-gx-card-header;
 }
 
-// Remove list-item marker
+// Remove list-item marker and ignore the CSS box on the <li> elements
 ::slotted(li),
 li {
-  display: flex;
+  display: contents;
 }
 
 .nav {
@@ -20,10 +20,10 @@ li {
 }
 
 .list-of-actions {
-  display: grid;
-  grid-auto-flow: column;
-  column-gap: 5px;
+  display: flex;
+  align-items: center;
   justify-content: flex-end;
+  justify-items: flex-end;
   width: 100%;
 }
 
