@@ -9,11 +9,11 @@
 //               Card header
 // - - - - - - - - - - - - - - - - - - - -
 // Needed to stretch the dropdown width to the width of the buttons
-gx-card-header > li > gx-button::part(caption) {
+gx-card-header > li[slot="low-priority-action"] > gx-button::part(caption) {
   overflow: unset;
 }
 
-gx-card-header > li > gx-button {
+gx-card-header > li:not([slot="low-priority-action"]) > gx-button {
   // The default width of the gx-buttons in the gx-card-header must be
   // "fit-content". Otherwise, they will take all the available width
   --width: fit-content;
