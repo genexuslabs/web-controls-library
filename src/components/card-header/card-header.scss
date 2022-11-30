@@ -34,6 +34,10 @@ li {
   width: 2px;
   height: 60%;
   margin: 0;
+
+  // Default separation between gx-card-header elements
+  margin-inline-start: 5px;
+
   transition: color $transition-duration;
 }
 
@@ -46,6 +50,9 @@ li {
   justify-content: flex-end;
   align-self: center;
   height: fit-content;
+
+  // Default separation between gx-card-header elements
+  margin-inline-start: 5px;
 }
 
 // Button to show low actions

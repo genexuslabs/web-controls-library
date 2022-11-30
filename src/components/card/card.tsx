@@ -25,7 +25,7 @@ export class Card implements GxComponent {
         {this.showHeader && <slot name="header" />}
 
         <slot name="body" />
-        {this.showHeader && <slot />}
+        <slot />
       </Host>
     );
   }
