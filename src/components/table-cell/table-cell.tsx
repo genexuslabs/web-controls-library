@@ -48,7 +48,7 @@ export class TableCell implements GxComponent {
   componentDidLoad() {
     const childElement: any = this.element.firstElementChild;
 
-    if (childElement?.invisibleMode !== "collapse") {
+    if (childElement?.getAttribute("invisible-mode") !== "collapse") {
       return;
     }
 
