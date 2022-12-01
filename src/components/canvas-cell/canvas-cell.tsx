@@ -51,7 +51,10 @@ export class CanvasCell implements GxComponent {
   private observer: MutationObserver;
 
   private setupObserver(childElement: any) {
-    if (childElement && childElement.invisibleMode === "collapse") {
+    if (
+      childElement &&
+      childElement.getAttribute("invisible-mode") === "collapse"
+    ) {
       this.observer = new MutationObserver(() => {
         this.setVisibilityBasedOnChildElement(childElement);
       });
