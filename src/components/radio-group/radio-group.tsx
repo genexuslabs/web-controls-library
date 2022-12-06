@@ -198,8 +198,7 @@ export class RadioGroup
       <Host
         class={{
           [this.cssClass]: !!this.cssClass,
-          [classes.vars]: true,
-          [classes.highlighted]: true
+          [classes.vars]: true
         }}
         role="radiogroup"
       >

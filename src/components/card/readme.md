@@ -1,43 +1,70 @@
 # gx-card
 
-A content container with a header and a footer, and the ability to render
-`gx-button`, `gx-textblock` or other actionable elements in specific areas of
-the header or footer, according to their priority.
-
-## Children
-
-The different building blocks of the card can be specified using a set of
-predefined slots:
-
-| Slot                     | Details                                                                                                                                                 |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `header`                 | This slot will be rendered as the header of the card                                                                                                    |
-| `footer`                 | This slot will be rendered as the footer of the card                                                                                                    |
-| `body`                   | This slot will be rendered as the body of the card                                                                                                      |
-| `normal-priority-action` | This slot will be rendered as a normal priority action of the card. Normal priority actions are rendered right aligned, in the card footer              |
-| `high-priority-action`   | This slot will be rendered as a high priority action of the card. High priority actions are rendered right aligned, in the card header                  |
-| `low-priority-action`    | This slot will be rendered as a low priority action of the card. Low priority actions are rendered inside a right aligned drop down, in the card header |
+A content container with the ability to render a header.
 
 ## Example
 
 ```html
+<style>
+  .ApplicationBarFancyClass {
+    background-color: #8082b3;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 500;
+
+    /* 
+    @include gx-navbar(
+      $default-button: ".DefaultButton",
+      $back-button: ".BackButton"
+    );
+    */
+  }
+</style>
+
 <gx-card>
-  <span slot="header">
-    Sample card
-  </span>
-  <gx-button slot="high-priority-action">Share</gx-button>
-  <gx-button slot="normal-priority-action">Save</gx-button>
-  <gx-button slot="normal-priority-action">Cancel</gx-button>
-  <gx-textblock slot="low-priority-action" href="#">Action</gx-textblock>
-  <gx-textblock slot="low-priority-action" href="#"
-    >Another action</gx-textblock
-  >
-  <gx-textblock slot="low-priority-action" href="#"
-    >Something else here</gx-textblock
-  >
+  <gx-card-header slot="header" css-class="ApplicationBarFancyClass">
+    <li slot="high-priority-action">
+      <gx-button>Share</gx-button>
+    </li>
+
+    <li slot="normal-priority-action">
+      <gx-button>Save</gx-button>
+    </li>
+
+    <li slot="normal-priority-action">
+      <gx-button>Cancel</gx-button>
+    </li>
+
+    <li slot="low-priority-action">
+      <gx-textblock href="#">Action</gx-textblock>
+    </li>
+
+    <li slot="low-priority-action">
+      <gx-textblock href="#">
+        Another action
+      </gx-textblock>
+    </li>
+
+    <li slot="low-priority-action">
+      <gx-textblock href="#">
+        Something else here
+      </gx-textblock>
+    </li>
+  </gx-card-header>
+
   <div slot="body">
     This is the card content
   </div>
+
+  <gx-action-sheet close-button-label="GXM_cancel">
+    <gx-action-sheet-item>Action A</gx-action-sheet-item>
+    <gx-action-sheet-item disabled>Action B</gx-action-sheet-item>
+  </gx-action-sheet>
+
+  <gx-action-sheet close-button-label="GXM_cancel">
+    <gx-action-sheet-item>Action 1</gx-action-sheet-item>
+    <gx-action-sheet-item>Action 2</gx-action-sheet-item>
+  </gx-action-sheet>
 </gx-card>
 ```
 
@@ -45,13 +72,17 @@ predefined slots:
 
 ## Properties
 
-| Property        | Attribute        | Description                                                                                                                                                                                                                                                                                                                                                                                  | Type                         | Default      |
-| --------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------ |
-| `cssClass`      | `css-class`      | A CSS class to set for the header and footer element classes of the `gx-card` control.                                                                                                                                                                                                                                                                                                       | `string`                     | `undefined`  |
-| `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \| | `"collapse" \| "keep-space"` | `"collapse"` |
-| `showBorder`    | `show-border`    | True to show the card border. False to hide it.                                                                                                                                                                                                                                                                                                                                              | `boolean`                    | `true`       |
-| `showFooter`    | `show-footer`    | True to show the card footer. False to hide it.                                                                                                                                                                                                                                                                                                                                              | `boolean`                    | `true`       |
-| `showHeader`    | `show-header`    | True to show the card header. False to hide it.                                                                                                                                                                                                                                                                                                                                              | `boolean`                    | `true`       |
+| Property     | Attribute     | Description                                     | Type      | Default |
+| ------------ | ------------- | ----------------------------------------------- | --------- | ------- |
+| `showHeader` | `show-header` | True to show the card header. False to hide it. | `boolean` | `true`  |
+
+## Slots
+
+| Slot       | Description                                                                                                                 |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------- |
+|            | The default slot will also be rendered as the body of the card. Typically, this slot will contain gx-action-sheet controls. |
+| `"body"`   | This slot will be rendered as the body of the card.                                                                         |
+| `"header"` | This slot will be rendered as the header of the card.                                                                       |
 
 ---
 

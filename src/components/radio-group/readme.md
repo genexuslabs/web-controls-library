@@ -28,6 +28,20 @@ The one option whose value matches the value of the group will be automatically 
 | -------- | -------------------------------------------------------------------------------------------- | ------------------ |
 | `change` | The `change` event is emitted when a change to the element's value is committed by the user. | `CustomEvent<any>` |
 
+## Dependencies
+
+### Used by
+
+- [gx-dynamic-form](../dynamic-form)
+
+### Graph
+
+```mermaid
+graph TD;
+  gx-dynamic-form --> gx-radio-group
+  style gx-radio-group fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_

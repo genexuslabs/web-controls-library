@@ -6,7 +6,10 @@ import {
 } from "../common/highlightable";
 
 // Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
+import {
+  getClasses,
+  HIGHLIGHT_CLASS_NAME
+} from "../common/css-transforms/css-transforms";
 
 @Component({
   shadow: true,
@@ -42,9 +45,16 @@ export class NavBarItem implements GxComponent, HighlightableComponent {
   @Prop() readonly iconAltText = "";
 
   /**
-   * This attribute lets you specify the URL of an icon for the navbar item.
+   * This attribute lets you specify the src attribute of an icon for the
+   * navbar item.
    */
-  @Prop() readonly iconSrc = "";
+  @Prop() readonly iconSrc: string;
+
+  /**
+   * This attribute lets you specify the srcset attribute of an icon for the
+   * navbar item.
+   */
+  @Prop() readonly iconSrcset: string;
 
   /**
    * This attribute lets you specify the layout size of the application.
@@ -69,28 +79,31 @@ export class NavBarItem implements GxComponent, HighlightableComponent {
     // Styling for gx-navbar-item control.
     const classes = getClasses(this.cssClass);
 
+    const shouldRenderImg = this.iconSrcset || this.iconSrc;
+
     return (
       <Host
         class={{
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,
-          [classes.highlighted]: this.active,
-          "gx-navbar-item-empty": !this.cssClass,
-          "small-layout-size": this.layoutSize === "small"
+          [HIGHLIGHT_CLASS_NAME]: this.active,
+          "small-layout-size": this.layoutSize === "small",
+          "gx-default-button": !this.cssClass
         }}
         data-has-action
       >
         <TagName
           class={{
             "navbar-item": true,
-            "navbar-item-with-icon": !!this.iconSrc
+            "navbar-item-with-icon": !!shouldRenderImg
           }}
           {...attris}
         >
-          {this.iconSrc && (
+          {shouldRenderImg && (
             <img
               class="navbar-item-icon"
-              src={this.iconSrc}
+              src={this.iconSrc || undefined}
+              srcset={this.iconSrcset || undefined}
               alt={this.iconAltText}
             />
           )}

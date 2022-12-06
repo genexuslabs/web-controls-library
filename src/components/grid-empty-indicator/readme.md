@@ -16,12 +16,13 @@ This control shows a text element with an image in the background. It also suppo
 
 ## Properties
 
-| Property     | Attribute     | Description                                            | Type | Default |
-| ------------ | ------------- | ------------------------------------------------------ | ---- | ------- |
-| `image`      | `image`       | Image url to be shown                                  | `""` | `""`    |
-| `imageClass` | `image-class` | A CSS class to set as the inner `image` element class. | `""` | `""`    |
-| `text`       | `text`        | Text to be displayed                                   | `""` | `""`    |
-| `textClass`  | `text-class`  | A CSS class to set as the inner `text` element class.  | `""` | `""`    |
+| Property     | Attribute     | Description                                                            | Type | Default |
+| ------------ | ------------- | ---------------------------------------------------------------------- | ---- | ------- |
+| `image`      | `image`       | This attribute lets you specify the `src` of the image to be shown.    | `""` | `""`    |
+| `imageClass` | `image-class` | A CSS class to set as the inner `image` element class.                 | `""` | `""`    |
+| `imageSet`   | `image-set`   | This attribute lets you specify the `srcset` of the image to be shown. | `""` | `""`    |
+| `text`       | `text`        | Text to be displayed                                                   | `""` | `""`    |
+| `textClass`  | `text-class`  | A CSS class to set as the inner `text` element class.                  | `""` | `""`    |
 
 ## Dependencies
 

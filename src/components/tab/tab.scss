@@ -1,7 +1,9 @@
 @import "../common/_base";
 @import "../common/_common-styling-config";
 
-gx-tab {
+@include visibility-shadow-DOM(grid);
+
+:host {
   /**
    * @prop --elevation: The size of the shadow for the tab component
    */
@@ -33,115 +35,104 @@ gx-tab {
   --tab-strip-height: auto;
 
   /**
-   * @prop --tab-caption-vertical-padding: Tab caption vertical padding
+   * @prop --gx-tab-caption-vertical-separation: Tab caption vertical separation between image and text
    */
-  --tab-caption-vertical-padding: calc(2px + 0.125em);
+  --gx-tab-caption-vertical-separation: 6px;
 
   /**
-   * @prop --tab-caption-horizontal-padding: Tab caption horizontal padding
+   * @prop --gx-tab-caption-horizontal-separation: Tab caption horizontal separation between image and text
    */
-  --tab-caption-horizontal-padding: 23px;
+  --gx-tab-caption-horizontal-separation: 3px;
 
   /**
-   * @prop --tab-caption-image-vertical-margin: Tab caption image vertical margin
+   * @prop --gx-tab-caption-overflow: The caption overflow for gx-tab-caption control
    */
-  --tab-caption-image-vertical-margin: 6px;
+  --gx-tab-caption-overflow: visible;
 
-  /**
-   * @prop --tab-caption-image-horizontal-margin: Tab caption image horizontal margin
-   */
-  --tab-caption-image-horizontal-margin: 2px;
+  --gx-tabs-position--order: 0;
 
   @include elevation();
-  @include transition-properties();
-  @include visibility(flex);
+
+  // Implement tabs position
+  grid-template-rows: minmax(auto, max-content);
+
   flex: 1;
   width: 100%;
   overflow: hidden;
+  @include transition-properties();
 
-  &[tabs-distribution="fixed-size"] {
-    & > div {
-      .gx-nav-tabs {
-        .gx-nav-tabs-table {
-          table-layout: fixed;
-          width: 100%;
+  --tab-scrollbar-background-color: var(
+    --gx-scrollbar-background-color,
+    #f5f5f5
+  );
+  --tab-scrollbar-thumb-color: var(--gx-scrollbar-thumb-color, #555);
+}
 
-          gx-tab-caption.gx-tab-caption {
-            .image-and-link-container {
-              span {
-                overflow: hidden;
-              }
-            }
-          }
-        }
-      }
-    }
+.gx-nav-tabs {
+  --elevation: var(--tab-strip-elevation);
+  @include elevation();
+
+  // Implement tabs position
+  order: var(--gx-tabs-position--order);
+
+  height: var(--tab-strip-height);
+  overflow: hidden;
+  white-space: nowrap;
+  transition: box-shadow $transition-duration;
+
+  &:hover {
+    overflow-x: auto; // Fix for Mozilla, because it only accepts: visible, hidden, auto or scroll
+    overflow-x: overlay;
   }
 
-  & > div {
-    display: grid;
-    flex: 1;
-    height: 100%;
+  // - - - - - - - - - - - - - - - -
+  //     Scrollbar customization
+  // - - - - - - - - - - - - - - - -
+  scrollbar-width: thin;
+  scrollbar-color: var(--tab-scrollbar-thumb-color)
+    var(--tab-scrollbar-background-color);
 
-    --tab-scrollbar-background-color: var(
-      --gx-scrollbar-background-color,
-      #f5f5f5
-    );
-    --tab-scrollbar-thumb-color: var(--gx-scrollbar-thumb-color, #555);
-
-    .gx-nav-tabs {
-      --elevation: var(--tab-strip-elevation);
-      height: var(--tab-strip-height);
-      overflow-x: hidden;
-      overflow-y: auto; // Fix for Mozilla, because it only accepts: visible, hidden, auto or scroll
-      overflow-y: overlay;
-      white-space: nowrap;
-      transition: box-shadow $transition-duration;
-
-      &:hover {
-        overflow-x: auto; // Fix for Mozilla, because it only accepts: visible, hidden, auto or scroll
-        overflow-x: overlay;
-      }
-
-      scrollbar-width: thin;
-      scrollbar-color: var(--tab-scrollbar-thumb-color)
-        var(--tab-scrollbar-background-color);
-
-      &::-webkit-scrollbar {
-        width: 5px;
-        height: 5px;
-      }
-
-      &::-webkit-scrollbar-track {
-        background: var(--tab-scrollbar-background-color);
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background-color: var(--tab-scrollbar-thumb-color);
-        border-radius: 6px;
-        border: 1px solid var(--tab-scrollbar-background-color);
-      }
-
-      .gx-nav-tabs-table {
-        display: table;
-        height: 100%;
-
-        &-filler {
-          display: table-cell;
-          width: 100%;
-          background-color: var(--tab-strip-background-color);
-          border-top: 1px solid transparent;
-          border-bottom: 1px solid transparent;
-          transition: background-color $transition-duration,
-            border-color $transition-duration;
-        }
-      }
-    }
-
-    .gx-tab-content {
-      display: flex;
-      height: 100%;
-      overflow: auto;
-    }
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
   }
+
+  &::-webkit-scrollbar-track {
+    background: var(--tab-scrollbar-background-color);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--tab-scrollbar-thumb-color);
+    border-radius: 6px;
+    border: 1px solid var(--tab-scrollbar-background-color);
+  }
+}
+
+.gx-tab-content {
+  display: flex;
+  height: 100%;
+}
+
+// - - - - - - - - - - - - - - - -
+//            Tab strip
+// - - - - - - - - - - - - - - - -
+.gx-nav-tabs-table {
+  display: table;
+  height: 100%;
+}
+
+.gx-fixed-tabs {
+  table-layout: fixed;
+  width: 100%;
+  --gx-tab-caption-overflow: hidden;
+}
+
+.gx-nav-tabs-table-filler {
+  display: table-cell;
+  width: 100%;
+  background-color: var(--tab-strip-background-color);
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid var(--tab-strip-separator-color);
+  transition-property: background-color, box-shadow, filter, opacity;
+  transition-duration: $transition-duration;
 }

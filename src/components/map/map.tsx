@@ -15,8 +15,9 @@ import {
   FeatureGroup,
   Marker,
   map as LFMap,
-  tileLayer,
-  polyline
+  polygon,
+  polyline,
+  tileLayer
 } from "leaflet/dist/leaflet-src.esm";
 import { parseCoords } from "../common/coordsValidate";
 import { watchPosition } from "./geolocation";
@@ -34,6 +35,7 @@ export class Map implements GxComponent {
   private isSelectionLayerSlot = false;
   private map: LFMap;
   private markersList = [];
+  private polygonsList = [];
   private linesList = [];
   private mapProviderApplied: string;
   private mapTypesProviders = {
@@ -45,7 +47,7 @@ export class Map implements GxComponent {
   };
   private selectionMarker: HTMLGxMapMarkerElement;
   private tileLayerApplied: tileLayer;
-  private watchPositionId: number;
+  private showMyLocationId: number;
 
   // Refs
   private divMapView: HTMLDivElement;
@@ -53,16 +55,6 @@ export class Map implements GxComponent {
   @Element() element: HTMLGxMapElement;
 
   @State() userLocationCoords: string;
-
-  @Watch("userLocationCoords")
-  userLocationHandler() {
-    this.userLocationChange.emit(this.userLocationCoords);
-  }
-
-  /**
-   * The class that the marker will have.
-   */
-  @Prop() markerClassIcon = "gx-default-icon";
 
   /**
    * The coord of initial center of the map.
@@ -95,6 +87,27 @@ export class Map implements GxComponent {
   @Prop({ mutable: true }) maxZoom: number = RECOMMENDED_MAX_ZOOM;
 
   /**
+   * A CSS class to set as the `showMyLocation` icon class.
+   */
+  @Prop() pinImageCssClass: string;
+
+  /**
+   * This attribute lets you specify the srcset attribute for the
+   * `showMyLocation` icon when the `pinShowMyLocationSrcset` property is not
+   * specified.
+   */
+  @Prop() pinImageSrcset: string;
+
+  /**
+   * This attribute lets you specify the srcset attribute for the
+   * `showMyLocation` icon. If not set the `pinImageSrcset` property will be
+   * used to specify the srcset attribute for the icon.
+   * If none of the properties are specified, a default icon will be used
+   * when `showMyLocation = true`
+   */
+  @Prop() pinShowMyLocationSrcset: string;
+
+  /**
    * Enables the possibility to navigate the map and select a location point using the map center.
    */
   @Prop() selectionLayer = false;
@@ -107,12 +120,7 @@ export class Map implements GxComponent {
   /**
    * Indicates if the current location of the device is displayed on the map.
    */
-  @Prop() watchPosition = false;
-
-  @Watch("selectionLayer")
-  selectionLayerHandler() {
-    this.registerSelectionLayerEvents();
-  }
+  @Prop() showMyLocation = false;
 
   /**
    * The initial zoom level in the map.
@@ -150,6 +158,16 @@ export class Map implements GxComponent {
    */
   @Event() userLocationChange: EventEmitter;
 
+  @Watch("selectionLayer")
+  selectionLayerHandler() {
+    this.registerSelectionLayerEvents();
+  }
+
+  @Watch("userLocationCoords")
+  userLocationHandler() {
+    this.userLocationChange.emit(this.userLocationCoords);
+  }
+
   @Listen("gxMapMarkerDidLoad")
   onMapMarkerDidLoad(event: CustomEvent) {
     const markerElement = event.target;
@@ -181,6 +199,28 @@ export class Map implements GxComponent {
 
     markerElement.addEventListener("gxMapMarkerDeleted", () => {
       this.onMapMarkerDeleted(markerV);
+    });
+  }
+
+  @Listen("gxMapPolygonDidLoad")
+  onMapPolygonDidLoad(event: CustomEvent) {
+    const polygonElement = event.target as HTMLGxMapPolygonElement;
+    const polygonInstance = event.detail as polygon;
+
+    // If the leaflet map has been created, add the polygon instance. Otherwise,
+    // wait for the leaflet map to load
+    if (this.map) {
+      polygonInstance.addTo(this.map);
+    } else {
+      this.element.addEventListener("gxMapDidLoad", () => {
+        polygonInstance.addTo(this.map);
+      });
+    }
+
+    // When the polygon element is removed from the DOM, remove the polygon
+    // instance in the gx-map
+    polygonElement.addEventListener("gxMapPolygonDeleted", () => {
+      this.onMapPolygonDeleted(polygonInstance);
     });
   }
 
@@ -258,19 +298,35 @@ export class Map implements GxComponent {
     }
   }
 
-  private onMapLineDeleted(line: polyline) {
-    let i = 0;
-    line.remove();
+  private onMapPolygonDeleted(polygonInstance: polygon) {
+    polygonInstance.remove();
+
+    this.searchAndRemoveMapElement(polygonInstance, this.polygonsList);
+  }
+
+  private onMapLineDeleted(lineInstance: polyline) {
+    lineInstance.remove();
+
+    this.searchAndRemoveMapElement(lineInstance, this.linesList);
+  }
+
+  private searchAndRemoveMapElement(
+    mapElement: polygon | polyline,
+    listOfElements: any[]
+  ) {
+    let elementIndex = 0;
+
+    // Try to find in the list the element id
     while (
-      i <= this.linesList.length &&
-      this.linesList[i]._leaflet_id !== line._leaflet_id
+      elementIndex <= listOfElements.length &&
+      listOfElements[elementIndex]._leaflet_id !== mapElement._leaflet_id
     ) {
-      i++;
+      elementIndex++;
     }
-    if (i <= this.linesList.length) {
-      this.linesList.splice(i, 1);
-    } else {
-      console.warn("There was an error in the line list!");
+
+    // Remove element if found in list
+    if (elementIndex <= listOfElements.length) {
+      listOfElements.splice(elementIndex, 1);
     }
   }
 
@@ -355,8 +411,8 @@ export class Map implements GxComponent {
   }
 
   componentWillLoad() {
-    if (this.watchPosition) {
-      this.watchPositionId = watchPosition(
+    if (this.showMyLocation) {
+      this.showMyLocationId = watchPosition(
         this.setUserLocation.bind(this),
         err => console.error(err),
         {
@@ -419,18 +475,18 @@ export class Map implements GxComponent {
   }
 
   disconnectedCallback() {
-    navigator.geolocation.clearWatch(this.watchPositionId);
+    navigator.geolocation.clearWatch(this.showMyLocationId);
   }
 
   render() {
     return (
       <Host>
-        {this.watchPosition && (
+        {this.showMyLocation && (
           <gx-map-marker
-            icon-width="65"
-            icon-height="55"
-            type="user-location"
             coords={this.userLocationCoords}
+            css-class={this.pinImageCssClass}
+            srcset={this.pinShowMyLocationSrcset || this.pinImageSrcset}
+            type="user-location"
           ></gx-map-marker>
         )}
         {this.selectionLayer &&
@@ -438,8 +494,6 @@ export class Map implements GxComponent {
             <slot name="selection-layer-marker" />
           ) : (
             <gx-map-marker
-              icon-width="30"
-              icon-height="30"
               type="selection-layer"
               coords={this.centerCoords}
             ></gx-map-marker>

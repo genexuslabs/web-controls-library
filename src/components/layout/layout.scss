@@ -1,9 +1,4 @@
-@import "../common/layout-styling-config.scss";
-
-// WA to remove "line-height: 1.5" property from Bootstrap's selector
-html > body {
-  line-height: normal;
-}
+@import "../common/layout-styling-config";
 
 gx-layout {
   /**
@@ -193,29 +188,4 @@ gx-layout {
   & > .bottom-navbar-and-small-layout-size > gx-component-host {
     bottom: $gx-navbar-main-height;
   }
-}
-
-gx-navbar + gx-message {
-  top: $gx-navbar-main-height;
-}
-
-// Disable html's scrollbars when a gx-modal presented and the html has content
-// that overflows vertically. Does not apply to mobile devices
-html.gx-disable-scroll {
-  overflow: hidden;
-
-  gx-navbar,
-  gx-layout {
-    padding-right: 8px;
-  }
-}
-
-html.gx-disable-scroll-mobile {
-  overflow: hidden;
-}
-
-// Hide gx-modal's scrollbars
-gx-modal::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
 }

@@ -14,7 +14,7 @@ import {
 import { Component as GxComponent } from "../common/interfaces";
 
 // Class transforms
-import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
+import { getClasses } from "../common/css-transforms/css-transforms";
 
 @Component({
   shadow: false,
@@ -271,7 +271,8 @@ export class Gauge implements GxComponent {
   }
 
   private disconnectObserver() {
-    if (this.watchForItemsObserver !== undefined) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.watchForItemsObserver) {
       this.watchForItemsObserver.disconnect();
       this.watchForItemsObserver = undefined;
     }
@@ -481,7 +482,7 @@ export class Gauge implements GxComponent {
             ROTATION_FIX}deg)`;
 
     // Styling for gx-gauge control.
-    const classes = getClassesWithoutFocus(this.cssClass);
+    const classes = getClasses(this.cssClass);
 
     return (
       <Host
@@ -560,7 +561,7 @@ export class Gauge implements GxComponent {
       this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
 
     // Styling for gx-gauge control.
-    const classes = getClassesWithoutFocus(this.cssClass);
+    const classes = getClasses(this.cssClass);
 
     return (
       <Host

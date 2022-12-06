@@ -26,6 +26,7 @@ The text caption of the progress bar will be its text content. Being a child ins
 | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--gx-progress-bar-accent-color`            | Background color used on `type = "indeterminate"` to style the circle. Also, this color is used to highlight the progress bar loading animation when `type = "determinate"` |
 | `--gx-progress-bar-dialog-background-color` | Dialog background color                                                                                                                                                     |
+| `--gx-progress-bar-dialog-box-shadow`       | Dialog box shadow                                                                                                                                                           |
 | `--gx-progress-bar-mask-background-color`   | Mask background color                                                                                                                                                       |
 | `--gx-progress-bar-primary-color`           | Background color used on `type = "determinate"` to style the first half of the progress bar                                                                                 |
 

@@ -12,12 +12,18 @@ import { Component as GxComponent } from "../common/interfaces";
 import { watchForItems } from "../common/watch-items";
 
 // Class transforms
-import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
+import { getClasses } from "../common/css-transforms/css-transforms";
 import {
   attachHorizontalScrollWithDragHandler,
   attachHorizontalScrollWithWheelHandler
 } from "../common/utils";
 
+/**
+ * @part back-button - The back button displayed on the left side of the control.
+ * @part default-button - The toggle button displayed on the left side of the control.
+ * @part low-actions-dropdown - The dropdown displayed on the right side of the control when clicking the "show more" button ("low-actions-toggle" part).
+ * @part low-actions-toggle - The "show more" button displayed on the right side of the control when the navbar has low priority actions.
+ */
 @Component({
   shadow: true,
   styleUrl: "navbar.scss",
@@ -196,7 +202,9 @@ export class NavBar implements GxComponent {
 
   disconnectedCallback() {
     document.body.removeEventListener("click", this.handleBodyClick);
-    if (this.watchForItemsObserver !== undefined) {
+
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.watchForItemsObserver) {
       this.watchForItemsObserver.disconnect();
       this.watchForItemsObserver = undefined;
     }
@@ -221,7 +229,7 @@ export class NavBar implements GxComponent {
       isHeaderRowPatternEnabled && this.showHeaderRowPatternClass
         ? this.headerRowPatternCssClass
         : this.cssClass;
-    const classes = getClassesWithoutFocus(currentClass);
+    const classes = getClasses(currentClass);
 
     let amountOfActionTypes = 0;
 
@@ -367,7 +375,7 @@ export class NavBar implements GxComponent {
       this.hasLowPriorityActions && (
         <div class="gx-navbar-actions-low">
           <div
-            part="action-low-popup"
+            part="low-actions-dropdown"
             class={{
               "gx-navbar-actions-low-popup": true,
               "gx-navbar-actions-low-popup--active": this.showLowActions
@@ -378,7 +386,7 @@ export class NavBar implements GxComponent {
           <button
             type="button"
             aria-label={this.actionToggleButtonLabel}
-            part="action-low"
+            part="low-actions-toggle"
             class={{
               "gx-navbar-actions-low-toggle": true,
               "gx-navbar-actions-low-toggle--active": this.showLowActions

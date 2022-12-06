@@ -26,16 +26,13 @@ gx-select {
     flex: 1;
     @include transition-properties();
 
+    &.disabled {
+      pointer-events: none;
+    }
+
     & > span {
       width: 100%;
     }
-  }
-
-  // Default style
-  & > select {
-    background-color: unset;
-    border: none;
-    outline: 0;
   }
 
   gx-select-option {

@@ -26,6 +26,12 @@ A container for creating absolute positioned layouts.
 | `swipeRight` | Emitted when the element is swiped right direction.     | `CustomEvent<any>` |
 | `swipeUp`    | Emitted when the element is swiped in upward direction. | `CustomEvent<any>` |
 
+## CSS Custom Properties
+
+| Name                  | Description                                                                                                                                                    |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--gx-overflow-style` | Determine if the overflow will be hidden or visible. By default, the gx-canvas hide its content overflow to ensure that the border-radius property is applied. |
+
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_

@@ -15,6 +15,13 @@
   flex: 1;
   align-self: stretch;
   text-align: start; // Default alignment which supports RTL
+
+  // Reset "pointer-events: none" inherited from gx-canvas-cell
+  pointer-events: auto;
+
+  // Remove outline of the focus state
+  outline: none;
+
   @include transition-properties();
 }
 

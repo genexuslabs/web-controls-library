@@ -29,21 +29,8 @@
   }
 }
 
-@mixin overflowMode() {
-  &[overflow-mode="clip"] {
-    overflow: hidden;
-  }
-  &[overflow-mode="scroll"] {
-    overflow: auto;
-  }
-}
-
-@mixin containerCell($has-overflow-mode: true) {
-  @include visibility(flex);
-
-  @if $has-overflow-mode {
-    @include overflowMode();
-  }
+@mixin align-inner-control-in-cell() {
+  display: flex;
 
   &[align="left"] {
     justify-content: flex-start;
@@ -63,16 +50,6 @@
 
   &[valign="bottom"] {
     align-items: flex-end;
-  }
-}
-
-@mixin reset-variables($include-width: true, $include-height: true) {
-  @if $include-width == true {
-    --width: initial;
-  }
-
-  @if $include-height == true {
-    --height: initial;
   }
 }
 

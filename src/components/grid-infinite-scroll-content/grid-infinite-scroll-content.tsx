@@ -1,7 +1,7 @@
 import { Component, ComponentInterface, Element, h, Host } from "@stencil/core";
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "grid-infinite-scroll-content.scss",
   tag: "gx-grid-infinite-scroll-content"
 })
@@ -10,7 +10,7 @@ export class InfiniteScrollContent implements ComponentInterface {
 
   render() {
     return (
-      <Host class="infinite-scroll-content">
+      <Host>
         <slot />
       </Host>
     );

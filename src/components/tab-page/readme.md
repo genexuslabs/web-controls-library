@@ -4,7 +4,12 @@ A content container for gx-tab items. Must be preceded by a `gx-tab-caption` ele
 
 <!-- Auto Generated Below -->
 
+## Properties
 
-----------------------------------------------
+| Property   | Attribute  | Description                                                  | Type      | Default |
+| ---------- | ---------- | ------------------------------------------------------------ | --------- | ------- |
+| `selected` | `selected` | This attribute lets you specify if the tab page is selected. | `boolean` | `false` |
 
-*Built with [StencilJS](https://stenciljs.com/)*
+---
+
+_Built with [StencilJS](https://stenciljs.com/)_

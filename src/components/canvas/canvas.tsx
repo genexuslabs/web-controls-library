@@ -10,49 +10,41 @@ import {
   Watch
 } from "@stencil/core";
 import {
-  ClickableComponent,
   Component as GxComponent,
+  ClickableComponent,
   DisableableComponent,
-  VisibilityComponent
+  VisibilityComponent,
+  CustomizableComponent
 } from "../common/interfaces";
 import { Swipeable, makeSwipeable } from "../common/events/swipeable";
-
-// Class transforms
-import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
 
 const CANVAS_THRESHOLD = 1.75;
 
 /* - - - - - - - - SELECTORS - - - - - - - - */
-const ALL_CANVAS_CELLS = ":scope > .canvas-cells-container > gx-canvas-cell";
+const ALL_CANVAS_CELLS = ":scope > gx-canvas-cell";
 
-const AUTOGROW_CANVAS_CELLS =
-  ":scope > .canvas-cells-container > .auto-grow-cell";
+const AUTOGROW_CANVAS_CELLS = ":scope > .auto-grow-cell";
 
-const AUTOGROW_CANVAS_CELL_CLASS = (id: string) => {
-  return `auto-grow-cell-${id}`;
-};
+const AUTOGROW_CANVAS_CELL_CLASS = (id: string) => `auto-grow-cell-${id}`;
 
-const AUTOGROW_CANVAS_CELL_BY_ID = (id: string) => {
-  return `:scope > .canvas-cells-container > .${AUTOGROW_CANVAS_CELL_CLASS(
-    id
-  )}`;
-};
+const AUTOGROW_CANVAS_CELL_BY_ID = (id: string) =>
+  `:scope > .${AUTOGROW_CANVAS_CELL_CLASS(id)}`;
 
-const WITHOUT_AUTOGROW_CANVAS_CELLS =
-  ":scope > .canvas-cells-container > .without-auto-grow-cell";
+const WITHOUT_AUTOGROW_CANVAS_CELLS = ":scope > .without-auto-grow-cell";
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "canvas.scss",
   tag: "gx-canvas"
 })
 export class Canvas
   implements
     GxComponent,
-    VisibilityComponent,
+    ClickableComponent,
+    CustomizableComponent,
     DisableableComponent,
     Swipeable,
-    ClickableComponent {
+    VisibilityComponent {
   constructor() {
     this.handleClick = this.handleClick.bind(this);
   }
@@ -505,15 +497,66 @@ export class Canvas
   }
 
   private disconnectCanvasObserver() {
-    if (this.watchForCanvasObserver !== undefined) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.watchForCanvasObserver) {
       this.watchForCanvasObserver.disconnect();
       this.watchForCanvasObserver = undefined;
     }
   }
 
+  /**
+   * In the following scenario:
+   * ```
+   *   <gx-canvas-cell min-height="680px">
+   *     <gx-canvas min-height="90%">
+   *        ...
+   *     </gx-canvas>
+   *   </gx-canvas-cell>
+   * ```
+   * Change the height of the `gx-canvas` to `calc(0.9 * 680px)`
+   */
+  private adjustHeightIfParentElementIsACanvasCell() {
+    // Only applies when the canvas has a percentage height, not calc or px
+    if (this.minHeight.includes("px") || this.minHeight.includes("calc")) {
+      return;
+    }
+    const parentCell = this.element.parentElement;
+
+    // The parent element must be a canvas cell
+    if (parentCell.tagName.toLowerCase() !== "gx-canvas-cell") {
+      return;
+    }
+    const parentCellHeight = (parentCell as HTMLGxCanvasCellElement).minHeight.trim();
+
+    // The parent canvas cell must have an absolute height, not calc or %
+    if (parentCellHeight.includes("%")) {
+      return;
+    }
+
+    /**
+     * If `this.minHeight = 90%` --> `canvasPercentageHeightValue = 0.9`
+     */
+    const canvasPercentageHeightValue =
+      Number(this.minHeight.replace("%", "")) / 100;
+
+    this.element.style.setProperty(
+      "height",
+      `calc(${canvasPercentageHeightValue} * ${parentCellHeight})`
+    );
+  }
+
   componentDidLoad() {
     makeSwipeable(this);
     this.didLoad = true;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // WA to adjust the height of the canvas in a certain scenario (nested canvas):
+    //  - Canvas with relative value (%)
+    //  - Parent element is a gx-canvas-cell with an absolute height (px)
+    //
+    // This WA won't solve the issue if the gx-canvas-cell has relative value.
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    this.adjustHeightIfParentElementIsACanvasCell();
 
     // The layout could be ready after the gx-canvas is rendered for the first time
     if (this.layoutIsReady) {
@@ -522,7 +565,8 @@ export class Canvas
   }
 
   disconnectedCallback() {
-    if (this.watchForItemsObserver !== undefined) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.watchForItemsObserver) {
       this.watchForItemsObserver.disconnect();
       this.watchForItemsObserver = undefined;
     }
@@ -531,14 +575,14 @@ export class Canvas
   }
 
   render() {
-    // Styling for gx-canvas control.
-    const classes = getClassesWithoutFocus(this.cssClass);
-
     this.element.addEventListener("click", this.handleClick);
 
     return (
       <Host
-        class={{ [this.cssClass]: !!this.cssClass, [classes.vars]: true }}
+        class={{
+          [this.cssClass]: !!this.cssClass,
+          disabled: this.disabled
+        }}
         style={{
           width: this.width,
           height: this.canvasFixedHeight == null ? this.minHeight : null,

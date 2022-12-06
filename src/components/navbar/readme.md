@@ -73,12 +73,12 @@ It also supports a set of items that will be rendered according to their priorit
 
 ## Shadow Parts
 
-| Part                 | Description |
-| -------------------- | ----------- |
-| `"action-low"`       |             |
-| `"action-low-popup"` |             |
-| `"back-button"`      |             |
-| `"default-button"`   |             |
+| Part                     | Description                                                                                                               |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| `"back-button"`          | The back button displayed on the left side of the control.                                                                |
+| `"default-button"`       | The toggle button displayed on the left side of the control.                                                              |
+| `"low-actions-dropdown"` | The dropdown displayed on the right side of the control when clicking the "show more" button ("low-actions-toggle" part). |
+| `"low-actions-toggle"`   | The "show more" button displayed on the right side of the control when the navbar has low priority actions.               |
 
 ## Dependencies
 

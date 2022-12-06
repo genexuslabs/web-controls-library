@@ -6,6 +6,7 @@ import {
   Host,
   Prop,
   State,
+  Watch,
   h
 } from "@stencil/core";
 
@@ -70,11 +71,6 @@ export class ImagePicker implements GxComponent {
   @Prop() readonly lazyLoad = true;
 
   /**
-   * This attribute lets you specify the low resolution image SRC.
-   */
-  @Prop() readonly lowResolutionSrc = "";
-
-  /**
    * This attribute allows specifing how the image is sized according to its container.
    * `contain`, `cover`, `fill` and `none` map directly to the values of the CSS `object-fit` property.
    * The `tile` value repeats the image, both vertically and horizontally, creating a tile effect.
@@ -87,7 +83,7 @@ export class ImagePicker implements GxComponent {
     | "tile";
 
   /**
-   * This attribute lets you specify the SRC.
+   * This attribute lets you specify the `src` of the `img`.
    */
   @Prop({ mutable: true }) src = "";
 
@@ -127,6 +123,14 @@ export class ImagePicker implements GxComponent {
   @Prop() readonly cancelButtonText = "CANCEL";
 
   /**
+   * This attribute lets you specify the `srcset` of the `img`. The `srcset`
+   * attribute defines the set of images we will allow the browser to choose
+   * between, and what size each image is. Each set of image information is
+   * separated from the previous one by a comma.
+   */
+  @Prop({ mutable: true }) srcset = "";
+
+  /**
    * This attribute lets you specify the current state of the gx-image-picker.
    *
    * | Value               | Details                                                                                   |
@@ -150,6 +154,28 @@ export class ImagePicker implements GxComponent {
 
   @State() renderModalElements = false;
 
+  /**
+   * When the src changes its value, the input value is no longer valid
+   */
+  @Watch("src")
+  handleSrcChange() {
+    // In some cases the Watch method is executed before the component renders,
+    // so we need to check the definition of "this.input"
+    if (this.input != undefined) {
+      this.input.value = "";
+    }
+  }
+
+  /**
+   * When the srcset changes its value, the input value is no longer valid
+   */
+  @Watch("srcset")
+  handleSrcsetChange() {
+    if (this.input != undefined) {
+      this.input.value = "";
+    }
+  }
+
   private stopPropagation(event: UIEvent) {
     event.stopPropagation();
   }
@@ -159,10 +185,12 @@ export class ImagePicker implements GxComponent {
     this.click.emit(event);
   };
 
-  // If there is no image, this directly opens the File System to select an image.
-  // In othercase, this allows to change or remove the image
+  /**
+   * If there is no image, this directly opens the File System to select an image.
+   * Otherwise, this allows to change or remove the image.
+   */
   private triggerAction = (event: MouseEvent) => {
-    if (this.src === "") {
+    if (this.emptySrc()) {
       this.input.click();
     } else {
       clearTimeout(this.dismissTimer);
@@ -172,9 +200,14 @@ export class ImagePicker implements GxComponent {
     event.stopPropagation();
   };
 
+  private emptySrc(): boolean {
+    return !this.srcset && !this.src;
+  }
+
   private clearImageAction = () => {
     this.input.value = "";
     this.src = "";
+    this.srcset = "";
     this.alt = "";
 
     this.onImageChanged.emit(null);
@@ -208,6 +241,7 @@ export class ImagePicker implements GxComponent {
     if (file == null) {
       return;
     }
+    // Start converting the image file to base64
     this.state = "uploadingFile";
 
     this.alt = this.getFileNameWithoutExtension(file.name);
@@ -220,9 +254,12 @@ export class ImagePicker implements GxComponent {
   // SVG used to print the search image button
   private getSearchPlusSolidSVG(): any {
     return (
-      <svg viewBox="3 2 20 20">
-        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
-        <path d="M0 0h24v24H0z" fill="none" />
+      <svg
+        class="image-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+      >
+        <path d="M5.70821345,5.73660301 C7.38668916,4.04663089 9.91888939,3.53618808 12.1210095,4.4439068 C14.3231297,5.35162552 15.7601123,7.49817411 15.7601674,9.88004029 C15.7629418,11.0873594 15.3888889,12.2654513 14.6901674,13.2500403 L14.6901674,13.2500403 L19.0401674,17.5900403 C19.3007187,17.8187734 19.3317557,18.2133861 19.1101674,18.4800403 L19.1101674,18.4800403 L18.2401674,19.3500403 C17.9874191,19.5977832 17.5829157,19.5977832 17.3301674,19.3500403 L17.3301674,19.3500403 L12.9201674,14.9400403 C12.014476,15.4837576 10.9765056,15.7674695 9.92016742,15.7600403 C7.53835636,15.7762435 5.38204913,14.3539464 4.4593202,12.1580735 C3.53659126,9.96220058 4.02973773,7.42657513 5.70821345,5.73660301 Z M9.88023584,5.50014279 C7.46515257,5.50563046 5.51016742,7.4649508 5.51016742,9.88004029 C5.51016742,11.0469051 5.97571888,12.1655459 6.8036281,12.987823 C7.63153732,13.8101002 8.75333,14.2680325 9.92016742,14.2600403 C12.3352003,14.2434986 14.2811309,12.2752416 14.2701684,9.86017719 C14.2591129,7.4451128 12.2953191,5.49467812 9.88023584,5.50014279 Z" />
       </svg>
     );
   }
@@ -230,11 +267,12 @@ export class ImagePicker implements GxComponent {
   // SVG used to print the change image button
   private getPencilAltSolidSVG(): any {
     return (
-      <svg viewBox="0 -35 570 570">
-        <path
-          fill="black"
-          d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
-        ></path>
+      <svg
+        class="image-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+      >
+        <path d="M5.58,14.38 L9.58,18.38 L4.77,19.23 L5.58,14.38 Z M13.31,6.66 L17.3,10.65 L10.64,17.32 L6.64,13.32 L13.31,6.66 Z M15.95,4.64302445 C16.3442299,4.64302445 16.722168,4.80030987 17,5.08 L17,5.08 L18.84,6.94 C19.3860552,7.51810735 19.3860552,8.42189265 18.84,9 L18.84,9 L18.39,9.6 L14.39,5.6 L14.9,5.08 C15.177832,4.80030987 15.5557701,4.64302445 15.95,4.64302445 Z" />
       </svg>
     );
   }
@@ -251,6 +289,11 @@ export class ImagePicker implements GxComponent {
       function() {
         // Convert image file to base64 string
         elem.src = this.result.toString();
+
+        // Remove srcset to start using the image loaded in the src
+        elem.srcset = "";
+
+        // Conversion of image file to base64 has ended
         elem.state = "readyToUse";
       },
       false
@@ -267,10 +310,10 @@ export class ImagePicker implements GxComponent {
           disabled={this.disabled}
           invisibleMode={this.invisibleMode}
           lazyLoad={this.lazyLoad}
-          lowResolutionSrc={this.lowResolutionSrc}
           scaleType={this.scaleType}
           showImagePickerButton={this.shouldShowImagePickerButton}
           src={this.src}
+          srcset={this.srcset}
           highlightable={this.highlightable}
           onClick={this.clickImageAction}
         >
@@ -285,7 +328,7 @@ export class ImagePicker implements GxComponent {
                   disabled={this.disabled}
                   onClick={this.triggerAction}
                 >
-                  {this.src === ""
+                  {this.emptySrc()
                     ? this.getSearchPlusSolidSVG()
                     : this.getPencilAltSolidSVG()}
                 </button>

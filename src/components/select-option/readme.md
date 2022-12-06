@@ -23,6 +23,20 @@ Options for `gx-select` custom element, like the `option` native element.
 | `gxSelectDidLoad`   | Emitted when the option loads.                                                               | `CustomEvent<any>` |
 | `gxSelectDidUnload` | Emitted when the option unloads.                                                             | `CustomEvent<any>` |
 
+## Dependencies
+
+### Used by
+
+- [gx-dynamic-form](../dynamic-form)
+
+### Graph
+
+```mermaid
+graph TD;
+  gx-dynamic-form --> gx-select-option
+  style gx-select-option fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_

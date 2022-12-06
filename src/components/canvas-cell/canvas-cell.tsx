@@ -2,7 +2,7 @@ import { Component, Element, Prop, h, Host } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "canvas-cell.scss",
   tag: "gx-canvas-cell"
 })
@@ -51,9 +51,12 @@ export class CanvasCell implements GxComponent {
   private observer: MutationObserver;
 
   private setupObserver(childElement: any) {
-    if (childElement && childElement.invisibleMode === "collapse") {
+    if (
+      childElement &&
+      childElement.getAttribute("invisible-mode") === "collapse"
+    ) {
       this.observer = new MutationObserver(() => {
-        this.changeVisibility(childElement);
+        this.setVisibilityBasedOnChildElement(childElement);
       });
 
       this.observer.observe(childElement, {
@@ -65,7 +68,7 @@ export class CanvasCell implements GxComponent {
     }
   }
 
-  private changeVisibility(childElement: any) {
+  private setVisibilityBasedOnChildElement(childElement: any) {
     // "null" will fallback to the default visibility, which is "flex"
     this.element.style.display = childElement.hidden ? "none" : null;
   }
@@ -75,7 +78,8 @@ export class CanvasCell implements GxComponent {
   }
 
   disconnectedCallback() {
-    if (this.observer !== undefined) {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.observer) {
       this.observer.disconnect();
       this.observer = undefined;
     }
@@ -85,6 +89,7 @@ export class CanvasCell implements GxComponent {
     return (
       <Host
         class={{
+          "gx-cell": true,
           "auto-grow-cell": this.maxHeight == null,
           "without-auto-grow-cell": this.maxHeight != null
         }}

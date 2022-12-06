@@ -1,9 +1,24 @@
-@import "../common/_base";
+:host {
+  /**
+   * @prop --gx-grid-css-items: Number of Columns to be shown in the Main axis direction.
+   */
+  --gx-grid-css-items: 1;
 
-gx-infinite-scroll {
-  @include visibility(none);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  // Since the gx-grid-smart-css will no longer use "display: grid" to position
+  // its items, the infinite scroll should not use "flex: 1" to stretch to the
+  // container width. Otherwise, the infinite scroll loader will be placed as
+  // a normal cell
+  width: 100%;
 }
 
-gx-infinite-scroll.infinite-scroll-enabled {
-  @include visibility(block);
+// "Hide" the infinite scroll, but with the possibility to check its position
+// in the parent's scroll
+:host(.not-loading) {
+  height: 0;
+  pointer-events: none;
 }

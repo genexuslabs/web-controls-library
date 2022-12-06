@@ -4,15 +4,6 @@
 
 $gx-navbar-main-background-color: var(--primary-color, #212121);
 
-$gx-navbar-active-background-color: #e0e0e0e0;
-
-$gx-navbar-active-color: black;
-
-@mixin button-default-active-color() {
-  background-color: $gx-navbar-active-background-color;
-  color: $gx-navbar-active-color;
-}
-
 // - - - - - - - - - - - - - - - -
 //          Bottom navbar
 // - - - - - - - - - - - - - - - -
@@ -150,7 +141,7 @@ $gx-navbar-active-color: black;
     @include transition-properties();
 
     &:active {
-      @include button-default-active-color();
+      @include navbar-button-default-active-color();
     }
   }
 
@@ -278,7 +269,7 @@ $gx-navbar-active-color: black;
 
       // A popup appears when show more button is clicked
       &-low-popup {
-        @include button-default-active-color();
+        @include navbar-button-default-active-color();
         display: none;
         flex-direction: column;
         position: absolute;
@@ -287,7 +278,7 @@ $gx-navbar-active-color: black;
         width: 160px;
         font-weight: 400;
         font-size: 12px;
-        border-radius: 2px;
+        border-radius: 4px;
         padding: 5px 0;
         box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.14),
           0px 3px 3px -2px rgba(0, 0, 0, 0.12),
@@ -312,7 +303,7 @@ $gx-navbar-active-color: black;
       margin-inline-start: 2px;
 
       &--active {
-        @include button-default-active-color();
+        @include navbar-button-default-active-color();
       }
     }
   }

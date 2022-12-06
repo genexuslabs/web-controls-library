@@ -13,7 +13,7 @@ import { cssVariablesWatcher } from "../common/css-variables-watcher";
 import lazySizes from "lazysizes";
 
 // Class transforms
-import { getClassesWithoutFocus } from "../common/css-transforms/css-transforms";
+import { getClasses } from "../common/css-transforms/css-transforms";
 
 const LAZY_LOAD_CLASS = "gx-lazyload";
 const LAZY_LOADING_CLASS = "gx-lazyloading";
@@ -95,11 +95,6 @@ export class Image
   @Prop() readonly lazyLoad = true;
 
   /**
-   * This attribute lets you specify the low resolution image SRC.
-   */
-  @Prop() readonly lowResolutionSrc = "";
-
-  /**
    * This attribute allows specifing how the image is sized according to its container.
    * `contain`, `cover`, `fill` and `none` map directly to the values of the CSS `object-fit` property.
    * The `tile` value repeats the image, both vertically and horizontally, creating a tile effect.
@@ -117,9 +112,17 @@ export class Image
   @Prop() showImagePickerButton = false;
 
   /**
-   * This attribute lets you specify the SRC.
+   * This attribute lets you specify the `src` of the `img`.
    */
   @Prop() readonly src: string = "";
+
+  /**
+   * This attribute lets you specify the `srcset` of the `img`. The `srcset`
+   * attribute defines the set of images we will allow the browser to choose
+   * between, and what size each image is. Each set of image information is
+   * separated from the previous one by a comma.
+   */
+  @Prop() readonly srcset: string = "";
 
   /**
    * True to highlight control when an action is fired.
@@ -154,9 +157,7 @@ export class Image
   }
 
   componentDidLoad() {
-    if (this.src) {
-      makeHighlightable(this, this.innerImageContainer);
-    }
+    makeHighlightable(this, this.innerImageContainer);
   }
 
   disconnectedCallback() {
@@ -168,11 +169,13 @@ export class Image
     const shouldLazyLoad = this.shouldLazyLoad();
 
     // Styling for gx-image control.
-    const classes = getClassesWithoutFocus(this.cssClass);
+    const classes = getClasses(this.cssClass);
 
     const withoutAutogrow = this.scaleType !== "tile" && !this.autoGrow;
 
-    const body = this.src
+    const shouldRenderTheImg = this.srcset || this.src;
+
+    const body = shouldRenderTheImg
       ? [
           <img
             class={{
@@ -187,8 +190,14 @@ export class Image
             }}
             onClick={this.handleClick}
             onLoad={this.handleImageLoad}
-            data-src={shouldLazyLoad ? this.src : undefined}
-            src={!shouldLazyLoad ? this.src : undefined}
+            // With lazy loading
+            data-src={shouldLazyLoad && this.src ? this.src : undefined}
+            data-srcset={
+              shouldLazyLoad && this.srcset ? this.srcset : undefined
+            }
+            // Without lazy loading
+            src={!shouldLazyLoad && this.src ? this.src : undefined}
+            srcset={!shouldLazyLoad && this.srcset ? this.srcset : undefined}
             alt={this.alt}
           />,
           <span class="gx-image-loading-indicator" />
@@ -210,7 +219,13 @@ export class Image
             [this.cssClass]: !!this.cssClass
           }}
           // Mouse pointer to indicate action
-          data-has-action={this.highlightable ? "" : undefined}
+          data-has-action={
+            this.highlightable && !this.disabled ? "" : undefined
+          }
+          // Necessary to avoid the focus-within state when clicking the picker-button
+          data-no-action={this.showImagePickerButton && !this.highlightable}
+          // Add focus to the control through sequential keyboard navigation and visually clicking
+          tabindex={this.highlightable && !this.disabled ? "0" : undefined}
           ref={el => (this.innerImageContainer = el as HTMLDivElement)}
         >
           {withoutAutogrow ? (
@@ -225,11 +240,13 @@ export class Image
   }
 
   private shouldLazyLoad(): boolean {
+    // Lazy load is disabled
     if (!this.lazyLoad) {
       return false;
     }
 
-    if (lazyLoadedImages.has(this.src)) {
+    // Do not lazy load already loaded images
+    if (lazyLoadedImages.has(this.srcset) || lazyLoadedImages.has(this.src)) {
       return false;
     }
 
@@ -239,9 +256,14 @@ export class Image
 
   private handleLazyLoaded(event: CustomEvent) {
     const img: HTMLImageElement = this.element.querySelector("img");
+
     if (event.target === img) {
       this.element.classList.remove("gx-img-lazyloading");
-      lazyLoadedImages.add(this.src);
+
+      const imageSrc = this.srcset || this.src;
+
+      // Store the srcset or src of the lazy loaded image
+      lazyLoadedImages.add(imageSrc);
     }
   }
 }

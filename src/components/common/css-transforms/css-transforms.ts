@@ -1,27 +1,23 @@
-import {
-  CssClasses,
-  CssClassesWithoutFocus,
-  CssTransformedClassesWithoutFocus
-} from "../interfaces";
+import { CssClasses, CssTransformedClassesWithoutFocus } from "../interfaces";
 
+// Classes used to implement styles when a control is clicked
+export const HIGHLIGHT_EVENT_NAME = "highlight";
+export const UNHIGHTLIGHT_EVENT_NAME = "unhighlight";
+export const HIGHLIGHT_CLASS_NAME = "gx-highlighted";
+
+// Transforms to implement gx-properties
 const transforms = {
   description: "--description",
   evenRow: "--even-row",
   groupCaption: "--group-caption",
-  highlighted: "--highlighted",
-  highlightedFocusWithin: "--focus-within",
-  hover: "--hover",
   horizontalLine: "--horizontal-line",
   label: "--label",
   labelContainer: "--label-container",
   labelHighlighted: "--label-highlighted",
-  labelPositionLeft: "--label-position-left",
-  labelPositionRight: "--label-position-right",
+  labelWidth: "--label-width",
   loading: "--loading",
   oddRow: "--odd-row",
   selectedTabCaption: "--selected-tab-page",
-  tabsPosition: "--tabs-position",
-  tabsPositionCaption: "--tabs-position-caption",
   title: "--title",
   unselectedTabCaption: "--unselected-tab-page",
   vars: "--vars"
@@ -29,136 +25,64 @@ const transforms = {
 
 // - - - - - - - - -  CACHE  - - - - - - - - -
 const classesCache = new Map<string, CssClasses>();
-const classesWoFocusCache = new Map<string, CssClassesWithoutFocus>();
 const transformedClassesWoFocusCache = new Map<
   string,
   CssTransformedClassesWithoutFocus
 >();
 
 // - - - - - - - -  Transforms  - - - - - - - -
-export function tDescription(className: string): string {
-  return className + transforms["description"];
-}
+export const tDescription = (className: string): string =>
+  className + transforms["description"];
 
-export function tEvenRow(className: string): string {
-  return className + transforms["evenRow"];
-}
+export const tEvenRow = (className: string): string =>
+  className + transforms["evenRow"];
 
-export function tGroupCaption(className): string {
-  return className + transforms["groupCaption"];
-}
+export const tGroupCaption = (className: string): string =>
+  className + transforms["groupCaption"];
 
-export function tHighlighted(className): string {
-  return className + transforms["highlighted"];
-}
+export const tHorizontalLine = (className: string): string =>
+  className + transforms["horizontalLine"];
 
-export function tHighlightedFocusWithin(className: string): string {
-  return className + transforms["highlightedFocusWithin"];
-}
+export const tLabel = (className: string): string =>
+  className + transforms["label"];
 
-export function tHover(className: string): string {
-  return className + transforms["hover"];
-}
+export const tLabelContainer = (className: string): string =>
+  className + transforms["labelContainer"];
 
-export function tHorizontalLine(className: string): string {
-  return className + transforms["horizontalLine"];
-}
+export const tLabelHighlighted = (className: string): string =>
+  className + transforms["labelHighlighted"];
 
-export function tLabel(className: string): string {
-  return className + transforms["label"];
-}
+export const tLabelWidth = (className: string): string =>
+  className + transforms["labelWidth"];
 
-export function tLabelContainer(className: string): string {
-  return className + transforms["labelContainer"];
-}
+export const tLoading = (className: string): string =>
+  className + transforms["loading"];
 
-export function tLabelHighlighted(className: string): string {
-  return className + transforms["labelHighlighted"];
-}
+export const tOddRow = (className: string): string =>
+  className + transforms["oddRow"];
 
-export function tLabelPositionLeft(className: string): string {
-  return className + transforms["labelPositionLeft"];
-}
+export const tSelectedTabCaption = (className: string): string =>
+  !className ? "" : className + transforms["selectedTabCaption"];
 
-export function tLabelPositionRight(className: string): string {
-  return className + transforms["labelPositionRight"];
-}
+export const tTitle = (className: string): string =>
+  className + transforms["title"];
 
-export function tLoading(className: string): string {
-  return className + transforms["loading"];
-}
+export const tUnselectedTabCaption = (className: string): string =>
+  !className ? "" : className + transforms["unselectedTabCaption"];
 
-export function tOddRow(className: string): string {
-  return className + transforms["oddRow"];
-}
-
-export function tSelectedTabCaption(className: string): string {
-  if (!className) {
-    return "";
-  }
-  return className + transforms["selectedTabCaption"];
-}
-
-export function tTabsPosition(className: string): string {
-  return className + transforms["tabsPosition"];
-}
-
-export function tTabsPositionCaption(className: string): string {
-  return className + transforms["tabsPositionCaption"];
-}
-
-export function tTitle(className: string): string {
-  return className + transforms["title"];
-}
-
-export function tUnselectedTabCaption(className: string): string {
-  if (!className) {
-    return "";
-  }
-  return className + transforms["unselectedTabCaption"];
-}
-
-export function tVars(className: string): string {
-  return className + transforms["vars"];
-}
-
-/**
- * @param cssClass Classes of the control
- * @returns For each class in the `cssClass` param, return two strings that match the variable and highlighted classes of the control.
- */
-export function getClasses(cssClass: string): CssClasses {
-  // If the cssClass is empty, we return empty classes
-  if (!cssClass) {
-    return { highlighted: "", vars: "" };
-  }
-  let result: CssClasses = classesCache.get(cssClass);
-
-  // If the value has not yet been calculated
-  if (result === undefined) {
-    const splittedClasses = cssClass.split(" ");
-    const highlighted = splittedClasses.map(tHighlightedFocusWithin).join(" ");
-    const vars = splittedClasses.map(tVars).join(" ");
-
-    // Cache for the corresponding value
-    result = { highlighted, vars };
-    classesCache.set(cssClass, result);
-  }
-
-  return result;
-}
+export const tVars = (className: string): string =>
+  className + transforms["vars"];
 
 /**
  * @param cssClass Classes of the control
  * @returns For each class in the `cssClass` param, return one string that match the variable classes of the control.
  */
-export function getClassesWithoutFocus(
-  cssClass: string
-): CssClassesWithoutFocus {
+export function getClasses(cssClass: string): CssClasses {
   // If the cssClass is empty, we return empty classes
   if (!cssClass) {
     return { vars: "" };
   }
-  let result: CssClassesWithoutFocus = classesWoFocusCache.get(cssClass);
+  let result: CssClasses = classesCache.get(cssClass);
 
   // If the value has not yet been calculated
   if (result === undefined) {
@@ -169,7 +93,7 @@ export function getClassesWithoutFocus(
 
     // Cache for the corresponding value
     result = { vars };
-    classesWoFocusCache.set(cssClass, result);
+    classesCache.set(cssClass, result);
   }
 
   return result;

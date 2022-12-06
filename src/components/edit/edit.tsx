@@ -23,6 +23,8 @@ import { makeLinesClampable } from "../common/line-clamp";
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
 
+const AUTOFILL_START_ANIMATION_NAME = "AutoFillStart";
+
 @Component({
   shadow: false,
   styleUrl: "edit.scss",
@@ -49,6 +51,11 @@ export class Edit implements FormComponent, HighlightableComponent {
   private renderer: EditRender;
 
   @Element() element: HTMLGxEditElement;
+
+  /**
+   * Determine if the gx-edit's value was auto-completed
+   */
+  @State() autoFilled = false;
 
   /**
    * Allows to specify the role of the element when inside a `gx-form-field` element
@@ -232,7 +239,7 @@ export class Edit implements FormComponent, HighlightableComponent {
   private shouldStyleHostElement = false;
   private shouldAddHighlightedClasses = true;
 
-  private disabledClass = "disabled";
+  private disabledClass = "disabled-custom";
 
   componentWillLoad() {
     this.shouldStyleHostElement = !this.multiline || this.readonly;
@@ -242,8 +249,8 @@ export class Edit implements FormComponent, HighlightableComponent {
       this.readonly || this.format === "HTML"
     );
 
-    if (this.format === "HTML") {
-      this.disabledClass = "disabled-html";
+    if (this.format === "HTML" || this.readonly) {
+      this.disabledClass = "disabled";
     }
   }
 
@@ -267,6 +274,10 @@ export class Edit implements FormComponent, HighlightableComponent {
       this.element.classList.add("value-set");
     }
   }
+
+  private handleAutoFill = (event: AnimationEvent) => {
+    this.autoFilled = event.animationName == AUTOFILL_START_ANIMATION_NAME;
+  };
 
   private handleChange(event: UIEvent) {
     this.value = this.renderer.getValueFromEvent(event);
@@ -295,21 +306,30 @@ export class Edit implements FormComponent, HighlightableComponent {
     return (
       <Host
         class={{
+          "gx-edit--auto-fill": this.autoFilled,
           "gx-edit--single-line":
             this.type === "date" || this.type === "datetime-local",
-          [this.disabledClass]: this.disabled && !this.readonly,
+          [this.disabledClass]: this.disabled,
           [this.cssClass]: this.shouldStyleHostElement && !!this.cssClass,
-          [classes.vars]: this.shouldStyleHostElement,
-          [classes.highlighted]:
-            this.shouldStyleHostElement && this.shouldAddHighlightedClasses
+          [classes.vars]: this.shouldStyleHostElement
         }}
+        // Mouse pointer to indicate action
+        data-has-action={this.highlightable && !this.disabled ? "" : undefined}
+        // Add focus to the control through sequential keyboard navigation and visually clicking
+        tabindex={
+          this.highlightable &&
+          (this.readonly || this.format == "HTML") &&
+          !this.disabled
+            ? "0"
+            : undefined
+        }
+        onAnimationStart={this.handleAutoFill}
       >
         {this.renderer.render({
           triggerContent: <slot name="trigger-content" />,
           shouldStyleHostElement: this.shouldStyleHostElement,
           cssClass: this.cssClass,
-          vars: classes.vars,
-          highlighted: classes.highlighted
+          vars: classes.vars
         })}
       </Host>
     );

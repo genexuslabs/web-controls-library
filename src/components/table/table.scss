@@ -1,22 +1,42 @@
 @import "../common/_base";
 @import "../common/_common-styling-config.scss";
+@import "../common/layout-styling-config";
 
-gx-table {
+@include visibility-shadow-DOM(grid);
+
+:host {
   --elevation: 0;
   --grid-template-areas: unset;
 
-  @include reset-variables();
+  /**
+   * @prop --gx-overflow-style: Determine if the overflow will be hidden or visible.
+   * By default, the gx-table hide its content overflow to ensure that the border-radius
+   * property is applied.
+   */
+  --gx-overflow-style: #{$default-overflow-style};
+
   @include elevation();
-  @include visibility(grid);
 
   // We need to split the "grid-template" properties ("grid-template-area",
   // "grid-template-columns", "grid-template-rows") to avoid the optimization
   // of the shorthand property "grid-template"
   grid-template-areas: var(--grid-template-areas);
   flex: 1;
-
-  // gx-table must hide its content overflow to ensure that the border-radius
-  // property is applied
-  overflow: hidden;
   @include transition-properties();
+}
+
+:host(.disabled) {
+  pointer-events: none;
+}
+
+// - - - - - - - - - - - - - - - -
+//   Overflow Behavior and Style
+// - - - - - - - - - - - - - - - -
+:host(.overflow-behavior--default),
+:host(.overflow-behavior--default) ::slotted(gx-table-cell) {
+  overflow: var(--gx-overflow-style);
+}
+
+:host(.overflow-behavior--scroll) {
+  overflow-y: auto;
 }
