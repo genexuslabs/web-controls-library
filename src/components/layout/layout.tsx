@@ -9,7 +9,7 @@ import {
   State,
   Watch
 } from "@stencil/core";
-import { Component as GxComponent } from "../common/interfaces";
+import { Component as GxComponent, LayoutSize } from "../common/interfaces";
 import { getWindowsOrientation } from "../common/utils";
 
 @Component({
@@ -32,29 +32,29 @@ export class Layout implements GxComponent {
    * This attribute lets you specify the layout size of the application.
    * Each layout size will set different behaviors in the gx-layout control.
    */
-  @Prop() readonly layoutSize: "small" | "medium" | "large" = "large";
+  @Prop() readonly layoutSize: LayoutSize = "large";
 
   /**
-   * True to hide the top target
+   * `false` to hide the top target.
    */
-  @Prop() readonly topHidden = false;
+  @Prop() readonly topVisible = false;
 
   /**
-   * True to hide the right target
+   * `false` to hide the right target
    */
-  @Prop({ mutable: true }) rightHidden = false;
+  @Prop({ mutable: true }) rightVisible = false;
 
   /**
-   * True to hide the bottom target
+   * `false` to hide the bottom target
    */
-  @Prop() readonly bottomHidden = false;
+  @Prop() readonly bottomVisible = false;
 
   /**
-   * True to hide the left target
+   * `false` to hide the left target
    */
-  @Prop({ mutable: true }) leftHidden = false;
+  @Prop({ mutable: true }) leftVisible = false;
 
-  @State() isMaskVisible = !this.rightHidden || !this.leftHidden;
+  @State() isMaskVisible = this.rightVisible || this.leftVisible;
 
   /**
    * Fired when the leftHidden property is changed
@@ -62,24 +62,24 @@ export class Layout implements GxComponent {
   @Event() leftHiddenChange: EventEmitter;
 
   /**
-   * Fired when the rightHidden property is changed
+   * Fired when the rightVisible property is changed
    */
   @Event() rightHiddenChange: EventEmitter;
 
-  @Watch("rightHidden")
+  @Watch("rightVisible")
   handleRightHiddenChange() {
     this.updateMaskVisibility();
-    this.rightHiddenChange.emit(this.rightHidden);
+    this.rightHiddenChange.emit(!this.rightVisible);
   }
 
-  @Watch("leftHidden")
+  @Watch("leftVisible")
   handleLeftHiddenChange() {
     this.updateMaskVisibility();
-    this.leftHiddenChange.emit(this.leftHidden);
+    this.leftHiddenChange.emit(!this.leftVisible);
   }
 
   private updateMaskVisibility() {
-    this.isMaskVisible = !this.rightHidden || !this.leftHidden;
+    this.isMaskVisible = this.rightVisible || this.leftVisible;
   }
 
   /**
@@ -87,8 +87,8 @@ export class Layout implements GxComponent {
    */
   private closeTargets = (e: MouseEvent) => {
     e.stopPropagation();
-    this.rightHidden = true;
-    this.leftHidden = true;
+    this.rightVisible = false;
+    this.leftVisible = false;
   };
 
   private updateGridsOrientation() {
@@ -140,32 +140,40 @@ export class Layout implements GxComponent {
           ></div>
           <slot />
         </main>
-        <header class="target top" hidden={this.topHidden}>
-          <slot name="top" />
-        </header>
+
+        {this.topVisible && (
+          <header class="target top">
+            <slot name="top" />
+          </header>
+        )}
+
         <aside
           class={{
             "target vertical left": true,
             "bottom-navbar-and-small-layout-size": bottomNavbarAndSmallLayoutSize,
             "not-large-layout-size": notLargeLayoutSize
           }}
-          hidden={this.leftHidden}
+          hidden={!this.leftVisible}
         >
           <slot name="left" />
         </aside>
+
         <aside
           class={{
             "target vertical right": true,
             "bottom-navbar-and-small-layout-size": bottomNavbarAndSmallLayoutSize,
             "not-large-layout-size": notLargeLayoutSize
           }}
-          hidden={this.rightHidden}
+          hidden={!this.rightVisible}
         >
           <slot name="right" />
         </aside>
-        <footer class="target bottom" hidden={this.bottomHidden}>
-          <slot name="bottom" />
-        </footer>
+
+        {this.bottomVisible && (
+          <footer class="target bottom">
+            <slot name="bottom" />
+          </footer>
+        )}
       </Host>
     );
   }
