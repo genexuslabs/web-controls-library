@@ -46,21 +46,23 @@ When the left or right target is visible and floating, the center target is mask
 
 ## Properties
 
-| Property              | Attribute               | Description                                                                                                                                 | Type                             | Default   |
-| --------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | --------- |
-| `bottomHidden`        | `bottom-hidden`         | True to hide the bottom target                                                                                                              | `boolean`                        | `false`   |
-| `bottomNavbarVisible` | `bottom-navbar-visible` | `true` if the bottom navbar is visible in the application.                                                                                  | `boolean`                        | `false`   |
-| `layoutSize`          | `layout-size`           | This attribute lets you specify the layout size of the application. Each layout size will set different behaviors in the gx-layout control. | `"large" \| "medium" \| "small"` | `"large"` |
-| `leftHidden`          | `left-hidden`           | True to hide the left target                                                                                                                | `boolean`                        | `false`   |
-| `rightHidden`         | `right-hidden`          | True to hide the right target                                                                                                               | `boolean`                        | `false`   |
-| `topHidden`           | `top-hidden`            | True to hide the top target                                                                                                                 | `boolean`                        | `false`   |
+| Property                 | Attribute                   | Description                                                                                                                                 | Type                             | Default   |
+| ------------------------ | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | --------- |
+| `bottomNavbarVisible`    | `bottom-navbar-visible`     | `true` if the bottom navbar is visible in the application.                                                                                  | `boolean`                        | `false`   |
+| `bottomVisible`          | `bottom-visible`            | `false` to hide the bottom target                                                                                                           | `boolean`                        | `false`   |
+| `enableHeaderRowPattern` | `enable-header-row-pattern` | This attribute lets you specify if the header row pattern is enabled in the top navbar.                                                     | `boolean`                        | `false`   |
+| `layoutSize`             | `layout-size`               | This attribute lets you specify the layout size of the application. Each layout size will set different behaviors in the gx-layout control. | `"large" \| "medium" \| "small"` | `"large"` |
+| `leftVisible`            | `left-visible`              | `false` to hide the left target                                                                                                             | `boolean`                        | `false`   |
+| `rightVisible`           | `right-visible`             | `false` to hide the right target                                                                                                            | `boolean`                        | `false`   |
+| `topNavbarVisible`       | `top-navbar-visible`        | `true` if the top navbar is visible in the application.                                                                                     | `boolean`                        | `false`   |
+| `topVisible`             | `top-visible`               | `false` to hide the top target.                                                                                                             | `boolean`                        | `false`   |
 
 ## Events
 
-| Event               | Description                                    | Type               |
-| ------------------- | ---------------------------------------------- | ------------------ |
-| `leftHiddenChange`  | Fired when the leftHidden property is changed  | `CustomEvent<any>` |
-| `rightHiddenChange` | Fired when the rightHidden property is changed | `CustomEvent<any>` |
+| Event               | Description                                     | Type               |
+| ------------------- | ----------------------------------------------- | ------------------ |
+| `leftHiddenChange`  | Fired when the leftVisible property is changed  | `CustomEvent<any>` |
+| `rightHiddenChange` | Fired when the rightVisible property is changed | `CustomEvent<any>` |
 
 ## CSS Custom Properties
 

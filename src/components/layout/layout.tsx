@@ -13,7 +13,7 @@ import { Component as GxComponent, LayoutSize } from "../common/interfaces";
 import { getWindowsOrientation } from "../common/utils";
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "layout.scss",
   tag: "gx-layout"
 })
@@ -25,6 +25,7 @@ export class Layout implements GxComponent {
 
   /**
    * `true` if the bottom navbar is visible in the application.
+   * This property can only be true if `layoutSize` == `"small"`
    */
   @Prop() readonly bottomNavbarVisible: boolean = false;
 
@@ -32,6 +33,12 @@ export class Layout implements GxComponent {
    * `false` to hide the bottom target
    */
   @Prop() readonly bottomVisible = false;
+
+  /**
+   * This attribute lets you specify if the header row pattern is enabled in
+   * the top navbar.
+   */
+  @Prop() readonly enableHeaderRowPattern: boolean = false;
 
   /**
    * This attribute lets you specify the layout size of the application.
@@ -50,6 +57,11 @@ export class Layout implements GxComponent {
   @Prop({ mutable: true }) rightVisible = false;
 
   /**
+   * `true` if the top navbar is visible in the application.
+   */
+  @Prop() readonly topNavbarVisible: boolean = false;
+
+  /**
    * `false` to hide the top target.
    */
   @Prop() readonly topVisible = false;
@@ -57,7 +69,7 @@ export class Layout implements GxComponent {
   @State() isMaskVisible = this.rightVisible || this.leftVisible;
 
   /**
-   * Fired when the leftHidden property is changed
+   * Fired when the leftVisible property is changed
    */
   @Event() leftHiddenChange: EventEmitter;
 
@@ -124,12 +136,19 @@ export class Layout implements GxComponent {
   }
 
   render() {
-    const bottomNavbarAndSmallLayoutSize =
-      this.bottomNavbarVisible && this.layoutSize === "small";
     const notLargeLayoutSize = this.layoutSize !== "large";
 
     return (
-      <Host>
+      <Host
+        class={{
+          "gx-navbar-bottom--visible": this.bottomNavbarVisible,
+
+          "gx-navbar-top--visible-HRP":
+            this.topNavbarVisible && this.enableHeaderRowPattern,
+          "gx-navbar-top--visible-no-HRP":
+            this.topNavbarVisible && !this.enableHeaderRowPattern
+        }}
+      >
         <main class="target center">
           <div
             class={{
@@ -150,7 +169,6 @@ export class Layout implements GxComponent {
         <aside
           class={{
             "target vertical left": true,
-            "bottom-navbar-and-small-layout-size": bottomNavbarAndSmallLayoutSize,
             "not-large-layout-size": notLargeLayoutSize
           }}
           hidden={!this.leftVisible}
@@ -161,7 +179,6 @@ export class Layout implements GxComponent {
         <aside
           class={{
             "target vertical right": true,
-            "bottom-navbar-and-small-layout-size": bottomNavbarAndSmallLayoutSize,
             "not-large-layout-size": notLargeLayoutSize
           }}
           hidden={!this.rightVisible}
