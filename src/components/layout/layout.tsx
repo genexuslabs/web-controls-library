@@ -29,15 +29,20 @@ export class Layout implements GxComponent {
   @Prop() readonly bottomNavbarVisible: boolean = false;
 
   /**
+   * `false` to hide the bottom target
+   */
+  @Prop() readonly bottomVisible = false;
+
+  /**
    * This attribute lets you specify the layout size of the application.
    * Each layout size will set different behaviors in the gx-layout control.
    */
   @Prop() readonly layoutSize: LayoutSize = "large";
 
   /**
-   * `false` to hide the top target.
+   * `false` to hide the left target
    */
-  @Prop() readonly topVisible = false;
+  @Prop({ mutable: true }) leftVisible = false;
 
   /**
    * `false` to hide the right target
@@ -45,14 +50,9 @@ export class Layout implements GxComponent {
   @Prop({ mutable: true }) rightVisible = false;
 
   /**
-   * `false` to hide the bottom target
+   * `false` to hide the top target.
    */
-  @Prop() readonly bottomVisible = false;
-
-  /**
-   * `false` to hide the left target
-   */
-  @Prop({ mutable: true }) leftVisible = false;
+  @Prop() readonly topVisible = false;
 
   @State() isMaskVisible = this.rightVisible || this.leftVisible;
 
