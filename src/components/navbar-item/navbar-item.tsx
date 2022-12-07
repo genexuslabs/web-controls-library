@@ -1,5 +1,5 @@
 import { Component, Element, Host, Prop, h } from "@stencil/core";
-import { Component as GxComponent } from "../common/interfaces";
+import { Component as GxComponent, LayoutSize } from "../common/interfaces";
 import {
   HighlightableComponent,
   makeHighlightable
@@ -60,7 +60,7 @@ export class NavBarItem implements GxComponent, HighlightableComponent {
    * This attribute lets you specify the layout size of the application.
    * Each layout size will set different behaviors in the gx-navbar-item control.
    */
-  @Prop() readonly layoutSize: "small" | "medium" | "large" = "large";
+  @Prop() readonly layoutSize: LayoutSize = "large";
 
   componentDidLoad() {
     makeHighlightable(this);

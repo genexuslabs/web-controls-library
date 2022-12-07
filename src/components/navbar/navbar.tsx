@@ -8,7 +8,7 @@ import {
   EventEmitter,
   State
 } from "@stencil/core";
-import { Component as GxComponent } from "../common/interfaces";
+import { Component as GxComponent, LayoutSize } from "../common/interfaces";
 import { watchForItems } from "../common/watch-items";
 
 // Class transforms
@@ -80,7 +80,7 @@ export class NavBar implements GxComponent {
    * This attribute lets you specify the layout size of the application.
    * Each layout size will set different behaviors in the gx-layout control.
    */
-  @Prop() readonly layoutSize: "small" | "medium" | "large" = "large";
+  @Prop() readonly layoutSize: LayoutSize = "large";
 
   /**
    * `true` if the left target of the gx-layout is visible in the application.
