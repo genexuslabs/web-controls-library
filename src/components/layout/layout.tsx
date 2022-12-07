@@ -149,19 +149,20 @@ export class Layout implements GxComponent {
             this.topNavbarVisible && !this.enableHeaderRowPattern
         }}
       >
-        <main class="target center">
+        <main class="target center" part="main">
           <div
             class={{
               mask: true,
               "mask--active": this.isMaskVisible && notLargeLayoutSize
             }}
+            part="mask"
             onClick={this.closeTargets}
           ></div>
           <slot />
         </main>
 
         {this.topVisible && (
-          <header class="target top">
+          <header class="target top" part="header">
             <slot name="top" />
           </header>
         )}
@@ -171,6 +172,7 @@ export class Layout implements GxComponent {
             "target vertical left": true,
             "not-large-layout-size": notLargeLayoutSize
           }}
+          part="left"
           hidden={!this.leftVisible}
         >
           <slot name="left" />
@@ -181,13 +183,14 @@ export class Layout implements GxComponent {
             "target vertical right": true,
             "not-large-layout-size": notLargeLayoutSize
           }}
+          part="right"
           hidden={!this.rightVisible}
         >
           <slot name="right" />
         </aside>
 
         {this.bottomVisible && (
-          <footer class="target bottom">
+          <footer class="target bottom" part="footer">
             <slot name="bottom" />
           </footer>
         )}
