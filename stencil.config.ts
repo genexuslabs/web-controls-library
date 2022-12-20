@@ -46,15 +46,10 @@ export const config: Config = {
       components: ["gx-select", "gx-select-option"]
     },
     {
-      components: [
-        "gx-grid-flex",
-        "gx-grid-horizontal",
-        "gx-grid-smart-css",
-        "gx-grid-smart-cell",
-        "gx-grid-infinite-scroll",
-        "gx-grid-infinite-scroll-content",
-        "gx-grid-empty-indicator"
-      ]
+      components: ["gx-grid-smart-cell", "gx-grid-empty-indicator"]
+    },
+    {
+      components: ["gx-grid-infinite-scroll", "gx-grid-infinite-scroll-content"]
     },
     {
       components: ["gx-grid-image-map", "gx-grid-image-map-item"]
