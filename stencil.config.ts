@@ -18,6 +18,8 @@ export const config: Config = {
         "gx-modal",
         "gx-button",
         "gx-card",
+        "gx-loading",
+        "gx-lottie",
         "gx-table",
         "gx-table-cell",
         "gx-image",
