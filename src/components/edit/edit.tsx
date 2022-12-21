@@ -22,6 +22,7 @@ import { makeLinesClampable } from "../common/line-clamp";
 
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
+import { EditType } from "../../common/types";
 
 const AUTOFILL_START_ANIMATION_NAME = "AutoFillStart";
 
@@ -168,18 +169,7 @@ export class Edit implements FormComponent, HighlightableComponent {
    * * `"text"`
    * * `"url"`
    */
-  @Prop() readonly type:
-    | "date"
-    | "datetime-local"
-    | "email"
-    | "file"
-    | "number"
-    | "password"
-    | "search"
-    | "tel"
-    | "text"
-    | "time"
-    | "url" = "text";
+  @Prop() readonly type: EditType = "text";
 
   /**
    * The initial value of the control.
