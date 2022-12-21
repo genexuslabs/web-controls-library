@@ -10,6 +10,62 @@ import {
 
 import { Component as GxComponent } from "../common/interfaces";
 
+interface ParameterValue {
+  Value: string;
+  Name: string;
+}
+
+interface ElementValue {
+  Name: string;
+  Title: string;
+  Visible: "Always" | "Yes" | "No" | "Never";
+  Type: "Axis" | "Datum";
+  Axis: "Rows" | "Columns" | "Pages";
+  Aggregation: "Sum" | "Average" | "Count" | "Max" | "Min";
+  DataField: string;
+  AxisOrder?: {
+    Type: "None" | "Ascending" | "Descending" | "Custom";
+    Values?: string;
+  };
+  Filter?: {
+    Type: "ShowAllValues" | "HideAllValues" | "ShowSomeValues";
+    Values?: string;
+  };
+  ExpandCollapse?: {
+    Type: "ExpandAllValues" | "CollapseAllValues" | "ExpandSomeValues";
+    Values?: string;
+  };
+  Grouping?: Record<string, any>;
+  Action?: {
+    RaiseItemClick: boolean;
+  };
+  Format?: Format;
+}
+
+interface Format {
+  Picture: string;
+  Subtotals: "Yes" | "No" | "Hidden";
+  CanDragToPages: boolean;
+  Style: string;
+  TargetValue: string;
+  MaximumValue: string;
+  ValuesStyle?: ValueStyle[];
+  ConditionalStyles?: ConditionalStyle[];
+}
+
+interface ValueStyle {
+  Value: string;
+  ApplyToRowOrColumn: boolean;
+  StyleOrClass: string;
+}
+
+interface ConditionalStyle {
+  Value1: string;
+  Value2: string;
+  Operator: "EQ" | "LT" | "GT" | "LE" | "GE" | "NE" | "IN";
+  StyleOrClass: string;
+}
+
 @Component({
   tag: "gx-query-viewer",
   styleUrl: "query-viewer.scss",
@@ -327,20 +383,23 @@ export class QueryViewer implements GxComponent {
     return [
       ...Object.keys(QueryViewer.prototype)
         .filter(key => !this.propsNotToPost.includes(key))
+        // @ts-expect-error @todo TODO: Improve typing
         .map(key => <input type="hidden" name={key} value={this[key]} />),
+
       <input type="hidden" name="Elements" value={this.elements} />,
       <input type="hidden" name="Parameters" value={this.parameters} />
     ];
   }
 
   private getParameters() {
-    const parametersValue = [];
+    const parametersValue: ParameterValue[] = [];
 
     if (this.hasObjectCall()) {
       this.objectCall.slice(2).forEach(value => {
-        const parameterObject = {};
-        parameterObject["Value"] = encodeURIComponent(value);
-        parameterObject["Name"] = "";
+        const parameterObject: ParameterValue = {
+          Value: encodeURIComponent(value),
+          Name: ""
+        };
         parametersValue.push(parameterObject);
       });
     } else {
@@ -348,9 +407,10 @@ export class QueryViewer implements GxComponent {
         document.getElementsByTagName("gx-query-viewer-parameter")
       );
       parameters.forEach(parameter => {
-        const parameterObject = {};
-        parameterObject["Value"] = encodeURIComponent(parameter.Value);
-        parameterObject["Name"] = parameter.Name;
+        const parameterObject: ParameterValue = {
+          Value: encodeURIComponent(parameter.Value),
+          Name: parameter.Name
+        };
         parametersValue.push(parameterObject);
       });
     }
@@ -359,19 +419,21 @@ export class QueryViewer implements GxComponent {
   }
 
   private getElements() {
-    const elementsValue = [];
+    const elementsValue: ElementValue[] = [];
     const elements = Array.from(
       document.getElementsByTagName("gx-query-viewer-element")
     );
     elements.forEach(ax => {
-      const elementObjectValue = {};
-      elementObjectValue["Name"] = ax.name;
-      elementObjectValue["Title"] = ax.elementTitle;
-      elementObjectValue["Visible"] = ax.visible;
-      elementObjectValue["Type"] = ax.type;
-      elementObjectValue["Axis"] = ax.axis;
-      elementObjectValue["Aggregation"] = ax.aggregation;
-      elementObjectValue["DataField"] = ax.dataField;
+      const elementObjectValue: ElementValue = {
+        Name: ax.name,
+        Title: ax.elementTitle,
+        Visible: ax.visible,
+        Type: ax.type,
+        Axis: ax.axis,
+        Aggregation: ax.aggregation,
+        DataField: ax.dataField
+      };
+
       if (ax.axisOrderType) {
         elementObjectValue["AxisOrder"] = { Type: ax.axisOrderType };
         if (ax.axisOrderValues) {
@@ -406,21 +468,22 @@ export class QueryViewer implements GxComponent {
       );
 
       formats.forEach(format => {
-        const formatObject = {};
-
-        formatObject["Picture"] = format.picture;
-        formatObject["Subtotals"] = format.subtotals;
-        formatObject["CanDragToPages"] = format.canDragToPages;
-        formatObject["Style"] = format.formatStyle;
-        formatObject["TargetValue"] = format.targetValue;
-        formatObject["MaximumValue"] = format.maximumValue;
+        const formatObject: Format = {
+          Picture: format.picture,
+          Subtotals: format.subtotals,
+          CanDragToPages: format.canDragToPages,
+          Style: format.formatStyle,
+          TargetValue: format.targetValue,
+          MaximumValue: format.maximumValue
+        };
 
         const styles = Array.from(
           ax.getElementsByTagName("gx-query-viewer-format-style")
         );
 
-        const valuesStyles = [];
-        const conditionalStyles = [];
+        const valuesStyles: ValueStyle[] = [];
+        const conditionalStyles: ConditionalStyle[] = [];
+
         styles.forEach(style => {
           if (style.type === "Values") {
             const valueStyle = {
@@ -495,6 +558,7 @@ export class QueryViewer implements GxComponent {
         <form
           hidden
           target="query_viewer"
+          // @ts-expect-error @todo TODO: Improve typing
           action={this.baseUrl + this.mapServices[this.env]}
           method="POST"
         >
