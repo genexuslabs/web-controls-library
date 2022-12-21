@@ -5,8 +5,8 @@ export function makeSwipeable(comp: Swipeable) {
   element.addEventListener("touchstart", startTouch);
   element.addEventListener("touchmove", moveTouch);
 
-  let initialX = null;
-  let initialY = null;
+  let initialX: number = null;
+  let initialY: number = null;
 
   function startTouch(e: TouchEvent) {
     initialX = e.touches[0].clientX;

@@ -176,7 +176,7 @@ export class NavBar implements GxComponent {
       this.element,
       "gx-navbar-item",
       () => this.checkChildActions()
-    );
+    ) as MutationObserver;
 
     // - - - - - - - - - -   HANDLERS   - - - - - - - - - -
     attachHorizontalScrollWithDragHandler(this.navbarLinks);

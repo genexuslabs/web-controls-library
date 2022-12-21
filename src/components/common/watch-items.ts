@@ -2,7 +2,7 @@ export const watchForItems = <T extends HTMLElement>(
   containerEl: HTMLElement,
   tagName: string,
   onChange: (el: T | undefined) => void
-) => {
+): void | MutationObserver => {
   if (typeof MutationObserver === "undefined") {
     return;
   }

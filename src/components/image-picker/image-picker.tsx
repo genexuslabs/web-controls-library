@@ -102,7 +102,7 @@ export class ImagePicker implements GxComponent {
   /**
    * This attribute lets you specify the modal title.
    */
-  @Prop() readonly modalTitle = null;
+  @Prop() readonly modalTitle: string = null;
 
   /**
    * This attribute lets you specify the description of the

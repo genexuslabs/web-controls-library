@@ -94,14 +94,14 @@ export class GridFreeStyle
    */
   @Event({ bubbles: false }) gxInfiniteThresholdReached: EventEmitter<void>;
 
-  /*
+  /**
    * This method must be called after new grid data was fetched by the infinite scroller.
    */
   @Method()
   async complete() {
-    this.element
-      .querySelector(":scope > gx-grid-infinite-scroll")
-      ["complete"]();
+    (this.element.querySelector(
+      ":scope > gx-grid-infinite-scroll"
+    ) as HTMLGxGridInfiniteScrollElement)["complete"]();
   }
 
   private ensureViewPort() {

@@ -51,6 +51,7 @@ export class MapPolygon implements GxComponent {
    */
   @Event() gxMapPolygonDeleted: EventEmitter;
 
+  // @ts-expect-error @todo TODO: Improve typing
   private setupPolygon(coords) {
     const options = this.getMapPolygonStyle();
 

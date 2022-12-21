@@ -70,7 +70,7 @@ export class Video
     event.preventDefault();
   }
 
-  private parseYoutubeSrc(src) {
+  private parseYoutubeSrc(src: string) {
     const domainIdArray = src.split("watch?v=");
     return `${domainIdArray[0]}embed/${domainIdArray[1]}`;
   }

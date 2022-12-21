@@ -642,7 +642,8 @@ export class GridHorizontal
     return { ...swiperOptions, ...this.options, ...mergedEventOptions };
   }
 
-  private getViewPortHeightIfColumnFill() {
+  // @todo TODO: Check if this function still works. If not, remove it
+  private getViewPortHeightIfColumnFill(): any {
     let height = null;
 
     if (this.autoGrow || this.fillMode === "row") {

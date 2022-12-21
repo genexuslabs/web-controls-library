@@ -6,16 +6,16 @@ export function makeLinesClampable(
   contentContainerElementSelector: string,
   lineMeasuringElementSelector: string,
   componentHasShadowDOM = false
-) {
+): void | { applyLineClamp: () => void } {
   if (!component.lineClamp) {
     return;
   }
 
   // Used to know the sizes of the `content-container`
-  let contentContainerElement;
+  let contentContainerElement: HTMLElement;
 
   // Used to measure the line height
-  let lineMeasuringElement;
+  let lineMeasuringElement: HTMLElement;
 
   // Used to keep the state of the component
   let contentContainerHeight = -1;

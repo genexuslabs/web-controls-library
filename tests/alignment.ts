@@ -89,13 +89,20 @@ function testAlignment(
 ) {
   const autoGrowName = options.autoGrow ? "True" : "False";
 
+  // @ts-expect-error
+  const hAlignsMap = HORIZONTAL_ALIGNS_MAP[options.align];
+  // @ts-expect-error
+  const vAlignsMap = VERTICAL_ALIGNS_MAP[options.valign];
+  // @ts-expect-error
+  const hAlignsWithNumberMap = HORIZONTAL_ALIGNS_WITH_NUMBER_MAP[options.align];
+  // @ts-expect-error
+  const vAlignsWithNumberMap = VERTICAL_ALIGNS_WITH_NUMBER_MAP[options.valign];
+
   const testUniqueName = `should align correctly in ${
     CELL_CONTAINERS_MAP[options.cellContainer]
   } (Height: ${
     CELL_HEIGHTS_MAP[options.cellHeight]
-  }, AutoGrow: ${autoGrowName}, Align: ${
-    HORIZONTAL_ALIGNS_MAP[options.align]
-  }, Valign: ${VERTICAL_ALIGNS_MAP[options.valign]}) when it has ${
+  }, AutoGrow: ${autoGrowName}, Align: ${hAlignsMap}, Valign: ${vAlignsMap}) when it has ${
     options.innerControlProperties
   }`;
 
@@ -103,9 +110,9 @@ function testAlignment(
     options.innerControlName
   }_Alignment_${options.imageProperties}_${
     CELL_CONTAINERS_MAP[options.cellContainer]
-  }_${CELL_HEIGHTS_MAP[options.cellHeight]}_${autoGrowName}_${
-    HORIZONTAL_ALIGNS_WITH_NUMBER_MAP[options.align]
-  }_${VERTICAL_ALIGNS_WITH_NUMBER_MAP[options.valign]}`;
+  }_${
+    CELL_HEIGHTS_MAP[options.cellHeight]
+  }_${autoGrowName}_${hAlignsWithNumberMap}_${vAlignsWithNumberMap}`;
 
   // - - - - - - - - - -  Conversions  - - - - - - - - - - - -
   const rowsTemplateInTable = () => {
@@ -243,10 +250,16 @@ function testAlignment(
         Valign
       </gx-table-cell>
       <gx-table-cell area="cell50" align="center" valign="middle">
-        ${HORIZONTAL_ALIGNS_MAP[options.align]}
+        ${
+          // @ts-expect-error
+          HORIZONTAL_ALIGNS_MAP[options.align]
+        }
       </gx-table-cell>
       <gx-table-cell area="cell51" align="center" valign="middle">
-        ${VERTICAL_ALIGNS_MAP[options.valign]}
+        ${
+          // @ts-expect-error
+          VERTICAL_ALIGNS_MAP[options.valign]
+        }
       </gx-table-cell>
     </gx-table>`;
 
@@ -273,8 +286,8 @@ function testAlignment(
         </gx-table>`;
     }
 
-    if (options.cellContainer == "gx-canvas-cell") {
-      return `
+    // options.cellContainer == "gx-canvas-cell"
+    return `
         <gx-canvas
           css-class="TableFancyTransparent_3"
           width="198px"
@@ -291,7 +304,6 @@ function testAlignment(
             ${innerControl}
           </gx-canvas-cell>
         </gx-canvas>`;
-    }
   };
 
   it(testUniqueName, async () => {

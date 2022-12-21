@@ -7,7 +7,10 @@ import {
   Prop
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
+
+// @ts-expect-error @todo TODO: Fix this import
 import { polyline } from "leaflet/dist/leaflet-src.esm";
+
 import { parseCoords } from "../common/coordsValidate";
 
 @Component({
@@ -36,6 +39,7 @@ export class MapLine implements GxComponent {
    */
   @Event() gxMapLineDeleted: EventEmitter;
 
+  // @ts-expect-error @todo TODO: Improve typing
   private setupLine(coords) {
     this.lineInstance = polyline(coords, {
       color: "red",
