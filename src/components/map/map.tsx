@@ -427,8 +427,8 @@ export class Map implements GxComponent {
 
   componentDidLoad() {
     const coords = parseCoords(this.center);
-
     this.maxZoom = this.checkForMaxZoom();
+
     this.zoom = this.getZoom();
 
     // Depending on the coordinates, set different view types

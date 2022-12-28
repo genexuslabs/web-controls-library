@@ -53,6 +53,11 @@ export class MapMarker implements GxComponent {
   private markerInstance: any;
 
   /**
+   * Reference to the marker instance
+   */
+  private popupContainer: HTMLDivElement = null;
+
+  /**
    * The marker image width.
    */
   private iconWidth: number;
@@ -139,7 +144,6 @@ export class MapMarker implements GxComponent {
 
     const halfSizes = this.getHalfSizes();
     const shouldRenderSrcImage = this.srcset || this.src;
-
     const srcAttributes = this.getSrcAttributes();
     const altAttribute = this.alt || "";
 
@@ -200,7 +204,7 @@ export class MapMarker implements GxComponent {
   private setPopup() {
     // TODO: In which case does this condition occur?
     // eslint-disable-next-line @stencil/strict-boolean-conditions
-    if (this.element.firstElementChild) {
+    if (this.popupContainer.firstElementChild !== null) {
       const maxPopupSize = {
         height:
           document.querySelector(".gxMap").clientHeight * MAX_POPUP_SIZE_FACTOR,
@@ -208,7 +212,7 @@ export class MapMarker implements GxComponent {
           document.querySelector(".gxMap").clientWidth * MAX_POPUP_SIZE_FACTOR
       };
 
-      this.markerInstance.bindPopup(this.element, {
+      this.markerInstance.bindPopup(this.popupContainer, {
         keepInView: true,
         maxHeight: maxPopupSize.height,
         maxWidth: maxPopupSize.width,
@@ -248,7 +252,12 @@ export class MapMarker implements GxComponent {
 
     return (
       <Host class={!!this.cssClass ? classes.vars : undefined}>
-        <slot />
+        <div
+          class="popup-data-container"
+          ref={el => (this.popupContainer = el as HTMLDivElement)}
+        >
+          <slot />
+        </div>
       </Host>
     );
   }
