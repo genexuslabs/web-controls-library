@@ -1,34 +1,18 @@
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Prop,
-  h
-} from "@stencil/core";
+import { Component, Element, Host, Prop, h } from "@stencil/core";
 
 import {
-  ClickableComponent,
   Component as GxComponent,
   DisableableComponent,
   VisibilityComponent
 } from "../common/interfaces";
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "./video.scss",
   tag: "gx-video"
 })
 export class Video
-  implements
-    GxComponent,
-    ClickableComponent,
-    DisableableComponent,
-    VisibilityComponent {
-  constructor() {
-    this.handleClick = this.handleClick.bind(this);
-  }
-
+  implements GxComponent, DisableableComponent, VisibilityComponent {
   @Element() element: HTMLGxVideoElement;
 
   /**
@@ -60,27 +44,25 @@ export class Video
     @Prop() lazyLoad = true;
   */
 
-  /**
-   * Emitted when the element is clicked.
-   */
-  @Event() gxClick: EventEmitter;
-
-  private handleClick(event: UIEvent) {
-    this.gxClick.emit(event);
-    event.preventDefault();
-  }
-
   private parseYoutubeSrc(src) {
     const domainIdArray = src.split("watch?v=");
     return `${domainIdArray[0]}embed/${domainIdArray[1]}`;
   }
 
+  private isYoutubeVideo = () => this.src.indexOf("youtube.com") !== -1;
+
   render() {
-    const handleClick = !this.disabled ? this.handleClick : null;
     return (
-      <div class="gxVideoContainer" onClick={handleClick}>
-        <iframe src={this.parseYoutubeSrc(this.src)} />
-      </div>
+      <Host
+        aria-disabled={this.disabled ? "true" : undefined}
+        class={{ disabled: this.disabled }}
+      >
+        {this.isYoutubeVideo() ? (
+          <iframe class="gx-video" src={this.parseYoutubeSrc(this.src)} />
+        ) : (
+          <video class="gx-video" controls src={this.src}></video>
+        )}
+      </Host>
     );
   }
 }
