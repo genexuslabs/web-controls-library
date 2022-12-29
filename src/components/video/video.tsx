@@ -2,8 +2,7 @@ import { Component, Element, Host, Prop, h } from "@stencil/core";
 
 import {
   Component as GxComponent,
-  DisableableComponent,
-  VisibilityComponent
+  DisableableComponent
 } from "../common/interfaces";
 
 @Component({
@@ -11,8 +10,7 @@ import {
   styleUrl: "./video.scss",
   tag: "gx-video"
 })
-export class Video
-  implements GxComponent, DisableableComponent, VisibilityComponent {
+export class Video implements GxComponent, DisableableComponent {
   @Element() element: HTMLGxVideoElement;
 
   /**
@@ -21,16 +19,6 @@ export class Video
    * (for example, click event).
    */
   @Prop() readonly disabled = false;
-
-  /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * This attribute is for specifies the src of the video.
