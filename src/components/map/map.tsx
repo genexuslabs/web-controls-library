@@ -48,6 +48,7 @@ export class Map implements GxComponent {
   private selectionMarker: HTMLGxMapMarkerElement;
   private tileLayerApplied: tileLayer;
   private showMyLocationId: number;
+  private resizeObserver: ResizeObserver = null;
 
   // Refs
   private divMapView: HTMLDivElement;
@@ -241,6 +242,31 @@ export class Map implements GxComponent {
     });
   }
 
+  private connectResizeObserver() {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.resizeObserver) {
+      return;
+    }
+    this.resizeObserver = new ResizeObserver(this.resizeObserverCallback);
+    this.resizeObserver.observe(this.element);
+  }
+
+  private resizeObserverCallback = () => {
+    const height = this.element.clientHeight;
+    const width = this.element.clientWidth;
+
+    this.element.style.setProperty("--gx-map-width", `${width}px`);
+    this.element.style.setProperty("--gx-map-height", `${height}px`);
+  };
+
+  private disconnectResizeObserver() {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
+  }
+
   private addMapListener(eventToListen, callbackFunction) {
     this.map.on(eventToListen, callbackFunction);
   }
@@ -428,9 +454,8 @@ export class Map implements GxComponent {
   componentDidLoad() {
     const coords = parseCoords(this.center);
     this.maxZoom = this.checkForMaxZoom();
-
     this.zoom = this.getZoom();
-
+    this.connectResizeObserver();
     // Depending on the coordinates, set different view types
     if (coords !== null) {
       this.map = LFMap(this.divMapView, {
@@ -476,6 +501,7 @@ export class Map implements GxComponent {
 
   disconnectedCallback() {
     navigator.geolocation.clearWatch(this.showMyLocationId);
+    this.disconnectResizeObserver();
   }
 
   render() {

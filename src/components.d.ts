@@ -1155,6 +1155,10 @@ export namespace Components {
      */
     cssClass: string;
     /**
+     * Whether the gx-map-marker's popUp can be shown.
+     */
+    showPopup: boolean;
+    /**
      * This attribute lets you specify the src of the marker image.
      */
     src: string;
@@ -4068,6 +4072,10 @@ declare namespace LocalJSX {
      * Emitted when the element update its data.
      */
     onGxMapMarkerUpdate?: (event: GxMapMarkerCustomEvent<any>) => void;
+    /**
+     * Whether the gx-map-marker's popUp can be shown.
+     */
+    showPopup?: boolean;
     /**
      * This attribute lets you specify the src of the marker image.
      */

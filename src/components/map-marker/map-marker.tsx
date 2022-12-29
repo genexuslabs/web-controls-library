@@ -85,6 +85,11 @@ export class MapMarker implements GxComponent {
   @Prop() readonly cssClass: string;
 
   /**
+   * Whether the gx-map-marker's popUp can be shown.
+   */
+  @Prop() readonly showPopup: boolean;
+
+  /**
    * This attribute lets you specify the src of the marker image.
    */
   @Prop() readonly src: string;
@@ -200,22 +205,22 @@ export class MapMarker implements GxComponent {
     const coords = parseCoords(this.coords);
     return coords !== null ? coords : DEFAULT_COORDS;
   }
-
+  /**
+   * If showPopup property is true, binds a popup to the map layer with the passed content using MapMaker's bindPopup method. Set popupContainer max-width and max-height using the size of the map.
+   */
   private setPopup() {
-    // TODO: In which case does this condition occur?
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
-    if (this.popupContainer.firstElementChild !== null) {
-      const maxPopupSize = {
-        height:
-          document.querySelector(".gxMap").clientHeight * MAX_POPUP_SIZE_FACTOR,
-        width:
-          document.querySelector(".gxMap").clientWidth * MAX_POPUP_SIZE_FACTOR
-      };
+    if (this.showPopup) {
+      this.popupContainer.style.setProperty(
+        "max-width",
+        `calc(var(--gx-map-width) * ${MAX_POPUP_SIZE_FACTOR})`
+      );
+      this.popupContainer.style.setProperty(
+        "max-height",
+        `calc(var(--gx-map-height) * ${MAX_POPUP_SIZE_FACTOR})`
+      );
 
       this.markerInstance.bindPopup(this.popupContainer, {
         keepInView: true,
-        maxHeight: maxPopupSize.height,
-        maxWidth: maxPopupSize.width,
         minWidth: 100
       });
     }
