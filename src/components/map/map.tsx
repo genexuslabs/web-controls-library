@@ -15,8 +15,9 @@ import {
   FeatureGroup,
   Marker,
   map as LFMap,
-  tileLayer,
-  circle
+  polygon,
+  polyline,
+  tileLayer
 } from "leaflet/dist/leaflet-src.esm";
 import { parseCoords } from "../common/coordsValidate";
 import { watchPosition } from "./geolocation";
@@ -34,7 +35,8 @@ export class Map implements GxComponent {
   private isSelectionLayerSlot = false;
   private map: LFMap;
   private markersList = [];
-  private circleList = [];
+  private polygonsList = [];
+  private linesList = [];
   private mapProviderApplied: string;
   private mapTypesProviders = {
     hybrid:
@@ -45,20 +47,17 @@ export class Map implements GxComponent {
   };
   private selectionMarker: HTMLGxMapMarkerElement;
   private tileLayerApplied: tileLayer;
-  private watchPositionId: number;
+  private showMyLocationId: number;
+
+  // Refs
+  private divMapView: HTMLDivElement;
 
   @Element() element: HTMLGxMapElement;
 
   @State() userLocationCoords: string;
 
-  @Watch("userLocationCoords")
-  userLocationHandler() {
-    this.userLocationChange.emit(this.userLocationCoords);
-  }
-
   /**
    * The coord of initial center of the map.
-   *
    */
   @Prop({ mutable: true }) center = "0, 0";
 
@@ -78,7 +77,6 @@ export class Map implements GxComponent {
   /**
    * Map type to be used.
    * _Note: If you set a map provider, the selected map type will be ignored._
-   *
    */
   @Prop() mapType: "standard" | "satellite" | "hybrid" = "standard";
 
@@ -89,19 +87,40 @@ export class Map implements GxComponent {
   @Prop({ mutable: true }) maxZoom: number = RECOMMENDED_MAX_ZOOM;
 
   /**
+   * A CSS class to set as the `showMyLocation` icon class.
+   */
+  @Prop() pinImageCssClass: string;
+
+  /**
+   * This attribute lets you specify the srcset attribute for the
+   * `showMyLocation` icon when the `pinShowMyLocationSrcset` property is not
+   * specified.
+   */
+  @Prop() pinImageSrcset: string;
+
+  /**
+   * This attribute lets you specify the srcset attribute for the
+   * `showMyLocation` icon. If not set the `pinImageSrcset` property will be
+   * used to specify the srcset attribute for the icon.
+   * If none of the properties are specified, a default icon will be used
+   * when `showMyLocation = true`
+   */
+  @Prop() pinShowMyLocationSrcset: string;
+
+  /**
    * Enables the possibility to navigate the map and select a location point using the map center.
    */
   @Prop() selectionLayer = false;
 
   /**
+   * Whether the map can be zoomed by using the mouse wheel.
+   */
+  @Prop() readonly scrollWheelZoom: boolean = true;
+
+  /**
    * Indicates if the current location of the device is displayed on the map.
    */
-  @Prop() watchPosition = false;
-
-  @Watch("selectionLayer")
-  selectionLayerHandler() {
-    this.registerSelectionLayerEvents();
-  }
+  @Prop() showMyLocation = false;
 
   /**
    * The initial zoom level in the map.
@@ -139,10 +158,21 @@ export class Map implements GxComponent {
    */
   @Event() userLocationChange: EventEmitter;
 
+  @Watch("selectionLayer")
+  selectionLayerHandler() {
+    this.registerSelectionLayerEvents();
+  }
+
+  @Watch("userLocationCoords")
+  userLocationHandler() {
+    this.userLocationChange.emit(this.userLocationCoords);
+  }
+
   @Listen("gxMapMarkerDidLoad")
   onMapMarkerDidLoad(event: CustomEvent) {
     const markerElement = event.target;
     const markerV = event.detail;
+
     if (this.map) {
       markerV.addTo(this.map);
     } else {
@@ -150,13 +180,14 @@ export class Map implements GxComponent {
         markerV.addTo(this.map);
       });
     }
+
     if (this.selectionLayer) {
       const slot = this.getSelectionMarkerSlot();
       if (slot.exist) {
         this.selectionMarker = slot.elem;
       } else {
         this.selectionMarker = this.element.querySelector(
-          "[marker-class='gx-default-selection-layer-icon']"
+          "[type='selection-layer']"
         );
       }
       if (markerElement !== this.selectionMarker) {
@@ -171,20 +202,42 @@ export class Map implements GxComponent {
     });
   }
 
-  @Listen("gxMapCircleDidLoad")
-  onMapCircleDidLoad(event: CustomEvent) {
-    const circleElement = event.target;
-    const circleV = event.detail;
+  @Listen("gxMapPolygonDidLoad")
+  onMapPolygonDidLoad(event: CustomEvent) {
+    const polygonElement = event.target as HTMLGxMapPolygonElement;
+    const polygonInstance = event.detail as polygon;
+
+    // If the leaflet map has been created, add the polygon instance. Otherwise,
+    // wait for the leaflet map to load
     if (this.map) {
-      circleV.addTo(this.map);
+      polygonInstance.addTo(this.map);
     } else {
       this.element.addEventListener("gxMapDidLoad", () => {
-        circleV.addTo(this.map);
+        polygonInstance.addTo(this.map);
       });
     }
-    this.circleList.push(circleV);
-    circleElement.addEventListener("gxMapCircleDeleted", () => {
-      this.onMapCircleDeleted(circleV);
+
+    // When the polygon element is removed from the DOM, remove the polygon
+    // instance in the gx-map
+    polygonElement.addEventListener("gxMapPolygonDeleted", () => {
+      this.onMapPolygonDeleted(polygonInstance);
+    });
+  }
+
+  @Listen("gxMapLineDidLoad")
+  onMapLineDidLoad(event: CustomEvent) {
+    const lineElement = event.target;
+    const lineV = event.detail;
+    if (this.map) {
+      lineV.addTo(this.map);
+    } else {
+      this.element.addEventListener("gxMapDidLoad", () => {
+        lineV.addTo(this.map);
+      });
+    }
+
+    lineElement.addEventListener("gxMapLineDeleted", () => {
+      this.onMapLineDeleted(lineV);
     });
   }
 
@@ -233,7 +286,7 @@ export class Map implements GxComponent {
     let i = 0;
     marker.remove();
     while (
-      i <= this.markersList.length &&
+      i < this.markersList.length &&
       this.markersList[i]._leaflet_id !== marker._leaflet_id
     ) {
       i++;
@@ -245,19 +298,35 @@ export class Map implements GxComponent {
     }
   }
 
-  private onMapCircleDeleted(pCircle: circle) {
-    let i = 0;
-    pCircle.remove();
+  private onMapPolygonDeleted(polygonInstance: polygon) {
+    polygonInstance.remove();
+
+    this.searchAndRemoveMapElement(polygonInstance, this.polygonsList);
+  }
+
+  private onMapLineDeleted(lineInstance: polyline) {
+    lineInstance.remove();
+
+    this.searchAndRemoveMapElement(lineInstance, this.linesList);
+  }
+
+  private searchAndRemoveMapElement(
+    mapElement: polygon | polyline,
+    listOfElements: any[]
+  ) {
+    let elementIndex = 0;
+
+    // Try to find in the list the element id
     while (
-      i <= this.circleList.length &&
-      this.circleList[i]._leaflet_id !== pCircle._leaflet_id
+      elementIndex <= listOfElements.length &&
+      listOfElements[elementIndex]._leaflet_id !== mapElement._leaflet_id
     ) {
-      i++;
+      elementIndex++;
     }
-    if (i <= this.circleList.length) {
-      this.circleList.splice(i, 1);
-    } else {
-      console.warn("There was an error in the circle list!");
+
+    // Remove element if found in list
+    if (elementIndex <= listOfElements.length) {
+      listOfElements.splice(elementIndex, 1);
     }
   }
 
@@ -342,8 +411,8 @@ export class Map implements GxComponent {
   }
 
   componentWillLoad() {
-    if (this.watchPosition) {
-      this.watchPositionId = watchPosition(
+    if (this.showMyLocation) {
+      this.showMyLocationId = watchPosition(
         this.setUserLocation.bind(this),
         err => console.error(err),
         {
@@ -357,23 +426,26 @@ export class Map implements GxComponent {
   }
 
   componentDidLoad() {
-    const elementVar = this.element.querySelector(".gxMap");
     const coords = parseCoords(this.center);
 
     this.maxZoom = this.checkForMaxZoom();
     this.zoom = this.getZoom();
+
+    // Depending on the coordinates, set different view types
     if (coords !== null) {
-      this.map = LFMap(elementVar).setView(coords, this.zoom, this.maxZoom);
+      this.map = LFMap(this.divMapView, {
+        scrollWheelZoom: this.scrollWheelZoom
+      }).setView(coords, this.zoom, this.maxZoom);
     } else {
-      console.warn(
-        "GX warning: Can not read 'center' attribute, default center set (gx-map)",
-        this.element
-      );
-      this.map = LFMap(elementVar).setView([0, 0], this.getZoom());
+      this.map = LFMap(this.divMapView, {
+        scrollWheelZoom: this.scrollWheelZoom
+      }).setView([0, 0], this.getZoom());
     }
+
     this.setMapProvider();
     this.map.setMaxZoom(this.maxZoom);
     this.fitBounds();
+
     this.gxMapDidLoad.emit(this);
 
     if (this.selectionLayer) {
@@ -395,24 +467,26 @@ export class Map implements GxComponent {
   componentDidUpdate() {
     const maxZoom = this.checkForMaxZoom();
     this.setMapProvider();
-    this.fitBounds();
+    if (this.selectionLayer) {
+      this.fitBounds();
+    }
     this.map.setMaxZoom(maxZoom);
     this.userLocationChange.emit(this.userLocationCoords);
   }
 
-  componentDidUnload() {
-    navigator.geolocation.clearWatch(this.watchPositionId);
+  disconnectedCallback() {
+    navigator.geolocation.clearWatch(this.showMyLocationId);
   }
 
   render() {
     return (
       <Host>
-        {this.watchPosition && (
+        {this.showMyLocation && (
           <gx-map-marker
-            marker-class="gx-default-user-location-icon"
-            icon-width="15"
-            icon-height="15"
             coords={this.userLocationCoords}
+            css-class={this.pinImageCssClass}
+            srcset={this.pinShowMyLocationSrcset || this.pinImageSrcset}
+            type="user-location"
           ></gx-map-marker>
         )}
         {this.selectionLayer &&
@@ -420,14 +494,15 @@ export class Map implements GxComponent {
             <slot name="selection-layer-marker" />
           ) : (
             <gx-map-marker
-              marker-class="gx-default-selection-layer-icon"
-              icon-width="30"
-              icon-height="30"
+              type="selection-layer"
               coords={this.centerCoords}
             ></gx-map-marker>
           ))}
         <div class="gxMapContainer">
-          <div class="gxMap"></div>
+          <div
+            class="gxMap"
+            ref={el => (this.divMapView = el as HTMLDivElement)}
+          ></div>
         </div>
       </Host>
     );
