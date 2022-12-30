@@ -20,25 +20,21 @@ export class MapCircle implements GxComponent {
 
   /**
    * The coordinates where the circle will appear in the map.
-   *
    */
   @Prop({ mutable: true }) coords = "0, 0";
 
   /**
    * The radius that the circle will have in the map. It's expressed in meters.
-   *
    */
   @Prop({ mutable: true }) radius = 1000;
 
   /**
    * Emmits when the element is added to a `<gx-map>`.
-   *
    */
   @Event() gxMapCircleDidLoad: EventEmitter;
 
   /**
    * Emmits when the element is deleted from a `<gx-map>`.
-   *
    */
   @Event() gxMapCircleDeleted: EventEmitter;
 
@@ -51,19 +47,17 @@ export class MapCircle implements GxComponent {
 
   componentDidLoad() {
     const coords = parseCoords(this.coords);
+
     if (coords !== null) {
       this.setupCircle(coords);
     } else {
-      console.warn(
-        "GX warning: Cannot read 'coords' attribute, default coords set (gx-map-circle)",
-        this.element
-      );
       this.setupCircle([0, 0]);
     }
+
     this.gxMapCircleDidLoad.emit(this.circleInstance);
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.gxMapCircleDeleted.emit(this.circleInstance);
   }
 
