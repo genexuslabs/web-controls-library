@@ -17,7 +17,8 @@ import {
   map as LFMap,
   polygon,
   polyline,
-  tileLayer
+  tileLayer,
+  circle
 } from "leaflet/dist/leaflet-src.esm";
 import { parseCoords } from "../common/coordsValidate";
 import { watchPosition } from "./geolocation";
@@ -35,6 +36,7 @@ export class Map implements GxComponent {
   private isSelectionLayerSlot = false;
   private map: LFMap;
   private markersList = [];
+  private circleList = [];
   private polygonsList = [];
   private linesList = [];
   private mapProviderApplied: string;
@@ -202,6 +204,23 @@ export class Map implements GxComponent {
     });
   }
 
+  @Listen("gxMapCircleDidLoad")
+  onMapCircleDidLoad(event: CustomEvent) {
+    const circleElement = event.target;
+    const circleV = event.detail;
+    if (this.map) {
+      circleV.addTo(this.map);
+    } else {
+      this.element.addEventListener("gxMapDidLoad", () => {
+        circleV.addTo(this.map);
+      });
+    }
+    this.circleList.push(circleV);
+    circleElement.addEventListener("gxMapCircleDeleted", () => {
+      this.onMapCircleDeleted(circleV);
+    });
+  }
+
   @Listen("gxMapPolygonDidLoad")
   onMapPolygonDidLoad(event: CustomEvent) {
     const polygonElement = event.target as HTMLGxMapPolygonElement;
@@ -295,6 +314,22 @@ export class Map implements GxComponent {
       this.markersList.splice(i, 1);
     } else {
       console.warn("There was an error in the markers list!");
+    }
+  }
+
+  private onMapCircleDeleted(pCircle: circle) {
+    let i = 0;
+    pCircle.remove();
+    while (
+      i <= this.circleList.length &&
+      this.circleList[i]._leaflet_id !== pCircle._leaflet_id
+    ) {
+      i++;
+    }
+    if (i <= this.circleList.length) {
+      this.circleList.splice(i, 1);
+    } else {
+      console.warn("There was an error in the circle list!");
     }
   }
 
