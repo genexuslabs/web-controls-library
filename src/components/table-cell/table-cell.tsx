@@ -7,6 +7,8 @@ import { Component as GxComponent } from "../common/interfaces";
   tag: "gx-table-cell"
 })
 export class TableCell implements GxComponent {
+  private observer: MutationObserver = null;
+
   @Element() element: HTMLGxTableCellElement;
 
   /**
@@ -14,102 +16,96 @@ export class TableCell implements GxComponent {
    * so it can be used from the [areas-template attributes](../table/readme.md#areas-template)
    * of the gx-table element.
    */
-  @Prop() readonly area: string;
+  @Prop() readonly area: string = null;
 
   /**
-   * Defines the horizontal aligmnent of the content of the cell.
+   * Defines the horizontal alignment of the content of the cell.
    */
-  @Prop({ reflect: true }) readonly align: "left" | "right" | "center" = "left";
-
-  /**
-   * This attribute defines how the control behaves when the content overflows.
-   *
-   * | Value    | Details                                                     |
-   * | -------- | ----------------------------------------------------------- |
-   * | `scroll` | The overflowin content is hidden, but scrollbars are shown  |
-   * | `clip`   | The overflowing content is hidden, without scrollbars       |
-   *
-   */
-  @Prop() readonly overflowMode: "scroll" | "clip";
+  @Prop({ reflect: true }) readonly align: "left" | "right" | "center";
 
   /**
    * This attribute defines the maximum height of the cell.
-   *
    */
-  @Prop() readonly maxHeight: string;
+  @Prop() readonly maxHeight: string = null;
 
   /**
    * This attribute defines the minimum height of the cell when its contents are visible.
-   * Ignored if its content has `invisible-mode` = `collapse` and is hidden.
-   *
+   * Ignored if its content has `invisible-mode="collapse"` and is hidden.
    */
-  @Prop() readonly minHeight: string;
+  @Prop() readonly minHeight: string = null;
 
   /**
-   * Defines the vertical aligmnent of the content of the cell.
+   * True to add a fading overlay on the right and bottom area of the cell to signify
+   * that the content is longer than the space allows.
    */
-  @Prop({ reflect: true }) readonly valign: "top" | "bottom" | "medium" = "top";
+  @Prop() readonly showContentFade = false;
 
-  private observer: MutationObserver;
-
-  componentDidRender() {
-    this.setMinHeight(this.element.firstElementChild);
-    this.setMaxHeight();
-  }
+  /**
+   * Defines the vertical alignment of the content of the cell.
+   */
+  @Prop({ reflect: true }) readonly valign: "top" | "bottom" | "middle";
 
   componentDidLoad() {
-    this.setupObserver(this.element.firstElementChild);
+    const childElement: any = this.element.firstElementChild;
+
+    if (childElement?.getAttribute("invisible-mode") !== "collapse") {
+      return;
+    }
+
+    this.setVisibilityBasedOnChildElement(childElement);
+
+    this.setupObserver(childElement);
   }
 
+  /**
+   * Based on the visibility of the child element, it sets the visibility of
+   * the gx-table-cell control.
+   * @param childElement The direct child element of the control.
+   */
+  private setVisibilityBasedOnChildElement(childElement: any) {
+    // "null" will fallback to the default visibility, which is "flex"
+    this.element.style.display = childElement.hidden ? "none" : null;
+  }
+
+  /**
+   * Set a MutationObserver to watch for changes to the hidden attribute on the
+   * direct child element.
+   * @param childElement The direct child element of the control.
+   */
   private setupObserver(childElement: any) {
-    if (childElement && childElement.invisibleMode === "collapse") {
-      this.observer = new MutationObserver(
-        (mutationsList: MutationRecord[]) => {
-          for (const mutation of mutationsList) {
-            if (
-              mutation.type === "attributes" &&
-              mutation.attributeName === "hidden"
-            ) {
-              this.setMinHeight(childElement);
-            }
-          }
-        }
-      );
+    this.observer = new MutationObserver(() => {
+      this.setVisibilityBasedOnChildElement(childElement);
+    });
 
-      this.observer.observe(childElement, {
-        attributes: true,
-        childList: false,
-        subtree: false
-      });
-    }
+    this.observer.observe(childElement, {
+      attributes: true,
+      attributeFilter: ["hidden"],
+      childList: false,
+      subtree: false
+    });
   }
 
-  private setMinHeight(childElement: any) {
-    if (childElement) {
-      this.element.style.minHeight =
-        childElement.invisibleMode === "collapse" && childElement.hidden
-          ? "0"
-          : this.minHeight;
-    }
-  }
-
-  private setMaxHeight() {
-    this.element.style.maxHeight = this.maxHeight;
-  }
-
-  componentDidUnload() {
-    if (this.observer !== undefined) {
+  disconnectedCallback() {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.observer) {
       this.observer.disconnect();
+      this.observer = null;
     }
   }
 
   render() {
-    if (this.area) {
-      this.element.style["gridArea"] = this.area;
-    }
-
     return (
-      <Host>
+      <Host
+        class={{
+          "gx-cell": true,
+          "gx-long-content-fade": this.showContentFade
+        }}
+        style={{
+          "grid-area": this.area,
+          "min-height": this.minHeight,
+          "max-height": this.maxHeight
+        }}
+      >
         <slot />
       </Host>
     );

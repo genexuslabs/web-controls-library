@@ -1,5 +1,11 @@
 @import "../common/_base";
+@import "../common/_common-styling-config";
 
-gx-chronometer {
-  @include visibility(inline);
+@include visibility-shadow-DOM(inline-flex);
+
+:host {
+  @include elevation();
+  flex: 1;
+  text-align: start;
+  @include transition-properties();
 }

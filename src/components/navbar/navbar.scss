@@ -1,68 +1,163 @@
 @import "../common/_base";
-@import "./_navbar-button-states";
+@import "../common/common-styling-config";
+@import "../common/layout-styling-config";
 
-gx-navbar {
-  @include visibility(block);
+$gx-navbar-main-background-color: var(--primary-color, #212121);
+
+:host([position="bottom"]) {
+  bottom: 0;
+
+  // If the width of the screen >= $gx-xsmall-breakpoint-plus-1, we hide
+  // the bottom navbar
+  @media screen and (min-width: $gx-xsmall-breakpoint-plus-1) {
+    display: none;
+  }
+
+  // We display the links at the bottom navbar, when the width of the
+  // screen is <= $gx-xsmall-breakpoint
+  @media screen and (max-width: $gx-xsmall-breakpoint) {
+    .gx-navbar-line {
+      grid-template: "cell-links" 100% / 100%;
+    }
+
+    .gx-navbar-links {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(max-content, 1fr);
+      width: 100%;
+    }
+  }
+}
+
+// The layout of the top navbar adjusts based on the breakpoints and actions
+// displayed
+:host(:not([position="bottom"])) {
+  @media screen and (min-width: $gx-xsmall-breakpoint-plus-1) {
+    .gx-navbar-line {
+      grid-template: "cell-left-side-container cell-links cell-actions cell-show-more-btn" 100% / 25% 50% 1fr max-content;
+    }
+
+    // We display the links at the top navbar, when the width of the screen
+    // is >= $gx-xsmall-breakpoint-plus-1
+    .gx-navbar-links {
+      display: flex;
+    }
+  }
+
+  @media screen and (max-width: $gx-xsmall-breakpoint) {
+    .gx-navbar-0-action-types {
+      grid-template: "cell-left-side-container" 100% / 100%;
+
+      &-low-action {
+        grid-template: "cell-left-side-container cell-show-more-btn" 100% / 1fr max-content;
+      }
+    }
+
+    .gx-navbar-1-action-types {
+      grid-template:
+        "cell-left-side-container cell-actions" 100% / minmax(min-content, 2fr)
+        minmax(10%, max-content);
+
+      &-low-action {
+        grid-template:
+          "cell-left-side-container cell-actions cell-show-more-btn" 100% / minmax(
+            min-content,
+            2fr
+          )
+          minmax(10%, max-content) max-content;
+      }
+    }
+
+    .gx-navbar-2-action-types {
+      grid-template:
+        "cell-left-side-container cell-actions" 100% / minmax(
+          min-content,
+          1.25fr
+        )
+        minmax(20%, max-content);
+
+      &-low-action {
+        grid-template:
+          "cell-left-side-container cell-actions cell-show-more-btn" 100% / minmax(
+            min-content,
+            1.25fr
+          )
+          minmax(20%, max-content) max-content;
+      }
+    }
+  }
+}
+
+// We override the default value "position: sticky"
+:host(.gx-navbar-header-row-pattern) {
+  position: fixed;
+}
+
+// These classes apply when the Header Row Pattern is enabled. When HRP is
+// enabled and the asides are visible, we have to reposition the navbar so it
+// does not overlap the asides. If we do not do this, the burger button won't
+// be reached.
+@media screen and (min-width: $gx-vertical-targets-breakpoint-plus-1) {
+  :host(.left-target-visible) {
+    left: $gx-vertical-target-width;
+  }
+
+  :host(.right-target-visible) {
+    right: $gx-vertical-target-width;
+  }
+}
+
+@include visibility-shadow-DOM(block);
+
+:host {
   @include elevation();
 
-  --gx-navbar-main-background-color: rgb(87, 89, 101);
-  --gx-navbar-sub-background-color: white;
-  --gx-navbar-items-background-color: #e0e0e0;
-  --gx-navbar-items-color: #575965;
-  --gx-navbar-main-color: white;
+  // Unused properties?
   --gx-navbar-sub-color: black;
-  --gx-navbar-main-height: 60px;
-  --gx-navbar-sub-height: 48px;
-  --gx-navbar-icon-size: 24px;
   --gx-navbar-sub-separator-top: none;
   --gx-navbar-sub-separator-bottom: 1px solid rgb(195, 196, 200);
-  --gx-navbar-actions-separator: 1px solid #e0e0e0;
-  --gx-navbar-main-focus-border-color: #e0e0e0;
-  --gx-navbar-main-hover-background-color: #939498;
-  --gx-navbar-main-active-background-color: #c3c4c8;
-  --gx-navbar-main-active-color: #111111;
-  --gx-navbar-sub-focus-border-color: #e0e0e0;
-  --gx-navbar-sub-hover-color: #575965;
-  --gx-navbar-sub-active-background-color: rgba(195, 196, 200, 0.2);
-  --gx-navbar-sub-active-color: #000;
-  --gx-navbar-low-background-color: #e0e0e0;
-  --gx-navbar-low-hover-background-color: #939498;
 
+  position: sticky;
+  top: 0;
+  background-color: $gx-navbar-main-background-color;
+  color: #fff;
   font-size: 14px;
   font-weight: 600;
   width: 100%;
-  height: calc(var(--gx-navbar-main-height) + var(--gx-navbar-sub-height));
+  z-index: $z-index-gx-navbar;
 
-  gx-icon {
-    --gx-icon-size: var(--gx-navbar-icon-size);
-    --gx-icon-color: var(--gx-navbar-main-color);
-  }
+  // We do not add "color" property to de transition to avoid double duration
+  // when the items inherit the color property
+  transition-property: background-color, border-color, box-shadow, filter,
+    opacity, transform;
+  transition-duration: $transition-duration;
 
+  // Default style for back, burger and show more buttons
   button {
+    appearance: none;
     background: none;
+    background-color: transparent;
+    border-style: none;
+    color: inherit;
     cursor: pointer;
-    padding: 0;
-    border: 0;
+    outline: none;
+    padding: 4px;
+    user-select: none;
+    @include transition-properties();
 
-    &,
-    &:focus,
     &:active {
-      appearance: none;
-      outline: none;
+      @include navbar-button-default-active-color();
     }
   }
 
   .gx-navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1;
     display: flex;
     flex-direction: column;
 
-    &-header {
+    &-caption {
       outline: none;
+      margin-inline-start: 22px;
+      transition: color $transition-duration;
 
       &,
       &:hover,
@@ -73,136 +168,127 @@ gx-navbar {
       }
     }
 
-    &-icon-button {
-      line-height: 0;
-
-      @include button-default-states();
-    }
-
     &-back-button {
+      display: flex;
+      align-items: center;
+      border-radius: 50%;
       font: inherit;
       font-size: 11px;
       font-weight: 600;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-
-      gx-icon {
-        --gx-icon-color: var(--gx-navbar-sub-color);
-      }
-
-      @include button-default-states();
-      @include button-line-2-states();
+      margin-inline-end: 2px;
     }
 
-    &-target-toggle {
-      margin-right: 24px;
+    // Burger button
+    &-toggle-button {
+      border-radius: 4px;
+      line-height: 0;
+      margin-inline-end: 2px;
     }
 
     &-line {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      padding: 0 16px;
+      display: grid;
+      place-items: center;
+      padding-inline: 16px;
     }
 
     &-line-1 {
-      height: var(--gx-navbar-main-height);
-      color: var(--gx-navbar-main-color);
-      background-color: var(--gx-navbar-main-background-color);
+      height: $gx-navbar-main-height;
       background-image: var(--gx-navbar-main-background-image);
     }
 
     &-line-2 {
-      height: var(--gx-navbar-sub-height);
+      height: $gx-navbar-sub-height;
       color: var(--gx-navbar-sub-color);
-      background-color: var(--gx-navbar-sub-background-color);
       border-top: var(--gx-navbar-sub-separator-top);
       border-bottom: var(--gx-navbar-sub-separator-bottom);
+      overflow: hidden;
 
       .gx-navbar-actions {
         flex: 1;
         justify-content: flex-end;
-
-        &-toggle {
-          gx-icon {
-            --gx-icon-color: var(--gx-navbar-sub-color);
-          }
-
-          &--active {
-            gx-icon {
-              --gx-icon-color: var(--gx-navbar-main-color);
-            }
-          }
-        }
       }
 
-      .gx-navbar-icon-button {
-        @include button-line-2-states();
+      .gx-navbar-back-button {
+        color: inherit;
       }
+    }
+
+    // Container for back button, toggle button and gx-navbar caption
+    &-left-side-container {
+      grid-area: cell-left-side-container;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      max-height: 100%;
+      overflow: hidden;
     }
 
     &-links {
-      flex: 1;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: stretch;
-      overflow: hidden;
+      grid-area: cell-links;
+      display: none;
+      max-width: 100%;
+      align-self: stretch;
+      overflow-x: auto;
+      scrollbar-width: none;
 
-      @media screen and (max-width: $gx-xsmall-breakpoint) {
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 1;
-        height: 60px;
-        background-color: var(--gx-navbar-items-background-color);
-        color: var(--gx-navbar-items-color);
-        justify-content: stretch;
+      &::-webkit-scrollbar {
+        height: 0;
       }
     }
 
+    // Style for each type of action (HIGH, NORMAL and LOW priority)
     &-actions {
+      grid-area: cell-actions;
       display: flex;
-      flex-direction: row;
+      justify-content: flex-end;
       position: relative;
-
-      @media screen and (max-width: $gx-xsmall-breakpoint) {
-        flex: 1;
-        justify-content: flex-end;
-      }
+      width: 100%;
+      align-self: stretch;
+      overflow: hidden;
 
       &-high,
       &-normal {
         display: flex;
-        flex-direction: row;
         align-items: center;
-      }
+        overflow-x: auto;
+        scrollbar-width: none;
 
-      &-normal {
-        &--separator {
-          border-left: var(--gx-navbar-actions-separator);
+        &::-webkit-scrollbar {
+          height: 0;
         }
       }
 
+      &--separator {
+        align-self: center;
+        background-color: currentColor;
+        width: 2px;
+        height: 60%;
+        transition: color $transition-duration;
+      }
+
+      // Container of LOW actions
       &-low {
+        display: flex;
+        position: relative;
+      }
+
+      // A popup appears when show more button is clicked
+      &-low-popup {
+        @include navbar-button-default-active-color();
         display: none;
+        flex-direction: column;
+        position: absolute;
+        top: calc(#{$gx-navbar-main-height} / 2 + 6px);
+        right: 0;
         width: 160px;
-        background-color: var(--gx-navbar-low-background-color);
-        color: var(--gx-navbar-sub-color);
         font-weight: 400;
         font-size: 12px;
-        position: absolute;
-        top: 34px;
-        right: -32px;
-        z-index: 1;
-        flex-direction: column;
-        border-radius: 2px;
+        border-radius: 4px;
         padding: 5px 0;
         box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.14),
           0px 3px 3px -2px rgba(0, 0, 0, 0.12),
           0px 1px 8px 0px rgba(0, 0, 0, 0.2);
+        z-index: $z-index-gx-navbar-item;
 
         &--active {
           display: flex;
@@ -210,37 +296,19 @@ gx-navbar {
       }
     }
 
-    &-actions-toggle {
-      border-radius: 100%;
-      height: 32px;
-      width: 32px;
-      min-width: 32px;
+    // Show more button at the end of the gx-navbar
+    &-actions-low-toggle {
+      grid-area: cell-show-more-btn;
       display: inline-flex;
       place-content: center;
       place-items: center;
+      border-radius: 50%;
+      color: inherit;
+      align-self: center;
+      margin-inline-start: 2px;
 
       &--active {
-        background-color: var(--gx-navbar-low-background-color);
-
-        gx-icon {
-          --gx-icon-color: var(--gx-navbar-sub-color);
-        }
-      }
-    }
-  }
-
-  &.navbar-single-line {
-    height: var(--gx-navbar-main-height);
-  }
-
-  &.navbar-nav-only {
-    @media screen and (max-width: $gx-xsmall-breakpoint) {
-      height: 0;
-
-      .gx-navbar-line-1,
-      .gx-navbar-line-2 {
-        height: 0;
-        overflow: hidden;
+        @include navbar-button-default-active-color();
       }
     }
   }

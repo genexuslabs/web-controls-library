@@ -1,0 +1,74 @@
+// - - - - - - - - - - - - - - - -
+//            gx-navbar
+// - - - - - - - - - - - - - - - -
+$gx-navbar-main-height: var(--gx-navbar-main-height, 60px);
+$gx-navbar-sub-height: 48px;
+
+$gx-navbar-active-background-color: #e0e0e0e0;
+$gx-navbar-active-color: black;
+
+@mixin navbar-button-default-active-color() {
+  background-color: $gx-navbar-active-background-color;
+  color: $gx-navbar-active-color;
+}
+
+// - - - - - - - - - - - - - - - -
+//           Breakpoints
+// - - - - - - - - - - - - - - - -
+$gx-xsmall-breakpoint: 768px;
+$gx-xsmall-breakpoint-plus-1: 769px;
+$gx-vertical-targets-breakpoint: 1200px;
+$gx-vertical-targets-breakpoint-plus-1: $gx-vertical-targets-breakpoint + 1px;
+
+// - - - - - - - - - - - - - - - -
+//             Layout
+// - - - - - - - - - - - - - - - -
+$gx-vertical-target-width: 320px;
+
+// - - - - - - - - - - - - - - - -
+//         Overflow Style
+// - - - - - - - - - - - - - - - -
+$default-overflow-style: visible;
+
+// - - - - - - - - - - - - - - - -
+//             z-index
+// - - - - - - - - - - - - - - - -
+$base-z-index: 100;
+$z-index-1: $base-z-index + 1;
+$z-index-2: $base-z-index + 2;
+$z-index-3: $base-z-index + 3;
+$z-index-4: $base-z-index + 4;
+$z-index-5: $base-z-index + 5;
+$z-index-6: $base-z-index + 6;
+$z-index-7: $base-z-index + 7;
+$z-index-8: $base-z-index + 8;
+$z-index-9: $base-z-index + 9;
+$z-index-10: $base-z-index + 10;
+$z-index-11: $base-z-index + 11;
+$z-index-12: $base-z-index + 12;
+
+$z-index-gx-message: $z-index-12;
+
+// Modal message
+$z-index-gx-modal-alert: $z-index-11;
+
+$z-index-gx-progress-bar: $z-index-10;
+
+// Popup
+$z-index-gx-modal-popup: $z-index-9;
+
+// Vertical target (asides) when HRP is on
+$z-index-gx-layout-vertical-header-row-pattern: $z-index-8;
+
+$z-index-gx-navbar-item: $z-index-7;
+$z-index-gx-navbar: $z-index-6;
+
+$z-index-gx-layout-vertical: $z-index-5;
+$z-index-gx-layout-mask: $z-index-4;
+
+// Card header. Its items should be above the layout and below of the navbar and asides
+$z-index-gx-card-header: $z-index-3;
+
+// Modal used by another control
+$z-index-gx-modal-dialog: $z-index-2;
+$z-index-gx-layout: $z-index-1;

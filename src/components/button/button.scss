@@ -1,39 +1,109 @@
 @import "../common/_base";
-@import "../common/_image-position";
-@import "../renders/bootstrap/button/button-render";
+@import "../common/common-styling-config";
 
-gx-button {
-  @include visibility(inline-flex);
+@include visibility-shadow-DOM(grid);
 
+:host {
+  /**
+   * @prop --gx-button-image-size: Button image size
+   * (16px by default)
+   */
   --gx-button-image-size: 16px;
-  margin-top: var(--margin-top);
-  margin-right: var(--margin-right);
-  margin-bottom: var(--margin-bottom);
-  margin-left: var(--margin-left);
 
-  vertical-align: middle;
+  /**
+   * @prop --gx-button-image-margin: Button image margin
+   * (0px by default)
+   */
+  --gx-button-image-margin: 0px;
 
-  & > button.gx-button {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    align-items: center;
-    justify-content: center;
+  --elevation: 0;
 
-    & > img {
-      height: var(--gx-button-image-size);
-      width: var(--gx-button-image-size);
-      object-fit: contain;
-    }
+  // Default width and height (flex: 1 and align-self: stretch)
+  --width: 1;
+  --height: stretch;
 
-    &:not(:disabled):not(.disabled) {
-      &:focus,
-      &:active:focus {
-        box-shadow: none;
-      }
-    }
+  @include elevation();
+  place-items: center;
+  align-content: center;
+  justify-content: center;
+  line-height: 1.5em;
+
+  // Takes "flex: 1" value when the --width is not defined
+  flex: var(--width);
+
+  // Takes "align-self: stretch" value when the --height is not defined
+  align-self: var(--height);
+
+  max-width: var(--width);
+  height: var(--height);
+
+  // Background image properties
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  overflow: hidden;
+
+  // Remove outline of the focus state
+  outline: none;
+
+  // Reset inherited "pointer-events: none" from gx-canvas-cell
+  pointer-events: auto;
+
+  // Avoid zooming on double tap
+  touch-action: manipulation;
+
+  // Remove text selection on double click
+  user-select: none;
+
+  @include transition-properties();
+}
+
+:host(.empty-caption) {
+  --gx-button-image-size: 100%;
+}
+
+:host(.disabled) {
+  pointer-events: none;
+}
+
+// - - - - - - - - - - - - - - - -
+//        Image positioning
+// - - - - - - - - - - - - - - - -
+:host(.gx-image-position--before),
+:host(.gx-image-position--after) {
+  grid-auto-flow: column;
+}
+
+// Correctly place the caption
+:host(.gx-image-position--before),
+:host(.gx-image-position--above) {
+  & > .caption {
+    order: 1;
+  }
+}
+
+:host(.gx-image-position--behind) {
+  ::slotted(img) {
+    position: absolute;
   }
 
-  @include imagePosition("button.gx-button", ".gx-button--disabled");
+  > .caption {
+    z-index: 1;
+  }
+}
+
+.caption {
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Customize images
+::slotted(img) {
+  width: var(--gx-button-image-size);
+  height: var(--gx-button-image-size);
+  margin: var(--gx-button-image-margin);
+  object-fit: contain;
 }

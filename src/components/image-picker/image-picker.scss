@@ -1,0 +1,220 @@
+@import "../common/_base";
+@import "../common/common-styling-config";
+
+gx-image-picker {
+  /**
+   * @prop --gx-image-picker-icon-background-color: Icon background color of the image picker button.
+   */
+  --gx-image-picker-icon-background-color: #efefefc0;
+
+  /**
+   * @prop --gx-image-picker-icon-background-color: Icon background color of the image picker button in light mode.
+   */
+  --gx-image-picker-icon-background-color--light: #efefefc0;
+
+  /**
+   * @prop --gx-image-picker-icon-background-color: Icon background color of the image picker button in dark mode.
+   */
+  --gx-image-picker-icon-background-color--dark: #22222280;
+
+  /**
+   * @prop --gx-image-picker-icon-color: Icon color of the image picker button.
+   */
+  --gx-image-picker-icon-color: black;
+
+  /**
+   * @prop --gx-image-picker-icon-color: Icon color of the image picker button in light mode.
+   */
+  --gx-image-picker-icon-color--light: black;
+
+  /**
+   * @prop --gx-image-picker-icon-color: Icon color of the image picker button in dark mode.
+   */
+  --gx-image-picker-icon-color--dark: #fff;
+
+  @media (prefers-color-scheme: light) {
+    // Color
+    --gx-image-picker-icon-color: var(--gx-image-picker-icon-color--light);
+
+    // Background color
+    --gx-image-picker-icon-background-color: var(
+      --gx-image-picker-icon-background-color--light
+    );
+  }
+
+  @media (prefers-color-scheme: dark) {
+    // Color
+    --gx-image-picker-icon-color: var(--gx-image-picker-icon-color--dark);
+
+    // Background color
+    --gx-image-picker-icon-background-color: var(
+      --gx-image-picker-icon-background-color--dark
+    );
+  }
+
+  display: flex;
+  flex: 1;
+  align-self: stretch;
+  pointer-events: none;
+
+  & > gx-image > .gx-image-container > .image-picker-state-container {
+    display: flex;
+    align-items: stretch;
+    position: absolute;
+    right: 2px; // Neecessary since the button has box-shadow when focused
+    bottom: 2px;
+    min-width: 30px;
+    min-height: 30px;
+    border-radius: 50%;
+
+    & > .image-picker-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      background-color: var(--gx-image-picker-icon-background-color);
+      border: unset;
+      border-radius: 50%;
+      padding: 0;
+      pointer-events: all;
+      outline: none;
+      transition-property: background-color, color, box-shadow, filter;
+      transition-duration: $transition-duration;
+
+      &:hover {
+        @include hover-style();
+      }
+
+      &:focus {
+        box-shadow: 0 0 0px 2px #000000c0;
+      }
+
+      &:active {
+        @include active-style();
+      }
+
+      &[disabled] {
+        @include disabled-style();
+        pointer-events: none;
+      }
+
+      & > .image-icon {
+        width: 24px;
+        height: 24px;
+        fill: var(--gx-image-picker-icon-color);
+      }
+    }
+
+    & > .loading-image {
+      width: 100%;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: #60606080;
+      border-left-color: #60606080;
+      animation: rotate-loading-image 0.6s linear infinite;
+    }
+  }
+
+  & > gx-modal {
+    &::part(dialog) {
+      max-width: 512px;
+    }
+
+    & > .body-container {
+      display: flex;
+      align-content: space-between;
+      justify-content: center;
+      flex-wrap: wrap;
+      background-color: inherit;
+      width: 100%;
+
+      & > .picker-container {
+        display: flex;
+        position: relative;
+        background-color: var(--gx-modal-accent-color);
+        box-shadow: 0 0 9px var(--gx-modal-accent-color);
+        color: var(--accent-contrast-color, inherit);
+        overflow: hidden;
+        padding: 0;
+
+        & > .file-picker {
+          position: absolute;
+          width: 100%;
+          height: 0;
+          opacity: 0;
+        }
+
+        & > .download {
+          fill: currentColor;
+          width: 0.9em;
+          margin-inline-start: 16px;
+        }
+
+        & > .custom-file-picker {
+          padding: 8px 16px 8px 12px;
+          pointer-events: none;
+        }
+      }
+
+      & > .remove-image-button {
+        display: flex;
+        appearance: none;
+        background-color: inherit;
+        border: 1px solid;
+        box-shadow: 0 0 9px -3px var(--gx-modal-accent-color);
+        color: var(--gx-modal-accent-color);
+        font-size: inherit;
+        outline: 0;
+        padding: 8px 16px 8px 13px;
+
+        & > .trash-can {
+          fill: currentColor;
+          width: 1.1em;
+          margin-inline-end: 8px;
+        }
+      }
+
+      & > .picker-container,
+      & > .remove-image-button {
+        display: flex;
+        align-items: center;
+        border-radius: 8px;
+        cursor: pointer;
+        min-height: 2em;
+        margin: 16px 16px 8px 16px;
+        transition: filter $transition-duration;
+
+        &:active {
+          @include active-style();
+        }
+      }
+    }
+
+    & > .cancel-button {
+      display: flex;
+      align-items: center;
+      appearance: none;
+      background-color: transparent;
+      border: 1px solid;
+      border-radius: 8px;
+      box-shadow: 0 0 9px -3px var(--gx-modal-accent-color);
+      color: var(--gx-modal-accent-color);
+      cursor: pointer;
+      padding: 8px 16px;
+      transition: filter $transition-duration;
+
+      &:active {
+        @include active-style();
+      }
+    }
+  }
+}
+
+// - - - - - - - - - - - - - - - -
+//           Key frames
+// - - - - - - - - - - - - - - - -
+@keyframes rotate-loading-image {
+  to {
+    transform: rotate(360deg);
+  }
+}

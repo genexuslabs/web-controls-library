@@ -19,32 +19,6 @@ export class RadioOptionRender implements Renderer {
     return this.component.element.querySelector("[data-native-element]");
   }
 
-  private getCssClasses() {
-    const classList = [];
-
-    classList.push("custom-control-input");
-
-    if (this.component.cssClass) {
-      classList.push(this.component.cssClass);
-    }
-
-    if (!this.component.caption) {
-      classList.push("position-static");
-    }
-
-    return classList.join(" ");
-  }
-
-  private getInnerControlContainerClass() {
-    const classList = ["custom-control", "custom-radio"];
-
-    if (this.component.disabled) {
-      classList.push("disabled");
-    }
-
-    return classList.join(" ");
-  }
-
   handleClick() {
     this.checkedChanged(true);
   }
@@ -94,7 +68,7 @@ export class RadioOptionRender implements Renderer {
 
     const attris = {
       "aria-disabled": radioOption.disabled ? "true" : undefined,
-      class: this.getCssClasses(),
+      class: "hidden-input",
       "data-native-element": "",
       disabled: radioOption.disabled,
       id: this.inputId,
@@ -108,14 +82,22 @@ export class RadioOptionRender implements Renderer {
       for: attris.id
     };
 
-    return [
-      <gx-bootstrap />,
-      <div class={this.getInnerControlContainerClass()}>
-        <input {...attris} type="radio" checked={radioOption.checked} />
-        <label class="custom-control-label" {...forAttris}>
+    return (
+      <div class="option-and-label-container" data-part="option-control">
+        <div class="option-container">
+          <input {...attris} type="radio" checked={radioOption.checked} />
+
+          <label class="custom-option"></label>
+
+          <svg viewBox="-8 -8 16 16">
+            <circle r="3"></circle>
+          </svg>
+        </div>
+
+        <label class="label-of-the-option" {...forAttris}>
           {radioOption.caption}
         </label>
       </div>
-    ];
+    );
   }
 }

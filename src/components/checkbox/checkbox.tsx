@@ -12,6 +12,9 @@ import {
 } from "@stencil/core";
 import { FormComponent } from "../common/interfaces";
 
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
+
 @Component({
   shadow: false,
   styleUrl: "checkbox.scss",
@@ -29,23 +32,6 @@ export class CheckBox implements FormComponent {
   @Element() element: HTMLGxCheckboxElement;
 
   /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
-
-  /**
-   * This attribute lets you specify if the element is disabled.
-   * If disabled, it will not fire any user interaction related event
-   * (for example, click event).
-   */
-  @Prop() readonly disabled = false;
-
-  /**
    * Specifies the label of the checkbox.
    */
   @Prop() readonly caption: string;
@@ -56,14 +42,43 @@ export class CheckBox implements FormComponent {
   @Prop({ mutable: true }) checked: boolean;
 
   /**
-   * The value of the control.
-   */
-  @Prop({ mutable: true }) value: string;
-
-  /**
    * The value when the checkbox is 'on'
    */
   @Prop() readonly checkedValue: string;
+
+  /**
+   * A CSS class to set as the `gx-checkbox` element class.
+   */
+  @Prop() readonly cssClass: string;
+
+  /**
+   * This attribute lets you specify if the element is disabled.
+   * If disabled, it will not fire any user interaction related event
+   * (for example, click event).
+   */
+  @Prop() readonly disabled = false;
+
+  /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
+
+  /**
+   * This attribute lets you specify how this element will behave when hidden.
+   *
+   * | Value        | Details                                                                     |
+   * | ------------ | --------------------------------------------------------------------------- |
+   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
+   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+   */
+  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
+
+  /**
+   * This attribute indicates that the user cannot modify the value of the control.
+   * Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly)
+   * attribute for `input` elements.
+   */
+  @Prop() readonly readonly = false;
 
   /**
    * The value when the checkbox is 'off'
@@ -71,9 +86,9 @@ export class CheckBox implements FormComponent {
   @Prop() readonly unCheckedValue: string;
 
   /**
-   * A CSS class to set as the inner `input` element class.
+   * The value of the control.
    */
-  @Prop() readonly cssClass: string;
+  @Prop({ mutable: true }) value: string;
 
   /**
    * The `input` event is emitted when a change to the element's value is committed by the user.
@@ -114,6 +129,27 @@ export class CheckBox implements FormComponent {
   }
 
   render() {
-    return <Host>{this.renderer.render()}</Host>;
+    // Styling for gx-checkbox control.
+    const classes = getClasses(this.cssClass);
+
+    return (
+      <Host
+        class={{
+          [this.cssClass]: !!this.cssClass,
+          [classes.vars]: true,
+          disabled: this.disabled
+        }}
+        // Mouse pointer to indicate action
+        data-has-action={this.highlightable && !this.disabled ? "" : undefined}
+        // Add focus to the control through sequential keyboard navigation and visually clicking
+        tabindex={
+          this.highlightable && this.readonly && !this.disabled
+            ? "0"
+            : undefined
+        }
+      >
+        {this.renderer.render()}
+      </Host>
+    );
   }
 }

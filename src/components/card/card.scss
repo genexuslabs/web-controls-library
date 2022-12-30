@@ -1,6 +1,16 @@
-@import "../common/_base";
-@import "../renders/bootstrap/card/card-render";
+@import "../common/layout-styling-config";
 
-gx-card {
-  @include visibility(block);
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+// WA to display gx-action-sheet on top of gx-layout's targets. As the
+// gx-action-sheets are inside the gx-layout (in particular, inside the
+// gx-card) but they have to be displayed above the gx-navbar, we have to
+// "delay" the inheritance of the gx-layout's z-index, to make
+// gx-action-sheet z-index work the in the main app layer.
+::slotted([slot="body"]) {
+  z-index: $z-index-gx-layout;
 }

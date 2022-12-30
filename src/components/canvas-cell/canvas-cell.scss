@@ -1,6 +1,6 @@
-@import "../common/_base";
-
-gx-canvas-cell {
+:host {
   position: absolute;
-  @include containerCell();
+
+  // Inherit from the parent element (.canvas-cells-container)
+  overflow: var(--gx-overflow-style);
 }

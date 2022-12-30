@@ -22,12 +22,14 @@
 
 ### Used by
 
+- [gx-card-header](../card-header)
 - [gx-navbar](../navbar)
 
 ### Graph
 
 ```mermaid
 graph TD;
+  gx-card-header --> gx-icon
   gx-navbar --> gx-icon
   style gx-icon fill:#f9f,stroke:#333,stroke-width:4px
 ```

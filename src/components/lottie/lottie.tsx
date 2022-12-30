@@ -17,7 +17,7 @@ import {
 } from "../common/interfaces";
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "lottie.scss",
   tag: "gx-lottie"
 })
@@ -29,6 +29,9 @@ export class Lottie
     DisableableComponent {
   private animation: any;
   private animationTotalFrames: number;
+
+  // Refs
+  private divContainerToRenderAnimation: HTMLDivElement;
 
   @Element() element: HTMLGxLottieElement;
 
@@ -161,7 +164,7 @@ export class Lottie
     this.setAnimation();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.animation.destroy();
   }
 
@@ -174,7 +177,7 @@ export class Lottie
     this.animation = bodymovin.loadAnimation({
       animationData: this.animationData,
       autoplay: this.autoPlay,
-      container: this.element.querySelector(":scope > div"),
+      container: this.divContainerToRenderAnimation,
       loop: this.loop,
       path: this.path,
       renderer: "svg"
@@ -192,6 +195,6 @@ export class Lottie
   }
 
   render() {
-    return <div />;
+    return <div ref={el => (this.divContainerToRenderAnimation = el)} />;
   }
 }

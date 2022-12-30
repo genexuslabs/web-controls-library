@@ -1,15 +1,9 @@
-@import "../common/_base";
-
-gx-tab-page {
-  @include visibility(flex);
+:host {
+  display: none;
   flex: 1;
   flex-direction: column;
+}
 
-  &.gx-tab-page {
-    display: none;
-
-    &--active {
-      display: flex;
-    }
-  }
+:host(.gx-tab-page--selected) {
+  display: flex;
 }

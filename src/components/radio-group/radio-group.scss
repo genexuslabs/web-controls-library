@@ -1,10 +1,23 @@
 @import "../common/_base";
+@import "../common/common-styling-config";
 
 gx-radio-group {
-  @include visibility(block);
+  @include elevation();
+  @include visibility(flex);
+  flex: 1;
+  @include transition-properties();
 
-  &[direction="horizontal"] > gx-radio-option {
-    display: inline-flex;
-    margin-right: 1rem;
+  &[direction="vertical"] {
+    flex-direction: column;
+  }
+
+  &[direction="horizontal"] {
+    flex-wrap: wrap;
+
+    // WA to override the default vertical alignment when readonly="true".
+    // Default values must be configured in one file and not be separated into
+    // multiple scss files. For example, some defaults are set in the
+    // _base.scss and components/form-field/form-field.scss files
+    align-content: flex-start;
   }
 }

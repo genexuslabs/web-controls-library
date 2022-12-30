@@ -1,26 +1,38 @@
-import {
-  Component,
-  Element,
-  Host,
-  Prop,
-  h,
-  Event,
-  EventEmitter
-} from "@stencil/core";
+import { Component, Element, Host, Prop, h } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+
+// Class transforms
+import {
+  getClasses,
+  HIGHLIGHT_CLASS_NAME
+} from "../common/css-transforms/css-transforms";
 
 @Component({
   shadow: true,
   styleUrl: "navbar-item.scss",
   tag: "gx-navbar-item"
 })
-export class NavBarItem implements GxComponent {
+export class NavBarItem implements GxComponent, HighlightableComponent {
   @Element() element: HTMLGxNavbarItemElement;
 
   /**
    * Indicates if the navbar item is the active one (for example, when the item represents the current page)
    */
   @Prop() readonly active = false;
+
+  /**
+   * A CSS class to set as the `gx-navbar-item` element class.
+   */
+  @Prop() readonly cssClass: string;
+
+  /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = true;
 
   /**
    * This attribute lets you specify the URL of the navbar item.
@@ -33,26 +45,19 @@ export class NavBarItem implements GxComponent {
   @Prop() readonly iconAltText = "";
 
   /**
-   * This attribute lets you specify the URL of an icon for the navbar item.
+   * This attribute lets you specify the src attribute of an icon for the
+   * navbar item.
    */
-  @Prop() readonly iconSrc = "";
+  @Prop() readonly iconSrc: string;
 
   /**
-   * Fired after the component has been rendered in the page for the first time
+   * This attribute lets you specify the srcset attribute of an icon for the
+   * navbar item.
    */
-  @Event() navBarItemLoaded: EventEmitter;
-
-  /**
-   * Fired after the component has been removed from the page
-   */
-  @Event() navBarItemUnloaded: EventEmitter;
+  @Prop() readonly iconSrcset: string;
 
   componentDidLoad() {
-    this.navBarItemLoaded.emit(this.element);
-  }
-
-  disconnectedCallback() {
-    this.navBarItemUnloaded.emit(this.element);
+    makeHighlightable(this);
   }
 
   render() {
@@ -65,18 +70,35 @@ export class NavBarItem implements GxComponent {
           type: "button"
         };
 
+    // Styling for gx-navbar-item control.
+    const classes = getClasses(this.cssClass);
+
+    const shouldRenderImg = this.iconSrcset || this.iconSrc;
+
     return (
-      <Host>
+      <Host
+        class={{
+          "gx-default-button": !this.cssClass,
+          [this.cssClass]: !!this.cssClass,
+          [classes.vars]: true,
+          [HIGHLIGHT_CLASS_NAME]: this.active
+        }}
+        data-has-action
+      >
         <TagName
           class={{
-            item: true,
-            "item-with-icon": !!this.iconSrc,
-            "item--active": this.active
+            "navbar-item": true,
+            "navbar-item-with-icon": !!shouldRenderImg
           }}
           {...attris}
         >
-          {this.iconSrc && (
-            <img class="item-icon" src={this.iconSrc} alt={this.iconAltText} />
+          {shouldRenderImg && (
+            <img
+              class="navbar-item-icon"
+              src={this.iconSrc || undefined}
+              srcset={this.iconSrcset || undefined}
+              alt={this.iconAltText}
+            />
           )}
           <slot />
         </TagName>

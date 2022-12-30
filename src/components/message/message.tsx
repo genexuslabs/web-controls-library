@@ -1,63 +1,108 @@
-import { Component, Element, Prop, h, Host } from "@stencil/core";
-import { MessageRender } from "../renders/bootstrap/message/message-render";
+import { Component, Element, Host, Prop, State, h } from "@stencil/core";
+import { Component as GxComponent } from "../common/interfaces";
 import {
-  Component as GxComponent,
-  VisibilityComponent
-} from "../common/interfaces";
+  DismissableComponent,
+  makeDismissable,
+  SHOULD_DISMISS,
+  STOP_DISMISS
+} from "../common/motion-handlers/dismissable";
+import { setContrastColor } from "../common/utils";
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "message.scss",
   tag: "gx-message"
 })
-export class Message implements GxComponent, VisibilityComponent {
-  constructor() {
-    this.renderer = new MessageRender(this);
-  }
+export class Message implements GxComponent, DismissableComponent {
+  private interval: NodeJS.Timer = null;
+  private intervalDuration: number;
 
-  private renderer: MessageRender;
+  private presented = false;
 
   @Element() element: HTMLGxMessageElement;
 
   /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+   * A CSS class to set as the `gx-message` element class.
    */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
+  @Prop() readonly cssClass: string = null;
 
   /**
-   * Show a button for closing the meesage box
-   */
-  @Prop() readonly showCloseButton: boolean;
-
-  /**
-   * Text for the close button.
-   */
-  @Prop() readonly closeButtonText: string;
-
-  /**
-   * Type of the button:
-   * * `info`: Information message
-   * * `warning`: Warning Message
-   * * `error`: Error message
-   */
-  @Prop() readonly type: "info" | "warning" | "error";
-
-  /**
-   * The time in miliseconds before the message is automatically dismissed.
+   * The time in seconds before the message is automatically dismissed.
    * If no duration is specified, the message will not be automatically dismissed.
    */
-  @Prop() readonly duration: number;
+  @Prop() readonly duration: number = 0;
+
+  /**
+   * This attribute lets you identify the message.
+   * If `messageId == null`, the message will not be presented.
+   */
+  @Prop({ mutable: true }) messageId: string = null;
+
+  /**
+   * This attribute lets you specify the text of the message.
+   */
+  @Prop() messageText: string = null;
+
+  @State() triggerDismiss = false;
+
+  componentDidRender() {
+    // Contrast for gx-message's background-color
+    setContrastColor(
+      this.element,
+      this.element,
+      "background-color",
+      "--contrast-color"
+    );
+  }
 
   componentDidLoad() {
-    this.renderer.componentDidLoad();
+    makeDismissable(this);
   }
 
   render() {
-    return <Host>{this.renderer.render({ default: <slot /> })}</Host>;
+    const wasPreviouslyPresented = this.presented;
+    this.presented =
+      this.messageId != null &&
+      !this.element.classList.contains(SHOULD_DISMISS);
+
+    this.intervalDuration = this.duration;
+
+    // If the message should be dismissed because a dismiss gesture was performed
+    if (this.element.classList.contains(SHOULD_DISMISS)) {
+      clearInterval(this.interval);
+      this.element.classList.remove(STOP_DISMISS, SHOULD_DISMISS);
+    }
+
+    // Check if should not set the interval
+    if (this.duration == 0) {
+      clearInterval(this.interval);
+
+      // If duration > 0, check if should set the interval
+    } else if (!wasPreviouslyPresented && this.presented) {
+      this.interval = setInterval(() => {
+        // Do not dismiss if the message is being dragged
+        if (this.element.classList.contains(STOP_DISMISS)) {
+          this.intervalDuration = this.duration;
+
+          // Decrement the duration
+        } else if (this.intervalDuration > 0) {
+          this.intervalDuration--;
+        } else {
+          // Since each message has its unique id, we model the dismiss with
+          // the null id
+          this.messageId = null;
+          clearInterval(this.interval);
+        }
+      }, 1000);
+    }
+
+    return (
+      <Host
+        role="alert"
+        class={{ [this.cssClass]: !!this.cssClass, presented: this.presented }}
+      >
+        {this.presented && this.messageText}
+      </Host>
+    );
   }
 }

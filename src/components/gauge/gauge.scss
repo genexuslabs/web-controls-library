@@ -1,0 +1,413 @@
+@import "../common/_base";
+@import "../common/_common-styling-config";
+
+gx-gauge {
+  /**
+  * @prop --center-circle-text-color:
+   * Define the color of the center text in `circle` gauge type.
+   * (rgba(44, 44, 44, 1) by default)
+  */
+  --center-circle-text-color: rgba(44, 44, 44, 1);
+
+  /**
+  * @prop --center-circle-background-color:
+   * Define the color of the center background text in `circle` gauge type.
+   * (rgba(255, 255, 255, 0) by default)
+  */
+  --center-circle-background-color: rgba(255, 255, 255, 0);
+
+  /**
+  * @prop --indicator-circle-background-color:
+   * Define the color of the background value indicator in `circle` gauge type.
+   * (rgba(44, 44, 44, 1) by default)
+  */
+  --indicator-circle-background-color: rgba(44, 44, 44, 1);
+
+  /**
+  * @prop --stroke-linecap:
+   * Defines the shape to be used at the end of open subpaths when they are stroked.
+   * (initial by default)
+  */
+  --stroke-linecap: initial;
+
+  /**
+  * @prop --stroke-animation-duration:
+   * Sets the duration of the stroke transition animation the first time the component is loaded.
+   * (1s by default)
+  */
+  --stroke-animation-duration: 1s;
+
+  /**
+  * @prop --value-text-color:
+   * Define the color of the value text in `line` gauge type.
+   * (rgba(44, 44, 44, 1) by default)
+  */
+  --value-text-color: rgba(44, 44, 44, 1);
+
+  /**
+  * @prop --value-text-background-color:
+   * Define the background-color of the value text in `line` gauge type.
+   * (rgba(255, 255, 255, 0.800) by default)
+  */
+  --value-text-background-color: rgba(255, 255, 255, 0.5);
+
+  /**
+  * @prop --max-value-background-color:
+   * Set the color of maximum value display background in `line` gauge type.
+   * (rgba(255, 255, 255, 0.800) by default)
+  */
+  --max-value-background-color: rgba(255, 255, 255, 0.5);
+
+  /**
+  * @prop --max-value-text-color:
+   * Set the color of maximum value display text in `line` gauge type.
+   * (rgba(40, 40, 40, 0.8) by default)
+  */
+  --max-value-text-color: rgba(40, 40, 40, 0.8);
+
+  /**
+  * @prop --min-value-background-color:
+   * Set the color of minimum value display background in `line` gauge type.
+   * (rgba(255, 255, 255, 0.8000) by default)
+  */
+  --min-value-background-color: rgba(255, 255, 255, 0.5);
+
+  /**
+  * @prop --min-value-text-color:
+   * Set the color of minimum value display text in `line` gauge type.
+   * (rgba(40, 40, 40, 0.8) by default)
+  */
+  --min-value-text-color: rgba(40, 40, 40, 0.8);
+
+  /**
+  * @prop --indicator-line-background-color:
+   * Set the color of background value indicator in `line` gauge type.
+   * (rgba(44, 44, 44, 1) by default)
+  */
+  --indicator-line-background-color: rgba(44, 44, 44, 1);
+
+  /**
+  * @prop empty-range-background-color:
+   * Sets the color of background of the empty range in both gauge types.
+   * (rgba(192, 192, 192, 0.5) by default)
+  */
+  --empty-range-background-color: rgba(192, 192, 192, 0.5);
+
+  // Used to customize the transitions for background-color and fore color
+  $transition-color-config: background-color $transition-duration,
+    color $transition-duration;
+
+  @mixin flex-centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /*  Used to implement responsive alignment in the .current-value and
+      .indicator for line gauge type.
+   */
+  @mixin alignment {
+    &.center-align {
+      margin-left: var(--percentage, 0);
+      transform: translateX(-50%);
+    }
+
+    &.right-align {
+      margin-left: 100%;
+      transform: translateX(-100%);
+    }
+  }
+
+  /*  Useful when the circle gauge has at least 2 childs. 
+      In each child, c, it sets a delay of c * --stroke-animation-duration
+      to keep the stroke-dasharray at the starting position.
+  */
+  @keyframes delay-animation-circle {
+    0% {
+      stroke-linecap: initial;
+      stroke-dasharray: var(--stroke-dasharray-initial);
+    }
+
+    100% {
+      stroke-linecap: initial;
+      stroke-dasharray: var(--stroke-dasharray-initial);
+    }
+  }
+
+  @keyframes loading-animation-circle {
+    0% {
+      stroke-dasharray: var(--stroke-dasharray-initial);
+    }
+
+    100% {
+      stroke-dasharray: var(--stroke-dasharray);
+    }
+  }
+
+  /*  Useful when the line gauge has at least 2 childs. 
+      In each child, c, it sets a delay of c * --stroke-animation-duration
+      to keep the stroke-dasharray at the starting position.
+  */
+  @keyframes delay-animation-line {
+    0% {
+      width: 0;
+    }
+
+    100% {
+      width: 0;
+    }
+  }
+
+  @keyframes loading-animation-line {
+    0% {
+      width: 0;
+    }
+
+    100% {
+      width: var(--range-width);
+    }
+  }
+
+  // Animates the first load of the ranges in the line gauge type
+  @mixin animate-loading-of-line-gauge-childs {
+    animation: delay-animation-line
+        calc(var(--child-number) * var(--stroke-animation-duration)),
+      loading-animation-line var(--stroke-animation-duration) ease-in-out
+        calc(var(--child-number) * var(--stroke-animation-duration));
+  }
+
+  // This mixin is used to adjust the range labels based on the fontSize value
+  @mixin labels-container(
+    $align-items: center,
+    $position: relative,
+    $height: 100%,
+    $overflow: unset,
+    $transition: null
+  ) {
+    .labels-container {
+      display: flex;
+      align-items: $align-items;
+      position: $position;
+      width: 100%;
+      height: $height;
+      overflow: $overflow;
+
+      .labels-subcontainer {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 1.0625em;
+
+        .range-label {
+          @include flex-centered;
+          position: absolute;
+          line-height: 1.125em;
+          width: var(--range-width);
+          max-height: 100%;
+          filter: brightness(0.5);
+          text-align: center;
+          overflow: hidden;
+
+          // Animates the first load of the ranges
+          @include animate-loading-of-line-gauge-childs;
+
+          @if $transition == null {
+            transition: height $transition-duration, width $transition-duration,
+              font-size $transition-duration;
+          }
+          @if $transition != null {
+            transition: width $transition-duration;
+          }
+        }
+      }
+    }
+  }
+
+  // gx-gauge properties
+  display: flex;
+  position: relative;
+  width: 100%;
+  @include transition-properties();
+
+  .line-gauge-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: fit-content;
+
+    .current-value-container {
+      display: flex;
+      flex-wrap: wrap;
+      position: relative;
+      width: 100%;
+      height: 1.25em;
+      transition: height $transition-duration;
+
+      .current-value {
+        @include alignment;
+        height: 80%;
+        line-height: 1em;
+        font-weight: 700;
+        z-index: 1;
+        transition: margin-left $transition-duration,
+          transform $transition-duration, font-size $transition-duration,
+          $transition-color-config;
+        background-color: var(--value-text-background-color);
+        color: var(--value-text-color);
+      }
+
+      & + .ranges-labels-and-indicator-container {
+        .ranges-and-labels-container {
+          margin-top: 4px;
+        }
+      }
+    }
+
+    .ranges-labels-and-indicator-container {
+      display: flex;
+      position: relative;
+      width: 100%;
+      transition: width $transition-duration, height $transition-duration;
+
+      .indicator {
+        @include alignment;
+        display: block;
+        position: absolute;
+        height: 100%;
+        width: 1.125%;
+        z-index: 1;
+        transition: margin-left $transition-duration,
+          transform $transition-duration, background-color $transition-duration;
+        background-color: var(--indicator-line-background-color);
+      }
+
+      .ranges-and-labels-container {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        background-color: var(--empty-range-background-color);
+        transition: background-color $transition-duration;
+
+        .range {
+          @include flex-centered;
+          width: var(--range-width);
+          height: 100%;
+          position: absolute;
+          transition: width $transition-duration;
+
+          // Animates the first load of the ranges
+          @include animate-loading-of-line-gauge-childs;
+        }
+
+        @include labels-container;
+      }
+    }
+
+    .min-max-and-labels-container {
+      display: flex;
+      align-items: flex-end;
+      position: relative;
+      width: 100%;
+      height: 1.25em;
+      transition: width $transition-duration, height $transition-duration,
+        font-size $transition-duration;
+
+      .min-max-values-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        height: 1em;
+        font-weight: 500;
+        z-index: 1;
+        pointer-events: none;
+
+        .min-value,
+        .max-value {
+          line-height: 1em;
+          pointer-events: all;
+          transition: $transition-color-config;
+        }
+
+        .max-value {
+          background-color: var(--max-value-background-color);
+          color: var(--max-value-text-color);
+        }
+
+        .min-value {
+          background-color: var(--min-value-background-color);
+          color: var(--min-value-text-color);
+        }
+      }
+
+      @include labels-container(baseline, absolute, 1.125em, hidden, " ");
+    }
+  }
+
+  .circle-gauge-container {
+    @include flex-centered;
+    align-self: stretch;
+    position: relative;
+
+    .svg-and-indicator-container {
+      display: flex;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      height: 100%;
+
+      svg {
+        width: 100%;
+        height: 100%;
+        min-width: 5px;
+        min-height: 5px;
+
+        .circle-range {
+          fill: none;
+          stroke-linecap: var(--stroke-linecap, initial);
+          transition: stroke $transition-duration,
+            stroke-dasharray $transition-duration;
+
+          // Animates the first load of the ranges
+          animation: delay-animation-circle
+              calc(var(--child-number) * var(--stroke-animation-duration)),
+            loading-animation-circle var(--stroke-animation-duration)
+              ease-in-out
+              calc(var(--child-number) * var(--stroke-animation-duration));
+        }
+
+        .background-circle {
+          fill: none;
+          stroke: var(--empty-range-background-color);
+          transition: stroke $transition-duration;
+        }
+      }
+
+      .indicator-container {
+        position: absolute;
+        width: 100%;
+        height: 1.125%;
+        transition: transform $transition-duration;
+
+        .indicator {
+          height: 100%;
+          transition: background-color $transition-duration;
+          background-color: var(--indicator-circle-background-color);
+        }
+      }
+    }
+
+    .current-value-container {
+      position: absolute;
+
+      & > span.current-value {
+        display: block;
+        line-height: 100%;
+        padding-bottom: 0.125em;
+        font-weight: 900;
+        transition: $transition-color-config;
+        color: var(--center-circle-text-color);
+        background-color: var(--center-circle-background-color);
+      }
+    }
+  }
+}

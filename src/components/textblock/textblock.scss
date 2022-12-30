@@ -1,13 +1,38 @@
 @import "../common/_base";
+@import "../common/_common-styling-config";
 
-gx-textblock {
+@include line-clamp();
+@include visibility-shadow-DOM(inline-flex);
+
+:host(.disabled) {
+  pointer-events: none;
+}
+
+:host {
   --elevation: 0;
+  @include elevation();
+
   flex: 1;
+  align-self: stretch;
+  text-align: start; // Default alignment which supports RTL
 
-  @include visibility(inline-flex);
+  // Reset "pointer-events: none" inherited from gx-canvas-cell
+  pointer-events: auto;
 
-  & > .content {
-    flex: 1;
-    @include elevation();
+  // Remove outline of the focus state
+  outline: none;
+
+  @include transition-properties();
+}
+
+.gx-textblock-container {
+  display: flex;
+  align-items: flex-start;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+
+  & > .gx-textblock-content {
+    width: 100%;
   }
 }

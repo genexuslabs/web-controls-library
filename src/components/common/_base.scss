@@ -1,5 +1,3 @@
-$gx-xsmall-breakpoint: 768px;
-
 @mixin visibility($display) {
   display: $display;
 
@@ -13,25 +11,29 @@ $gx-xsmall-breakpoint: 768px;
   }
 }
 
-@mixin overflowMode() {
-  &[overflow-mode="clip"] {
-    overflow: hidden;
+// Same as "visibility" mixin, but for shadow DOM components
+@mixin visibility-shadow-DOM($display) {
+  :host {
+    display: $display;
   }
-  &[overflow-mode="scroll"] {
-    overflow: auto;
+
+  :host([hidden]) {
+    display: none !important;
+  }
+
+  :host([hidden][invisible-mode="keep-space"]) {
+    display: $display !important;
+
+    // "!important" is needed to avoid "visibility: inherit" from "hydrated" class
+    visibility: hidden !important;
   }
 }
 
-@mixin containerCell() {
-  @include visibility(flex);
+@mixin align-inner-control-in-cell() {
+  display: flex;
 
-  @include overflowMode();
-
-  &:not([align]),
   &[align="left"] {
-    & > * {
-      flex: 1;
-    }
+    justify-content: flex-start;
   }
 
   &[align="center"] {
@@ -51,8 +53,132 @@ $gx-xsmall-breakpoint: 768px;
   }
 }
 
-@mixin elevation() {
-  box-shadow: 0 calc(var(--elevation) * 0.125rem)
-    calc(var(--elevation) * 0.25rem)
-    rgba(0, 0, 0, calc(var(--elevation) * 0.075));
+@mixin elevation($shadowPosition: bottom) {
+  @if $shadowPosition == bottom {
+    box-shadow: 0
+      calc(var(--elevation) * 0.125rem)
+      calc(var(--elevation) * 0.25rem)
+      rgba(0, 0, 0, calc(var(--elevation) * 0.075));
+  }
+
+  @if $shadowPosition == top {
+    box-shadow: 0
+      calc(var(--elevation) * -0.125rem)
+      calc(var(--elevation) * 0.25rem)
+      rgba(0, 0, 0, calc(var(--elevation) * 0.075));
+  }
+}
+
+@function overflow-gradient($color, $stop: 90%, $direction: to right) {
+  @return linear-gradient(
+    $direction,
+    #{"rgba("} $color #{", 0 )"},
+    #{"rgba("} $color #{", 1 )"} $stop
+  );
+}
+
+@mixin line-clamp() {
+  .gx-line-clamp {
+    display: -webkit-box;
+    position: absolute;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--max-lines);
+    overflow: hidden;
+  }
+
+  // Used to measure the line height, in order to make the lines clampable
+  .line-measuring {
+    visibility: hidden;
+    position: absolute;
+  }
+}
+
+@mixin scss-custom-option-control($option-border-radius: 100%) {
+  $custom-option-size: min(1em, 20px);
+  $disabled-color: #a5a8aac0;
+  $transition-duration: 0.2s;
+  $transition-function: ease-in-out;
+  $space-between-option-and-label: min(0.35em, 7px);
+
+  $option-checked-color: var(--option-checked-color, #ffa7c0);
+
+  $option-border-color: var(--option-border-color, #adb5bd);
+
+  $option-highlight-color: var(--option-highlight-color, #dc354570);
+
+  .option-and-label-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+
+    .option-container {
+      display: flex;
+      padding-inline-end: $space-between-option-and-label;
+
+      .hidden-input {
+        width: $custom-option-size;
+        height: $custom-option-size;
+        opacity: 0;
+
+        &:checked {
+          & ~ .custom-option {
+            border-color: $option-checked-color;
+            background-color: $option-checked-color;
+          }
+
+          & ~ svg {
+            opacity: 100;
+          }
+        }
+
+        &:active:not(:disabled) {
+          &:not(:checked) + .custom-option {
+            border-color: $option-highlight-color;
+            background-color: $option-highlight-color;
+          }
+
+          & + .custom-option {
+            filter: brightness(85%);
+          }
+        }
+
+        &:focus + .custom-option {
+          box-shadow: 0 0 0 min(0.15em, 4px) $option-highlight-color;
+        }
+
+        &:disabled + .custom-option {
+          background-color: $disabled-color;
+        }
+      }
+
+      .custom-option {
+        position: absolute;
+        width: $custom-option-size;
+        height: $custom-option-size;
+        border: 1px solid $option-border-color;
+        border-radius: $option-border-radius;
+        margin-bottom: 0;
+        pointer-events: none;
+        transition-property: background-color, border-color, box-shadow, filter;
+        transition-duration: $transition-duration;
+        transition-timing-function: $transition-function;
+      }
+
+      svg {
+        position: absolute;
+        width: $custom-option-size;
+        height: $custom-option-size;
+        pointer-events: none;
+        z-index: 1; // Necessary?
+        opacity: 0;
+        fill: white;
+        fill-opacity: 0.75;
+      }
+    }
+
+    .label-of-the-option {
+      margin-bottom: 0;
+    }
+  }
 }

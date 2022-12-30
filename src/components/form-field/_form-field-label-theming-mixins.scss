@@ -1,0 +1,84 @@
+@import "../common/css-transforms/scss-transforms";
+
+////
+/// @group theming-mixins
+////
+
+/// Helper mixin to ease styling gx-form-field label
+/// @param {string} $label Base class of the label of the component
+/// @param {string} $label-align Determine the horizontal alignment of the label
+/// @param {string} $label-valign Determine the vertical alignment of the label
+/// @param {string} $label-width Determine the width of the label
+@mixin gx-form-field-label(
+  $label: null,
+  $label-align: null,
+  $label-valign: null,
+  $label-width: null
+) {
+  // We create a custom label class to use inside the gx-form-field. The same
+  // goes for the highlighted label class.
+  @if $label != null {
+    &#{$gx-label} {
+      @extend #{$label} !optional;
+    }
+
+    // - - - - - - - - - - Highlighted Label - - - - - - - - - -
+    &#{$gx-label-highlighted}:active {
+      @extend #{str-replace($label, ".", "%")}#{$gx-highlighted} !optional;
+    }
+  }
+
+  // - - - - - - - - - -  Label alignment  - - - - - - - - - -
+  // The default text alignment does not have a mapping, because left and
+  // right Label positioning define their default text alignment values
+  $text-align-array: (
+    Left: start,
+    Center: center,
+    Right: end,
+    Justify: start
+  );
+  $horizontal-align-array: (
+    Left: flex-start,
+    Center: center,
+    Right: flex-end,
+    Justify: flex-start
+  );
+  $vertical-align-array: (
+    Default: flex-start,
+    Top: flex-start,
+    Middle: center,
+    Bottom: flex-end
+  );
+
+  $valid-align: false;
+  $valid-valign: false;
+
+  @if $label-align != null and $label-align != Default {
+    $valid-align: true;
+  }
+
+  @if $label-valign != null {
+    $valid-valign: true;
+  }
+
+  @if $valid-align == true or $valid-valign == true {
+    @at-root #{&}#{$gx-label-container}.gx-label-container {
+      @if $valid-align == true {
+        text-align: map-get($text-align-array, $label-align);
+        justify-self: map-get($horizontal-align-array, $label-align);
+      }
+
+      @if $valid-valign == true {
+        align-items: map-get($vertical-align-array, $label-valign);
+      }
+    }
+  }
+
+  // - - - - - - - - - - -  Label width - - - - - - - - - - -
+  @if $label-width != null {
+    &#{$gx-label-width} {
+      --gx-form-field-label-width-row: #{$label-width};
+      --gx-form-field-label-width-column: #{$label-width};
+    }
+  }
+}

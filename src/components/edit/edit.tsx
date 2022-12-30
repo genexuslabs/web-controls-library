@@ -3,22 +3,34 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Method,
   Prop,
+  State,
   Watch,
-  h,
-  Host
+  h
 } from "@stencil/core";
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+
 import { EditRender } from "../renders/bootstrap/edit/edit-render";
 import { FormComponent } from "../common/interfaces";
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
+import { makeLinesClampable } from "../common/line-clamp";
+
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
+
+const AUTOFILL_START_ANIMATION_NAME = "AutoFillStart";
 
 @Component({
   shadow: false,
   styleUrl: "edit.scss",
   tag: "gx-edit"
 })
-export class Edit implements FormComponent {
+export class Edit implements FormComponent, HighlightableComponent {
   constructor() {
     this.renderer = new EditRender(this, {
       handleChange: this.handleChange.bind(this),
@@ -32,6 +44,8 @@ export class Edit implements FormComponent {
         propertyName: "fontCategory"
       }
     ]);
+
+    makeLinesClampable(this, ".gx-line-clamp-container", ".line-measuring");
   }
 
   private renderer: EditRender;
@@ -39,9 +53,14 @@ export class Edit implements FormComponent {
   @Element() element: HTMLGxEditElement;
 
   /**
+   * Determine if the gx-edit's value was auto-completed
+   */
+  @State() autoFilled = false;
+
+  /**
    * Allows to specify the role of the element when inside a `gx-form-field` element
    */
-  @Prop({ reflectToAttr: true }) readonly area: "field";
+  @Prop({ reflect: true }) readonly area: "field";
 
   /**
    * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize)
@@ -62,6 +81,11 @@ export class Edit implements FormComponent {
    * attribute for `input` elements.
    */
   @Prop() readonly autocorrect: string;
+
+  /**
+   * A CSS class to set as the `gx-edit` element class.
+   */
+  @Prop() readonly cssClass: string;
 
   /**
    * Used to define the semantic of the element when readonly=true.
@@ -101,6 +125,11 @@ export class Edit implements FormComponent {
   @Prop() readonly disabled = false;
 
   /**
+   * True to cut text when it overflows, showing an ellipsis (only applies when readonly)
+   */
+  @Prop() readonly lineClamp = false;
+
+  /**
    * Controls if the element accepts multiline text.
    */
   @Prop() readonly multiline: boolean;
@@ -120,18 +149,10 @@ export class Edit implements FormComponent {
 
   /**
    * If true, a trigger button is shown next to the edit field. The button can
-   * be customized using `trigger-text` and `trigger-class` attributes,
-   * or adding a child element with `slot="trigger-content"` attribute to
-   * specify the content inside the trigger button.
+   * be customized adding a child element with `slot="trigger-content"`
+   * attribute to specify the content inside the trigger button.
    */
   @Prop() readonly showTrigger: boolean;
-
-  /**
-   * The text of the trigger button. If a text is specified and an image is
-   * specified (through an element with `slot="trigger-content"`), the content
-   * is ignored and the text is used instead.
-   */
-  @Prop() readonly triggerText: string;
 
   /**
    * The type of control to render. A subset of the types supported by the `input` element is supported:
@@ -157,12 +178,37 @@ export class Edit implements FormComponent {
     | "search"
     | "tel"
     | "text"
+    | "time"
     | "url" = "text";
 
   /**
    * The initial value of the control.
    */
   @Prop({ mutable: true }) value: string;
+
+  /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
+
+  /**
+   * It specifies the format that will have the edit control.
+   *
+   * If `format` = `HTML`, the edit control works as an HTML div and the
+   * innerHTML will be the same as the `inner` property specifies. Also, it
+   * does not allow any input/editable UI since it works as an HTML div.
+   *
+   * If `format` = `Text`, the edit control works as a normal input control and
+   * it is affected by most of the defined properties.
+   */
+  @Prop() readonly format: "Text" | "HTML" = "Text";
+
+  /**
+   * Used as the innerHTML when `format` = `HTML`.
+   */
+  @Prop() readonly inner: string = "";
+
+  @State() maxLines = 0;
 
   /**
    * The `change` event is emitted when a change to the element's value is
@@ -190,8 +236,29 @@ export class Edit implements FormComponent {
     return this.renderer.getNativeInputId();
   }
 
+  private shouldStyleHostElement = false;
+  private shouldAddHighlightedClasses = true;
+
+  private disabledClass = "disabled-custom";
+
+  componentWillLoad() {
+    this.shouldStyleHostElement = !this.multiline || this.readonly;
+
+    // In case of false, makeHighligtable() function highlights the gx-edit control
+    this.shouldAddHighlightedClasses = !(
+      this.readonly || this.format === "HTML"
+    );
+
+    if (this.format === "HTML" || this.readonly) {
+      this.disabledClass = "disabled";
+    }
+  }
+
   componentDidLoad() {
     this.toggleValueSetClass();
+    if (!this.shouldAddHighlightedClasses) {
+      makeHighlightable(this);
+    }
   }
 
   @Watch("value")
@@ -208,6 +275,10 @@ export class Edit implements FormComponent {
     }
   }
 
+  private handleAutoFill = (event: AnimationEvent) => {
+    this.autoFilled = event.animationName == AUTOFILL_START_ANIMATION_NAME;
+  };
+
   private handleChange(event: UIEvent) {
     this.value = this.renderer.getValueFromEvent(event);
     this.change.emit(event);
@@ -219,14 +290,46 @@ export class Edit implements FormComponent {
   }
 
   private handleTriggerClick(event: UIEvent) {
+    if (!this.disabled) {
+      event.stopPropagation();
+    }
     this.gxTriggerClick.emit(event);
   }
 
   render() {
+    /*  Styling for gx-edit control. 
+        If the gx-edit is (readonly || format == "HTML"), we do not add 
+        highlighted classes
+    */
+    const classes = getClasses(this.cssClass);
+
     return (
-      <Host>
+      <Host
+        class={{
+          "gx-edit--auto-fill": this.autoFilled,
+          "gx-edit--single-line":
+            this.type === "date" || this.type === "datetime-local",
+          [this.disabledClass]: this.disabled,
+          [this.cssClass]: this.shouldStyleHostElement && !!this.cssClass,
+          [classes.vars]: this.shouldStyleHostElement
+        }}
+        // Mouse pointer to indicate action
+        data-has-action={this.highlightable && !this.disabled ? "" : undefined}
+        // Add focus to the control through sequential keyboard navigation and visually clicking
+        tabindex={
+          this.highlightable &&
+          (this.readonly || this.format == "HTML") &&
+          !this.disabled
+            ? "0"
+            : undefined
+        }
+        onAnimationStart={this.handleAutoFill}
+      >
         {this.renderer.render({
-          triggerContent: <slot name="trigger-content" />
+          triggerContent: <slot name="trigger-content" />,
+          shouldStyleHostElement: this.shouldStyleHostElement,
+          cssClass: this.cssClass,
+          vars: classes.vars
         })}
       </Host>
     );

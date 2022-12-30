@@ -6,45 +6,85 @@ import {
   EventEmitter,
   Method,
   Prop,
-  QueueApi,
   State,
   Watch,
   Host,
-  h
+  h,
+  readTask,
+  writeTask
 } from "@stencil/core";
 
+/**
+ * gx-layout reference. Necessary to compute the intersection calculates when
+ * the infinite scroll is attached on the window.
+ */
+let gxLayoutReference: HTMLGxLayoutElement = null;
+
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "grid-infinite-scroll.scss",
   tag: "gx-grid-infinite-scroll"
 })
 export class GridInfiniteScroll implements ComponentInterface {
-  constructor() {
-    this.onScroll = this.onScroll.bind(this);
-  }
+  /** `true` if the `componentDidLoad()` method was called */
+  private didLoad = false;
 
-  private thrPx = 0;
-  private thrPc = 0;
-  private scrollEl?: HTMLElement = null;
-  private scrollListenerEl?: HTMLElement;
-  private didFire = false;
-  private isBusy = false;
-  private attachedToWindow = false;
-  private attached = false;
+  /** `true` if the parent grid has `direction = "vertical"` */
+  private infiniteScrollSupport = true;
+
+  private thresholdConfiguration: "pixel" | "percentage" = "percentage";
+  private thresholdValue = 0;
+
+  private scrollableParentElement: Element | HTMLElement = null;
+  private scrollListenerElement: HTMLElement | Element | Window;
+
+  private typeOfParentElementAttached: "virtual-scroller" | "window" | "other" =
+    "virtual-scroller";
+
+  // - - - - - - - Variables to implement inverse loading - - - - - - -
+  /**
+   * When the content overflows the first time, the scroll position correction
+   * (`addedHeight`) has to be the difference between the current values of
+   * clientHeight and scrollHeight.
+   */
+  private firstTimeContentOverflow = true;
+
+  /**
+   * `true` when the resizeObserver callback is being processed.
+   *
+   * Since the UI may take some time to be updated when the
+   * resize observer callback is executed, we don't have to update interfere
+   * with that update. Otherwise, the scroll top positioning may broke.
+   *
+   * This variable help us to not update the `lastScrollTop` variable in the
+   * scroll event.
+   */
+  private scrollTopIsGoingToBeUpdated = false;
+
+  private resizeObserver: ResizeObserver = null;
+  private lastScrollTop = 0;
+  private lastScrollHeight = 0;
+
+  // - - - - - - - - -  Variables to debounce checks  - - - - - - - - -
+  private needForRAF = true; // To prevent redundant RAF (request animation frame) calls
+  private needForRAFResizeObserver = true; // To prevent redundant RAF (request animation frame) calls
+
+  private scrollEventWasNotCauseByTheUser = false;
 
   @Element() el!: HTMLGxGridInfiniteScrollElement;
-  @State() isLoading = false;
+
+  @State() isBusyWaitingForCompleteEvent = false;
 
   /**
    * This property must be bounded to grid item count property.
-   * It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the intial batch does not overflow the main container
+   * It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the initial batch does not overflow the main container
    */
   @Prop() readonly itemCount: number = 0;
 
   /**
-   * A QueueAPI object
+   * The main layout selector where the infinite scroll is contained.
    */
-  @Prop({ context: "queue" }) readonly queue!: QueueApi;
+  @Prop() readonly layoutSelector: string = "gx-layout";
 
   /**
    * The threshold distance from the bottom
@@ -66,7 +106,7 @@ export class GridInfiniteScroll implements ComponentInterface {
    * when it is known that there is no more data that can be added, and
    * the infinite scroll is no longer needed.
    */
-  @Prop() readonly disabled: boolean = false;
+  @Prop({ mutable: true }) disabled = false;
 
   /**
    * The position of the infinite scroll element.
@@ -81,164 +121,61 @@ export class GridInfiniteScroll implements ComponentInterface {
   @Prop() readonly viewportSelector: string;
 
   /**
-   * Emitted when the scroll reaches
-   * the threshold distance. From within your infinite handler,
-   * you must call the infinite scroll's `complete()` method when
-   * your async operation has completed.
+   * Emitted when the scroll reaches the threshold distance. From within your
+   * infinite handler, you must call the infinite scroll's `complete()` method
+   * when your async operation has completed.
    */
   @Event({ bubbles: false }) gxInfinite!: EventEmitter<void>;
 
-  componentWillLoad() {
-    this.itemCountChanged();
-  }
-
   @Watch("itemCount")
-  public itemCountChanged() {
-    if (this.disabled || this.itemCount === 0) {
+  handleItemCountChanged(newValue: number, oldValue: number) {
+    // The infinite scroll must stay at the top position of the grid content.
+    // To make that possible, the infinite scroll is placed as the "first" item
+    // of the grid using the current itemCount.
+    if (this.position === "top") {
+      this.el.style.gridRowStart = `-${newValue + 2}`;
+    }
+
+    // In some cases, the following scenario can happen (in this particular order):
+    //  - The grid fully loaded all its data.  ----> this.disabled == true
+    //  - The grid's data was removed.         ----> this.itemCount == 0
+    //  - Some new data is coming to the grid. ----> newValue != 0 && oldValue == 0
+    // In this scenario, we have to re-enable the scroll events and set the resizeObserver
+    if (this.disabled && newValue != 0 && oldValue == 0) {
+      this.disabled = false;
+    }
+
+    // The grid data is removed. Reset the variable
+    if (newValue === 0 && oldValue != 0) {
+      this.firstTimeContentOverflow = true;
+      this.lastScrollHeight = 0;
+      this.lastScrollTop = 0;
+    }
+
+    if (
+      this.disabled ||
+      this.itemCount === 0 || // TODO: Check if this condition is useful
+      !this.didLoad ||
+      this.isBusyWaitingForCompleteEvent
+    ) {
       return;
     }
 
-    setTimeout(() => {
-      let emitInfinite = false;
-      this.ensure();
-      emitInfinite = this.isVisibleInViewport(this.el);
-      if (emitInfinite) {
-        this.gxInfinite.emit();
-      }
-    }, 100);
-  }
-
-  @Watch("disabled")
-  protected disabledChanged(val: boolean) {
-    if (this.disabled) {
-      this.isLoading = false;
-      this.isBusy = false;
-    }
-    this.enableScrollEvents(!val);
+    this.tryToFetchMoreItems();
   }
 
   @Watch("threshold")
-  protected thresholdChanged(val: string) {
-    if (val.lastIndexOf("%") > -1) {
-      this.thrPx = 0;
-      this.thrPc = parseFloat(val) / 100;
-    } else {
-      this.thrPx = parseFloat(val);
-      this.thrPc = 0;
+  protected thresholdChanged(newValue: string) {
+    // Threshold in percentage
+    if (newValue.lastIndexOf("%") > -1) {
+      this.thresholdConfiguration = "percentage";
+      this.thresholdValue = parseFloat(newValue) / 100;
     }
-  }
-
-  private isVisibleInViewport(el: HTMLElement): boolean {
-    const rect = el.getBoundingClientRect();
-    const elemTop = rect.top;
-    const element = this.getScrollListener();
-
-    return (
-      el.style.display !== "none" &&
-      elemTop >= 0 &&
-      elemTop <= (element["clientHeight"] || element["innerHeight"])
-    );
-  }
-
-  private getScrollParent(node: any): HTMLElement {
-    if (node === null) {
-      return null;
+    // Threshold in pixel
+    else {
+      this.thresholdConfiguration = "pixel";
+      this.thresholdValue = parseFloat(newValue);
     }
-
-    if (node === window.document.documentElement) {
-      return node;
-    }
-
-    if (this.viewportSelector) {
-      const scrollParent = node.closest(this.viewportSelector);
-      if (scrollParent != null) {
-        //When parent scroller is known before hand.
-        return scrollParent;
-      }
-    }
-
-    //We try to search for first scrollable parent element.
-    const overflow = window.getComputedStyle(node).overflowY;
-    if (node.scrollHeight > node.clientHeight || overflow === "scroll") {
-      return node;
-    }
-
-    return this.getScrollParent(node.parentNode);
-  }
-
-  private ensure() {
-    if (this.disabled || this.attached || this.itemCount === 0) {
-      return;
-    }
-
-    let contentEl = this.getScrollParent(this.el);
-
-    if (contentEl !== null) {
-      if (contentEl === window.document.documentElement) {
-        this.scrollListenerEl = null;
-        contentEl = window.document.body;
-        this.attachedToWindow = true;
-      } else {
-        this.scrollListenerEl = contentEl;
-      }
-
-      this.scrollEl = contentEl as HTMLElement;
-      this.thresholdChanged(this.threshold);
-      this.enableScrollEvents(!this.disabled);
-      this.attached = !this.disabled;
-      if (this.position === "top") {
-        this.queue.write(() => {
-          if (this.scrollEl !== null) {
-            this.scrollEl.scrollTop =
-              this.scrollEl.scrollHeight - this.scrollEl.clientHeight;
-          }
-        });
-      }
-    }
-  }
-
-  async componentDidLoad() {
-    this.ensure();
-  }
-
-  componentDidUnload() {
-    this.scrollEl = null;
-    this.attachedToWindow = false;
-    this.attached = false;
-    this.scrollListenerEl = null;
-  }
-
-  private onScroll() {
-    const scrollEl = this.scrollEl;
-    if (scrollEl === null || !this.canStart()) {
-      return 1;
-    }
-    const infiniteHeight = this.el.offsetHeight;
-    const scrollTop = !this.attachedToWindow
-      ? scrollEl.scrollTop
-      : window.scrollY;
-    const scrollHeight = scrollEl.scrollHeight;
-    const height = !this.attachedToWindow
-      ? scrollEl.offsetHeight
-      : window.innerHeight;
-    const threshold = this.thrPc !== 0 ? height * this.thrPc : this.thrPx;
-
-    const distanceFromInfinite =
-      this.position === "bottom"
-        ? scrollHeight - infiniteHeight - scrollTop - threshold - height
-        : scrollTop - infiniteHeight - threshold;
-    if (distanceFromInfinite < 0) {
-      if (!this.didFire) {
-        this.isLoading = true;
-        this.didFire = true;
-        this.gxInfinite.emit();
-        return 3;
-      }
-    } else {
-      this.didFire = false;
-    }
-
-    return 4;
   }
 
   /**
@@ -253,93 +190,465 @@ export class GridInfiniteScroll implements ComponentInterface {
    */
   @Method()
   async complete() {
-    const scrollEl = this.scrollEl;
-    if (!this.isLoading || scrollEl === null) {
+    this.scrollTopIsGoingToBeUpdated = true;
+
+    requestAnimationFrame(() => {
+      writeTask(() => {
+        // Re-enable item requests
+        this.isBusyWaitingForCompleteEvent = false;
+
+        this.checkIfTheGridFullyLoaded();
+      });
+    });
+  }
+
+  private checkIfTheGridFullyLoaded() {
+    // When the grid loaded all its data, disconnect the resize observer.
+    // In the Watch decorator the scroll listener will be disconnected
+    if (this.disabled) {
+      // Reset variables
+      this.scrollTopIsGoingToBeUpdated = false;
+      this.needForRAF = true;
+      this.needForRAFResizeObserver = true;
+    }
+    // If the grid has not fully loaded, try to fetch more data
+    else if (!this.isBusyWaitingForCompleteEvent) {
+      this.tryToFetchMoreItems();
+    }
+  }
+
+  private tryToFetchMoreItems() {
+    // Debounce requests with RAF to ensure that the UI has been updated.
+    // Otherwise, multiple requests can be done between animation frames
+    // causing the scrollTop to be set at incorrect positions. Also, perform
+    // a readTask to ensure the scrollTop property has been updated before
+    // trying to read it
+    requestAnimationFrame(() => {
+      readTask(() => {
+        if (this.isBusyWaitingForCompleteEvent) {
+          return;
+        }
+
+        const shouldFetchMoreItems = this.infiniteScrollIsVisibleInViewport();
+
+        if (shouldFetchMoreItems) {
+          this.isBusyWaitingForCompleteEvent = true;
+          this.gxInfinite.emit();
+        }
+      });
+    });
+  }
+
+  /**
+   * Determine if the infinite scroll is visible in the scrollable parent
+   * element based on the configured threshold.
+   *
+   * @returns `true` if the infinite scroll element is visible in the viewport
+   * of the scrollable parent element. In other words, `true` if the "last items"
+   * of the scrollable parent element intersect the threshold set in the
+   * infinite scroll.
+   */
+  private infiniteScrollIsVisibleInViewport(): boolean {
+    const elementIsDisplayed = getComputedStyle(this.el).display !== "none";
+
+    if (!elementIsDisplayed) {
+      return false;
+    }
+
+    const threshold = this.getThresholdValue();
+    const scrollTop = this.getScrollableParentScrollTop();
+
+    // If the scroll is "close" to the last item
+    if (this.position === "top") {
+      return this.typeOfParentElementAttached === "window"
+        ? scrollTop <=
+            threshold +
+              this.el.getBoundingClientRect().y -
+              gxLayoutReference.getBoundingClientRect().y
+        : scrollTop <= threshold;
+    }
+
+    const scrollHeight = this.getScrollableParentScrollHeight();
+    const clientHeight = this.getScrollableParentClientHeight();
+
+    /**
+     * Determine the amount of scrollable space remaining until the infinite
+     * scroll is reached.
+     *  - First condition: The infinite scroll could not be at the "bottom: 0" position of the scrollable parent.
+     *    The position must be deduced from the window's position.
+     *  - Second condition: The infinite scroll is at the "bottom: 0" position of the scrollable parent.
+     *    The position is inferred by the parent's scrollTop and parent's heights
+     */
+    const remainingSizeUntilReachingInfiniteScroll =
+      this.typeOfParentElementAttached === "window"
+        ? this.el.getBoundingClientRect().y - clientHeight
+        : scrollHeight - (scrollTop + clientHeight);
+
+    // If the scroll is "close" to the last item
+    return remainingSizeUntilReachingInfiniteScroll <= threshold;
+  }
+
+  private getThresholdValue() {
+    const parentElementClientHeight = this.getScrollableParentClientHeight();
+
+    return this.thresholdConfiguration == "pixel"
+      ? this.thresholdValue
+      : parentElementClientHeight * this.thresholdValue;
+  }
+
+  private getScrollableParentClientHeight(): number {
+    return this.typeOfParentElementAttached === "window"
+      ? window.innerHeight
+      : this.scrollableParentElement.clientHeight;
+  }
+
+  private getScrollableParentScrollHeight(): number {
+    return this.scrollableParentElement.scrollHeight;
+  }
+
+  private getScrollableParentScrollTop(): number {
+    return this.scrollableParentElement.scrollTop;
+  }
+
+  /**
+   * @todo TODO: Test this function when the element has an iframe as its parent element.
+   *
+   * Recursively look for a parent element in the `node`'s tree to calculate the
+   * infinite scroll visibility and attach the scroll event listener.
+   *
+   * Considerations:
+   *  - This algorithm starts with `node` === `this.el`.
+   *  - If the parent grid has auto-grow = False, the return value should be
+   *    the virtual scroller that is used in the parent grid.
+   * @param node An element that will serve to recursively look up the parent element of `this.el` to attach the scroll event listener.
+   * @returns A parent element of `node` in which the scroll event listener must be attached.
+   */
+  private getScrollableParentToAttachInfiniteScroll(
+    node: Element | HTMLElement
+  ): Element | HTMLElement {
+    if (node === null || node === window.document.documentElement) {
+      this.typeOfParentElementAttached = "window";
+      this.scrollListenerElement = window;
+
+      return window.document.documentElement;
+    }
+
+    // If the parent grid has virtual scroller (only when auto-grow = False)
+    if (this.viewportSelector) {
+      const scrollParent = node.closest(this.viewportSelector);
+      if (scrollParent != null) {
+        this.scrollListenerElement = scrollParent;
+
+        // When parent scroller is known before hand.
+        return scrollParent;
+      }
+    }
+
+    // We try to search for first scrollable parent element.
+    const overflowY = window.getComputedStyle(node).overflowY;
+
+    // The last condition must be used, as the parent container could clip
+    // (overflow: hidden) its overflow. In that scenario, the scroll is "hidden"
+    // or "locked" but set
+    if (
+      overflowY === "auto" ||
+      overflowY === "scroll" ||
+      node.scrollHeight > node.clientHeight
+    ) {
+      this.typeOfParentElementAttached =
+        node.tagName == "virtual-scroller" ? "virtual-scroller" : "other";
+
+      this.scrollListenerElement = node;
+      return node;
+    }
+
+    // Try with the next parent element
+    return this.getScrollableParentToAttachInfiniteScroll(node.parentElement);
+  }
+
+  private connectResizeObserver() {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.resizeObserver) {
       return;
     }
-    this.isLoading = false;
 
+    // Inverse loading is not supported when the scroll is attached to the window.
+    // The current implementation "supports" this scenario, but since this use
+    // case changes the position of the scroll every time the grid retrieves
+    // data, unexpected behaviors will occur.
+    // Also, Android does not support Inverse Loading in this scenario either.
+    if (
+      this.infiniteScrollSupport &&
+      this.position == "top" &&
+      this.typeOfParentElementAttached !== "window"
+    ) {
+      this.resizeObserver = new ResizeObserver(
+        this.resizeObserverCallbackForInverseLoading
+      );
+    }
+    // In any other case, a resize observer should be set up to detect changes
+    // in the grid size and trigger the algorithm to deduce if there is
+    // necessary to fetch more data.
+    else {
+      this.resizeObserver = new ResizeObserver(
+        this.resizeObserverCallbackToCheckGridState
+      );
+    }
+
+    /**
+     * In the virtual scroller this element represents the container
+     * (`.scrollable-content`) of the cells:
+     * ```
+     *   <gx-grid-smart-css>
+     *     <virtual-scroller slot="grid-content">
+     *       <div class="total-padding"></div>
+     *       <div class="scrollable-content">
+     *         <gx-grid-smart-cell>...</gx-grid-smart-cell>
+     *         <gx-grid-smart-cell>...</gx-grid-smart-cell>
+     *         ...
+     *       </div>
+     *     </virtual-scroller>
+     *     ...
+     *   </gx-grid-smart-css>
+     * ```
+     *
+     * When there is no virtual scroller, this element represents the cell
+     * container (`[slot="grid-content"]`)
+     * ```
+     *   <gx-grid-smart-css>
+     *     <div slot="grid-content">
+     *       <gx-grid-smart-cell>...</gx-grid-smart-cell>
+     *       <gx-grid-smart-cell>...</gx-grid-smart-cell>
+     *       ...
+     *       <gx-grid-infinite-scroll></gx-grid-infinite-scroll>
+     *     </div>
+     *     ...
+     *   </gx-grid-smart-css>
+     * ```
+     */
+    const elementToWatch: Element =
+      this.typeOfParentElementAttached === "virtual-scroller"
+        ? this.scrollableParentElement.lastElementChild
+        : this.el.parentElement;
+
+    this.resizeObserver.observe(elementToWatch);
+  }
+
+  private resizeObserverCallbackForInverseLoading = () => {
+    const currentScrollHeight = this.getScrollableParentScrollHeight();
+    const currentClientHeight = this.getScrollableParentClientHeight();
+    const currentScrollTop = this.getScrollableParentScrollTop();
+
+    /**
+     * The amount of height added since the last fetch. In other word, it
+     * determines how much the `scrollTop` should be offset to keep the last
+     * position of the items.
+     */
+    let addedHeight = currentScrollHeight - this.lastScrollHeight;
+
+    // In most cases, when the resize observer interrupts the first time
+    // the content might be overflowed (clientHeight < scrollHeight), but
+    // "lastScrollTop == 0". In that case, "lastScrollTop" must be the
+    // difference between scrollHeight and clientHeight
+    if (
+      this.firstTimeContentOverflow &&
+      currentScrollTop == 0 &&
+      currentClientHeight < currentScrollHeight
+    ) {
+      this.firstTimeContentOverflow = false;
+      addedHeight = currentScrollHeight - currentClientHeight;
+    }
+
+    // Store the new scroll height value
+    this.lastScrollHeight = currentScrollHeight;
+
+    // Store the new scroll top value
+    this.scrollTopIsGoingToBeUpdated = true;
+    this.lastScrollTop += addedHeight;
+
+    this.scrollEventWasNotCauseByTheUser = true;
+
+    // Update the scroll top on the scrollable parent
+    this.scrollableParentElement.scrollTop = this.lastScrollTop;
+
+    requestAnimationFrame(() => {
+      writeTask(() => {
+        this.scrollTopIsGoingToBeUpdated = false;
+
+        // Check the state of the grid, if there is not a request in progress
+        if (!this.isBusyWaitingForCompleteEvent) {
+          this.checkIfTheGridFullyLoaded();
+        }
+      });
+    });
+  };
+
+  private resizeObserverCallbackToCheckGridState = () => {
+    if (!this.needForRAFResizeObserver) {
+      return;
+    }
+    this.needForRAFResizeObserver = false; // No need to call RAF up until next frame
+
+    requestAnimationFrame(() => {
+      this.needForRAFResizeObserver = true; // RAF now consumes the movement instruction so a new one can come
+
+      // Check the state of the grid, if there is not a request in progress
+      if (!this.isBusyWaitingForCompleteEvent) {
+        this.checkIfTheGridFullyLoaded();
+      }
+    });
+  };
+
+  private disconnectResizeObserver() {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
+  }
+
+  private handleScrollChange = () => {
+    if (this.scrollEventWasNotCauseByTheUser) {
+      this.scrollEventWasNotCauseByTheUser = false;
+      return;
+    }
+
+    // Store the new scroll top value, if the current scroll position is not
+    // going to be updated
+    if (!this.scrollTopIsGoingToBeUpdated) {
+      this.lastScrollTop = this.getScrollableParentScrollTop();
+    }
+
+    if (
+      this.disabled ||
+      !this.needForRAF ||
+      this.isBusyWaitingForCompleteEvent
+    ) {
+      return;
+    }
+    this.needForRAF = false; // No need to call RAF up until next frame
+
+    requestAnimationFrame(() => {
+      readTask(() => {
+        this.needForRAF = true; // RAF now consumes the movement instruction so a new one can come
+
+        if (this.isBusyWaitingForCompleteEvent) {
+          return;
+        }
+        const shouldFetchMoreItems = this.infiniteScrollIsVisibleInViewport();
+
+        if (shouldFetchMoreItems) {
+          this.isBusyWaitingForCompleteEvent = true;
+          this.gxInfinite.emit();
+        }
+      });
+    });
+  };
+
+  private setScrollListener(shouldSetEvent: boolean) {
+    if (shouldSetEvent) {
+      this.scrollListenerElement.addEventListener(
+        "scroll",
+        this.handleScrollChange,
+        { passive: true }
+      );
+    }
+    // Remove the event
+    else {
+      // If the component is disconnected before the `getScrollableParentToAttachInfiniteScroll()`
+      // method is performed, the variable reference will be undefined
+      this.scrollListenerElement?.removeEventListener(
+        "scroll",
+        this.handleScrollChange
+      );
+    }
+  }
+
+  /**
+   * Store scrollable parent element reference and compute infinite scrolling
+   * support.
+   */
+  componentWillLoad() {
+    // Update threshold value
+    this.thresholdChanged(this.threshold);
+
+    // Update initial position in the grid
     if (this.position === "top") {
-      /**
-       * New content is being added at the top, but the scrollTop position stays the same,
-       * which causes a scroll jump visually. This algorithm makes sure to prevent this.
-       * (Frame 1)
-       *    - complete() is called, but the UI hasn't had time to update yet.
-       *    - Save the current content dimensions.
-       *    - Wait for the next frame using _dom.read, so the UI will be updated.
-       * (Frame 2)
-       *    - Read the new content dimensions.
-       *    - Calculate the height difference and the new scroll position.
-       *    - Delay the scroll position change until other possible dom reads are done using _dom.write to be performant.
-       * (Still frame 2, if I'm correct)
-       *    - Change the scroll position (= visually maintain the scroll position).
-       *    - Change the state to re-enable the InfiniteScroll.
-       *    - This should be after changing the scroll position, or it could
-       *    cause the InfiniteScroll to be triggered again immediately.
-       * (Frame 3)
-       *    Done.
-       */
-      this.isBusy = true;
-      // ******** DOM READ ****************
-      // Save the current content dimensions before the UI updates
-      const prev = scrollEl.scrollHeight - scrollEl.scrollTop;
+      this.el.style.gridRowStart = `-${this.itemCount + 2}`;
+    }
+  }
 
-      // ******** DOM READ ****************
+  componentDidLoad() {
+    this.scrollableParentElement = this.getScrollableParentToAttachInfiniteScroll(
+      this.el
+    );
+
+    // Store the gx-layout reference since is necessary to compute the
+    // intersection calculates when the infinite scroll is attached on the
+    // window.
+    if (
+      this.typeOfParentElementAttached === "window" &&
+      gxLayoutReference == null
+    ) {
+      gxLayoutReference = document.querySelector(this.layoutSelector);
+    }
+
+    const gridComponent = this.el.closest(
+      ".gx-grid-base"
+    ) as HTMLGxGridSmartCssElement;
+
+    // Horizontal Orientation not supported
+    this.infiniteScrollSupport =
+      gridComponent && gridComponent.direction === "vertical";
+
+    // Read at the best moment the scrollHeight and clientHeight values
+    readTask(() => {
+      const currentScrollHeight = this.getScrollableParentScrollHeight();
+      const currentClientHeight = this.getScrollableParentClientHeight();
+
       requestAnimationFrame(() => {
-        this.queue.read(() => {
-          // UI has updated, save the new content dimensions
-          const scrollHeight = scrollEl.scrollHeight;
-          // New content was added on top, so the scroll position should be changed immediately to prevent it from jumping around
-          const newScrollTop = scrollHeight - prev;
+        writeTask(() => {
+          // Update at the best moment the initial scrollTop
+          if (this.infiniteScrollSupport && this.position == "top") {
+            this.scrollableParentElement.scrollTop =
+              currentScrollHeight - currentClientHeight;
+          }
 
-          // ******** DOM WRITE ****************
+          // After the scrollTop update, set algorithms to check the grid state
           requestAnimationFrame(() => {
-            this.queue.write(() => {
-              scrollEl.scrollTop = newScrollTop;
-              this.isBusy = false;
-            });
+            this.didLoad = true;
+
+            this.handleItemCountChanged(this.itemCount, this.itemCount);
+            this.connectResizeObserver();
+
+            this.setScrollListener(true);
           });
         });
       });
-    }
+    });
   }
 
-  private canStart(): boolean {
-    return (
-      !this.disabled &&
-      !this.isBusy &&
-      this.scrollEl !== null &&
-      !this.isLoading
-    );
-  }
+  disconnectedCallback() {
+    this.scrollEventWasNotCauseByTheUser = false;
+    this.isBusyWaitingForCompleteEvent = false;
 
-  private getScrollListener() {
-    if (this.attachedToWindow) {
-      return window;
-    } else {
-      return this.scrollListenerEl;
-    }
-  }
+    this.disconnectResizeObserver();
 
-  private enableScrollEvents(shouldListen: boolean) {
-    const scrollListener = this.getScrollListener();
-    if (scrollListener !== null) {
-      if (shouldListen) {
-        scrollListener.addEventListener("scroll", this.onScroll);
-      } else {
-        scrollListener.removeEventListener("scroll", this.onScroll);
-      }
-    }
+    // Remove scroll event since the parent element could be the window or
+    // other element that will not be removed from the DOM
+    this.setScrollListener(false);
   }
 
   render() {
     return (
       <Host
         class={{
-          "infinite-scroll-enabled": !this.disabled,
-          "infinite-scroll-loading": this.isLoading
+          "not-loading": !this.isBusyWaitingForCompleteEvent
         }}
-      />
+        aria-hidden={!this.isBusyWaitingForCompleteEvent ? "true" : undefined}
+      >
+        <slot />
+      </Host>
     );
   }
 }

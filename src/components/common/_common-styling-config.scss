@@ -1,0 +1,115 @@
+// - - - - - - - - - - - - - - - -
+//          Base styling
+// - - - - - - - - - - - - - - - -
+@mixin base-styling-for-application() {
+  [hidden] {
+    display: none !important;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+      "Noto Color Emoji";
+    text-align: start;
+
+    // Hide vertical scrollbar on page load. Useful to reduce CLS on app load
+    margin: 0;
+  }
+
+  // This selector works at app load time. Useful to reduce CLS on app load
+  *,
+  ::after,
+  ::before {
+    box-sizing: border-box;
+  }
+
+  textarea {
+    overflow: auto;
+    resize: vertical;
+  }
+
+  // - - - - - - Reset browser defaults - - - - - -
+  button,
+  fieldset,
+  input,
+  select,
+  optgroup,
+  textarea {
+    background-color: unset;
+    border: none;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+  }
+
+  ul,
+  li,
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  footer {
+    font-size: inherit;
+    font-weight: inherit;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+// - - - - - - - - - - - - - - - -
+//              Icons
+// - - - - - - - - - - - - - - - -
+$gx-icon-size: 24px;
+
+// - - - - - - - - - - - - - - - -
+//    States and pseudo classes
+// - - - - - - - - - - - - - - - -
+@mixin active-style() {
+  filter: brightness(80%);
+}
+
+@mixin disabled-style() {
+  filter: opacity(0.5);
+}
+
+@mixin hover-style() {
+  filter: brightness(90%);
+}
+
+// - - - - - - - - - - - - - - - -
+//      Transition properties
+// - - - - - - - - - - - - - - - -
+$transition-delay: 0.25s;
+$transition-duration: 0.25s;
+
+$half-transition-delay: 0.125s;
+$half-transition-duration: 0.125s;
+
+$two-times-transition-delay: 0.5s;
+$two-times-transition-duration: 0.5s;
+
+$three-times-transition-delay: 0.75s;
+$three-times-transition-duration: 0.75s;
+
+$four-times-transition-duration: 1s;
+$four-times-transition-delay: 1s;
+
+$five-times-transition-duration: 1.25s;
+$five-times-transition-delay: 1.25s;
+
+$six-times-transition-duration: 1.5s;
+$six-times-transition-delay: 1.5s;
+
+@mixin transition-properties() {
+  transition-property: background-color, border-color, box-shadow, color, filter,
+    opacity, transform;
+  transition-duration: $transition-duration;
+}

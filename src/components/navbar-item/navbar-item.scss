@@ -1,16 +1,32 @@
 @import "../common/_base";
-@import "../navbar/_navbar-button-states";
+@import "../common/css-transforms/scss-transforms";
+@import "../common/_common-styling-config";
+@import "../common/layout-styling-config.scss";
+
+@include visibility-shadow-DOM(inline-flex);
+
+$gx-navbar-active-background-color: #888;
+$gx-navbar-active-color: black;
+
+// Default :hover style
+:host(:hover:not(:active)) {
+  @include hover-style();
+}
+
+// Default :active color
+:host(:active) {
+  color: $gx-navbar-active-color;
+}
 
 :host {
-  @include visibility(inline-flex);
   --gx-navbar-item-icon-size-big: 24px;
   --gx-navbar-item-icon-size-small: 18px;
-  --gx-navbar-item-active-color: inherit;
-  --gx-navbar-item-active-color-xs: #000;
 
-  font-size: inherit;
-  font-weight: inherit;
+  align-self: stretch;
+  cursor: pointer;
   outline: none;
+  padding-inline: 12px;
+  @include transition-properties();
 
   @media screen and (max-width: $gx-xsmall-breakpoint) {
     flex: 1;
@@ -21,28 +37,23 @@
     appearance: none;
     border: 0;
     background-color: transparent;
+    color: inherit;
     font: inherit;
   }
 
-  .item {
-    flex: 1;
-    align-items: center;
-    cursor: pointer;
+  .navbar-item {
     display: inline-flex;
+    align-items: center;
+    flex: 1;
     color: inherit;
-    text-decoration: none;
-    padding: 3px 15px;
-    margin: 0 2px;
+    cursor: pointer;
+    overflow: hidden;
     outline: none;
+    text-decoration: none;
 
     &--active {
-      background-color: #888;
-      color: var(--gx-navbar-item-active-color);
-
-      @media screen and (max-width: $gx-xsmall-breakpoint) {
-        background-color: transparent;
-        color: var(--gx-navbar-item-active-color-xs);
-      }
+      background-color: $gx-navbar-active-background-color;
+      color: $gx-navbar-active-color;
     }
 
     &-icon {
@@ -50,11 +61,7 @@
       height: var(--gx-navbar-item-icon-size-small);
       width: var(--gx-navbar-item-icon-size-small);
       object-fit: contain;
-      margin-right: 12px;
-
-      @media screen and (max-width: $gx-xsmall-breakpoint) {
-        --gx-icon-color: var(--gx-navbar-item-active-color-xs);
-      }
+      margin-inline-end: 12px;
     }
 
     @media screen and (max-width: $gx-xsmall-breakpoint) {
@@ -65,39 +72,25 @@
 
       &-icon {
         margin-bottom: 5px;
-        margin-right: 0;
+        margin-inline-end: 0;
       }
     }
   }
 }
 
 :host([slot="low-priority-action"]) {
-  .item {
-    padding: 8px 16px;
-    margin: 0;
+  .navbar-item {
     justify-content: start;
     align-items: start;
-
-    &:hover,
-    &:focus {
-      background-color: var(--gx-navbar-low-hover-background-color);
-      color: var(--gx-navbar-main-color);
-    }
-  }
-}
-
-:host(:not([slot="low-priority-action"])) {
-  .item {
-    @include button-default-states(3, 15);
+    padding: 8px 16px;
+    margin: 0;
   }
 }
 
 :host(:empty) {
-  .item {
+  .navbar-item {
     &-with-icon {
       padding: 4px;
-      @include button-default-states();
-      @include button-line-2-states();
     }
 
     &-icon {
@@ -106,8 +99,4 @@
       width: var(--gx-navbar-item-icon-size-big);
     }
   }
-}
-
-:host-context(.gx-navbar-line-2) {
-  @include button-line-2-states();
 }

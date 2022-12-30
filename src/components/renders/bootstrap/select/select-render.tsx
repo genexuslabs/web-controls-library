@@ -2,6 +2,9 @@ import { h } from "@stencil/core";
 import { Renderer } from "../../../common/interfaces";
 import { Select } from "../../../select/select";
 
+// Class transforms
+import { getClasses } from "../../../common/css-transforms/css-transforms";
+
 let autoSelectId = 0;
 
 export class SelectRender implements Renderer {
@@ -25,22 +28,6 @@ export class SelectRender implements Renderer {
     return !this.component.readonly ? this.selectId : null;
   }
 
-  private getCssClasses() {
-    const classList = [];
-
-    if (this.component.readonly) {
-      classList.push("form-control-plaintext");
-    } else {
-      classList.push("custom-select");
-    }
-
-    if (this.component.cssClass) {
-      classList.push(this.component.cssClass);
-    }
-
-    return classList.join(" ");
-  }
-
   private getReadonlyTextContent() {
     const matchingOpts = this.options.filter(
       o => o.value === this.component.value
@@ -60,18 +47,34 @@ export class SelectRender implements Renderer {
     this.component.input.emit(event);
   }
 
-  render() {
+  render(anOptionHasBeenSelected) {
+    // Styling for gx-select control.
+    const classes = getClasses(this.component.cssClass);
+
     if (this.component.readonly) {
       return (
-        <span class={this.getCssClasses()}>
-          {this.getReadonlyTextContent()}
-        </span>
+        <div
+          class={{
+            "gx-select-control": true,
+            [this.component.cssClass]: !!this.component.cssClass,
+            [classes.vars]: true,
+            disabled: this.component.disabled
+          }}
+        >
+          <span>{this.getReadonlyTextContent()}</span>
+        </div>
       );
     } else {
       let datalistId: string;
+
       const attris = {
         "aria-disabled": this.component.disabled ? "true" : undefined,
-        class: this.getCssClasses(),
+        class: {
+          "gx-select-control": true,
+          [this.component.cssClass]: !!this.component.cssClass,
+          [classes.vars]: true,
+          disabled: this.component.disabled
+        },
         disabled: this.component.disabled,
         id: this.selectId,
         onChange: this.handleChange.bind(this),
@@ -79,17 +82,23 @@ export class SelectRender implements Renderer {
           select.value = this.component.value;
         }
       };
+
       if (this.component.suggest) {
         datalistId = `${this.selectId}__datalist`;
       }
 
       return this.component.suggest
         ? [
-            <gx-bootstrap />,
-            <input list={datalistId}></input>,
+            <input
+              list={datalistId}
+              disabled={this.component.disabled}
+              placeholder={this.component.placeholder}
+              value={this.component.value}
+              onChange={this.handleChange.bind(this)}
+            ></input>,
 
             <datalist id={datalistId}>
-              {this.options.map(({ disabled, innerText, selected, value }) => (
+              {this.options.map(({ innerText, selected, value, disabled }) => (
                 <option disabled={disabled} selected={selected} value={value}>
                   {innerText}
                 </option>
@@ -97,9 +106,11 @@ export class SelectRender implements Renderer {
             </datalist>
           ]
         : [
-            <gx-bootstrap />,
             <select {...attris}>
-              {this.options.map(({ disabled, innerText, selected, value }) => (
+              {!anOptionHasBeenSelected && (
+                <option hidden>{this.component.placeholder}</option>
+              )}
+              {this.options.map(({ innerText, selected, value, disabled }) => (
                 <option disabled={disabled} selected={selected} value={value}>
                   {innerText}
                 </option>

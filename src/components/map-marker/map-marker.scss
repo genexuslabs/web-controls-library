@@ -1,5 +1,15 @@
-@import "../common/_base";
-
 gx-map-marker {
-  @include visibility(none);
+  display: none;
+}
+
+.gx-map-marker {
+  &-default,
+  &-user-location {
+    overflow: visible;
+  }
+
+  &-user-location {
+    filter: drop-shadow(0px 0px 4px #22222240)
+      drop-shadow(0px 0px 3px #00000040) drop-shadow(0px 0px 2px #00000020);
+  }
 }

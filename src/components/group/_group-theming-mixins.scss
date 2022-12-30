@@ -1,25 +1,13 @@
+@import "../common/css-transforms/scss-transforms";
+
 ////
 /// @group theming-mixins
 ////
 
 /// Helper mixin to ease styling gx-group custom elements
-/// @param {string} $class Base class of the component
-/// @param {string} $highlighted Class to be used when the group is active
 /// @param {string} $caption Class for styling the caption of the group
-@mixin gx-group($class, $highlighted: null, $caption: null) {
-  & > fieldset {
-    @extend #{$class} !optional;
-
-    @if ($highlighted != null) {
-      &:active {
-        @extend #{$highlighted} !optional;
-      }
-    }
-
-    @if ($caption != null) {
-      & > legend {
-        @extend #{$caption} !optional;
-      }
-    }
+@mixin gx-group($caption) {
+  &#{$gx-group-caption} {
+    @extend #{$caption} !optional;
   }
 }

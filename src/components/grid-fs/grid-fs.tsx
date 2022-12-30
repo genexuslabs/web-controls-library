@@ -4,12 +4,14 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Method,
   Prop,
-  h,
-  Host
+  h
 } from "@stencil/core";
-import { GridBaseHelper, GridBase } from "../grid-base/grid-base";
+import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
+
+import { HighlightableComponent } from "../common/highlightable";
 import { VisibilityComponent } from "../common/interfaces";
 
 @Component({
@@ -18,14 +20,18 @@ import { VisibilityComponent } from "../common/interfaces";
   tag: "gx-grid-fs"
 })
 export class GridFreeStyle
-  implements GridBase, ComponentInterface, VisibilityComponent {
+  implements
+    GridBase,
+    ComponentInterface,
+    VisibilityComponent,
+    HighlightableComponent {
   constructor() {
     this.handleGxInfinite = this.handleGxInfinite.bind(this);
   }
 
   viewPortInitialized = false;
 
-  @Element() el!: HTMLGxGridFsElement;
+  @Element() element!: HTMLGxGridFsElement;
 
   /**
    * This attribute defines if the control size will grow automatically,
@@ -34,6 +40,11 @@ export class GridFreeStyle
    * if the content overflows.
    */
   @Prop() readonly autoGrow = false;
+
+  /**
+   * A CSS class to set as the `gx-grid-fs` element class.
+   */
+  @Prop() readonly cssClass: string;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -74,6 +85,11 @@ export class GridFreeStyle
   @Prop() readonly threshold: string = "150px";
 
   /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
+
+  /**
    * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
    */
   @Event({ bubbles: false }) gxInfiniteThresholdReached: EventEmitter<void>;
@@ -83,19 +99,25 @@ export class GridFreeStyle
    */
   @Method()
   async complete() {
-    this.el.querySelector(":scope > gx-grid-infinite-scroll")["complete"]();
+    this.element
+      .querySelector(":scope > gx-grid-infinite-scroll")
+      ["complete"]();
   }
 
   private ensureViewPort() {
     if (this.autoGrow || this.viewPortInitialized) {
       return;
     }
-    const height = this.el.parentElement.offsetHeight;
+    const height = this.element.parentElement.offsetHeight;
 
     if (height > 0) {
-      this.el.style.maxHeight = height + "px";
+      this.element.style.maxHeight = height + "px";
       this.viewPortInitialized = true;
     }
+  }
+
+  componentDidLoad() {
+    GridBaseHelper.init(this);
   }
 
   render() {

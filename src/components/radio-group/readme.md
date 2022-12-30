@@ -10,17 +10,17 @@ The one option whose value matches the value of the group will be automatically 
 
 <!-- Auto Generated Below -->
 
-
 ## Properties
 
-| Property        | Attribute        | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Type                         | Default        |
-| --------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | -------------- |
-| `direction`     | `direction`      | Specifies how the child `gx-radio-option` will be layed out. It supports two values:  * `horizontal` * `vertical` (default)                                                                                                                                                                                                                                                                                                                                                        | `"horizontal" \| "vertical"` | `"horizontal"` |
-| `disabled`      | `disabled`       | This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).                                                                                                                                                                                                                                                                                                                           | `boolean`                    | `false`        |
-| `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden.  \| Value        \| Details                                                                     \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space.         \| \| `collapse`   \| The element is removed form the document flow, and it doesn't occupy space. \| | `"collapse" \| "keep-space"` | `"collapse"`   |
-| `name`          | `name`           | The name that will be set to all the inner inputs of type radio                                                                                                                                                                                                                                                                                                                                                                                                                    | `string`                     | `undefined`    |
-| `value`         | `value`          | The initial value of the control. Setting the value automatically selects the corresponding radio option.                                                                                                                                                                                                                                                                                                                                                                          | `string`                     | `undefined`    |
-
+| Property        | Attribute        | Description                                                                                                                                                                                                                                                                                                                                                                                  | Type                         | Default      |
+| --------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------ |
+| `cssClass`      | `css-class`      | A CSS class to set as the `gx-radio-group` element class.                                                                                                                                                                                                                                                                                                                                    | `string`                     | `undefined`  |
+| `direction`     | `direction`      | Specifies how the child `gx-radio-option` will be layed out. It supports two values: _ `horizontal` _ `vertical` (default)                                                                                                                                                                                                                                                                   | `"horizontal" \| "vertical"` | `"vertical"` |
+| `disabled`      | `disabled`       | This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).                                                                                                                                                                                                                                     | `boolean`                    | `false`      |
+| `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \| | `"collapse" \| "keep-space"` | `"collapse"` |
+| `name`          | `name`           | The name that will be set to all the inner inputs of type radio                                                                                                                                                                                                                                                                                                                              | `string`                     | `undefined`  |
+| `readonly`      | `readonly`       | This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.                                                                                                                                                                             | `boolean`                    | `undefined`  |
+| `value`         | `value`          | The initial value of the control. Setting the value automatically selects the corresponding radio option.                                                                                                                                                                                                                                                                                    | `string`                     | `undefined`  |
 
 ## Events
 
@@ -28,7 +28,20 @@ The one option whose value matches the value of the group will be automatically 
 | -------- | -------------------------------------------------------------------------------------------- | ------------------ |
 | `change` | The `change` event is emitted when a change to the element's value is committed by the user. | `CustomEvent<any>` |
 
+## Dependencies
 
-----------------------------------------------
+### Used by
 
-*Built with [StencilJS](https://stenciljs.com/)*
+- [gx-dynamic-form](../dynamic-form)
+
+### Graph
+
+```mermaid
+graph TD;
+  gx-dynamic-form --> gx-radio-group
+  style gx-radio-group fill:#f9f,stroke:#333,stroke-width:4px
+```
+
+---
+
+_Built with [StencilJS](https://stenciljs.com/)_

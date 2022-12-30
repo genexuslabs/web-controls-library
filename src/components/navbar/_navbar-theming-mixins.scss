@@ -1,35 +1,46 @@
+@import "../common/css-transforms/scss-transforms";
+
 ////
 /// @group theming-mixins
 ////
 
 /// Helper mixin to ease styling gx-navbar custom elements
-/// @param {string} $class Base class of the component
-/// @param {string} $action Class for styling the actions of the navigation bar
-/// @param {string} $back-button Class for styling the back button of the navigation bar
 /// @param {string} $default-button Class for styling buttons of the navigation bar
-@mixin gx-navbar(
-  $class,
-  $action: null,
-  $back-button: null,
-  $default-button: null
-) {
-  @extend #{$class} !optional;
-
-  @if ($action != null) {
-    gx-navbar-item {
-      @extend #{$action} !optional;
-    }
-  }
-
+/// @param {string} $back-button Class for styling the back button of the navigation bar
+@mixin gx-navbar($default-button: null, $back-button: null) {
   @if ($default-button != null) {
-    button {
+    &::part(low-actions-toggle),
+    &::part(low-actions-dropdown),
+    &::part(default-button) {
       @extend #{$default-button} !optional;
+    }
+
+    // Styling for action groups that do not have a class.
+    @at-root #{&} > .gx-default-button {
+      @extend #{$default-button} !optional;
+    }
+
+    // When the default-button or low-actions-toggle are active or they have
+    // :active pseudo-class it will be highlighted.
+    @at-root #{&}.gx-navbar-actions-active::part(low-actions-toggle),
+      #{&}.gx-navbar-actions-active::part(low-actions-dropdown),
+      #{&}::part(default-button):active,
+      #{&}::part(low-actions-toggle):active,
+      #{&} > .gx-default-button:active {
+      @extend #{str-replace($default-button, ".", "%")}#{$gx-highlighted}
+          !optional;
     }
   }
 
   @if ($back-button != null) {
-    .gx-navbar-back-button {
+    &::part(back-button) {
       @extend #{$back-button} !optional;
+    }
+
+    // When the back-button has :active pseudo-class it will be highlighted
+    &::part(back-button):active {
+      @extend #{str-replace($back-button, ".", "%")}#{$gx-highlighted}
+          !optional;
     }
   }
 }

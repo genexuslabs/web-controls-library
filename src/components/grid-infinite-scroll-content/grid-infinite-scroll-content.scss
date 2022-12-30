@@ -1,20 +1,6 @@
-@import "../common/_base";
-
-gx-grid-infinite-scroll {
-  @include visibility(flex);
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  flex: 1;
-}
-
-gx-grid-infinite-scroll-content,
-.gx-grid-empty:not(.gx-grid-loading) gx-grid-infinite-scroll {
-  @include visibility(none);
-}
-
-.infinite-scroll-loading gx-grid-infinite-scroll-content,
-.gx-grid-loading gx-grid-infinite-scroll-content {
-  @include visibility(block);
-  flex: 1;
+:host {
+  display: block;
+  width: 100%;
+  height: 100%; // Required to hide the control when the infinite scroll parent has height: 0;
+  overflow: hidden; // Required for gx-loading's positioning
 }

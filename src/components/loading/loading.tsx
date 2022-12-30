@@ -1,122 +1,112 @@
-import { Component, Element, Prop, State, Watch, h } from "@stencil/core";
+import { Component, Element, Host, Prop, h } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
+import { getLottiePath } from "../common/utils";
+
+// Class transforms
+import {
+  getTransformedClassesWithoutFocus,
+  tLoading
+} from "../common/css-transforms/css-transforms";
 
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "loading.scss",
   tag: "gx-loading"
 })
 export class Loading implements GxComponent {
   @Element() element: HTMLGxLoadingElement;
 
-  @State() private lottiePath = "";
+  /**
+   * A CSS class to set as the `gx-loading` element class.
+   */
+  @Prop() readonly cssClass: string;
 
   /**
-   * Sets the description text.
-   *
+   * `true` if the `componentDidLoad()` method was called.
+   * This property is not used as a state due to the following issue:
+   * https://github.com/ionic-team/stencil/issues/3158
    */
-  @Prop() readonly description: string;
+  @Prop({ mutable: true }) didLoad = false;
 
   /**
-   * Sets the caption text.
-   *
+   * This attribute lets you specify the lottie path to use for the lottie
+   * animation.
+   * This property is not used as a state due to the following issue:
+   * https://github.com/ionic-team/stencil/issues/3158
    */
-  @Prop() readonly caption: string;
+  @Prop({ mutable: true }) lottiePath = "";
 
   /**
-   * Sets if the loading dialog is presented.
+   * This attribute lets you specify if the loading is presented.
    */
-  @Prop() readonly presented = false;
+  @Prop() readonly presented: boolean = false;
 
   /**
-   * Sets the value.
-   *
+   * `true` to display the animation defined in the default `<slot>` instead
+   * the native (default) animation.
    */
-  @Prop() readonly type: "determinate" | "indeterminate";
+  @Prop() readonly showSlotAnimation: boolean = false;
 
-  /**
-   * Sets the value when type is determinate. Must be a value between 0 and 1.
-   *
-   */
-  @Prop() readonly value = 0;
+  // @Watch("value")
+  // valueWatchHandler(newValue: number, oldValue: number) {
+  //   if (newValue === oldValue) {
+  //     return;
+  //   }
 
-  @Watch("value")
-  valueWatchHandler(newValue: number, oldValue: number) {
-    if (newValue === oldValue) {
-      return;
-    }
+  //   if (this.lottiePath) {
+  //     const gxLottie = this.element.querySelector("gx-lottie");
+  //     if (gxLottie !== null) {
+  //       const from = oldValue > newValue ? 0 : oldValue;
+  //       gxLottie.play(from, newValue);
+  //     }
+  //   }
+  // }
 
-    if (this.lottiePath) {
-      const gxLottie = this.element.querySelector("gx-lottie");
-      if (gxLottie !== null) {
-        const from = oldValue > newValue ? 0 : oldValue;
-        gxLottie.play(from, newValue);
-      }
-    }
+  private updateLottiePath() {
+    this.lottiePath = getLottiePath(window.getComputedStyle(this.element));
   }
 
-  @Watch("presented")
-  presentedWatchHandler(newValue: boolean, oldValue = false) {
-    if (newValue === oldValue) {
-      return;
-    }
+  componentDidLoad(): void {
+    this.didLoad = true;
 
-    if (newValue) {
-      this.present();
-    } else {
-      this.dismiss();
-    }
-  }
-
-  private present() {
-    const rawLottiePath = window
-      .getComputedStyle(this.element.querySelector(".gx-lottie-test"))
-      .getPropertyValue("--gx-lottie-file-path");
-
-    if (rawLottiePath) {
-      this.lottiePath = rawLottiePath
-        .trim()
-        .replace(/^"/, "")
-        .replace(/"$/, "");
-    }
-
-    this.element.style.display = "block";
-  }
-
-  private dismiss() {
-    this.element.style.display = "none";
+    // Check if a lottie path exists
+    this.updateLottiePath();
   }
 
   render() {
-    this.element.style.display = this.presented ? "block" : "none";
+    const loadingClasses = getTransformedClassesWithoutFocus(
+      this.cssClass,
+      tLoading
+    );
+
+    const shouldShowContent = this.presented && this.didLoad;
 
     return (
-      <div class="box" role="dialog">
-        <div class="gx-lottie-test" />
-        {this.lottiePath ? (
-          <gx-lottie
-            path={this.lottiePath}
-            loop={this.type === "indeterminate"}
-            autoPlay={this.type === "indeterminate"}
-          />
-        ) : (
-          <div
-            class={{
-              [this.type]: true,
-              loader: true
-            }}
-          >
-            <div
-              class="loader-inner"
-              style={{
-                width: `${this.value * 100}%`
-              }}
-            />
+      <Host
+        class={{
+          [loadingClasses.transformedCssClass]: true,
+          [loadingClasses.vars]: true,
+          "slot-animation": this.showSlotAnimation
+        }}
+        aria-hidden={!shouldShowContent ? "true" : undefined}
+      >
+        {shouldShowContent && this.lottiePath != "" && (
+          <gx-lottie autoPlay loop path={this.lottiePath} />
+        )}
+
+        {shouldShowContent &&
+          this.lottiePath == "" &&
+          this.showSlotAnimation && <slot />}
+
+        {// Default loading animation if no gx-lottie and slots animation
+        shouldShowContent && this.lottiePath == "" && !this.showSlotAnimation && (
+          <div class="gx-loading-rotate-container">
+            <div class="circle circle-1" />
+            <div class="circle circle-2" />
+            <div class="circle circle-3" />
           </div>
         )}
-        <div class="title">{this.caption}</div>
-        <div class="description">{this.description}</div>
-      </div>
+      </Host>
     );
   }
 }

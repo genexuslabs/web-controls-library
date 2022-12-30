@@ -1,3 +1,25 @@
+@import "./css-transforms/scss-transforms";
+
+/// Helper mixin to ease styling animations of the custom elements
+/// @param {string} $class Base class of the animation
+@mixin animation($class) {
+  &#{$gx-loading} {
+    @extend #{$class} !optional;
+  }
+
+  &#{$gx-loading-vars} {
+    @extend #{$class}#{$gx-vars} !optional;
+  }
+}
+
+/// Helper mixin to ease styling custom vars of the custom elements
+/// @param {string} $class Base class of the custom vars properties
+@mixin custom-vars($class) {
+  &#{$gx-vars} {
+    @extend #{$class} !optional;
+  }
+}
+
 @mixin dragging-behavior(
   $accept-drag-class: null,
   $no-accept-drag-class: null,
@@ -23,5 +45,265 @@
     &.drag-over-class {
       @extend #{$drag-over-class} !optional;
     }
+  }
+}
+
+/// Helper mixin to be use within the "highlighted" mixin
+/// @param {string} $class Base class of the highlight properties
+/// @param {string} $background-color Specifies the background color for the highlight class
+/// @param {string} $background-image Specifies the background image for the highlight class
+/// @param {string} $color Specifies the font color for the highlight class
+@mixin extend-highlighted-class(
+  $class: null,
+  $background-color: null,
+  $background-image: null,
+  $color: null
+) {
+  @if $background-color != null {
+    background-color: $background-color;
+  }
+  @if $background-image != null {
+    background-image: $background-image;
+  }
+  @if $color != null {
+    color: $color;
+  }
+
+  @if $class != null {
+    @extend #{$class} !optional;
+  }
+}
+
+/// Helper mixin to ease styling focusable custom elements
+/// @param {string} $class Base class of the focus properties
+/// @param {string} $control-type Determine what type of control the focus class will apply to
+@mixin focused($class, $control-type: null) {
+  // Any control
+  @if $control-type == null {
+    // We need to check the absence of the attribute [data-no-action], since
+    // the focused pseudo-class is implemented with focus-within, there are
+    // some scenarios when the focus-within is triggered by an unwanted focus
+    // on a inner control. For example, the gx-image-picker with
+    // highlight = false and picker button (readonly = false and disabled = false)
+    // triggers this undesired state
+    @at-root :not([#{$gx-no-action}])#{&}:focus-within {
+      @extend #{$class} !optional;
+    }
+  }
+
+  // gx-form-field's controls
+  @else if $control-type == attribute {
+    @at-root [area="field"]#{&}:focus-within,
+
+      // Used by gx-select control and gx-edit with multiline = True
+      [area="field"] #{&}:focus-within {
+      @extend #{$class} !optional;
+    }
+  }
+
+  // gx-button control
+  @if $control-type == button {
+    @at-root gx-button#{&}:focus-within {
+      @extend #{$class} !optional;
+    }
+  }
+
+  // gx-textblock control
+  @else if $control-type == text-block {
+    @at-root gx-textblock#{&}:focus-within {
+      @extend #{$class} !optional;
+    }
+  }
+
+  // Image
+  @else if $control-type == image {
+    @at-root .gx-image-container#{&}:focus-within {
+      @extend #{$class} !optional;
+    }
+  }
+
+  // TO DO: Tab Caption
+}
+
+/// Helper mixin to ease styling hoverable custom elements
+/// @param {string} $class Base class of the hover properties
+/// @param {string} $control-type Determine what type of control the hover class will apply to
+@mixin hovered($class, $control-type: null) {
+  // gx-form-field's controls
+  @if $control-type == attribute {
+    @at-root [area="field"]#{&}:hover,
+
+      // Used by gx-select control and gx-edit with multiline = True
+      [area="field"] #{&}:hover {
+      @extend #{$class} !optional;
+    }
+  }
+
+  // gx-button control
+  @if $control-type == button {
+    @at-root gx-button#{&}:hover {
+      @extend #{$class} !optional;
+    }
+  }
+
+  // gx-textblock control
+  @else if $control-type == text-block {
+    @at-root gx-textblock#{&}:hover {
+      @extend #{$class} !optional;
+    }
+  }
+
+  // Image
+  @else if $control-type == image {
+    @at-root .gx-image-container#{&}:hover {
+      @extend #{$class} !optional;
+    }
+  }
+
+  // TO DO: Flex container
+  // gx-canvas, gx-group and gx-table controls
+  @else if $control-type == table {
+    @at-root gx-canvas#{&},
+      fieldset#{&}, // gx-group
+      gx-table#{&} {
+      &:hover {
+        @extend #{$class} !optional;
+      }
+    }
+  }
+}
+
+/// Helper mixin to ease styling the horizontal line in grid elements
+/// @param {string} $class Base class of the horizontal line properties
+/// @param {string} $show-horizontal-line True to show the horizontal line
+@mixin horizontal-line($class: null, $show-horizontal-line: true) {
+  &#{$gx-horizontal-line}::after {
+    @if $show-horizontal-line == true {
+      content: "";
+      display: block;
+      height: 1px;
+
+      // Default background-color when no class is set
+      @if $class == null {
+        background-color: #cfcfcf;
+      }
+    } @else {
+      content: none;
+    }
+  }
+
+  // This selector needs more specificity to overcome the default height value
+  @if $show-horizontal-line == true and $class != null {
+    @at-root gx-grid-smart-cell#{&}#{$gx-horizontal-line}::after {
+      @extend #{$class} !optional;
+    }
+  }
+}
+
+/// Helper mixin to ease styling highlightable custom elements
+/// @param {string} $class Base class of the highlight properties
+/// @param {string} $control-type Determine what type of control the highlight class will apply to
+/// @param {string} $background-color Specifies the background color for the highlight class
+/// @param {string} $background-image Specifies the background image for the highlight class
+/// @param {string} $color Specifies the font color for the highlight class
+@mixin highlighted(
+  $class: null,
+  $control-type: null,
+  $background-color: null,
+  $background-image: null,
+  $color: null
+) {
+  // Any control
+  @if $control-type == null {
+    @at-root #{str-replace(#{&}, ".", "%")}#{$gx-highlighted},
+      [data-has-action]#{&}#{$gx-highlighted-dot} {
+      @include extend-highlighted-class(
+        $class,
+        $background-color,
+        $background-image,
+        $color
+      );
+    }
+  }
+
+  // gx-form-field's controls
+  @if $control-type == attribute {
+    @at-root [area="field"]#{&} {
+      &[data-has-action]#{$gx-highlighted-dot} {
+        @include extend-highlighted-class(
+          $class,
+          $background-color,
+          $background-image,
+          $color
+        );
+      }
+    }
+  }
+
+  // gx-textblock control
+  @if $control-type == text-block {
+    @at-root gx-textblock[data-has-action]#{&}#{$gx-highlighted-dot} {
+      @include extend-highlighted-class(
+        $class,
+        $background-color,
+        $background-image,
+        $color
+      );
+    }
+  }
+
+  // gx-image control
+  @if $control-type == image {
+    @at-root [data-has-action].inner-image#{&}#{$gx-highlighted-dot} {
+      @include extend-highlighted-class(
+        $class,
+        $background-color,
+        $background-image,
+        $color
+      );
+    }
+  }
+
+  // TO DO: Flex container
+  // gx-canvas, gx-group and gx-table controls
+  @if $control-type == table {
+    @at-root gx-canvas#{&},
+      gx-group#{&},
+      gx-table#{&} {
+      &[data-has-action]#{$gx-highlighted-dot} {
+        @include extend-highlighted-class(
+          $class,
+          $background-color,
+          $background-image,
+          $color
+        );
+      }
+    }
+  }
+
+  // gx-button control
+  @if $control-type == button {
+    @at-root gx-button[data-has-action]#{&}#{$gx-highlighted-dot} {
+      @include extend-highlighted-class(
+        $class,
+        $background-color,
+        $background-image,
+        $color
+      );
+    }
+  }
+
+  // TODO.
+  // @if $control-type == section {
+  // }
+}
+
+/// Helper mixin to ease styling the overflow style of the custom elements
+/// @param {string} $overflow-style Determine if the overflow style will be hidden or visible
+@mixin overflow-style($overflow-style: hide) {
+  @if $overflow-style == hide {
+    --gx-overflow-style: hidden;
+  } @else {
+    --gx-overflow-style: visible;
   }
 }

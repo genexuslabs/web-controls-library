@@ -1,77 +1,59 @@
+@import "../common/css-transforms/scss-transforms";
+
 ////
 /// @group theming-mixins
 ////
 
+$grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller) >, & > * > .scrollable-content >";
+
 /// Helper mixin to ease styling gx-grid-base custom elements
-/// @param {string} $class Base class of the component
-/// @param {string} $highlighted Class to be used when the grid is active
 /// @param {string} $odd-row Class for styling the Odd row
 /// @param {string} $even-row Class for styling the Odd even
-/// @param {string} loading-animation Class for styling the grid loading animation
+/// @param {string} loading-animation Class for styling the grid loading animation. WA to temporarily maintain backwards compatibility with CSS generation
 /// @param {string} group-separator Class for styling the grid group-separator
-/// @param {string} $horizontal-line Class of the horizontal line separator (to be implemented)
 @mixin gx-grid-base(
-  $class,
-  $highlighted: null,
   $odd-row: null,
   $even-row: null,
-  $loading-animation: null,
-  $group-separator: null,
-  $horizontal-line: null
+  // WA to temporarily maintain backwards compatibility with CSS generation
+    $loading-animation: null,
+  $group-separator: null
 ) {
-  @extend #{$class};
+  // - - - - - - - - - - Odd row - - - - - - - - - -
+  @if ($odd-row != null) {
+    &#{$gx-odd-row} {
+      @extend #{$odd-row} !optional;
+    }
 
-  @if ($highlighted != null) {
-    &:active {
-      @extend #{$highlighted} !optional;
+    // Highlighted class
+    &#{$gx-odd-row}#{$gx-highlighted-dot} {
+      @extend #{str-replace($odd-row, ".", "%")}#{$gx-highlighted} !optional;
     }
   }
 
-  & > [slot="grid-content"] > {
-    @if ($odd-row != null) {
-      .gx-grid-row:nth-child(odd),
-      * > .gx-grid-row:nth-child(odd) {
-        @extend #{$odd-row} !optional;
-      }
+  // - - - - - - - - - - Even row - - - - - - - - - -
+  @if $even-row != null {
+    &#{$gx-even-row} {
+      @extend #{$even-row} !optional;
     }
 
-    @if ($even-row != null) {
-      .gx-grid-row:nth-child(even),
-      * > .gx-grid-row:nth-child(even) {
-        @extend #{$even-row} !optional;
-      }
+    // Highlighted class
+    &#{$gx-even-row}#{$gx-highlighted-dot} {
+      @extend #{str-replace($even-row, ".", "%")}#{$gx-highlighted} !optional;
     }
+  }
 
-    @if ($horizontal-line != null) {
-      .gx-grid-row:after,
-      * > .gx-grid-row:after {
-        --grid--horizontal-line-separator-default: block;
-        @extend #{$horizontal-line} !optional;
-        content: "";
-        height: var(--height, 1px);
-        display: var(
-          --grid--horizontal-line-separator,
-          var(--grid--horizontal-line-separator-default)
-        );
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
+  @if ($group-separator != null) {
+    #{$grid-content-selector} {
+      .gx-group-separator {
+        @extend #{$group-separator} !optional;
       }
     }
   }
-}
 
-/// Helper mixin to ease styling gx-grid-base's custom elements rows
-/// @param {string} $class Base class of the component
-/// @param {string} $highlighted Class to be used when the grid row is active
-@mixin gx-grid-base-row($class, $highlighted: null) {
-  @extend #{$class};
-
-  @if ($highlighted != null) {
-    &:active,
-    &[data-gx-grid-highlighted] {
-      @extend #{$highlighted} !optional;
+  // WA to temporarily maintain backwards compatibility with CSS generation
+  @if $loading-animation != null {
+    &#{$gx-loading} {
+      @extend #{$loading-animation}#{$gx-vars} !optional;
     }
   }
 }

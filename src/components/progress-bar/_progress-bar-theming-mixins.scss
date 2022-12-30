@@ -1,0 +1,22 @@
+@import "../common/css-transforms/scss-transforms";
+
+////
+/// @group theming-mixins
+////
+
+/// Helper mixin to ease styling gx-progress-bar custom elements
+/// @param {string} $title Class for the title part of the component
+/// @param {string} $description Class for the description part of the component
+@mixin gx-progress($title: null, $description: null) {
+  @if ($title != null) {
+    &#{$gx-title} {
+      @extend #{$title} !optional;
+    }
+  }
+
+  @if ($description != null) {
+    &#{$gx-description} {
+      @extend #{$description} !optional;
+    }
+  }
+}

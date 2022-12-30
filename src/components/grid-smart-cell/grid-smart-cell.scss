@@ -1,0 +1,15 @@
+@import "../common/_common-styling-config.scss";
+
+.gx-grid-row {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-width: min-content;
+
+  // Inherit from the parent element
+  // gx-grid-smart-cell must hide its content overflow to ensure that the
+  // border-radius property is applied
+  overflow: var(--gx-overflow-style);
+
+  @include transition-properties();
+}

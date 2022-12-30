@@ -1,0 +1,227 @@
+@import "../common/layout-styling-config";
+@import "../grid-base/grid-base.scss";
+
+$grid-horizontal-content-selector: "& > .gx-grid-horizontal-content > [slot='grid-content']";
+
+gx-grid-smart-css {
+  /**
+   * @prop --gx-grid-css-items: Number of Columns or Rows to be shown in the Main axis direction.
+   */
+  --gx-grid-css-items: 1;
+
+  /**
+   * @prop --gx-grid-css-min-size: This attribute value is used to determine the number of columns to be shown
+   * in a Smart Grid with Multiple by Size in Items Layout Mode.
+   * The grid will fit as many columns as possible with at least this width, 0 means to use all width.
+   */
+  --gx-grid-css-min-size: 0;
+
+  /**
+   * @prop --gx-grid-css-max-size: This attribute value is used to determine the number of columns in a 
+   * Smart Grid with Multiple by Size in Items Layout Mode and Vertical scroll direction. 
+   * The width of the grid items cannot be greater than this maximum. 0 means no maximum.
+   */
+  --gx-grid-css-max-size: 0;
+
+  /**
+   * @prop --gx-overflow-style: Determine if the overflow will be hidden or visible.
+   * By default, the gx-grid-smart-css hide its content overflow.
+   */
+  --gx-overflow-style: #{$default-overflow-style};
+
+  @include visibility(flex);
+
+  #{$grid-content-selector} {
+    display: grid;
+  }
+
+  // - - - - - - - - - - - - - - - - - -
+  //          Virtual Scroller
+  // - - - - - - - - - - - - - - - - - -
+  & > virtual-scroller {
+    display: flex;
+    width: 100%;
+
+    // Virtual Scroll overrides these settings. This selector has high
+    // Specificity to override the default settings
+    &[slot="grid-content"] > .scrollable-content {
+      height: auto;
+      max-height: unset;
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - -
+  //            Snap to Grid
+  // - - - - - - - - - - - - - - - - - -
+  &[snap-to-grid] {
+    // Default setting
+    #{$grid-content-selector} {
+      & > .gx-grid-row {
+        scroll-snap-align: start;
+      }
+    }
+
+    // Vertical orientation
+    &[direction="vertical"] {
+      #{$grid-content-selector} {
+        scroll-snap-type: y mandatory;
+      }
+    }
+
+    // Horizontal orientation
+    &[direction="horizontal"] {
+      #{$grid-content-selector} {
+        scroll-snap-type: x mandatory;
+      }
+    }
+  }
+}
+
+// - - - - - - - - - - - - - - - - - -
+//        Vertical Orientation
+// - - - - - - - - - - - - - - - - - -
+gx-grid-smart-css[direction="vertical"] {
+  &[auto-grow] {
+    overflow: visible; // Override default behavior in this case
+  }
+
+  // This ensures that the rows will only set their height based on the height
+  // of the content.
+  #{$grid-content-selector} {
+    grid-auto-rows: min-content;
+
+    // The relative height of the inner content will determine the height of
+    // the cell. In this case, the inner height is "relative" to the grid
+    // viewport height
+    & > .gx-grid-row[relative-size] {
+      min-height: calc(
+        var(--gx-grid-smart-css-viewport-size) *
+          var(--gx-grid-item-relative-size)
+      );
+    }
+  }
+
+  // - - - - - Inverse Loading settings - - - - -
+  &.gx-grid-inverse-loading {
+    // Necessary to make work the "align-content" property when Inverse Loading
+    // is enabled
+    & > virtual-scroller > .scrollable-content {
+      min-height: 100%;
+    }
+
+    #{$grid-content-selector} {
+      align-content: flex-end;
+
+      // "width: 100%" for the infinite scroll. Useful when
+      // Item Layout Mode = Multiple By Quantity
+      & > grid-infinite-scroll {
+        grid-column-start: 1;
+        grid-column-end: calc(var(--gx-grid-css-items) + 1);
+      }
+    }
+  }
+
+  // - - - - - - - - -  Single  - - - - - - - - -
+  &[item-layout-mode="single"] {
+    #{$grid-content-selector} {
+      grid-template-columns: 1fr;
+    }
+
+    &.gx-grid-inverse-loading {
+      #{$grid-content-selector} {
+        & > .gx-grid-row {
+          grid-row-start: var(--gx-cell-index--single);
+        }
+      }
+    }
+  }
+
+  // - - - - - - Multiple by Quantity - - - - - -
+  &[item-layout-mode="mbyq"] {
+    #{$grid-content-selector} {
+      grid-template-columns: repeat(var(--gx-grid-css-items), 1fr);
+    }
+
+    &.gx-grid-inverse-loading {
+      #{$grid-content-selector} {
+        & > .gx-grid-row {
+          grid-row-start: var(--gx-cell-index--mbyq);
+        }
+      }
+    }
+  }
+
+  // - - - - - - - Multiple by Size - - - - - - -
+  &[item-layout-mode="mbys"] {
+    #{$grid-content-selector} {
+      grid-template-columns: repeat(
+        auto-fill,
+        minmax(var(--gx-grid-css-min-size), 1fr)
+      );
+    }
+  }
+}
+
+// - - - - - - - - - - - - - - - - - -
+//       Horizontal Orientation
+// - - - - - - - - - - - - - - - - - -
+gx-grid-smart-css[direction="horizontal"] {
+  & > .gx-grid-horizontal-content {
+    display: flex;
+    position: relative;
+    flex: 1;
+  }
+
+  #{$grid-horizontal-content-selector} {
+    display: grid;
+    position: absolute;
+    flex: 1;
+    max-width: 100%;
+    grid-auto-flow: column;
+    overflow-x: auto;
+
+    // Hide the scrollbars by default.
+    // TODO: In the future, these values must be configured with the
+    // "Scroll Indicators Visibility" property of GeneXus
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      width: 0px;
+      height: 0px;
+    }
+
+    // The relative width of the inner content will determine the width of
+    // the cell. In this case, the inner width is "relative" to the grid
+    // viewport width
+    & > .gx-grid-row[relative-size] {
+      width: calc(
+        var(--gx-grid-smart-css-viewport-size) *
+          var(--gx-grid-item-relative-size)
+      );
+    }
+  }
+
+  // - - - - - - - - -  Single  - - - - - - - - -
+  &[item-layout-mode="single"] {
+    #{$grid-horizontal-content-selector} {
+      grid-template-rows: 1fr;
+    }
+  }
+
+  // - - - - - - Multiple by Quantity - - - - - -
+  &[item-layout-mode="mbyq"] {
+    #{$grid-horizontal-content-selector} {
+      grid-template-rows: repeat(var(--gx-grid-css-items), 1fr);
+    }
+  }
+
+  // - - - - - - - Multiple by Size - - - - - - -
+  &[item-layout-mode="mbys"] {
+    #{$grid-horizontal-content-selector} {
+      grid-template-rows: repeat(
+        auto-fill,
+        minmax(var(--gx-grid-css-min-size), 1fr)
+      );
+    }
+  }
+}

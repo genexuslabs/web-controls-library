@@ -3,27 +3,55 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Listen,
   Prop,
-  h,
-  Host
+  h
 } from "@stencil/core";
 import {
   Component as GxComponent,
   VisibilityComponent
 } from "../common/interfaces";
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
 
-const BASE_TABLIST_SELECTOR = ":scope > [role='tablist']";
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
 
+/**
+ * @part nav-tabs - The main parent of the container of the tab captions.
+ * @part nav-tabs-table - The main parent container of the tab captions.
+ * @part nav-tabs-table-filler - The tab strip filler when the `tabs-distribution="scroll"`.
+ * @part tab-content - The main parent container of the tab pages.
+ *
+ * @slot caption - The slot for the tab captions.
+ * @slot page - The slot for the tab pages.
+ */
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "tab.scss",
   tag: "gx-tab"
 })
-export class Tab implements GxComponent, VisibilityComponent {
+export class Tab
+  implements GxComponent, VisibilityComponent, HighlightableComponent {
+  /**
+   *  - Input: Caption Id
+   *  - Output: Corresponding tabPage Id
+   */
+  private tabCaptionIdToTabPageId = new Map<string, string>();
+
+  // Refs
+  private lastSelectedTabCaption: HTMLGxTabCaptionElement;
+  private lastSelectedTabPage: HTMLGxTabPageElement;
+
   @Element() element: HTMLGxTabElement;
 
-  private lastSelectedTab: HTMLElement;
+  /**
+   * A CSS class to set as the `gx-tab` element class.
+   */
+  @Prop() readonly cssClass: string;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -36,128 +64,134 @@ export class Tab implements GxComponent, VisibilityComponent {
   @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
-   * Fired when the active tab is changed
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
+
+  /**
+   * Defines how the tabs will be distributed in the Strip.
    *
+   * | Value        | Details                                                                            |
+   * | ------------ | ---------------------------------------------------------------------------------- |
+   * | `scoll`      | Allows scrolling the tab control when the number of tabs exceeds the screen width. |
+   * | `fixed-size` | Tabs are fixed size. Used with any amount of tabs.                                 |
+   */
+  @Prop() tabsDistribution: "scroll" | "fixed-size" = "scroll";
+
+  /**
+   * Fired when the active tab is changed
    */
   @Event() tabChange: EventEmitter;
 
   @Listen("tabSelect")
   tabClickHandler(event: CustomEvent) {
-    const targetElement = event.target as HTMLElement;
-    if (targetElement.closest("gx-tab") !== this.element) {
+    const tabCaptionElement = event.target as HTMLGxTabCaptionElement;
+
+    if (
+      tabCaptionElement.closest("gx-tab") !== this.element ||
+      tabCaptionElement == this.lastSelectedTabCaption
+    ) {
       return;
     }
+    this.setSelectedTab(tabCaptionElement);
 
-    const oldSelectedTab = this.lastSelectedTab;
-    this.setSelectedTab(targetElement);
-    if (oldSelectedTab !== this.lastSelectedTab) {
-      this.tabChange.emit(event);
-    }
+    this.tabChange.emit(event);
   }
 
-  private setSelectedTab(captionElement: HTMLElement) {
-    this.lastSelectedTab = captionElement;
-    this.getCaptionSlots().forEach((slotElement: any, i) => {
-      slotElement.selected = slotElement === captionElement;
-      const nthChild = i + 1;
-      const pageElement = this.element.querySelector(
-        `:scope > gx-tab-page:nth-child(${nthChild}), 
-        ${BASE_TABLIST_SELECTOR} > .gx-tab-content > gx-tab-page:nth-child(${nthChild})`
-      ) as HTMLElement;
-      this.mapPageToCaptionSelection(slotElement, pageElement);
-    });
+  private setSelectedTab(tabCaptionElement: HTMLGxTabCaptionElement) {
+    // Unselect last tabCaption and tabPage elements
+    this.lastSelectedTabCaption.selected = false;
+    this.lastSelectedTabPage.selected = false;
+
+    // Update last tabCaption and tabPage elements
+    const tabPageId = this.tabCaptionIdToTabPageId.get(tabCaptionElement.id);
+    this.lastSelectedTabCaption = tabCaptionElement;
+    this.lastSelectedTabPage = this.element.querySelector(`#${tabPageId}`);
+
+    // Select new tabCaption and tabPage elements
+    this.lastSelectedTabCaption.selected = true;
+    this.lastSelectedTabPage.selected = true;
   }
 
-  private getCaptionSlots(): HTMLElement[] {
-    return Array.from(
-      this.element.querySelectorAll(
-        `:scope > [slot='caption'], 
-         ${BASE_TABLIST_SELECTOR} > .gx-nav-tabs > [slot='caption']`
-      )
-    );
-  }
-
-  private mapPageToCaptionSelection(
-    captionElement: any,
-    pageElement: HTMLElement
-  ) {
-    pageElement.classList.toggle(
-      "gx-tab-page--active",
-      !!captionElement.selected
-    );
-  }
-
-  componentDidLoad() {
-    this.linkTabs(true);
-  }
-
-  componentDidUpdate() {
-    this.linkTabs();
-  }
-
-  disconnectedCallback() {
-    this.lastSelectedTab = null;
-  }
-
-  private linkTabs(resolveSelected = false) {
+  private linkCaptionsWithTabPages() {
     const captionSlots = this.getCaptionSlots();
     const pageSlots = this.getPageSlots();
 
-    if (captionSlots.length === pageSlots.length) {
-      captionSlots.forEach((captionElement: any, i) => {
-        const pageElement: any = pageSlots[i];
-        captionElement.setAttribute("aria-controls", pageElement.id);
-        pageElement.setAttribute("aria-labelledby", captionElement.id);
-        if (resolveSelected) {
-          this.mapPageToCaptionSelection(captionElement, pageElement);
-          if (captionElement.selected) {
-            this.lastSelectedTab = captionElement;
-          }
-        }
-      });
+    if (captionSlots.length !== pageSlots.length) {
+      return;
     }
+
+    captionSlots.forEach((captionElement, i) => {
+      const pageElement = pageSlots[i];
+
+      captionElement.setAttribute("aria-controls", pageElement.id);
+      pageElement.setAttribute("aria-labelledby", captionElement.id);
+
+      this.tabCaptionIdToTabPageId.set(captionElement.id, pageElement.id);
+
+      // Determine which tab page is selected
+      if (captionElement.selected) {
+        this.lastSelectedTabCaption = captionElement;
+        this.lastSelectedTabPage = pageElement;
+
+        this.lastSelectedTabPage.selected = true;
+      }
+    });
   }
 
-  render() {
-    this.setCaptionSlotsClass();
-    this.setPageSlotsClass();
-    return (
-      <Host>
-        <div role="tablist">
-          <div class="gx-nav-tabs">
-            <slot name="caption" />
-            <div aria-hidden="true" class="gx-nav-tabs-filler"></div>
-          </div>
-          <div class="gx-tab-content">
-            <slot name="page" />
-          </div>
-        </div>
-      </Host>
+  private getCaptionSlots(): HTMLGxTabCaptionElement[] {
+    return Array.from(
+      this.element.querySelectorAll(":scope > [slot='caption']")
     );
   }
 
-  private setCaptionSlotsClass() {
-    this.getCaptionSlots().forEach(captionElement => {
-      if (!captionElement.classList.contains("gx-nav-item")) {
-        captionElement.classList.add("gx-nav-item");
-      }
-    });
+  private getPageSlots(): HTMLGxTabPageElement[] {
+    return Array.from(this.element.querySelectorAll(":scope > [slot='page']"));
   }
 
-  private setPageSlotsClass() {
-    this.getPageSlots().forEach(pageElement => {
-      if (!pageElement.classList.contains("gx-tab-page")) {
-        pageElement.classList.add("gx-tab-page");
-      }
-    });
+  componentDidLoad() {
+    makeHighlightable(this);
+    this.linkCaptionsWithTabPages();
   }
 
-  private getPageSlots(): HTMLElement[] {
-    return Array.from(
-      this.element.querySelectorAll(
-        `:scope > [slot='page'], 
-         ${BASE_TABLIST_SELECTOR} > .gx-tab-content > [slot='page']`
-      )
+  disconnectedCallback() {
+    this.lastSelectedTabCaption = null;
+  }
+
+  render() {
+    // Styling for gx-tab-caption control.
+    const classes = getClasses(this.cssClass);
+
+    return (
+      <Host
+        role="tablist"
+        class={{
+          [this.cssClass]: !!this.cssClass,
+          [classes.vars]: true
+        }}
+      >
+        <div class="gx-nav-tabs" part="nav-tabs">
+          <div
+            class={{
+              "gx-nav-tabs-table": true,
+              "gx-fixed-tabs": this.tabsDistribution === "fixed-size"
+            }}
+            part="nav-tabs-table"
+          >
+            <slot name="caption" />
+            {this.tabsDistribution === "scroll" && (
+              <div
+                aria-hidden="true"
+                class="gx-nav-tabs-table-filler"
+                part="nav-tabs-table-filler"
+              ></div>
+            )}
+          </div>
+        </div>
+        <div class="gx-tab-content" part="tab-content">
+          <slot name="page" />
+        </div>
+      </Host>
     );
   }
 }

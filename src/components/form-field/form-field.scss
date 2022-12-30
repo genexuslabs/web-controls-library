@@ -1,19 +1,116 @@
 @import "../common/_base";
-@import "../renders/bootstrap/form-field/form-field-render";
+@import "../common/common-styling-config";
 
 gx-form-field {
-  @include visibility(flex);
+  --elevation: 0;
 
+  /**
+   * @prop --gx-form-field-label-width-row:
+   * Define the label width when the label position is top or bottom.
+   * (100% by default)
+   */
+  --gx-form-field-label-width-row: 100%;
+
+  /**
+   * @prop --gx-form-field-label-width-column:
+   * Define the label width when the label position is left or right.
+   * (100% by default)
+   */
+  --gx-form-field-label-width-column: 25%;
+
+  @include visibility(grid);
   justify-self: stretch;
   align-self: stretch;
+  max-height: 100%;
   flex: 1;
+
+  &.gx-label-position {
+    // Adjust label position to the opposite cell
+    &-top,
+    &-left {
+      & > .gx-label-container {
+        order: -1;
+      }
+    }
+
+    // Label width when position is top or bottom
+    &-top,
+    &-bottom {
+      & > .gx-label-container {
+        width: var(--gx-form-field-label-width-row);
+      }
+    }
+
+    &-left,
+    &-right {
+      grid-auto-flow: column;
+    }
+
+    &-top {
+      grid-template-rows: 0.25fr 1fr;
+    }
+
+    &-bottom {
+      grid-template-rows: 1fr 0.25fr;
+    }
+
+    &-left {
+      grid-template-columns: var(--gx-form-field-label-width-column) 1fr;
+    }
+
+    &-right {
+      grid-template-columns: 1fr var(--gx-form-field-label-width-column);
+    }
+  }
+
+  & > .gx-label-container {
+    display: flex;
+    width: 100%;
+    text-align: start;
+
+    & > label {
+      @include transition-properties();
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  & > .gx-label-right {
+    text-align: end;
+  }
+}
+
+[align="left"],
+:not([align]) {
+  & > gx-form-field {
+    [data-part="field"],
+    .gx-edit-readonly-container {
+      text-align: start;
+    }
+
+    gx-radio-group[direction="vertical"] [data-part="option-control"],
+    gx-radio-group[direction="horizontal"],
+    gx-checkbox,
+    gx-gauge {
+      justify-content: flex-start;
+    }
+  }
 }
 
 [align="center"] {
   & > gx-form-field {
     [data-part="field"],
-    [data-readonly] {
+    .gx-edit-readonly-container {
       text-align: center;
+    }
+
+    gx-radio-group[direction="vertical"] [data-part="option-control"],
+    gx-radio-group[direction="horizontal"],
+    gx-checkbox,
+    gx-gauge {
+      justify-content: center;
     }
   }
 }
@@ -21,29 +118,196 @@ gx-form-field {
 [align="right"] {
   & > gx-form-field {
     [data-part="field"],
-    [data-readonly] {
-      text-align: right;
+    .gx-edit-readonly-container {
+      text-align: end;
+    }
+
+    gx-radio-group[direction="vertical"] [data-part="option-control"],
+    gx-radio-group[direction="horizontal"],
+    gx-checkbox,
+    gx-gauge {
+      justify-content: flex-end;
+    }
+  }
+}
+
+[valign="top"] {
+  & > gx-form-field {
+    .gx-edit-readonly-container,
+    [data-part="container"],
+    gx-checkbox > .option-and-label-container {
+      align-items: flex-start;
+    }
+
+    gx-radio-group {
+      &[direction="vertical"] {
+        justify-content: flex-start;
+      }
+
+      &[direction="horizontal"] {
+        align-content: flex-start;
+      }
+    }
+
+    gx-gauge {
+      align-items: flex-start;
     }
   }
 }
 
 [valign="middle"] {
   & > gx-form-field {
-    [data-readonly],
-    [data-part="label"] {
-      align-self: center;
+    .gx-edit-readonly-container,
+    [data-part="container"],
+    gx-checkbox > .option-and-label-container {
+      align-items: center;
+    }
+
+    gx-radio-group {
+      &[direction="vertical"] {
+        justify-content: center;
+      }
+
+      &[direction="horizontal"] {
+        align-content: center;
+      }
+    }
+
+    gx-gauge {
+      align-items: center;
     }
   }
 }
 
 [valign="bottom"] {
   & > gx-form-field {
-    [data-readonly] {
-      align-self: flex-end;
-      line-height: 1.25; // WA: Increase line-height minimally to avoid vertical scrollbars
+    .gx-edit-readonly-container,
+    [data-part="container"],
+    gx-checkbox {
+      align-items: flex-end;
     }
-    [data-part="label"] {
-      align-self: flex-end;
+
+    gx-radio-group {
+      &[direction="vertical"] {
+        justify-content: flex-end;
+      }
+
+      &[direction="horizontal"] {
+        align-content: flex-end;
+      }
+    }
+
+    gx-gauge {
+      align-items: flex-end;
     }
   }
 }
+
+// If the inner control is readonly, the default vertical alignment might vary
+:not([valign]) {
+  & > gx-form-field {
+    // gx-checkbox's default is center
+    gx-checkbox[readonly="true"] > .option-and-label-container {
+      align-items: flex-start;
+    }
+
+    [data-part="container"] {
+      align-items: center;
+    }
+
+    // gx-radio-group's default is flex-start
+    gx-radio-group:not([readonly="true"]) {
+      &[direction="vertical"] {
+        justify-content: center;
+      }
+
+      &[direction="horizontal"] {
+        align-content: center;
+      }
+    }
+
+    gx-gauge {
+      align-items: center;
+    }
+  }
+}
+
+// Start - Refactoring for gx-form-field controls alignment
+[align="left"],
+:not([align]) {
+  & > gx-form-field {
+    [data-text-align] {
+      text-align: start;
+    }
+
+    [data-align] {
+      justify-content: flex-start;
+    }
+  }
+}
+
+[align="center"] {
+  & > gx-form-field {
+    [data-text-align] {
+      text-align: center;
+    }
+
+    [data-align] {
+      justify-content: center;
+    }
+  }
+}
+
+[align="right"] {
+  & > gx-form-field {
+    [data-text-align] {
+      text-align: end;
+    }
+
+    [data-align] {
+      justify-content: flex-end;
+    }
+  }
+}
+
+:not([valign]) {
+  & > gx-form-field {
+    // Default vertical alignment is middle when readonly="false"
+    [data-valign] {
+      align-items: center;
+    }
+
+    // Default vertical alignment is top when readonly="true"
+    [data-valign-readonly] {
+      align-items: flex-start;
+    }
+  }
+}
+
+[valign="top"] {
+  & > gx-form-field {
+    [data-valign],
+    [data-valign-readonly] {
+      align-items: flex-start;
+    }
+  }
+}
+
+[valign="middle"] {
+  & > gx-form-field {
+    [data-valign],
+    [data-valign-readonly] {
+      align-items: center;
+    }
+  }
+}
+
+[valign="bottom"] {
+  & > gx-form-field {
+    [data-valign],
+    [data-valign-readonly] {
+      align-items: flex-end;
+    }
+  }
+}
+// End - Refactoring for gx-form-field controls alignment

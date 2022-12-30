@@ -1,0 +1,79 @@
+@import "../common/_base";
+
+// Used to horizontally and vertically align the text and image
+@mixin empty-placeholder-alignment(
+  $text-align: null,
+  $justify-content: null,
+  $align-items: null
+) {
+  & > .grid-empty-placeholder > div > .gx-empty-indicator > .gx-empty-item {
+    // Alignment for the gx-textblock control
+    @if $text-align != null {
+      > gx-textblock {
+        text-align: $text-align;
+      }
+    }
+    @if $align-items != null {
+      > gx-textblock::part(valign) {
+        align-items: $align-items;
+      }
+    }
+
+    // Alignment for the gx-image control
+    @if $justify-content != null or $align-items != null {
+      > gx-image {
+        @if $justify-content != null {
+          justify-content: $justify-content;
+        }
+        @if $align-items != null {
+          align-self: $align-items;
+        }
+      }
+    }
+  }
+}
+
+[align="left"] > .gx-grid-empty {
+  @include empty-placeholder-alignment(start, flex-start);
+}
+
+[align="center"] > .gx-grid-empty {
+  @include empty-placeholder-alignment(center, center);
+}
+
+[align="right"] > .gx-grid-empty {
+  @include empty-placeholder-alignment(end, flex-end);
+}
+
+[valign="top"] > .gx-grid-empty {
+  @include empty-placeholder-alignment($align-items: flex-start);
+}
+
+[valign="middle"] > .gx-grid-empty {
+  @include empty-placeholder-alignment($align-items: center);
+}
+
+[valign="bottom"] > .gx-grid-empty {
+  @include empty-placeholder-alignment($align-items: flex-end);
+}
+
+gx-grid-empty-indicator {
+  @include visibility(flex);
+  position: relative;
+  flex: 1;
+  height: 100%;
+
+  // Inherit from the parent element
+  overflow: var(--gx-overflow-style);
+
+  & > .gx-empty-item {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    & > gx-image > .inner-image {
+      max-width: fit-content;
+    }
+  }
+}

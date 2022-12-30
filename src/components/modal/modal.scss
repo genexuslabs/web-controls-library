@@ -1,5 +1,236 @@
 @import "../common/_base";
+@import "../common/common-styling-config";
+@import "../common/layout-styling-config";
 
-gx-modal {
-  @include visibility(block);
+$close-vector-size: 16px;
+$close-button-padding: 4px;
+$close-button-size: $close-vector-size + $close-button-padding +
+  $close-button-padding;
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+:host {
+  /**
+   * @prop --gx-modal-accent-color: Accent color for gx-modal's actions.
+   */
+  --gx-modal-accent-color: rgb(255, 167, 192);
+
+  /**
+    * @prop --gx-modal-content-background-color: Background color for body and footer
+    */
+  --gx-modal-dialog-background-color: #fff;
+
+  /**
+   * @prop --gx-modal-mask-background-color: Mask background color
+   */
+  --gx-modal-mask-background-color: #333333bf; // Android's mask
+
+  // Reset requiered when the control is used inside of a highlightable control.
+  // For example, gx-image-picker
+  cursor: auto;
+}
+
+// - - - - - - - - - - - - - - - -
+//  z-index for each modal's type
+// - - - - - - - - - - - - - - - -
+:host([type="alert"]) {
+  z-index: $z-index-gx-modal-alert;
+}
+
+:host([type="dialog"]) {
+  z-index: $z-index-gx-modal-dialog;
+}
+
+:host([type="popup"]) {
+  z-index: $z-index-gx-modal-popup;
+}
+
+:host(:not(.presented)) {
+  display: none;
+}
+
+:host(.presented) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: var(--gx-modal-mask-background-color);
+
+  // Implement scrollable content. Scroll bars won't be displayed
+  max-width: 100%;
+  max-height: 100%;
+  overflow: auto;
+  scrollbar-width: none;
+
+  opacity: 0; // Initial opacity when the animation starts
+  animation: mask-fade-in $transition-duration ease-in-out forwards;
+
+  // WA to enable pointer event if the gx-modal is used inside another
+  // control that has "pointer-events: none", for example gx-image-picker
+  pointer-events: all;
+}
+
+:host(.dismiss-animation) {
+  opacity: 1; // Initial opacity when the animation starts
+  animation: dismiss-modal $transition-duration ease-in-out forwards;
+
+  & > .gx-modal-dialog {
+    // Defaults when the animation starts
+    opacity: 1;
+    transform: translateY(0);
+
+    animation: dismiss-dialog $transition-duration ease-in-out forwards;
+  }
+}
+
+.gx-modal-dialog {
+  // Defaults when the animation starts
+  opacity: 0;
+  transform: translateY(-25%);
+
+  animation: dialog-fade-in $transition-duration ease-in-out
+    $half-transition-delay forwards;
+}
+
+// Used to customize the container of the messages (alert and dialog types)
+.custom-dialog {
+  border-radius: 14px;
+  box-shadow: 0 8px 22px #00000040, inset 0 0 6px -3px #00000040;
+  width: min(768px, 66.7vw);
+  margin-block: 14px 30px;
+  overflow: hidden;
+  word-break: break-word; // Improve long error messages
+}
+
+.gx-modal-content {
+  display: grid;
+  grid-template: "cell-header" min-content "cell-body" 1fr "cell-footer" min-content / 1fr;
+  height: 100%;
+}
+
+// - - - - - - - - - - - - - - - -
+//              Slots
+// - - - - - - - - - - - - - - - -
+.header {
+  grid-area: cell-header;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #212121;
+  color: var(--header-contrast-color, inherit);
+  min-height: 3em;
+  padding: 6px 12px 6px 24px;
+}
+
+h5 {
+  font-size: 1em;
+  padding: 0;
+  margin: 0;
+}
+
+.close-button {
+  position: absolute;
+  top: calc(1.5em - 12px);
+  appearance: none;
+  background-color: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: inherit;
+  outline: unset;
+  width: $close-button-size;
+  height: $close-button-size;
+  padding: $close-button-padding;
+  margin-inline-start: calc(100% - 24px - 1em);
+  z-index: 1;
+
+  & > svg {
+    width: $close-vector-size;
+    height: $close-vector-size;
+
+    & > .vector {
+      stroke: var(--header-contrast-color, var(--body-contrast-color));
+      stroke-width: 2px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: filter $transition-duration;
+    }
+  }
+
+  &:active > svg > .vector {
+    filter: invert(0.5);
+  }
+
+  &:hover:not(:active) > svg > .vector {
+    filter: invert(0.25);
+  }
+}
+
+.body {
+  display: flex;
+  grid-area: cell-body;
+}
+
+// Used to customize the body of the messages (alert and dialog types)
+.custom-body {
+  position: relative;
+  background-color: var(--gx-modal-dialog-background-color);
+  width: 100%;
+  min-height: 3em;
+  padding: 24px;
+
+  & + .footer {
+    background-color: var(--gx-modal-dialog-background-color);
+    min-height: 3em;
+    padding: 12px 24px 24px 24px;
+  }
+}
+
+.footer {
+  grid-area: cell-footer;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+// - - - - - - - - - - - - - - - -
+//           Key frames
+// - - - - - - - - - - - - - - - -
+@keyframes dialog-fade-in {
+  50% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dismiss-dialog {
+  to {
+    transform: translateY(-25%);
+    opacity: 0;
+  }
+}
+
+@keyframes dismiss-modal {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes mask-fade-in {
+  to {
+    opacity: 1;
+  }
 }

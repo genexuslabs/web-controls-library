@@ -1,7 +1,20 @@
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+
 import { EventEmitter } from "@stencil/core";
 
+// Class transforms
+import { getClasses } from "../common/css-transforms/css-transforms";
+
 export interface GridBase {
-  el: HTMLElement;
+  element: HTMLElement;
+
+  /**
+   * A CSS class to set as the `gx-grid` element class.
+   */
+  cssClass: string;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -12,6 +25,13 @@ export interface GridBase {
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
   invisibleMode: "collapse" | "keep-space";
+
+  /**
+   * When set to `true`, the grid items will be loaded in inverse order, with
+   * the first element at the bottom and the "Loading" message (infinite-scroll)
+   * at the top.
+   */
+  inverseLoading?: boolean;
 
   /**
    * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.
@@ -46,10 +66,20 @@ export interface GridBase {
 export class GridBaseHelper {
   static GRID_BASE_CLASSNAME = "gx-grid-base";
 
+  static init(component: HighlightableComponent) {
+    makeHighlightable(component);
+  }
+
   static hostData(cmp: GridBase) {
+    // Styling for gx-grid control.
+    const classes = getClasses(cmp.cssClass);
+
     return {
       class: {
         "gx-grid-base": true,
+        [cmp.cssClass]: !!cmp.cssClass,
+        [classes.vars]: true,
+        "gx-grid-inverse-loading": !!cmp.inverseLoading,
         "gx-grid-empty": this.isEmptyGrid(cmp),
         "gx-grid-empty-loading":
           cmp.loadingState === "loading" && cmp.recordCount <= 0,
