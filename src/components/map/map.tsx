@@ -35,10 +35,12 @@ export class Map implements GxComponent {
   private centerCoords: string;
   private isSelectionLayerSlot = false;
   private map: LFMap;
+
   private markersList = [];
   private circleList = [];
   private polygonsList = [];
   private linesList = [];
+
   private mapProviderApplied: string;
   private mapTypesProviders = {
     hybrid:
@@ -301,36 +303,16 @@ export class Map implements GxComponent {
     return { exist: slot !== null, elem: slot };
   }
 
-  private onMapMarkerDeleted(marker: Marker) {
-    let i = 0;
-    marker.remove();
-    while (
-      i < this.markersList.length &&
-      this.markersList[i]._leaflet_id !== marker._leaflet_id
-    ) {
-      i++;
-    }
-    if (i <= this.markersList.length) {
-      this.markersList.splice(i, 1);
-    } else {
-      console.warn("There was an error in the markers list!");
-    }
+  private onMapMarkerDeleted(markerInstance: Marker) {
+    markerInstance.remove();
+
+    this.searchAndRemoveMapElement(markerInstance, this.markersList);
   }
 
-  private onMapCircleDeleted(pCircle: circle) {
-    let i = 0;
-    pCircle.remove();
-    while (
-      i <= this.circleList.length &&
-      this.circleList[i]._leaflet_id !== pCircle._leaflet_id
-    ) {
-      i++;
-    }
-    if (i <= this.circleList.length) {
-      this.circleList.splice(i, 1);
-    } else {
-      console.warn("There was an error in the circle list!");
-    }
+  private onMapCircleDeleted(circleInstance: circle) {
+    circleInstance.remove();
+
+    this.searchAndRemoveMapElement(circleInstance, this.circleList);
   }
 
   private onMapPolygonDeleted(polygonInstance: polygon) {
@@ -346,7 +328,7 @@ export class Map implements GxComponent {
   }
 
   private searchAndRemoveMapElement(
-    mapElement: polygon | polyline,
+    mapElement: Marker | circle | polygon | polyline,
     listOfElements: any[]
   ) {
     let elementIndex = 0;
@@ -524,6 +506,7 @@ export class Map implements GxComponent {
             type="user-location"
           ></gx-map-marker>
         )}
+
         {this.selectionLayer &&
           (this.isSelectionLayerSlot ? (
             <slot name="selection-layer-marker" />
@@ -533,6 +516,7 @@ export class Map implements GxComponent {
               coords={this.centerCoords}
             ></gx-map-marker>
           ))}
+
         <div class="gxMapContainer">
           <div
             class="gxMap"
