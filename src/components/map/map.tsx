@@ -36,6 +36,11 @@ export class Map implements GxComponent {
   private isSelectionLayerSlot = false;
   private map: LFMap;
 
+  /**
+   * @todo TODO: Use a different structure to improve operations on elements.
+   * For example, `markersList = new Map<string, Marker>();`
+   */
+  // Map elements
   private markersList = [];
   private circleList = [];
   private polygonsList = [];
@@ -49,12 +54,12 @@ export class Map implements GxComponent {
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     standard: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   };
-  private selectionMarker: HTMLGxMapMarkerElement;
   private tileLayerApplied: tileLayer;
   private showMyLocationId: number;
 
   // Refs
   private divMapView: HTMLDivElement;
+  private selectionMarker: HTMLGxMapMarkerElement;
 
   @Element() element: HTMLGxMapElement;
 
@@ -128,37 +133,31 @@ export class Map implements GxComponent {
 
   /**
    * The initial zoom level in the map.
-   *
    */
   @Prop({ mutable: true }) zoom = 1;
 
   /**
    * Emmited when the map is loaded.
-   *
    */
   @Event() gxMapDidLoad: EventEmitter;
 
   /**
    * Emmited when the map is clicked and return click coords.
-   *
    */
   @Event() mapClick: EventEmitter;
 
   /**
    * Emmited when the map is being moved, if selection layer is active.
-   *
    */
   @Event() selectionInput: EventEmitter;
 
   /**
    * Emmited when the map stops from being moved, if selection layer is active.
-   *
    */
   @Event() selectionChange: EventEmitter;
 
   /**
    * Emmited when the user location coords change.
-   *
    */
   @Event() userLocationChange: EventEmitter;
 
@@ -411,6 +410,13 @@ export class Map implements GxComponent {
       this.mapProviderApplied = this.mapProvider;
       this.tileLayerApplied = tileLayerToApply;
     } else {
+      /**
+       * @todo TODO: Use the existing dictionary to refactor these conditions,
+       * since the only variable in play is this.mapType.
+       * For example:
+       *   const mapTypeProvider = this.mapTypesProviders[this.mapType] || this.mapTypesProviders.standard;
+       *   this.selectingTypes(mapTypeProvider);
+       */
       if (!this.mapType || this.mapType === "standard") {
         this.selectingTypes(this.mapTypesProviders.standard);
       } else {
