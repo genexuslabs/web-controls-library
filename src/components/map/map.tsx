@@ -49,7 +49,6 @@ export class Map implements GxComponent {
   private tileLayerApplied: tileLayer;
   private showMyLocationId: number;
   private resizeObserver: ResizeObserver = null;
-
   // Refs
   private divMapView: HTMLDivElement;
 
@@ -122,6 +121,16 @@ export class Map implements GxComponent {
    * Indicates if the current location of the device is displayed on the map.
    */
   @Prop() showMyLocation = false;
+
+  /**
+   * 	Indicates how the map will be displayed at startup
+   */
+  @Prop() initialZoom: "showAll" | "nearestPoint" | "radius" | "noInitialZoom" =
+    "noInitialZoom";
+  /**
+   * 	The radius value if initialZoom is set to "radius"
+   */
+  @Prop() initialZoomRadius = 1;
 
   /**
    * The initial zoom level in the map.
@@ -279,11 +288,22 @@ export class Map implements GxComponent {
     return this.maxZoom < 20 ? this.maxZoom : RECOMMENDED_MAX_ZOOM;
   }
 
+  /**
+   *Sets the map initial view depending of the initialZoom property
+   */
   private fitBounds() {
-    if (this.markersList.length > 1) {
+    if (this.markersList.length > 1 && this.initialZoom == "showAll") {
       const markersGroup = new FeatureGroup(this.markersList);
       this.map.fitBounds(markersGroup.getBounds());
-    } else if (this.markersList.length === 1) {
+    } else if (
+      this.markersList.length > 1 &&
+      this.initialZoom == "nearestPoint" &&
+      this.userLocationCoords
+    ) {
+      this.map.setView(this.userLocationCoords.split(","), this.zoom);
+    } else if (this.markersList.length > 1 && this.initialZoom == "radius") {
+      this.map.setView(this.center.split(","), this.initialZoomRadius);
+    } else {
       const [marker] = this.markersList;
       const markerCoords = [marker._latlng.lat, marker._latlng.lng];
       this.map.setView(markerCoords, this.zoom);
@@ -462,15 +482,14 @@ export class Map implements GxComponent {
         scrollWheelZoom: this.scrollWheelZoom
       }).setView(coords, this.zoom, this.maxZoom);
     } else {
+      console.log("coords is null");
+
       this.map = LFMap(this.divMapView, {
         scrollWheelZoom: this.scrollWheelZoom
       }).setView([0, 0], this.getZoom());
     }
-
     this.setMapProvider();
     this.map.setMaxZoom(this.maxZoom);
-    this.fitBounds();
-
     this.gxMapDidLoad.emit(this);
 
     if (this.selectionLayer) {
@@ -490,11 +509,10 @@ export class Map implements GxComponent {
   }
 
   componentDidUpdate() {
+    console.log(this.center);
     const maxZoom = this.checkForMaxZoom();
     this.setMapProvider();
-    if (this.selectionLayer) {
-      this.fitBounds();
-    }
+    this.fitBounds();
     this.map.setMaxZoom(maxZoom);
     this.userLocationChange.emit(this.userLocationCoords);
   }

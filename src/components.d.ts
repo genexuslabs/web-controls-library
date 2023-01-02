@@ -1095,6 +1095,14 @@ export namespace Components {
      */
     highAccuracyLocator: boolean;
     /**
+     * Indicates how the map will be displayed at startup
+     */
+    initialZoom: "showAll" | "nearestPoint" | "radius" | "noInitialZoom";
+    /**
+     * The radius value if initialZoom is set to "radius"
+     */
+    initialZoomRadius: number;
+    /**
      * The map provider. _Note: Currently, this property is for setting a custom map provider using an URL._
      */
     mapProvider: string;
@@ -3972,6 +3980,14 @@ declare namespace LocalJSX {
      * Enable the High Accuracy in user location. _Note: This property applies when ```watchPosition = true```._
      */
     highAccuracyLocator?: boolean;
+    /**
+     * Indicates how the map will be displayed at startup
+     */
+    initialZoom?: "showAll" | "nearestPoint" | "radius" | "noInitialZoom";
+    /**
+     * The radius value if initialZoom is set to "radius"
+     */
+    initialZoomRadius?: number;
     /**
      * The map provider. _Note: Currently, this property is for setting a custom map provider using an URL._
      */
