@@ -19,9 +19,10 @@ import {
   polyline,
   tileLayer
 } from "leaflet/dist/leaflet-src.esm";
+
 import { parseCoords } from "../common/coordsValidate";
 import { watchPosition } from "./geolocation";
-
+import omnivore from "@mapbox/leaflet-omnivore/leaflet-omnivore.min.js";
 const MIN_ZOOM = 1;
 const RECOMMENDED_MAX_ZOOM = 20;
 
@@ -481,9 +482,31 @@ export class Map implements GxComponent {
       this.map = LFMap(this.divMapView, {
         scrollWheelZoom: this.scrollWheelZoom
       }).setView(coords, this.zoom, this.maxZoom);
-    } else {
-      console.log("coords is null");
 
+      const track = new omnivore.kml.parse(`<?xml version="1.0" encoding="UTF-8"?>
+          <kml xmlns="http://www.opengis.net/kml/2.2">
+          <Style id="buildingLabel">
+        <IconStyle>
+        <Icon>
+            <href>/icons/building-label.png</href>
+        </Icon>
+        </IconStyle>
+          </Style>
+            <Placemark>
+          
+              <name>A simple placemark on the ground</name>
+              <description>Building description</description>
+              <styleUrl>#buildingLabel</styleUrl>
+              <Point>
+                <coordinates>38.542952335953721,12.36685263064198,0.0</coordinates>
+              </Point>
+          
+            </Placemark>
+          
+          </kml>`);
+
+      this.map.addLayer(track);
+    } else {
       this.map = LFMap(this.divMapView, {
         scrollWheelZoom: this.scrollWheelZoom
       }).setView([0, 0], this.getZoom());
@@ -509,7 +532,6 @@ export class Map implements GxComponent {
   }
 
   componentDidUpdate() {
-    console.log(this.center);
     const maxZoom = this.checkForMaxZoom();
     this.setMapProvider();
     this.fitBounds();
