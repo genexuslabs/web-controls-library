@@ -17,12 +17,12 @@ import {
   map as LFMap,
   polygon,
   polyline,
-  tileLayer
+  tileLayer,
+  geoJson
 } from "leaflet/dist/leaflet-src.esm";
-
 import { parseCoords } from "../common/coordsValidate";
 import { watchPosition } from "./geolocation";
-import omnivore from "@mapbox/leaflet-omnivore/leaflet-omnivore.min.js";
+import togeojson from "togeojson";
 const MIN_ZOOM = 1;
 const RECOMMENDED_MAX_ZOOM = 20;
 
@@ -50,6 +50,7 @@ export class Map implements GxComponent {
   private tileLayerApplied: tileLayer;
   private showMyLocationId: number;
   private resizeObserver: ResizeObserver = null;
+  private kmlLayerVisible = false;
   // Refs
   private divMapView: HTMLDivElement;
 
@@ -453,6 +454,28 @@ export class Map implements GxComponent {
     }
   }
 
+  /**
+   *Load a new Feature from a KML formatted string
+   * @param kmlString KML string containing the Feature to Load
+   *
+   */
+  private LoadKMLLayer(kmlString: string) {
+    const kml = new DOMParser().parseFromString(kmlString, "text/html");
+
+    const geoFromKML = togeojson.kml(kml);
+
+    geoJson(geoFromKML, { pane: "fromKML" }).addTo(this.map);
+  }
+
+  /**
+   * Set visibility of the kmlLayers loaded with LoadKMLLayer
+   */
+  private toggleVisibilityKmlLayer() {
+    this.kmlLayerVisible
+      ? (this.map.getPane("fromKML").style.display = "none")
+      : (this.map.getPane("fromKML").style.display = "block");
+  }
+
   private setUserLocation({ coords }) {
     this.userLocationCoords = `${coords.latitude}, ${coords.longitude}`;
   }
@@ -482,35 +505,12 @@ export class Map implements GxComponent {
       this.map = LFMap(this.divMapView, {
         scrollWheelZoom: this.scrollWheelZoom
       }).setView(coords, this.zoom, this.maxZoom);
-
-      const track = new omnivore.kml.parse(`<?xml version="1.0" encoding="UTF-8"?>
-          <kml xmlns="http://www.opengis.net/kml/2.2">
-          <Style id="buildingLabel">
-        <IconStyle>
-        <Icon>
-            <href>/icons/building-label.png</href>
-        </Icon>
-        </IconStyle>
-          </Style>
-            <Placemark>
-          
-              <name>A simple placemark on the ground</name>
-              <description>Building description</description>
-              <styleUrl>#buildingLabel</styleUrl>
-              <Point>
-                <coordinates>38.542952335953721,12.36685263064198,0.0</coordinates>
-              </Point>
-          
-            </Placemark>
-          
-          </kml>`);
-
-      this.map.addLayer(track);
     } else {
       this.map = LFMap(this.divMapView, {
         scrollWheelZoom: this.scrollWheelZoom
       }).setView([0, 0], this.getZoom());
     }
+    this.map.createPane("fromKML");
     this.setMapProvider();
     this.map.setMaxZoom(this.maxZoom);
     this.gxMapDidLoad.emit(this);
