@@ -256,7 +256,12 @@ export class MapMarker implements GxComponent {
     const classes = getClasses(this.cssClass);
 
     return (
-      <Host class={!!this.cssClass ? classes.vars : undefined}>
+      <Host
+        class={!!this.cssClass ? classes.vars : undefined}
+        slot={
+          this.type == "selection-layer" ? "selection-layer-marker" : undefined
+        }
+      >
         <div
           class="popup-data-container"
           ref={el => (this.popupContainer = el as HTMLDivElement)}

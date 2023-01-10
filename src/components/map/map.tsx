@@ -141,6 +141,17 @@ export class Map implements GxComponent {
   @Prop({ mutable: true }) zoom = 1;
 
   /**
+   * Image src set to selection layer
+   *@default ""
+   */
+  @Prop() selectionTargetImageSrc: "";
+
+  /**
+   * A CSS class to set as the `selectionTargetImageClass` icon class.
+   */
+  @Prop() selectionTargetImageClass: "";
+
+  /**
    * Emmited when the map is loaded.
    *
    */
@@ -490,7 +501,8 @@ export class Map implements GxComponent {
         }
       );
     }
-    if (this.selectionLayer && this.getSelectionMarkerSlot().exist) {
+    //TODO: Para qué se usa el slot?
+    if (this.selectionLayer) {
       this.isSelectionLayerSlot = true;
     }
   }
@@ -555,15 +567,18 @@ export class Map implements GxComponent {
             type="user-location"
           ></gx-map-marker>
         )}
-        {this.selectionLayer &&
-          (this.isSelectionLayerSlot ? (
-            <slot name="selection-layer-marker" />
-          ) : (
-            <gx-map-marker
-              type="selection-layer"
-              coords={this.centerCoords}
-            ></gx-map-marker>
-          ))}
+        {this.selectionLayer && (
+          <gx-map-marker
+            coords={this.centerCoords}
+            css-class={
+              this.selectionTargetImageClass ?? this.selectionTargetImageClass
+            }
+            srcset={
+              this.selectionTargetImageSrc ?? this.selectionTargetImageSrc
+            }
+            type="selection-layer"
+          ></gx-map-marker>
+        )}
         <div class="gxMapContainer">
           <div
             class="gxMap"
