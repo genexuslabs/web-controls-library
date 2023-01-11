@@ -23,6 +23,7 @@ import {
 import { parseCoords } from "../common/coordsValidate";
 import { watchPosition } from "./geolocation";
 import togeojson from "togeojson";
+
 const MIN_ZOOM = 1;
 const RECOMMENDED_MAX_ZOOM = 20;
 
@@ -113,7 +114,14 @@ export class Map implements GxComponent {
    * Enables the possibility to navigate the map and select a location point using the map center.
    */
   @Prop() selectionLayer = false;
-
+  /**
+   * Enables the possibility to draw the route between two points on the map.
+   */
+  @Prop() directionLayer = false;
+  /**
+   * WKT format string containing the response of Google Maps Directions API call
+   */
+  @Prop() directionLayerWKTString: string;
   /**
    * Whether the map can be zoomed by using the mouse wheel.
    */
@@ -506,6 +514,25 @@ export class Map implements GxComponent {
       this.isSelectionLayerSlot = true;
     }
   }
+  /**
+   * Transform a WKT format string to Polyline latLang array
+   * @param lineString WKT format string. Example: LINESTRING (-56.18565 -34.90555, -56.1859 -34.90558, -56.18645 -34.90561)
+   * @returns Array of latLong coordinates. Example: [[-56.18565, -34.90555],[-56.1859, -34.90558],[-56.18645, -34.90561]]
+   */
+  private wktToPolyline(lineString: string) {
+    const wktString = lineString
+      .split("(")
+      .pop()
+      .slice(0, -1);
+    const wktArray = wktString.split(",");
+    const polyline = [];
+    wktArray.forEach(element => {
+      element = element.trim();
+      const latLng = element.split(" ");
+      polyline.push([parseFloat(latLng[0]), parseFloat(latLng[1])]);
+    });
+    return polyline;
+  }
 
   componentDidLoad() {
     const coords = parseCoords(this.center);
@@ -523,6 +550,9 @@ export class Map implements GxComponent {
       }).setView([0, 0], this.getZoom());
     }
     this.map.createPane("fromKML");
+
+    // zoom the map to the polyline
+
     this.setMapProvider();
     this.map.setMaxZoom(this.maxZoom);
     this.gxMapDidLoad.emit(this);
@@ -530,6 +560,10 @@ export class Map implements GxComponent {
     if (this.selectionLayer) {
       this.updateSelectionMarkerPosition();
       this.registerSelectionLayerEvents();
+    }
+    if (this.directionLayer) {
+      const latLangs = this.wktToPolyline(this.directionLayerWKTString);
+      polyline(latLangs, { color: "red" }).addTo(this.map);
     }
 
     this.addMapListener("popupopen", function(e) {
