@@ -1091,6 +1091,14 @@ export namespace Components {
      */
     center: string;
     /**
+     * Enables the possibility to draw the route between two points on the map.
+     */
+    directionLayer: boolean;
+    /**
+     * WKT format string containing the response of Google Maps Directions API call
+     */
+    directionLayerWKTString: string;
+    /**
      * Enable the High Accuracy in user location. _Note: This property applies when ```watchPosition = true```._
      */
     highAccuracyLocator: boolean;
@@ -3985,6 +3993,14 @@ declare namespace LocalJSX {
      * The coord of initial center of the map.
      */
     center?: string;
+    /**
+     * Enables the possibility to draw the route between two points on the map.
+     */
+    directionLayer?: boolean;
+    /**
+     * WKT format string containing the response of Google Maps Directions API call
+     */
+    directionLayerWKTString?: string;
     /**
      * Enable the High Accuracy in user location. _Note: This property applies when ```watchPosition = true```._
      */

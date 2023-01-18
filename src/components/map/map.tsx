@@ -17,15 +17,18 @@ import {
   map as LFMap,
   polygon,
   polyline,
-  tileLayer,
-  geoJson
+  tileLayer
+  /* geoJson */
 } from "leaflet/dist/leaflet-src.esm";
+/* import * as L from "leaflet"; */
+import "leaflet.markercluster";
+import "leaflet.markercluster/dist/MarkerCluster.css";
 import { parseCoords } from "../common/coordsValidate";
 import { watchPosition } from "./geolocation";
-import togeojson from "togeojson";
+/* import togeojson from "togeojson"; */
 
-const MIN_ZOOM = 1;
-const RECOMMENDED_MAX_ZOOM = 20;
+const MIN_ZOOM_LEVEL = 1;
+const MAX_ZOOM_LEVEL = 23;
 
 @Component({
   shadow: false,
@@ -34,7 +37,7 @@ const RECOMMENDED_MAX_ZOOM = 20;
 })
 export class Map implements GxComponent {
   private centerCoords: string;
-  private isSelectionLayerSlot = false;
+  /* private isSelectionLayerSlot = false; */
   private map: LFMap;
   private markersList = [];
   private polygonsList = [];
@@ -51,7 +54,7 @@ export class Map implements GxComponent {
   private tileLayerApplied: tileLayer;
   private showMyLocationId: number;
   private resizeObserver: ResizeObserver = null;
-  private kmlLayerVisible = false;
+  /*  private kmlLayerVisible = false; */
   // Refs
   private divMapView: HTMLDivElement;
 
@@ -87,7 +90,7 @@ export class Map implements GxComponent {
    * The max zoom level available in the map.
    * _Note: 20 is the best value to be used, only lower values are allowed. Is highly recommended to no change this value if you are not sure about the `maxZoom` supported by the map._
    */
-  @Prop({ mutable: true }) maxZoom: number = RECOMMENDED_MAX_ZOOM;
+  @Prop({ mutable: true }) maxZoom: number = MAX_ZOOM_LEVEL;
 
   /**
    * A CSS class to set as the `showMyLocation` icon class.
@@ -125,7 +128,7 @@ export class Map implements GxComponent {
   /**
    * Whether the map can be zoomed by using the mouse wheel.
    */
-  @Prop() readonly scrollWheelZoom: boolean = true;
+  @Prop() scrollWheelZoom = false;
 
   /**
    * Indicates if the current location of the device is displayed on the map.
@@ -197,6 +200,14 @@ export class Map implements GxComponent {
   @Watch("userLocationCoords")
   userLocationHandler() {
     this.userLocationChange.emit(this.userLocationCoords);
+  }
+
+  // eslint-disable-next-line @stencil/prefer-vdom-listener
+  @Listen("click")
+  clickHandler() {
+    if (!this.scrollWheelZoom) {
+      this.map.scrollWheelZoom.enable();
+    }
   }
 
   @Listen("gxMapMarkerDidLoad")
@@ -306,7 +317,7 @@ export class Map implements GxComponent {
   }
 
   private checkForMaxZoom() {
-    return this.maxZoom < 20 ? this.maxZoom : RECOMMENDED_MAX_ZOOM;
+    return this.maxZoom < 20 ? this.maxZoom : MAX_ZOOM_LEVEL;
   }
 
   /**
@@ -331,13 +342,8 @@ export class Map implements GxComponent {
     }
   }
 
-  private getZoom() {
-    return this.zoom > 0
-      ? this.zoom < RECOMMENDED_MAX_ZOOM
-        ? this.zoom
-        : RECOMMENDED_MAX_ZOOM - 1
-      : MIN_ZOOM;
-  }
+  private getZoomLevel = () =>
+    Math.min(Math.max(this.zoom, MIN_ZOOM_LEVEL), MAX_ZOOM_LEVEL);
 
   private getSelectionMarkerSlot(): {
     exist: boolean;
@@ -478,22 +484,22 @@ export class Map implements GxComponent {
    * @param kmlString KML string containing the Feature to Load
    *
    */
-  private LoadKMLLayer(kmlString: string) {
+  /* private LoadKMLLayer(kmlString: string) {
     const kml = new DOMParser().parseFromString(kmlString, "text/html");
 
     const geoFromKML = togeojson.kml(kml);
 
     geoJson(geoFromKML, { pane: "fromKML" }).addTo(this.map);
-  }
+  } */
 
   /**
    * Set visibility of the kmlLayers loaded with LoadKMLLayer
    */
-  private toggleVisibilityKmlLayer() {
+  /* private toggleVisibilityKmlLayer() {
     this.kmlLayerVisible
       ? (this.map.getPane("fromKML").style.display = "none")
       : (this.map.getPane("fromKML").style.display = "block");
-  }
+  } */
 
   private setUserLocation({ coords }) {
     this.userLocationCoords = `${coords.latitude}, ${coords.longitude}`;
@@ -511,7 +517,7 @@ export class Map implements GxComponent {
     }
     //TODO: Para qué se usa el slot?
     if (this.selectionLayer) {
-      this.isSelectionLayerSlot = true;
+      /*   this.isSelectionLayerSlot = true; */
     }
   }
   /**
@@ -537,7 +543,7 @@ export class Map implements GxComponent {
   componentDidLoad() {
     const coords = parseCoords(this.center);
     this.maxZoom = this.checkForMaxZoom();
-    this.zoom = this.getZoom();
+    this.zoom = this.getZoomLevel();
     this.connectResizeObserver();
     // Depending on the coordinates, set different view types
     if (coords !== null) {
@@ -547,9 +553,19 @@ export class Map implements GxComponent {
     } else {
       this.map = LFMap(this.divMapView, {
         scrollWheelZoom: this.scrollWheelZoom
-      }).setView([0, 0], this.getZoom());
+      }).setView([0, 0], this.getZoomLevel());
     }
     this.map.createPane("fromKML");
+
+    /*  const markers = new L.MarkerClusterGroup();
+    const marker1 = new Marker([10, 20]);
+    const marker2 = new Marker([11, 19]);
+    const marker3 = new Marker([12, 21]);
+    const fg = new FeatureGroup([marker1, marker2, marker3]);
+
+    markers.addLayer(fg);
+    this.map.setMaxZoom(10);
+    this.map.addLayer(markers); */
 
     // zoom the map to the polyline
 
@@ -573,6 +589,7 @@ export class Map implements GxComponent {
     });
 
     this.addMapListener("click", ev => {
+      console.log("click");
       this.mapClick.emit(ev.latlng);
     });
   }
