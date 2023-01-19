@@ -87,12 +87,6 @@ export class Map implements GxComponent {
   @Prop() mapType: "standard" | "satellite" | "hybrid" = "standard";
 
   /**
-   * The max zoom level available in the map.
-   * _Note: 20 is the best value to be used, only lower values are allowed. Is highly recommended to no change this value if you are not sure about the `maxZoom` supported by the map._
-   */
-  @Prop({ mutable: true }) maxZoom: number = MAX_ZOOM_LEVEL;
-
-  /**
    * A CSS class to set as the `showMyLocation` icon class.
    */
   @Prop() pinImageCssClass: string;
@@ -150,17 +144,6 @@ export class Map implements GxComponent {
    *
    */
   @Prop({ mutable: true }) zoom = 1;
-
-  /**
-   * Image src set to selection layer
-   *@default ""
-   */
-  @Prop() selectionTargetImageSrc: "";
-
-  /**
-   * A CSS class to set as the `selectionTargetImageClass` icon class.
-   */
-  @Prop() selectionTargetImageClass: "";
 
   /**
    * Emmited when the map is loaded.
@@ -302,26 +285,29 @@ export class Map implements GxComponent {
     this.map.off(eventToListen, callbackFunction);
   }
 
-  private checkForMaxZoom() {
-    return this.maxZoom < 20 ? this.maxZoom : MAX_ZOOM_LEVEL;
-  }
-
   /**
    *Sets the map initial view depending of the initialZoom property
    */
   private fitBounds() {
+    // set the maximum zoom level possible to fit all of the map elements when initialZoom property is set to "showAll"
     if (this.markersList.length > 1 && this.initialZoom == "showAll") {
       const markersGroup = new FeatureGroup(this.markersList);
       this.map.fitBounds(markersGroup.getBounds());
-    } else if (
+    }
+    // the map zoom is adjusted to display the current device location and the nearest point when initialZoom property is set to "nearestPoint"
+    else if (
       this.markersList.length > 1 &&
       this.initialZoom == "nearestPoint" &&
       this.userLocationCoords
     ) {
       this.map.setView(this.userLocationCoords.split(","), this.zoom);
-    } else if (this.markersList.length > 1 && this.initialZoom == "radius") {
+    }
+    //the map zoom is adjusted to display a fixed radius specified on initialZoomRadius property when initialZoom property is set to "radius"
+    else if (this.markersList.length > 1 && this.initialZoom == "radius") {
       this.map.setView(this.center.split(","), this.initialZoomRadius);
-    } else {
+    }
+    // use default zoom otherwise
+    else {
       const [marker] = this.markersList;
       const markerCoords = [marker._latlng.lat, marker._latlng.lng];
       this.map.setView(markerCoords, this.zoom);
@@ -438,7 +424,7 @@ export class Map implements GxComponent {
 
   private selectingTypes(mapType) {
     const tileLayerToApply = tileLayer(mapType, {
-      maxZoom: this.maxZoom
+      maxZoom: MAX_ZOOM_LEVEL
     });
     tileLayerToApply.addTo(this.map);
     this.mapProviderApplied = tileLayerToApply;
@@ -450,7 +436,7 @@ export class Map implements GxComponent {
     }
     if (this.mapProvider) {
       const tileLayerToApply = tileLayer(this.mapProvider, {
-        maxZoom: this.maxZoom
+        maxZoom: MAX_ZOOM_LEVEL
       });
       tileLayerToApply.addTo(this.map);
       this.mapProviderApplied = this.mapProvider;
@@ -477,8 +463,6 @@ export class Map implements GxComponent {
     const kml = new DOMParser().parseFromString(kmlString, "text/html");
 
     const geoFromKML = togeojson.kml(kml);
-    console.log("geoJson ", geoFromKML);
-
     geoJson(geoFromKML, { pane: "fromKML" }).addTo(this.map);
   }
 
@@ -532,14 +516,13 @@ export class Map implements GxComponent {
 
   componentDidLoad() {
     const coords = parseCoords(this.center);
-    this.maxZoom = this.checkForMaxZoom();
     this.zoom = this.getZoomLevel();
     this.connectResizeObserver();
     // Depending on the coordinates, set different view types
     if (coords !== null) {
       this.map = LFMap(this.divMapView, {
         scrollWheelZoom: this.scrollWheelZoom
-      }).setView(coords, this.zoom, this.maxZoom);
+      }).setView(coords, this.zoom, MAX_ZOOM_LEVEL);
     } else {
       this.map = LFMap(this.divMapView, {
         scrollWheelZoom: this.scrollWheelZoom
@@ -1889,7 +1872,7 @@ export class Map implements GxComponent {
     // zoom the map to the polyline
 
     this.setMapProvider();
-    this.map.setMaxZoom(this.maxZoom);
+    this.map.setMaxZoom(MAX_ZOOM_LEVEL);
     this.gxMapDidLoad.emit(this);
 
     if (this.selectionLayer) {
@@ -1909,10 +1892,9 @@ export class Map implements GxComponent {
   }
 
   componentDidUpdate() {
-    const maxZoom = this.checkForMaxZoom();
     this.setMapProvider();
     this.fitBounds();
-    this.map.setMaxZoom(maxZoom);
+    this.map.setMaxZoom(MAX_ZOOM_LEVEL);
     this.userLocationChange.emit(this.userLocationCoords);
   }
 
@@ -1935,12 +1917,8 @@ export class Map implements GxComponent {
         {this.selectionLayer && (
           <gx-map-marker
             coords={this.centerCoords}
-            css-class={
-              this.selectionTargetImageClass ?? this.selectionTargetImageClass
-            }
-            srcset={
-              this.selectionTargetImageSrc ?? this.selectionTargetImageSrc
-            }
+            css-class={this.pinImageCssClass}
+            srcset={this.pinShowMyLocationSrcset || this.pinImageSrcset}
             type="selection-layer"
           ></gx-map-marker>
         )}

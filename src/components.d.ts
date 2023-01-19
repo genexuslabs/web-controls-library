@@ -1119,10 +1119,6 @@ export namespace Components {
      */
     mapType: "standard" | "satellite" | "hybrid";
     /**
-     * The max zoom level available in the map. _Note: 20 is the best value to be used, only lower values are allowed. Is highly recommended to no change this value if you are not sure about the `maxZoom` supported by the map._
-     */
-    maxZoom: number;
-    /**
      * A CSS class to set as the `showMyLocation` icon class.
      */
     pinImageCssClass: string;
@@ -1142,15 +1138,6 @@ export namespace Components {
      * Enables the possibility to navigate the map and select a location point using the map center.
      */
     selectionLayer: boolean;
-    /**
-     * A CSS class to set as the `selectionTargetImageClass` icon class.
-     */
-    selectionTargetImageClass: "";
-    /**
-     * Image src set to selection layer
-     * @default ""
-     */
-    selectionTargetImageSrc: "";
     /**
      * Indicates if the current location of the device is displayed on the map.
      */
@@ -4022,10 +4009,6 @@ declare namespace LocalJSX {
      */
     mapType?: "standard" | "satellite" | "hybrid";
     /**
-     * The max zoom level available in the map. _Note: 20 is the best value to be used, only lower values are allowed. Is highly recommended to no change this value if you are not sure about the `maxZoom` supported by the map._
-     */
-    maxZoom?: number;
-    /**
      * Emmited when the map is loaded.
      */
     onGxMapDidLoad?: (event: GxMapCustomEvent<any>) => void;
@@ -4061,15 +4044,6 @@ declare namespace LocalJSX {
      * Enables the possibility to navigate the map and select a location point using the map center.
      */
     selectionLayer?: boolean;
-    /**
-     * A CSS class to set as the `selectionTargetImageClass` icon class.
-     */
-    selectionTargetImageClass?: "";
-    /**
-     * Image src set to selection layer
-     * @default ""
-     */
-    selectionTargetImageSrc?: "";
     /**
      * Indicates if the current location of the device is displayed on the map.
      */
