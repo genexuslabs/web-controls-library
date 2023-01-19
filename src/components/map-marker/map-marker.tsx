@@ -226,7 +226,23 @@ export class MapMarker implements GxComponent {
     }
   }
 
+  private closePopup = (event: UIEvent) => {
+    if (
+      event.composedPath().find(el => el === this.element.parentElement) ===
+      undefined
+    ) {
+      return;
+    }
+    this.markerInstance.closePopup();
+  };
+
   componentDidLoad() {
+    if (this.showPopup) {
+      this.element.parentElement.addEventListener("click", this.closePopup, {
+        capture: true
+      });
+    }
+
     this.setupMarker(this.getParsedCoords());
 
     this.setPopup();
@@ -249,8 +265,10 @@ export class MapMarker implements GxComponent {
 
   disconnectedCallback() {
     this.gxMapMarkerDeleted.emit(this.markerInstance);
+    if (this.showPopup) {
+      this.element.parentElement.removeEventListener("click", this.closePopup);
+    }
   }
-
   render() {
     // Styling for gx-map-marker control.
     const classes = getClasses(this.cssClass);

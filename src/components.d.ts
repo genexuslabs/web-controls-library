@@ -4030,10 +4030,6 @@ declare namespace LocalJSX {
      */
     onGxMapDidLoad?: (event: GxMapCustomEvent<any>) => void;
     /**
-     * Emmited when the map is clicked and return click coords.
-     */
-    onMapClick?: (event: GxMapCustomEvent<any>) => void;
-    /**
      * Emmited when the map stops from being moved, if selection layer is active.
      */
     onSelectionChange?: (event: GxMapCustomEvent<any>) => void;
