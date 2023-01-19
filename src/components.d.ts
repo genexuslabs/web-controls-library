@@ -2134,10 +2134,6 @@ export namespace Components {
      */
     disabled: false;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
-    /**
      * This attribute is for specifies the src of the video.
      */
     src: string;
@@ -2307,10 +2303,6 @@ export interface GxTabCaptionCustomEvent<T> extends CustomEvent<T> {
 export interface GxTableCustomEvent<T> extends CustomEvent<T> {
   detail: T;
   target: HTMLGxTableElement;
-}
-export interface GxVideoCustomEvent<T> extends CustomEvent<T> {
-  detail: T;
-  target: HTMLGxVideoElement;
 }
 declare global {
   interface HTMLGxActionSheetElement
@@ -5165,14 +5157,6 @@ declare namespace LocalJSX {
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled?: false;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
-    /**
-     * Emitted when the element is clicked.
-     */
-    onGxClick?: (event: GxVideoCustomEvent<any>) => void;
     /**
      * This attribute is for specifies the src of the video.
      */
