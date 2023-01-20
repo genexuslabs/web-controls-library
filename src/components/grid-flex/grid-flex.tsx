@@ -23,6 +23,49 @@ export class GridFlex
   @Element() element!: HTMLGxGridFlexElement;
 
   /**
+   * This aligns a flex container’s lines within when there is extra space in
+   * the cross-axis, similar to how justify-content aligns individual items
+   * within the main-axis.
+   *
+   * | Value           | Details                                                                                  |
+   * | --------------- | ---------------------------------------------------------------------------------------- |
+   * | `center`        | Lines are packed toward the center of the flex container.                                |
+   * | `flex-end`      | Lines are packed toward the start of the flex container.                                 |
+   * | `flex-start`    | Lines are packed toward the end of the flex container.                                   |
+   * | `space-around`  | Lines are evenly distributed in the flex container, with half-size spaces on either end. |
+   * | `space-between` | Lines are evenly distributed in the flex container.                                      |
+   * | `stretch`       | Lines stretch to take up the remaining space.                                            |
+   */
+  @Prop() readonly alignContent:
+    | "center"
+    | "flex-end"
+    | "flex-start"
+    | "space-around"
+    | "space-between"
+    | "stretch" = "stretch";
+
+  /**
+   * This attribute lets you define the default behavior for how flex items are
+   * laid out along the cross axis on the current line.
+   * Think of it as the justify-content version for the cross-axis
+   * (perpendicular to the main-axis).
+   *
+   * | Value           | Details                                                                                                                                                            |
+   * | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+   * | `baseline`      | Controls are aligned such as their baselines align. This is useful to have several texts from different controls aligned taking into account different font sizes. |
+   * | `center`        | Controls are positioned at the center of the container.                                                                                                            |
+   * | `flex-end`      | Controls are positioned at the end of the container.                                                                                                               |
+   * | `flex-start`    | Controls are positioned at the beginning of the container.                                                                                                         |
+   * | `stretch`       | Controls are stretched to fit the container. In other words, children match the size of their container in the cross axis.                                         |
+   */
+  @Prop() readonly alignItems:
+    | "baseline"
+    | "center"
+    | "flex-end"
+    | "flex-start"
+    | "stretch" = "stretch";
+
+  /**
    * This attribute defines if the control size will grow automatically,
    * to adjust to its content size.
    * If set to `false`, it won't grow automatically and it will show scrollbars
@@ -36,6 +79,39 @@ export class GridFlex
   @Prop() readonly cssClass: string;
 
   /**
+   * Determines the direction of the main-axis (and the cross-axis, perpendicular to the
+   * main-axis). The direction children items are placed inside the Flexbox layout.
+   *
+   * | Value            | Details                                                                                |
+   * | ---------------- | -------------------------------------------------------------------------------------- |
+   * | `column`         | Controls are displayed vertically, as a column (from top to bottom).                   |
+   * | `column-reverse` | Controls are displayed vertically, as a column, in reverse order (from bottom to top). |
+   * | `row`            | Controls are displayed horizontally, as a row (from left to right).                    |
+   * | `row-reverse`    | Controls are displayed horizontally, as a row, in reverse order (from right to left).  |
+   */
+  @Prop() readonly flexDirection:
+    | "column"
+    | "column-reverse"
+    | "row"
+    | "row-reverse" = "row";
+
+  /**
+   * Determine whether the flex container is single-line or multi-line, and the
+   * direction of the cross axis.
+   * This attribute specifies what happens when children overflow the size of
+   * the container along the main-axis of the layout container.
+   * By default, flex items will all try to fit onto one line. You can change
+   * that and allow the items to wrap as needed with this attribute.
+   *
+   * | Value          | Details                                                       |
+   * | -------------- | ------------------------------------------------------------- |
+   * | `nowrap`       | All flex items will be on one line                            |
+   * | `wrap`         | Flex items will wrap onto multiple lines, from top to bottom. |
+   * | `wrap-reverse` | Flex items will wrap onto multiple lines from bottom to top.  |
+   */
+  @Prop() readonly flexWrap: "nowrap" | "wrap" | "wrap-reverse" = "nowrap";
+
+  /**
    * This attribute lets you specify how this element will behave when hidden.
    *
    * | Value        | Details                                                                     |
@@ -46,28 +122,39 @@ export class GridFlex
   @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
+   * This attribute lets you define the alignment along the main axis. It helps
+   * distribute extra free space leftover when either all the flex items on a
+   * line are inflexible, or are flexible but have reached their maximum size.
+   * It also exerts some control over the alignment of items when they overflow
+   * the line.
+   *
+   * | Value           | Details                                                                  |
+   * | --------------- | ------------------------------------------------------------------------ |
+   * | `center`        | Controls are positioned at the center of the container.                  |
+   * | `flex-end`      | Controls are positioned at the end of the container.                     |
+   * | `flex-start`    | Controls are positioned at the beginning of the container.               |
+   * | `space-around`  | Controls are positioned with space before, between, and after the lines. |
+   * | `space-between` | Controls are positioned with space between the lines.                    |
+   * | `space-evenly`  | Controls are positioned with space evenly around them.                   |
+   */
+  @Prop() readonly justifyContent:
+    | "center"
+    | "flex-end"
+    | "flex-start"
+    | "space-around"
+    | "space-between"
+    | "space-evenly" = "flex-start";
+
+  /**
    * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.
    *
-   * | Value        | Details                                                                                        |
-   * | ------------ | ---------------------------------------------------------------------------------------------- |
-   * | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                |
+   * | Value      | Details                                                                                          |
+   * | ---------- | ------------------------------------------------------------------------------------------------ |
+   * | `loading`  | The grid is waiting the server for the grid data. Grid loading mask will be shown.               |
    * | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
    */
 
   @Prop() readonly loadingState: "loading" | "loaded";
-
-  /**
-   * This establishes the main-axis, thus defining the direction flex items are placed in the flex container. 
-     Flexbox is (aside from optional wrapping) a single-direction layout concept. 
-    Think of flex items as primarily laying out either in horizontal rows or vertical columns.
-   *
-   * | Value        | Details                                                                                        |
-   * | ------------ | ---------------------------------------------------------------------------------------------- |
-   * | `row` | The flex container's main-axis is defined to be the same as the text direction. The main-start and main-end points are the same as the content direction.                |
-   * | `column`   | The flex container's main-axis is the same as the block-axis. The main-start and main-end points are the same as the before and after points of the writing-mode. |
-   */
-
-  @Prop({ reflect: true }) readonly flexDirection: "row" | "column" = "row";
 
   /**
    * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes.
