@@ -7,7 +7,7 @@ import {
   h,
   Prop
 } from "@stencil/core";
-import { Component as GxComponent } from "../common/interfaces";
+import { Component as GxComponent, GridMapElement } from "../common/interfaces";
 import {
   LatLngTuple,
   LineCapShape,
@@ -22,13 +22,14 @@ import { parseCoords } from "../common/coordsValidate";
 import { getClasses } from "../common/css-transforms/css-transforms";
 
 const DEFAULT_COORDS: LatLngTuple = [0, 0];
-
+let autoPolygonId = 0;
 @Component({
   shadow: true,
   tag: "gx-map-polygon"
 })
-export class MapPolygon implements GxComponent {
+export class GridMapPolygon implements GxComponent {
   @Element() element: HTMLGxMapPolygonElement;
+  private polygonId: string;
   private polygonInstance: Polygon;
 
   /**
@@ -44,7 +45,7 @@ export class MapPolygon implements GxComponent {
   /**
    * Emitted when the element is added to a `<gx-map>`.
    */
-  @Event() gxMapPolygonDidLoad: EventEmitter;
+  @Event() gxMapPolygonDidLoad: EventEmitter<GridMapElement>;
 
   /**
    * Emitted when the element is deleted from a `<gx-map>`.
@@ -89,6 +90,14 @@ export class MapPolygon implements GxComponent {
     return options;
   }
 
+  componentWillLoad() {
+    // Sets IDs
+    if (!this.polygonId) {
+      this.polygonId =
+        this.element.id || `gx-map-polygon-auto-id-${autoPolygonId++}`;
+    }
+  }
+
   componentDidLoad() {
     const coords = parseCoords(this.coords);
     if (coords !== null) {
@@ -97,7 +106,10 @@ export class MapPolygon implements GxComponent {
       this.setupPolygon(DEFAULT_COORDS);
     }
 
-    this.gxMapPolygonDidLoad.emit(this.polygonInstance);
+    this.gxMapPolygonDidLoad.emit({
+      id: this.polygonId,
+      instance: this.polygonInstance
+    });
   }
 
   componentDidUpdate() {

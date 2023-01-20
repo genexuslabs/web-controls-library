@@ -6,16 +6,17 @@ import {
   h,
   Prop
 } from "@stencil/core";
-import { Component as GxComponent } from "../common/interfaces";
+import { Component as GxComponent, GridMapElement } from "../common/interfaces";
 import { circle } from "leaflet/dist/leaflet-src.esm";
 import { parseCoords } from "../common/coordsValidate";
-
+let autoCircleId = 0;
 @Component({
   shadow: false,
   tag: "gx-map-circle"
 })
-export class MapCircle implements GxComponent {
+export class GridMapCircle implements GxComponent {
   @Element() element: HTMLGxMapCircleElement;
+  private circleId: string;
   private circleInstance: any;
 
   /**
@@ -31,7 +32,7 @@ export class MapCircle implements GxComponent {
   /**
    * Emmits when the element is added to a `<gx-map>`.
    */
-  @Event() gxMapCircleDidLoad: EventEmitter;
+  @Event() gxMapCircleDidLoad: EventEmitter<GridMapElement>;
 
   /**
    * Emmits when the element is deleted from a `<gx-map>`.
@@ -45,6 +46,14 @@ export class MapCircle implements GxComponent {
     });
   }
 
+  componentWillLoad() {
+    // Sets IDs
+    if (!this.circleId) {
+      this.circleId =
+        this.element.id || `gx-map-circle-auto-id-${autoCircleId++}`;
+    }
+  }
+
   componentDidLoad() {
     const coords = parseCoords(this.coords);
 
@@ -54,7 +63,10 @@ export class MapCircle implements GxComponent {
       this.setupCircle([0, 0]);
     }
 
-    this.gxMapCircleDidLoad.emit(this.circleInstance);
+    this.gxMapCircleDidLoad.emit({
+      id: this.circleId,
+      instance: this.circleInstance
+    });
   }
 
   disconnectedCallback() {

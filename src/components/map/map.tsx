@@ -36,19 +36,15 @@ const MAX_ZOOM_LEVEL = 23;
   styleUrl: "map.scss",
   tag: "gx-map"
 })
-export class Map implements GxComponent {
+export class GridMap implements GxComponent {
   private centerCoords: string;
   /* private isSelectionLayerSlot = false; */
   private map: LFMap;
-  /**
-   * @todo TODO: Use a different structure to improve operations on elements.
-   * For example, `markersList = new Map<string, Marker>();`
-   */
-  // Map elements
-  private markersList = [];
-  private circleList = [];
-  private polygonsList = [];
-  private linesList = [];
+
+  private markersList = new Map<string, Marker>();
+  private circleList = new Map<string, circle>();
+  private polygonsList = new Map<string, polygon>();
+  private linesList = new Map<string, polyline>();
 
   private mapProviderApplied: string;
   private mapTypesProviders = {
@@ -61,7 +57,7 @@ export class Map implements GxComponent {
   private tileLayerApplied: tileLayer;
   private showMyLocationId: number;
   private resizeObserver: ResizeObserver = null;
-  private kmlLayerVisible = false;
+  /* private kmlLayerVisible = false; */
   // Refs
   private divMapView: HTMLDivElement;
   private selectionMarker: HTMLGxMapMarkerElement;
@@ -191,13 +187,13 @@ export class Map implements GxComponent {
   @Listen("gxMapMarkerDidLoad")
   onMapMarkerDidLoad(event: CustomEvent) {
     const markerElement = event.target;
-    const markerV = event.detail;
+    const { id, instance } = event.detail;
 
     if (this.map) {
-      markerV.addTo(this.map);
+      instance.addTo(this.map);
     } else {
       this.element.addEventListener("gxMapDidLoad", () => {
-        markerV.addTo(this.map);
+        instance.addTo(this.map);
       });
     }
 
@@ -211,70 +207,70 @@ export class Map implements GxComponent {
         );
       }
       if (markerElement !== this.selectionMarker) {
-        this.markersList.push(markerV);
+        this.markersList.set(id, instance);
       }
     } else {
-      this.markersList.push(markerV);
+      this.markersList.set(id, instance);
     }
 
     markerElement.addEventListener("gxMapMarkerDeleted", () => {
-      this.onMapMarkerDeleted(markerV);
+      this.onMapMarkerDeleted(id, instance);
     });
   }
 
   @Listen("gxMapCircleDidLoad")
   onMapCircleDidLoad(event: CustomEvent) {
     const circleElement = event.target;
-    const circleV = event.detail;
+    const { id, instance } = event.detail;
     if (this.map) {
-      circleV.addTo(this.map);
+      instance.addTo(this.map);
     } else {
       this.element.addEventListener("gxMapDidLoad", () => {
-        circleV.addTo(this.map);
+        instance.addTo(this.map);
       });
     }
-    this.circleList.push(circleV);
+    this.circleList.set(id, instance);
     circleElement.addEventListener("gxMapCircleDeleted", () => {
-      this.onMapCircleDeleted(circleV);
+      this.onMapCircleDeleted(instance);
     });
   }
 
   @Listen("gxMapPolygonDidLoad")
   onMapPolygonDidLoad(event: CustomEvent) {
     const polygonElement = event.target as HTMLGxMapPolygonElement;
-    const polygonInstance = event.detail as polygon;
+    const { id, instance } = event.detail;
 
     // If the leaflet map has been created, add the polygon instance. Otherwise,
     // wait for the leaflet map to load
     if (this.map) {
-      polygonInstance.addTo(this.map);
+      instance.addTo(this.map);
     } else {
       this.element.addEventListener("gxMapDidLoad", () => {
-        polygonInstance.addTo(this.map);
+        instance.addTo(this.map);
       });
     }
-
+    this.polygonsList.set(id, instance);
     // When the polygon element is removed from the DOM, remove the polygon
     // instance in the gx-map
     polygonElement.addEventListener("gxMapPolygonDeleted", () => {
-      this.onMapPolygonDeleted(polygonInstance);
+      this.onMapPolygonDeleted(instance);
     });
   }
 
   @Listen("gxMapLineDidLoad")
   onMapLineDidLoad(event: CustomEvent) {
     const lineElement = event.target;
-    const lineV = event.detail;
+    const { id, instance } = event.detail;
     if (this.map) {
-      lineV.addTo(this.map);
+      instance.addTo(this.map);
     } else {
       this.element.addEventListener("gxMapDidLoad", () => {
-        lineV.addTo(this.map);
+        instance.addTo(this.map);
       });
     }
-
+    this.linesList.set(id, instance);
     lineElement.addEventListener("gxMapLineDeleted", () => {
-      this.onMapLineDeleted(lineV);
+      this.onMapLineDeleted(id, instance);
     });
   }
 
@@ -316,25 +312,26 @@ export class Map implements GxComponent {
    */
   private fitBounds() {
     // set the maximum zoom level possible to fit all of the map elements when initialZoom property is set to "showAll"
-    if (this.markersList.length > 1 && this.initialZoom == "showAll") {
+    if (this.markersList.size > 1 && this.initialZoom == "showAll") {
       const markersGroup = new FeatureGroup(this.markersList);
       this.map.fitBounds(markersGroup.getBounds());
     }
     // the map zoom is adjusted to display the current device location and the nearest point when initialZoom property is set to "nearestPoint"
     else if (
-      this.markersList.length > 1 &&
+      this.markersList.size > 1 &&
       this.initialZoom == "nearestPoint" &&
       this.userLocationCoords
     ) {
       this.map.setView(this.userLocationCoords.split(","), this.zoom);
     }
     //the map zoom is adjusted to display a fixed radius specified on initialZoomRadius property when initialZoom property is set to "radius"
-    else if (this.markersList.length > 1 && this.initialZoom == "radius") {
+    else if (this.markersList.size > 1 && this.initialZoom == "radius") {
       this.map.setView(this.center.split(","), this.initialZoomRadius);
     }
     // use default zoom otherwise
     else {
-      const [marker] = this.markersList;
+      const [marker] = this.markersList.values();
+
       const markerCoords = [marker._latlng.lat, marker._latlng.lng];
       this.map.setView(markerCoords, this.zoom);
     }
@@ -356,10 +353,10 @@ export class Map implements GxComponent {
     return { exist: slot !== null, elem: slot };
   }
 
-  private onMapMarkerDeleted(markerInstance: Marker) {
+  private onMapMarkerDeleted(markerId: string, markerInstance: polyline) {
     markerInstance.remove();
 
-    this.searchAndRemoveMapElement(markerInstance, this.markersList);
+    this.searchAndRemoveMapElement(markerId, this.markersList);
   }
 
   private onMapCircleDeleted(circleInstance: circle) {
@@ -374,30 +371,21 @@ export class Map implements GxComponent {
     this.searchAndRemoveMapElement(polygonInstance, this.polygonsList);
   }
 
-  private onMapLineDeleted(lineInstance: polyline) {
+  private onMapLineDeleted(lineId: string, lineInstance: polyline) {
     lineInstance.remove();
 
-    this.searchAndRemoveMapElement(lineInstance, this.linesList);
+    this.searchAndRemoveMapElement(lineId, this.linesList);
   }
 
   private searchAndRemoveMapElement(
-    mapElement: Marker | circle | polygon | polyline,
-    listOfElements: any[]
+    mapElementId: Marker | circle | polygon | polyline | string,
+    listOfElements:
+      | Map<string, Marker>
+      | Map<string, circle>
+      | Map<string, polygon>
+      | Map<string, polyline>
   ) {
-    let elementIndex = 0;
-
-    // Try to find in the list the element id
-    while (
-      elementIndex <= listOfElements.length &&
-      listOfElements[elementIndex]._leaflet_id !== mapElement._leaflet_id
-    ) {
-      elementIndex++;
-    }
-
-    // Remove element if found in list
-    if (elementIndex <= listOfElements.length) {
-      listOfElements.splice(elementIndex, 1);
-    }
+    listOfElements.delete(mapElementId);
   }
 
   private updateSelectionMarkerPosition() {
@@ -464,22 +452,9 @@ export class Map implements GxComponent {
       this.mapProviderApplied = this.mapProvider;
       this.tileLayerApplied = tileLayerToApply;
     } else {
-      /**
-       * @todo TODO: Use the existing dictionary to refactor these conditions,
-       * since the only variable in play is this.mapType.
-       * For example:
-       *   const mapTypeProvider = this.mapTypesProviders[this.mapType] || this.mapTypesProviders.standard;
-       *   this.selectingTypes(mapTypeProvider);
-       */
-      if (!this.mapType || this.mapType === "standard") {
-        this.selectingTypes(this.mapTypesProviders.standard);
-      } else {
-        if (this.mapType === "hybrid") {
-          this.selectingTypes(this.mapTypesProviders.hybrid);
-        } else if (this.mapType === "satellite") {
-          this.selectingTypes(this.mapTypesProviders.satellite);
-        }
-      }
+      const mapTypeProvider =
+        this.mapTypesProviders[this.mapType] || this.mapTypesProviders.standard;
+      this.selectingTypes(mapTypeProvider);
     }
   }
 
@@ -498,11 +473,11 @@ export class Map implements GxComponent {
   /**
    * Set visibility of the kmlLayers loaded with LoadKMLLayer
    */
-  private toggleVisibilityKmlLayer() {
+  /* private toggleVisibilityKmlLayer() {
     this.kmlLayerVisible
       ? (this.map.getPane("fromKML").style.display = "none")
       : (this.map.getPane("fromKML").style.display = "block");
-  }
+  } */
 
   private setUserLocation({ coords }) {
     this.userLocationCoords = `${coords.latitude}, ${coords.longitude}`;

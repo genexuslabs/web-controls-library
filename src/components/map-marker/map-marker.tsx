@@ -43,13 +43,15 @@ const iconDictionary = {
   "user-location": (width: number, height: number) =>
     iconSVGWrapper(USER_LOCATION_ICON, "user-location", width, height)
 };
-
+let autoMarkerId = 0;
 @Component({
   shadow: false,
   styleUrl: "map-marker.scss",
   tag: "gx-map-marker"
 })
-export class MapMarker implements GxComponent {
+export class GridMapMarker implements GxComponent {
+  private markerId: string;
+
   private markerInstance: any;
 
   /**
@@ -236,6 +238,13 @@ export class MapMarker implements GxComponent {
     this.markerInstance.closePopup();
   };
 
+  componentWillLoad() {
+    // Sets IDs
+    if (!this.markerId) {
+      this.markerId =
+        this.element.id || `gx-map-marker-auto-id-${autoMarkerId++}`;
+    }
+  }
   componentDidLoad() {
     if (this.showPopup) {
       this.element.parentElement.addEventListener("click", this.closePopup, {
@@ -251,7 +260,10 @@ export class MapMarker implements GxComponent {
         direction: "top"
       });
     }
-    this.gxMapMarkerDidLoad.emit(this.markerInstance);
+    this.gxMapMarkerDidLoad.emit({
+      id: this.markerId,
+      instance: this.markerInstance
+    });
   }
 
   componentDidUpdate() {

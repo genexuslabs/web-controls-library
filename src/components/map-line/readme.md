@@ -10,10 +10,10 @@
 
 ## Events
 
-| Event              | Description                                           | Type               |
-| ------------------ | ----------------------------------------------------- | ------------------ |
-| `gxMapLineDeleted` | Emmits when the element is deleted from a `<gx-map>`. | `CustomEvent<any>` |
-| `gxMapLineDidLoad` | Emmits when the element is added to a `<gx-map>`.     | `CustomEvent<any>` |
+| Event              | Description                                           | Type                          |
+| ------------------ | ----------------------------------------------------- | ----------------------------- |
+| `gxMapLineDeleted` | Emmits when the element is deleted from a `<gx-map>`. | `CustomEvent<any>`            |
+| `gxMapLineDidLoad` | Emmits when the element is added to a `<gx-map>`.     | `CustomEvent<GridMapElement>` |
 
 ---
 

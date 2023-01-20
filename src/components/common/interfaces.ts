@@ -42,6 +42,17 @@ export interface FormComponent
   getNativeInputId: () => void;
 }
 
+export interface GridMapElement {
+  /**
+   * Determine the ID of the map element instance
+   */
+  id: string;
+
+  /**
+   * The instance object to render in the map.
+   */
+  instance: any;
+}
 export interface Renderer {
   render: (slots?: object) => void;
   componentWillLoad?: () => void;
