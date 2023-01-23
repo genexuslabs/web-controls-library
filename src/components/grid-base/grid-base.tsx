@@ -75,6 +75,7 @@ export class GridBaseHelper {
     const classes = getClasses(cmp.cssClass);
 
     return {
+      role: "grid",
       class: {
         "gx-grid-base": true,
         [cmp.cssClass]: !!cmp.cssClass,
