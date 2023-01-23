@@ -81,14 +81,17 @@ export class GridBaseHelper {
         [classes.vars]: true,
         "gx-grid-inverse-loading": !!cmp.inverseLoading,
         "gx-grid-empty": this.isEmptyGrid(cmp),
-        "gx-grid-empty-loading":
-          cmp.loadingState === "loading" && cmp.recordCount <= 0,
+        "gx-grid-initial-load": this.isInitialLoad(cmp),
         "gx-grid-loading": cmp.loadingState === "loading"
       }
     };
   }
 
-  static isEmptyGrid(cmp: GridBase): boolean {
-    return cmp.recordCount === 0 && cmp.loadingState === "loaded";
-  }
+  static isEmptyGrid = (cmp: GridBase): boolean =>
+    cmp.loadingState === "loaded" && cmp.recordCount === 0;
+
+  static isNotEmptyGrid = (cmp: GridBase): boolean => cmp.recordCount > 0;
+
+  static isInitialLoad = (cmp: GridBase): boolean =>
+    cmp.loadingState === "loading" && cmp.recordCount <= 0;
 }
