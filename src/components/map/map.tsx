@@ -10,7 +10,7 @@ import {
   Host,
   Watch
 } from "@stencil/core";
-import { Component as GxComponent } from "../common/interfaces";
+import { Component as GxComponent, GridMapElement } from "../common/interfaces";
 import {
   FeatureGroup,
   Marker,
@@ -31,6 +31,12 @@ import togeojson from "togeojson";
 const MIN_ZOOM_LEVEL = 1;
 const MAX_ZOOM_LEVEL = 23;
 
+const MAP_MARKER_DELETED_EVENT_NAME = "gxMapMarkerDeleted";
+const MAP_CIRCLE_DELETED_EVENT_NAME = "gxMapCircleDeleted";
+const MAP_POLYGON_DELETED_EVENT_NAME = "gxMapPolygonDeleted";
+const MAP_LINE_DELETED_EVENT_NAME = "gxMapLineDeleted";
+
+type GridMapElementInstance = Marker | circle | polygon | polyline;
 @Component({
   shadow: false,
   styleUrl: "map.scss",
@@ -185,17 +191,17 @@ export class GridMap implements GxComponent {
   }
 
   @Listen("gxMapMarkerDidLoad")
-  onMapMarkerDidLoad(event: CustomEvent) {
-    const markerElement = event.target;
+  onMapMarkerDidLoad(event: CustomEvent<GridMapElement>) {
+    const markerHTMLElement = event.target as HTMLGxMapMarkerElement;
     const { id, instance } = event.detail;
 
-    if (this.map) {
-      instance.addTo(this.map);
-    } else {
-      this.element.addEventListener("gxMapDidLoad", () => {
-        instance.addTo(this.map);
-      });
-    }
+    this.renderMapElementWhenTheMapDidLoad(
+      id,
+      instance,
+      this.markersList,
+      markerHTMLElement,
+      MAP_MARKER_DELETED_EVENT_NAME
+    );
 
     if (this.selectionLayer) {
       const slot = this.getSelectionMarkerSlot();
@@ -206,72 +212,60 @@ export class GridMap implements GxComponent {
           "[type='selection-layer']"
         );
       }
-      if (markerElement !== this.selectionMarker) {
+      if (markerHTMLElement !== this.selectionMarker) {
         this.markersList.set(id, instance);
       }
     } else {
       this.markersList.set(id, instance);
     }
-
-    markerElement.addEventListener("gxMapMarkerDeleted", () => {
-      this.onMapMarkerDeleted(id, instance);
-    });
   }
 
   @Listen("gxMapCircleDidLoad")
-  onMapCircleDidLoad(event: CustomEvent) {
-    const circleElement = event.target;
+  onMapCircleDidLoad(event: CustomEvent<GridMapElement>) {
+    const circleHTMLElement = event.target as HTMLGxMapCircleElement;
     const { id, instance } = event.detail;
-    if (this.map) {
-      instance.addTo(this.map);
-    } else {
-      this.element.addEventListener("gxMapDidLoad", () => {
-        instance.addTo(this.map);
-      });
-    }
+
+    this.renderMapElementWhenTheMapDidLoad(
+      id,
+      instance,
+      this.circleList,
+      circleHTMLElement,
+      MAP_CIRCLE_DELETED_EVENT_NAME
+    );
+
     this.circleList.set(id, instance);
-    circleElement.addEventListener("gxMapCircleDeleted", () => {
-      this.onMapCircleDeleted(instance);
-    });
   }
 
   @Listen("gxMapPolygonDidLoad")
-  onMapPolygonDidLoad(event: CustomEvent) {
-    const polygonElement = event.target as HTMLGxMapPolygonElement;
+  onMapPolygonDidLoad(event: CustomEvent<GridMapElement>) {
+    const polygonHTMLElement = event.target as HTMLGxMapCircleElement;
     const { id, instance } = event.detail;
 
-    // If the leaflet map has been created, add the polygon instance. Otherwise,
-    // wait for the leaflet map to load
-    if (this.map) {
-      instance.addTo(this.map);
-    } else {
-      this.element.addEventListener("gxMapDidLoad", () => {
-        instance.addTo(this.map);
-      });
-    }
+    this.renderMapElementWhenTheMapDidLoad(
+      id,
+      instance,
+      this.polygonsList,
+      polygonHTMLElement,
+      MAP_POLYGON_DELETED_EVENT_NAME
+    );
+
     this.polygonsList.set(id, instance);
-    // When the polygon element is removed from the DOM, remove the polygon
-    // instance in the gx-map
-    polygonElement.addEventListener("gxMapPolygonDeleted", () => {
-      this.onMapPolygonDeleted(instance);
-    });
   }
 
   @Listen("gxMapLineDidLoad")
-  onMapLineDidLoad(event: CustomEvent) {
-    const lineElement = event.target;
+  onMapLineDidLoad(event: CustomEvent<GridMapElement>) {
+    const lineHTMLElement = event.target as HTMLGxMapCircleElement;
     const { id, instance } = event.detail;
-    if (this.map) {
-      instance.addTo(this.map);
-    } else {
-      this.element.addEventListener("gxMapDidLoad", () => {
-        instance.addTo(this.map);
-      });
-    }
+
+    this.renderMapElementWhenTheMapDidLoad(
+      id,
+      instance,
+      this.linesList,
+      lineHTMLElement,
+      MAP_LINE_DELETED_EVENT_NAME
+    );
+
     this.linesList.set(id, instance);
-    lineElement.addEventListener("gxMapLineDeleted", () => {
-      this.onMapLineDeleted(id, instance);
-    });
   }
 
   private connectResizeObserver() {
@@ -353,39 +347,13 @@ export class GridMap implements GxComponent {
     return { exist: slot !== null, elem: slot };
   }
 
-  private onMapMarkerDeleted(markerId: string, markerInstance: polyline) {
-    markerInstance.remove();
-
-    this.searchAndRemoveMapElement(markerId, this.markersList);
-  }
-
-  private onMapCircleDeleted(circleInstance: circle) {
-    circleInstance.remove();
-
-    this.searchAndRemoveMapElement(circleInstance, this.circleList);
-  }
-
-  private onMapPolygonDeleted(polygonInstance: polygon) {
-    polygonInstance.remove();
-
-    this.searchAndRemoveMapElement(polygonInstance, this.polygonsList);
-  }
-
-  private onMapLineDeleted(lineId: string, lineInstance: polyline) {
-    lineInstance.remove();
-
-    this.searchAndRemoveMapElement(lineId, this.linesList);
-  }
-
-  private searchAndRemoveMapElement(
-    mapElementId: Marker | circle | polygon | polyline | string,
-    listOfElements:
-      | Map<string, Marker>
-      | Map<string, circle>
-      | Map<string, polygon>
-      | Map<string, polyline>
+  private removeMapElement(
+    mapElementId: string,
+    mapElementInstance: GridMapElementInstance,
+    mapOfMapElements: Map<string, GridMapElementInstance>
   ) {
-    listOfElements.delete(mapElementId);
+    mapElementInstance.remove();
+    mapOfMapElements.delete(mapElementId);
   }
 
   private updateSelectionMarkerPosition() {
@@ -456,6 +424,32 @@ export class GridMap implements GxComponent {
         this.mapTypesProviders[this.mapType] || this.mapTypesProviders.standard;
       this.selectingTypes(mapTypeProvider);
     }
+  }
+  private renderMapElementWhenTheMapDidLoad(
+    mapElementId: string,
+    mapElementInstance: GridMapElementInstance,
+    mapOfMapElements: Map<string, GridMapElementInstance>,
+    mapHTMLElement:
+      | HTMLGxMapCircleElement
+      | HTMLGxMapLineElement
+      | HTMLGxMapMarkerElement
+      | HTMLGxMapPolygonElement,
+    mapHTMLElementDisconnectedEvent: string
+  ) {
+    // If the map did render
+    if (this.map) {
+      mapElementInstance.addTo(this.map);
+
+      // Otherwise, wait until the first render
+    } else {
+      this.element.addEventListener("gxMapDidLoad", () => {
+        mapElementInstance.addTo(this.map);
+      });
+    }
+
+    mapHTMLElement.addEventListener(mapHTMLElementDisconnectedEvent, () => {
+      this.removeMapElement(mapElementId, mapElementInstance, mapOfMapElements);
+    });
   }
 
   /**
