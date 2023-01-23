@@ -6,7 +6,7 @@
   $justify-content: null,
   $align-items: null
 ) {
-  & > .grid-empty-placeholder > div > .gx-empty-indicator > .gx-empty-item {
+  & > .gx-empty-indicator > .gx-empty-item {
     // Alignment for the gx-textblock control
     @if $text-align != null {
       > gx-textblock {
