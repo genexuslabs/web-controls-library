@@ -1,7 +1,11 @@
+@import "../common/base";
 @import "../common/layout-styling-config";
-@import "../grid-base/grid-base.scss";
 
-gx-grid-flex {
+// With "display: grid" we ensure that the layout doesn't break when using
+// relative size columns in the parent gx-table
+@include visibility-shadow-DOM(grid);
+
+:host {
   /**
    * @prop --gx-grid-flex-align-content: This aligns a flex container’s lines
    * within when there is extra space in the cross-axis, similar to how
@@ -89,37 +93,19 @@ gx-grid-flex {
    * By default, the gx-grid-flex hide its content overflow.
    */
   --gx-overflow-style: #{$default-overflow-style};
+}
 
-  @include visibility(flex);
+// - - - - - - - - - - - - - - - -
+//          Grid content
+// - - - - - - - - - - - - - - - -
+::slotted([slot="grid-content"]) {
+  display: flex;
+  flex-direction: var(--gx-grid-flex-flex-direction);
+  flex-wrap: var(--gx-grid-flex-flex-wrap);
+  align-items: var(--gx-grid-flex-align-items);
+  align-content: var(--gx-grid-flex-align-content);
+  justify-content: var(--gx-grid-flex-justify-content);
 
-  > div {
-    flex: 1;
-  }
-
-  #{$grid-content-selector} {
-    @include visibility(flex);
-    flex-direction: var(--gx-grid-flex-direction);
-    flex-wrap: var(--gx-grid-flex-wrap);
-    justify-content: var(--gx-grid-flex-justify-content);
-    align-items: var(--gx-grid-flex-align-items);
-    align-content: var(--gx-grid-flex-align-content);
-
-    &[flex-direction="row"] {
-      #{$grid-content-selector} {
-        & > gx-grid-smart-cell[relative-size] {
-          min-width: calc(
-            var(--gx-grid-css-viewport-width) *
-              var(--gx-grid-item-relative-size)
-          );
-        }
-      }
-    }
-  }
-
-  gx-grid-smart-cell {
-    @include visibility(flex);
-    & > * {
-      flex: 1;
-    }
-  }
+  // Implements directional scroll depending on the flex-direction and flex-wrap
+  overflow: auto;
 }

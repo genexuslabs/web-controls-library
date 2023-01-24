@@ -13,8 +13,15 @@ import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
 import { VisibilityComponent } from "../common/interfaces";
 
+// Default values of flex properties
+const DEFAULT_ALIGN_CONTENT = "stretch";
+const DEFAULT_ALIGN_ITEMS = "stretch";
+const DEFAULT_FLEX_DIRECTION = "row";
+const DEFAULT_FLEX_WRAP = "nowrap";
+const DEFAULT_JUSTIFY_CONTENT = "flex-start";
+
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "grid-flex.scss",
   tag: "gx-grid-flex"
 })
@@ -42,7 +49,7 @@ export class GridFlex
     | "flex-start"
     | "space-around"
     | "space-between"
-    | "stretch" = "stretch";
+    | "stretch" = DEFAULT_ALIGN_CONTENT;
 
   /**
    * This attribute lets you define the default behavior for how flex items are
@@ -63,7 +70,7 @@ export class GridFlex
     | "center"
     | "flex-end"
     | "flex-start"
-    | "stretch" = "stretch";
+    | "stretch" = DEFAULT_ALIGN_ITEMS;
 
   /**
    * This attribute defines if the control size will grow automatically,
@@ -93,7 +100,7 @@ export class GridFlex
     | "column"
     | "column-reverse"
     | "row"
-    | "row-reverse" = "row";
+    | "row-reverse" = DEFAULT_FLEX_DIRECTION;
 
   /**
    * Determine whether the flex container is single-line or multi-line, and the
@@ -109,7 +116,10 @@ export class GridFlex
    * | `wrap`         | Flex items will wrap onto multiple lines, from top to bottom. |
    * | `wrap-reverse` | Flex items will wrap onto multiple lines from bottom to top.  |
    */
-  @Prop() readonly flexWrap: "nowrap" | "wrap" | "wrap-reverse" = "nowrap";
+  @Prop() readonly flexWrap:
+    | "nowrap"
+    | "wrap"
+    | "wrap-reverse" = DEFAULT_FLEX_WRAP;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -143,7 +153,7 @@ export class GridFlex
     | "flex-start"
     | "space-around"
     | "space-between"
-    | "space-evenly" = "flex-start";
+    | "space-evenly" = DEFAULT_JUSTIFY_CONTENT;
 
   /**
    * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.
@@ -153,7 +163,6 @@ export class GridFlex
    * | `loading`  | The grid is waiting the server for the grid data. Grid loading mask will be shown.               |
    * | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
    */
-
   @Prop() readonly loadingState: "loading" | "loaded";
 
   /**
@@ -188,29 +197,56 @@ export class GridFlex
       ["complete"]();
   }
 
-  private ensureViewPort() {
-    const elementStyle = this.element.style;
-    elementStyle.setProperty(
-      "--gx-grid-css-viewport-width",
-      this.element.parentElement.offsetWidth + "px"
-    );
-    elementStyle.setProperty(
-      "--gx-grid-css-viewport-height",
-      this.element.parentElement.offsetHeight + "px"
-    );
-  }
+  private getValueIfNotDefault = (
+    value: string,
+    defaultValue: string
+  ): string | undefined => (value != defaultValue ? value : undefined);
 
   render() {
-    this.ensureViewPort();
+    const emptyGrid = GridBaseHelper.isEmptyGrid(this);
+    const notEmptyGrid = GridBaseHelper.isNotEmptyGrid(this);
+    const initialLoad = GridBaseHelper.isInitialLoad(this);
+
+    const hostData = GridBaseHelper.hostData(this);
+
     return (
-      <Host {...GridBaseHelper.hostData(this)}>
-        {[
-          <slot name="grid-content" />,
-          <slot name="grid-empty-loading-placeholder" />,
-          <div class="grid-empty-placeholder">
-            <slot name="grid-content-empty" />
-          </div>
-        ]}
+      <Host
+        {...hostData}
+        style={{
+          "--gx-grid-flex-align-content":
+            this.flexWrap === "nowrap"
+              ? undefined
+              : this.getValueIfNotDefault(
+                  this.alignContent,
+                  DEFAULT_ALIGN_CONTENT
+                ),
+
+          "--gx-grid-flex-align-items": this.getValueIfNotDefault(
+            this.alignItems,
+            DEFAULT_ALIGN_ITEMS
+          ),
+
+          "--gx-grid-flex-flex-direction": this.getValueIfNotDefault(
+            this.flexDirection,
+            DEFAULT_FLEX_DIRECTION
+          ),
+
+          "--gx-grid-flex-flex-wrap": this.getValueIfNotDefault(
+            this.flexWrap,
+            DEFAULT_FLEX_WRAP
+          ),
+
+          "--gx-grid-flex-justify-content": this.getValueIfNotDefault(
+            this.justifyContent,
+            DEFAULT_JUSTIFY_CONTENT
+          )
+        }}
+      >
+        {notEmptyGrid && <slot name="grid-content" />}
+
+        {initialLoad && <slot name="grid-empty-loading-placeholder" />}
+
+        {emptyGrid && <slot name="grid-content-empty" />}
       </Host>
     );
   }
