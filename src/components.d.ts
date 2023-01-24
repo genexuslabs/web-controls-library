@@ -1104,7 +1104,7 @@ export namespace Components {
      */
     highAccuracyLocator: boolean;
     /**
-     * Indicates how the map will be displayed at startup
+     * Indicates how the map will be displayed at startup  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `showAll` | (Default value) the map is adjusted to display all the loaded points (and the current device location if Show My Location is set to True).         | | `nearestPoint`   | The map is adjusted to display the current device location and shows my location and the nearest point. | | `radius`   | The map is adjusted to display a fixed radius, from the specified center. The radius value is specified using the initialZoomRadius property | | `noInitialZoom`   | No specific action is taken regarding the initial zoom |
      */
     initialZoom: "showAll" | "nearestPoint" | "radius" | "noInitialZoom";
     /**
@@ -1116,7 +1116,7 @@ export namespace Components {
      */
     mapProvider: string;
     /**
-     * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._
+     * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `standard` | Shows streets.         | | `satellite`   | Shows satellite images of the Earth. | | `hybrid`   | Shows streets over the satellite images. |
      */
     mapType: "standard" | "satellite" | "hybrid";
     /**
@@ -4008,7 +4008,7 @@ declare namespace LocalJSX {
      */
     highAccuracyLocator?: boolean;
     /**
-     * Indicates how the map will be displayed at startup
+     * Indicates how the map will be displayed at startup  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `showAll` | (Default value) the map is adjusted to display all the loaded points (and the current device location if Show My Location is set to True).         | | `nearestPoint`   | The map is adjusted to display the current device location and shows my location and the nearest point. | | `radius`   | The map is adjusted to display a fixed radius, from the specified center. The radius value is specified using the initialZoomRadius property | | `noInitialZoom`   | No specific action is taken regarding the initial zoom |
      */
     initialZoom?: "showAll" | "nearestPoint" | "radius" | "noInitialZoom";
     /**
@@ -4020,7 +4020,7 @@ declare namespace LocalJSX {
      */
     mapProvider?: string;
     /**
-     * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._
+     * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `standard` | Shows streets.         | | `satellite`   | Shows satellite images of the Earth. | | `hybrid`   | Shows streets over the satellite images. |
      */
     mapType?: "standard" | "satellite" | "hybrid";
     /**

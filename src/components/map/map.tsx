@@ -96,6 +96,12 @@ export class GridMap implements GxComponent {
   /**
    * Map type to be used.
    * _Note: If you set a map provider, the selected map type will be ignored._
+   *
+   * | Value        | Details                                                                     |
+   * | ------------ | --------------------------------------------------------------------------- |
+   * | `standard` | Shows streets.         |
+   * | `satellite`   | Shows satellite images of the Earth. |
+   * | `hybrid`   | Shows streets over the satellite images. |
    */
   @Prop() mapType: "standard" | "satellite" | "hybrid" = "standard";
 
@@ -144,9 +150,17 @@ export class GridMap implements GxComponent {
 
   /**
    * 	Indicates how the map will be displayed at startup
+   *
+   * | Value        | Details                                                                     |
+   * | ------------ | --------------------------------------------------------------------------- |
+   * | `showAll` | (Default value) the map is adjusted to display all the loaded points (and the current device location if Show My Location is set to True).         |
+   * | `nearestPoint`   | The map is adjusted to display the current device location and shows my location and the nearest point. |
+   * | `radius`   | The map is adjusted to display a fixed radius, from the specified center. The radius value is specified using the initialZoomRadius property |
+   * | `noInitialZoom`   | No specific action is taken regarding the initial zoom |
+   *
    */
   @Prop() initialZoom: "showAll" | "nearestPoint" | "radius" | "noInitialZoom" =
-    "noInitialZoom";
+    "showAll";
   /**
    * 	The radius value if initialZoom is set to "radius"
    */
@@ -309,20 +323,22 @@ export class GridMap implements GxComponent {
    */
   private fitBounds() {
     // set the maximum zoom level possible to fit all of the map elements when initialZoom property is set to "showAll"
-    if (this.markersList.size > 1 && this.initialZoom == "showAll") {
+    if (this.initialZoom == "showAll" && this.markersList.size > 1) {
+      console.log("entra aqui");
+
       const markersGroup = new FeatureGroup(this.markersList);
       this.map.fitBounds(markersGroup.getBounds());
     }
     // the map zoom is adjusted to display the current device location and the nearest point when initialZoom property is set to "nearestPoint"
     else if (
-      this.markersList.size > 1 &&
       this.initialZoom == "nearestPoint" &&
-      this.userLocationCoords
+      this.userLocationCoords &&
+      this.markersList.size > 1
     ) {
       this.map.setView(this.userLocationCoords.split(","), this.zoom);
     }
     //the map zoom is adjusted to display a fixed radius specified on initialZoomRadius property when initialZoom property is set to "radius"
-    else if (this.markersList.size > 1 && this.initialZoom == "radius") {
+    else if (this.initialZoom == "radius" && this.markersList.size > 1) {
       this.map.setView(this.center.split(","), this.initialZoomRadius);
     }
     // use default zoom otherwise
