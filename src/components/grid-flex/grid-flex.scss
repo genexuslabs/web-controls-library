@@ -98,6 +98,19 @@
 // - - - - - - - - - - - - - - - -
 //          Grid content
 // - - - - - - - - - - - - - - - -
+// Applies when Auto Grow = False
+.grid-absolute-content-container {
+  display: flex;
+  position: relative;
+  align-self: stretch;
+
+  & > ::slotted([slot="grid-content"]) {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+}
+
 ::slotted([slot="grid-content"]) {
   display: flex;
   flex-direction: var(--gx-grid-flex-flex-direction);

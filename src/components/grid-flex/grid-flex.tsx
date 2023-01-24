@@ -242,7 +242,14 @@ export class GridFlex
           )
         }}
       >
-        {notEmptyGrid && <slot name="grid-content" />}
+        {notEmptyGrid &&
+          (this.autoGrow ? (
+            <slot name="grid-content" />
+          ) : (
+            <div class="grid-absolute-content-container">
+              <slot name="grid-content" />
+            </div>
+          ))}
 
         {initialLoad && <slot name="grid-empty-loading-placeholder" />}
 
