@@ -324,9 +324,10 @@ export class GridMap implements GxComponent {
   private fitBounds() {
     // set the maximum zoom level possible to fit all of the map elements when initialZoom property is set to "showAll"
     if (this.initialZoom == "showAll" && this.markersList.size > 1) {
-      console.log("entra aqui");
+      const markersGroup = new FeatureGroup(
+        Array.from(this.markersList.values())
+      );
 
-      const markersGroup = new FeatureGroup(this.markersList);
       this.map.fitBounds(markersGroup.getBounds());
     }
     // the map zoom is adjusted to display the current device location and the nearest point when initialZoom property is set to "nearestPoint"
