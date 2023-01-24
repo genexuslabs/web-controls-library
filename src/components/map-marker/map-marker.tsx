@@ -9,7 +9,7 @@ import {
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 import { parseCoords } from "../common/coordsValidate";
-import { divIcon, marker, DivIcon, LatLngTuple } from "leaflet";
+import { divIcon, DivIcon, LatLngTuple, marker, Marker } from "leaflet";
 
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
@@ -52,7 +52,7 @@ let autoMarkerId = 0;
 export class GridMapMarker implements GxComponent {
   private markerId: string;
 
-  private markerInstance: any;
+  private markerInstance: Marker;
 
   /**
    * Reference to the marker instance
@@ -136,7 +136,7 @@ export class GridMapMarker implements GxComponent {
     return halfIconSizes;
   }
 
-  private setupMarker(coords) {
+  private setupMarker(coords: LatLngTuple) {
     this.markerInstance = marker(coords, {
       icon: this.getDivIcon()
     });
@@ -203,9 +203,10 @@ export class GridMapMarker implements GxComponent {
    * Given the current coords of the `gx-marker` it returns its parsed coords or the default value if they are null.
    * @returns The parsed coords of the marker.
    */
-  private getParsedCoords(): string[] | LatLngTuple {
+  private getParsedCoords() {
     const coords = parseCoords(this.coords);
-    return coords !== null ? coords : DEFAULT_COORDS;
+    const parsedCoords = coords.map(Number);
+    return coords !== null ? (parsedCoords as LatLngTuple) : DEFAULT_COORDS;
   }
   /**
    * If showPopup property is true, binds a popup to the map layer with the passed content using MapMaker's bindPopup method. Set popupContainer max-width and max-height using the size of the map.

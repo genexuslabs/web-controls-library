@@ -7,7 +7,7 @@ import {
   Prop
 } from "@stencil/core";
 import { Component as GxComponent, GridMapElement } from "../common/interfaces";
-import { polyline } from "leaflet/dist/leaflet-src.esm";
+import { polyline, Polyline } from "leaflet/dist/leaflet-src.esm";
 import { parseCoords } from "../common/coordsValidate";
 let autoLineId = 0;
 @Component({
@@ -17,7 +17,7 @@ let autoLineId = 0;
 export class GridMapLine implements GxComponent {
   @Element() element: HTMLGxMapLineElement;
   private lineId: string;
-  private lineInstance: any;
+  private lineInstance: Polyline;
 
   /**
    * The coordinates where the line/polyline will appear in the map.

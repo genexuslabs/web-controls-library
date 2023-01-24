@@ -7,7 +7,7 @@ import {
   Prop
 } from "@stencil/core";
 import { Component as GxComponent, GridMapElement } from "../common/interfaces";
-import { circle } from "leaflet/dist/leaflet-src.esm";
+import { circle, Circle } from "leaflet/dist/leaflet-src.esm";
 import { parseCoords } from "../common/coordsValidate";
 let autoCircleId = 0;
 @Component({
@@ -17,7 +17,7 @@ let autoCircleId = 0;
 export class GridMapCircle implements GxComponent {
   @Element() element: HTMLGxMapCircleElement;
   private circleId: string;
-  private circleInstance: any;
+  private circleInstance: Circle;
 
   /**
    * The coordinates where the circle will appear in the map.

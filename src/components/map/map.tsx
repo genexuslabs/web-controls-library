@@ -12,14 +12,17 @@ import {
 } from "@stencil/core";
 import { Component as GxComponent, GridMapElement } from "../common/interfaces";
 import {
+  Circle,
   FeatureGroup,
+  geoJson,
+  map as leafletMap,
+  Map as LFMap,
   Marker,
-  map as LFMap,
-  polygon,
+  Polygon,
+  Polyline,
   polyline,
   tileLayer,
-  geoJson,
-  circle
+  TileLayer
 } from "leaflet/dist/leaflet-src.esm";
 /* import * as L from "leaflet"; */
 import "leaflet.markercluster";
@@ -36,7 +39,7 @@ const MAP_CIRCLE_DELETED_EVENT_NAME = "gxMapCircleDeleted";
 const MAP_POLYGON_DELETED_EVENT_NAME = "gxMapPolygonDeleted";
 const MAP_LINE_DELETED_EVENT_NAME = "gxMapLineDeleted";
 
-type GridMapElementInstance = Marker | circle | polygon | polyline;
+type GridMapElementInstance = Marker | Circle | Polygon | Polyline;
 @Component({
   shadow: false,
   styleUrl: "map.scss",
@@ -48,9 +51,9 @@ export class GridMap implements GxComponent {
   private map: LFMap;
 
   private markersList = new Map<string, Marker>();
-  private circleList = new Map<string, circle>();
-  private polygonsList = new Map<string, polygon>();
-  private linesList = new Map<string, polyline>();
+  private circleList = new Map<string, Circle>();
+  private polygonsList = new Map<string, Polygon>();
+  private linesList = new Map<string, Polyline>();
 
   private mapProviderApplied: string;
   private mapTypesProviders = {
@@ -60,7 +63,7 @@ export class GridMap implements GxComponent {
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     standard: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   };
-  private tileLayerApplied: tileLayer;
+  private tileLayerApplied: TileLayer;
   private showMyLocationId: number;
   private resizeObserver: ResizeObserver = null;
   /* private kmlLayerVisible = false; */
@@ -518,11 +521,11 @@ export class GridMap implements GxComponent {
     this.connectResizeObserver();
     // Depending on the coordinates, set different view types
     if (coords !== null) {
-      this.map = LFMap(this.divMapView, {
+      this.map = leafletMap(this.divMapView, {
         scrollWheelZoom: this.scrollWheelZoom
       }).setView(coords, this.zoom, MAX_ZOOM_LEVEL);
     } else {
-      this.map = LFMap(this.divMapView, {
+      this.map = leafletMap(this.divMapView, {
         scrollWheelZoom: this.scrollWheelZoom
       }).setView([0, 0], this.getZoomLevel());
     }
