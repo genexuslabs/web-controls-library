@@ -1140,6 +1140,15 @@ export namespace Components {
      */
     selectionLayer: boolean;
     /**
+     * A CSS class to set as the `selectionTargetImageClass` icon class.
+     */
+    selectionTargetImageCssClass: "";
+    /**
+     * Image src set to selection layer
+     * @default ""
+     */
+    selectionTargetImageSrcset: "";
+    /**
      * Indicates if the current location of the device is displayed on the map.
      */
     showMyLocation: boolean;
@@ -4063,6 +4072,15 @@ declare namespace LocalJSX {
      * Enables the possibility to navigate the map and select a location point using the map center.
      */
     selectionLayer?: boolean;
+    /**
+     * A CSS class to set as the `selectionTargetImageClass` icon class.
+     */
+    selectionTargetImageCssClass?: "";
+    /**
+     * Image src set to selection layer
+     * @default ""
+     */
+    selectionTargetImageSrcset?: "";
     /**
      * Indicates if the current location of the device is displayed on the map.
      */

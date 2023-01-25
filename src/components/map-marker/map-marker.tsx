@@ -287,12 +287,7 @@ export class GridMapMarker implements GxComponent {
     const classes = getClasses(this.cssClass);
 
     return (
-      <Host
-        class={!!this.cssClass ? classes.vars : undefined}
-        slot={
-          this.type == "selection-layer" ? "selection-layer-marker" : undefined
-        }
-      >
+      <Host class={!!this.cssClass ? classes.vars : undefined}>
         <div
           class="popup-data-container"
           ref={el => (this.popupContainer = el as HTMLDivElement)}

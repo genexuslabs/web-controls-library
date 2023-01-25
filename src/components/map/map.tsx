@@ -46,7 +46,6 @@ type GridMapElementInstance = Marker | Circle | Polygon | Polyline;
   tag: "gx-map"
 })
 export class GridMap implements GxComponent {
-  private centerCoords: string;
   /* private isSelectionLayerSlot = false; */
   private map: LFMap;
 
@@ -69,11 +68,11 @@ export class GridMap implements GxComponent {
   /* private kmlLayerVisible = false; */
   // Refs
   private divMapView: HTMLDivElement;
-  private selectionMarker: HTMLGxMapMarkerElement;
 
   @Element() element: HTMLGxMapElement;
 
   @State() userLocationCoords: string;
+  @State() centerCoords: string;
 
   /**
    * The coord of initial center of the map.
@@ -130,6 +129,18 @@ export class GridMap implements GxComponent {
    * Enables the possibility to navigate the map and select a location point using the map center.
    */
   @Prop() selectionLayer = false;
+
+  /**
+   * Image src set to selection layer
+   *@default ""
+   */
+  @Prop() selectionTargetImageSrcset: "";
+
+  /**
+   * A CSS class to set as the `selectionTargetImageClass` icon class.
+   */
+
+  @Prop() selectionTargetImageCssClass: "";
   /**
    * Enables the possibility to draw the route between two points on the map.
    */
@@ -197,14 +208,14 @@ export class GridMap implements GxComponent {
    */
   @Event() userLocationChange: EventEmitter;
 
+  @Watch("mapType")
+  mapTypeChange() {
+    this.setMapProvider();
+  }
+
   @Watch("selectionLayer")
   selectionLayerHandler() {
     this.registerSelectionLayerEvents();
-  }
-
-  @Watch("userLocationCoords")
-  userLocationHandler() {
-    this.userLocationChange.emit(this.userLocationCoords);
   }
 
   @Listen("gxMapMarkerDidLoad")
@@ -219,20 +230,8 @@ export class GridMap implements GxComponent {
       markerHTMLElement,
       MAP_MARKER_DELETED_EVENT_NAME
     );
-
-    if (this.selectionLayer) {
-      const slot = this.getSelectionMarkerSlot();
-      if (slot.exist) {
-        this.selectionMarker = slot.elem;
-      } else {
-        this.selectionMarker = this.element.querySelector(
-          "[type='selection-layer']"
-        );
-      }
-      if (markerHTMLElement !== this.selectionMarker) {
-        this.markersList.set(id, instance);
-      }
-    } else {
+    const markerElement = event.target as HTMLGxMapMarkerElement;
+    if (!this.selectionLayer || markerElement.type != "selection-layer") {
       this.markersList.set(id, instance);
     }
   }
@@ -357,16 +356,6 @@ export class GridMap implements GxComponent {
       ? Math.min(Math.max(this.zoom, MIN_ZOOM_LEVEL), MAX_ZOOM_LEVEL)
       : MIN_ZOOM_LEVEL;
 
-  private getSelectionMarkerSlot(): {
-    exist: boolean;
-    elem: HTMLGxMapMarkerElement;
-  } {
-    const slot = this.element.querySelector<HTMLGxMapMarkerElement>(
-      "[slot='selection-layer-marker']"
-    );
-    return { exist: slot !== null, elem: slot };
-  }
-
   private removeMapElement(
     mapElementId: string,
     mapElementInstance: GridMapElementInstance,
@@ -379,7 +368,6 @@ export class GridMap implements GxComponent {
   private updateSelectionMarkerPosition() {
     const centerCoords = this.map.getCenter();
     this.centerCoords = `${centerCoords.lat},${centerCoords.lng}`;
-    this.selectionMarker.setAttribute("coords", this.centerCoords);
   }
 
   private registerSelectionLayerEvents() {
@@ -493,14 +481,15 @@ export class GridMap implements GxComponent {
       : (this.map.getPane("fromKML").style.display = "block");
   } */
 
-  private setUserLocation({ coords }) {
+  private setUserLocation = ({ coords }) => {
     this.userLocationCoords = `${coords.latitude}, ${coords.longitude}`;
-  }
+    this.userLocationChange.emit(this.userLocationCoords);
+  };
 
   componentWillLoad() {
     if (this.showMyLocation) {
       this.showMyLocationId = watchPosition(
-        this.setUserLocation.bind(this),
+        this.setUserLocation,
         err => console.error(err),
         {
           enableHighAccuracy: this.highAccuracyLocator
@@ -1909,13 +1898,6 @@ export class GridMap implements GxComponent {
     });
   }
 
-  componentDidUpdate() {
-    this.setMapProvider();
-    this.fitBounds();
-    this.map.setMaxZoom(MAX_ZOOM_LEVEL);
-    this.userLocationChange.emit(this.userLocationCoords);
-  }
-
   disconnectedCallback() {
     navigator.geolocation.clearWatch(this.showMyLocationId);
     this.disconnectResizeObserver();
@@ -1935,8 +1917,8 @@ export class GridMap implements GxComponent {
         {this.selectionLayer && (
           <gx-map-marker
             coords={this.centerCoords}
-            css-class={this.pinImageCssClass}
-            srcset={this.pinShowMyLocationSrcset || this.pinImageSrcset}
+            css-class={this.selectionTargetImageCssClass}
+            srcset={this.selectionTargetImageSrcset || this.pinImageSrcset}
             type="selection-layer"
           ></gx-map-marker>
         )}
