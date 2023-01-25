@@ -15,6 +15,7 @@ import {
   Circle,
   FeatureGroup,
   geoJson,
+  LatLngTuple,
   map as leafletMap,
   Map as LFMap,
   Marker,
@@ -23,11 +24,10 @@ import {
   polyline,
   tileLayer,
   TileLayer
-} from "leaflet/dist/leaflet-src.esm";
+} from "leaflet";
 /* import * as L from "leaflet"; */
 import "leaflet.markercluster";
 import "leaflet.markercluster/dist/MarkerCluster.css";
-import { parseCoords } from "../common/coordsValidate";
 import { watchPosition } from "./geolocation";
 import togeojson from "togeojson";
 
@@ -49,12 +49,13 @@ export class GridMap implements GxComponent {
   /* private isSelectionLayerSlot = false; */
   private map: LFMap;
 
+  private didLoad = false;
+
   private markersList = new Map<string, Marker>();
   private circleList = new Map<string, Circle>();
   private polygonsList = new Map<string, Polygon>();
   private linesList = new Map<string, Polyline>();
 
-  private mapProviderApplied: string;
   private mapTypesProviders = {
     hybrid:
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
@@ -77,7 +78,7 @@ export class GridMap implements GxComponent {
   /**
    * The coord of initial center of the map.
    */
-  @Prop({ mutable: true }) center = "0, 0";
+  @Prop({ mutable: true }) center = "0,0";
 
   /**
    * Enable the High Accuracy in user location.
@@ -335,19 +336,30 @@ export class GridMap implements GxComponent {
       this.userLocationCoords &&
       this.markersList.size > 1
     ) {
-      this.map.setView(this.userLocationCoords.split(","), this.zoom);
+      this.map.setView(
+        this.fromStringToLatLngTuple(this.userLocationCoords),
+        this.zoom
+      );
     }
     //the map zoom is adjusted to display a fixed radius specified on initialZoomRadius property when initialZoom property is set to "radius"
     else if (this.initialZoom == "radius" && this.markersList.size > 1) {
-      this.map.setView(this.center.split(","), this.initialZoomRadius);
+      this.map.setView(
+        this.fromStringToLatLngTuple(this.userLocationCoords),
+        this.initialZoomRadius
+      );
     }
     // use default zoom otherwise
     else {
       const [marker] = this.markersList.values();
+      console.log(marker);
 
-      const markerCoords = [marker._latlng.lat, marker._latlng.lng];
-      this.map.setView(markerCoords, this.zoom);
+      /* const markerCoords = [marker._latlng.lat, marker._latlng.lng];
+      this.map.setView(markerCoords as LatLngTuple, this.zoom); */
     }
+  }
+
+  private fromStringToLatLngTuple(value: string): LatLngTuple {
+    return value.split(",").map(Number) as LatLngTuple;
   }
 
   private getZoomLevel = () =>
@@ -408,31 +420,27 @@ export class GridMap implements GxComponent {
     }
   }
 
-  private selectingTypes(mapType) {
-    const tileLayerToApply = tileLayer(mapType, {
+  private setMapProvider() {
+    this.removeTileLayer();
+    const mapProviderToRender =
+      this.mapProvider ||
+      this.mapTypesProviders[this.mapType] ||
+      this.mapTypesProviders.standard;
+
+    const tileLayerToApply = tileLayer(mapProviderToRender, {
       maxZoom: MAX_ZOOM_LEVEL
     });
     tileLayerToApply.addTo(this.map);
-    this.mapProviderApplied = tileLayerToApply;
+    this.tileLayerApplied = tileLayerToApply;
   }
 
-  private setMapProvider() {
-    if (this.mapProviderApplied && this.tileLayerApplied) {
+  private removeTileLayer() {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.didLoad && this.tileLayerApplied) {
       this.tileLayerApplied.removeFrom(this.map);
     }
-    if (this.mapProvider) {
-      const tileLayerToApply = tileLayer(this.mapProvider, {
-        maxZoom: MAX_ZOOM_LEVEL
-      });
-      tileLayerToApply.addTo(this.map);
-      this.mapProviderApplied = this.mapProvider;
-      this.tileLayerApplied = tileLayerToApply;
-    } else {
-      const mapTypeProvider =
-        this.mapTypesProviders[this.mapType] || this.mapTypesProviders.standard;
-      this.selectingTypes(mapTypeProvider);
-    }
   }
+
   private renderMapElementWhenTheMapDidLoad(
     mapElementId: string,
     mapElementInstance: GridMapElementInstance,
@@ -445,7 +453,7 @@ export class GridMap implements GxComponent {
     mapHTMLElementDisconnectedEvent: string
   ) {
     // If the map did render
-    if (this.map) {
+    if (this.didLoad) {
       mapElementInstance.addTo(this.map);
 
       // Otherwise, wait until the first render
@@ -522,14 +530,13 @@ export class GridMap implements GxComponent {
   }
 
   componentDidLoad() {
-    const coords = parseCoords(this.center);
     this.zoom = this.getZoomLevel();
     this.connectResizeObserver();
     // Depending on the coordinates, set different view types
-    if (coords !== null) {
+    if (this.center != undefined) {
       this.map = leafletMap(this.divMapView, {
         scrollWheelZoom: this.scrollWheelZoom
-      }).setView(coords, this.zoom, MAX_ZOOM_LEVEL);
+      }).setView(this.fromStringToLatLngTuple(this.center), this.zoom);
     } else {
       this.map = leafletMap(this.divMapView, {
         scrollWheelZoom: this.scrollWheelZoom
@@ -1880,6 +1887,7 @@ export class GridMap implements GxComponent {
 
     this.setMapProvider();
     this.map.setMaxZoom(MAX_ZOOM_LEVEL);
+    this.fitBounds();
     this.gxMapDidLoad.emit(this);
 
     if (this.selectionLayer) {
@@ -1896,10 +1904,12 @@ export class GridMap implements GxComponent {
       px.y -= e.target._popup._container.clientHeight / 2;
       this.panTo(this.unproject(px), { animate: true });
     });
+    this.didLoad = true;
   }
 
   disconnectedCallback() {
     navigator.geolocation.clearWatch(this.showMyLocationId);
+    this.removeTileLayer();
     this.disconnectResizeObserver();
   }
 
