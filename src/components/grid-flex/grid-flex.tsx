@@ -7,18 +7,47 @@ import {
   Host,
   Method,
   Prop,
-  h
+  h,
+  Watch
 } from "@stencil/core";
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
 import { VisibilityComponent } from "../common/interfaces";
+import { FlexDirection, FlexWrap, ScrollDirection } from "../../common/types";
+
+const VERTICAL_SCROLL: ScrollDirection = "vertical";
+const HORIZONTAL_SCROLL: ScrollDirection = "horizontal";
+
+const VIEWPORT_SIZE_CUSTOM_VAR = "--gx-grid-flex-viewport-size";
 
 // Default values of flex properties
 const DEFAULT_ALIGN_CONTENT = "stretch";
 const DEFAULT_ALIGN_ITEMS = "stretch";
-const DEFAULT_FLEX_DIRECTION = "row";
-const DEFAULT_FLEX_WRAP = "nowrap";
+const DEFAULT_FLEX_DIRECTION: FlexDirection = "row";
+const DEFAULT_FLEX_WRAP: FlexWrap = "nowrap";
 const DEFAULT_JUSTIFY_CONTENT = "flex-start";
+
+/**
+ * Determine the type of scroll that will be displayed in runtime, depending on
+ * the flex properties.
+ * This dictionary is useful to knowing all the scenarios in which a resize
+ * observer must be set up to relativize the width or height properties of the
+ * cells.
+ */
+const propertiesToScrollDirectionMap = {
+  "column nowrap": VERTICAL_SCROLL,
+  "column wrap": HORIZONTAL_SCROLL,
+  "column wrap-reverse": HORIZONTAL_SCROLL,
+  "column-reverse nowrap": VERTICAL_SCROLL,
+  "column-reverse wrap": HORIZONTAL_SCROLL,
+  "column-reverse wrap-reverse": HORIZONTAL_SCROLL,
+  "row nowrap": HORIZONTAL_SCROLL,
+  "row wrap": VERTICAL_SCROLL,
+  "row wrap-reverse": VERTICAL_SCROLL,
+  "row-reverse nowrap": HORIZONTAL_SCROLL,
+  "row-reverse wrap": VERTICAL_SCROLL,
+  "row-reverse wrap-reverse": VERTICAL_SCROLL
+};
 
 @Component({
   shadow: true,
@@ -27,6 +56,19 @@ const DEFAULT_JUSTIFY_CONTENT = "flex-start";
 })
 export class GridFlex
   implements GridBase, ComponentInterface, VisibilityComponent {
+  /**
+   * `true` if the `componentDidLoad()` method was called
+   */
+  private didLoad = false;
+  private needForRAF = true; // To prevent redundant RAF (request animation frame) calls
+
+  private lastScrollDirection: ScrollDirection = HORIZONTAL_SCROLL;
+
+  private resizeObserver: ResizeObserver = null;
+
+  // Refs
+  private elementToMeasureSize: HTMLElement = null;
+
   @Element() element!: HTMLGxGridFlexElement;
 
   /**
@@ -96,11 +138,7 @@ export class GridFlex
    * | `row`            | Controls are displayed horizontally, as a row (from left to right).                    |
    * | `row-reverse`    | Controls are displayed horizontally, as a row, in reverse order (from right to left).  |
    */
-  @Prop() readonly flexDirection:
-    | "column"
-    | "column-reverse"
-    | "row"
-    | "row-reverse" = DEFAULT_FLEX_DIRECTION;
+  @Prop() readonly flexDirection: FlexDirection = DEFAULT_FLEX_DIRECTION;
 
   /**
    * Determine whether the flex container is single-line or multi-line, and the
@@ -116,10 +154,7 @@ export class GridFlex
    * | `wrap`         | Flex items will wrap onto multiple lines, from top to bottom. |
    * | `wrap-reverse` | Flex items will wrap onto multiple lines from bottom to top.  |
    */
-  @Prop() readonly flexWrap:
-    | "nowrap"
-    | "wrap"
-    | "wrap-reverse" = DEFAULT_FLEX_WRAP;
+  @Prop() readonly flexWrap: FlexWrap = DEFAULT_FLEX_WRAP;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -197,17 +232,150 @@ export class GridFlex
       ["complete"]();
   }
 
+  @Watch("flexDirection")
+  handleFlexDirectionChange(newValue: FlexDirection) {
+    const upcomingScrollDirection = this.getScrollDirection(
+      newValue,
+      this.flexWrap
+    );
+
+    this.checkIfShouldModifyTheResizeObserverCallback(upcomingScrollDirection);
+  }
+
+  @Watch("flexWrap")
+  handleFlexWrapChange(newValue: FlexWrap) {
+    const upcomingScrollDirection = this.getScrollDirection(
+      this.flexDirection,
+      newValue
+    );
+
+    this.checkIfShouldModifyTheResizeObserverCallback(upcomingScrollDirection);
+  }
+
+  @Watch("recordCount")
+  handleRecordCountChange(newValue: number) {
+    // If the grid will not have any items on the next render, turn off the
+    // observer to save resources
+    if (newValue === 0) {
+      this.disconnectResizeObserver();
+
+      // Otherwise, try to setup the resize observer
+    } else {
+      this.tryToSetupResizeObserver(newValue, this.lastScrollDirection);
+    }
+  }
+
+  private checkIfShouldModifyTheResizeObserverCallback(
+    upcomingScrollDirection: ScrollDirection
+  ) {
+    if (this.lastScrollDirection == upcomingScrollDirection) {
+      return;
+    }
+
+    this.disconnectResizeObserver();
+    this.tryToSetupResizeObserver(this.recordCount, upcomingScrollDirection);
+  }
+
+  /**
+   * Deduces if the resize observer should be connected. If so, it setups a
+   * resize observer to watch the size of the `elementToMeasureSize` element.
+   * @param recordCount Determine the grid row count. Useful when the count will be modified in the next render
+   * @param scrollDirection Determine the scroll direction of the grid. Useful when the scroll direction will be modified in the next render
+   */
+  private tryToSetupResizeObserver = (
+    recordCount: number,
+    scrollDirection: ScrollDirection
+  ) => {
+    if (!this.didLoad || this.resizeObserver || recordCount <= 0) {
+      return;
+    }
+
+    // Horizontal Scroll OR (Vertical Scroll AND Auto Grow = False)
+    if (scrollDirection === HORIZONTAL_SCROLL || !this.autoGrow) {
+      this.connectResizeObserver(scrollDirection);
+    }
+  };
+
+  private connectResizeObserver(scrollDirection: ScrollDirection) {
+    /**
+     * Arrow function to get the size of the `elementToMeasureSize` element.
+     * This function is defined depending on the scroll direction.
+     */
+    const getElementSize =
+      scrollDirection === "horizontal"
+        ? () => this.elementToMeasureSize.clientWidth
+        : () => this.elementToMeasureSize.clientHeight;
+
+    this.resizeObserver = new ResizeObserver(() => {
+      if (!this.needForRAF) {
+        return;
+      }
+      this.needForRAF = false; // No need to call RAF up until next frame
+
+      // Update CSS variable in the best moment
+      requestAnimationFrame(() => {
+        this.needForRAF = true; // RAF now consumes the movement instruction so a new one can come
+
+        const elementSize = getElementSize();
+
+        this.element.style.setProperty(
+          VIEWPORT_SIZE_CUSTOM_VAR,
+          `${elementSize}px`
+        );
+      });
+    });
+
+    // Observe element
+    this.resizeObserver.observe(this.elementToMeasureSize);
+  }
+
+  private disconnectResizeObserver() {
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+      this.element.style.removeProperty(VIEWPORT_SIZE_CUSTOM_VAR);
+    }
+  }
+
   private getValueIfNotDefault = (
     value: string,
     defaultValue: string
-  ): string | undefined => (value != defaultValue ? value : undefined);
+  ): string | null => (value != defaultValue ? value : null);
+
+  private getScrollDirection = (
+    flexDirection: FlexDirection,
+    flexWrap: FlexWrap
+  ) => propertiesToScrollDirectionMap[`${flexDirection} ${flexWrap}`];
+
+  componentDidLoad() {
+    this.didLoad = true;
+    this.tryToSetupResizeObserver(this.recordCount, this.lastScrollDirection);
+  }
+
+  disconnectedCallback() {
+    this.disconnectResizeObserver();
+  }
 
   render() {
     const emptyGrid = GridBaseHelper.isEmptyGrid(this);
     const notEmptyGrid = GridBaseHelper.isNotEmptyGrid(this);
     const initialLoad = GridBaseHelper.isInitialLoad(this);
 
+    this.lastScrollDirection = this.getScrollDirection(
+      this.flexDirection,
+      this.flexWrap
+    );
+
     const hostData = GridBaseHelper.hostData(this);
+
+    // Add an extra class that determine the scroll direction.
+    hostData.class = {
+      ...hostData.class,
+      ...{
+        [`gx-grid-flex--${this.lastScrollDirection}-scroll`]: true
+      }
+    };
 
     return (
       <Host
@@ -242,6 +410,12 @@ export class GridFlex
           )
         }}
       >
+        <div
+          aria-hidden="true"
+          class="gx-measure-size"
+          ref={el => (this.elementToMeasureSize = el as HTMLElement)}
+        ></div>
+
         {notEmptyGrid &&
           (this.autoGrow ? (
             <slot name="grid-content" />

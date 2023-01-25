@@ -96,6 +96,26 @@
 }
 
 // - - - - - - - - - - - - - - - -
+//        Measure grid size
+// - - - - - - - - - - - - - - - -
+:host(.gx-grid-flex--vertical-scroll) {
+  // Necessary to enforce that the "gx-measure-size" will not
+  // occupy any available width
+  grid-template-columns: 0 1fr;
+}
+
+:host(.gx-grid-flex--horizontal-scroll) {
+  // Necessary to enforce that the "gx-measure-size" will not
+  // occupy any available height
+  grid-template-rows: 0 1fr;
+}
+
+.gx-measure-size {
+  display: flex;
+  height: 100%;
+}
+
+// - - - - - - - - - - - - - - - -
 //          Grid content
 // - - - - - - - - - - - - - - - -
 // Applies when Auto Grow = False
