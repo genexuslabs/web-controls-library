@@ -50,6 +50,8 @@ export class GridMap implements GxComponent {
   private map: LFMap;
 
   private didLoad = false;
+  // To prevent redundant RAF (request animation frame) calls
+  private needForRAF = true;
 
   private markersList = new Map<string, Marker>();
   private circleList = new Map<string, Circle>();
@@ -350,11 +352,7 @@ export class GridMap implements GxComponent {
     }
     // use default zoom otherwise
     else {
-      const [marker] = this.markersList.values();
-      console.log(marker);
-
-      /* const markerCoords = [marker._latlng.lat, marker._latlng.lng];
-      this.map.setView(markerCoords as LatLngTuple, this.zoom); */
+      this.map.setView(this.fromStringToLatLngTuple(this.center), this.zoom);
     }
   }
 
@@ -378,8 +376,17 @@ export class GridMap implements GxComponent {
   }
 
   private updateSelectionMarkerPosition() {
-    const centerCoords = this.map.getCenter();
-    this.centerCoords = `${centerCoords.lat},${centerCoords.lng}`;
+    if (!this.needForRAF) {
+      return;
+    }
+    // No need to call RAF up until next frame
+    this.needForRAF = false;
+
+    requestAnimationFrame(() => {
+      this.needForRAF = true; // RAF now consumes the movement instruction so a new one can come
+      const centerCoords = this.map.getCenter();
+      this.centerCoords = `${centerCoords.lat},${centerCoords.lng}`;
+    });
   }
 
   private registerSelectionLayerEvents() {
