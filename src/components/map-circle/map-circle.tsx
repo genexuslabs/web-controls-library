@@ -7,6 +7,7 @@ import {
   Prop
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
+// @ts-expect-error @todo TODO: Fix this import
 import { circle } from "leaflet/dist/leaflet-src.esm";
 import { parseCoords } from "../common/coordsValidate";
 
@@ -38,7 +39,7 @@ export class MapCircle implements GxComponent {
    */
   @Event() gxMapCircleDeleted: EventEmitter;
 
-  private setupCircle(coords) {
+  private setupCircle(coords: any) {
     this.circleInstance = circle(coords, this.radius, {
       color: "red",
       weight: 3

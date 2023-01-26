@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { TimerState } from "./components/chronometer/chronometer-timer-state";
-import { FlexDirection, FlexWrap } from "./common/types";
+import { EditType, FlexDirection, FlexWrap } from "./common/types";
 import { SwiperOptions } from "swiper";
 import { QueryViewerParameterChangedEvent } from "./components/query-viewer-parameter/query-viewer-parameter";
 export namespace Components {
