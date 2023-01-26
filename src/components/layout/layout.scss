@@ -32,10 +32,10 @@
   --gx-layout-target-transition-timing-function: ease-in-out;
 
   // Determine the size that the top navbar takes
-  --gx-navbar-size--top: 0;
+  --gx-navbar-size--top: 0px;
 
   // Determine the size that the bottom navbar takes
-  --gx-navbar-size--bottom: 0;
+  --gx-navbar-size--bottom: 0px;
 
   display: grid;
   position: relative;
@@ -159,13 +159,13 @@
 // If the TOP navbar is visible and Header Row Pattern is not enabled, the
 // navbar will always take space in the screen
 :host(.gx-navbar-top--visible-no-HRP) > .vertical {
-  --gx-navbar-size--top: $gx-navbar-main-height;
+  --gx-navbar-size--top: #{$gx-navbar-main-height};
 }
 
 // When the BOTTOM navbar is visible it will will always take space in the
 // screen
 :host(.gx-navbar-bottom--visible) > .vertical {
-  --gx-navbar-size--bottom: $gx-navbar-main-height;
+  --gx-navbar-size--bottom: #{$gx-navbar-main-height};
 }
 
 // - - - - - - - - - - - - - - - - - - - -
