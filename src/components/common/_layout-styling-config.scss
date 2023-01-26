@@ -31,6 +31,24 @@ $gx-vertical-target-width: 320px;
 $default-overflow-style: visible;
 
 // - - - - - - - - - - - - - - - -
+//    Scrollbars customization
+// - - - - - - - - - - - - - - - -
+@mixin scrollbar-customization() {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--gx-scrollbar-background-color);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--gx-scrollbar-thumb-color);
+  }
+}
+
+// - - - - - - - - - - - - - - - -
 //             z-index
 // - - - - - - - - - - - - - - - -
 $base-z-index: 100;

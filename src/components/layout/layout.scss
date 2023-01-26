@@ -1,5 +1,8 @@
 @import "../common/layout-styling-config";
 
+// Only applies to scrolls in the Shadow Root
+@include scrollbar-customization();
+
 :host {
   /**
    * @prop --gx-layout-vertical-target-width: Width for vertical targets (left and right)
