@@ -684,9 +684,8 @@ export class GridHorizontal
             <div class="swiper-scrollbar" ref={el => (this.scrollbarEl = el)} />
           ),
           <slot name="grid-empty-loading-placeholder" />,
-          <div class="grid-empty-placeholder">
-            <slot name="grid-content-empty" />
-          </div>,
+
+          <slot name="grid-content-empty" />,
           <slot />
         ]}
       </Host>

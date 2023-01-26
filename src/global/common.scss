@@ -51,6 +51,29 @@ gx-card-header > li:not([slot="low-priority-action"]) > gx-button {
 }
 
 // - - - - - - - - - - - - - - - - - - - -
+//                  Grids
+// - - - - - - - - - - - - - - - - - - - -
+// When the Flex Grid has a horizontal scroll, we need the width of the Flex
+// Grid to compute the relative size of its cells
+.gx-grid-flex--horizontal-scroll > div > .gx-grid-row[relative-size] {
+  min-width: calc(
+    var(--gx-grid-flex-viewport-size) * var(--gx-grid-item-relative-size)
+  );
+  width: calc(
+    var(--gx-grid-flex-viewport-size) * var(--gx-grid-item-relative-size)
+  );
+}
+
+// When the Flex Grid has a vertical scroll, we need the height of the Flex
+// Grid to compute the relative size of its cells. The height property must not
+// be added, to allow the cells to have Auto Grow
+.gx-grid-flex--vertical-scroll > div > .gx-grid-row[relative-size] {
+  min-height: calc(
+    var(--gx-grid-flex-viewport-size) * var(--gx-grid-item-relative-size)
+  );
+}
+
+// - - - - - - - - - - - - - - - - - - - -
 //                 Message
 // - - - - - - - - - - - - - - - - - - - -
 gx-navbar + gx-message {

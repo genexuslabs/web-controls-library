@@ -286,9 +286,8 @@ export class GridSmartCss
         )}
 
         <slot name="grid-empty-loading-placeholder" />
-        <div class="grid-empty-placeholder">
-          <slot name="grid-content-empty" />
-        </div>
+
+        <slot name="grid-content-empty" />
       </Host>
     );
   }
