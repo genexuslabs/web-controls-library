@@ -96,23 +96,17 @@
   position: relative;
 }
 
+// The mask is only active when the layout size is not "large"
 .mask {
-  display: none;
+  display: block;
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
   background-color: var(--gx-layout-mask-background-color);
   opacity: 0;
   z-index: $z-index-gx-layout-mask;
 
-  // The mask is only active when the layout size is not "large"
-  &--active {
-    display: block;
-    animation: mask-fade-in var(--gx-layout-target-transition-duration)
-      var(--gx-layout-target-transition-timing-function) forwards;
-  }
+  animation: mask-fade-in var(--gx-layout-target-transition-duration)
+    var(--gx-layout-target-transition-timing-function) forwards;
 }
 
 // - - - - - - - - - - - - - - - - - - - -

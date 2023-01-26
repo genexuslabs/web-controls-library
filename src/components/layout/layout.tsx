@@ -150,15 +150,10 @@ export class Layout implements GxComponent {
         }}
       >
         <main class="target center" part="main">
-          <div
-            class={{
-              mask: true,
-              "mask--active": this.isMaskVisible && notLargeLayoutSize
-            }}
-            part="mask"
-            onClick={this.closeTargets}
-          ></div>
           <slot />
+          {this.isMaskVisible && notLargeLayoutSize && (
+            <div class="mask" part="mask" onClick={this.closeTargets}></div>
+          )}
         </main>
 
         {this.topVisible && (
