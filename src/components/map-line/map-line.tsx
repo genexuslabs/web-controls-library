@@ -7,7 +7,7 @@ import {
   Prop
 } from "@stencil/core";
 import { Component as GxComponent, GridMapElement } from "../common/interfaces";
-import { polyline, Polyline } from "leaflet/dist/leaflet-src.esm";
+import { polyline, Polyline } from "leaflet";
 import { parseCoords } from "../common/coordsValidate";
 let autoLineId = 0;
 @Component({

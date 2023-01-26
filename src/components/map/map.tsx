@@ -542,10 +542,16 @@ export class GridMap implements GxComponent {
     // Depending on the coordinates, set different view types
     if (this.center != undefined) {
       this.map = leafletMap(this.divMapView, {
-        scrollWheelZoom: this.scrollWheelZoom
+        scrollWheelZoom: this.scrollWheelZoom,
+        zoomAnimation: false,
+        fadeAnimation: true,
+        markerZoomAnimation: true
       }).setView(this.fromStringToLatLngTuple(this.center), this.zoom);
     } else {
       this.map = leafletMap(this.divMapView, {
+        zoomAnimation: false,
+        fadeAnimation: true,
+        markerZoomAnimation: true,
         scrollWheelZoom: this.scrollWheelZoom
       }).setView([0, 0], this.getZoomLevel());
     }

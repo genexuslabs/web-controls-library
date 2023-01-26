@@ -275,7 +275,6 @@ export class GridMapMarker implements GxComponent {
 
     // Update icon
     this.markerInstance.setIcon(this.getDivIcon());
-    /* this.setPopup(); */
   }
 
   disconnectedCallback() {

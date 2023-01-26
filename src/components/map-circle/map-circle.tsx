@@ -7,7 +7,7 @@ import {
   Prop
 } from "@stencil/core";
 import { Component as GxComponent, GridMapElement } from "../common/interfaces";
-import { circle, Circle } from "leaflet/dist/leaflet-src.esm";
+import { circle, Circle } from "leaflet";
 import { parseCoords } from "../common/coordsValidate";
 let autoCircleId = 0;
 @Component({
