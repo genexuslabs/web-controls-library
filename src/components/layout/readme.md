@@ -48,7 +48,7 @@ When the left or right target is visible and floating, the center target is mask
 
 | Property                 | Attribute                   | Description                                                                                                                                 | Type                             | Default   |
 | ------------------------ | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | --------- |
-| `bottomNavbarVisible`    | `bottom-navbar-visible`     | `true` if the bottom navbar is visible in the application.                                                                                  | `boolean`                        | `false`   |
+| `bottomNavbarVisible`    | `bottom-navbar-visible`     | `true` if the bottom navbar is visible in the application. This property can only be true if `layoutSize` == `"small"`                      | `boolean`                        | `false`   |
 | `bottomVisible`          | `bottom-visible`            | `false` to hide the bottom target                                                                                                           | `boolean`                        | `false`   |
 | `enableHeaderRowPattern` | `enable-header-row-pattern` | This attribute lets you specify if the header row pattern is enabled in the top navbar.                                                     | `boolean`                        | `false`   |
 | `layoutSize`             | `layout-size`               | This attribute lets you specify the layout size of the application. Each layout size will set different behaviors in the gx-layout control. | `"large" \| "medium" \| "small"` | `"large"` |
@@ -63,6 +63,17 @@ When the left or right target is visible and floating, the center target is mask
 | ------------------- | ----------------------------------------------- | ------------------ |
 | `leftHiddenChange`  | Fired when the leftVisible property is changed  | `CustomEvent<any>` |
 | `rightHiddenChange` | Fired when the rightVisible property is changed | `CustomEvent<any>` |
+
+## Shadow Parts
+
+| Part       | Description |
+| ---------- | ----------- |
+| `"footer"` |             |
+| `"header"` |             |
+| `"left"`   |             |
+| `"main"`   |             |
+| `"mask"`   |             |
+| `"right"`  |             |
 
 ## CSS Custom Properties
 
