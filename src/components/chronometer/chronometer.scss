@@ -4,6 +4,7 @@
 @include visibility-shadow-DOM(inline-flex);
 
 :host {
+  @include elevation();
   flex: 1;
   text-align: start;
   @include transition-properties();
