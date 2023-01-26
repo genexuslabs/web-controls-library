@@ -17,7 +17,8 @@ import {
   map as LFMap,
   polygon,
   polyline,
-  tileLayer
+  tileLayer,
+  circle
   // @ts-expect-error @todo TODO: Fix this import
 } from "leaflet/dist/leaflet-src.esm";
 
@@ -37,8 +38,16 @@ export class Map implements GxComponent {
   private isSelectionLayerSlot = false;
   private map: LFMap;
 
+  /**
+   * @todo TODO: Use a different structure to improve operations on elements.
+   * For example, `markersList = new Map<string, Marker>();`
+   */
+  // Map elements
   // @ts-expect-error @todo TODO: Improve typing
   private markersList = [];
+
+  // @ts-expect-error @todo TODO: Improve typing
+  private circleList = [];
 
   // @ts-expect-error @todo TODO: Improve typing
   private polygonsList = [];
@@ -54,12 +63,12 @@ export class Map implements GxComponent {
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     standard: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   };
-  private selectionMarker: HTMLGxMapMarkerElement;
   private tileLayerApplied: tileLayer;
   private showMyLocationId: number;
 
   // Refs
   private divMapView: HTMLDivElement;
+  private selectionMarker: HTMLGxMapMarkerElement;
 
   @Element() element: HTMLGxMapElement;
 
@@ -133,37 +142,31 @@ export class Map implements GxComponent {
 
   /**
    * The initial zoom level in the map.
-   *
    */
   @Prop({ mutable: true }) zoom = 1;
 
   /**
    * Emmited when the map is loaded.
-   *
    */
   @Event() gxMapDidLoad: EventEmitter;
 
   /**
    * Emmited when the map is clicked and return click coords.
-   *
    */
   @Event() mapClick: EventEmitter;
 
   /**
    * Emmited when the map is being moved, if selection layer is active.
-   *
    */
   @Event() selectionInput: EventEmitter;
 
   /**
    * Emmited when the map stops from being moved, if selection layer is active.
-   *
    */
   @Event() selectionChange: EventEmitter;
 
   /**
    * Emmited when the user location coords change.
-   *
    */
   @Event() userLocationChange: EventEmitter;
 
@@ -208,6 +211,23 @@ export class Map implements GxComponent {
 
     markerElement.addEventListener("gxMapMarkerDeleted", () => {
       this.onMapMarkerDeleted(markerV);
+    });
+  }
+
+  @Listen("gxMapCircleDidLoad")
+  onMapCircleDidLoad(event: CustomEvent) {
+    const circleElement = event.target;
+    const circleV = event.detail;
+    if (this.map) {
+      circleV.addTo(this.map);
+    } else {
+      this.element.addEventListener("gxMapDidLoad", () => {
+        circleV.addTo(this.map);
+      });
+    }
+    this.circleList.push(circleV);
+    circleElement.addEventListener("gxMapCircleDeleted", () => {
+      this.onMapCircleDeleted(circleV);
     });
   }
 
@@ -293,20 +313,16 @@ export class Map implements GxComponent {
     return { exist: slot !== null, elem: slot };
   }
 
-  private onMapMarkerDeleted(marker: Marker) {
-    let i = 0;
-    marker.remove();
-    while (
-      i < this.markersList.length &&
-      this.markersList[i]._leaflet_id !== marker._leaflet_id
-    ) {
-      i++;
-    }
-    if (i <= this.markersList.length) {
-      this.markersList.splice(i, 1);
-    } else {
-      console.warn("There was an error in the markers list!");
-    }
+  private onMapMarkerDeleted(markerInstance: Marker) {
+    markerInstance.remove();
+
+    this.searchAndRemoveMapElement(markerInstance, this.markersList);
+  }
+
+  private onMapCircleDeleted(circleInstance: circle) {
+    circleInstance.remove();
+
+    this.searchAndRemoveMapElement(circleInstance, this.circleList);
   }
 
   private onMapPolygonDeleted(polygonInstance: polygon) {
@@ -322,7 +338,7 @@ export class Map implements GxComponent {
   }
 
   private searchAndRemoveMapElement(
-    mapElement: polygon | polyline,
+    mapElement: Marker | circle | polygon | polyline,
     listOfElements: any[]
   ) {
     let elementIndex = 0;
@@ -406,6 +422,13 @@ export class Map implements GxComponent {
       this.mapProviderApplied = this.mapProvider;
       this.tileLayerApplied = tileLayerToApply;
     } else {
+      /**
+       * @todo TODO: Use the existing dictionary to refactor these conditions,
+       * since the only variable in play is this.mapType.
+       * For example:
+       *   const mapTypeProvider = this.mapTypesProviders[this.mapType] || this.mapTypesProviders.standard;
+       *   this.selectingTypes(mapTypeProvider);
+       */
       if (!this.mapType || this.mapType === "standard") {
         this.selectingTypes(this.mapTypesProviders.standard);
       } else {
@@ -504,6 +527,7 @@ export class Map implements GxComponent {
             type="user-location"
           ></gx-map-marker>
         )}
+
         {this.selectionLayer &&
           (this.isSelectionLayerSlot ? (
             <slot name="selection-layer-marker" />
@@ -513,6 +537,7 @@ export class Map implements GxComponent {
               coords={this.centerCoords}
             ></gx-map-marker>
           ))}
+
         <div class="gxMapContainer">
           <div
             class="gxMap"

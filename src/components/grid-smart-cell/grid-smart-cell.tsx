@@ -106,6 +106,7 @@ export class GridSmartCell
 
     return (
       <Host
+        role="gridcell"
         class={{
           "gx-grid-row": true,
           [classes.transformedCssClass]: !!this.cssClass,
