@@ -237,6 +237,7 @@ export class GridMap implements GxComponent {
     if (!this.selectionLayer || markerElement.type != "selection-layer") {
       this.markersList.set(id, instance);
     }
+    event.stopPropagation();
   }
 
   @Listen("gxMapCircleDidLoad")
@@ -253,6 +254,7 @@ export class GridMap implements GxComponent {
     );
 
     this.circleList.set(id, instance);
+    event.stopPropagation();
   }
 
   @Listen("gxMapPolygonDidLoad")
@@ -269,6 +271,7 @@ export class GridMap implements GxComponent {
     );
 
     this.polygonsList.set(id, instance);
+    event.stopPropagation();
   }
 
   @Listen("gxMapLineDidLoad")
@@ -285,6 +288,7 @@ export class GridMap implements GxComponent {
     );
 
     this.linesList.set(id, instance);
+    event.stopPropagation();
   }
 
   private connectResizeObserver() {
@@ -352,7 +356,9 @@ export class GridMap implements GxComponent {
     }
     // use default zoom otherwise
     else {
-      this.map.setView(this.fromStringToLatLngTuple(this.center), this.zoom);
+      if (this.center) {
+        this.map.setView(this.fromStringToLatLngTuple(this.center), this.zoom);
+      }
     }
   }
 
@@ -542,16 +548,10 @@ export class GridMap implements GxComponent {
     // Depending on the coordinates, set different view types
     if (this.center != undefined) {
       this.map = leafletMap(this.divMapView, {
-        scrollWheelZoom: this.scrollWheelZoom,
-        zoomAnimation: false,
-        fadeAnimation: true,
-        markerZoomAnimation: true
+        scrollWheelZoom: this.scrollWheelZoom
       }).setView(this.fromStringToLatLngTuple(this.center), this.zoom);
     } else {
       this.map = leafletMap(this.divMapView, {
-        zoomAnimation: false,
-        fadeAnimation: true,
-        markerZoomAnimation: true,
         scrollWheelZoom: this.scrollWheelZoom
       }).setView([0, 0], this.getZoomLevel());
     }
