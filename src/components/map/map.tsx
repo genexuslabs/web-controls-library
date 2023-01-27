@@ -1922,7 +1922,6 @@ export class GridMap implements GxComponent {
 
   disconnectedCallback() {
     navigator.geolocation.clearWatch(this.showMyLocationId);
-    this.removeTileLayer();
     this.disconnectResizeObserver();
   }
 
