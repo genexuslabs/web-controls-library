@@ -152,7 +152,7 @@ export class GridMapMarker implements GxComponent {
     this.setIconSize();
 
     const halfSizes = this.getHalfSizes();
-    const shouldRenderSrcImage = this.srcset || this.src;
+    const shouldRenderSrcImage = this.srcset || this.src ? true : false;
     const srcAttributes = this.getSrcAttributes();
     const altAttribute = this.alt || "";
 

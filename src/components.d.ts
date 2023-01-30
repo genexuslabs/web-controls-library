@@ -1092,6 +1092,10 @@ export namespace Components {
      */
     center: string;
     /**
+     * The map should cluster the markers
+     */
+    clusteringPoints: boolean;
+    /**
      * Enables the possibility to draw the route between two points on the map.
      */
     directionLayer: boolean;
@@ -1140,14 +1144,13 @@ export namespace Components {
      */
     selectionLayer: boolean;
     /**
-     * A CSS class to set as the `selectionTargetImageClass` icon class.
+     * A CSS class to set as the `selectionLayer` icon class.
      */
-    selectionTargetImageCssClass: "";
+    selectionTargetImageCssClass: string;
     /**
-     * Image src set to selection layer
-     * @default ""
+     * This attribute lets you specify the srcset attribute for the `selectionLayer` icon. If not set the `pinImageSrcset` property will be used to specify the srcset attribute for the icon. If none of the properties are specified, a default icon will be used when `selectionLayer = true`
      */
-    selectionTargetImageSrcset: "";
+    selectionTargetImageSrcset: string;
     /**
      * Indicates if the current location of the device is displayed on the map.
      */
@@ -4005,6 +4008,10 @@ declare namespace LocalJSX {
      */
     center?: string;
     /**
+     * The map should cluster the markers
+     */
+    clusteringPoints?: boolean;
+    /**
      * Enables the possibility to draw the route between two points on the map.
      */
     directionLayer?: boolean;
@@ -4073,14 +4080,13 @@ declare namespace LocalJSX {
      */
     selectionLayer?: boolean;
     /**
-     * A CSS class to set as the `selectionTargetImageClass` icon class.
+     * A CSS class to set as the `selectionLayer` icon class.
      */
-    selectionTargetImageCssClass?: "";
+    selectionTargetImageCssClass?: string;
     /**
-     * Image src set to selection layer
-     * @default ""
+     * This attribute lets you specify the srcset attribute for the `selectionLayer` icon. If not set the `pinImageSrcset` property will be used to specify the srcset attribute for the icon. If none of the properties are specified, a default icon will be used when `selectionLayer = true`
      */
-    selectionTargetImageSrcset?: "";
+    selectionTargetImageSrcset?: string;
     /**
      * Indicates if the current location of the device is displayed on the map.
      */

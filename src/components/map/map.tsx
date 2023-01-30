@@ -25,9 +25,8 @@ import {
   tileLayer,
   TileLayer
 } from "leaflet";
-/* import * as L from "leaflet"; */
+import * as L from "leaflet";
 import "leaflet.markercluster";
-import "leaflet.markercluster/dist/MarkerCluster.css";
 import { watchPosition } from "./geolocation";
 import togeojson from "togeojson";
 
@@ -77,6 +76,10 @@ export class GridMap implements GxComponent {
   @State() userLocationCoords: string;
   @State() centerCoords: string;
 
+  /**
+   * The map should cluster the markers
+   */
+  @Prop() clusteringPoints = true;
   /**
    * The coord of initial center of the map.
    */
@@ -134,16 +137,19 @@ export class GridMap implements GxComponent {
   @Prop() selectionLayer = false;
 
   /**
-   * Image src set to selection layer
-   *@default ""
+   * This attribute lets you specify the srcset attribute for the
+   * `selectionLayer` icon. If not set the `pinImageSrcset` property will be
+   * used to specify the srcset attribute for the icon.
+   * If none of the properties are specified, a default icon will be used
+   * when `selectionLayer = true`
    */
-  @Prop() selectionTargetImageSrcset: "";
+  @Prop() selectionTargetImageSrcset: string;
 
   /**
-   * A CSS class to set as the `selectionTargetImageClass` icon class.
+   * A CSS class to set as the `selectionLayer` icon class.
    */
 
-  @Prop() selectionTargetImageCssClass: "";
+  @Prop() selectionTargetImageCssClass: string;
   /**
    * Enables the possibility to draw the route between two points on the map.
    */
@@ -233,8 +239,8 @@ export class GridMap implements GxComponent {
       markerHTMLElement,
       MAP_MARKER_DELETED_EVENT_NAME
     );
-    const markerElement = event.target as HTMLGxMapMarkerElement;
-    if (!this.selectionLayer || markerElement.type != "selection-layer") {
+
+    if (!this.selectionLayer || markerHTMLElement.type != "selection-layer") {
       this.markersList.set(id, instance);
     }
     event.stopPropagation();
@@ -480,6 +486,21 @@ export class GridMap implements GxComponent {
       this.removeMapElement(mapElementId, mapElementInstance, mapOfMapElements);
     });
   }
+  /**
+   * Used to prevent clicks on the map element can open a popUp
+   */
+  private avoidMapClickEventPropagation() {
+    this.divMapView.addEventListener(
+      "click",
+      (event: UIEvent) => {
+        if (event.target == this.divMapView) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      },
+      { capture: true }
+    );
+  }
 
   /**
    *Load a new Feature from a KML formatted string
@@ -508,6 +529,7 @@ export class GridMap implements GxComponent {
   };
 
   componentWillLoad() {
+    this.zoom = this.getZoomLevel();
     if (this.showMyLocation) {
       this.showMyLocationId = watchPosition(
         this.setUserLocation,
@@ -543,7 +565,6 @@ export class GridMap implements GxComponent {
   }
 
   componentDidLoad() {
-    this.zoom = this.getZoomLevel();
     this.connectResizeObserver();
     // Depending on the coordinates, set different view types
     if (this.center != undefined) {
@@ -555,16 +576,7 @@ export class GridMap implements GxComponent {
         scrollWheelZoom: this.scrollWheelZoom
       }).setView([0, 0], this.getZoomLevel());
     }
-    this.divMapView.addEventListener(
-      "click",
-      (event: UIEvent) => {
-        if (event.target == this.divMapView) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-      },
-      { capture: true }
-    );
+    this.avoidMapClickEventPropagation();
     this.map.createPane("fromKML");
 
     this.LoadKMLLayer(`<?xml version="1.0" encoding="UTF-8"?>
@@ -1885,16 +1897,25 @@ export class GridMap implements GxComponent {
       </Document>
     </kml>
     `);
+    /// To set the leaflet default marker icon
+    /* const markerIcon = new Icon({
+      iconSize: [25, 41],
+      iconAnchor: [10, 41],
+      popupAnchor: [2, -40],
+      // specify the path here
+      iconUrl: "https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png",
+      shadowUrl: "https://unpkg.com/leaflet@1.5.1/dist/images/marker-shadow.png"
+    }); */
 
-    /*  const markers = new L.MarkerClusterGroup();
-    const marker1 = new Marker([10, 20]);
-    const marker2 = new Marker([11, 19]);
-    const marker3 = new Marker([12, 21]);
-    const fg = new FeatureGroup([marker1, marker2, marker3]);
+    if (this.clusteringPoints) {
+      const markers = new L.MarkerClusterGroup();
+      const markersArray = Array.from(this.markersList.values());
+      const fg = new FeatureGroup(markersArray);
 
-    markers.addLayer(fg);
-    this.map.setMaxZoom(10);
-    this.map.addLayer(markers); */
+      markers.addLayer(fg);
+      this.map.setMaxZoom(this.zoom);
+      this.map.addLayer(markers);
+    }
 
     // zoom the map to the polyline
 
