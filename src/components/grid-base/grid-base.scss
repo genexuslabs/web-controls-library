@@ -16,9 +16,9 @@ $grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller), & > * 
     flex: 1;
   }
 
-  & > pinch-zoom > .gx-empty-indicator, // Used by gx-grid-image-map
-  & > .gx-empty-indicator {
-    @include visibility(none);
+  &:not(.gx-grid-empty) > pinch-zoom > .gx-empty-indicator, // Used by gx-grid-image-map
+  &:not(.gx-grid-empty) > .gx-empty-indicator {
+    display: none;
   }
 }
 
