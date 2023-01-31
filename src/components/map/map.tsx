@@ -33,6 +33,9 @@ import togeojson from "togeojson";
 const MIN_ZOOM_LEVEL = 1;
 const MAX_ZOOM_LEVEL = 23;
 
+const SELECTION_LAYER_MOVE_EVENT_NAME = "move";
+const SELECTION_LAYER_MOVE_END_EVENT_NAME = "moveend";
+
 const MAP_MARKER_DELETED_EVENT_NAME = "gxMapMarkerDeleted";
 const MAP_CIRCLE_DELETED_EVENT_NAME = "gxMapCircleDeleted";
 const MAP_POLYGON_DELETED_EVENT_NAME = "gxMapPolygonDeleted";
@@ -223,8 +226,8 @@ export class GridMap implements GxComponent {
   }
 
   @Watch("selectionLayer")
-  selectionLayerHandler() {
-    this.registerSelectionLayerEvents();
+  electionLayerHandler(newValue: boolean) {
+    this.registerSelectionLayerEvents(newValue);
   }
 
   @Listen("gxMapMarkerDidLoad")
@@ -398,44 +401,33 @@ export class GridMap implements GxComponent {
       this.needForRAF = true; // RAF now consumes the movement instruction so a new one can come
       const centerCoords = this.map.getCenter();
       this.centerCoords = `${centerCoords.lat},${centerCoords.lng}`;
+
+      this.selectionInput.emit(this.centerCoords);
     });
   }
 
-  private registerSelectionLayerEvents() {
-    if (this.selectionLayer) {
-      const moveBehaivor = {
-        eventTrigger: "move",
-        callbackFunction: () => {
-          this.updateSelectionMarkerPosition();
-          this.selectionInput.emit(this.centerCoords);
-        }
-      };
-      const moveEndBehaivor = {
-        eventTrigger: "moveend",
-        callbackFunction: () => {
-          this.updateSelectionMarkerPosition();
-          this.selectionChange.emit(this.centerCoords);
-        }
-      };
-      if (this.selectionLayer) {
-        this.addMapListener(
-          moveBehaivor.eventTrigger,
-          moveBehaivor.callbackFunction
-        );
-        this.addMapListener(
-          moveEndBehaivor.eventTrigger,
-          moveEndBehaivor.callbackFunction
-        );
-      } else {
-        this.removeMapListener(
-          moveBehaivor.eventTrigger,
-          moveBehaivor.callbackFunction
-        );
-        this.removeMapListener(
-          moveEndBehaivor.eventTrigger,
-          moveEndBehaivor.callbackFunction
-        );
-      }
+  /**
+   * Sets or removes the event handlers for the selection layer property.
+   * @param upcomingSelectionLayerValue Determine the `selectionLayer` value. Useful when the selectionLayer will be modified in the next render
+   */
+  private registerSelectionLayerEvents(upcomingSelectionLayerValue: boolean) {
+    // Add handlers
+    if (upcomingSelectionLayerValue) {
+      this.addMapListener(SELECTION_LAYER_MOVE_EVENT_NAME, () => {
+        this.updateSelectionMarkerPosition();
+      });
+      this.addMapListener(SELECTION_LAYER_MOVE_END_EVENT_NAME, () => {
+        this.updateSelectionMarkerPosition();
+      });
+
+      // Remove handlers
+    } else {
+      this.removeMapListener(SELECTION_LAYER_MOVE_EVENT_NAME, () => {
+        this.updateSelectionMarkerPosition();
+      });
+      this.removeMapListener(SELECTION_LAYER_MOVE_END_EVENT_NAME, () => {
+        this.updateSelectionMarkerPosition();
+      });
     }
   }
 
@@ -1926,7 +1918,7 @@ export class GridMap implements GxComponent {
 
     if (this.selectionLayer) {
       this.updateSelectionMarkerPosition();
-      this.registerSelectionLayerEvents();
+      this.registerSelectionLayerEvents(true);
     }
     if (this.directionLayer) {
       const latLangs = this.wktToPolyline(this.directionLayerWKTString);

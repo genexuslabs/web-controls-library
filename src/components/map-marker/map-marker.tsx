@@ -16,7 +16,7 @@ import { getClasses } from "../common/css-transforms/css-transforms";
 
 const DEFAULT_COORDS: LatLngTuple = [0, 0];
 const MAX_POPUP_SIZE_FACTOR = 0.83;
-
+const MIN_POPUP_SIZE_FACTOR = 0.2;
 // Icons
 const DEFAULT_ICON_SIZE = 20; // 20px
 const DEFAULT_ICON =
@@ -223,6 +223,11 @@ export class GridMapMarker implements GxComponent {
         "max-height",
         `calc(var(--gx-map-height) * ${MAX_POPUP_SIZE_FACTOR})`
       );
+      this.popupContainer.style.setProperty(
+        "min-width",
+        `calc(var(--gx-map-width) * ${MIN_POPUP_SIZE_FACTOR})`
+      );
+      this.popupContainer.style.setProperty("min-height", `300px`);
 
       this.markerInstance.bindPopup(this.popupContainer, {
         keepInView: true,

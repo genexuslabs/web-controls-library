@@ -33,3 +33,6 @@ gx-map {
     height: 100%;
   }
 }
+gx-geolocation > gx-map > .gxMap {
+  min-height: 200px;
+}
