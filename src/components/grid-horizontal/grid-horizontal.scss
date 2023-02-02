@@ -10,17 +10,27 @@ gx-grid-horizontal {
    */
   --gx-overflow-style: #{$default-overflow-style};
 
-  @include visibility(flex);
+  // With "display: grid" we ensure that the layout doesn't break when using
+  // relative size columns in the parent gx-table
+  @include visibility(grid);
+  grid-template-rows: 1fr min-content 0;
+
+  // Show the loading on grid load
+  &.gx-grid-initial-load {
+    grid-template-rows: 0 1fr;
+  }
 
   & > .gx-grid-horizontal-content {
     display: flex;
     position: relative;
-    flex: 1;
+    width: 100%;
+  }
 
-    & > .swiper-wrapper {
-      position: absolute;
-      height: fit-content;
-    }
+  // When the horizontal grid does not have auto grow, its content must not
+  // stretch the grid height
+  & > .gx-grid-horizontal--no-auto-grow > .swiper-wrapper {
+    position: absolute;
+    inset: 0;
   }
 
   & > [slot="grid-empty-loading-placeholder"] {
