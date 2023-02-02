@@ -263,7 +263,7 @@ export class GridHorizontal
     );
     this.scrollableContainer.classList.add("swiper-wrapper");
 
-    window.requestAnimationFrame(() => this.ensureSwiper());
+    this.ensureSwiper();
     GridBaseHelper.init(this);
   }
 
