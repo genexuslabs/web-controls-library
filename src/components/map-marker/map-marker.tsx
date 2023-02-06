@@ -152,7 +152,7 @@ export class GridMapMarker implements GxComponent {
     this.setIconSize();
 
     const halfSizes = this.getHalfSizes();
-    const shouldRenderSrcImage = this.srcset || this.src ? true : false;
+    const shouldRenderSrcImage = this.srcset || this.src;
     const srcAttributes = this.getSrcAttributes();
     const altAttribute = this.alt || "";
 
@@ -227,7 +227,6 @@ export class GridMapMarker implements GxComponent {
         "min-width",
         `calc(var(--gx-map-width) * ${MIN_POPUP_SIZE_FACTOR})`
       );
-      this.popupContainer.style.setProperty("min-height", `300px`);
 
       this.markerInstance.bindPopup(this.popupContainer, {
         keepInView: true,

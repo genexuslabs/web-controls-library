@@ -13,6 +13,7 @@ import {
 import { Component as GxComponent, GridMapElement } from "../common/interfaces";
 import {
   Circle,
+  Control,
   FeatureGroup,
   geoJson,
   LatLngTuple,
@@ -25,10 +26,11 @@ import {
   tileLayer,
   TileLayer
 } from "leaflet";
-import * as L from "leaflet";
-import "leaflet.markercluster";
+
+import { MarkerClusterGroup } from "leaflet.markercluster";
 import { watchPosition } from "./geolocation";
 import togeojson from "togeojson";
+/* import { Draw } from "leaflet-draw"; */
 
 const MIN_ZOOM_LEVEL = 1;
 const MAX_ZOOM_LEVEL = 23;
@@ -80,7 +82,8 @@ export class GridMap implements GxComponent {
   @State() centerCoords: string;
 
   /**
-   * The map should cluster the markers
+   * This attribute determines whether map markers should be grouped. When true, the markers will be grouped depending on their proximity
+   *
    */
   @Prop() clusteringPoints = true;
   /**
@@ -332,6 +335,25 @@ export class GridMap implements GxComponent {
   private removeMapListener(eventToListen, callbackFunction) {
     this.map.off(eventToListen, callbackFunction);
   }
+  /**
+   * Allow to draw geometries on the map when editableGeographies property is set to true
+   */
+  private activateDrawOnMap() {
+    const drawnItems = new FeatureGroup();
+    this.map.addLayer(drawnItems);
+    //TODO: How to import the Draw function without using import * as L from "leaflet"
+    // Normally the way to use it is L.Control.Draw
+    const drawControl = Control.Draw({
+      edit: {
+        featureGroup: drawnItems
+      }
+    });
+    this.map.addControl(drawControl);
+
+    this.map.on("draw:created", function(e) {
+      console.log("created", e);
+    });
+  }
 
   /**
    *Sets the map initial view depending of the initialZoom property
@@ -430,6 +452,18 @@ export class GridMap implements GxComponent {
       });
     }
   }
+  /**
+   * Allow to group markers depending of proximity when clusteringPoints property is set to true
+   */
+  private activateCLusteringPoints() {
+    const markers = new MarkerClusterGroup();
+    const markersArray = Array.from(this.markersList.values());
+    const fg = new FeatureGroup(markersArray);
+
+    markers.addLayer(fg);
+    this.map.setMaxZoom(MAX_ZOOM_LEVEL);
+    this.map.addLayer(markers);
+  }
 
   private setMapProvider() {
     this.removeTileLayer();
@@ -451,7 +485,6 @@ export class GridMap implements GxComponent {
       this.tileLayerApplied.removeFrom(this.map);
     }
   }
-
   private renderMapElementWhenTheMapDidLoad(
     mapElementId: string,
     mapElementInstance: GridMapElementInstance,
@@ -479,9 +512,10 @@ export class GridMap implements GxComponent {
     });
   }
   /**
-   * Used to prevent clicks on the map element can open a popUp
+   * Used to avoid opening the marker's popup when clicking on the map. This function is necessary as this behavior is a bug in the leaflet implementation.
+   *
    */
-  private avoidMapClickEventPropagation() {
+  private preventPopupDisplayWhenClickingOnTheMap() {
     this.divMapView.addEventListener(
       "click",
       (event: UIEvent) => {
@@ -531,10 +565,6 @@ export class GridMap implements GxComponent {
         }
       );
     }
-    //TODO: Para qué se usa el slot?
-    if (this.selectionLayer) {
-      /*   this.isSelectionLayerSlot = true; */
-    }
   }
   /**
    * Transform a WKT format string to Polyline latLang array
@@ -568,7 +598,8 @@ export class GridMap implements GxComponent {
         scrollWheelZoom: this.scrollWheelZoom
       }).setView([0, 0], this.getZoomLevel());
     }
-    this.avoidMapClickEventPropagation();
+    /* this.activateDrawOnMap(); */
+    this.preventPopupDisplayWhenClickingOnTheMap();
     this.map.createPane("fromKML");
 
     this.LoadKMLLayer(`<?xml version="1.0" encoding="UTF-8"?>
@@ -1889,7 +1920,7 @@ export class GridMap implements GxComponent {
       </Document>
     </kml>
     `);
-    /// To set the leaflet default marker icon
+    /// Set the leaflet default marker icon
     /* const markerIcon = new Icon({
       iconSize: [25, 41],
       iconAnchor: [10, 41],
@@ -1900,13 +1931,7 @@ export class GridMap implements GxComponent {
     }); */
 
     if (this.clusteringPoints) {
-      const markers = new L.MarkerClusterGroup();
-      const markersArray = Array.from(this.markersList.values());
-      const fg = new FeatureGroup(markersArray);
-
-      markers.addLayer(fg);
-      this.map.setMaxZoom(this.zoom);
-      this.map.addLayer(markers);
+      this.activateCLusteringPoints();
     }
 
     // zoom the map to the polyline

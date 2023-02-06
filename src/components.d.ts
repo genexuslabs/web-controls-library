@@ -1092,7 +1092,7 @@ export namespace Components {
      */
     center: string;
     /**
-     * The map should cluster the markers
+     * This attribute determines whether map markers should be grouped. When true, the markers will be grouped depending on their proximity
      */
     clusteringPoints: boolean;
     /**
@@ -4008,7 +4008,7 @@ declare namespace LocalJSX {
      */
     center?: string;
     /**
-     * The map should cluster the markers
+     * This attribute determines whether map markers should be grouped. When true, the markers will be grouped depending on their proximity
      */
     clusteringPoints?: boolean;
     /**

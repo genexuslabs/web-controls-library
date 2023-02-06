@@ -1,7 +1,10 @@
 @import "../common/_base";
 @import "../../../node_modules/leaflet/dist/leaflet.css";
-@import "../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css";
-@import "../../../node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css";
+@import "./map-marker-cluster";
+
+//TODO: Decide what to do with the leaflet-draw plugin
+/* @import "../../../node_modules/leaflet-draw/dist/leaflet.draw-src.css"; */
+
 gx-map {
   /**
    * @prop --gx-fill-color:
@@ -32,7 +35,4 @@ gx-map {
     width: 100%;
     height: 100%;
   }
-}
-gx-geolocation > gx-map > .gxMap {
-  min-height: 200px;
 }

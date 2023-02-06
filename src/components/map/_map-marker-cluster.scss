@@ -1,0 +1,57 @@
+@import "../common/common-styling-config";
+
+.marker-cluster-small {
+  background-color: rgba(181, 226, 140, 0.6);
+}
+
+.marker-cluster-small div {
+  background-color: rgba(110, 204, 57, 0.6);
+}
+
+.marker-cluster-medium {
+  background-color: rgba(241, 211, 87, 0.6);
+}
+
+.marker-cluster-medium div {
+  background-color: rgba(240, 194, 12, 0.6);
+}
+
+.marker-cluster-large {
+  background-color: rgba(253, 156, 115, 0.6);
+}
+
+.marker-cluster-large div {
+  background-color: rgba(241, 128, 23, 0.6);
+}
+
+.marker-cluster {
+  background-clip: padding-box;
+  border-radius: 20px;
+}
+
+.marker-cluster div {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  margin-top: 5px;
+  margin-inline-start: 5px;
+  text-align: center;
+}
+
+.marker-cluster span {
+  line-height: 30px;
+}
+
+.leaflet-cluster-anim .leaflet-marker-icon,
+.leaflet-cluster-anim .leaflet-marker-shadow {
+  transition: transform $transition-duration ease-out,
+    opacity $transition-duration ease-in;
+}
+
+.leaflet-cluster-spider-leg {
+  // stroke-dashoffset (duration and function) should match with
+  // leaflet-marker-icon transform in order to track it exactly
+  transition: stroke-dashoffset $transition-duration ease-out,
+    stroke-opacity $transition-duration ease-in;
+}
