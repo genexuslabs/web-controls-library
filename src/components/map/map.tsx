@@ -30,7 +30,7 @@ import {
 import { MarkerClusterGroup } from "leaflet.markercluster";
 import { watchPosition } from "./geolocation";
 import togeojson from "togeojson";
-/* import { Draw } from "leaflet-draw"; */
+import "leaflet-draw";
 
 const MIN_ZOOM_LEVEL = 1;
 const MAX_ZOOM_LEVEL = 23;
@@ -343,7 +343,7 @@ export class GridMap implements GxComponent {
     this.map.addLayer(drawnItems);
     //TODO: How to import the Draw function without using import * as L from "leaflet"
     // Normally the way to use it is L.Control.Draw
-    const drawControl = Control.Draw({
+    const drawControl = new Control.Draw({
       edit: {
         featureGroup: drawnItems
       }
@@ -587,6 +587,7 @@ export class GridMap implements GxComponent {
   }
 
   componentDidLoad() {
+    console.log("componentDidLoad");
     this.connectResizeObserver();
     // Depending on the coordinates, set different view types
     if (this.center != undefined) {
@@ -598,7 +599,7 @@ export class GridMap implements GxComponent {
         scrollWheelZoom: this.scrollWheelZoom
       }).setView([0, 0], this.getZoomLevel());
     }
-    /* this.activateDrawOnMap(); */
+    this.activateDrawOnMap();
     this.preventPopupDisplayWhenClickingOnTheMap();
     this.map.createPane("fromKML");
 
