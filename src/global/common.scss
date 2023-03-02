@@ -50,6 +50,12 @@ gx-card-header > li:not([slot="low-priority-action"]) > gx-button {
   cursor: pointer;
 }
 
+// Style applied when controls are disabled. At this moment it's only used by
+// gx-canvas and gx-table
+.gx-disabled {
+  pointer-events: none;
+}
+
 // - - - - - - - - - - - - - - - - - - - -
 //                  Grids
 // - - - - - - - - - - - - - - - - - - - -

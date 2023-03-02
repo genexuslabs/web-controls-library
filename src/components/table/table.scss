@@ -25,10 +25,6 @@
   @include transition-properties();
 }
 
-:host(.disabled) {
-  pointer-events: none;
-}
-
 // - - - - - - - - - - - - - - - -
 //   Overflow Behavior and Style
 // - - - - - - - - - - - - - - - -

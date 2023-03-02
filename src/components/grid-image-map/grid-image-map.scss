@@ -6,7 +6,6 @@ gx-grid-image-map {
   @include visibility(block);
   position: relative;
   width: 100%;
-  pointer-events: all;
 
   & > pinch-zoom > .gx-image-map-container {
     position: relative;
