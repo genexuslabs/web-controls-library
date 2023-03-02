@@ -46,7 +46,8 @@ gx-card-header > li:not([slot="low-priority-action"]) > gx-button {
 }
 
 // Style applied to the highlightable controls
-[data-has-action] {
+[data-has-action],
+button {
   cursor: pointer;
 }
 
