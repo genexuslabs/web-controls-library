@@ -17,6 +17,11 @@ import {
   VisibilityComponent,
   CustomizableComponent
 } from "../common/interfaces";
+
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
 import { Swipeable, makeSwipeable } from "../common/events/swipeable";
 
 import { DISABLED_CLASS } from "../../common/reserved-names";
@@ -49,6 +54,7 @@ export class Canvas
     ClickableComponent,
     CustomizableComponent,
     DisableableComponent,
+    HighlightableComponent,
     Swipeable,
     VisibilityComponent {
   constructor() {
@@ -68,6 +74,11 @@ export class Canvas
    * (for example, click event).
    */
   @Prop() readonly disabled: boolean = false;
+
+  /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -557,6 +568,7 @@ export class Canvas
   }
 
   componentDidLoad() {
+    makeHighlightable(this);
     makeSwipeable(this);
     this.didLoad = true;
 
