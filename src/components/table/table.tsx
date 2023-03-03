@@ -20,6 +20,8 @@ import {
 } from "../common/highlightable";
 import { Swipeable, makeSwipeable } from "../common/events/swipeable";
 
+import { DISABLED_CLASS } from "../../common/reserved-names";
+
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
 
@@ -124,12 +126,17 @@ export class Table
    */
   @Event() swipeLeft: EventEmitter;
 
-  @Listen("click", { capture: true })
+  /**
+   * Stops event bubbling when the table is disabled
+   * @param event The UI Event
+   */
+  @Listen("click", {})
   handleClick(event: UIEvent) {
     if (this.disabled) {
       event.stopPropagation();
-      return;
     }
+
+    // @todo: TODO Use a custom vdom event "gxClick"
   }
 
   componentDidLoad() {
@@ -146,7 +153,7 @@ export class Table
         class={{
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,
-          disabled: this.disabled,
+          [DISABLED_CLASS]: this.disabled,
 
           // Overflow Behavior
           "overflow-behavior--default": this.overflowBehavior === "clip",
