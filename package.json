@@ -1,6 +1,6 @@
 {
   "name": "@genexus/web-controls-library",
-  "version": "1.34.0",
+  "version": "1.35.0",
   "description": "GeneXus Web Controls Library",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
