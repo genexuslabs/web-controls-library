@@ -54,11 +54,11 @@ Example: `-34.87945241095968, -56.078210142066956`
 
 | Event                | Description                                                                | Type               |
 | -------------------- | -------------------------------------------------------------------------- | ------------------ |
-| `gxMapDidLoad`       | Emmited when the map is loaded.                                            | `CustomEvent<any>` |
-| `mapClick`           | Emmited when the map is clicked and return click coords.                   | `CustomEvent<any>` |
-| `selectionChange`    | Emmited when the map stops from being moved, if selection layer is active. | `CustomEvent<any>` |
-| `selectionInput`     | Emmited when the map is being moved, if selection layer is active.         | `CustomEvent<any>` |
-| `userLocationChange` | Emmited when the user location coords change.                              | `CustomEvent<any>` |
+| `gxMapDidLoad`       | Emitted when the map is loaded.                                            | `CustomEvent<any>` |
+| `mapClick`           | Emitted when the map is clicked and return click coords.                   | `CustomEvent<any>` |
+| `selectionChange`    | Emitted when the map stops from being moved, if selection layer is active. | `CustomEvent<any>` |
+| `selectionInput`     | Emitted when the map is being moved, if selection layer is active.         | `CustomEvent<any>` |
+| `userLocationChange` | Emitted when the user location coords change.                              | `CustomEvent<any>` |
 
 ## CSS Custom Properties
 

@@ -48,13 +48,12 @@ type GridMapElementInstance = Marker | Circle | Polygon | Polyline;
   tag: "gx-map"
 })
 export class GridMap implements GxComponent {
-  /* private isSelectionLayerSlot = false; */
   private map: LFMap;
 
   private didLoad = false;
-  // To prevent redundant RAF (request animation frame) calls
-  private needForRAF = true;
+  private needForRAF = true; // To prevent redundant RAF (request animation frame) calls
 
+  // References to map controls
   private markersList = new Map<string, Marker>();
   private circleList = new Map<string, Circle>();
   private polygonsList = new Map<string, Polygon>();
@@ -70,7 +69,7 @@ export class GridMap implements GxComponent {
   private tileLayerApplied: TileLayer;
   private showMyLocationId: number;
   private resizeObserver: ResizeObserver = null;
-  /* private kmlLayerVisible = false; */
+
   // Refs
   private divMapView: HTMLDivElement;
 
@@ -127,7 +126,6 @@ export class GridMap implements GxComponent {
   /**
    * The map provider.
    * _Note: Currently, this property is for setting a custom map provider using an URL._
-   *
    */
   @Prop() mapProvider: string;
 
@@ -165,7 +163,8 @@ export class GridMap implements GxComponent {
   @Prop() pinShowMyLocationSrcset: string;
 
   /**
-   * Enables the possibility to navigate the map and select a location point using the map center.
+   * Enables the possibility to navigate the map and select a location point
+   * using the map center.
    */
   @Prop() selectionLayer = false;
 
@@ -199,27 +198,27 @@ export class GridMap implements GxComponent {
   @Prop({ mutable: true }) zoom = 1;
 
   /**
-   * Emmited when the map is loaded.
+   * Emitted when the map is loaded.
    */
   @Event() gxMapDidLoad: EventEmitter;
 
   /**
-   * Emmited when the map is clicked and return click coords.
+   * Emitted when the map is clicked and return click coords.
    */
   @Event() mapClick: EventEmitter;
 
   /**
-   * Emmited when the map is being moved, if selection layer is active.
+   * Emitted when the map is being moved, if selection layer is active.
    */
   @Event() selectionInput: EventEmitter;
 
   /**
-   * Emmited when the map stops from being moved, if selection layer is active.
+   * Emitted when the map stops from being moved, if selection layer is active.
    */
   @Event() selectionChange: EventEmitter;
 
   /**
-   * Emmited when the user location coords change.
+   * Emitted when the user location coords change.
    */
   @Event() userLocationChange: EventEmitter;
 
@@ -337,7 +336,7 @@ export class GridMap implements GxComponent {
   }
 
   /**
-   * Allow to draw geometries on the map when editableGeographies property is set to true
+   * Allow to draw geometries on the map when `editableGeographies` = `true`.
    */
   private activateDrawOnMap() {
     const drawnItems = new FeatureGroup();
@@ -357,10 +356,11 @@ export class GridMap implements GxComponent {
   }
 
   /**
-   * Sets the map initial view depending of the initialZoom property
+   * Sets the map initial view depending of the `initialZoom`` property
    */
   private fitBounds() {
-    // set the maximum zoom level possible to fit all of the map elements when initialZoom property is set to "showAll"
+    // Set the maximum zoom level possible to fit all of the map elements when
+    // initialZoom property is set to "showAll"
     if (this.initialZoom == "showAll" && this.markersList.size > 1) {
       const markersGroup = new FeatureGroup(
         Array.from(this.markersList.values())
@@ -368,7 +368,8 @@ export class GridMap implements GxComponent {
 
       this.map.fitBounds(markersGroup.getBounds());
     }
-    // the map zoom is adjusted to display the current device location and the nearest point when initialZoom property is set to "nearestPoint"
+    // The map zoom is adjusted to display the current device location and the
+    // nearest point when initialZoom property is set to "nearestPoint"
     else if (
       this.initialZoom == "nearestPoint" &&
       this.userLocationCoords &&
@@ -379,14 +380,16 @@ export class GridMap implements GxComponent {
         this.zoom
       );
     }
-    //the map zoom is adjusted to display a fixed radius specified on initialZoomRadius property when initialZoom property is set to "radius"
+
+    // The map zoom is adjusted to display a fixed radius specified on
+    // initialZoomRadius property when initialZoom property is set to "radius"
     else if (this.initialZoom == "radius" && this.markersList.size > 1) {
       this.map.setView(
         this.fromStringToLatLngTuple(this.userLocationCoords),
         this.initialZoomRadius
       );
     }
-    // use default zoom otherwise
+    // Use default zoom otherwise
     else {
       if (this.center) {
         this.map.setView(this.fromStringToLatLngTuple(this.center), this.zoom);
@@ -453,8 +456,10 @@ export class GridMap implements GxComponent {
       });
     }
   }
+
   /**
-   * Allow to group markers depending of proximity when clusteringPoints property is set to true
+   * Allow to group markers depending of proximity when
+   * `clusteringPoints` = `true`.
    */
   private activateCLusteringPoints() {
     const markers = new MarkerClusterGroup();
@@ -486,6 +491,7 @@ export class GridMap implements GxComponent {
       this.tileLayerApplied.removeFrom(this.map);
     }
   }
+
   private renderMapElementWhenTheMapDidLoad(
     mapElementId: string,
     mapElementInstance: GridMapElementInstance,
@@ -512,9 +518,10 @@ export class GridMap implements GxComponent {
       this.removeMapElement(mapElementId, mapElementInstance, mapOfMapElements);
     });
   }
+
   /**
-   * Used to avoid opening the marker's popup when clicking on the map. This function is necessary as this behavior is a bug in the leaflet implementation.
-   *
+   * Used to avoid opening the marker's popup when clicking on the map. This
+   * function is necessary as this behavior is a bug in the leaflet implementation.
    */
   private preventPopupDisplayWhenClickingOnTheMap() {
     this.divMapView.addEventListener(
@@ -557,7 +564,7 @@ export class GridMap implements GxComponent {
   }
 
   /**
-   * Transform a WKT format string to Polyline latLang array
+   * Transform a WKT format string to Polyline latLang array.
    * @param lineString WKT format string. Example: LINESTRING (-56.18565 -34.90555, -56.1859 -34.90558, -56.18645 -34.90561)
    * @returns Array of latLong coordinates. Example: [[-56.18565, -34.90555],[-56.1859, -34.90558],[-56.18645, -34.90561]]
    */
