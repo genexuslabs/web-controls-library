@@ -80,21 +80,49 @@ export class GridMap implements GxComponent {
   @State() centerCoords: string;
 
   /**
-   * This attribute determines whether map markers should be grouped. When true, the markers will be grouped depending on their proximity
-   *
+   * The coord of initial center of the map.
+   */
+  @Prop({ mutable: true }) center = "0,0";
+
+  /**
+   * This attribute determines whether map markers should be grouped. When true,
+   * the markers will be grouped depending on their proximity.
    */
   @Prop() clusteringPoints = true;
 
   /**
-   * The coord of initial center of the map.
+   * Enables the possibility to draw the route between two points on the map.
    */
-  @Prop({ mutable: true }) center = "0,0";
+  @Prop() directionLayer = false;
+
+  /**
+   * WKT format string containing the response of Google Maps Directions API call
+   */
+  @Prop() directionLayerWKTString: string;
 
   /**
    * Enable the High Accuracy in user location.
    * _Note: This property applies when ```watchPosition = true```._
    */
   @Prop() highAccuracyLocator = true;
+
+  /**
+   * Indicates how the map will be displayed at startup.
+   *
+   * | Value           | Details                                                                                                                                       |
+   * | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+   * | `showAll`       | (Default value) the map is adjusted to display all the loaded points (and the current device location if Show My Location is set to True).    |
+   * | `nearestPoint`  | The map is adjusted to display the current device location and shows my location and the nearest point.                                       |
+   * | `radius`        | The map is adjusted to display a fixed radius, from the specified center. The radius value is specified using the initialZoomRadius property. |
+   * | `noInitialZoom` | No specific action is taken regarding the initial zoom.                                                                                       |
+   */
+  @Prop() initialZoom: "showAll" | "nearestPoint" | "radius" | "noInitialZoom" =
+    "showAll";
+
+  /**
+   * The radius value if `initialZoom` = `"radius"`.
+   */
+  @Prop() initialZoomRadius = 1;
 
   /**
    * The map provider.
@@ -142,6 +170,11 @@ export class GridMap implements GxComponent {
   @Prop() selectionLayer = false;
 
   /**
+   * A CSS class to set as the `selectionLayer` icon class.
+   */
+  @Prop() selectionTargetImageCssClass: string;
+
+  /**
    * This attribute lets you specify the srcset attribute for the
    * `selectionLayer` icon. If not set the `pinImageSrcset` property will be
    * used to specify the srcset attribute for the icon.
@@ -149,21 +182,6 @@ export class GridMap implements GxComponent {
    * when `selectionLayer = true`
    */
   @Prop() selectionTargetImageSrcset: string;
-
-  /**
-   * A CSS class to set as the `selectionLayer` icon class.
-   */
-  @Prop() selectionTargetImageCssClass: string;
-
-  /**
-   * Enables the possibility to draw the route between two points on the map.
-   */
-  @Prop() directionLayer = false;
-
-  /**
-   * WKT format string containing the response of Google Maps Directions API call
-   */
-  @Prop() directionLayerWKTString: string;
 
   /**
    * Whether the map can be zoomed by using the mouse wheel.
@@ -174,25 +192,6 @@ export class GridMap implements GxComponent {
    * Indicates if the current location of the device is displayed on the map.
    */
   @Prop() showMyLocation = false;
-
-  /**
-   * 	Indicates how the map will be displayed at startup
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `showAll` | (Default value) the map is adjusted to display all the loaded points (and the current device location if Show My Location is set to True).         |
-   * | `nearestPoint`   | The map is adjusted to display the current device location and shows my location and the nearest point. |
-   * | `radius`   | The map is adjusted to display a fixed radius, from the specified center. The radius value is specified using the initialZoomRadius property |
-   * | `noInitialZoom`   | No specific action is taken regarding the initial zoom |
-   *
-   */
-  @Prop() initialZoom: "showAll" | "nearestPoint" | "radius" | "noInitialZoom" =
-    "showAll";
-
-  /**
-   * 	The radius value if initialZoom is set to "radius"
-   */
-  @Prop() initialZoomRadius = 1;
 
   /**
    * The initial zoom level in the map.
