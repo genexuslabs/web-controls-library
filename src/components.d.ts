@@ -8,7 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { TimerState } from "./components/chronometer/chronometer-timer-state";
 import { FlexDirection, FlexWrap } from "./common/types";
 import { SwiperOptions } from "swiper";
-import { GridMapElement } from "./components/common/interfaces";
+import { GridMapElement, LayoutSize } from "./components/common/interfaces";
 import { QueryViewerParameterChangedEvent } from "./components/query-viewer-parameter/query-viewer-parameter";
 export namespace Components {
   interface GxActionSheet {
@@ -80,6 +80,10 @@ export namespace Components {
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled: boolean;
+    /**
+     * True to highlight control when an action is fired.
+     */
+    highlightable: false;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -1030,25 +1034,37 @@ export namespace Components {
   }
   interface GxLayout {
     /**
-     * True to hide the bottom target
-     */
-    bottomHidden: false;
-    /**
-     * `true` if the bottom navbar is visible in the application.
+     * `true` if the bottom navbar is visible in the application. This property can only be true if `layoutSize` == `"small"`
      */
     bottomNavbarVisible: boolean;
     /**
-     * True to hide the left target
+     * `false` to hide the bottom target
      */
-    leftHidden: boolean;
+    bottomVisible: false;
     /**
-     * True to hide the right target
+     * This attribute lets you specify if the header row pattern is enabled in the top navbar.
      */
-    rightHidden: boolean;
+    enableHeaderRowPattern: boolean;
     /**
-     * True to hide the top target
+     * This attribute lets you specify the layout size of the application. Each layout size will set different behaviors in the gx-layout control.
      */
-    topHidden: false;
+    layoutSize: LayoutSize;
+    /**
+     * `false` to hide the left target
+     */
+    leftVisible: boolean;
+    /**
+     * `false` to hide the right target
+     */
+    rightVisible: boolean;
+    /**
+     * `true` if the top navbar is visible in the application.
+     */
+    topNavbarVisible: boolean;
+    /**
+     * `false` to hide the top target.
+     */
+    topVisible: false;
   }
   interface GxLoading {
     /**
@@ -1121,7 +1137,7 @@ export namespace Components {
      */
     center: string;
     /**
-     * This attribute determines whether map markers should be grouped. When true, the markers will be grouped depending on their proximity
+     * This attribute determines whether map markers should be grouped. When true, the markers will be grouped depending on their proximity.
      */
     clusteringPoints: boolean;
     /**
@@ -1137,11 +1153,11 @@ export namespace Components {
      */
     highAccuracyLocator: boolean;
     /**
-     * Indicates how the map will be displayed at startup  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `showAll` | (Default value) the map is adjusted to display all the loaded points (and the current device location if Show My Location is set to True).         | | `nearestPoint`   | The map is adjusted to display the current device location and shows my location and the nearest point. | | `radius`   | The map is adjusted to display a fixed radius, from the specified center. The radius value is specified using the initialZoomRadius property | | `noInitialZoom`   | No specific action is taken regarding the initial zoom |
+     * Indicates how the map will be displayed at startup.  | Value           | Details                                                                                                                                       | | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | | `showAll`       | (Default value) the map is adjusted to display all the loaded points (and the current device location if Show My Location is set to True).    | | `nearestPoint`  | The map is adjusted to display the current device location and shows my location and the nearest point.                                       | | `radius`        | The map is adjusted to display a fixed radius, from the specified center. The radius value is specified using the initialZoomRadius property. | | `noInitialZoom` | No specific action is taken regarding the initial zoom.                                                                                       |
      */
     initialZoom: "showAll" | "nearestPoint" | "radius" | "noInitialZoom";
     /**
-     * The radius value if initialZoom is set to "radius"
+     * The radius value if `initialZoom` = `"radius"`.
      */
     initialZoomRadius: number;
     /**
@@ -1331,6 +1347,10 @@ export namespace Components {
      */
     headerRowPatternCssClass: string;
     /**
+     * This attribute lets you specify the layout size of the application. Each layout size will set different behaviors in the gx-layout control.
+     */
+    layoutSize: LayoutSize;
+    /**
      * `true` if the left target of the gx-layout is visible in the application.
      */
     leftTargetVisible: boolean;
@@ -1392,6 +1412,10 @@ export namespace Components {
      * This attribute lets you specify the srcset attribute of an icon for the navbar item.
      */
     iconSrcset: string;
+    /**
+     * This attribute lets you specify the layout size of the application. Each layout size will set different behaviors in the gx-navbar-item control.
+     */
+    layoutSize: LayoutSize;
   }
   interface GxPasswordEdit {
     /**
@@ -2931,6 +2955,10 @@ declare namespace LocalJSX {
      */
     disabled?: boolean;
     /**
+     * True to highlight control when an action is fired.
+     */
+    highlightable?: false;
+    /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode?: "collapse" | "keep-space";
@@ -3969,39 +3997,45 @@ declare namespace LocalJSX {
   }
   interface GxLayout {
     /**
-     * True to hide the bottom target
-     */
-    bottomHidden?: false;
-    /**
-     * `true` if the bottom navbar is visible in the application.
+     * `true` if the bottom navbar is visible in the application. This property can only be true if `layoutSize` == `"small"`
      */
     bottomNavbarVisible?: boolean;
     /**
-     * True to hide the left target
+     * `false` to hide the bottom target
      */
-    leftHidden?: boolean;
+    bottomVisible?: false;
     /**
-     * Fired when the leftHidden property is changed
+     * This attribute lets you specify if the header row pattern is enabled in the top navbar.
+     */
+    enableHeaderRowPattern?: boolean;
+    /**
+     * This attribute lets you specify the layout size of the application. Each layout size will set different behaviors in the gx-layout control.
+     */
+    layoutSize?: LayoutSize;
+    /**
+     * `false` to hide the left target
+     */
+    leftVisible?: boolean;
+    /**
+     * Fired when the leftVisible property is changed
      */
     onLeftHiddenChange?: (event: GxLayoutCustomEvent<any>) => void;
     /**
-     * Fired when the rightHidden property is changed
+     * Fired when the rightVisible property is changed
      */
     onRightHiddenChange?: (event: GxLayoutCustomEvent<any>) => void;
     /**
-     * Fired when the viewport size is less than the vertical targets breakpoint.
+     * `false` to hide the right target
      */
-    onVerticalTargetsBreakpointMatchChange?: (
-      event: GxLayoutCustomEvent<any>
-    ) => void;
+    rightVisible?: boolean;
     /**
-     * True to hide the right target
+     * `true` if the top navbar is visible in the application.
      */
-    rightHidden?: boolean;
+    topNavbarVisible?: boolean;
     /**
-     * True to hide the top target
+     * `false` to hide the top target.
      */
-    topHidden?: false;
+    topVisible?: false;
   }
   interface GxLoading {
     /**
@@ -4065,7 +4099,7 @@ declare namespace LocalJSX {
      */
     center?: string;
     /**
-     * This attribute determines whether map markers should be grouped. When true, the markers will be grouped depending on their proximity
+     * This attribute determines whether map markers should be grouped. When true, the markers will be grouped depending on their proximity.
      */
     clusteringPoints?: boolean;
     /**
@@ -4081,11 +4115,11 @@ declare namespace LocalJSX {
      */
     highAccuracyLocator?: boolean;
     /**
-     * Indicates how the map will be displayed at startup  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `showAll` | (Default value) the map is adjusted to display all the loaded points (and the current device location if Show My Location is set to True).         | | `nearestPoint`   | The map is adjusted to display the current device location and shows my location and the nearest point. | | `radius`   | The map is adjusted to display a fixed radius, from the specified center. The radius value is specified using the initialZoomRadius property | | `noInitialZoom`   | No specific action is taken regarding the initial zoom |
+     * Indicates how the map will be displayed at startup.  | Value           | Details                                                                                                                                       | | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | | `showAll`       | (Default value) the map is adjusted to display all the loaded points (and the current device location if Show My Location is set to True).    | | `nearestPoint`  | The map is adjusted to display the current device location and shows my location and the nearest point.                                       | | `radius`        | The map is adjusted to display a fixed radius, from the specified center. The radius value is specified using the initialZoomRadius property. | | `noInitialZoom` | No specific action is taken regarding the initial zoom.                                                                                       |
      */
     initialZoom?: "showAll" | "nearestPoint" | "radius" | "noInitialZoom";
     /**
-     * The radius value if initialZoom is set to "radius"
+     * The radius value if `initialZoom` = `"radius"`.
      */
     initialZoomRadius?: number;
     /**
@@ -4097,23 +4131,23 @@ declare namespace LocalJSX {
      */
     mapType?: "standard" | "satellite" | "hybrid";
     /**
-     * Emmited when the map is loaded.
+     * Emitted when the map is loaded.
      */
     onGxMapDidLoad?: (event: GxMapCustomEvent<any>) => void;
     /**
-     * Emmited when the map is clicked and return click coords.
+     * Emitted when the map is clicked and return click coords.
      */
     onMapClick?: (event: GxMapCustomEvent<any>) => void;
     /**
-     * Emmited when the map stops from being moved, if selection layer is active.
+     * Emitted when the map stops from being moved, if selection layer is active.
      */
     onSelectionChange?: (event: GxMapCustomEvent<any>) => void;
     /**
-     * Emmited when the map is being moved, if selection layer is active.
+     * Emitted when the map is being moved, if selection layer is active.
      */
     onSelectionInput?: (event: GxMapCustomEvent<any>) => void;
     /**
-     * Emmited when the user location coords change.
+     * Emitted when the user location coords change.
      */
     onUserLocationChange?: (event: GxMapCustomEvent<any>) => void;
     /**
@@ -4343,6 +4377,10 @@ declare namespace LocalJSX {
      */
     headerRowPatternCssClass?: string;
     /**
+     * This attribute lets you specify the layout size of the application. Each layout size will set different behaviors in the gx-layout control.
+     */
+    layoutSize?: LayoutSize;
+    /**
      * `true` if the left target of the gx-layout is visible in the application.
      */
     leftTargetVisible?: boolean;
@@ -4412,6 +4450,10 @@ declare namespace LocalJSX {
      * This attribute lets you specify the srcset attribute of an icon for the navbar item.
      */
     iconSrcset?: string;
+    /**
+     * This attribute lets you specify the layout size of the application. Each layout size will set different behaviors in the gx-navbar-item control.
+     */
+    layoutSize?: LayoutSize;
   }
   interface GxPasswordEdit {
     /**
