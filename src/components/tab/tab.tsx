@@ -76,7 +76,7 @@ export class Tab
    * | `scoll`      | Allows scrolling the tab control when the number of tabs exceeds the screen width. |
    * | `fixed-size` | Tabs are fixed size. Used with any amount of tabs.                                 |
    */
-  @Prop() tabsDistribution: "scroll" | "fixed-size" = "scroll";
+  @Prop() readonly tabsDistribution: "scroll" | "fixed-size" = "scroll";
 
   /**
    * Fired when the active tab is changed

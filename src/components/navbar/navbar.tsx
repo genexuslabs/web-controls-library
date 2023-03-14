@@ -8,7 +8,7 @@ import {
   EventEmitter,
   State
 } from "@stencil/core";
-import { Component as GxComponent } from "../common/interfaces";
+import { Component as GxComponent, LayoutSize } from "../common/interfaces";
 import { watchForItems } from "../common/watch-items";
 
 // Class transforms
@@ -30,6 +30,16 @@ import {
   tag: "gx-navbar"
 })
 export class NavBar implements GxComponent {
+  // Observers
+  private watchForItemsObserver: MutationObserver;
+
+  private isTopPosition: boolean;
+
+  // Refs
+  private navbarLinks: HTMLDivElement;
+  private navbarActionsHigh: HTMLDivElement;
+  private navbarActionsNormal: HTMLDivElement;
+
   @Element() element: HTMLGxNavbarElement;
 
   /**
@@ -67,20 +77,30 @@ export class NavBar implements GxComponent {
   @Prop() readonly headerRowPatternCssClass: string;
 
   /**
+   * This attribute lets you specify the layout size of the application.
+   * Each layout size will set different behaviors in the gx-layout control.
+   */
+  @Prop() readonly layoutSize: LayoutSize = "large";
+
+  /**
    * `true` if the left target of the gx-layout is visible in the application.
    */
   @Prop() readonly leftTargetVisible: boolean = false;
 
   /**
+   * This attribute lets you specify the position of the navbar in the
+   * viewport.
+   * If `position = "top"` the navbar will be placed normally at the top of the
+   * viewport.
+   * If `position = "bottom"` the navbar will be placed at the bottom of the
+   * viewport. This position of navbar is used to show navigation links.
+   */
+  @Prop() readonly position: "top" | "bottom" = "top";
+
+  /**
    * `true` if the right target of the gx-layout is visible in the application.
    */
   @Prop() readonly rightTargetVisible: boolean = false;
-
-  /**
-   * This attribute lets you specify if one or two lines will be used to render the navigation bar.
-   * Useful when there are links and also actions, to have links in the first line, and actions in the second
-   */
-  @Prop() readonly singleLine = true;
 
   /**
    * True to show the back button
@@ -94,21 +114,15 @@ export class NavBar implements GxComponent {
   @Prop() readonly showHeaderRowPatternClass: boolean = false;
 
   /**
-   * This attribute lets you specify the position of the navbar in the
-   * viewport.
-   * If `position = "top"` the navbar will be placed normally at the top of the
-   * viewport.
-   * If `position = "bottom"` the navbar will be placed at the bottom of the
-   * viewport. This position of navbar is used to show navigation links.
-   */
-  @Prop() readonly position: "top" | "bottom" = "top";
-
-  @State() showLowActions = false;
-
-  /**
    * True to show the left target toggle button (a burger icon)
    */
   @Prop() readonly showToggleButton: false;
+
+  /**
+   * This attribute lets you specify if one or two lines will be used to render the navigation bar.
+   * Useful when there are links and also actions, to have links in the first line, and actions in the second
+   */
+  @Prop() readonly singleLine = true;
 
   /**
    * This attribute lets you specify the label for the left target toggle button. Important for accessibility.
@@ -121,6 +135,8 @@ export class NavBar implements GxComponent {
 
   @State() hasLowPriorityActions = false;
 
+  @State() showLowActions = false;
+
   /**
    * Fired when the toggle button is clicked
    */
@@ -130,15 +146,6 @@ export class NavBar implements GxComponent {
    * Fired when the back button is clicked
    */
   @Event() backButtonClick: EventEmitter;
-
-  private watchForItemsObserver: MutationObserver;
-
-  private isTopPosition: boolean;
-
-  // Refs
-  private navbarLinks: HTMLDivElement;
-  private navbarActionsHigh: HTMLDivElement;
-  private navbarActionsNormal: HTMLDivElement;
 
   private handleToggleButtonClick = (e: MouseEvent) => {
     this.toggleButtonClick.emit(e);
@@ -172,6 +179,8 @@ export class NavBar implements GxComponent {
 
   componentDidLoad() {
     document.body.addEventListener("click", this.handleBodyClick);
+
+    // - - - - - - - - - -   Observers   - - - - - - - - - -
     this.watchForItemsObserver = watchForItems(
       this.element,
       "gx-navbar-item",
@@ -227,10 +236,24 @@ export class NavBar implements GxComponent {
     if (this.hasHighPriorityActions) {
       amountOfActionTypes++;
     }
-
     if (this.hasNormalPriorityActions) {
       amountOfActionTypes++;
     }
+
+    // Layout size variables to add classes
+    const leftTargetVisible =
+      isHeaderRowPatternEnabled &&
+      this.leftTargetVisible &&
+      this.layoutSize === "large";
+
+    const rightTargetVisible =
+      isHeaderRowPatternEnabled &&
+      this.rightTargetVisible &&
+      this.layoutSize === "large";
+
+    const smallLayoutSize = this.isTopPosition && this.layoutSize === "small";
+    const notSmallLayoutSize =
+      this.isTopPosition && this.layoutSize !== "small";
 
     return (
       <Host
@@ -239,10 +262,14 @@ export class NavBar implements GxComponent {
           [classes.vars]: true,
           "gx-navbar-actions-active": this.showLowActions,
           "gx-navbar-header-row-pattern": isHeaderRowPatternEnabled,
-          "left-target-visible":
-            isHeaderRowPatternEnabled && this.leftTargetVisible,
-          "right-target-visible":
-            isHeaderRowPatternEnabled && this.rightTargetVisible
+
+          // Adjust gx-navbar's position when HRP is on, the layout size is
+          // "large" and gx-layout vertical targets are visible
+          "left-target-visible": leftTargetVisible,
+          "right-target-visible": rightTargetVisible,
+
+          "not-small-layout-size": notSmallLayoutSize,
+          "small-layout-size": smallLayoutSize
         }}
       >
         <nav class="gx-navbar">

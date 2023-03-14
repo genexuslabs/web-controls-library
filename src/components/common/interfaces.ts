@@ -70,3 +70,5 @@ export interface RendererConstructor {
 }
 
 declare const Renderer: RendererConstructor;
+
+export type LayoutSize = "small" | "medium" | "large";

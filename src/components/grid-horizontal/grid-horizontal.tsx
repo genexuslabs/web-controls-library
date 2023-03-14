@@ -34,10 +34,6 @@ export class GridHorizontal
   private swiper: Swiper = null;
   private fillMode: "column" | "row" = "row";
 
-  private needForRAF = true; // To prevent redundant RAF (request animation frame) calls
-
-  private resizeObserver: ResizeObserver = null;
-
   // Refs
   private horizontalGridContent: HTMLDivElement = null;
   private scrollableContainer: HTMLElement = null;
@@ -109,7 +105,7 @@ export class GridHorizontal
   /**
    * Specifies the orientation mode.
    */
-  @Prop() orientation: "portrait" | "landscape" = "portrait";
+  @Prop({ mutable: true }) orientation: "portrait" | "landscape" = "portrait";
 
   /**
    * If `true`, show the pagination buttons.
@@ -267,13 +263,8 @@ export class GridHorizontal
     );
     this.scrollableContainer.classList.add("swiper-wrapper");
 
-    window.requestAnimationFrame(() => this.ensureSwiper());
+    this.ensureSwiper();
     GridBaseHelper.init(this);
-
-    // Implement auto grow
-    if (this.autoGrow) {
-      this.connectResizeObserver();
-    }
   }
 
   componentDidUpdate() {
@@ -283,12 +274,6 @@ export class GridHorizontal
   disconnectedCallback() {
     if (this.isInitialized()) {
       this.swiper.destroy(true, true);
-    }
-
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
-    if (this.resizeObserver) {
-      this.resizeObserver.disconnect();
-      this.resizeObserver = null;
     }
   }
 
@@ -443,26 +428,6 @@ export class GridHorizontal
     this.swiper.allowSlideNext = !lock;
     this.swiper.allowSlidePrev = !lock;
     this.swiper.allowTouchMove = !lock;
-  }
-
-  private connectResizeObserver() {
-    this.resizeObserver = new ResizeObserver(() => {
-      if (!this.needForRAF) {
-        return;
-      }
-      this.needForRAF = false; // No need to call RAF up until next frame
-
-      // Update the height in the best moment
-      requestAnimationFrame(() => {
-        this.needForRAF = true; // RAF now consumes the movement instruction so a new one can come
-
-        // Update the height of the horizontal content container, because the
-        // scrollableContainer has "position: absolute"
-        this.horizontalGridContent.style.height = `${this.scrollableContainer.scrollHeight}px`;
-      });
-    });
-
-    this.resizeObserver.observe(this.scrollableContainer);
   }
 
   private ensureSwiper(orientationDidChange = false): boolean {
@@ -642,25 +607,13 @@ export class GridHorizontal
     return { ...swiperOptions, ...this.options, ...mergedEventOptions };
   }
 
-  private getViewPortHeightIfColumnFill() {
-    let height = null;
-
-    if (this.autoGrow || this.fillMode === "row") {
-      return height;
-    }
-    //When 'column' it uses flex-direction: column layout which requires specified height on swiper-container.
-    height = this.element.parentElement.offsetHeight;
-  }
-
   render() {
-    const height = this.getViewPortHeightIfColumnFill();
     const hostData = GridBaseHelper.hostData(this);
 
     return (
       <Host
         {...hostData}
         style={{
-          height: height,
           "--rows":
             this.orientation === "portrait"
               ? this.rows.toString()
@@ -669,7 +622,10 @@ export class GridHorizontal
       >
         {[
           <div
-            class="gx-grid-horizontal-content swiper-container"
+            class={{
+              "gx-grid-horizontal-content swiper-container": true,
+              "gx-grid-horizontal--no-auto-grow": !this.autoGrow
+            }}
             ref={el => (this.horizontalGridContent = el as HTMLDivElement)}
           >
             <slot name="grid-content" />
@@ -684,9 +640,8 @@ export class GridHorizontal
             <div class="swiper-scrollbar" ref={el => (this.scrollbarEl = el)} />
           ),
           <slot name="grid-empty-loading-placeholder" />,
-          <div class="grid-empty-placeholder">
-            <slot name="grid-content-empty" />
-          </div>,
+
+          <slot name="grid-content-empty" />,
           <slot />
         ]}
       </Host>
