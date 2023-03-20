@@ -84,7 +84,7 @@ button {
 //                 Message
 // - - - - - - - - - - - - - - - - - - - -
 gx-navbar + gx-message {
-  top: $gx-navbar-main-height;
+  inset-block-start: $gx-navbar-main-height;
 }
 
 // - - - - - - - - - - - - - - - - - - - -
@@ -95,7 +95,7 @@ gx-navbar + gx-message {
 html.gx-disable-scroll {
   gx-navbar,
   gx-layout {
-    padding-right: 8px;
+    padding-right: 8px; // We use the physical property since the scroll does not change its position with RTL
   }
 }
 
@@ -108,4 +108,24 @@ html.gx-disable-scroll-mobile {
 gx-modal::-webkit-scrollbar {
   width: 0px;
   height: 0px;
+}
+
+// - - - - - - - - - - - - - - - - - - - -
+//                   RTL
+// - - - - - - - - - - - - - - - - - - - -
+html[dir="rtl"] {
+  // WA to improve RTL support in the gx-navbar back-button
+  gx-navbar::part(back-button) {
+    rotate: 180deg;
+  }
+
+  // WA to improve RTL support in the left aside when hidden
+  gx-layout::part(left) {
+    --gx-vertical-hidden-position-X: 100%;
+  }
+
+  // WA to improve RTL support in the right aside when hidden
+  gx-layout::part(right) {
+    --gx-vertical-hidden-position-X: -100%;
+  }
 }

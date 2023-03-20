@@ -10,7 +10,7 @@ $gx-navbar-main-background-color: var(--primary-color, #212121);
 // When the width of the screen is <= $gx-xsmall-breakpoint, the bottom navbar
 // is rendered in the DOM
 :host([position="bottom"]) {
-  bottom: 0;
+  inset-block-end: 0;
 
   // We display the links at the bottom navbar
   .gx-navbar-line {
@@ -95,11 +95,11 @@ $gx-navbar-main-background-color: var(--primary-color, #212121);
 // does not overlap the asides. If we do not do this, the burger button won't
 // be reached.
 :host(.left-target-visible) {
-  left: $gx-vertical-target-width;
+  inset-inline-start: $gx-vertical-target-width;
 }
 
 :host(.right-target-visible) {
-  right: $gx-vertical-target-width;
+  inset-inline-end: $gx-vertical-target-width;
 }
 
 @include visibility-shadow-DOM(block);
@@ -113,7 +113,7 @@ $gx-navbar-main-background-color: var(--primary-color, #212121);
   --gx-navbar-sub-separator-bottom: 1px solid rgb(195, 196, 200);
 
   position: sticky;
-  top: 0;
+  inset-block-start: 0;
   background-color: $gx-navbar-main-background-color;
   color: #fff;
   font-size: 14px;
@@ -194,8 +194,8 @@ $gx-navbar-main-background-color: var(--primary-color, #212121);
     &-line-2 {
       height: $gx-navbar-sub-height;
       color: var(--gx-navbar-sub-color);
-      border-top: var(--gx-navbar-sub-separator-top);
-      border-bottom: var(--gx-navbar-sub-separator-bottom);
+      border-block: var(--gx-navbar-sub-separator-top)
+        var(--gx-navbar-sub-separator-bottom);
       overflow: hidden;
 
       .gx-navbar-actions {
@@ -273,8 +273,8 @@ $gx-navbar-main-background-color: var(--primary-color, #212121);
         display: none;
         flex-direction: column;
         position: absolute;
-        top: calc(#{$gx-navbar-main-height} / 2 + 6px);
-        right: 0;
+        inset-block-start: calc(#{$gx-navbar-main-height} / 2 + 6px);
+        inset-inline-end: 0;
         width: 160px;
         font-weight: 400;
         font-size: 12px;

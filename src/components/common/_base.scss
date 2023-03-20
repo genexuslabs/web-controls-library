@@ -158,7 +158,7 @@
         height: $custom-option-size;
         border: 1px solid $option-border-color;
         border-radius: $option-border-radius;
-        margin-bottom: 0;
+        margin-block-end: 0;
         pointer-events: none;
         transition-property: background-color, border-color, box-shadow, filter;
         transition-duration: $transition-duration;
@@ -178,7 +178,7 @@
     }
 
     .label-of-the-option {
-      margin-bottom: 0;
+      margin-block-end: 0;
     }
   }
 }

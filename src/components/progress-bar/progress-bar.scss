@@ -57,10 +57,7 @@ gx-progress-bar {
     justify-content: center;
     align-items: center;
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    inset: 0;
     background-color: var(--gx-progress-bar-mask-background-color);
     opacity: 0; // Initial opacity when the animation starts
     z-index: $z-index-gx-progress-bar;
@@ -92,7 +89,7 @@ gx-progress-bar {
     // - - - - - - - - - - - - - - - -
     & > span + .gx-progress-bar-container--determinate,
     & > span + .gx-progress-lottie--determinate {
-      margin-top: 32px; // Space between progress-bar and captions
+      margin-block-start: 32px; // Space between progress-bar and captions
     }
 
     & > .gx-progress-bar-container--determinate > .gx-progress-bar {
@@ -107,7 +104,7 @@ gx-progress-bar {
       border-radius: $determinate-progress-border-radius;
       width: var(--width);
       height: 100%;
-      margin-bottom: 4px; // Separation between the values
+      margin-block-end: 4px; // Separation between the values
       overflow: hidden;
       transition-property: background-color, width;
       transition-duration: $transition-duration;
@@ -115,33 +112,28 @@ gx-progress-bar {
       // Properties to animate the determinate progress bar
       &::after {
         --gx-progress-bar-accent-color: inherit;
+        --gx-progress-bar-determinate-background: linear-gradient(
+          90deg,
+          transparent,
+          var(--gx-progress-bar-accent-color),
+          transparent
+        );
+
         content: "";
-        width: 100%;
+        width: 60%;
         height: 100%;
-        background-image: linear-gradient(
-            90deg,
-            transparent,
-            var(--gx-progress-bar-accent-color),
-            transparent
-          ),
-          linear-gradient(
-            90deg,
-            transparent,
-            var(--gx-progress-bar-accent-color),
-            transparent
-          ),
-          linear-gradient(
-            90deg,
-            transparent,
-            var(--gx-progress-bar-accent-color),
-            transparent
-          );
-        background-position: -200% 0%;
-        background-repeat: no-repeat;
-        background-size: 60%;
+        background: var(--gx-progress-bar-determinate-background),
+          var(--gx-progress-bar-determinate-background),
+          var(--gx-progress-bar-determinate-background);
+        transform: translateX(-120%);
         text-align: center;
         animation: determinate-progress-bar-load-effect 3s ease
           $two-times-transition-delay infinite;
+      }
+
+      html[dir="rtl"] &::after {
+        transform: translateX(120%);
+        animation-name: determinate-progress-bar-load-effect-rtl;
       }
     }
 
@@ -205,7 +197,13 @@ gx-progress-bar {
 
   @keyframes determinate-progress-bar-load-effect {
     to {
-      background-position: 300% 0%;
+      transform: translateX(180%);
+    }
+  }
+
+  @keyframes determinate-progress-bar-load-effect-rtl {
+    to {
+      transform: translateX(-180%);
     }
   }
 
@@ -237,7 +235,7 @@ gx-progress-bar {
     border-radius: $determinate-progress-border-radius;
     width: $determinate-progress-width;
     height: $determinate-progress-height;
-    margin-bottom: 1.25em;
+    margin-block-end: 1.25em;
   }
 
   &--indeterminate {

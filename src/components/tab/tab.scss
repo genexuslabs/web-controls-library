@@ -128,8 +128,8 @@
   display: table-cell;
   width: 100%;
   background-color: var(--tab-strip-background-color);
-  border-top: 1px solid transparent;
-  border-bottom: 1px solid var(--tab-strip-separator-color);
+  border-block-start: 1px solid transparent;
+  border-block-end: 1px solid var(--tab-strip-separator-color);
   transition-property: background-color, box-shadow, filter, opacity;
   transition-duration: $transition-duration;
 }
