@@ -9,8 +9,7 @@
   position: relative;
 
   // Tab strip separator
-  border-top: 1px solid #00000000; // transparent color
-  border-bottom: 1px solid #00000000; // transparent color
+  border-block: 1px solid #00000000; // transparent color
 
   // Default style
   min-height: 1em;
@@ -26,7 +25,7 @@
 
 // Tab strip separator
 :host(.unselected) {
-  border-bottom-color: var(--tab-strip-separator-color);
+  border-block-end-color: var(--tab-strip-separator-color);
 }
 
 // Hover style for unselected tab captions
@@ -83,9 +82,8 @@
 
 .indicator {
   position: absolute;
-  right: 0;
-  bottom: -1px;
-  left: 0;
+  inset-inline: 0;
+  inset-block-end: -1px;
   height: 3px;
   background-color: var(--tab-strip-indicator-color);
   transition: background-color $transition-duration;
