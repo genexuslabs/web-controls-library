@@ -15,7 +15,6 @@ export const config: Config = {
         "gx-image",
         "gx-layout",
         "gx-loading",
-        "gx-lottie",
         "gx-message",
         "gx-modal",
         "gx-navbar",
