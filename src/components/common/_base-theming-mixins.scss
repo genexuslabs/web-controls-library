@@ -101,9 +101,9 @@
     }
   }
 
-  // gx-button control
+  // gx-button and gx-anchor controls
   @if $control-type == button {
-    @at-root gx-button#{&}:focus-within {
+    @at-root :is(gx-button, .gx-link)#{&}:focus-within {
       @extend #{$class} !optional;
     }
   }
@@ -139,9 +139,9 @@
     }
   }
 
-  // gx-button control
+  // gx-button and gx-anchor controls
   @if $control-type == button {
-    @at-root gx-button#{&}:hover {
+    @at-root :is(gx-button, .gx-link)#{&}:hover {
       @extend #{$class} !optional;
     }
   }
@@ -281,9 +281,9 @@
     }
   }
 
-  // gx-button control
+  // gx-button and gx-anchor controls
   @if $control-type == button {
-    @at-root gx-button[data-has-action]#{&}#{$gx-highlighted-dot} {
+    @at-root :is(gx-button, .gx-link)[data-has-action]#{&}#{$gx-highlighted-dot} {
       @include extend-highlighted-class(
         $class,
         $background-color,

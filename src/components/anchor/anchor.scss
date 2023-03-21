@@ -1,0 +1,22 @@
+@import "../common/_base";
+@import "../common/common-styling-config";
+
+gx-anchor {
+  @include visibility(grid);
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+
+  & > .gx-link {
+    // Reset browser defaults
+    all: unset;
+    text-decoration: underline;
+
+    // Avoid zooming on double tap
+    touch-action: manipulation;
+
+    // Remove text selection on double click
+    user-select: none;
+
+    @include transition-properties();
+  }
+}
