@@ -203,7 +203,7 @@ function testAlignment(
         width: 194px;
         height: 97px;
         border: 1px solid;
-        margin-left: 3px;
+        margin-inline-start: 3px;
       }
 
       .cell {

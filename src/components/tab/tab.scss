@@ -54,7 +54,7 @@
   @include elevation();
 
   // Implement tabs position
-  grid-template-rows: minmax(auto, max-content);
+  grid-template-rows: min-content 1fr;
 
   flex: 1;
   width: 100%;
@@ -76,14 +76,11 @@
   order: var(--gx-tabs-position--order);
 
   height: var(--tab-strip-height);
-  overflow: hidden;
+  overflow-x: auto; // Fix for Mozilla, because it only accepts: visible, hidden, auto or scroll
+  overflow-x: overlay;
+
   white-space: nowrap;
   transition: box-shadow $transition-duration;
-
-  &:hover {
-    overflow-x: auto; // Fix for Mozilla, because it only accepts: visible, hidden, auto or scroll
-    overflow-x: overlay;
-  }
 
   // - - - - - - - - - - - - - - - -
   //     Scrollbar customization
@@ -131,8 +128,8 @@
   display: table-cell;
   width: 100%;
   background-color: var(--tab-strip-background-color);
-  border-top: 1px solid transparent;
-  border-bottom: 1px solid var(--tab-strip-separator-color);
+  border-block-start: 1px solid transparent;
+  border-block-end: 1px solid var(--tab-strip-separator-color);
   transition-property: background-color, box-shadow, filter, opacity;
   transition-duration: $transition-duration;
 }

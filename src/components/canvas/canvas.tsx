@@ -3,11 +3,12 @@ import {
   Element,
   Event,
   EventEmitter,
-  Prop,
-  h,
   Host,
+  Listen,
+  Prop,
   State,
-  Watch
+  Watch,
+  h
 } from "@stencil/core";
 import {
   Component as GxComponent,
@@ -16,7 +17,14 @@ import {
   VisibilityComponent,
   CustomizableComponent
 } from "../common/interfaces";
+
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
 import { Swipeable, makeSwipeable } from "../common/events/swipeable";
+
+import { DISABLED_CLASS } from "../../common/reserved-names";
 
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
@@ -46,6 +54,7 @@ export class Canvas
     ClickableComponent,
     CustomizableComponent,
     DisableableComponent,
+    HighlightableComponent,
     Swipeable,
     VisibilityComponent {
   constructor() {
@@ -65,6 +74,11 @@ export class Canvas
    * (for example, click event).
    */
   @Prop() readonly disabled: boolean = false;
+
+  /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -123,6 +137,19 @@ export class Canvas
    * Emitted when the element is swiped left direction.
    */
   @Event() swipeLeft: EventEmitter;
+
+  /**
+   * Stops event bubbling when the canvas is disabled
+   * @param event The UI Event
+   */
+  @Listen("click", {})
+  handleClick(event: UIEvent) {
+    if (this.disabled) {
+      event.stopPropagation();
+    }
+
+    // @todo: TODO Use a custom vdom event "gxClick"
+  }
 
   /**
    * Its value is not null when there is a `gx-canvas-cell` that has more
@@ -491,14 +518,6 @@ export class Canvas
     return maxCanvasCellHeight;
   }
 
-  private handleClick(event: UIEvent) {
-    if (this.disabled) {
-      return;
-    }
-
-    this.gxClick.emit(event);
-  }
-
   private disconnectCanvasObserver() {
     // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.watchForCanvasObserver) {
@@ -549,6 +568,7 @@ export class Canvas
   }
 
   componentDidLoad() {
+    makeHighlightable(this);
     makeSwipeable(this);
     this.didLoad = true;
 
@@ -578,8 +598,6 @@ export class Canvas
   }
 
   render() {
-    this.element.addEventListener("click", this.handleClick);
-
     // Styling for gx-canvas control.
     const classes = getClasses(this.cssClass);
 
@@ -588,7 +606,7 @@ export class Canvas
         class={{
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,
-          disabled: this.disabled
+          [DISABLED_CLASS]: this.disabled
         }}
         style={{
           width: this.width,

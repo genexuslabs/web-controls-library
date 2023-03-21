@@ -67,10 +67,7 @@ gx-edit {
     display: flex;
     justify-content: flex-end;
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    inset: 0;
     pointer-events: none;
 
     // Space reserved for trigger-button that support RTL

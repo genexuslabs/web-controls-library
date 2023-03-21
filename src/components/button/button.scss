@@ -46,9 +46,6 @@
   // Remove outline of the focus state
   outline: none;
 
-  // Reset inherited "pointer-events: none" from gx-canvas-cell
-  pointer-events: auto;
-
   // Avoid zooming on double tap
   touch-action: manipulation;
 

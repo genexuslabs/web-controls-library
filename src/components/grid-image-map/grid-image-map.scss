@@ -6,7 +6,6 @@ gx-grid-image-map {
   @include visibility(block);
   position: relative;
   width: 100%;
-  pointer-events: all;
 
   & > pinch-zoom > .gx-image-map-container {
     position: relative;
@@ -15,10 +14,7 @@ gx-grid-image-map {
 
     & > [slot="grid-content"] {
       position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
+      inset: 0;
     }
   }
 }
@@ -28,8 +24,8 @@ pinch-zoom {
   & > [slot="grid-content-empty"],
   & > [slot="grid-empty-loading-placeholder"] {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset-block-start: 0;
+    inset-inline-start: 0;
   }
 }
 
@@ -44,8 +40,8 @@ pinch-zoom {
 
   & > .tooltip-text {
     position: absolute;
-    right: 0;
-    bottom: 0;
+    inset-inline-end: 0;
+    inset-block-end: 0;
     max-width: min(256px, 32%);
     background-color: black;
     border-radius: 16px;

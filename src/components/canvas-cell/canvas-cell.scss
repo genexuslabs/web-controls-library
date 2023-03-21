@@ -3,4 +3,13 @@
 
   // Inherit from the parent element (.canvas-cells-container)
   overflow: var(--gx-overflow-style);
+
+  // Since the inner control may be smaller than the cell, and there may be
+  // some cells that overlap other controls, the cells should not "interrupt"
+  // any pointer event
+  pointer-events: none;
+}
+
+::slotted(*) {
+  pointer-events: auto;
 }
