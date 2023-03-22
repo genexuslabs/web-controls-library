@@ -5,16 +5,6 @@
 
 :host {
   /**
-   * @prop --elevation: The size of the shadow for the tab component
-   */
-  --elevation: 0;
-
-  /**
-   * @prop --tab-strip-elevation: The size of the shadow for the tab strip
-   */
-  --tab-strip-elevation: 0;
-
-  /**
    * @prop --tab-strip-indicator-color: Background color of the indicator. Used when a tab caption is selected
    */
   --tab-strip-indicator-color: transparent;
@@ -51,8 +41,6 @@
 
   --gx-tabs-position--order: 0;
 
-  @include elevation();
-
   // Implement tabs position
   grid-template-rows: min-content 1fr;
 
@@ -69,9 +57,6 @@
 }
 
 .gx-nav-tabs {
-  --elevation: var(--tab-strip-elevation);
-  @include elevation();
-
   // Implement tabs position
   order: var(--gx-tabs-position--order);
 
