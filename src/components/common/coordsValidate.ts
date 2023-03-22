@@ -1,4 +1,4 @@
-export function parseCoords(coord): string[] {
+export function parseCoords(coord: string): string[] {
   const regExp = /^(\-?\d+(?:\.\d+)?),\s*(\-?\d+(?:\.\d+)?)$/;
   const result = regExp.exec(coord);
   if (result !== null) {
@@ -8,7 +8,7 @@ export function parseCoords(coord): string[] {
   }
 }
 
-function tryParseGeoJson(coord) {
+function tryParseGeoJson(coord: string) {
   let geoObject;
 
   try {

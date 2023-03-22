@@ -1,4 +1,5 @@
 import { h } from "@stencil/core";
+import { EditType } from "../../common/types";
 import { DynamicFormElement } from "./dynamic-form-interfaces";
 
 // - - - - - - - - Dictionaries - - - - - - - -
@@ -64,11 +65,13 @@ function getElementValue(element: DynamicFormElement) {
     : "";
 }
 
-function getComponentType(type: string, display: string) {
+function getComponentType(type: string, display: string): string {
+  // @ts-expect-error:
   return componentTypeDictionary[`${type}-${display}`] || "GX-EDIT";
 }
 
-function getEditType(type: string) {
+function getEditType(type: string): EditType {
+  // @ts-expect-error:
   return typeDictionary[type];
 }
 
@@ -187,6 +190,7 @@ export function renderElement(
   const componentType = getComponentType(element.type, element.display);
 
   if (componentType !== "GX-DYNAMIC-FORM") {
+    // @ts-expect-error:
     return renderDictionary[componentType](element, options);
   }
 

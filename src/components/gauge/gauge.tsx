@@ -75,7 +75,7 @@ export class Gauge implements GxComponent {
    */
   @Prop() maxValue: number;
 
-  @State() rangesChildren = [];
+  @State() rangesChildren: any[] = []; // It has the following type: GaugeRange[]
 
   @State() labelsOverflow = false;
 
@@ -166,6 +166,7 @@ export class Gauge implements GxComponent {
   private SVGcircle: SVGCircleElement;
 
   @Listen("gxGaugeRangeDidLoad")
+  // @ts-expect-error It has type { detail: GaugeRange }, but to prevent any issue the error message is avoided
   onGaugeRangeDidLoad({ detail: childRange }) {
     this.rangesChildren = [...this.rangesChildren, childRange];
     this.totalAmount += childRange.amount;
@@ -373,7 +374,7 @@ export class Gauge implements GxComponent {
   }
 
   private addCircleRanges(
-    { amount, color },
+    { amount, color }: { amount: number; color: string },
     position: number,
     radius: number,
     childNumber: string // Identifies the number of child to animate it at the start
@@ -405,7 +406,7 @@ export class Gauge implements GxComponent {
   }
 
   private addLineRanges(
-    { amount, color },
+    { amount, color }: { amount: number; color: string },
     position: number,
     childNumber: string // Identifies the number of child to animate it at the start
   ): any {
@@ -424,7 +425,7 @@ export class Gauge implements GxComponent {
   }
 
   private addLineRangesLabels(
-    { amount, color, name },
+    { amount, color, name }: { amount: number; color: string; name: string },
     position: number,
     childNumber: string // Identifies the number of child to animate it at the start
   ): any {
@@ -445,9 +446,7 @@ export class Gauge implements GxComponent {
     );
   }
 
-  private renderCircle(
-    childRanges: Array<HTMLGxGaugeRangeElement>
-  ): HTMLElement {
+  private renderCircle(childRanges: HTMLGxGaugeRangeElement[]): HTMLElement {
     const FULL_CIRCLE_RADIO = 100 / 2;
     const svgRanges = [];
     const ONE_PERCENT_OF_CIRCLE_DREGREE = 3.6;
@@ -534,7 +533,7 @@ export class Gauge implements GxComponent {
     );
   }
 
-  private renderLine(childRanges) {
+  private renderLine(childRanges: HTMLGxGaugeRangeElement[]) {
     const divRanges = [];
     const divRangesLabel = [];
     this.totalAmount = 0;

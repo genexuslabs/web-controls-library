@@ -141,9 +141,9 @@ export class GridSmartCss
    */
   @Method()
   async complete() {
-    this.element
-      .querySelector(':scope > [slot="grid-content"] gx-grid-infinite-scroll"')
-      ["complete"]();
+    (this.element.querySelector(
+      ':scope > [slot="grid-content"] gx-grid-infinite-scroll"'
+    ) as HTMLGxGridInfiniteScrollElement)["complete"]();
   }
 
   private isHorizontal(): boolean {

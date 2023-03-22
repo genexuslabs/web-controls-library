@@ -5,7 +5,7 @@ import { CheckBox } from "../../../checkbox/checkbox";
 let autoCheckBoxId = 0;
 
 export class CheckBoxRender implements Renderer {
-  constructor(private component: CheckBox, handlers: { handleChange }) {
+  constructor(private component: CheckBox, handlers: { handleChange: any }) {
     this.handleChange = handlers.handleChange;
 
     // ID for gx-checkbox's Label

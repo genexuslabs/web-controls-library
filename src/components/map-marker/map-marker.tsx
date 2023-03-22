@@ -124,6 +124,7 @@ export class MapMarker implements GxComponent {
     return halfIconSizes;
   }
 
+  // @ts-expect-error @todo TODO: Improve typing
   private setupMarker(coords) {
     this.markerInstance = marker(coords, {
       icon: this.getDivIcon()

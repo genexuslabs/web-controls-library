@@ -19,7 +19,9 @@ import {
   polyline,
   tileLayer,
   circle
+  // @ts-expect-error @todo TODO: Fix this import
 } from "leaflet/dist/leaflet-src.esm";
+
 import { parseCoords } from "../common/coordsValidate";
 import { watchPosition } from "./geolocation";
 
@@ -41,9 +43,16 @@ export class Map implements GxComponent {
    * For example, `markersList = new Map<string, Marker>();`
    */
   // Map elements
+  // @ts-expect-error @todo TODO: Improve typing
   private markersList = [];
+
+  // @ts-expect-error @todo TODO: Improve typing
   private circleList = [];
+
+  // @ts-expect-error @todo TODO: Improve typing
   private polygonsList = [];
+
+  // @ts-expect-error @todo TODO: Improve typing
   private linesList = [];
 
   private mapProviderApplied: string;
@@ -261,10 +270,12 @@ export class Map implements GxComponent {
     });
   }
 
+  // @ts-expect-error @todo TODO: Improve typing
   private addMapListener(eventToListen, callbackFunction) {
     this.map.on(eventToListen, callbackFunction);
   }
 
+  // @ts-expect-error @todo TODO: Improve typing
   private removeMapListener(eventToListen, callbackFunction) {
     this.map.off(eventToListen, callbackFunction);
   }
@@ -390,6 +401,7 @@ export class Map implements GxComponent {
     }
   }
 
+  // @ts-expect-error @todo TODO: Improve typing
   private selectingTypes(mapType) {
     const tileLayerToApply = tileLayer(mapType, {
       maxZoom: this.maxZoom
@@ -429,6 +441,7 @@ export class Map implements GxComponent {
     }
   }
 
+  // @ts-expect-error @todo TODO: Improve typing
   private setUserLocation({ coords }) {
     this.userLocationCoords = `${coords.latitude}, ${coords.longitude}`;
   }
@@ -476,12 +489,14 @@ export class Map implements GxComponent {
       this.registerSelectionLayerEvents();
     }
 
+    // @ts-expect-error @todo TODO: Improve typing
     this.addMapListener("popupopen", function(e) {
       const px = this.project(e.target._popup._latlng);
       px.y -= e.target._popup._container.clientHeight / 2;
       this.panTo(this.unproject(px), { animate: true });
     });
 
+    // @ts-expect-error @todo TODO: Improve typing
     this.addMapListener("click", ev => {
       this.mapClick.emit(ev.latlng);
     });

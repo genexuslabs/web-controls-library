@@ -17,9 +17,9 @@ export class EditRender implements Renderer {
   constructor(
     private component: Edit,
     handlers: {
-      handleChange;
-      handleTriggerClick;
-      handleValueChanging;
+      handleChange: (event: UIEvent) => void;
+      handleTriggerClick: (event: UIEvent) => void;
+      handleValueChanging: (event: UIEvent) => void;
     }
   ) {
     this.handleChange = handlers.handleChange;
@@ -48,7 +48,7 @@ export class EditRender implements Renderer {
     event.stopPropagation();
   }
 
-  getReadonlyContent(component, initialContent) {
+  getReadonlyContent(component: Edit, initialContent: string) {
     let content = initialContent;
     if (
       content &&
@@ -86,7 +86,12 @@ export class EditRender implements Renderer {
     }
   }
 
-  render(slots) {
+  render(slots: {
+    cssClass: string;
+    shouldStyleHostElement: boolean;
+    vars: string;
+    triggerContent: HTMLElement;
+  }) {
     const edit = this.component;
 
     const dateTypes = ["datetime-local", "date", "time"];

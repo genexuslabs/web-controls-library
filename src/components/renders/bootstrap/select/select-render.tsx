@@ -20,7 +20,7 @@ export class SelectRender implements Renderer {
   protected element: HTMLElement;
   private selectId: string;
 
-  updateOptions(options) {
+  updateOptions(options: any[]) {
     this.options = options;
   }
 
@@ -47,7 +47,8 @@ export class SelectRender implements Renderer {
     this.component.input.emit(event);
   }
 
-  render(anOptionHasBeenSelected) {
+  // @ts-expect-error This error will no longer apply when the select is refactored
+  render(anOptionHasBeenSelected: boolean) {
     // Styling for gx-select control.
     const classes = getClasses(this.component.cssClass);
 

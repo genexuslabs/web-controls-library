@@ -67,7 +67,7 @@ function setupEvent(
       startEvent.target as HTMLElement
     );
 
-    const mouseUpHandler = endEvent => {
+    const mouseUpHandler = (endEvent: Event) => {
       fireCustomEvent(
         END_LONG_PRESS_EVENT_NAME,
         endEvent.target as HTMLElement

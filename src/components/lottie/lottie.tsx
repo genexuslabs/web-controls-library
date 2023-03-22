@@ -152,7 +152,7 @@ export class Lottie
     this.animation.stop();
   }
 
-  private durationToFrames(duration) {
+  private durationToFrames(duration: number) {
     return Math.trunc(this.animationTotalFrames * duration);
   }
 

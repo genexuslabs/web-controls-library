@@ -87,7 +87,7 @@ export class CardHeader implements GxComponent, CustomizableComponent {
    * @param actionsSelector A selector for card action elements.
    * @returns `true` if the card has at least one action in the selector `actionsSelector`.
    */
-  private checkIfTheCardHasActions(actionsSelector): boolean {
+  private checkIfTheCardHasActions(actionsSelector: string): boolean {
     return this.element.querySelectorAll(actionsSelector).length > 0;
   }
 

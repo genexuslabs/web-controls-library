@@ -143,7 +143,7 @@ export class GridImageMap
   @Event() longPress: EventEmitter<any>;
 
   @Listen("wheel", { capture: true })
-  handleWheel(ev) {
+  handleWheel(ev: WheelEvent) {
     this.gxZoom.emit(ev);
 
     if (this.shouldShowTooltip) {
@@ -193,8 +193,9 @@ export class GridImageMap
     this.imageDidLoad = true;
   }
 
-  private onResize(entries) {
-    const component = entries[0].target;
+  private onResize(entries: ResizeObserverEntry[]) {
+    const component = entries[0].target as HTMLGxGridImageMapElement;
+
     component.style.setProperty(
       "--image-map-width",
       component.offsetWidth.toString()

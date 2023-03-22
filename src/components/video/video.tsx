@@ -32,7 +32,7 @@ export class Video implements GxComponent, DisableableComponent {
     @Prop() lazyLoad = true;
   */
 
-  private parseYoutubeSrc(src) {
+  private parseYoutubeSrc(src: string) {
     const domainIdArray = src.split("watch?v=");
     return `${domainIdArray[0]}embed/${domainIdArray[1]}`;
   }

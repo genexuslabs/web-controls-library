@@ -96,7 +96,7 @@ export class Select implements FormComponent {
     );
   }
 
-  private updateOptions(options) {
+  private updateOptions(options: any[]) {
     this.options = options;
     this.renderer.updateOptions(options);
   }
