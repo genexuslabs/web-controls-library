@@ -9,9 +9,6 @@
 }
 
 :host {
-  --elevation: 0;
-  @include elevation();
-
   flex: 1;
   align-self: stretch;
   text-align: start; // Default alignment which supports RTL

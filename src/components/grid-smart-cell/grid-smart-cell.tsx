@@ -110,7 +110,6 @@ export class GridSmartCell
         class={{
           "gx-grid-row": true,
           [classes.transformedCssClass]: !!this.cssClass,
-          [classes.vars]: true,
           [horizontalLineClasses]: this.showHorizontalLine
         }}
         data-has-action={this.highlightable ? "" : undefined}

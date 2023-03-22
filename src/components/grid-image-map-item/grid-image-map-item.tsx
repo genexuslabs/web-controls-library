@@ -15,9 +15,6 @@ import {
   makeHighlightable
 } from "../common/highlightable";
 
-// Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
-
 @Component({
   tag: "gx-grid-image-map-item",
   styleUrl: "grid-image-map-item.scss",
@@ -103,15 +100,13 @@ export class GridImageMapItem implements GxComponent, HighlightableComponent {
   }
 
   render() {
-    const classes = getClasses(this.cssClass);
     this.element.addEventListener("click", this.handleClick);
 
     return (
       <Host
         class={{
           "no-display": this.display === false,
-          [this.cssClass]: !!this.cssClass,
-          [classes.vars]: true
+          [this.cssClass]: !!this.cssClass
         }}
         style={{
           top: `calc(${this.top}px * (var(--image-map-height) / var(--image-map-image-height)))`,

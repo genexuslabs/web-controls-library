@@ -48,6 +48,24 @@
   }
 }
 
+/// Helper mixin to ease styling elevation shadow of the custom elements
+/// @param {string} $elevation Specifies the size of the elevation shadow
+@mixin elevation($elevation: 0, $shadow-position: bottom) {
+  @if $shadow-position == bottom {
+    box-shadow: 0
+      ($elevation * 0.125rem)
+      ($elevation * 0.25rem)
+      rgba(0, 0, 0, $elevation * 0.075);
+  }
+
+  @if $shadow-position == top {
+    box-shadow: 0
+      ($elevation * -0.125rem)
+      ($elevation * 0.25rem)
+      rgba(0, 0, 0, $elevation * 0.075);
+  }
+}
+
 /// Helper mixin to be use within the "highlighted" mixin
 /// @param {string} $class Base class of the highlight properties
 /// @param {string} $background-color Specifies the background color for the highlight class

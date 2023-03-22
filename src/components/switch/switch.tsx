@@ -10,9 +10,6 @@ import {
 } from "@stencil/core";
 import { FormComponent } from "../common/interfaces";
 
-// Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
-
 let autoSwitchId = 0;
 
 @Component({
@@ -110,9 +107,6 @@ export class Switch implements FormComponent {
   }
 
   render() {
-    // Styling for gx-switch control.
-    const classes = getClasses(this.cssClass);
-
     const checked = this.value === this.checkedValue;
 
     const inputAttrs = {
@@ -132,7 +126,6 @@ export class Switch implements FormComponent {
       <Host
         class={{
           [this.cssClass]: !!this.cssClass,
-          [classes.vars]: true,
           disabled: this.disabled
         }}
         // Horizontal and vertical alignment support

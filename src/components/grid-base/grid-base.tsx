@@ -5,9 +5,6 @@ import {
 
 import { EventEmitter } from "@stencil/core";
 
-// Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
-
 export interface GridBase {
   element: HTMLElement;
 
@@ -71,15 +68,11 @@ export class GridBaseHelper {
   }
 
   static hostData(cmp: GridBase) {
-    // Styling for gx-grid control.
-    const classes = getClasses(cmp.cssClass);
-
     return {
       role: "grid",
       class: {
         "gx-grid-base": true,
         [cmp.cssClass]: !!cmp.cssClass,
-        [classes.vars]: true,
         "gx-grid-inverse-loading": !!cmp.inverseLoading,
         "gx-grid-empty": this.isEmptyGrid(cmp),
         "gx-grid-initial-load": this.isInitialLoad(cmp),

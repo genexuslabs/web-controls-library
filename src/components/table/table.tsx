@@ -22,9 +22,6 @@ import { Swipeable, makeSwipeable } from "../common/events/swipeable";
 
 import { DISABLED_CLASS } from "../../common/reserved-names";
 
-// Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
-
 @Component({
   shadow: true,
   styleUrl: "table.scss",
@@ -145,14 +142,10 @@ export class Table
   }
 
   render() {
-    // Styling for gx-table control.
-    const classes = getClasses(this.cssClass);
-
     return (
       <Host
         class={{
           [this.cssClass]: !!this.cssClass,
-          [classes.vars]: true,
           [DISABLED_CLASS]: this.disabled,
 
           // Overflow Behavior

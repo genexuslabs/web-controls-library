@@ -20,8 +20,6 @@ import { FormComponent } from "../common/interfaces";
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
 import { makeLinesClampable } from "../common/line-clamp";
 
-// Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
 import { EditType } from "../../common/types";
 
 const AUTOFILL_START_ANIMATION_NAME = "AutoFillStart";
@@ -287,12 +285,6 @@ export class Edit implements FormComponent, HighlightableComponent {
   }
 
   render() {
-    /*  Styling for gx-edit control. 
-        If the gx-edit is (readonly || format == "HTML"), we do not add 
-        highlighted classes
-    */
-    const classes = getClasses(this.cssClass);
-
     return (
       <Host
         class={{
@@ -300,8 +292,7 @@ export class Edit implements FormComponent, HighlightableComponent {
           "gx-edit--single-line":
             this.type === "date" || this.type === "datetime-local",
           [this.disabledClass]: this.disabled,
-          [this.cssClass]: this.shouldStyleHostElement && !!this.cssClass,
-          [classes.vars]: this.shouldStyleHostElement
+          [this.cssClass]: this.shouldStyleHostElement && !!this.cssClass
         }}
         // Mouse pointer to indicate action
         data-has-action={this.highlightable && !this.disabled ? "" : undefined}
@@ -318,8 +309,7 @@ export class Edit implements FormComponent, HighlightableComponent {
         {this.renderer.render({
           triggerContent: <slot name="trigger-content" />,
           shouldStyleHostElement: this.shouldStyleHostElement,
-          cssClass: this.cssClass,
-          vars: classes.vars
+          cssClass: this.cssClass
         })}
       </Host>
     );

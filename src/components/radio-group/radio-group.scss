@@ -2,7 +2,6 @@
 @import "../common/common-styling-config";
 
 gx-radio-group {
-  @include elevation();
   @include visibility(flex);
   flex: 1;
   @include transition-properties();

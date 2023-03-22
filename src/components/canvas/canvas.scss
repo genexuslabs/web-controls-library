@@ -12,7 +12,6 @@
    */
   --gx-overflow-style: #{$default-overflow-style};
 
-  @include elevation();
   position: relative;
   height: fit-content;
   overflow: var(--gx-overflow-style);

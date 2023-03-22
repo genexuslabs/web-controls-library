@@ -7,10 +7,7 @@ import {
 import { Component as GxComponent } from "../common/interfaces";
 
 // Class transforms
-import {
-  getClasses,
-  tGroupCaption
-} from "../common/css-transforms/css-transforms";
+import { tGroupCaption } from "../common/css-transforms/css-transforms";
 
 @Component({
   shadow: false,
@@ -50,15 +47,12 @@ export class Group implements GxComponent, HighlightableComponent {
   }
 
   render() {
-    // Styling for gx-group control.
-    const classes = getClasses(this.cssClass);
     const captionClass = !!this.cssClass ? tGroupCaption(this.cssClass) : "";
 
     return (
       <fieldset
         class={{
-          [this.cssClass]: !!this.cssClass,
-          [classes.vars]: true
+          [this.cssClass]: !!this.cssClass
         }}
         data-has-action={this.highlightable ? "" : undefined}
         ref={el => (this.fieldsetElement = el as HTMLFieldSetElement)}

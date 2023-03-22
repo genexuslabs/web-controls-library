@@ -13,9 +13,6 @@ import {
 import { Component as GxComponent } from "../common/interfaces";
 import { TimerState } from "./chronometer-timer-state";
 
-// Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
-
 @Component({
   shadow: true,
   styleUrl: "chronometer.scss",
@@ -214,11 +211,8 @@ export class Chronometer implements GxComponent {
     const maxVal = this.maxValue * this.getUnit();
     const maxValueReached = this.elapsedTime > maxVal && maxVal !== 0;
 
-    // Styling for gx-chronometer control.
-    const classes = getClasses(this.cssClass);
-
     return (
-      <Host class={{ [this.cssClass]: !!this.cssClass, [classes.vars]: true }}>
+      <Host class={{ [this.cssClass]: !!this.cssClass }}>
         <span>{maxValueReached ? this.maxValueText : time}</span>
       </Host>
     );

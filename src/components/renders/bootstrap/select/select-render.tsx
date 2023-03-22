@@ -2,9 +2,6 @@ import { h } from "@stencil/core";
 import { Renderer } from "../../../common/interfaces";
 import { Select } from "../../../select/select";
 
-// Class transforms
-import { getClasses } from "../../../common/css-transforms/css-transforms";
-
 let autoSelectId = 0;
 
 export class SelectRender implements Renderer {
@@ -49,16 +46,12 @@ export class SelectRender implements Renderer {
 
   // @ts-expect-error This error will no longer apply when the select is refactored
   render(anOptionHasBeenSelected: boolean) {
-    // Styling for gx-select control.
-    const classes = getClasses(this.component.cssClass);
-
     if (this.component.readonly) {
       return (
         <div
           class={{
             "gx-select-control": true,
             [this.component.cssClass]: !!this.component.cssClass,
-            [classes.vars]: true,
             disabled: this.component.disabled
           }}
         >
@@ -73,7 +66,6 @@ export class SelectRender implements Renderer {
         class: {
           "gx-select-control": true,
           [this.component.cssClass]: !!this.component.cssClass,
-          [classes.vars]: true,
           disabled: this.component.disabled
         },
         disabled: this.component.disabled,

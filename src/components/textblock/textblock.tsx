@@ -18,9 +18,6 @@ import {
 } from "../common/highlightable";
 import { LineClampComponent, makeLinesClampable } from "../common/line-clamp";
 
-// Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
-
 @Component({
   shadow: true,
   styleUrl: "textblock.scss",
@@ -118,9 +115,6 @@ export class TextBlock
   }
 
   render() {
-    // Styling for gx-textblock control.
-    const classes = getClasses(this.cssClass);
-
     const body = (
       <div class="gx-textblock-container" part="valign">
         {this.lineClamp && <div class="line-measuring">{"A"}</div>}
@@ -155,7 +149,6 @@ export class TextBlock
       <Host
         class={{
           [this.cssClass]: !!this.cssClass,
-          [classes.vars]: true,
           disabled: this.disabled
         }}
         data-has-action={this.highlightable ? "" : undefined}

@@ -10,9 +10,6 @@ import {
 } from "@stencil/core";
 import { FormComponent } from "../common/interfaces";
 
-// Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
-
 let autoRatingId = 0;
 
 @Component({
@@ -97,14 +94,10 @@ export class Rating implements FormComponent {
       calculatedMaxValue // At most this.maxValue
     );
 
-    // Styling for gx-rating control.
-    const classes = getClasses(this.cssClass);
-
     return (
       <Host
         class={{
           [this.cssClass]: !!this.cssClass,
-          [classes.vars]: true,
           disabled: this.disabled
         }}
         data-score={this.value !== 0 ? this.value : undefined}

@@ -105,8 +105,6 @@ $gx-navbar-main-background-color: var(--primary-color, #212121);
 @include visibility-shadow-DOM(block);
 
 :host {
-  @include elevation();
-
   // Unused properties?
   --gx-navbar-sub-color: black;
   --gx-navbar-sub-separator-top: none;

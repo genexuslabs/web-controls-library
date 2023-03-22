@@ -26,9 +26,6 @@ import { Swipeable, makeSwipeable } from "../common/events/swipeable";
 
 import { DISABLED_CLASS } from "../../common/reserved-names";
 
-// Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
-
 const CANVAS_THRESHOLD = 1.75;
 
 /* - - - - - - - - SELECTORS - - - - - - - - */
@@ -598,14 +595,10 @@ export class Canvas
   }
 
   render() {
-    // Styling for gx-canvas control.
-    const classes = getClasses(this.cssClass);
-
     return (
       <Host
         class={{
           [this.cssClass]: !!this.cssClass,
-          [classes.vars]: true,
           [DISABLED_CLASS]: this.disabled
         }}
         style={{

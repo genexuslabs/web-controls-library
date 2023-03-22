@@ -3,7 +3,6 @@
 
 gx-edit {
   @include visibility(flex);
-  @include elevation();
   @include line-clamp();
 
   &[multiline][readonly="false"] {

@@ -11,8 +11,6 @@ import {
 import { Component as GxComponent, LayoutSize } from "../common/interfaces";
 import { watchForItems } from "../common/watch-items";
 
-// Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
 import {
   attachHorizontalScrollWithDragHandler,
   attachHorizontalScrollWithWheelHandler
@@ -229,7 +227,6 @@ export class NavBar implements GxComponent {
       isHeaderRowPatternEnabled && this.showHeaderRowPatternClass
         ? this.headerRowPatternCssClass
         : this.cssClass;
-    const classes = getClasses(currentClass);
 
     let amountOfActionTypes = 0;
 
@@ -259,7 +256,6 @@ export class NavBar implements GxComponent {
       <Host
         class={{
           [currentClass]: !!currentClass,
-          [classes.vars]: true,
           "gx-navbar-actions-active": this.showLowActions,
           "gx-navbar-header-row-pattern": isHeaderRowPatternEnabled,
 

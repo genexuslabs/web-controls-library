@@ -12,9 +12,6 @@ import {
 } from "@stencil/core";
 import { FormComponent } from "../common/interfaces";
 
-// Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
-
 @Component({
   shadow: false,
   styleUrl: "checkbox.scss",
@@ -129,14 +126,10 @@ export class CheckBox implements FormComponent {
   }
 
   render() {
-    // Styling for gx-checkbox control.
-    const classes = getClasses(this.cssClass);
-
     return (
       <Host
         class={{
           [this.cssClass]: !!this.cssClass,
-          [classes.vars]: true,
           disabled: this.disabled
         }}
         // Mouse pointer to indicate action

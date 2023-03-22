@@ -15,9 +15,6 @@ import {
   VisibilityComponent
 } from "../common/interfaces";
 
-// Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
-
 @Component({
   shadow: false,
   styleUrl: "radio-group.scss",
@@ -191,14 +188,10 @@ export class RadioGroup
   }
 
   render() {
-    // Styling for gx-radio-group control.
-    const classes = getClasses(this.cssClass);
-
     return (
       <Host
         class={{
-          [this.cssClass]: !!this.cssClass,
-          [classes.vars]: true
+          [this.cssClass]: !!this.cssClass
         }}
         role="radiogroup"
       >

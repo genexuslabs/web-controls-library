@@ -22,9 +22,6 @@ import {
   makeLongPressable
 } from "../common/events/long-press";
 
-// Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
-
 @Component({
   tag: "gx-grid-image-map",
   styleUrl: "grid-image-map.scss",
@@ -262,15 +259,6 @@ export class GridImageMap
         ];
 
     const hostData = GridBaseHelper.hostData(this);
-    const classes = getClasses(this.cssClass);
-
-    // Add extra styles if the cssClass is set
-    if (!!this.cssClass) {
-      hostData.class = {
-        ...hostData.class,
-        ...{ [this.cssClass]: true, [classes.vars]: true }
-      };
-    }
 
     return <Host {...hostData}>{body}</Host>;
   }

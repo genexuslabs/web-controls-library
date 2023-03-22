@@ -16,13 +16,10 @@
    */
   --gx-button-image-margin: 0px;
 
-  --elevation: 0;
-
   // Default width and height (flex: 1 and align-self: stretch)
   --width: 1;
   --height: stretch;
 
-  @include elevation();
   place-items: center;
   align-content: center;
   justify-content: center;

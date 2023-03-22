@@ -89,7 +89,6 @@ export class EditRender implements Renderer {
   render(slots: {
     cssClass: string;
     shouldStyleHostElement: boolean;
-    vars: string;
     triggerContent: HTMLElement;
   }) {
     const edit = this.component;
@@ -147,8 +146,7 @@ export class EditRender implements Renderer {
             <textarea
               class={{
                 [slots.cssClass]:
-                  !slots.shouldStyleHostElement && !!this.component.cssClass,
-                [slots.vars]: !slots.shouldStyleHostElement
+                  !slots.shouldStyleHostElement && !!this.component.cssClass
               }}
               {...attris}
               data-part="field"
