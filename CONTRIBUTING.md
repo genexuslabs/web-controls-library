@@ -137,7 +137,6 @@ They refer to the following set of [products](https://www.genexus.com/en/product
 - GeneXus Server, a tool for team collaboration.
 - GeneXus BPM for process modeling, automation, management, and optimization.
 - GeneXus Query for reporting and data analysis.
-- GXportal for creating websites.
 
 ### Resources
 
@@ -154,3 +153,4 @@ They refer to the following set of [products](https://www.genexus.com/en/product
 The following well-defined branches can be found within a repository:
 
 - `master`: stable development version (its functionality and integration with GeneXus has been tested).
+- All other branches are known as 'feature branches.' That is to say, branches where specific developments (features or fixes) are being made; they are deleted after they are merged into a 'master' branch.
