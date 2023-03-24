@@ -1,0 +1,21 @@
+:host {
+  display: block;
+  --color: 'transparent';
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+
+:host(.hide-keep) {
+  opacity: 0;
+}
+:host(.hide-collapse) {
+  display: none;
+}
+
+#canvas{
+  border: 2px solid black;
+}
+
