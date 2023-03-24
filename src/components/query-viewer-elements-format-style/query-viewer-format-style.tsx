@@ -5,36 +5,37 @@ import { Component, Event, EventEmitter, Prop } from "@stencil/core";
   shadow: false
 })
 export class QueryViewerFormatStyle {
+  // eslint-disable-next-line @stencil-community/required-jsdoc
   @Event() elementChanged: EventEmitter;
 
   /**
    * Type of the element Conditional or Format
    */
-  @Prop() type: "Values" | "Conditional";
+  @Prop() readonly type: "Values" | "Conditional";
   /**
    * If Conditional Value to format
    */
-  @Prop() value: string;
+  @Prop() readonly value: string;
   /**
    * If Conditional true for applying to row or column
    */
-  @Prop() applyToRowOrColumn: boolean;
+  @Prop() readonly applyToRowOrColumn: boolean;
   /**
    * Style or Css class
    */
-  @Prop() styleOrClass: string;
+  @Prop() readonly styleOrClass: string;
   /**
    * If Format the operator of the element
    */
-  @Prop() operator: "EQ" | "LT" | "GT" | "LE" | "GE" | "NE" | "IN";
+  @Prop() readonly operator: "EQ" | "LT" | "GT" | "LE" | "GE" | "NE" | "IN";
   /**
    * If format first value
    */
-  @Prop() value1: string;
+  @Prop() readonly value1: string;
   /**
    * If format second value
    */
-  @Prop() value2: string;
+  @Prop() readonly value2: string;
 
   componentDidUpdate() {
     this.elementChanged.emit();

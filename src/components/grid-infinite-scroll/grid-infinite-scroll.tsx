@@ -367,7 +367,6 @@ export class GridInfiniteScroll implements ComponentInterface {
   }
 
   private connectResizeObserver() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.resizeObserver) {
       return;
     }
@@ -500,7 +499,6 @@ export class GridInfiniteScroll implements ComponentInterface {
   };
 
   private disconnectResizeObserver() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
       this.resizeObserver = null;
@@ -579,9 +577,8 @@ export class GridInfiniteScroll implements ComponentInterface {
   }
 
   componentDidLoad() {
-    this.scrollableParentElement = this.getScrollableParentToAttachInfiniteScroll(
-      this.el
-    );
+    this.scrollableParentElement =
+      this.getScrollableParentToAttachInfiniteScroll(this.el);
 
     // Store the gx-layout reference since is necessary to compute the
     // intersection calculates when the infinite scroll is attached on the

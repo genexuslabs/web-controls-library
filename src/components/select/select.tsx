@@ -64,12 +64,12 @@ export class Select implements FormComponent {
   /**
    * Render a text input showing a list of suggested elements.
    */
-  @Prop() suggest: boolean;
+  @Prop() readonly suggest: boolean;
 
   /**
    * Text that appears in the form control when it has no value set
    */
-  @Prop() placeholder: string;
+  @Prop() readonly placeholder: string;
 
   /**
    * The initial value of the control. Setting the value automatically selects

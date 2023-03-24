@@ -41,7 +41,8 @@ let autoTabId = 0;
   tag: "gx-tab-caption"
 })
 export class TabCaption
-  implements GxComponent, DisableableComponent, HighlightableComponent {
+  implements GxComponent, DisableableComponent, HighlightableComponent
+{
   private hasDisabledImage = false;
   private hasMainImage = false;
 
@@ -61,7 +62,7 @@ export class TabCaption
   /**
    * This attribute lets you specify if the tab page is disabled.
    */
-  @Prop() disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * This attribute lets you specify the relative location of the image to the text.
@@ -84,7 +85,7 @@ export class TabCaption
   /**
    * This attribute lets you specify if the tab page corresponding to this caption is selected
    */
-  @Prop() selected = false;
+  @Prop({ mutable: true }) selected = false;
 
   /**
    * A CSS class to set as the `gx-tab-caption` element class when
@@ -100,7 +101,7 @@ export class TabCaption
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() highlightable = true;
+  @Prop() readonly highlightable: boolean = true;
 
   @Watch("selected")
   selectedHandler() {
@@ -184,15 +185,19 @@ export class TabCaption
           href="#"
           onClick={this.clickHandler}
         >
-          {// Main image
-          this.hasMainImage && (this.selected || !this.hasDisabledImage) && (
-            <slot name="main-image" />
-          )}
+          {
+            // Main image
+            this.hasMainImage && (this.selected || !this.hasDisabledImage) && (
+              <slot name="main-image" />
+            )
+          }
 
-          {// Disabled image
-          this.hasDisabledImage && !this.selected && (
-            <slot name="disabled-image" />
-          )}
+          {
+            // Disabled image
+            this.hasDisabledImage && !this.selected && (
+              <slot name="disabled-image" />
+            )
+          }
 
           <span class="caption" part="caption">
             <slot />

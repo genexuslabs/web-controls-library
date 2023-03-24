@@ -337,12 +337,12 @@ export class DynamicForm implements GxComponent {
   }
 
   private decodeOperator(operator: number) {
-    // @ts-expect-error:
+    // @ts-expect-error: Improve typing
     return arithmeticalDictionary[operator];
   }
 
   private decodeLogical(condition: number) {
-    // @ts-expect-error:
+    // @ts-expect-error: Improve typing
     return logicalDictionary[condition];
   }
 

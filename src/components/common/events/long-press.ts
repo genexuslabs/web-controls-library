@@ -35,7 +35,7 @@ export function makeLongPressable(
         event.stopPropagation();
 
         // Emit longPress event
-        timer = setTimeout(function() {
+        timer = setTimeout(function () {
           component.longPress.emit(event);
         }, LONG_PRESS_DELAY);
       }

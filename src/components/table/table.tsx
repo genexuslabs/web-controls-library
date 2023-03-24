@@ -37,7 +37,8 @@ export class Table
     CustomizableComponent,
     VisibilityComponent,
     HighlightableComponent,
-    Swipeable {
+    Swipeable
+{
   @Element() element: HTMLGxTableElement;
 
   /**

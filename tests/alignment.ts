@@ -89,13 +89,13 @@ function testAlignment(
 ) {
   const autoGrowName = options.autoGrow ? "True" : "False";
 
-  // @ts-expect-error
+  // @ts-expect-error Improve typing
   const hAlignsMap = HORIZONTAL_ALIGNS_MAP[options.align];
-  // @ts-expect-error
+  // @ts-expect-error Improve typing
   const vAlignsMap = VERTICAL_ALIGNS_MAP[options.valign];
-  // @ts-expect-error
+  // @ts-expect-error Improve typing
   const hAlignsWithNumberMap = HORIZONTAL_ALIGNS_WITH_NUMBER_MAP[options.align];
-  // @ts-expect-error
+  // @ts-expect-error Improve typing
   const vAlignsWithNumberMap = VERTICAL_ALIGNS_WITH_NUMBER_MAP[options.valign];
 
   const testUniqueName = `should align correctly in ${
@@ -251,13 +251,13 @@ function testAlignment(
       </gx-table-cell>
       <gx-table-cell area="cell50" align="center" valign="middle">
         ${
-          // @ts-expect-error
+          // @ts-expect-error Improve typing
           HORIZONTAL_ALIGNS_MAP[options.align]
         }
       </gx-table-cell>
       <gx-table-cell area="cell51" align="center" valign="middle">
         ${
-          // @ts-expect-error
+          // @ts-expect-error Improve typing
           VERTICAL_ALIGNS_MAP[options.valign]
         }
       </gx-table-cell>
