@@ -20,7 +20,7 @@
     "build:dev": "stencil build --dev && npm run scss-bundle",
     "postbuild": "npm run scss-bundle && npm run pretty-quick",
     "docs": "stencil build --dev --docs",
-    "eslint": "eslint . --ext .tsx,.ts,.jsx,.js",
+    "eslint": "eslint src/**/*{.ts,.tsx} --fix",
     "lint": "npm run eslint",
     "pretty-quick": "pretty-quick",
     "scss-bundle": "scss-bundle -e ./src/components/_components-theming-mixins.scss -o dist/theming/theming-mixins.scss",
