@@ -12,17 +12,21 @@ export function debounce(
   wait: number,
   immediate = false
 ): () => void {
-  let timeout;
-  return function(...args) {
-    const later = function() {
+  let timeout: NodeJS.Timeout;
+
+  return function (...args) {
+    const later = function () {
       timeout = null;
       if (!immediate) {
         func.apply(this, args);
       }
     }.bind(this);
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
     const callNow = immediate && !timeout;
+
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
+
     if (callNow) {
       func.apply(this, args);
     }
@@ -180,7 +184,7 @@ export function attachHorizontalScrollWithDragHandler(
 
   /** Relative to the left edge of the entire document */
   let initialXPosition: number;
-  let initialScrollLeftPosition;
+  let initialScrollLeftPosition: number;
 
   scrollableContainer.addEventListener("mousedown", (event: MouseEvent) => {
     // Reset variable as in some scenarios it might be true
@@ -223,7 +227,7 @@ export function attachHorizontalScrollWithDragHandler(
    */
   scrollableContainer.addEventListener(
     "click",
-    event => {
+    (event) => {
       if (!scrollableContainerHasBeenDragged) {
         return;
       }
@@ -265,4 +269,4 @@ export function attachHorizontalScrollWithWheelHandler(
   });
 }
 
-export const delay = ms => new Promise(res => setTimeout(res, ms));
+export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));

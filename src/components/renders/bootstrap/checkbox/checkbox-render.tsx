@@ -5,7 +5,7 @@ import { CheckBox } from "../../../checkbox/checkbox";
 let autoCheckBoxId = 0;
 
 export class CheckBoxRender implements Renderer {
-  constructor(private component: CheckBox, handlers: { handleChange }) {
+  constructor(private component: CheckBox, handlers: { handleChange: any }) {
     this.handleChange = handlers.handleChange;
 
     // ID for gx-checkbox's Label
@@ -49,11 +49,11 @@ export class CheckBoxRender implements Renderer {
       "data-native-element": "",
       disabled: checkbox.disabled || checkbox.readonly,
       id: this.inputId,
-      onInput: this.handleChange
+      onInput: this.handleChange,
     };
 
     const forAttris = {
-      for: attris.id
+      for: attris.id,
     };
 
     return (

@@ -5,79 +5,78 @@ import { reactOutputTarget } from "@stencil/react-output-target";
 export const config: Config = {
   bundles: [
     {
-      components: ["gx-action-sheet", "gx-action-sheet-item"]
+      components: ["gx-action-sheet", "gx-action-sheet-item"],
     },
     {
       components: [
-        "gx-layout",
-        "gx-icon",
-        "gx-navbar",
-        "gx-navbar-item",
-        "gx-message",
-        "gx-progress-bar",
-        "gx-modal",
         "gx-button",
         "gx-card",
+        "gx-icon",
+        "gx-image",
+        "gx-layout",
+        "gx-loading",
+        "gx-message",
+        "gx-modal",
+        "gx-navbar",
+        "gx-navbar-item",
+        "gx-progress-bar",
         "gx-table",
         "gx-table-cell",
-        "gx-image",
-        "gx-textblock"
-      ]
+        "gx-textblock",
+      ],
     },
     {
-      components: ["gx-tab", "gx-tab-caption", "gx-tab-page"]
+      components: ["gx-canvas", "gx-canvas-cell"],
     },
     {
-      components: ["gx-canvas", "gx-canvas-cell"]
+      components: ["gx-form-field", "gx-edit"],
     },
     {
-      components: ["gx-map", "gx-map-marker"]
+      components: ["gx-gauge", "gx-gauge-range"],
     },
     {
-      components: ["gx-form-field", "gx-edit"]
-    },
-    {
-      components: ["gx-gauge", "gx-gauge-range"]
-    },
-    {
-      components: ["gx-radio-group", "gx-radio-option"]
-    },
-    {
-      components: ["gx-select", "gx-select-option"]
+      components: ["gx-grid-image-map", "gx-grid-image-map-item"],
     },
     {
       components: [
-        "gx-grid-flex",
-        "gx-grid-horizontal",
-        "gx-grid-smart-css",
-        "gx-grid-smart-cell",
         "gx-grid-infinite-scroll",
         "gx-grid-infinite-scroll-content",
-        "gx-grid-empty-indicator"
-      ]
+      ],
     },
     {
-      components: ["gx-grid-image-map", "gx-grid-image-map-item"]
-    }
+      components: ["gx-grid-smart-cell", "gx-grid-empty-indicator"],
+    },
+    {
+      components: ["gx-map", "gx-map-marker"],
+    },
+    {
+      components: ["gx-radio-group", "gx-radio-option"],
+    },
+    {
+      components: ["gx-select", "gx-select-option"],
+    },
+    {
+      components: ["gx-tab", "gx-tab-caption", "gx-tab-page"],
+    },
   ],
   namespace: "gx-web-controls",
   globalStyle: "src/global/common.scss",
   outputTargets: [
     {
       type: "dist",
-      esmLoaderPath: "../loader"
+      esmLoaderPath: "../loader",
     },
     {
-      type: "docs-readme"
+      type: "docs-readme",
     },
     {
       type: "www",
-      serviceWorker: null
+      serviceWorker: null,
     },
     reactOutputTarget({
       componentCorePackage: "@genexus/web-controls-library",
-      proxiesFile: "../web-controls-library-react/src/components.ts"
-    })
+      proxiesFile: "../web-controls-library-react/src/components.ts",
+    }),
   ],
-  plugins: [sass()]
+  plugins: [sass()],
 };

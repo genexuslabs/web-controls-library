@@ -108,12 +108,12 @@ gx-gauge {
    */
   @mixin alignment {
     &.center-align {
-      margin-left: var(--percentage, 0);
+      margin-inline-start: var(--percentage, 0);
       transform: translateX(-50%);
     }
 
     &.right-align {
-      margin-left: 100%;
+      margin-inline-start: 100%;
       transform: translateX(-100%);
     }
   }
@@ -258,7 +258,7 @@ gx-gauge {
 
       & + .ranges-labels-and-indicator-container {
         .ranges-and-labels-container {
-          margin-top: 4px;
+          margin-block-start: 4px;
         }
       }
     }
@@ -402,7 +402,7 @@ gx-gauge {
       & > span.current-value {
         display: block;
         line-height: 100%;
-        padding-bottom: 0.125em;
+        padding-block-end: 0.125em;
         font-weight: 900;
         transition: $transition-color-config;
         color: var(--center-circle-text-color);

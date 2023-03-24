@@ -120,7 +120,7 @@
   position: sticky;
 
   // The top is updated with the space occupied by the top navbar
-  top: var(--gx-navbar-size--top);
+  inset-block-start: var(--gx-navbar-size--top);
 
   width: $gx-vertical-target-width;
   height: 100%;

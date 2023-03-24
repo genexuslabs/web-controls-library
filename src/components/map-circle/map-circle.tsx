@@ -4,7 +4,7 @@ import {
   Event,
   EventEmitter,
   h,
-  Prop
+  Prop,
 } from "@stencil/core";
 import { Component as GxComponent, GridMapElement } from "../common/interfaces";
 import { circle, Circle } from "leaflet";
@@ -12,7 +12,7 @@ import { parseCoords } from "../common/coordsValidate";
 let autoCircleId = 0;
 @Component({
   shadow: false,
-  tag: "gx-map-circle"
+  tag: "gx-map-circle",
 })
 export class GridMapCircle implements GxComponent {
   @Element() element: HTMLGxMapCircleElement;
@@ -39,10 +39,10 @@ export class GridMapCircle implements GxComponent {
    */
   @Event() gxMapCircleDeleted: EventEmitter;
 
-  private setupCircle(coords) {
+  private setupCircle(coords: any) {
     this.circleInstance = circle(coords, this.radius, {
       color: "red",
-      weight: 3
+      weight: 3,
     });
   }
 
@@ -65,7 +65,7 @@ export class GridMapCircle implements GxComponent {
 
     this.gxMapCircleDidLoad.emit({
       id: this.circleId,
-      instance: this.circleInstance
+      instance: this.circleInstance,
     });
   }
 

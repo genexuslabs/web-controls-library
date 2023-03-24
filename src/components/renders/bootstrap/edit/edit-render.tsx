@@ -10,16 +10,16 @@ const fontCategoryTagMap = {
   caption2: "span",
   footnote: "footer",
   headline: "h1",
-  subheadline: "h2"
+  subheadline: "h2",
 };
 
 export class EditRender implements Renderer {
   constructor(
     private component: Edit,
     handlers: {
-      handleChange;
-      handleTriggerClick;
-      handleValueChanging;
+      handleChange: (event: UIEvent) => void;
+      handleTriggerClick: (event: UIEvent) => void;
+      handleValueChanging: (event: UIEvent) => void;
     }
   ) {
     this.handleChange = handlers.handleChange;
@@ -48,7 +48,7 @@ export class EditRender implements Renderer {
     event.stopPropagation();
   }
 
-  getReadonlyContent(component, initialContent) {
+  getReadonlyContent(component: Edit, initialContent: string) {
     let content = initialContent;
     if (
       content &&
@@ -61,14 +61,14 @@ export class EditRender implements Renderer {
       const dayMonthYear = new Intl.DateTimeFormat("default", {
         year: "numeric",
         month: "numeric",
-        day: "numeric"
+        day: "numeric",
       }).format(dateTime);
       if (component.type === "date") {
         content = `${dayMonthYear}`;
       } else {
         const hourMins = new Intl.DateTimeFormat("default", {
           hour: "numeric",
-          minute: "numeric"
+          minute: "numeric",
         }).format(dateTime);
         content = `${dayMonthYear} ${hourMins}`;
       }
@@ -86,7 +86,12 @@ export class EditRender implements Renderer {
     }
   }
 
-  render(slots) {
+  render(slots: {
+    cssClass: string;
+    shouldStyleHostElement: boolean;
+    vars: string;
+    triggerContent: HTMLElement;
+  }) {
     const edit = this.component;
 
     const dateTypes = ["datetime-local", "date", "time"];
@@ -127,7 +132,7 @@ export class EditRender implements Renderer {
       onClick: edit.disabled ? null : this.stopPropagation,
       onInput: valueChangingHandler,
       placeholder: edit.placeholder,
-      step: dateTypes.includes(edit.type) ? "1" : undefined
+      step: dateTypes.includes(edit.type) ? "1" : undefined,
     };
 
     // This will be displayed at the end
@@ -143,7 +148,7 @@ export class EditRender implements Renderer {
               class={{
                 [slots.cssClass]:
                   !slots.shouldStyleHostElement && !!this.component.cssClass,
-                [slots.vars]: !slots.shouldStyleHostElement
+                [slots.vars]: !slots.shouldStyleHostElement,
               }}
               {...attris}
               data-part="field"
@@ -178,20 +183,22 @@ export class EditRender implements Renderer {
               */
               "null-date":
                 dateTypes.includes(edit.type) &&
-                (edit.value == undefined || edit.value == "")
+                (edit.value == undefined || edit.value == ""),
             }}
             hidden={edit.readonly}
             data-part="container"
           >
             {input}
 
-            {// Implements a non-native placeholder for date types
-            dateTypes.includes(edit.type) &&
-              (edit.value == undefined || edit.value == "") && (
-                <div class="date-placeholder-container">
-                  <span>{edit.placeholder}</span>
-                </div>
-              )}
+            {
+              // Implements a non-native placeholder for date types
+              dateTypes.includes(edit.type) &&
+                (edit.value == undefined || edit.value == "") && (
+                  <div class="date-placeholder-container">
+                    <span>{edit.placeholder}</span>
+                  </div>
+                )
+            }
           </div>,
           // If showTrigger == true, it sets a trigger button
           edit.showTrigger && (
@@ -199,7 +206,7 @@ export class EditRender implements Renderer {
               <button
                 class={{
                   "trigger-button": true,
-                  "not-disabled": !edit.disabled
+                  "not-disabled": !edit.disabled,
                 }}
                 onClick={this.handleTriggerClick}
                 type="button"
@@ -208,7 +215,7 @@ export class EditRender implements Renderer {
                 {existSlotContent !== null && slots.triggerContent}
               </button>
             </div>
-          )
+          ),
         ];
       }
       // If format = HTML
@@ -237,11 +244,11 @@ export class EditRender implements Renderer {
               key="readonly"
               class={{
                 "gx-edit-content": true,
-                "gx-line-clamp": this.component.lineClamp
+                "gx-line-clamp": this.component.lineClamp,
               }}
               style={
                 this.component.lineClamp && {
-                  "--max-lines": edit.maxLines.toString()
+                  "--max-lines": edit.maxLines.toString(),
                 }
               }
             >
@@ -255,7 +262,7 @@ export class EditRender implements Renderer {
           </div>
         </div>
       ),
-      editableElement
+      editableElement,
     ];
   }
 

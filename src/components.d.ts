@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { TimerState } from "./components/chronometer/chronometer-timer-state";
-import { FlexDirection, FlexWrap } from "./common/types";
+import { EditType, FlexDirection, FlexWrap } from "./common/types";
 import { SwiperOptions } from "swiper";
 import { GridMapElement, LayoutSize } from "./components/common/interfaces";
 import { QueryViewerParameterChangedEvent } from "./components/query-viewer-parameter/query-viewer-parameter";
@@ -347,18 +347,7 @@ export namespace Components {
     /**
      * The type of control to render. A subset of the types supported by the `input` element is supported:  * `"date"` * `"datetime-local"` * `"email"` * `"file"` * `"number"` * `"password"` * `"search"` * `"tel"` * `"text"` * `"url"`
      */
-    type:
-      | "date"
-      | "datetime-local"
-      | "email"
-      | "file"
-      | "number"
-      | "password"
-      | "search"
-      | "tel"
-      | "text"
-      | "time"
-      | "url";
+    type: EditType;
     /**
      * The initial value of the control.
      */
@@ -519,6 +508,9 @@ export namespace Components {
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
      */
     autoGrow: false;
+    /**
+     * This method must be called after new grid data was fetched by the infinite scroller.
+     */
     complete: () => Promise<void>;
     /**
      * A CSS class to set as the `gx-grid-fs` element class.
@@ -992,7 +984,7 @@ export namespace Components {
     /**
      * This attribute lets you specify the modal title.
      */
-    modalTitle: any;
+    modalTitle: string;
     /**
      * This attribute lets you specify if the image is readonly. If readonly, it will not allow to use the edit button. In fact, the edit button will not be shown.
      */
@@ -3261,18 +3253,7 @@ declare namespace LocalJSX {
     /**
      * The type of control to render. A subset of the types supported by the `input` element is supported:  * `"date"` * `"datetime-local"` * `"email"` * `"file"` * `"number"` * `"password"` * `"search"` * `"tel"` * `"text"` * `"url"`
      */
-    type?:
-      | "date"
-      | "datetime-local"
-      | "email"
-      | "file"
-      | "number"
-      | "password"
-      | "search"
-      | "tel"
-      | "text"
-      | "time"
-      | "url";
+    type?: EditType;
     /**
      * The initial value of the control.
      */
@@ -3947,7 +3928,7 @@ declare namespace LocalJSX {
     /**
      * This attribute lets you specify the modal title.
      */
-    modalTitle?: any;
+    modalTitle?: string;
     /**
      * Fired when the image is clicked
      */

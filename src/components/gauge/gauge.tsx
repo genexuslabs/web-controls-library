@@ -8,7 +8,7 @@ import {
   Prop,
   State,
   h,
-  Watch
+  Watch,
 } from "@stencil/core";
 
 import { Component as GxComponent } from "../common/interfaces";
@@ -19,7 +19,7 @@ import { getClasses } from "../common/css-transforms/css-transforms";
 @Component({
   shadow: false,
   styleUrl: "gauge.scss",
-  tag: "gx-gauge"
+  tag: "gx-gauge",
 })
 export class Gauge implements GxComponent {
   @Element() element: HTMLGxGaugeElement;
@@ -75,7 +75,7 @@ export class Gauge implements GxComponent {
    */
   @Prop() maxValue: number;
 
-  @State() rangesChildren = [];
+  @State() rangesChildren: any[] = []; // It has the following type: GaugeRange[]
 
   @State() labelsOverflow = false;
 
@@ -166,19 +166,20 @@ export class Gauge implements GxComponent {
   private SVGcircle: SVGCircleElement;
 
   @Listen("gxGaugeRangeDidLoad")
+  // @ts-expect-error It has type { detail: GaugeRange }, but to prevent any issue the error message is avoided
   onGaugeRangeDidLoad({ detail: childRange }) {
     this.rangesChildren = [...this.rangesChildren, childRange];
     this.totalAmount += childRange.amount;
     // Possible improvement here. Check the approach applied in navbar.jsx line 103
     childRange.element.addEventListener("gxGaugeRangeDidUnload", () => {
       this.rangesChildren = this.rangesChildren.filter(
-        elementToSave => elementToSave != childRange
+        (elementToSave) => elementToSave != childRange
       );
       this.totalAmount -= childRange.amount;
     });
     childRange.element.addEventListener("gxGaugeRangeDidUpdate", () => {
       const index = this.rangesChildren.findIndex(
-        elementFinding => elementFinding === childRange
+        (elementFinding) => elementFinding === childRange
       );
       this.rangesChildren.splice(index, 1, childRange);
       this.totalAmount = 0;
@@ -311,8 +312,8 @@ export class Gauge implements GxComponent {
       this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
 
     // This does not include the gauge padding
-    const gaugeWidth = this.linearCurrentValueContainer.getBoundingClientRect()
-      .width;
+    const gaugeWidth =
+      this.linearCurrentValueContainer.getBoundingClientRect().width;
 
     const distanceToTheValueCenter = (gaugeWidth / 100) * percentage;
 
@@ -373,7 +374,7 @@ export class Gauge implements GxComponent {
   }
 
   private addCircleRanges(
-    { amount, color },
+    { amount, color }: { amount: number; color: string },
     position: number,
     radius: number,
     childNumber: string // Identifies the number of child to animate it at the start
@@ -397,15 +398,16 @@ export class Gauge implements GxComponent {
         style={{
           "--child-number": childNumber,
           "--stroke-dasharray-initial": `0, ${circleLength}`,
-          "--stroke-dasharray": `${circleLength *
-            valuePercentage}, ${circleLength}`
+          "--stroke-dasharray": `${
+            circleLength * valuePercentage
+          }, ${circleLength}`,
         }}
       />
     );
   }
 
   private addLineRanges(
-    { amount, color },
+    { amount, color }: { amount: number; color: string },
     position: number,
     childNumber: string // Identifies the number of child to animate it at the start
   ): any {
@@ -417,14 +419,14 @@ export class Gauge implements GxComponent {
           "background-color": color,
           "margin-left": `${position}%`,
           "--child-number": childNumber,
-          "--range-width": `${(amount * 100) / range}%`
+          "--range-width": `${(amount * 100) / range}%`,
         }}
       />
     );
   }
 
   private addLineRangesLabels(
-    { amount, color, name },
+    { amount, color, name }: { amount: number; color: string; name: string },
     position: number,
     childNumber: string // Identifies the number of child to animate it at the start
   ): any {
@@ -437,7 +439,7 @@ export class Gauge implements GxComponent {
           "margin-left": `${position}%`,
           color: color,
           "--child-number": childNumber,
-          "--range-width": `${(amount * 100) / range}%`
+          "--range-width": `${(amount * 100) / range}%`,
         }}
       >
         {name}
@@ -445,9 +447,7 @@ export class Gauge implements GxComponent {
     );
   }
 
-  private renderCircle(
-    childRanges: Array<HTMLGxGaugeRangeElement>
-  ): HTMLElement {
+  private renderCircle(childRanges: HTMLGxGaugeRangeElement[]): HTMLElement {
     const FULL_CIRCLE_RADIO = 100 / 2;
     const svgRanges = [];
     const ONE_PERCENT_OF_CIRCLE_DREGREE = 3.6;
@@ -478,8 +478,9 @@ export class Gauge implements GxComponent {
     const rotation =
       this.calcPercentage() == 100
         ? `rotate(${359.5 + ROTATION_FIX}deg)`
-        : `rotate(${this.calcPercentage() * ONE_PERCENT_OF_CIRCLE_DREGREE +
-            ROTATION_FIX}deg)`;
+        : `rotate(${
+            this.calcPercentage() * ONE_PERCENT_OF_CIRCLE_DREGREE + ROTATION_FIX
+          }deg)`;
 
     // Styling for gx-gauge control.
     const classes = getClasses(this.cssClass);
@@ -498,7 +499,7 @@ export class Gauge implements GxComponent {
                 cx="50%"
                 cy="50%"
                 stroke-width={`${this.calcThickness()}%`}
-                ref={el => (this.SVGcircle = el as SVGCircleElement)}
+                ref={(el) => (this.SVGcircle = el as SVGCircleElement)}
               />
               {svgRanges}
             </svg>
@@ -507,13 +508,13 @@ export class Gauge implements GxComponent {
               <div
                 class="indicator-container"
                 style={{
-                  transform: rotation
+                  transform: rotation,
                 }}
               >
                 <div
                   class="indicator"
                   style={{
-                    width: `${this.calcThickness() + 2}%`
+                    width: `${this.calcThickness() + 2}%`,
                   }}
                 />
               </div>
@@ -523,7 +524,7 @@ export class Gauge implements GxComponent {
             <div class="current-value-container">
               <span
                 class="current-value"
-                ref={el => (this.circleCurrentValue = el as HTMLSpanElement)}
+                ref={(el) => (this.circleCurrentValue = el as HTMLSpanElement)}
               >
                 {this.value}
               </span>
@@ -534,7 +535,7 @@ export class Gauge implements GxComponent {
     );
   }
 
-  private renderLine(childRanges) {
+  private renderLine(childRanges: HTMLGxGaugeRangeElement[]) {
     const divRanges = [];
     const divRangesLabel = [];
     this.totalAmount = 0;
@@ -575,7 +576,7 @@ export class Gauge implements GxComponent {
           {this.showValue && (
             <div
               class="current-value-container"
-              ref={el =>
+              ref={(el) =>
                 (this.linearCurrentValueContainer = el as HTMLDivElement)
               }
             >
@@ -583,9 +584,9 @@ export class Gauge implements GxComponent {
                 class={{
                   "current-value": true,
                   "center-align": this.lineCurrentValuePosition === "Center",
-                  "right-align": this.lineCurrentValuePosition === "Right"
+                  "right-align": this.lineCurrentValuePosition === "Right",
                 }}
-                ref={el => (this.linearCurrentValue = el as HTMLDivElement)}
+                ref={(el) => (this.linearCurrentValue = el as HTMLDivElement)}
               >
                 {this.value}
               </span>
@@ -594,7 +595,9 @@ export class Gauge implements GxComponent {
           <div
             class="ranges-labels-and-indicator-container"
             style={{
-              height: `${2 * this.calcThickness() + (this.showValue ? 4 : 0)}px`
+              height: `${
+                2 * this.calcThickness() + (this.showValue ? 4 : 0)
+              }px`,
             }}
           >
             {this.showValue && (
@@ -602,22 +605,22 @@ export class Gauge implements GxComponent {
                 class={{
                   indicator: true,
                   "center-align": this.lineIndicatorPosition === "Center",
-                  "right-align": this.lineIndicatorPosition === "Right"
+                  "right-align": this.lineIndicatorPosition === "Right",
                 }}
-                ref={el => (this.linearIndicator = el as HTMLDivElement)}
+                ref={(el) => (this.linearIndicator = el as HTMLDivElement)}
               />
             )}
             <div
               class="ranges-and-labels-container"
               style={{
-                "border-radius": `${this.calcThickness()}px`
+                "border-radius": `${this.calcThickness()}px`,
               }}
             >
               {divRanges}
               <div class="labels-container">
                 <div
                   class="labels-subcontainer"
-                  ref={el => (this.labelsSubContainer = el as HTMLDivElement)}
+                  ref={(el) => (this.labelsSubContainer = el as HTMLDivElement)}
                 >
                   {!this.labelsOverflow && divRangesLabel}
                 </div>

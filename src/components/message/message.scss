@@ -16,7 +16,7 @@
   align-items: center;
   justify-content: center;
   position: fixed;
-  top: 0;
+  inset-block-start: 0;
   width: calc(100% - $horizontal-margin);
   min-height: 50px;
   background-color: $default-background-color;

@@ -7,7 +7,7 @@ import {
   Method,
   Prop,
   State,
-  Watch
+  Watch,
 } from "@stencil/core";
 import { SelectRender } from "../renders/bootstrap/select/select-render";
 import { FormComponent } from "../common/interfaces";
@@ -15,7 +15,7 @@ import { FormComponent } from "../common/interfaces";
 @Component({
   shadow: false,
   styleUrl: "select.scss",
-  tag: "gx-select"
+  tag: "gx-select",
 })
 export class Select implements FormComponent {
   constructor() {
@@ -90,13 +90,13 @@ export class Select implements FormComponent {
           disabled: option.disabled,
           innerText: option.innerText,
           selected: option.selected,
-          value: option.value
+          value: option.value,
         };
       }
     );
   }
 
-  private updateOptions(options) {
+  private updateOptions(options: any[]) {
     this.options = options;
     this.renderer.updateOptions(options);
   }
@@ -111,7 +111,7 @@ export class Select implements FormComponent {
     );
     // let's set the new check state to all options
     // regardless if it is checked or not
-    optionsElement.forEach(option => {
+    optionsElement.forEach((option) => {
       if (option.value === this.value) {
         // the option value matches with the new select value
         // let's check this option
@@ -135,7 +135,7 @@ export class Select implements FormComponent {
           disabled: option.disabled,
           innerText: option.innerText,
           selected: option.selected,
-          value: option.value
+          value: option.value,
         };
       })
     );
@@ -197,7 +197,7 @@ export class Select implements FormComponent {
 
   @Listen("gxSelect")
   onSelectOptionSelect(ev: HTMLSelectOptionElementEvent) {
-    this.options.forEach(option => {
+    this.options.forEach((option) => {
       if (option === ev.target) {
         if (option.value !== this.value) {
           this.value = option.value;

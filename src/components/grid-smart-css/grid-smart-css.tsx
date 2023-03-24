@@ -8,7 +8,7 @@ import {
   Method,
   Prop,
   h,
-  Watch
+  Watch,
 } from "@stencil/core";
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
@@ -19,10 +19,11 @@ import { VisibilityComponent } from "../common/interfaces";
 @Component({
   shadow: false,
   styleUrl: "grid-smart-css.scss",
-  tag: "gx-grid-smart-css"
+  tag: "gx-grid-smart-css",
 })
 export class GridSmartCss
-  implements GridBase, ComponentInterface, VisibilityComponent {
+  implements GridBase, ComponentInterface, VisibilityComponent
+{
   constructor() {
     this.handleGxInfinite = this.handleGxInfinite.bind(this);
   }
@@ -141,9 +142,11 @@ export class GridSmartCss
    */
   @Method()
   async complete() {
-    this.element
-      .querySelector(':scope > [slot="grid-content"] gx-grid-infinite-scroll"')
-      ["complete"]();
+    (
+      this.element.querySelector(
+        ':scope > [slot="grid-content"] gx-grid-infinite-scroll"'
+      ) as HTMLGxGridInfiniteScrollElement
+    )["complete"]();
   }
 
   private isHorizontal(): boolean {
@@ -249,7 +252,7 @@ export class GridSmartCss
         <div
           aria-hidden="true"
           class="gx-grid-measure-size"
-          ref={el => (this.elementToMeasureSize = el as HTMLDivElement)}
+          ref={(el) => (this.elementToMeasureSize = el as HTMLDivElement)}
         ></div>
 
         {!this.autoGrow && this.direction == "horizontal" ? (

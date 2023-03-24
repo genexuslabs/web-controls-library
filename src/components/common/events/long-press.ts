@@ -35,7 +35,7 @@ export function makeLongPressable(
         event.stopPropagation();
 
         // Emit longPress event
-        timer = setTimeout(function() {
+        timer = setTimeout(function () {
           component.longPress.emit(event);
         }, LONG_PRESS_DELAY);
       }
@@ -61,13 +61,13 @@ function setupEvent(
   endEventName1: string,
   endEventName2: string
 ) {
-  document.body.addEventListener(startEventName, startEvent => {
+  document.body.addEventListener(startEventName, (startEvent) => {
     fireCustomEvent(
       START_LONG_PRESS_EVENT_NAME,
       startEvent.target as HTMLElement
     );
 
-    const mouseUpHandler = endEvent => {
+    const mouseUpHandler = (endEvent: Event) => {
       fireCustomEvent(
         END_LONG_PRESS_EVENT_NAME,
         endEvent.target as HTMLElement

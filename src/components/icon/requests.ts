@@ -7,9 +7,10 @@ export function getSvgContent(url: string) {
 
   if (request === undefined) {
     // we don't already have a request
-    request = fetch(url).then(response => {
+    // @ts-expect-error @todo TODO: Fix this error
+    request = fetch(url).then((response) => {
       if (response.ok) {
-        return response.text().then(svgContent => {
+        return response.text().then((svgContent) => {
           iconContent.set(url, svgContent);
           return svgContent;
         });

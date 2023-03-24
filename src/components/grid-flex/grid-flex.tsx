@@ -8,7 +8,7 @@ import {
   Method,
   Prop,
   h,
-  Watch
+  Watch,
 } from "@stencil/core";
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
@@ -46,16 +46,17 @@ const propertiesToScrollDirectionMap = {
   "row wrap-reverse": VERTICAL_SCROLL,
   "row-reverse nowrap": HORIZONTAL_SCROLL,
   "row-reverse wrap": VERTICAL_SCROLL,
-  "row-reverse wrap-reverse": VERTICAL_SCROLL
+  "row-reverse wrap-reverse": VERTICAL_SCROLL,
 };
 
 @Component({
   shadow: true,
   styleUrl: "grid-flex.scss",
-  tag: "gx-grid-flex"
+  tag: "gx-grid-flex",
 })
 export class GridFlex
-  implements GridBase, ComponentInterface, VisibilityComponent {
+  implements GridBase, ComponentInterface, VisibilityComponent
+{
   /**
    * `true` if the `componentDidLoad()` method was called
    */
@@ -227,9 +228,11 @@ export class GridFlex
    */
   @Method()
   async complete() {
-    this.element
-      .querySelector(':scope > [slot="grid-content"] gx-grid-infinite-scroll"')
-      ["complete"]();
+    (
+      this.element.querySelector(
+        ':scope > [slot="grid-content"] gx-grid-infinite-scroll"'
+      ) as HTMLGxGridInfiniteScrollElement
+    )["complete"]();
   }
 
   @Watch("flexDirection")
@@ -373,8 +376,8 @@ export class GridFlex
     hostData.class = {
       ...hostData.class,
       ...{
-        [`gx-grid-flex--${this.lastScrollDirection}-scroll`]: true
-      }
+        [`gx-grid-flex--${this.lastScrollDirection}-scroll`]: true,
+      },
     };
 
     return (
@@ -407,13 +410,13 @@ export class GridFlex
           "--gx-grid-flex-justify-content": this.getValueIfNotDefault(
             this.justifyContent,
             DEFAULT_JUSTIFY_CONTENT
-          )
+          ),
         }}
       >
         <div
           aria-hidden="true"
           class="gx-measure-size"
-          ref={el => (this.elementToMeasureSize = el as HTMLElement)}
+          ref={(el) => (this.elementToMeasureSize = el as HTMLElement)}
         ></div>
 
         {notEmptyGrid &&

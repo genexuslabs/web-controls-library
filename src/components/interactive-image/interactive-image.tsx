@@ -4,7 +4,7 @@ import { Component as GxComponent } from "../common/interfaces";
 @Component({
   shadow: false,
   styleUrl: "interactive-image.scss",
-  tag: "gx-interactive-image"
+  tag: "gx-interactive-image",
 })
 export class InteractiveImage implements GxComponent {
   @Element() element: HTMLGxInteractiveImageElement;
@@ -64,33 +64,35 @@ export class InteractiveImage implements GxComponent {
       this.zoom = 100;
     }
   }
-  private handleMouseMove = ev => {
+  private handleMouseMove = (ev: MouseEvent) => {
     ev.preventDefault();
     this.mouseOver = true;
     this.zoomedPositionX = this.calculateZoomedPosition(
       ev.offsetX,
-      ev.target.offsetWidth
+      (ev.target as HTMLImageElement).offsetWidth
     );
     this.zoomedPositionY = this.calculateZoomedPosition(
       ev.offsetY,
-      ev.target.offsetHeight
+      (ev.target as HTMLImageElement).offsetHeight
     );
   };
 
-  private handleTouchMove = ev => {
+  private handleTouchMove = (ev: TouchEvent) => {
     ev.preventDefault();
     this.mouseOver = true;
+    const eventTarget = ev.target as HTMLImageElement;
 
     const imgSize = {
-      height: ev.target.offsetHeight,
-      width: ev.target.offsetWidth
+      height: eventTarget.offsetHeight,
+      width: eventTarget.offsetWidth,
     };
 
     const touch = {
-      X: ev.changedTouches[0].clientX - ev.target.x,
+      X: ev.changedTouches[0].clientX - eventTarget.x,
       Y:
         ev.changedTouches[0].clientY -
-        ev.target.parentNode.getBoundingClientRect().top
+        // @ts-expect-error @todo TODO: Fix this error
+        eventTarget.parentNode.getBoundingClientRect().top,
     };
 
     if (touch.X <= 0) {
@@ -106,13 +108,13 @@ export class InteractiveImage implements GxComponent {
 
     const moveImgPostion = {
       X: this.calculateZoomTouch(
-        this.calculateZoomedPosition(touch.X, ev.target.offsetWidth),
+        this.calculateZoomedPosition(touch.X, eventTarget.offsetWidth),
         this.zoom
       ),
       Y: this.calculateZoomTouch(
         this.calculateZoomedPosition(touch.Y, imgSize.height),
         this.zoom
-      )
+      ),
     };
     this.zoomedPositionX = moveImgPostion.X;
     this.zoomedPositionY = moveImgPostion.Y;
@@ -142,7 +144,7 @@ export class InteractiveImage implements GxComponent {
           this.mouseOver
             ? {
                 "object-position": `${this.zoomedPositionX}px ${this.zoomedPositionY}px`,
-                transform: `scale(${this.zoom / 100})`
+                transform: `scale(${this.zoom / 100})`,
               }
             : {}
         }

@@ -1,4 +1,5 @@
 import { h } from "@stencil/core";
+import { EditType } from "../../common/types";
 import { DynamicFormElement } from "./dynamic-form-interfaces";
 
 // - - - - - - - - Dictionaries - - - - - - - -
@@ -9,7 +10,7 @@ const componentTypeDictionary = {
   "boolean-default": "GX-CHECKBOX",
   "enum-radio": "GX-RADIO-GROUP",
   "enum-default": "GX-SELECT",
-  "group-default": "GX-DYNAMIC-FORM"
+  "group-default": "GX-DYNAMIC-FORM",
 };
 
 /**
@@ -24,7 +25,7 @@ const renderDictionary = {
   "GX-EDIT": renderGxEdit,
   "GX-RADIO-GROUP": renderGxRadioGroup,
   "GX-SELECT": renderGxSelect,
-  "GX-SWITCH": renderGxSwitch
+  "GX-SWITCH": renderGxSwitch,
 };
 
 const typeDictionary = {
@@ -34,7 +35,7 @@ const typeDictionary = {
   password: "password",
   email: "email",
   numeric: "number",
-  upload: "file"
+  upload: "file",
 };
 
 // - - - - - - - -  Interfaces  - - - - - - - -
@@ -64,11 +65,13 @@ function getElementValue(element: DynamicFormElement) {
     : "";
 }
 
-function getComponentType(type: string, display: string) {
+function getComponentType(type: string, display: string): string {
+  // @ts-expect-error:
   return componentTypeDictionary[`${type}-${display}`] || "GX-EDIT";
 }
 
-function getEditType(type: string) {
+function getEditType(type: string): EditType {
+  // @ts-expect-error:
   return typeDictionary[type];
 }
 
@@ -103,7 +106,7 @@ export function renderGxRadioGroup(
       readonly={options.readonly}
       value={getElementValue(element)}
     >
-      {element.Values.map(value => {
+      {element.Values.map((value) => {
         return (
           <gx-radio-option
             caption={replaceSpecialChars(value.description)}
@@ -137,7 +140,7 @@ export function renderGxSelect(
       readonly={options.readonly}
       value={getElementValue(element)}
     >
-      {element.Values.map(value => {
+      {element.Values.map((value) => {
         return (
           <gx-select-option value={value.id.toString()}>
             {replaceSpecialChars(value.description)}
@@ -187,6 +190,7 @@ export function renderElement(
   const componentType = getComponentType(element.type, element.display);
 
   if (componentType !== "GX-DYNAMIC-FORM") {
+    // @ts-expect-error:
     return renderDictionary[componentType](element, options);
   }
 

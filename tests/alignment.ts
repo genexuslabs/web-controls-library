@@ -5,7 +5,7 @@ import { delay } from "../src/components/common/utils";
 
 const TEST_CONFIG: ScreenshotOptions = {
   clip: { x: 0, y: 0, width: 200, height: 256 },
-  pixelmatchThreshold: 0 // 100% accuracy
+  pixelmatchThreshold: 0, // 100% accuracy
 };
 
 const CELL_CONTAINERS: any[] = ["gx-table-cell", "gx-canvas-cell"];
@@ -15,30 +15,30 @@ const HORIZONTAL_ALIGNS = [
   "", // Default
   'align="left"',
   'align="center"',
-  'align="right"'
+  'align="right"',
   // Justify (not implemented)
 ];
 const VERTICAL_ALIGNS = [
   "", // Default
   'valign="top"',
   'valign="middle"',
-  'valign="bottom"'
+  'valign="bottom"',
 ];
 
 const CELL_CONTAINERS_MAP = {
   "gx-table-cell": "Table",
-  "gx-canvas-cell": "Canvas"
+  "gx-canvas-cell": "Canvas",
 };
 const CELL_HEIGHTS_MAP = {
   "110px": "110px",
-  "100%": "100per"
+  "100%": "100per",
 };
 
 const HORIZONTAL_ALIGNS_MAP = {
   "": "Default",
   'align="left"': "Left",
   'align="center"': "Center",
-  'align="right"': "Right"
+  'align="right"': "Right",
   // Justify (not implemented)
 };
 
@@ -46,7 +46,7 @@ const HORIZONTAL_ALIGNS_WITH_NUMBER_MAP = {
   "": "0-Default",
   'align="left"': "1-Left",
   'align="center"': "2-Center",
-  'align="right"': "3-Right"
+  'align="right"': "3-Right",
   // Justify (not implemented)
 };
 
@@ -54,14 +54,14 @@ const VERTICAL_ALIGNS_MAP = {
   "": "Default",
   'valign="top"': "Top",
   'valign="middle"': "Middle",
-  'valign="bottom"': "Bottom"
+  'valign="bottom"': "Bottom",
 };
 
 const VERTICAL_ALIGNS_WITH_NUMBER_MAP = {
   "": "0-Default",
   'valign="top"': "1-Top",
   'valign="middle"': "2-Middle",
-  'valign="bottom"': "3-Bottom"
+  'valign="bottom"': "3-Bottom",
 };
 
 interface AlignmentTestInnerControlOptions {
@@ -89,13 +89,20 @@ function testAlignment(
 ) {
   const autoGrowName = options.autoGrow ? "True" : "False";
 
+  // @ts-expect-error
+  const hAlignsMap = HORIZONTAL_ALIGNS_MAP[options.align];
+  // @ts-expect-error
+  const vAlignsMap = VERTICAL_ALIGNS_MAP[options.valign];
+  // @ts-expect-error
+  const hAlignsWithNumberMap = HORIZONTAL_ALIGNS_WITH_NUMBER_MAP[options.align];
+  // @ts-expect-error
+  const vAlignsWithNumberMap = VERTICAL_ALIGNS_WITH_NUMBER_MAP[options.valign];
+
   const testUniqueName = `should align correctly in ${
     CELL_CONTAINERS_MAP[options.cellContainer]
   } (Height: ${
     CELL_HEIGHTS_MAP[options.cellHeight]
-  }, AutoGrow: ${autoGrowName}, Align: ${
-    HORIZONTAL_ALIGNS_MAP[options.align]
-  }, Valign: ${VERTICAL_ALIGNS_MAP[options.valign]}) when it has ${
+  }, AutoGrow: ${autoGrowName}, Align: ${hAlignsMap}, Valign: ${vAlignsMap}) when it has ${
     options.innerControlProperties
   }`;
 
@@ -103,9 +110,9 @@ function testAlignment(
     options.innerControlName
   }_Alignment_${options.imageProperties}_${
     CELL_CONTAINERS_MAP[options.cellContainer]
-  }_${CELL_HEIGHTS_MAP[options.cellHeight]}_${autoGrowName}_${
-    HORIZONTAL_ALIGNS_WITH_NUMBER_MAP[options.align]
-  }_${VERTICAL_ALIGNS_WITH_NUMBER_MAP[options.valign]}`;
+  }_${
+    CELL_HEIGHTS_MAP[options.cellHeight]
+  }_${autoGrowName}_${hAlignsWithNumberMap}_${vAlignsWithNumberMap}`;
 
   // - - - - - - - - - -  Conversions  - - - - - - - - - - - -
   const rowsTemplateInTable = () => {
@@ -196,7 +203,7 @@ function testAlignment(
         width: 194px;
         height: 97px;
         border: 1px solid;
-        margin-left: 3px;
+        margin-inline-start: 3px;
       }
 
       .cell {
@@ -243,10 +250,16 @@ function testAlignment(
         Valign
       </gx-table-cell>
       <gx-table-cell area="cell50" align="center" valign="middle">
-        ${HORIZONTAL_ALIGNS_MAP[options.align]}
+        ${
+          // @ts-expect-error
+          HORIZONTAL_ALIGNS_MAP[options.align]
+        }
       </gx-table-cell>
       <gx-table-cell area="cell51" align="center" valign="middle">
-        ${VERTICAL_ALIGNS_MAP[options.valign]}
+        ${
+          // @ts-expect-error
+          VERTICAL_ALIGNS_MAP[options.valign]
+        }
       </gx-table-cell>
     </gx-table>`;
 
@@ -273,8 +286,8 @@ function testAlignment(
         </gx-table>`;
     }
 
-    if (options.cellContainer == "gx-canvas-cell") {
-      return `
+    // options.cellContainer == "gx-canvas-cell"
+    return `
         <gx-canvas
           css-class="TableFancyTransparent_3"
           width="198px"
@@ -291,7 +304,6 @@ function testAlignment(
             ${innerControl}
           </gx-canvas-cell>
         </gx-canvas>`;
-    }
   };
 
   it(testUniqueName, async () => {
@@ -337,7 +349,7 @@ export function runAlignmentTest(
               innerControlName,
               innerControlProperties,
               imageProperties,
-              valign
+              valign,
             };
 
             testAlignment(innerControl, options, delay);

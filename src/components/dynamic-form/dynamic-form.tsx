@@ -5,7 +5,7 @@ import {
   Element,
   Prop,
   Event,
-  EventEmitter
+  EventEmitter,
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 import {
@@ -17,7 +17,7 @@ import {
   GxDynamicForm,
   logicalDictionary,
   Messages,
-  RuleTypes
+  RuleTypes,
 } from "./dynamic-form-interfaces";
 import { renderElement } from "./dynamic-form-renders";
 
@@ -27,7 +27,7 @@ const FORM_FIELD_BY_ID = (id: string) => `#form-field-${id}`;
 @Component({
   tag: "gx-dynamic-form",
   styleUrl: "dynamic-form.scss",
-  shadow: false
+  shadow: false,
 })
 export class DynamicForm implements GxComponent {
   private conditions: DynamicFormCondition[] = [];
@@ -80,7 +80,7 @@ export class DynamicForm implements GxComponent {
   componentWillLoad() {
     this.JSONForm = JSON.parse(this.elements);
 
-    this.JSONForm[0].Elements.forEach(element => {
+    this.JSONForm[0].Elements.forEach((element) => {
       element.name = this.replaceSpecialChars(element.name);
       this.addConditionsOfElement(element);
     });
@@ -92,7 +92,7 @@ export class DynamicForm implements GxComponent {
     );
 
     // Store element references
-    elements.forEach(element => {
+    elements.forEach((element) => {
       element.addEventListener("change", () => {
         this.checkRules();
       });
@@ -101,7 +101,7 @@ export class DynamicForm implements GxComponent {
     });
 
     // Set element maxlength
-    this.JSONForm[0].Elements.forEach(element => {
+    this.JSONForm[0].Elements.forEach((element) => {
       this.setElementAttributes(element);
     });
 
@@ -125,11 +125,11 @@ export class DynamicForm implements GxComponent {
       return;
     }
 
-    element.Rules.forEach(rule => {
+    element.Rules.forEach((rule) => {
       this.conditions.push({
         id: element.id,
         function: rule.function,
-        conditions: this.parseRules(rule.Conditions)
+        conditions: this.parseRules(rule.Conditions),
       });
     });
   }
@@ -165,7 +165,7 @@ export class DynamicForm implements GxComponent {
    * This method parse each rule of the form and evaluate the conditions
    */
   private checkRules() {
-    Array.from(this.conditions).forEach(element => {
+    Array.from(this.conditions).forEach((element) => {
       const id = element.id;
       const conditions = element.conditions;
 
@@ -234,7 +234,7 @@ export class DynamicForm implements GxComponent {
    * @param {string} id - the id of the element that caused the message
    */
   private addMessage(type: Messages, conditional: string, id: string) {
-    conditional.split("&&|\\||").forEach(condition => {
+    conditional.split("&&|\\||").forEach((condition) => {
       const parsedCondition = this.buildCondition(condition);
 
       const result = eval(parsedCondition);
@@ -242,7 +242,7 @@ export class DynamicForm implements GxComponent {
       if (result && this.messages.get(id.toString()) === undefined) {
         const elemName = this.replaceSpecialChars(
           this.JSONForm[0].Elements.find(
-            element => element.id.toString() === id.toString()
+            (element) => element.id.toString() === id.toString()
           ).name
         );
 
@@ -251,7 +251,7 @@ export class DynamicForm implements GxComponent {
 
         this.messages.set(id.toString(), {
           type: type,
-          message: `${elemName} ${msgCondition}`
+          message: `${elemName} ${msgCondition}`,
         });
       }
     });
@@ -268,7 +268,7 @@ export class DynamicForm implements GxComponent {
   private parseRules(conditions: DynamicFormRuleCondition[]) {
     let parsedCond = "";
 
-    conditions.forEach(condition => {
+    conditions.forEach((condition) => {
       const logicalOperator =
         conditions[conditions.length - 1] != condition
           ? this.decodeLogical(condition.cndEval) + " "
@@ -278,7 +278,7 @@ export class DynamicForm implements GxComponent {
         condition.cndElemId,
         this.decodeOperator(condition.operator),
         condition.cndValue,
-        logicalOperator
+        logicalOperator,
       ].join(" ");
     });
     return parsedCond;
@@ -329,7 +329,7 @@ export class DynamicForm implements GxComponent {
    * this method makes the response when a form is submitted
    */
   private handleData() {
-    this.JSONForm[0].Elements.forEach(element => {
+    this.JSONForm[0].Elements.forEach((element) => {
       const input = this.formFieldElements.get(element.id.toString());
       element.value = input.value;
     });
@@ -337,23 +337,25 @@ export class DynamicForm implements GxComponent {
   }
 
   private decodeOperator(operator: number) {
+    // @ts-expect-error:
     return arithmeticalDictionary[operator];
   }
 
   private decodeLogical(condition: number) {
+    // @ts-expect-error:
     return logicalDictionary[condition];
   }
 
   render() {
     const options = {
       inputCssClass: this.inputCssClass,
-      readonly: this.readonly
+      readonly: this.readonly,
     };
 
     return (
       <Host>
         {this.JSONForm[0] &&
-          this.JSONForm[0].Elements.map(element => {
+          this.JSONForm[0].Elements.map((element) => {
             return (
               <gx-form-field
                 cssClass={this.inputCssClass}
