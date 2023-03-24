@@ -8,7 +8,7 @@ import {
   State,
   h,
   Host,
-  Watch,
+  Watch
 } from "@stencil/core";
 import { Component as GxComponent, GridMapElement } from "../common/interfaces";
 import {
@@ -23,7 +23,7 @@ import {
   Polyline,
   polyline,
   tileLayer,
-  TileLayer,
+  TileLayer
 } from "leaflet";
 
 import { MarkerClusterGroup } from "leaflet.markercluster";
@@ -45,7 +45,7 @@ type GridMapElementInstance = Marker | Circle | Polygon | Polyline;
 @Component({
   shadow: false,
   styleUrl: "map.scss",
-  tag: "gx-map",
+  tag: "gx-map"
 })
 export class GridMap implements GxComponent {
   private map: LFMap;
@@ -64,7 +64,7 @@ export class GridMap implements GxComponent {
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
     satellite:
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-    standard: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    standard: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   };
   private tileLayerApplied: TileLayer;
   private showMyLocationId: number;
@@ -347,12 +347,12 @@ export class GridMap implements GxComponent {
     // Normally the way to use it is L.Control.Draw
     const drawControl = new Control.Draw({
       edit: {
-        featureGroup: drawnItems,
-      },
+        featureGroup: drawnItems
+      }
     });
     this.map.addControl(drawControl);
 
-    this.map.on("draw:created", function (e) {
+    this.map.on("draw:created", function(e) {
       console.log("created", e);
     });
   }
@@ -481,7 +481,7 @@ export class GridMap implements GxComponent {
       this.mapTypesProviders.standard;
 
     const tileLayerToApply = tileLayer(mapProviderToRender, {
-      maxZoom: MAX_ZOOM_LEVEL,
+      maxZoom: MAX_ZOOM_LEVEL
     });
     tileLayerToApply.addTo(this.map);
     this.tileLayerApplied = tileLayerToApply;
@@ -557,9 +557,9 @@ export class GridMap implements GxComponent {
     if (this.showMyLocation) {
       this.showMyLocationId = watchPosition(
         this.setUserLocation,
-        (err) => console.error(err),
+        err => console.error(err),
         {
-          enableHighAccuracy: this.highAccuracyLocator,
+          enableHighAccuracy: this.highAccuracyLocator
         }
       );
     }
@@ -571,10 +571,13 @@ export class GridMap implements GxComponent {
    * @returns Array of latLong coordinates. Example: [[-56.18565, -34.90555],[-56.1859, -34.90558],[-56.18645, -34.90561]]
    */
   private wktToPolyline(lineString: string) {
-    const wktString = lineString.split("(").pop().slice(0, -1);
+    const wktString = lineString
+      .split("(")
+      .pop()
+      .slice(0, -1);
     const wktArray = wktString.split(",");
     const polyline = [];
-    wktArray.forEach((element) => {
+    wktArray.forEach(element => {
       element = element.trim();
       const latLng = element.split(" ");
       polyline.push([parseFloat(latLng[0]), parseFloat(latLng[1])]);
@@ -588,11 +591,11 @@ export class GridMap implements GxComponent {
     // Depending on the coordinates, set different view types
     if (this.center != undefined) {
       this.map = leafletMap(this.divMapView, {
-        scrollWheelZoom: this.scrollWheelZoom,
+        scrollWheelZoom: this.scrollWheelZoom
       }).setView(this.fromStringToLatLngTuple(this.center), this.zoom);
     } else {
       this.map = leafletMap(this.divMapView, {
-        scrollWheelZoom: this.scrollWheelZoom,
+        scrollWheelZoom: this.scrollWheelZoom
       }).setView([0, 0], this.getZoomLevel());
     }
 
@@ -631,7 +634,7 @@ export class GridMap implements GxComponent {
     }
 
     // @ts-expect-error @todo TODO: Improve typing
-    this.addMapListener("popupopen", function (e) {
+    this.addMapListener("popupopen", function(e) {
       const px = this.project(e.target._popup._latlng);
       px.y -= e.target._popup._container.clientHeight / 2;
       this.panTo(this.unproject(px), { animate: true });
@@ -666,7 +669,7 @@ export class GridMap implements GxComponent {
 
         <div
           class="gxMap"
-          ref={(el) => (this.divMapView = el as HTMLDivElement)}
+          ref={el => (this.divMapView = el as HTMLDivElement)}
         ></div>
       </Host>
     );

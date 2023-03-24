@@ -4,7 +4,7 @@ import {
   Event,
   EventEmitter,
   h,
-  Prop,
+  Prop
 } from "@stencil/core";
 import { Component as GxComponent, GridMapElement } from "../common/interfaces";
 import { polyline, Polyline } from "leaflet";
@@ -12,7 +12,7 @@ import { parseCoords } from "../common/coordsValidate";
 let autoLineId = 0;
 @Component({
   shadow: false,
-  tag: "gx-map-line",
+  tag: "gx-map-line"
 })
 export class GridMapLine implements GxComponent {
   @Element() element: HTMLGxMapLineElement;
@@ -41,7 +41,7 @@ export class GridMapLine implements GxComponent {
   private setupLine(coords) {
     this.lineInstance = polyline(coords, {
       color: "red",
-      weight: 3,
+      weight: 3
     });
   }
   componentWillLoad() {
@@ -64,7 +64,7 @@ export class GridMapLine implements GxComponent {
     }
     this.gxMapLineDidLoad.emit({
       id: this.lineId,
-      instance: this.lineInstance,
+      instance: this.lineInstance
     });
   }
 
