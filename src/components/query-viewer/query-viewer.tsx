@@ -5,7 +5,7 @@ import {
   Listen,
   Prop,
   State,
-  h,
+  h
 } from "@stencil/core";
 
 import { Component as GxComponent } from "../common/interfaces";
@@ -69,12 +69,12 @@ interface ConditionalStyle {
 @Component({
   tag: "gx-query-viewer",
   styleUrl: "query-viewer.scss",
-  shadow: false,
+  shadow: false
 })
 export class QueryViewer implements GxComponent {
   private mapServices = {
     net: "gxqueryviewerforsd.aspx",
-    java: "qviewer.services.gxqueryviewerforsd",
+    java: "qviewer.services.gxqueryviewerforsd"
   };
   private propsNotToPost = [
     "baseUrl",
@@ -85,7 +85,7 @@ export class QueryViewer implements GxComponent {
     "propsNotToPost",
     "parameters",
     "elements",
-    "dataVersionId",
+    "dataVersionId"
   ];
   private objectCall: Array<string>;
   private configurationObserver = new MutationObserver(() => {
@@ -341,7 +341,7 @@ export class QueryViewer implements GxComponent {
   componentDidLoad() {
     this.configurationObserver.observe(this.element, {
       childList: true,
-      subtree: true,
+      subtree: true
     });
   }
 
@@ -382,12 +382,12 @@ export class QueryViewer implements GxComponent {
 
     return [
       ...Object.keys(QueryViewer.prototype)
-        .filter((key) => !this.propsNotToPost.includes(key))
+        .filter(key => !this.propsNotToPost.includes(key))
         // @ts-expect-error @todo TODO: Improve typing
-        .map((key) => <input type="hidden" name={key} value={this[key]} />),
+        .map(key => <input type="hidden" name={key} value={this[key]} />),
 
       <input type="hidden" name="Elements" value={this.elements} />,
-      <input type="hidden" name="Parameters" value={this.parameters} />,
+      <input type="hidden" name="Parameters" value={this.parameters} />
     ];
   }
 
@@ -395,10 +395,10 @@ export class QueryViewer implements GxComponent {
     const parametersValue: ParameterValue[] = [];
 
     if (this.hasObjectCall()) {
-      this.objectCall.slice(2).forEach((value) => {
+      this.objectCall.slice(2).forEach(value => {
         const parameterObject: ParameterValue = {
           Value: encodeURIComponent(value),
-          Name: "",
+          Name: ""
         };
         parametersValue.push(parameterObject);
       });
@@ -406,10 +406,10 @@ export class QueryViewer implements GxComponent {
       const parameters = Array.from(
         document.getElementsByTagName("gx-query-viewer-parameter")
       );
-      parameters.forEach((parameter) => {
+      parameters.forEach(parameter => {
         const parameterObject: ParameterValue = {
           Value: encodeURIComponent(parameter.Value),
-          Name: parameter.Name,
+          Name: parameter.Name
         };
         parametersValue.push(parameterObject);
       });
@@ -423,7 +423,7 @@ export class QueryViewer implements GxComponent {
     const elements = Array.from(
       document.getElementsByTagName("gx-query-viewer-element")
     );
-    elements.forEach((ax) => {
+    elements.forEach(ax => {
       const elementObjectValue: ElementValue = {
         Name: ax.name,
         Title: ax.elementTitle,
@@ -431,7 +431,7 @@ export class QueryViewer implements GxComponent {
         Type: ax.type,
         Axis: ax.axis,
         Aggregation: ax.aggregation,
-        DataField: ax.dataField,
+        DataField: ax.dataField
       };
 
       if (ax.axisOrderType) {
@@ -467,14 +467,14 @@ export class QueryViewer implements GxComponent {
         ax.getElementsByTagName("gx-query-viewer-element-format")
       );
 
-      formats.forEach((format) => {
+      formats.forEach(format => {
         const formatObject: Format = {
           Picture: format.picture,
           Subtotals: format.subtotals,
           CanDragToPages: format.canDragToPages,
           Style: format.formatStyle,
           TargetValue: format.targetValue,
-          MaximumValue: format.maximumValue,
+          MaximumValue: format.maximumValue
         };
 
         const styles = Array.from(
@@ -484,12 +484,12 @@ export class QueryViewer implements GxComponent {
         const valuesStyles: ValueStyle[] = [];
         const conditionalStyles: ConditionalStyle[] = [];
 
-        styles.forEach((style) => {
+        styles.forEach(style => {
           if (style.type === "Values") {
             const valueStyle = {
               Value: style.value,
               ApplyToRowOrColumn: style.applyToRowOrColumn,
-              StyleOrClass: style.styleOrClass,
+              StyleOrClass: style.styleOrClass
             };
             valuesStyles.push(valueStyle);
           } else {
@@ -497,7 +497,7 @@ export class QueryViewer implements GxComponent {
               Value1: style.value1,
               Value2: style.value2,
               Operator: style.operator,
-              StyleOrClass: style.styleOrClass,
+              StyleOrClass: style.styleOrClass
             };
             conditionalStyles.push(conditionalStyle);
           }
@@ -523,27 +523,27 @@ export class QueryViewer implements GxComponent {
     const grouping = () => ({
       ...(ax.groupingGroupByYear && { GroupByYear: ax.groupingGroupByYear }),
       ...(ax.groupingYearTitle && {
-        YearTitle: ax.groupingYearTitle,
+        YearTitle: ax.groupingYearTitle
       }),
       ...(ax.groupingGroupBySemester && {
-        GroupBySemester: ax.groupingGroupBySemester,
+        GroupBySemester: ax.groupingGroupBySemester
       }),
       ...(ax.groupingSemesterTitle && {
-        SemesterTitle: ax.groupingSemesterTitle,
+        SemesterTitle: ax.groupingSemesterTitle
       }),
       ...(ax.groupingGroupByQuarter && {
-        GroupByQuarter: ax.groupingGroupByQuarter,
+        GroupByQuarter: ax.groupingGroupByQuarter
       }),
       ...(ax.groupingQuarterTitle && { QuarterTitle: ax.groupingQuarterTitle }),
       ...(ax.groupingGroupByMonth && { GroupByMonth: ax.groupingGroupByMonth }),
       ...(ax.groupingMonthTitle && { MonthTitle: ax.groupingMonthTitle }),
       ...(ax.groupingGroupByDayOfWeek && {
-        GroupByDayOfWeek: ax.groupingGroupByDayOfWeek,
+        GroupByDayOfWeek: ax.groupingGroupByDayOfWeek
       }),
       ...(ax.groupingDayOfWeekTitle && {
-        DayOfWeekTitle: ax.groupingDayOfWeekTitle,
+        DayOfWeekTitle: ax.groupingDayOfWeekTitle
       }),
-      ...(ax.groupingHideValue && { HideValue: ax.groupingHideValue }),
+      ...(ax.groupingHideValue && { HideValue: ax.groupingHideValue })
     });
     return grouping;
   }

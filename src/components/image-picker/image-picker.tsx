@@ -7,7 +7,7 @@ import {
   Prop,
   State,
   Watch,
-  h,
+  h
 } from "@stencil/core";
 
 import { Component as GxComponent } from "../common/interfaces";
@@ -15,7 +15,7 @@ import { Component as GxComponent } from "../common/interfaces";
 @Component({
   shadow: false,
   styleUrl: "image-picker.scss",
-  tag: "gx-image-picker",
+  tag: "gx-image-picker"
 })
 export class ImagePicker implements GxComponent {
   // Used to read the images
@@ -286,7 +286,7 @@ export class ImagePicker implements GxComponent {
 
     this.reader.addEventListener(
       "load",
-      function () {
+      function() {
         // Convert image file to base64 string
         elem.src = this.result.toString();
 
@@ -341,7 +341,7 @@ export class ImagePicker implements GxComponent {
         <gx-modal
           onClose={this.closeAction}
           onClick={this.stopPropagation}
-          ref={(el) => (this.modal = el as HTMLGxModalElement)}
+          ref={el => (this.modal = el as HTMLGxModalElement)}
         >
           <div class="body-container" slot="body">
             <label class="picker-container">
@@ -352,7 +352,7 @@ export class ImagePicker implements GxComponent {
                 type="file"
                 accept="image/*"
                 onChange={this.fileSelectedAction}
-                ref={(el) => (this.input = el as HTMLInputElement)}
+                ref={el => (this.input = el as HTMLInputElement)}
               />
               <svg
                 aria-hidden="true"
@@ -398,7 +398,7 @@ export class ImagePicker implements GxComponent {
               onClick={this.closeAction}
             >
               {this.cancelButtonText}
-            </button>,
+            </button>
           ]}
         </gx-modal>
       </Host>

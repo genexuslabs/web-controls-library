@@ -6,28 +6,27 @@ import {
   Method,
   Prop,
   Watch,
-  h,
+  h
 } from "@stencil/core";
 import bodymovin from "lottie-web/build/player/lottie_light";
 import {
   ClickableComponent,
   Component as GxComponent,
   DisableableComponent,
-  VisibilityComponent,
+  VisibilityComponent
 } from "../common/interfaces";
 
 @Component({
   shadow: true,
   styleUrl: "lottie.scss",
-  tag: "gx-lottie",
+  tag: "gx-lottie"
 })
 export class Lottie
   implements
     GxComponent,
     ClickableComponent,
     VisibilityComponent,
-    DisableableComponent
-{
+    DisableableComponent {
   private animation: any;
   private animationTotalFrames: number;
 
@@ -181,7 +180,7 @@ export class Lottie
       container: this.divContainerToRenderAnimation,
       loop: this.loop,
       path: this.path,
-      renderer: "svg",
+      renderer: "svg"
     });
 
     this.animation.addEventListener(
@@ -196,6 +195,6 @@ export class Lottie
   }
 
   render() {
-    return <div ref={(el) => (this.divContainerToRenderAnimation = el)} />;
+    return <div ref={el => (this.divContainerToRenderAnimation = el)} />;
   }
 }

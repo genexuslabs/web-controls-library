@@ -29,7 +29,7 @@ export const animationData = {
               n: ["0p32_1_0p68_0", "0p32_1_0p68_0", "0p32_0p32_0p68_0p68"],
               t: 14,
               s: [0, 0, 100],
-              e: [9, 9, 100],
+              e: [9, 9, 100]
             },
             {
               i: { x: [0.32, 0.32, 0.32], y: [1, 1, 0.32] },
@@ -37,7 +37,7 @@ export const animationData = {
               n: ["0p32_1_0p68_0", "0p32_1_0p68_0", "0p32_0p32_0p68_0p68"],
               t: 25,
               s: [9, 9, 100],
-              e: [6, 6, 100],
+              e: [6, 6, 100]
             },
             {
               i: { x: [0.32, 0.32, 0.32], y: [1, 1, 0.32] },
@@ -45,11 +45,11 @@ export const animationData = {
               n: ["0p32_1_0p68_0", "0p32_1_0p68_0", "0p32_0p32_0p68_0p68"],
               t: 41,
               s: [6, 6, 100],
-              e: [10, 10, 100],
+              e: [10, 10, 100]
             },
-            { t: 62 },
-          ],
-        },
+            { t: 62 }
+          ]
+        }
       },
       ao: 0,
       shapes: [
@@ -89,7 +89,7 @@ export const animationData = {
                     [2.651, 1.471],
                     [0, 0],
                     [0.289, -0.161],
-                    [0, 0],
+                    [0, 0]
                   ],
                   o: [
                     [-1.578, 0],
@@ -118,7 +118,7 @@ export const animationData = {
                     [0, 0],
                     [-0.288, -0.161],
                     [0, 0],
-                    [-1.191, 0.658],
+                    [-1.191, 0.658]
                   ],
                   v: [
                     [-53.993, 95.484],
@@ -147,13 +147,13 @@ export const animationData = {
                     [50.212, 94.497],
                     [0.454, 66.948],
                     [-0.456, 66.948],
-                    [-50.208, 94.497],
+                    [-50.208, 94.497]
                   ],
-                  c: true,
-                },
+                  c: true
+                }
               },
               nm: "Path 2",
-              mn: "ADBE Vector Shape - Group",
+              mn: "ADBE Vector Shape - Group"
             },
             {
               ty: "fl",
@@ -161,7 +161,7 @@ export const animationData = {
               o: { a: 0, k: 100 },
               r: 1,
               nm: "Fill 1",
-              mn: "ADBE Vector Graphic - Fill",
+              mn: "ADBE Vector Graphic - Fill"
             },
             {
               ty: "tr",
@@ -172,19 +172,19 @@ export const animationData = {
               o: { a: 0, k: 100, ix: 7 },
               sk: { a: 0, k: 0, ix: 4 },
               sa: { a: 0, k: 0, ix: 5 },
-              nm: "Transform",
-            },
+              nm: "Transform"
+            }
           ],
           nm: "Group 1",
           np: 2,
-          mn: "ADBE Vector Group",
-        },
+          mn: "ADBE Vector Group"
+        }
       ],
       ip: 14,
       op: 80,
       st: 14,
       bm: 0,
-      sr: 1,
+      sr: 1
     },
     {
       ddd: 0,
@@ -196,7 +196,7 @@ export const animationData = {
         r: { a: 0, k: 0 },
         p: { a: 0, k: [22.385, 21.344, 0] },
         a: { a: 0, k: [125, 125, 0] },
-        s: { a: 0, k: [10, 10, 100] },
+        s: { a: 0, k: [10, 10, 100] }
       },
       ao: 0,
       shapes: [
@@ -236,7 +236,7 @@ export const animationData = {
                     [2.651, 1.471],
                     [0, 0],
                     [0.289, -0.161],
-                    [0, 0],
+                    [0, 0]
                   ],
                   o: [
                     [-1.578, 0],
@@ -265,7 +265,7 @@ export const animationData = {
                     [0, 0],
                     [-0.288, -0.161],
                     [0, 0],
-                    [-1.191, 0.658],
+                    [-1.191, 0.658]
                   ],
                   v: [
                     [-53.993, 95.484],
@@ -294,13 +294,13 @@ export const animationData = {
                     [50.212, 94.497],
                     [0.454, 66.948],
                     [-0.456, 66.948],
-                    [-50.208, 94.497],
+                    [-50.208, 94.497]
                   ],
-                  c: true,
-                },
+                  c: true
+                }
               },
               nm: "Path 2",
-              mn: "ADBE Vector Shape - Group",
+              mn: "ADBE Vector Shape - Group"
             },
             {
               ty: "st",
@@ -311,7 +311,7 @@ export const animationData = {
               lj: 1,
               ml: 4,
               nm: "Stroke 1",
-              mn: "ADBE Vector Graphic - Stroke",
+              mn: "ADBE Vector Graphic - Stroke"
             },
             {
               ty: "tr",
@@ -322,19 +322,19 @@ export const animationData = {
               o: { a: 0, k: 100, ix: 7 },
               sk: { a: 0, k: 0, ix: 4 },
               sa: { a: 0, k: 0, ix: 5 },
-              nm: "Transform",
-            },
+              nm: "Transform"
+            }
           ],
           nm: "Group 1",
           np: 2,
-          mn: "ADBE Vector Group",
-        },
+          mn: "ADBE Vector Group"
+        }
       ],
       ip: 0,
       op: 4,
       st: -29,
       bm: 0,
-      sr: 1,
+      sr: 1
     },
     {
       ddd: 0,
@@ -346,7 +346,7 @@ export const animationData = {
         r: { a: 0, k: -320 },
         p: { a: 0, k: [22, 22, 0] },
         a: { a: 0, k: [0, 0, 0] },
-        s: { a: 0, k: [40, 40, 100] },
+        s: { a: 0, k: [40, 40, 100] }
       },
       ao: 0,
       shapes: [
@@ -361,21 +361,21 @@ export const animationData = {
                 k: {
                   i: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   o: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   v: [
                     [-37.5, -40.5],
-                    [-1, 0.5],
+                    [-1, 0.5]
                   ],
-                  c: false,
-                },
+                  c: false
+                }
               },
               nm: "Path 1",
-              mn: "ADBE Vector Shape - Group",
+              mn: "ADBE Vector Shape - Group"
             },
             {
               ty: "tm",
@@ -388,7 +388,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [47],
-                    e: [29],
+                    e: [29]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -396,11 +396,11 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [29],
-                    e: [9],
+                    e: [9]
                   },
-                  { t: 49 },
+                  { t: 49 }
                 ],
-                ix: 1,
+                ix: 1
               },
               e: {
                 a: 1,
@@ -411,7 +411,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [48],
-                    e: [30],
+                    e: [30]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -419,17 +419,17 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [30],
-                    e: [10],
+                    e: [10]
                   },
-                  { t: 49 },
+                  { t: 49 }
                 ],
-                ix: 2,
+                ix: 2
               },
               o: { a: 0, k: 0, ix: 3 },
               m: 1,
               ix: 2,
               nm: "Trim Paths 1",
-              mn: "ADBE Vector Filter - Trim",
+              mn: "ADBE Vector Filter - Trim"
             },
             {
               ty: "st",
@@ -442,10 +442,10 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [0.941, 0.561, 0, 1],
-                    e: [0.173, 0.569, 0.788, 1],
+                    e: [0.173, 0.569, 0.788, 1]
                   },
-                  { t: 27 },
-                ],
+                  { t: 27 }
+                ]
               },
               o: { a: 0, k: 100 },
               w: {
@@ -457,7 +457,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [5],
-                    e: [2],
+                    e: [2]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -465,16 +465,16 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [2],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 41 },
-                ],
+                  { t: 41 }
+                ]
               },
               lc: 2,
               lj: 1,
               ml: 4,
               nm: "Stroke 1",
-              mn: "ADBE Vector Graphic - Stroke",
+              mn: "ADBE Vector Graphic - Stroke"
             },
             {
               ty: "tr",
@@ -485,19 +485,19 @@ export const animationData = {
               o: { a: 0, k: 100, ix: 7 },
               sk: { a: 0, k: 0, ix: 4 },
               sa: { a: 0, k: 0, ix: 5 },
-              nm: "Transform",
-            },
+              nm: "Transform"
+            }
           ],
           nm: "Shape 1",
           np: 3,
-          mn: "ADBE Vector Group",
-        },
+          mn: "ADBE Vector Group"
+        }
       ],
       ip: 15,
       op: 61,
       st: -73,
       bm: 0,
-      sr: 1,
+      sr: 1
     },
     {
       ddd: 0,
@@ -509,7 +509,7 @@ export const animationData = {
         r: { a: 0, k: -306.6 },
         p: { a: 0, k: [22, 22, 0] },
         a: { a: 0, k: [0, 0, 0] },
-        s: { a: 0, k: [40, 40, 100] },
+        s: { a: 0, k: [40, 40, 100] }
       },
       ao: 0,
       shapes: [
@@ -524,21 +524,21 @@ export const animationData = {
                 k: {
                   i: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   o: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   v: [
                     [-37.5, -40.5],
-                    [-1, 0.5],
+                    [-1, 0.5]
                   ],
-                  c: false,
-                },
+                  c: false
+                }
               },
               nm: "Path 1",
-              mn: "ADBE Vector Shape - Group",
+              mn: "ADBE Vector Shape - Group"
             },
             {
               ty: "tm",
@@ -551,7 +551,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [44],
-                    e: [19],
+                    e: [19]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -559,11 +559,11 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [19],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 60 },
+                  { t: 60 }
                 ],
-                ix: 1,
+                ix: 1
               },
               e: {
                 a: 1,
@@ -574,7 +574,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [45],
-                    e: [20],
+                    e: [20]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -582,17 +582,17 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [20],
-                    e: [1],
+                    e: [1]
                   },
-                  { t: 60 },
+                  { t: 60 }
                 ],
-                ix: 2,
+                ix: 2
               },
               o: { a: 0, k: 0, ix: 3 },
               m: 1,
               ix: 2,
               nm: "Trim Paths 1",
-              mn: "ADBE Vector Filter - Trim",
+              mn: "ADBE Vector Filter - Trim"
             },
             {
               ty: "st",
@@ -605,10 +605,10 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [0.941, 0.561, 0, 1],
-                    e: [0.173, 0.569, 0.788, 1],
+                    e: [0.173, 0.569, 0.788, 1]
                   },
-                  { t: 27 },
-                ],
+                  { t: 27 }
+                ]
               },
               o: { a: 0, k: 100 },
               w: {
@@ -620,16 +620,16 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [5],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 60 },
-                ],
+                  { t: 60 }
+                ]
               },
               lc: 2,
               lj: 1,
               ml: 4,
               nm: "Stroke 1",
-              mn: "ADBE Vector Graphic - Stroke",
+              mn: "ADBE Vector Graphic - Stroke"
             },
             {
               ty: "tr",
@@ -640,19 +640,19 @@ export const animationData = {
               o: { a: 0, k: 100, ix: 7 },
               sk: { a: 0, k: 0, ix: 4 },
               sa: { a: 0, k: 0, ix: 5 },
-              nm: "Transform",
-            },
+              nm: "Transform"
+            }
           ],
           nm: "Shape 1",
           np: 3,
-          mn: "ADBE Vector Group",
-        },
+          mn: "ADBE Vector Group"
+        }
       ],
       ip: 15,
       op: 61,
       st: -73,
       bm: 0,
-      sr: 1,
+      sr: 1
     },
     {
       ddd: 0,
@@ -664,7 +664,7 @@ export const animationData = {
         r: { a: 0, k: -271.7 },
         p: { a: 0, k: [22, 22, 0] },
         a: { a: 0, k: [0, 0, 0] },
-        s: { a: 0, k: [40, 40, 100] },
+        s: { a: 0, k: [40, 40, 100] }
       },
       ao: 0,
       shapes: [
@@ -679,21 +679,21 @@ export const animationData = {
                 k: {
                   i: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   o: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   v: [
                     [-37.5, -40.5],
-                    [-1, 0.5],
+                    [-1, 0.5]
                   ],
-                  c: false,
-                },
+                  c: false
+                }
               },
               nm: "Path 1",
-              mn: "ADBE Vector Shape - Group",
+              mn: "ADBE Vector Shape - Group"
             },
             {
               ty: "tm",
@@ -706,7 +706,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [47],
-                    e: [29],
+                    e: [29]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -714,11 +714,11 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [29],
-                    e: [9],
+                    e: [9]
                   },
-                  { t: 49 },
+                  { t: 49 }
                 ],
-                ix: 1,
+                ix: 1
               },
               e: {
                 a: 1,
@@ -729,7 +729,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [48],
-                    e: [30],
+                    e: [30]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -737,17 +737,17 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [30],
-                    e: [10],
+                    e: [10]
                   },
-                  { t: 49 },
+                  { t: 49 }
                 ],
-                ix: 2,
+                ix: 2
               },
               o: { a: 0, k: 0, ix: 3 },
               m: 1,
               ix: 2,
               nm: "Trim Paths 1",
-              mn: "ADBE Vector Filter - Trim",
+              mn: "ADBE Vector Filter - Trim"
             },
             {
               ty: "st",
@@ -760,10 +760,10 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [0.941, 0.561, 0, 1],
-                    e: [0.173, 0.569, 0.788, 1],
+                    e: [0.173, 0.569, 0.788, 1]
                   },
-                  { t: 27 },
-                ],
+                  { t: 27 }
+                ]
               },
               o: { a: 0, k: 100 },
               w: {
@@ -775,7 +775,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [5],
-                    e: [2],
+                    e: [2]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -783,16 +783,16 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [2],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 41 },
-                ],
+                  { t: 41 }
+                ]
               },
               lc: 2,
               lj: 1,
               ml: 4,
               nm: "Stroke 1",
-              mn: "ADBE Vector Graphic - Stroke",
+              mn: "ADBE Vector Graphic - Stroke"
             },
             {
               ty: "tr",
@@ -803,19 +803,19 @@ export const animationData = {
               o: { a: 0, k: 100, ix: 7 },
               sk: { a: 0, k: 0, ix: 4 },
               sa: { a: 0, k: 0, ix: 5 },
-              nm: "Transform",
-            },
+              nm: "Transform"
+            }
           ],
           nm: "Shape 1",
           np: 3,
-          mn: "ADBE Vector Group",
-        },
+          mn: "ADBE Vector Group"
+        }
       ],
       ip: 15,
       op: 61,
       st: -73,
       bm: 0,
-      sr: 1,
+      sr: 1
     },
     {
       ddd: 0,
@@ -827,7 +827,7 @@ export const animationData = {
         r: { a: 0, k: -258.3 },
         p: { a: 0, k: [22, 22, 0] },
         a: { a: 0, k: [0, 0, 0] },
-        s: { a: 0, k: [40, 40, 100] },
+        s: { a: 0, k: [40, 40, 100] }
       },
       ao: 0,
       shapes: [
@@ -842,21 +842,21 @@ export const animationData = {
                 k: {
                   i: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   o: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   v: [
                     [-37.5, -40.5],
-                    [-1, 0.5],
+                    [-1, 0.5]
                   ],
-                  c: false,
-                },
+                  c: false
+                }
               },
               nm: "Path 1",
-              mn: "ADBE Vector Shape - Group",
+              mn: "ADBE Vector Shape - Group"
             },
             {
               ty: "tm",
@@ -869,7 +869,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [44],
-                    e: [19],
+                    e: [19]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -877,11 +877,11 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [19],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 60 },
+                  { t: 60 }
                 ],
-                ix: 1,
+                ix: 1
               },
               e: {
                 a: 1,
@@ -892,7 +892,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [45],
-                    e: [20],
+                    e: [20]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -900,17 +900,17 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [20],
-                    e: [1],
+                    e: [1]
                   },
-                  { t: 60 },
+                  { t: 60 }
                 ],
-                ix: 2,
+                ix: 2
               },
               o: { a: 0, k: 0, ix: 3 },
               m: 1,
               ix: 2,
               nm: "Trim Paths 1",
-              mn: "ADBE Vector Filter - Trim",
+              mn: "ADBE Vector Filter - Trim"
             },
             {
               ty: "st",
@@ -923,10 +923,10 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [0.941, 0.561, 0, 1],
-                    e: [0.392, 0.659, 0.086, 1],
+                    e: [0.392, 0.659, 0.086, 1]
                   },
-                  { t: 27 },
-                ],
+                  { t: 27 }
+                ]
               },
               o: { a: 0, k: 100 },
               w: {
@@ -938,16 +938,16 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [5],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 60 },
-                ],
+                  { t: 60 }
+                ]
               },
               lc: 2,
               lj: 1,
               ml: 4,
               nm: "Stroke 1",
-              mn: "ADBE Vector Graphic - Stroke",
+              mn: "ADBE Vector Graphic - Stroke"
             },
             {
               ty: "tr",
@@ -958,19 +958,19 @@ export const animationData = {
               o: { a: 0, k: 100, ix: 7 },
               sk: { a: 0, k: 0, ix: 4 },
               sa: { a: 0, k: 0, ix: 5 },
-              nm: "Transform",
-            },
+              nm: "Transform"
+            }
           ],
           nm: "Shape 1",
           np: 3,
-          mn: "ADBE Vector Group",
-        },
+          mn: "ADBE Vector Group"
+        }
       ],
       ip: 15,
       op: 61,
       st: -73,
       bm: 0,
-      sr: 1,
+      sr: 1
     },
     {
       ddd: 0,
@@ -982,7 +982,7 @@ export const animationData = {
         r: { a: 0, k: -220.3 },
         p: { a: 0, k: [22, 22, 0] },
         a: { a: 0, k: [0, 0, 0] },
-        s: { a: 0, k: [40, 40, 100] },
+        s: { a: 0, k: [40, 40, 100] }
       },
       ao: 0,
       shapes: [
@@ -997,21 +997,21 @@ export const animationData = {
                 k: {
                   i: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   o: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   v: [
                     [-37.5, -40.5],
-                    [-1, 0.5],
+                    [-1, 0.5]
                   ],
-                  c: false,
-                },
+                  c: false
+                }
               },
               nm: "Path 1",
-              mn: "ADBE Vector Shape - Group",
+              mn: "ADBE Vector Shape - Group"
             },
             {
               ty: "tm",
@@ -1024,7 +1024,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [47],
-                    e: [29],
+                    e: [29]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -1032,11 +1032,11 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [29],
-                    e: [9],
+                    e: [9]
                   },
-                  { t: 49 },
+                  { t: 49 }
                 ],
-                ix: 1,
+                ix: 1
               },
               e: {
                 a: 1,
@@ -1047,7 +1047,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [48],
-                    e: [30],
+                    e: [30]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -1055,17 +1055,17 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [30],
-                    e: [10],
+                    e: [10]
                   },
-                  { t: 49 },
+                  { t: 49 }
                 ],
-                ix: 2,
+                ix: 2
               },
               o: { a: 0, k: 0, ix: 3 },
               m: 1,
               ix: 2,
               nm: "Trim Paths 1",
-              mn: "ADBE Vector Filter - Trim",
+              mn: "ADBE Vector Filter - Trim"
             },
             {
               ty: "st",
@@ -1078,10 +1078,10 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [0.941, 0.561, 0, 1],
-                    e: [0.173, 0.569, 0.788, 1],
+                    e: [0.173, 0.569, 0.788, 1]
                   },
-                  { t: 27 },
-                ],
+                  { t: 27 }
+                ]
               },
               o: { a: 0, k: 100 },
               w: {
@@ -1093,7 +1093,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [5],
-                    e: [2],
+                    e: [2]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -1101,16 +1101,16 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [2],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 41 },
-                ],
+                  { t: 41 }
+                ]
               },
               lc: 2,
               lj: 1,
               ml: 4,
               nm: "Stroke 1",
-              mn: "ADBE Vector Graphic - Stroke",
+              mn: "ADBE Vector Graphic - Stroke"
             },
             {
               ty: "tr",
@@ -1121,19 +1121,19 @@ export const animationData = {
               o: { a: 0, k: 100, ix: 7 },
               sk: { a: 0, k: 0, ix: 4 },
               sa: { a: 0, k: 0, ix: 5 },
-              nm: "Transform",
-            },
+              nm: "Transform"
+            }
           ],
           nm: "Shape 1",
           np: 3,
-          mn: "ADBE Vector Group",
-        },
+          mn: "ADBE Vector Group"
+        }
       ],
       ip: 15,
       op: 61,
       st: -73,
       bm: 0,
-      sr: 1,
+      sr: 1
     },
     {
       ddd: 0,
@@ -1145,7 +1145,7 @@ export const animationData = {
         r: { a: 0, k: -206.9 },
         p: { a: 0, k: [22, 22, 0] },
         a: { a: 0, k: [0, 0, 0] },
-        s: { a: 0, k: [40, 40, 100] },
+        s: { a: 0, k: [40, 40, 100] }
       },
       ao: 0,
       shapes: [
@@ -1160,21 +1160,21 @@ export const animationData = {
                 k: {
                   i: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   o: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   v: [
                     [-37.5, -40.5],
-                    [-1, 0.5],
+                    [-1, 0.5]
                   ],
-                  c: false,
-                },
+                  c: false
+                }
               },
               nm: "Path 1",
-              mn: "ADBE Vector Shape - Group",
+              mn: "ADBE Vector Shape - Group"
             },
             {
               ty: "tm",
@@ -1187,7 +1187,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [44],
-                    e: [19],
+                    e: [19]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -1195,11 +1195,11 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [19],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 60 },
+                  { t: 60 }
                 ],
-                ix: 1,
+                ix: 1
               },
               e: {
                 a: 1,
@@ -1210,7 +1210,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [45],
-                    e: [20],
+                    e: [20]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -1218,17 +1218,17 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [20],
-                    e: [1],
+                    e: [1]
                   },
-                  { t: 60 },
+                  { t: 60 }
                 ],
-                ix: 2,
+                ix: 2
               },
               o: { a: 0, k: 0, ix: 3 },
               m: 1,
               ix: 2,
               nm: "Trim Paths 1",
-              mn: "ADBE Vector Filter - Trim",
+              mn: "ADBE Vector Filter - Trim"
             },
             {
               ty: "st",
@@ -1241,7 +1241,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: -29,
                     s: [0.941, 0.561, 0, 1],
-                    e: [0.392, 0.659, 0.086, 1],
+                    e: [0.392, 0.659, 0.086, 1]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -1249,10 +1249,10 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [0.392, 0.659, 0.086, 1],
-                    e: [0.173, 0.569, 0.788, 1],
+                    e: [0.173, 0.569, 0.788, 1]
                   },
-                  { t: 37 },
-                ],
+                  { t: 37 }
+                ]
               },
               o: { a: 0, k: 100 },
               w: {
@@ -1264,16 +1264,16 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [5],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 60 },
-                ],
+                  { t: 60 }
+                ]
               },
               lc: 2,
               lj: 1,
               ml: 4,
               nm: "Stroke 1",
-              mn: "ADBE Vector Graphic - Stroke",
+              mn: "ADBE Vector Graphic - Stroke"
             },
             {
               ty: "tm",
@@ -1283,7 +1283,7 @@ export const animationData = {
               m: 1,
               ix: 4,
               nm: "Trim Paths 2",
-              mn: "ADBE Vector Filter - Trim",
+              mn: "ADBE Vector Filter - Trim"
             },
             {
               ty: "tr",
@@ -1294,19 +1294,19 @@ export const animationData = {
               o: { a: 0, k: 100, ix: 7 },
               sk: { a: 0, k: 0, ix: 4 },
               sa: { a: 0, k: 0, ix: 5 },
-              nm: "Transform",
-            },
+              nm: "Transform"
+            }
           ],
           nm: "Shape 1",
           np: 4,
-          mn: "ADBE Vector Group",
-        },
+          mn: "ADBE Vector Group"
+        }
       ],
       ip: 15,
       op: 61,
       st: -73,
       bm: 0,
-      sr: 1,
+      sr: 1
     },
     {
       ddd: 0,
@@ -1318,7 +1318,7 @@ export const animationData = {
         r: { a: 0, k: -168.2 },
         p: { a: 0, k: [22, 22, 0] },
         a: { a: 0, k: [0, 0, 0] },
-        s: { a: 0, k: [40, 40, 100] },
+        s: { a: 0, k: [40, 40, 100] }
       },
       ao: 0,
       shapes: [
@@ -1333,21 +1333,21 @@ export const animationData = {
                 k: {
                   i: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   o: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   v: [
                     [-37.5, -40.5],
-                    [-1, 0.5],
+                    [-1, 0.5]
                   ],
-                  c: false,
-                },
+                  c: false
+                }
               },
               nm: "Path 1",
-              mn: "ADBE Vector Shape - Group",
+              mn: "ADBE Vector Shape - Group"
             },
             {
               ty: "tm",
@@ -1360,7 +1360,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [47],
-                    e: [29],
+                    e: [29]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -1368,11 +1368,11 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [29],
-                    e: [9],
+                    e: [9]
                   },
-                  { t: 49 },
+                  { t: 49 }
                 ],
-                ix: 1,
+                ix: 1
               },
               e: {
                 a: 1,
@@ -1383,7 +1383,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [48],
-                    e: [30],
+                    e: [30]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -1391,17 +1391,17 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [30],
-                    e: [10],
+                    e: [10]
                   },
-                  { t: 49 },
+                  { t: 49 }
                 ],
-                ix: 2,
+                ix: 2
               },
               o: { a: 0, k: 0, ix: 3 },
               m: 1,
               ix: 2,
               nm: "Trim Paths 1",
-              mn: "ADBE Vector Filter - Trim",
+              mn: "ADBE Vector Filter - Trim"
             },
             {
               ty: "st",
@@ -1414,10 +1414,10 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [0.173, 0.569, 0.788, 1],
-                    e: [0.941, 0.561, 0, 1],
+                    e: [0.941, 0.561, 0, 1]
                   },
-                  { t: 27 },
-                ],
+                  { t: 27 }
+                ]
               },
               o: { a: 0, k: 100 },
               w: {
@@ -1429,7 +1429,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [5],
-                    e: [2],
+                    e: [2]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -1437,16 +1437,16 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [2],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 41 },
-                ],
+                  { t: 41 }
+                ]
               },
               lc: 2,
               lj: 1,
               ml: 4,
               nm: "Stroke 1",
-              mn: "ADBE Vector Graphic - Stroke",
+              mn: "ADBE Vector Graphic - Stroke"
             },
             {
               ty: "tr",
@@ -1457,19 +1457,19 @@ export const animationData = {
               o: { a: 0, k: 100, ix: 7 },
               sk: { a: 0, k: 0, ix: 4 },
               sa: { a: 0, k: 0, ix: 5 },
-              nm: "Transform",
-            },
+              nm: "Transform"
+            }
           ],
           nm: "Shape 1",
           np: 3,
-          mn: "ADBE Vector Group",
-        },
+          mn: "ADBE Vector Group"
+        }
       ],
       ip: 15,
       op: 61,
       st: -73,
       bm: 0,
-      sr: 1,
+      sr: 1
     },
     {
       ddd: 0,
@@ -1481,7 +1481,7 @@ export const animationData = {
         r: { a: 0, k: -154.8 },
         p: { a: 0, k: [22, 22, 0] },
         a: { a: 0, k: [0, 0, 0] },
-        s: { a: 0, k: [40, 40, 100] },
+        s: { a: 0, k: [40, 40, 100] }
       },
       ao: 0,
       shapes: [
@@ -1496,21 +1496,21 @@ export const animationData = {
                 k: {
                   i: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   o: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   v: [
                     [-37.5, -40.5],
-                    [-1, 0.5],
+                    [-1, 0.5]
                   ],
-                  c: false,
-                },
+                  c: false
+                }
               },
               nm: "Path 1",
-              mn: "ADBE Vector Shape - Group",
+              mn: "ADBE Vector Shape - Group"
             },
             {
               ty: "tm",
@@ -1523,7 +1523,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [44],
-                    e: [19],
+                    e: [19]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -1531,11 +1531,11 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [19],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 60 },
+                  { t: 60 }
                 ],
-                ix: 1,
+                ix: 1
               },
               e: {
                 a: 1,
@@ -1546,7 +1546,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [45],
-                    e: [20],
+                    e: [20]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -1554,17 +1554,17 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [20],
-                    e: [1],
+                    e: [1]
                   },
-                  { t: 60 },
+                  { t: 60 }
                 ],
-                ix: 2,
+                ix: 2
               },
               o: { a: 0, k: 0, ix: 3 },
               m: 1,
               ix: 2,
               nm: "Trim Paths 1",
-              mn: "ADBE Vector Filter - Trim",
+              mn: "ADBE Vector Filter - Trim"
             },
             {
               ty: "st",
@@ -1577,7 +1577,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [0.173, 0.569, 0.788, 1],
-                    e: [0.329, 0.596, 0.8, 1],
+                    e: [0.329, 0.596, 0.8, 1]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -1585,10 +1585,10 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [0.329, 0.596, 0.8, 1],
-                    e: [0.549, 0.275, 0.71, 1],
+                    e: [0.549, 0.275, 0.71, 1]
                   },
-                  { t: 37 },
-                ],
+                  { t: 37 }
+                ]
               },
               o: { a: 0, k: 100 },
               w: {
@@ -1600,16 +1600,16 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [5],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 60 },
-                ],
+                  { t: 60 }
+                ]
               },
               lc: 2,
               lj: 1,
               ml: 4,
               nm: "Stroke 1",
-              mn: "ADBE Vector Graphic - Stroke",
+              mn: "ADBE Vector Graphic - Stroke"
             },
             {
               ty: "tr",
@@ -1620,19 +1620,19 @@ export const animationData = {
               o: { a: 0, k: 100, ix: 7 },
               sk: { a: 0, k: 0, ix: 4 },
               sa: { a: 0, k: 0, ix: 5 },
-              nm: "Transform",
-            },
+              nm: "Transform"
+            }
           ],
           nm: "Shape 1",
           np: 3,
-          mn: "ADBE Vector Group",
-        },
+          mn: "ADBE Vector Group"
+        }
       ],
       ip: 15,
       op: 61,
       st: -73,
       bm: 0,
-      sr: 1,
+      sr: 1
     },
     {
       ddd: 0,
@@ -1644,7 +1644,7 @@ export const animationData = {
         r: { a: 0, k: -117.1 },
         p: { a: 0, k: [22, 22, 0] },
         a: { a: 0, k: [0, 0, 0] },
-        s: { a: 0, k: [40, 40, 100] },
+        s: { a: 0, k: [40, 40, 100] }
       },
       ao: 0,
       shapes: [
@@ -1659,21 +1659,21 @@ export const animationData = {
                 k: {
                   i: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   o: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   v: [
                     [-37.5, -40.5],
-                    [-1, 0.5],
+                    [-1, 0.5]
                   ],
-                  c: false,
-                },
+                  c: false
+                }
               },
               nm: "Path 1",
-              mn: "ADBE Vector Shape - Group",
+              mn: "ADBE Vector Shape - Group"
             },
             {
               ty: "tm",
@@ -1686,7 +1686,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [47],
-                    e: [29],
+                    e: [29]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -1694,11 +1694,11 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [29],
-                    e: [9],
+                    e: [9]
                   },
-                  { t: 49 },
+                  { t: 49 }
                 ],
-                ix: 1,
+                ix: 1
               },
               e: {
                 a: 1,
@@ -1709,7 +1709,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [48],
-                    e: [30],
+                    e: [30]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -1717,17 +1717,17 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [30],
-                    e: [10],
+                    e: [10]
                   },
-                  { t: 49 },
+                  { t: 49 }
                 ],
-                ix: 2,
+                ix: 2
               },
               o: { a: 0, k: 0, ix: 3 },
               m: 1,
               ix: 2,
               nm: "Trim Paths 1",
-              mn: "ADBE Vector Filter - Trim",
+              mn: "ADBE Vector Filter - Trim"
             },
             {
               ty: "st",
@@ -1740,10 +1740,10 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [0.173, 0.569, 0.788, 1],
-                    e: [0.702, 0.843, 0.659, 1],
+                    e: [0.702, 0.843, 0.659, 1]
                   },
-                  { t: 27 },
-                ],
+                  { t: 27 }
+                ]
               },
               o: { a: 0, k: 100 },
               w: {
@@ -1755,7 +1755,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [5],
-                    e: [2],
+                    e: [2]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -1763,16 +1763,16 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [2],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 41 },
-                ],
+                  { t: 41 }
+                ]
               },
               lc: 2,
               lj: 1,
               ml: 4,
               nm: "Stroke 1",
-              mn: "ADBE Vector Graphic - Stroke",
+              mn: "ADBE Vector Graphic - Stroke"
             },
             {
               ty: "tm",
@@ -1782,7 +1782,7 @@ export const animationData = {
               m: 1,
               ix: 4,
               nm: "Trim Paths 2",
-              mn: "ADBE Vector Filter - Trim",
+              mn: "ADBE Vector Filter - Trim"
             },
             {
               ty: "tr",
@@ -1793,19 +1793,19 @@ export const animationData = {
               o: { a: 0, k: 100, ix: 7 },
               sk: { a: 0, k: 0, ix: 4 },
               sa: { a: 0, k: 0, ix: 5 },
-              nm: "Transform",
-            },
+              nm: "Transform"
+            }
           ],
           nm: "Shape 1",
           np: 4,
-          mn: "ADBE Vector Group",
-        },
+          mn: "ADBE Vector Group"
+        }
       ],
       ip: 15,
       op: 61,
       st: -73,
       bm: 0,
-      sr: 1,
+      sr: 1
     },
     {
       ddd: 0,
@@ -1817,7 +1817,7 @@ export const animationData = {
         r: { a: 0, k: -103.7 },
         p: { a: 0, k: [22, 22, 0] },
         a: { a: 0, k: [0, 0, 0] },
-        s: { a: 0, k: [40, 40, 100] },
+        s: { a: 0, k: [40, 40, 100] }
       },
       ao: 0,
       shapes: [
@@ -1832,21 +1832,21 @@ export const animationData = {
                 k: {
                   i: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   o: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   v: [
                     [-37.5, -40.5],
-                    [-1, 0.5],
+                    [-1, 0.5]
                   ],
-                  c: false,
-                },
+                  c: false
+                }
               },
               nm: "Path 1",
-              mn: "ADBE Vector Shape - Group",
+              mn: "ADBE Vector Shape - Group"
             },
             {
               ty: "tm",
@@ -1859,7 +1859,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [44],
-                    e: [19],
+                    e: [19]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -1867,11 +1867,11 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [19],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 60 },
+                  { t: 60 }
                 ],
-                ix: 1,
+                ix: 1
               },
               e: {
                 a: 1,
@@ -1882,7 +1882,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [45],
-                    e: [20],
+                    e: [20]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -1890,17 +1890,17 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [20],
-                    e: [1],
+                    e: [1]
                   },
-                  { t: 60 },
+                  { t: 60 }
                 ],
-                ix: 2,
+                ix: 2
               },
               o: { a: 0, k: 0, ix: 3 },
               m: 1,
               ix: 2,
               nm: "Trim Paths 1",
-              mn: "ADBE Vector Filter - Trim",
+              mn: "ADBE Vector Filter - Trim"
             },
             {
               ty: "st",
@@ -1913,7 +1913,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [0.722, 0.847, 0.949, 1],
-                    e: [0.173, 0.569, 0.788, 1],
+                    e: [0.173, 0.569, 0.788, 1]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -1921,10 +1921,10 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [0.173, 0.569, 0.788, 1],
-                    e: [0.392, 0.659, 0.086, 1],
+                    e: [0.392, 0.659, 0.086, 1]
                   },
-                  { t: 37 },
-                ],
+                  { t: 37 }
+                ]
               },
               o: { a: 0, k: 100 },
               w: {
@@ -1936,16 +1936,16 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [5],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 60 },
-                ],
+                  { t: 60 }
+                ]
               },
               lc: 2,
               lj: 1,
               ml: 4,
               nm: "Stroke 1",
-              mn: "ADBE Vector Graphic - Stroke",
+              mn: "ADBE Vector Graphic - Stroke"
             },
             {
               ty: "tr",
@@ -1956,19 +1956,19 @@ export const animationData = {
               o: { a: 0, k: 100, ix: 7 },
               sk: { a: 0, k: 0, ix: 4 },
               sa: { a: 0, k: 0, ix: 5 },
-              nm: "Transform",
-            },
+              nm: "Transform"
+            }
           ],
           nm: "Shape 1",
           np: 3,
-          mn: "ADBE Vector Group",
-        },
+          mn: "ADBE Vector Group"
+        }
       ],
       ip: 15,
       op: 61,
       st: -73,
       bm: 0,
-      sr: 1,
+      sr: 1
     },
     {
       ddd: 0,
@@ -1980,7 +1980,7 @@ export const animationData = {
         r: { a: 0, k: -69.3 },
         p: { a: 0, k: [22, 22, 0] },
         a: { a: 0, k: [0, 0, 0] },
-        s: { a: 0, k: [40, 40, 100] },
+        s: { a: 0, k: [40, 40, 100] }
       },
       ao: 0,
       shapes: [
@@ -1995,21 +1995,21 @@ export const animationData = {
                 k: {
                   i: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   o: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   v: [
                     [-37.5, -40.5],
-                    [-1, 0.5],
+                    [-1, 0.5]
                   ],
-                  c: false,
-                },
+                  c: false
+                }
               },
               nm: "Path 1",
-              mn: "ADBE Vector Shape - Group",
+              mn: "ADBE Vector Shape - Group"
             },
             {
               ty: "tm",
@@ -2022,7 +2022,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [47],
-                    e: [29],
+                    e: [29]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -2030,11 +2030,11 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [29],
-                    e: [9],
+                    e: [9]
                   },
-                  { t: 49 },
+                  { t: 49 }
                 ],
-                ix: 1,
+                ix: 1
               },
               e: {
                 a: 1,
@@ -2045,7 +2045,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [48],
-                    e: [30],
+                    e: [30]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -2053,17 +2053,17 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [30],
-                    e: [10],
+                    e: [10]
                   },
-                  { t: 49 },
+                  { t: 49 }
                 ],
-                ix: 2,
+                ix: 2
               },
               o: { a: 0, k: 0, ix: 3 },
               m: 1,
               ix: 2,
               nm: "Trim Paths 1",
-              mn: "ADBE Vector Filter - Trim",
+              mn: "ADBE Vector Filter - Trim"
             },
             {
               ty: "st",
@@ -2076,10 +2076,10 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [0.173, 0.569, 0.788, 1],
-                    e: [0.702, 0.847, 0.659, 1],
+                    e: [0.702, 0.847, 0.659, 1]
                   },
-                  { t: 27 },
-                ],
+                  { t: 27 }
+                ]
               },
               o: { a: 0, k: 100 },
               w: {
@@ -2091,7 +2091,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [5],
-                    e: [2],
+                    e: [2]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -2099,16 +2099,16 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [2],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 41 },
-                ],
+                  { t: 41 }
+                ]
               },
               lc: 2,
               lj: 1,
               ml: 4,
               nm: "Stroke 1",
-              mn: "ADBE Vector Graphic - Stroke",
+              mn: "ADBE Vector Graphic - Stroke"
             },
             {
               ty: "tr",
@@ -2119,19 +2119,19 @@ export const animationData = {
               o: { a: 0, k: 100, ix: 7 },
               sk: { a: 0, k: 0, ix: 4 },
               sa: { a: 0, k: 0, ix: 5 },
-              nm: "Transform",
-            },
+              nm: "Transform"
+            }
           ],
           nm: "Shape 1",
           np: 3,
-          mn: "ADBE Vector Group",
-        },
+          mn: "ADBE Vector Group"
+        }
       ],
       ip: 15,
       op: 61,
       st: -73,
       bm: 0,
-      sr: 1,
+      sr: 1
     },
     {
       ddd: 0,
@@ -2143,7 +2143,7 @@ export const animationData = {
         r: { a: 0, k: -55.9 },
         p: { a: 0, k: [22, 22, 0] },
         a: { a: 0, k: [0, 0, 0] },
-        s: { a: 0, k: [40, 40, 100] },
+        s: { a: 0, k: [40, 40, 100] }
       },
       ao: 0,
       shapes: [
@@ -2158,21 +2158,21 @@ export const animationData = {
                 k: {
                   i: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   o: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   v: [
                     [-37.5, -40.5],
-                    [-1, 0.5],
+                    [-1, 0.5]
                   ],
-                  c: false,
-                },
+                  c: false
+                }
               },
               nm: "Path 1",
-              mn: "ADBE Vector Shape - Group",
+              mn: "ADBE Vector Shape - Group"
             },
             {
               ty: "tm",
@@ -2185,7 +2185,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [44],
-                    e: [19],
+                    e: [19]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -2193,11 +2193,11 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [19],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 60 },
+                  { t: 60 }
                 ],
-                ix: 1,
+                ix: 1
               },
               e: {
                 a: 1,
@@ -2208,7 +2208,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [45],
-                    e: [20],
+                    e: [20]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -2216,17 +2216,17 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [20],
-                    e: [1],
+                    e: [1]
                   },
-                  { t: 60 },
+                  { t: 60 }
                 ],
-                ix: 2,
+                ix: 2
               },
               o: { a: 0, k: 0, ix: 3 },
               m: 1,
               ix: 2,
               nm: "Trim Paths 1",
-              mn: "ADBE Vector Filter - Trim",
+              mn: "ADBE Vector Filter - Trim"
             },
             {
               ty: "st",
@@ -2239,7 +2239,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [0.643, 0.812, 0.973, 1],
-                    e: [0.173, 0.569, 0.788, 1],
+                    e: [0.173, 0.569, 0.788, 1]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -2247,10 +2247,10 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [0.173, 0.569, 0.788, 1],
-                    e: [0.549, 0.275, 0.71, 1],
+                    e: [0.549, 0.275, 0.71, 1]
                   },
-                  { t: 37 },
-                ],
+                  { t: 37 }
+                ]
               },
               o: { a: 0, k: 100 },
               w: {
@@ -2262,16 +2262,16 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [5],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 60 },
-                ],
+                  { t: 60 }
+                ]
               },
               lc: 2,
               lj: 1,
               ml: 4,
               nm: "Stroke 1",
-              mn: "ADBE Vector Graphic - Stroke",
+              mn: "ADBE Vector Graphic - Stroke"
             },
             {
               ty: "tr",
@@ -2282,19 +2282,19 @@ export const animationData = {
               o: { a: 0, k: 100, ix: 7 },
               sk: { a: 0, k: 0, ix: 4 },
               sa: { a: 0, k: 0, ix: 5 },
-              nm: "Transform",
-            },
+              nm: "Transform"
+            }
           ],
           nm: "Shape 1",
           np: 3,
-          mn: "ADBE Vector Group",
-        },
+          mn: "ADBE Vector Group"
+        }
       ],
       ip: 15,
       op: 61,
       st: -73,
       bm: 0,
-      sr: 1,
+      sr: 1
     },
     {
       ddd: 0,
@@ -2306,7 +2306,7 @@ export const animationData = {
         r: { a: 0, k: -13.4 },
         p: { a: 0, k: [22, 22, 0] },
         a: { a: 0, k: [0, 0, 0] },
-        s: { a: 0, k: [40, 40, 100] },
+        s: { a: 0, k: [40, 40, 100] }
       },
       ao: 0,
       shapes: [
@@ -2321,21 +2321,21 @@ export const animationData = {
                 k: {
                   i: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   o: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   v: [
                     [-37.5, -40.5],
-                    [-1, 0.5],
+                    [-1, 0.5]
                   ],
-                  c: false,
-                },
+                  c: false
+                }
               },
               nm: "Path 1",
-              mn: "ADBE Vector Shape - Group",
+              mn: "ADBE Vector Shape - Group"
             },
             {
               ty: "tm",
@@ -2348,7 +2348,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [47],
-                    e: [29],
+                    e: [29]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -2356,11 +2356,11 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [29],
-                    e: [9],
+                    e: [9]
                   },
-                  { t: 49 },
+                  { t: 49 }
                 ],
-                ix: 1,
+                ix: 1
               },
               e: {
                 a: 1,
@@ -2371,7 +2371,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [48],
-                    e: [30],
+                    e: [30]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -2379,17 +2379,17 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [30],
-                    e: [10],
+                    e: [10]
                   },
-                  { t: 49 },
+                  { t: 49 }
                 ],
-                ix: 2,
+                ix: 2
               },
               o: { a: 0, k: 0, ix: 3 },
               m: 1,
               ix: 2,
               nm: "Trim Paths 1",
-              mn: "ADBE Vector Filter - Trim",
+              mn: "ADBE Vector Filter - Trim"
             },
             {
               ty: "st",
@@ -2402,10 +2402,10 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [0.173, 0.569, 0.788, 1],
-                    e: [0.631, 0.51, 0.624, 1],
+                    e: [0.631, 0.51, 0.624, 1]
                   },
-                  { t: 27 },
-                ],
+                  { t: 27 }
+                ]
               },
               o: { a: 0, k: 100 },
               w: {
@@ -2417,7 +2417,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [5],
-                    e: [2],
+                    e: [2]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -2425,16 +2425,16 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [2],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 41 },
-                ],
+                  { t: 41 }
+                ]
               },
               lc: 2,
               lj: 1,
               ml: 4,
               nm: "Stroke 1",
-              mn: "ADBE Vector Graphic - Stroke",
+              mn: "ADBE Vector Graphic - Stroke"
             },
             {
               ty: "tr",
@@ -2445,19 +2445,19 @@ export const animationData = {
               o: { a: 0, k: 100, ix: 7 },
               sk: { a: 0, k: 0, ix: 4 },
               sa: { a: 0, k: 0, ix: 5 },
-              nm: "Transform",
-            },
+              nm: "Transform"
+            }
           ],
           nm: "Shape 1",
           np: 3,
-          mn: "ADBE Vector Group",
-        },
+          mn: "ADBE Vector Group"
+        }
       ],
       ip: 15,
       op: 61,
       st: -73,
       bm: 0,
-      sr: 1,
+      sr: 1
     },
     {
       ddd: 0,
@@ -2469,7 +2469,7 @@ export const animationData = {
         r: { a: 0, k: 0 },
         p: { a: 0, k: [22, 22, 0] },
         a: { a: 0, k: [0, 0, 0] },
-        s: { a: 0, k: [40, 40, 100] },
+        s: { a: 0, k: [40, 40, 100] }
       },
       ao: 0,
       shapes: [
@@ -2484,21 +2484,21 @@ export const animationData = {
                 k: {
                   i: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   o: [
                     [0, 0],
-                    [0, 0],
+                    [0, 0]
                   ],
                   v: [
                     [-37.5, -40.5],
-                    [-1, 0.5],
+                    [-1, 0.5]
                   ],
-                  c: false,
-                },
+                  c: false
+                }
               },
               nm: "Path 1",
-              mn: "ADBE Vector Shape - Group",
+              mn: "ADBE Vector Shape - Group"
             },
             {
               ty: "tm",
@@ -2511,7 +2511,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [44],
-                    e: [19],
+                    e: [19]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -2519,11 +2519,11 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [19],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 60 },
+                  { t: 60 }
                 ],
-                ix: 1,
+                ix: 1
               },
               e: {
                 a: 1,
@@ -2534,7 +2534,7 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [45],
-                    e: [20],
+                    e: [20]
                   },
                   {
                     i: { x: [0.833], y: [0.833] },
@@ -2542,17 +2542,17 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [20],
-                    e: [1],
+                    e: [1]
                   },
-                  { t: 60 },
+                  { t: 60 }
                 ],
-                ix: 2,
+                ix: 2
               },
               o: { a: 0, k: 0, ix: 3 },
               m: 1,
               ix: 2,
               nm: "Trim Paths 1",
-              mn: "ADBE Vector Filter - Trim",
+              mn: "ADBE Vector Filter - Trim"
             },
             {
               ty: "st",
@@ -2565,10 +2565,10 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 15,
                     s: [0.173, 0.569, 0.788, 1],
-                    e: [0.941, 0.561, 0, 1],
+                    e: [0.941, 0.561, 0, 1]
                   },
-                  { t: 27 },
-                ],
+                  { t: 27 }
+                ]
               },
               o: { a: 0, k: 100 },
               w: {
@@ -2580,16 +2580,16 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 27,
                     s: [5],
-                    e: [0],
+                    e: [0]
                   },
-                  { t: 60 },
-                ],
+                  { t: 60 }
+                ]
               },
               lc: 2,
               lj: 1,
               ml: 4,
               nm: "Stroke 1",
-              mn: "ADBE Vector Graphic - Stroke",
+              mn: "ADBE Vector Graphic - Stroke"
             },
             {
               ty: "tr",
@@ -2600,19 +2600,19 @@ export const animationData = {
               o: { a: 0, k: 100, ix: 7 },
               sk: { a: 0, k: 0, ix: 4 },
               sa: { a: 0, k: 0, ix: 5 },
-              nm: "Transform",
-            },
+              nm: "Transform"
+            }
           ],
           nm: "Shape 1",
           np: 3,
-          mn: "ADBE Vector Group",
-        },
+          mn: "ADBE Vector Group"
+        }
       ],
       ip: 15,
       op: 61,
       st: -73,
       bm: 0,
-      sr: 1,
+      sr: 1
     },
     {
       ddd: 0,
@@ -2624,7 +2624,7 @@ export const animationData = {
         r: { a: 0, k: 0 },
         p: { a: 0, k: [22, 22, 0] },
         a: { a: 0, k: [0, 0, 0] },
-        s: { a: 0, k: [40, 40, 100] },
+        s: { a: 0, k: [40, 40, 100] }
       },
       ao: 0,
       shapes: [
@@ -2643,14 +2643,14 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167", "0p833_0p833_0p167_0p167"],
                     t: 9,
                     s: [25.744, 25.744],
-                    e: [60.744, 60.744],
+                    e: [60.744, 60.744]
                   },
-                  { t: 16 },
-                ],
+                  { t: 16 }
+                ]
               },
               p: { a: 0, k: [0, 0] },
               nm: "Ellipse Path 1",
-              mn: "ADBE Vector Shape - Ellipse",
+              mn: "ADBE Vector Shape - Ellipse"
             },
             {
               ty: "st",
@@ -2665,16 +2665,16 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 9,
                     s: [23.3],
-                    e: [1],
+                    e: [1]
                   },
-                  { t: 16 },
-                ],
+                  { t: 16 }
+                ]
               },
               lc: 1,
               lj: 1,
               ml: 4,
               nm: "Stroke 1",
-              mn: "ADBE Vector Graphic - Stroke",
+              mn: "ADBE Vector Graphic - Stroke"
             },
             {
               ty: "tr",
@@ -2685,19 +2685,19 @@ export const animationData = {
               o: { a: 0, k: 100, ix: 7 },
               sk: { a: 0, k: 0, ix: 4 },
               sa: { a: 0, k: 0, ix: 5 },
-              nm: "Transform",
-            },
+              nm: "Transform"
+            }
           ],
           nm: "Ellipse 1",
           np: 2,
-          mn: "ADBE Vector Group",
-        },
+          mn: "ADBE Vector Group"
+        }
       ],
       ip: 9,
       op: 17,
       st: -76,
       bm: 0,
-      sr: 1,
+      sr: 1
     },
     {
       ddd: 0,
@@ -2718,15 +2718,15 @@ export const animationData = {
               n: [
                 "0p833_0p833_0p167_0p167",
                 "0p833_0p833_0p167_0p167",
-                "0p833_0p833_0p167_0p167",
+                "0p833_0p833_0p167_0p167"
               ],
               t: 4,
               s: [4, 4, 100],
-              e: [40, 40, 100],
+              e: [40, 40, 100]
             },
-            { t: 10 },
-          ],
-        },
+            { t: 10 }
+          ]
+        }
       },
       ao: 0,
       shapes: [
@@ -2739,7 +2739,7 @@ export const animationData = {
               s: { a: 0, k: [57.344, 57.344] },
               p: { a: 0, k: [0, 0] },
               nm: "Ellipse Path 1",
-              mn: "ADBE Vector Shape - Ellipse",
+              mn: "ADBE Vector Shape - Ellipse"
             },
             {
               ty: "fl",
@@ -2752,15 +2752,15 @@ export const animationData = {
                     n: ["0p833_0p833_0p167_0p167"],
                     t: 4,
                     s: [0.941, 0.561, 0, 1],
-                    e: [0.812, 0.565, 0.969, 1],
+                    e: [0.812, 0.565, 0.969, 1]
                   },
-                  { t: 10 },
-                ],
+                  { t: 10 }
+                ]
               },
               o: { a: 0, k: 100 },
               r: 1,
               nm: "Fill 1",
-              mn: "ADBE Vector Graphic - Fill",
+              mn: "ADBE Vector Graphic - Fill"
             },
             {
               ty: "tr",
@@ -2771,19 +2771,19 @@ export const animationData = {
               o: { a: 0, k: 100, ix: 7 },
               sk: { a: 0, k: 0, ix: 4 },
               sa: { a: 0, k: 0, ix: 5 },
-              nm: "Transform",
-            },
+              nm: "Transform"
+            }
           ],
           nm: "Ellipse 1",
           np: 3,
-          mn: "ADBE Vector Group",
-        },
+          mn: "ADBE Vector Group"
+        }
       ],
       ip: 4,
       op: 10,
       st: -75,
       bm: 0,
-      sr: 1,
-    },
-  ],
+      sr: 1
+    }
+  ]
 };

@@ -30,7 +30,7 @@ export class SelectRender implements Renderer {
 
   private getReadonlyTextContent() {
     const matchingOpts = this.options.filter(
-      (o) => o.value === this.component.value
+      o => o.value === this.component.value
     );
     if (matchingOpts.length > 0) {
       return matchingOpts[0].innerText;
@@ -59,7 +59,7 @@ export class SelectRender implements Renderer {
             "gx-select-control": true,
             [this.component.cssClass]: !!this.component.cssClass,
             [classes.vars]: true,
-            disabled: this.component.disabled,
+            disabled: this.component.disabled
           }}
         >
           <span>{this.getReadonlyTextContent()}</span>
@@ -74,14 +74,14 @@ export class SelectRender implements Renderer {
           "gx-select-control": true,
           [this.component.cssClass]: !!this.component.cssClass,
           [classes.vars]: true,
-          disabled: this.component.disabled,
+          disabled: this.component.disabled
         },
         disabled: this.component.disabled,
         id: this.selectId,
         onChange: this.handleChange.bind(this),
         ref: (select: HTMLSelectElement) => {
           select.value = this.component.value;
-        },
+        }
       };
 
       if (this.component.suggest) {
@@ -104,7 +104,7 @@ export class SelectRender implements Renderer {
                   {innerText}
                 </option>
               ))}
-            </datalist>,
+            </datalist>
           ]
         : [
             <select {...attris}>
@@ -116,7 +116,7 @@ export class SelectRender implements Renderer {
                   {innerText}
                 </option>
               ))}
-            </select>,
+            </select>
           ];
     }
   }

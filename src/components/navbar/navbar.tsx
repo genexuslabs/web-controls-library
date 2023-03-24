@@ -6,7 +6,7 @@ import {
   Host,
   Event,
   EventEmitter,
-  State,
+  State
 } from "@stencil/core";
 import { Component as GxComponent, LayoutSize } from "../common/interfaces";
 import { watchForItems } from "../common/watch-items";
@@ -15,7 +15,7 @@ import { watchForItems } from "../common/watch-items";
 import { getClasses } from "../common/css-transforms/css-transforms";
 import {
   attachHorizontalScrollWithDragHandler,
-  attachHorizontalScrollWithWheelHandler,
+  attachHorizontalScrollWithWheelHandler
 } from "../common/utils";
 
 /**
@@ -27,7 +27,7 @@ import {
 @Component({
   shadow: true,
   styleUrl: "navbar.scss",
-  tag: "gx-navbar",
+  tag: "gx-navbar"
 })
 export class NavBar implements GxComponent {
   // Observers
@@ -164,7 +164,7 @@ export class NavBar implements GxComponent {
       const navbarToggleBtn = this.element.shadowRoot.querySelector(
         ".gx-navbar-actions-low-toggle"
       );
-      if (e.composedPath().find((el) => el === navbarToggleBtn) === undefined) {
+      if (e.composedPath().find(el => el === navbarToggleBtn) === undefined) {
         this.showLowActions = false;
       }
     }
@@ -269,7 +269,7 @@ export class NavBar implements GxComponent {
           "right-target-visible": rightTargetVisible,
 
           "not-small-layout-size": notSmallLayoutSize,
-          "small-layout-size": smallLayoutSize,
+          "small-layout-size": smallLayoutSize
         }}
       >
         <nav class="gx-navbar">
@@ -280,7 +280,7 @@ export class NavBar implements GxComponent {
               [`gx-navbar-${amountOfActionTypes}-action-types-low-action`]:
                 this.isTopPosition && this.hasLowPriorityActions,
               [`gx-navbar-${amountOfActionTypes}-action-types`]:
-                this.isTopPosition && !this.hasLowPriorityActions,
+                this.isTopPosition && !this.hasLowPriorityActions
             }}
           >
             {this.isTopPosition && (
@@ -318,7 +318,7 @@ export class NavBar implements GxComponent {
 
             <div
               class="gx-navbar-links"
-              ref={(el) => (this.navbarLinks = el as HTMLDivElement)}
+              ref={el => (this.navbarLinks = el as HTMLDivElement)}
             >
               <slot name="navigation" />
             </div>
@@ -355,7 +355,7 @@ export class NavBar implements GxComponent {
       <div class="gx-navbar-actions">
         <div
           class="gx-navbar-actions-high"
-          ref={(el) => (this.navbarActionsHigh = el as HTMLDivElement)}
+          ref={el => (this.navbarActionsHigh = el as HTMLDivElement)}
         >
           <slot name="high-priority-action" />
         </div>
@@ -366,7 +366,7 @@ export class NavBar implements GxComponent {
 
         <div
           class="gx-navbar-actions-normal"
-          ref={(el) => (this.navbarActionsNormal = el as HTMLDivElement)}
+          ref={el => (this.navbarActionsNormal = el as HTMLDivElement)}
         >
           <slot name="normal-priority-action" />
         </div>
@@ -378,7 +378,7 @@ export class NavBar implements GxComponent {
             part="low-actions-dropdown"
             class={{
               "gx-navbar-actions-low-popup": true,
-              "gx-navbar-actions-low-popup--active": this.showLowActions,
+              "gx-navbar-actions-low-popup--active": this.showLowActions
             }}
           >
             <slot name="low-priority-action" />
@@ -389,14 +389,14 @@ export class NavBar implements GxComponent {
             part="low-actions-toggle"
             class={{
               "gx-navbar-actions-low-toggle": true,
-              "gx-navbar-actions-low-toggle--active": this.showLowActions,
+              "gx-navbar-actions-low-toggle--active": this.showLowActions
             }}
             onClick={this.handleActionToggleButtonClick}
           >
             <gx-icon type="show-more"></gx-icon>
           </button>
         </div>
-      ),
+      )
     ];
   }
 

@@ -8,11 +8,11 @@ import {
   Prop,
   State,
   Watch,
-  h,
+  h
 } from "@stencil/core";
 import {
   HighlightableComponent,
-  makeHighlightable,
+  makeHighlightable
 } from "../common/highlightable";
 
 import { EditRender } from "../renders/bootstrap/edit/edit-render";
@@ -29,21 +29,21 @@ const AUTOFILL_START_ANIMATION_NAME = "AutoFillStart";
 @Component({
   shadow: false,
   styleUrl: "edit.scss",
-  tag: "gx-edit",
+  tag: "gx-edit"
 })
 export class Edit implements FormComponent, HighlightableComponent {
   constructor() {
     this.renderer = new EditRender(this, {
       handleChange: this.handleChange.bind(this),
       handleTriggerClick: this.handleTriggerClick.bind(this),
-      handleValueChanging: this.handleValueChanging.bind(this),
+      handleValueChanging: this.handleValueChanging.bind(this)
     });
 
     cssVariablesWatcher(this, [
       {
         cssVariableName: "--font-category",
-        propertyName: "fontCategory",
-      },
+        propertyName: "fontCategory"
+      }
     ]);
 
     makeLinesClampable(this, ".gx-line-clamp-container", ".line-measuring");
@@ -301,7 +301,7 @@ export class Edit implements FormComponent, HighlightableComponent {
             this.type === "date" || this.type === "datetime-local",
           [this.disabledClass]: this.disabled,
           [this.cssClass]: this.shouldStyleHostElement && !!this.cssClass,
-          [classes.vars]: this.shouldStyleHostElement,
+          [classes.vars]: this.shouldStyleHostElement
         }}
         // Mouse pointer to indicate action
         data-has-action={this.highlightable && !this.disabled ? "" : undefined}
@@ -319,7 +319,7 @@ export class Edit implements FormComponent, HighlightableComponent {
           triggerContent: <slot name="trigger-content" />,
           shouldStyleHostElement: this.shouldStyleHostElement,
           cssClass: this.cssClass,
-          vars: classes.vars,
+          vars: classes.vars
         })}
       </Host>
     );

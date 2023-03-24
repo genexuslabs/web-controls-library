@@ -1,7 +1,7 @@
 import {
   HIGHLIGHT_CLASS_NAME,
   HIGHLIGHT_EVENT_NAME,
-  UNHIGHTLIGHT_EVENT_NAME,
+  UNHIGHTLIGHT_EVENT_NAME
 } from "./css-transforms/css-transforms";
 
 let isSetup = false;
@@ -54,7 +54,7 @@ function setupEvent(
   endEventName1: string,
   endEventName2: string
 ) {
-  document.body.addEventListener(startEventName, (startEvent) => {
+  document.body.addEventListener(startEventName, startEvent => {
     fireCustomEvent(HIGHLIGHT_EVENT_NAME, startEvent.target as HTMLElement);
     const mouseUpHandler = (endEvent: Event) => {
       fireCustomEvent(UNHIGHTLIGHT_EVENT_NAME, endEvent.target as HTMLElement);
@@ -68,7 +68,7 @@ function setupEvent(
 
 function fireCustomEvent(eventName: string, element: HTMLElement) {
   const highlightEvent = new CustomEvent(eventName, {
-    bubbles: true,
+    bubbles: true
   });
   element.dispatchEvent(highlightEvent);
 }

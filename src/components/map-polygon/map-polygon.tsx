@@ -5,7 +5,7 @@ import {
   EventEmitter,
   Host,
   h,
-  Prop,
+  Prop
 } from "@stencil/core";
 import { Component as GxComponent, GridMapElement } from "../common/interfaces";
 import {
@@ -14,7 +14,7 @@ import {
   LineJoinShape,
   PathOptions,
   Polygon,
-  polygon,
+  polygon
 } from "leaflet";
 import { parseCoords } from "../common/coordsValidate";
 
@@ -25,7 +25,7 @@ const DEFAULT_COORDS: LatLngTuple = [0, 0];
 let autoPolygonId = 0;
 @Component({
   shadow: true,
-  tag: "gx-map-polygon",
+  tag: "gx-map-polygon"
 })
 export class GridMapPolygon implements GxComponent {
   @Element() element: HTMLGxMapPolygonElement;
@@ -109,7 +109,7 @@ export class GridMapPolygon implements GxComponent {
 
     this.gxMapPolygonDidLoad.emit({
       id: this.polygonId,
-      instance: this.polygonInstance,
+      instance: this.polygonInstance
     });
   }
 

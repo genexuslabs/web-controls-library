@@ -2,13 +2,13 @@ import { Component, Element, Host, Prop, h } from "@stencil/core";
 
 import {
   Component as GxComponent,
-  DisableableComponent,
+  DisableableComponent
 } from "../common/interfaces";
 
 @Component({
   shadow: true,
   styleUrl: "./video.scss",
-  tag: "gx-video",
+  tag: "gx-video"
 })
 export class Video implements GxComponent, DisableableComponent {
   @Element() element: HTMLGxVideoElement;

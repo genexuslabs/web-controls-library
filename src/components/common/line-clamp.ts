@@ -21,7 +21,7 @@ export function makeLinesClampable(
   let contentContainerHeight = -1;
   let lineMeasuringHeight = -1;
 
-  const applyLineClamp = debounce(function () {
+  const applyLineClamp = debounce(function() {
     requestAnimationFrame(function applyLineClampImpl() {
       const currentContentContainerHeight =
         contentContainerElement.clientHeight;
@@ -90,7 +90,7 @@ export function makeLinesClampable(
       // Observe the `content-container` and line height
       resizeObserverContainer.observe(component.element);
       resizeObserverContainer.observe(lineMeasuringElement);
-    },
+    }
   });
 
   overrideMethod(component, "disconnectedCallback", {
@@ -100,11 +100,11 @@ export function makeLinesClampable(
         resizeObserverContainer.disconnect();
         resizeObserverContainer = undefined;
       }
-    },
+    }
   });
 
   return {
-    applyLineClamp,
+    applyLineClamp
   };
 }
 

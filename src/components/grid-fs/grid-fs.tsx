@@ -7,7 +7,7 @@ import {
   Host,
   Method,
   Prop,
-  h,
+  h
 } from "@stencil/core";
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
@@ -17,15 +17,14 @@ import { VisibilityComponent } from "../common/interfaces";
 @Component({
   shadow: false,
   styleUrl: "grid-fs.scss",
-  tag: "gx-grid-fs",
+  tag: "gx-grid-fs"
 })
 export class GridFreeStyle
   implements
     GridBase,
     ComponentInterface,
     VisibilityComponent,
-    HighlightableComponent
-{
+    HighlightableComponent {
   constructor() {
     this.handleGxInfinite = this.handleGxInfinite.bind(this);
   }
@@ -100,11 +99,9 @@ export class GridFreeStyle
    */
   @Method()
   async complete() {
-    (
-      this.element.querySelector(
-        ":scope > gx-grid-infinite-scroll"
-      ) as HTMLGxGridInfiniteScrollElement
-    )["complete"]();
+    (this.element.querySelector(
+      ":scope > gx-grid-infinite-scroll"
+    ) as HTMLGxGridInfiniteScrollElement)["complete"]();
   }
 
   private ensureViewPort() {
@@ -131,7 +128,7 @@ export class GridFreeStyle
           <slot name="grid-content" />,
           <slot name="grid-empty-loading-placeholder" />,
 
-          <slot name="grid-content-empty" />,
+          <slot name="grid-content-empty" />
         ]}
       </Host>
     );

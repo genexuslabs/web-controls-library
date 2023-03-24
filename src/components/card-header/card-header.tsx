@@ -1,7 +1,7 @@
 import { Component, Element, Prop, h, Host, State } from "@stencil/core";
 import {
   Component as GxComponent,
-  CustomizableComponent,
+  CustomizableComponent
 } from "../common/interfaces";
 
 const actionSelector = (priority: string) =>
@@ -22,7 +22,7 @@ let autoCardHeaderId = 0;
 @Component({
   shadow: true,
   styleUrl: "card-header.scss",
-  tag: "gx-card-header",
+  tag: "gx-card-header"
 })
 export class CardHeader implements GxComponent, CustomizableComponent {
   private cardHeaderId: string;
@@ -98,7 +98,7 @@ export class CardHeader implements GxComponent, CustomizableComponent {
 
     // If the click was not performed in the toggle button, close the dropdown
     if (
-      event.composedPath().find((el) => el === this.lowActionsToggleButton) ===
+      event.composedPath().find(el => el === this.lowActionsToggleButton) ===
       undefined
     ) {
       this.showLowActions = false;
@@ -115,7 +115,7 @@ export class CardHeader implements GxComponent, CustomizableComponent {
         role="banner"
         class={{
           [this.cssClass]: !!this.cssClass,
-          "gx-navbar-actions-active": this.showLowActions,
+          "gx-navbar-actions-active": this.showLowActions
         }}
       >
         <nav class="nav" part="nav">
@@ -144,11 +144,11 @@ export class CardHeader implements GxComponent, CustomizableComponent {
                   type="button"
                   class={{
                     "low-actions-toggle": true,
-                    "low-actions-toggle--active": this.showLowActions,
+                    "low-actions-toggle--active": this.showLowActions
                   }}
                   part="low-actions-toggle"
                   onClick={this.handleActionToggleButtonClick}
-                  ref={(el) =>
+                  ref={el =>
                     (this.lowActionsToggleButton = el as HTMLButtonElement)
                   }
                 >

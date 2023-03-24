@@ -7,12 +7,12 @@ export const watchForItems = <T extends HTMLElement>(
     return;
   }
 
-  const mutation = new MutationObserver((mutationList) => {
+  const mutation = new MutationObserver(mutationList => {
     onChange(getSelectedItem<T>(mutationList, tagName));
   });
   mutation.observe(containerEl, {
     childList: true,
-    subtree: true,
+    subtree: true
   });
   return mutation;
 };
@@ -22,7 +22,7 @@ function getSelectedItem<T extends HTMLElement>(
   tagName: string
 ): T | undefined {
   let newOption: HTMLElement | undefined;
-  mutationList.forEach((mut) => {
+  mutationList.forEach(mut => {
     for (let i = 0; i < mut.addedNodes.length; i++) {
       newOption = findCheckedItem(mut.addedNodes[i], tagName) || newOption;
     }

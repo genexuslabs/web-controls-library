@@ -4,7 +4,7 @@ import { Component as GxComponent } from "../common/interfaces";
 @Component({
   shadow: false,
   styleUrl: "interactive-image.scss",
-  tag: "gx-interactive-image",
+  tag: "gx-interactive-image"
 })
 export class InteractiveImage implements GxComponent {
   @Element() element: HTMLGxInteractiveImageElement;
@@ -84,7 +84,7 @@ export class InteractiveImage implements GxComponent {
 
     const imgSize = {
       height: eventTarget.offsetHeight,
-      width: eventTarget.offsetWidth,
+      width: eventTarget.offsetWidth
     };
 
     const touch = {
@@ -92,7 +92,7 @@ export class InteractiveImage implements GxComponent {
       Y:
         ev.changedTouches[0].clientY -
         // @ts-expect-error @todo TODO: Fix this error
-        eventTarget.parentNode.getBoundingClientRect().top,
+        eventTarget.parentNode.getBoundingClientRect().top
     };
 
     if (touch.X <= 0) {
@@ -114,7 +114,7 @@ export class InteractiveImage implements GxComponent {
       Y: this.calculateZoomTouch(
         this.calculateZoomedPosition(touch.Y, imgSize.height),
         this.zoom
-      ),
+      )
     };
     this.zoomedPositionX = moveImgPostion.X;
     this.zoomedPositionY = moveImgPostion.Y;
@@ -144,7 +144,7 @@ export class InteractiveImage implements GxComponent {
           this.mouseOver
             ? {
                 "object-position": `${this.zoomedPositionX}px ${this.zoomedPositionY}px`,
-                transform: `scale(${this.zoom / 100})`,
+                transform: `scale(${this.zoom / 100})`
               }
             : {}
         }

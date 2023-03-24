@@ -49,11 +49,11 @@ export class CheckBoxRender implements Renderer {
       "data-native-element": "",
       disabled: checkbox.disabled || checkbox.readonly,
       id: this.inputId,
-      onInput: this.handleChange,
+      onInput: this.handleChange
     };
 
     const forAttris = {
-      for: attris.id,
+      for: attris.id
     };
 
     return (

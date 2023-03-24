@@ -7,7 +7,7 @@ import {
   Event,
   EventEmitter,
   Listen,
-  State,
+  State
 } from "@stencil/core";
 import "custom-pinch-zoom-element";
 
@@ -15,11 +15,11 @@ import { Component as GxComponent } from "../common/interfaces";
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 import {
   HighlightableComponent,
-  makeHighlightable,
+  makeHighlightable
 } from "../common/highlightable";
 import {
   LongPressComponent,
-  makeLongPressable,
+  makeLongPressable
 } from "../common/events/long-press";
 
 // Class transforms
@@ -28,11 +28,10 @@ import { getClasses } from "../common/css-transforms/css-transforms";
 @Component({
   tag: "gx-grid-image-map",
   styleUrl: "grid-image-map.scss",
-  shadow: false,
+  shadow: false
 })
 export class GridImageMap
-  implements GxComponent, GridBase, HighlightableComponent, LongPressComponent
-{
+  implements GxComponent, GridBase, HighlightableComponent, LongPressComponent {
   constructor() {
     this.handleImageLoad = this.handleImageLoad.bind(this);
   }
@@ -241,7 +240,7 @@ export class GridImageMap
                 aria-hidden="true"
                 class="inner-img"
                 style={{
-                  opacity: !this.imageDidLoad ? "0" : null,
+                  opacity: !this.imageDidLoad ? "0" : null
                 }}
                 onLoad={this.handleImageLoad}
                 src={this.src}
@@ -255,11 +254,11 @@ export class GridImageMap
             </div>
             <slot name="grid-empty-loading-placeholder" />
             <slot name="grid-content-empty" />
-          </pinch-zoom>,
+          </pinch-zoom>
         ]
       : [
           <slot name="grid-empty-loading-placeholder" />,
-          <slot name="grid-content-empty" />,
+          <slot name="grid-content-empty" />
         ];
 
     const hostData = GridBaseHelper.hostData(this);
@@ -269,7 +268,7 @@ export class GridImageMap
     if (!!this.cssClass) {
       hostData.class = {
         ...hostData.class,
-        ...{ [this.cssClass]: true, [classes.vars]: true },
+        ...{ [this.cssClass]: true, [classes.vars]: true }
       };
     }
 
