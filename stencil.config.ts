@@ -17,8 +17,6 @@ export const config: Config = {
         "gx-loading",
         "gx-message",
         "gx-modal",
-        "gx-navbar",
-        "gx-navbar-item",
         "gx-progress-bar",
         "gx-table",
         "gx-table-cell",
@@ -45,6 +43,9 @@ export const config: Config = {
     },
     {
       components: ["gx-map", "gx-map-marker"]
+    },
+    {
+      components: ["gx-navbar", "gx-navbar-item"]
     },
     {
       components: ["gx-radio-group", "gx-radio-option"]
