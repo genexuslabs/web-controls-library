@@ -26,6 +26,7 @@ import {
   TileLayer
 } from "leaflet";
 
+// @ts-expect-error Todo: Improve typing
 import { MarkerClusterGroup } from "leaflet.markercluster";
 import { watchPosition } from "./geolocation";
 import "leaflet-draw";
@@ -345,6 +346,7 @@ export class GridMap implements GxComponent {
     this.map.addLayer(drawnItems);
     //TODO: How to import the Draw function without using import * as L from "leaflet"
     // Normally the way to use it is L.Control.Draw
+    // @ts-expect-error Todo: Improve typing
     const drawControl = new Control.Draw({
       edit: {
         featureGroup: drawnItems
@@ -547,6 +549,7 @@ export class GridMap implements GxComponent {
       : (this.map.getPane("fromKML").style.display = "block");
   } */
 
+  // @ts-expect-error Todo: Improve typing
   private setUserLocation = ({ coords }) => {
     this.userLocationCoords = `${coords.latitude}, ${coords.longitude}`;
     this.userLocationChange.emit(this.userLocationCoords);
@@ -576,12 +579,17 @@ export class GridMap implements GxComponent {
       .pop()
       .slice(0, -1);
     const wktArray = wktString.split(",");
+
+    // @ts-expect-error: Todo: Improve typing
     const polyline = [];
+
     wktArray.forEach(element => {
       element = element.trim();
       const latLng = element.split(" ");
       polyline.push([parseFloat(latLng[0]), parseFloat(latLng[1])]);
     });
+
+    // @ts-expect-error: Todo: Improve typing
     return polyline;
   }
 
