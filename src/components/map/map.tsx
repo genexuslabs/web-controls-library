@@ -101,6 +101,11 @@ export class GridMap implements GxComponent {
   @Prop() directionLayerWKTString: string;
 
   /**
+   * If `true` allows drawing geometries on the map.
+   */
+  @Prop() readonly editableGeographies: boolean = false;
+
+  /**
    * Enable the High Accuracy in user location.
    * _Note: This property applies when ```watchPosition = true```._
    */
@@ -342,6 +347,10 @@ export class GridMap implements GxComponent {
    * Allow to draw geometries on the map when `editableGeographies` = `true`.
    */
   private activateDrawOnMap() {
+    if (!this.editableGeographies) {
+      return;
+    }
+
     const drawnItems = new FeatureGroup();
     this.map.addLayer(drawnItems);
     //TODO: How to import the Draw function without using import * as L from "leaflet"
