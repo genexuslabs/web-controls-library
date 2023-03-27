@@ -35,7 +35,7 @@ export class GridMapPolygon implements GxComponent {
   /**
    * The coordinates where the polygon will appear in the map.
    */
-  @Prop({ mutable: true }) coords = "0, 0";
+  @Prop() readonly coords: string = "0, 0";
 
   /**
    * A CSS class to set as the `gx-map-polygon` element class.

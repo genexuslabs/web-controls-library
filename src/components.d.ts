@@ -205,7 +205,7 @@ export namespace Components {
     /**
      * Defines the interval that the function onTick will be called.
      */
-    interval: 1;
+    interval: number;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -213,7 +213,7 @@ export namespace Components {
     /**
      * When the chronometer reaches this value, MaxValueText will be shown instead of the Chronometer value.
      */
-    maxValue: 0;
+    maxValue: number;
     /**
      * Text to be displayed when chronometer value reaches maxValue.
      */
@@ -1018,7 +1018,7 @@ export namespace Components {
     /**
      * Lets you specify the image URL. *Requiered*
      */
-    src: "";
+    src: string;
     /**
      * Indicates how much you can enlarge an image. (Percentage) _Note: 100% = Normal size_.
      */
@@ -1129,7 +1129,7 @@ export namespace Components {
      */
     center: string;
     /**
-     * This attribute determines whether map markers should be grouped. When true, the markers will be grouped depending on their proximity.
+     * This attribute determines whether map markers should be grouped. When `true`, the markers will be grouped depending on their proximity.
      */
     clusteringPoints: boolean;
     /**
@@ -1140,6 +1140,10 @@ export namespace Components {
      * WKT format string containing the response of Google Maps Directions API call
      */
     directionLayerWKTString: string;
+    /**
+     * If `true` allows drawing geometries on the map.
+     */
+    editableGeographies: boolean;
     /**
      * Enable the High Accuracy in user location. _Note: This property applies when ```watchPosition = true```._
      */
@@ -1157,7 +1161,7 @@ export namespace Components {
      */
     mapProvider: string;
     /**
-     * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `standard` | Shows streets.         | | `satellite`   | Shows satellite images of the Earth. | | `hybrid`   | Shows streets over the satellite images. |
+     * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._  | Value       | Details                                                                     | | ----------- | --------------------------------------------------------------------------- | | `standard`  | Shows streets.                                                              | | `satellite` | Shows satellite images of the Earth.                                        | | `hybrid`    | Shows streets over the satellite images.                                    |
      */
     mapType: "standard" | "satellite" | "hybrid";
     /**
@@ -3091,7 +3095,7 @@ declare namespace LocalJSX {
     /**
      * Defines the interval that the function onTick will be called.
      */
-    interval?: 1;
+    interval?: number;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -3099,7 +3103,7 @@ declare namespace LocalJSX {
     /**
      * When the chronometer reaches this value, MaxValueText will be shown instead of the Chronometer value.
      */
-    maxValue?: 0;
+    maxValue?: number;
     /**
      * Text to be displayed when chronometer value reaches maxValue.
      */
@@ -3970,7 +3974,7 @@ declare namespace LocalJSX {
     /**
      * Lets you specify the image URL. *Requiered*
      */
-    src?: "";
+    src?: string;
     /**
      * Indicates how much you can enlarge an image. (Percentage) _Note: 100% = Normal size_.
      */
@@ -4080,7 +4084,7 @@ declare namespace LocalJSX {
      */
     center?: string;
     /**
-     * This attribute determines whether map markers should be grouped. When true, the markers will be grouped depending on their proximity.
+     * This attribute determines whether map markers should be grouped. When `true`, the markers will be grouped depending on their proximity.
      */
     clusteringPoints?: boolean;
     /**
@@ -4091,6 +4095,10 @@ declare namespace LocalJSX {
      * WKT format string containing the response of Google Maps Directions API call
      */
     directionLayerWKTString?: string;
+    /**
+     * If `true` allows drawing geometries on the map.
+     */
+    editableGeographies?: boolean;
     /**
      * Enable the High Accuracy in user location. _Note: This property applies when ```watchPosition = true```._
      */
@@ -4108,7 +4116,7 @@ declare namespace LocalJSX {
      */
     mapProvider?: string;
     /**
-     * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `standard` | Shows streets.         | | `satellite`   | Shows satellite images of the Earth. | | `hybrid`   | Shows streets over the satellite images. |
+     * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._  | Value       | Details                                                                     | | ----------- | --------------------------------------------------------------------------- | | `standard`  | Shows streets.                                                              | | `satellite` | Shows satellite images of the Earth.                                        | | `hybrid`    | Shows streets over the satellite images.                                    |
      */
     mapType?: "standard" | "satellite" | "hybrid";
     /**
@@ -4174,11 +4182,11 @@ declare namespace LocalJSX {
      */
     coords?: string;
     /**
-     * Emmits when the element is deleted from a `<gx-map>`.
+     * Emits when the element is deleted from a `<gx-map>`.
      */
     onGxMapCircleDeleted?: (event: GxMapCircleCustomEvent<any>) => void;
     /**
-     * Emmits when the element is added to a `<gx-map>`.
+     * Emits when the element is added to a `<gx-map>`.
      */
     onGxMapCircleDidLoad?: (
       event: GxMapCircleCustomEvent<GridMapElement>
@@ -4194,11 +4202,11 @@ declare namespace LocalJSX {
      */
     coords?: string;
     /**
-     * Emmits when the element is deleted from a `<gx-map>`.
+     * Emits when the element is deleted from a `<gx-map>`.
      */
     onGxMapLineDeleted?: (event: GxMapLineCustomEvent<any>) => void;
     /**
-     * Emmits when the element is added to a `<gx-map>`.
+     * Emits when the element is added to a `<gx-map>`.
      */
     onGxMapLineDidLoad?: (event: GxMapLineCustomEvent<GridMapElement>) => void;
   }

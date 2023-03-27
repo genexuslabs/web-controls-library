@@ -20,10 +20,10 @@ This element represents a circle inside a `<gx-map>` element.
 
 ## Events
 
-| Event                | Description                                           | Type                          |
-| -------------------- | ----------------------------------------------------- | ----------------------------- |
-| `gxMapCircleDeleted` | Emmits when the element is deleted from a `<gx-map>`. | `CustomEvent<any>`            |
-| `gxMapCircleDidLoad` | Emmits when the element is added to a `<gx-map>`.     | `CustomEvent<GridMapElement>` |
+| Event                | Description                                          | Type                          |
+| -------------------- | ---------------------------------------------------- | ----------------------------- |
+| `gxMapCircleDeleted` | Emits when the element is deleted from a `<gx-map>`. | `CustomEvent<any>`            |
+| `gxMapCircleDidLoad` | Emits when the element is added to a `<gx-map>`.     | `CustomEvent<GridMapElement>` |
 
 ---
 

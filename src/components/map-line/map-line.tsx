@@ -9,7 +9,9 @@ import {
 import { Component as GxComponent, GridMapElement } from "../common/interfaces";
 import { polyline, Polyline } from "leaflet";
 import { parseCoords } from "../common/coordsValidate";
+
 let autoLineId = 0;
+
 @Component({
   shadow: false,
   tag: "gx-map-line"
@@ -21,19 +23,16 @@ export class GridMapLine implements GxComponent {
 
   /**
    * The coordinates where the line/polyline will appear in the map.
-   *
    */
-  @Prop({ mutable: true }) coords = "0, 0";
+  @Prop() readonly coords: string = "0, 0";
 
   /**
-   * Emmits when the element is added to a `<gx-map>`.
-   *
+   * Emits when the element is added to a `<gx-map>`.
    */
   @Event() gxMapLineDidLoad: EventEmitter<GridMapElement>;
 
   /**
-   * Emmits when the element is deleted from a `<gx-map>`.
-   *
+   * Emits when the element is deleted from a `<gx-map>`.
    */
   @Event() gxMapLineDeleted: EventEmitter;
 

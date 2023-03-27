@@ -22,20 +22,20 @@ export class GridMapCircle implements GxComponent {
   /**
    * The coordinates where the circle will appear in the map.
    */
-  @Prop({ mutable: true }) coords = "0, 0";
+  @Prop() readonly coords: string = "0, 0";
 
   /**
    * The radius that the circle will have in the map. It's expressed in meters.
    */
-  @Prop({ mutable: true }) radius = 1000;
+  @Prop() readonly radius: number = 1000;
 
   /**
-   * Emmits when the element is added to a `<gx-map>`.
+   * Emits when the element is added to a `<gx-map>`.
    */
   @Event() gxMapCircleDidLoad: EventEmitter<GridMapElement>;
 
   /**
-   * Emmits when the element is deleted from a `<gx-map>`.
+   * Emits when the element is deleted from a `<gx-map>`.
    */
   @Event() gxMapCircleDeleted: EventEmitter;
 

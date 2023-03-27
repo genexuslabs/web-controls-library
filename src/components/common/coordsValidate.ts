@@ -20,7 +20,6 @@ export function parseCoords(coords: string): string[] {
   }
   const result = COORDINATES_REGEX.exec(coords);
 
-  // eslint-disable-next-line @stencil/strict-boolean-conditions
   return !!result ? result.slice(1) : null;
 }
 

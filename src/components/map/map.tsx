@@ -84,23 +84,23 @@ export class GridMap implements GxComponent {
   /**
    * The coord of initial center of the map.
    */
-  @Prop({ mutable: true }) center = "0,0";
+  @Prop() readonly center: string = "0,0";
 
   /**
    * This attribute determines whether map markers should be grouped. When
    * `true`, the markers will be grouped depending on their proximity.
    */
-  @Prop() clusteringPoints = false;
+  @Prop() readonly clusteringPoints: boolean = false;
 
   /**
    * Enables the possibility to draw the route between two points on the map.
    */
-  @Prop() directionLayer = false;
+  @Prop() readonly directionLayer: boolean = false;
 
   /**
    * WKT format string containing the response of Google Maps Directions API call
    */
-  @Prop() directionLayerWKTString: string;
+  @Prop() readonly directionLayerWKTString: string;
 
   /**
    * If `true` allows drawing geometries on the map.
@@ -111,7 +111,7 @@ export class GridMap implements GxComponent {
    * Enable the High Accuracy in user location.
    * _Note: This property applies when ```watchPosition = true```._
    */
-  @Prop() readonly highAccuracyLocator = true;
+  @Prop() readonly highAccuracyLocator: boolean = true;
 
   /**
    * Indicates how the map will be displayed at startup.
@@ -123,13 +123,16 @@ export class GridMap implements GxComponent {
    * | `radius`        | The map is adjusted to display a fixed radius, from the specified center. The radius value is specified using the initialZoomRadius property. |
    * | `noInitialZoom` | No specific action is taken regarding the initial zoom.                                                                                       |
    */
-  @Prop() initialZoom: "showAll" | "nearestPoint" | "radius" | "noInitialZoom" =
-    "showAll";
+  @Prop() readonly initialZoom:
+    | "showAll"
+    | "nearestPoint"
+    | "radius"
+    | "noInitialZoom" = "showAll";
 
   /**
    * The radius value if `initialZoom` = `"radius"`.
    */
-  @Prop() initialZoomRadius = 1;
+  @Prop() readonly initialZoomRadius: number = 1;
 
   /**
    * The map provider.
@@ -141,11 +144,11 @@ export class GridMap implements GxComponent {
    * Map type to be used.
    * _Note: If you set a map provider, the selected map type will be ignored._
    *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `standard` | Shows streets.         |
-   * | `satellite`   | Shows satellite images of the Earth. |
-   * | `hybrid`   | Shows streets over the satellite images. |
+   * | Value       | Details                                                                     |
+   * | ----------- | --------------------------------------------------------------------------- |
+   * | `standard`  | Shows streets.                                                              |
+   * | `satellite` | Shows satellite images of the Earth.                                        |
+   * | `hybrid`    | Shows streets over the satellite images.                                    |
    */
   @Prop() readonly mapType: "standard" | "satellite" | "hybrid" = "standard";
 
@@ -174,12 +177,12 @@ export class GridMap implements GxComponent {
    * Enables the possibility to navigate the map and select a location point
    * using the map center.
    */
-  @Prop() readonly selectionLayer = false;
+  @Prop() readonly selectionLayer: boolean = false;
 
   /**
    * A CSS class to set as the `selectionLayer` icon class.
    */
-  @Prop() selectionTargetImageCssClass: string;
+  @Prop() readonly selectionTargetImageCssClass: string;
 
   /**
    * This attribute lets you specify the srcset attribute for the
@@ -188,17 +191,17 @@ export class GridMap implements GxComponent {
    * If none of the properties are specified, a default icon will be used
    * when `selectionLayer = true`
    */
-  @Prop() selectionTargetImageSrcset: string;
+  @Prop() readonly selectionTargetImageSrcset: string;
 
   /**
    * Whether the map can be zoomed by using the mouse wheel.
    */
-  @Prop() scrollWheelZoom = true;
+  @Prop() readonly scrollWheelZoom: boolean = true;
 
   /**
    * Indicates if the current location of the device is displayed on the map.
    */
-  @Prop() readonly showMyLocation = false;
+  @Prop() readonly showMyLocation: boolean = false;
 
   /**
    * The initial zoom level in the map.
@@ -311,7 +314,6 @@ export class GridMap implements GxComponent {
   }
 
   private connectResizeObserver() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.resizeObserver) {
       return;
     }
@@ -328,7 +330,6 @@ export class GridMap implements GxComponent {
   };
 
   private disconnectResizeObserver() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
       this.resizeObserver = null;
@@ -365,7 +366,7 @@ export class GridMap implements GxComponent {
     });
     this.map.addControl(drawControl);
 
-    this.map.on("draw:created", function(e) {
+    this.map.on("draw:created", function (e) {
       console.log("created", e);
     });
   }
@@ -425,7 +426,6 @@ export class GridMap implements GxComponent {
   }
 
   private getZoomLevel = () =>
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     !!this.zoom
       ? Math.min(Math.max(this.zoom, MIN_ZOOM_LEVEL), MAX_ZOOM_LEVEL)
       : MIN_ZOOM_LEVEL;
@@ -509,7 +509,6 @@ export class GridMap implements GxComponent {
   }
 
   private removeTileLayer() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.didLoad && this.tileLayerApplied) {
       this.tileLayerApplied.removeFrom(this.map);
     }
@@ -593,10 +592,7 @@ export class GridMap implements GxComponent {
    * @returns Array of latLong coordinates. Example: [[-56.18565, -34.90555],[-56.1859, -34.90558],[-56.18645, -34.90561]]
    */
   private wktToPolyline(lineString: string) {
-    const wktString = lineString
-      .split("(")
-      .pop()
-      .slice(0, -1);
+    const wktString = lineString.split("(").pop().slice(0, -1);
     const wktArray = wktString.split(",");
 
     // @ts-expect-error: Todo: Improve typing

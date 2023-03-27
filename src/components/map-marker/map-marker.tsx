@@ -86,7 +86,7 @@ export class GridMapMarker implements GxComponent {
   /**
    * The coordinates where the marker will appear in the map.
    */
-  @Prop({ mutable: true }) coords = "0, 0";
+  @Prop() readonly coords: string = "0, 0";
 
   /**
    * The class that the marker will have.
@@ -224,7 +224,6 @@ export class GridMapMarker implements GxComponent {
   private getParsedCoords(newCoords: string): LatLngTuple {
     const coords = parseCoords(newCoords);
 
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     return !!coords ? (coords.map(Number) as LatLngTuple) : DEFAULT_COORDS;
   }
 
