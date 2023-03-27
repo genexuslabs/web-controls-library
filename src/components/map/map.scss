@@ -1,7 +1,7 @@
 @import "../common/_base";
 @import "../../../node_modules/leaflet/dist/leaflet.css";
-@import "./map-marker-cluster";
 @import "../../../node_modules/leaflet-draw/dist/leaflet.draw-src.css";
+@import "./map-marker-cluster";
 
 //TODO: Decide what to do with the leaflet-draw plugin
 /* @import "../../../node_modules/leaflet-draw/dist/leaflet.draw-src.css"; */
@@ -30,7 +30,7 @@ gx-map {
 
   @include visibility(flex);
   height: 100%;
-  overflow: auto;
+
   & > .gxMap {
     display: flex;
     width: 100%;
