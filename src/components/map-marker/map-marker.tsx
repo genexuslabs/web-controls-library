@@ -5,7 +5,8 @@ import {
   EventEmitter,
   Host,
   Prop,
-  h
+  h,
+  Watch
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 import { parseCoords } from "../common/coordsValidate";
@@ -57,9 +58,9 @@ export class GridMapMarker implements GxComponent {
   private markerInstance: Marker;
 
   /**
-   * Reference to the marker instance
+   * `true` if the `componentDidLoad()` method was called
    */
-  private popupContainer: HTMLDivElement = null;
+  private didLoad = false;
 
   /**
    * The marker image width.
@@ -70,6 +71,10 @@ export class GridMapMarker implements GxComponent {
    * The marker image height.
    */
   private iconHeight: number;
+
+  // Refs
+  /** Reference to the marker instance */
+  private popupContainer: HTMLDivElement = null;
 
   @Element() element: HTMLGxMapMarkerElement;
 
@@ -129,6 +134,16 @@ export class GridMapMarker implements GxComponent {
    * Emitted when the element is deleted from a `<gx-map>`.
    */
   @Event() gxMapMarkerDeleted: EventEmitter;
+
+  @Watch("coords")
+  handleCoordsChange(newCoords: string) {
+    if (!this.didLoad) {
+      return;
+    }
+
+    // Update lat and lng
+    this.markerInstance.setLatLng(this.getParsedCoords(newCoords));
+  }
 
   private getHalfSizes(): any {
     const halfIconSizes = {
@@ -202,16 +217,21 @@ export class GridMapMarker implements GxComponent {
   }
 
   /**
-   * Given the current coords of the `gx-marker` it returns its parsed coords or the default value if they are null.
+   * Given the current coords of the `gx-marker` it returns its parsed coords
+   * or the default value if they are null.
    * @returns The parsed coords of the marker.
    */
-  private getParsedCoords() {
-    const coords = parseCoords(this.coords);
-    const parsedCoords = coords.map(Number);
-    return coords !== null ? (parsedCoords as LatLngTuple) : DEFAULT_COORDS;
+  private getParsedCoords(newCoords: string): LatLngTuple {
+    const coords = parseCoords(newCoords);
+
+    // eslint-disable-next-line @stencil/strict-boolean-conditions
+    return !!coords ? (coords.map(Number) as LatLngTuple) : DEFAULT_COORDS;
   }
+
   /**
-   * If showPopup property is true, binds a popup to the map layer with the passed content using MapMaker's bindPopup method. Set popupContainer max-width and max-height using the size of the map.
+   * If showPopup property is true, binds a popup to the map layer with the
+   * passed content using MapMaker's bindPopup method.
+   * Set popupContainer max-width and max-height using the size of the map.
    */
   private setPopup() {
     if (this.showPopup) {
@@ -252,6 +272,7 @@ export class GridMapMarker implements GxComponent {
         this.element.id || `gx-map-marker-auto-id-${autoMarkerId++}`;
     }
   }
+
   componentDidLoad() {
     if (this.showPopup) {
       this.element.parentElement.addEventListener("click", this.closePopup, {
@@ -259,9 +280,9 @@ export class GridMapMarker implements GxComponent {
       });
     }
 
-    this.setupMarker(this.getParsedCoords());
-
+    this.setupMarker(this.getParsedCoords(this.coords));
     this.setPopup();
+
     if (this.tooltipCaption) {
       this.markerInstance.bindTooltip(this.tooltipCaption, {
         direction: "top"
@@ -274,9 +295,6 @@ export class GridMapMarker implements GxComponent {
   }
 
   componentDidUpdate() {
-    // Update lat and lng
-    this.markerInstance.setLatLng(this.getParsedCoords());
-
     // Update icon
     this.markerInstance.setIcon(this.getDivIcon());
   }
@@ -287,6 +305,7 @@ export class GridMapMarker implements GxComponent {
       this.element.parentElement.removeEventListener("click", this.closePopup);
     }
   }
+
   render() {
     // Styling for gx-map-marker control.
     const classes = getClasses(this.cssClass);
