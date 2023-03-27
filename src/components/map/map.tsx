@@ -31,6 +31,8 @@ import { MarkerClusterGroup } from "leaflet.markercluster";
 import { watchPosition } from "./geolocation";
 import "leaflet-draw";
 
+const DEFAULT_CENTER: LatLngTuple = [0, 0];
+
 const MIN_ZOOM_LEVEL = 1;
 const MAX_ZOOM_LEVEL = 23;
 
@@ -369,6 +371,12 @@ export class GridMap implements GxComponent {
   }
 
   /**
+   * @todo TODO: Improve implementation since the second condition is a WA
+   */
+  private checkValidCenter = () =>
+    this.center && !this.center.startsWith("undefined");
+
+  /**
    * Sets the map initial view depending of the `initialZoom`` property
    */
   private fitBounds() {
@@ -404,9 +412,11 @@ export class GridMap implements GxComponent {
     }
     // Use default zoom otherwise
     else {
-      if (this.center) {
-        this.map.setView(this.fromStringToLatLngTuple(this.center), this.zoom);
-      }
+      const center = this.checkValidCenter()
+        ? this.fromStringToLatLngTuple(this.center)
+        : DEFAULT_CENTER;
+
+      this.map.setView(center, this.zoom);
     }
   }
 
@@ -606,14 +616,17 @@ export class GridMap implements GxComponent {
     this.connectResizeObserver();
 
     // Depending on the coordinates, set different view types
-    if (this.center != undefined) {
+    if (this.checkValidCenter()) {
       this.map = leafletMap(this.divMapView, {
         scrollWheelZoom: this.scrollWheelZoom
       }).setView(this.fromStringToLatLngTuple(this.center), this.zoom);
-    } else {
+    }
+
+    // Invalid center
+    else {
       this.map = leafletMap(this.divMapView, {
         scrollWheelZoom: this.scrollWheelZoom
-      }).setView([0, 0], this.getZoomLevel());
+      }).setView(DEFAULT_CENTER, this.getZoomLevel());
     }
 
     this.activateDrawOnMap();
@@ -645,6 +658,7 @@ export class GridMap implements GxComponent {
       this.updateSelectionMarkerPosition();
       this.registerSelectionLayerEvents(true);
     }
+
     if (this.directionLayer) {
       const latLangs = this.wktToPolyline(this.directionLayerWKTString);
       polyline(latLangs, { color: "red" }).addTo(this.map);
