@@ -85,10 +85,10 @@ export class GridMap implements GxComponent {
   @Prop({ mutable: true }) center = "0,0";
 
   /**
-   * This attribute determines whether map markers should be grouped. When true,
-   * the markers will be grouped depending on their proximity.
+   * This attribute determines whether map markers should be grouped. When
+   * `true`, the markers will be grouped depending on their proximity.
    */
-  @Prop() clusteringPoints = true;
+  @Prop() clusteringPoints = false;
 
   /**
    * Enables the possibility to draw the route between two points on the map.
