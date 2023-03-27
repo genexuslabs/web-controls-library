@@ -366,9 +366,9 @@ export class GridMap implements GxComponent {
     });
     this.map.addControl(drawControl);
 
-    this.map.on("draw:created", function (e) {
-      console.log("created", e);
-    });
+    // this.map.on("draw:created", function (e) {
+    //   console.log("created", e);
+    // });
   }
 
   /**
