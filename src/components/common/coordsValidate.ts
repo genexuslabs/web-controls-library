@@ -1,3 +1,5 @@
+const COORDINATES_REGEX = /^(\-?\d+(?:\.\d+)?),\s*(\-?\d+(?:\.\d+)?)$/;
+
 /**
  * Validate that the given string is a LatLong format string and return a string array containing [latitude,longitude], or the result of tryParseGeoJson function if it is not
  * @param coord String indicating the point latitude and longitude with coma separated
@@ -12,10 +14,14 @@
  * INPUT 3 (GeoJSON string): {"type":"Point","coordinates":[-56.1701774597168,-34.91676309400329]}"
  * OUTPUT 3: [-56.1701774597168, -34.91676309400329]
  */
-export function parseCoords(coord: string): string[] {
-  const regExp = /^(\-?\d+(?:\.\d+)?),\s*(\-?\d+(?:\.\d+)?)$/;
-  const result = regExp.exec(coord);
-  return result !== null ? result.slice(1) : null;
+export function parseCoords(coords: string): string[] {
+  if (!coords) {
+    return null;
+  }
+  const result = COORDINATES_REGEX.exec(coords);
+
+  // eslint-disable-next-line @stencil/strict-boolean-conditions
+  return !!result ? result.slice(1) : null;
 }
 
 /**
