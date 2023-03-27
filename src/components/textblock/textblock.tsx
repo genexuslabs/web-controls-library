@@ -32,7 +32,8 @@ export class TextBlock
     DisableableComponent,
     VisibilityComponent,
     LineClampComponent,
-    HighlightableComponent {
+    HighlightableComponent
+{
   constructor() {
     makeLinesClampable(
       this,

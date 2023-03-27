@@ -21,7 +21,8 @@ import {
   tag: "gx-password-edit"
 })
 export class PasswordEdit
-  implements GxComponent, DisableableComponent, VisibilityComponent {
+  implements GxComponent, DisableableComponent, VisibilityComponent
+{
   constructor() {
     this.renderer = new PasswordEditRender(this);
   }

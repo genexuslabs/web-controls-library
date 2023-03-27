@@ -22,7 +22,8 @@ import { VisibilityComponent } from "../common/interfaces";
   tag: "gx-grid-smart-css"
 })
 export class GridSmartCss
-  implements GridBase, ComponentInterface, VisibilityComponent {
+  implements GridBase, ComponentInterface, VisibilityComponent
+{
   constructor() {
     this.handleGxInfinite = this.handleGxInfinite.bind(this);
   }
@@ -141,9 +142,11 @@ export class GridSmartCss
    */
   @Method()
   async complete() {
-    (this.element.querySelector(
-      ':scope > [slot="grid-content"] gx-grid-infinite-scroll"'
-    ) as HTMLGxGridInfiniteScrollElement)["complete"]();
+    (
+      this.element.querySelector(
+        ':scope > [slot="grid-content"] gx-grid-infinite-scroll"'
+      ) as HTMLGxGridInfiniteScrollElement
+    )["complete"]();
   }
 
   private isHorizontal(): boolean {
@@ -217,7 +220,6 @@ export class GridSmartCss
   };
 
   private disconnectResizeObserver() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
       this.resizeObserver = null;

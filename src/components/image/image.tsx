@@ -31,7 +31,8 @@ export class Image
     GxComponent,
     DisableableComponent,
     VisibilityComponent,
-    HighlightableComponent {
+    HighlightableComponent
+{
   constructor() {
     cssVariablesWatcher(
       this,
@@ -109,7 +110,7 @@ export class Image
   /**
    * True to show the image picker button.
    */
-  @Prop() showImagePickerButton = false;
+  @Prop() readonly showImagePickerButton: boolean = false;
 
   /**
    * This attribute lets you specify the `src` of the `img`.

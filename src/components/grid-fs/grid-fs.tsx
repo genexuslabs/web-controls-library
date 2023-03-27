@@ -24,12 +24,13 @@ export class GridFreeStyle
     GridBase,
     ComponentInterface,
     VisibilityComponent,
-    HighlightableComponent {
+    HighlightableComponent
+{
   constructor() {
     this.handleGxInfinite = this.handleGxInfinite.bind(this);
   }
 
-  viewPortInitialized = false;
+  private viewPortInitialized = false;
 
   @Element() element!: HTMLGxGridFsElement;
 
@@ -99,9 +100,11 @@ export class GridFreeStyle
    */
   @Method()
   async complete() {
-    (this.element.querySelector(
-      ":scope > gx-grid-infinite-scroll"
-    ) as HTMLGxGridInfiniteScrollElement)["complete"]();
+    (
+      this.element.querySelector(
+        ":scope > gx-grid-infinite-scroll"
+      ) as HTMLGxGridInfiniteScrollElement
+    )["complete"]();
   }
 
   private ensureViewPort() {

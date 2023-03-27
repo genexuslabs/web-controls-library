@@ -200,7 +200,6 @@ export class MapMarker implements GxComponent {
 
   private setPopup() {
     // TODO: In which case does this condition occur?
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.element.firstElementChild) {
       const maxPopupSize = {
         height:

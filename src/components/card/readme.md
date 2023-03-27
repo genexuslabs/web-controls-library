@@ -40,21 +40,15 @@ A content container with the ability to render a header.
     </li>
 
     <li slot="low-priority-action">
-      <gx-textblock href="#">
-        Another action
-      </gx-textblock>
+      <gx-textblock href="#"> Another action </gx-textblock>
     </li>
 
     <li slot="low-priority-action">
-      <gx-textblock href="#">
-        Something else here
-      </gx-textblock>
+      <gx-textblock href="#"> Something else here </gx-textblock>
     </li>
   </gx-card-header>
 
-  <div slot="body">
-    This is the card content
-  </div>
+  <div slot="body">This is the card content</div>
 
   <gx-action-sheet close-button-label="GXM_cancel">
     <gx-action-sheet-item>Action A</gx-action-sheet-item>

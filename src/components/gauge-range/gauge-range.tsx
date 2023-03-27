@@ -14,20 +14,20 @@ export class GaugeRange implements GxComponent {
    * The range length.
    *
    */
-  @Prop() amount: number;
+  @Prop() readonly amount: number;
 
   /**
    * The name of the range.
    *
    */
-  @Prop() name: string;
+  @Prop() readonly name: string;
 
   /**
    * Color property defines the color of range background.
    * Color value can be any valid CSS color.
    *
    */
-  @Prop() color: string;
+  @Prop() readonly color: string;
 
   /**
    * The gxGaugeRangeDidLoad is triggered when the component has been added and its render completely ran.

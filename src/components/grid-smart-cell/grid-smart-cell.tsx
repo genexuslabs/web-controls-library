@@ -25,7 +25,8 @@ import {
   tag: "gx-grid-smart-cell"
 })
 export class GridSmartCell
-  implements ComponentInterface, HighlightableComponent {
+  implements ComponentInterface, HighlightableComponent
+{
   @Element() element: HTMLGxGridSmartCellElement;
 
   /**
@@ -98,10 +99,7 @@ export class GridSmartCell
     const classes = getTransformedClassesWithoutFocus(this.cssClass, tClass);
 
     const horizontalLineClasses = !!this.cssClass
-      ? this.cssClass
-          .split(" ")
-          .map(tHorizontalLine)
-          .join(" ")
+      ? this.cssClass.split(" ").map(tHorizontalLine).join(" ")
       : "";
 
     return (

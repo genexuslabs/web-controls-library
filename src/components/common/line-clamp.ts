@@ -21,7 +21,7 @@ export function makeLinesClampable(
   let contentContainerHeight = -1;
   let lineMeasuringHeight = -1;
 
-  const applyLineClamp = debounce(function() {
+  const applyLineClamp = debounce(function () {
     requestAnimationFrame(function applyLineClampImpl() {
       const currentContentContainerHeight =
         contentContainerElement.clientHeight;
@@ -95,7 +95,6 @@ export function makeLinesClampable(
 
   overrideMethod(component, "disconnectedCallback", {
     before: () => {
-      // eslint-disable-next-line @stencil/strict-boolean-conditions
       if (resizeObserverContainer) {
         resizeObserverContainer.disconnect();
         resizeObserverContainer = undefined;
