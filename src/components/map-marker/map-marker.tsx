@@ -273,6 +273,8 @@ export class GridMapMarker implements GxComponent {
   }
 
   componentDidLoad() {
+    this.didLoad = true;
+
     if (this.showPopup) {
       this.element.parentElement.addEventListener("click", this.closePopup, {
         capture: true
