@@ -55,7 +55,8 @@ const propertiesToScrollDirectionMap = {
   tag: "gx-grid-flex"
 })
 export class GridFlex
-  implements GridBase, ComponentInterface, VisibilityComponent {
+  implements GridBase, ComponentInterface, VisibilityComponent
+{
   /**
    * `true` if the `componentDidLoad()` method was called
    */
@@ -227,9 +228,11 @@ export class GridFlex
    */
   @Method()
   async complete() {
-    (this.element.querySelector(
-      ':scope > [slot="grid-content"] gx-grid-infinite-scroll"'
-    ) as HTMLGxGridInfiniteScrollElement)["complete"]();
+    (
+      this.element.querySelector(
+        ':scope > [slot="grid-content"] gx-grid-infinite-scroll"'
+      ) as HTMLGxGridInfiniteScrollElement
+    )["complete"]();
   }
 
   @Watch("flexDirection")
@@ -330,7 +333,6 @@ export class GridFlex
   }
 
   private disconnectResizeObserver() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
       this.resizeObserver = null;

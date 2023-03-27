@@ -190,13 +190,15 @@ export class EditRender implements Renderer {
           >
             {input}
 
-            {// Implements a non-native placeholder for date types
-            dateTypes.includes(edit.type) &&
-              (edit.value == undefined || edit.value == "") && (
-                <div class="date-placeholder-container">
-                  <span>{edit.placeholder}</span>
-                </div>
-              )}
+            {
+              // Implements a non-native placeholder for date types
+              dateTypes.includes(edit.type) &&
+                (edit.value == undefined || edit.value == "") && (
+                  <div class="date-placeholder-container">
+                    <span>{edit.placeholder}</span>
+                  </div>
+                )
+            }
           </div>,
           // If showTrigger == true, it sets a trigger button
           edit.showTrigger && (

@@ -37,43 +37,43 @@ export class Gauge implements GxComponent {
   /**
    * This property allows selecting the gauge type. The allowed values are `circle` or `line` (defautl).
    */
-  @Prop() type: "line" | "circle" = "line";
+  @Prop() readonly type: "line" | "circle" = "line";
 
   /**
    *  Set `true` to display the current value. Default is `false`.
    *
    */
-  @Prop() showValue = false;
+  @Prop() readonly showValue: boolean = false;
 
   /**
    *  Set `true` to display the minimum and maximum value. Default is `false`.
    *
    */
-  @Prop() showMinMax = false;
+  @Prop() readonly showMinMax: boolean = false;
 
   /**
    * The minimum value of the gauge
    * 0 by Default
    */
-  @Prop() minValue = 0;
+  @Prop() readonly minValue: number = 0;
 
   /**
    * The current value of the gauge
    *
    */
-  @Prop() value: number;
+  @Prop() readonly value: number;
 
   /**
    * Allows specify the width of the circumference _(When gauge is circle type)_ or the width of the bar _(When gauge is Line type)_ in % relative the component size.
    *
    */
-  @Prop() thickness = 10;
+  @Prop() readonly thickness: number = 10;
 
   /**
    * The maximum value of the gauge.
    * This prop allows specify the maximum value that the gauge will handle. If there is no value specified it will be calculated by the sum of all gx-ranges values
    */
-  @Prop() maxValue: number;
+  @Prop() readonly maxValue: number;
 
   @State() rangesChildren: any[] = []; // It has the following type: GaugeRange[]
 
@@ -272,7 +272,6 @@ export class Gauge implements GxComponent {
   }
 
   private disconnectObserver() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.watchForItemsObserver) {
       this.watchForItemsObserver.disconnect();
       this.watchForItemsObserver = undefined;
@@ -312,8 +311,8 @@ export class Gauge implements GxComponent {
       this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
 
     // This does not include the gauge padding
-    const gaugeWidth = this.linearCurrentValueContainer.getBoundingClientRect()
-      .width;
+    const gaugeWidth =
+      this.linearCurrentValueContainer.getBoundingClientRect().width;
 
     const distanceToTheValueCenter = (gaugeWidth / 100) * percentage;
 
@@ -398,8 +397,9 @@ export class Gauge implements GxComponent {
         style={{
           "--child-number": childNumber,
           "--stroke-dasharray-initial": `0, ${circleLength}`,
-          "--stroke-dasharray": `${circleLength *
-            valuePercentage}, ${circleLength}`
+          "--stroke-dasharray": `${
+            circleLength * valuePercentage
+          }, ${circleLength}`
         }}
       />
     );
@@ -477,8 +477,9 @@ export class Gauge implements GxComponent {
     const rotation =
       this.calcPercentage() == 100
         ? `rotate(${359.5 + ROTATION_FIX}deg)`
-        : `rotate(${this.calcPercentage() * ONE_PERCENT_OF_CIRCLE_DREGREE +
-            ROTATION_FIX}deg)`;
+        : `rotate(${
+            this.calcPercentage() * ONE_PERCENT_OF_CIRCLE_DREGREE + ROTATION_FIX
+          }deg)`;
 
     // Styling for gx-gauge control.
     const classes = getClasses(this.cssClass);

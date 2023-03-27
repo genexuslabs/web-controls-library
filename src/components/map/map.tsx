@@ -111,7 +111,7 @@ export class GridMap implements GxComponent {
    * Enable the High Accuracy in user location.
    * _Note: This property applies when ```watchPosition = true```._
    */
-  @Prop() highAccuracyLocator = true;
+  @Prop() readonly highAccuracyLocator = true;
 
   /**
    * Indicates how the map will be displayed at startup.
@@ -135,7 +135,7 @@ export class GridMap implements GxComponent {
    * The map provider.
    * _Note: Currently, this property is for setting a custom map provider using an URL._
    */
-  @Prop() mapProvider: string;
+  @Prop() readonly mapProvider: string;
 
   /**
    * Map type to be used.
@@ -147,19 +147,19 @@ export class GridMap implements GxComponent {
    * | `satellite`   | Shows satellite images of the Earth. |
    * | `hybrid`   | Shows streets over the satellite images. |
    */
-  @Prop() mapType: "standard" | "satellite" | "hybrid" = "standard";
+  @Prop() readonly mapType: "standard" | "satellite" | "hybrid" = "standard";
 
   /**
    * A CSS class to set as the `showMyLocation` icon class.
    */
-  @Prop() pinImageCssClass: string;
+  @Prop() readonly pinImageCssClass: string;
 
   /**
    * This attribute lets you specify the srcset attribute for the
    * `showMyLocation` icon when the `pinShowMyLocationSrcset` property is not
    * specified.
    */
-  @Prop() pinImageSrcset: string;
+  @Prop() readonly pinImageSrcset: string;
 
   /**
    * This attribute lets you specify the srcset attribute for the
@@ -168,13 +168,13 @@ export class GridMap implements GxComponent {
    * If none of the properties are specified, a default icon will be used
    * when `showMyLocation = true`
    */
-  @Prop() pinShowMyLocationSrcset: string;
+  @Prop() readonly pinShowMyLocationSrcset: string;
 
   /**
    * Enables the possibility to navigate the map and select a location point
    * using the map center.
    */
-  @Prop() selectionLayer = false;
+  @Prop() readonly selectionLayer = false;
 
   /**
    * A CSS class to set as the `selectionLayer` icon class.
@@ -198,7 +198,7 @@ export class GridMap implements GxComponent {
   /**
    * Indicates if the current location of the device is displayed on the map.
    */
-  @Prop() showMyLocation = false;
+  @Prop() readonly showMyLocation = false;
 
   /**
    * The initial zoom level in the map.
@@ -665,7 +665,7 @@ export class GridMap implements GxComponent {
     }
 
     // @ts-expect-error @todo TODO: Improve typing
-    this.addMapListener("popupopen", function(e) {
+    this.addMapListener("popupopen", function (e) {
       const px = this.project(e.target._popup._latlng);
       px.y -= e.target._popup._container.clientHeight / 2;
       this.panTo(this.unproject(px), { animate: true });

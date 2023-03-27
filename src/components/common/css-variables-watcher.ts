@@ -6,7 +6,7 @@ export function cssVariablesWatcher(
   properties: CssVariableWatcherProperty[],
   debounceValue = 100
 ): void {
-  const updatePropertiesFromCss = debounce(function(): void {
+  const updatePropertiesFromCss = debounce(function (): void {
     for (const prop of properties) {
       const propCssValue =
         getComputedStyle(component.element)
@@ -44,7 +44,6 @@ export function cssVariablesWatcher(
 
   overrideMethod(component, "disconnectedCallback", {
     before: () => {
-      // eslint-disable-next-line @stencil/strict-boolean-conditions
       if (classObserver) {
         classObserver.disconnect();
         classObserver = undefined;

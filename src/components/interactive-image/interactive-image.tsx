@@ -12,17 +12,17 @@ export class InteractiveImage implements GxComponent {
   /**
    * True/False. If this property is true, the user can zoom in/out on the image.
    */
-  @Prop() enableZoom = false;
+  @Prop() readonly enableZoom: boolean = false;
 
   /**
    * Indicates how much you can enlarge an image. (Percentage) _Note: 100% = Normal size_.
    */
-  @Prop() zoom = 100;
+  @Prop({ mutable: true }) zoom = 100;
 
   /**
    * Lets you specify the image URL. *Requiered*
    */
-  @Prop() readonly src = "";
+  @Prop() readonly src: string = "";
 
   @State() mouseOver = false;
 

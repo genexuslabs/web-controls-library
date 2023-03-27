@@ -42,15 +42,11 @@ actionable elements in specific areas, according to their priority.
     </li>
 
     <li slot="low-priority-action">
-      <gx-textblock href="#">
-        Another action
-      </gx-textblock>
+      <gx-textblock href="#"> Another action </gx-textblock>
     </li>
 
     <li slot="low-priority-action">
-      <gx-textblock href="#">
-        Something else here
-      </gx-textblock>
+      <gx-textblock href="#"> Something else here </gx-textblock>
     </li>
   </gx-card-header>
 </gx-card>

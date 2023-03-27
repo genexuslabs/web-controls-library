@@ -14,21 +14,13 @@ tab content, using the `gx-tab-page` element.
 ```html
 <gx-tab>
   <gx-tab-caption slot="caption">Tab Page 1</gx-tab-caption>
-  <gx-tab-page slot="page">
-    First tab page
-  </gx-tab-page>
+  <gx-tab-page slot="page"> First tab page </gx-tab-page>
   <gx-tab-caption slot="caption" selected="true">Tab Page 2</gx-tab-caption>
-  <gx-tab-page slot="page">
-    Second tab page
-  </gx-tab-page>
+  <gx-tab-page slot="page"> Second tab page </gx-tab-page>
   <gx-tab-caption slot="caption">Tab Page 3</gx-tab-caption>
-  <gx-tab-page slot="page">
-    Third tab page
-  </gx-tab-page>
+  <gx-tab-page slot="page"> Third tab page </gx-tab-page>
   <gx-tab-caption slot="caption" disabled>Tab Page 4 (disabled)</gx-tab-caption>
-  <gx-tab-page slot="page">
-    Forth tab page (disabled)
-  </gx-tab-page>
+  <gx-tab-page slot="page"> Forth tab page (disabled) </gx-tab-page>
 </gx-tab>
 ```
 

@@ -14,14 +14,14 @@ export function debounce(
 ): () => void {
   let timeout: NodeJS.Timeout;
 
-  return function(...args) {
-    const later = function() {
+  return function (...args) {
+    const later = function () {
       timeout = null;
       if (!immediate) {
         func.apply(this, args);
       }
     }.bind(this);
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
+
     const callNow = immediate && !timeout;
 
     clearTimeout(timeout);

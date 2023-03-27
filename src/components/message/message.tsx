@@ -41,7 +41,7 @@ export class Message implements GxComponent, DismissableComponent {
   /**
    * This attribute lets you specify the text of the message.
    */
-  @Prop() messageText: string = null;
+  @Prop() readonly messageText: string = null;
 
   @State() triggerDismiss = false;
 

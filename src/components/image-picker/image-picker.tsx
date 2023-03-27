@@ -140,7 +140,7 @@ export class ImagePicker implements GxComponent {
    *
    * `uploadingFile` will not allow you to change or remove the current image.
    */
-  @Prop() state: "readyToUse" | "uploadingFile" = "readyToUse";
+  @Prop({ mutable: true }) state: "readyToUse" | "uploadingFile" = "readyToUse";
 
   /**
    * Fired when the image is clicked
@@ -286,7 +286,7 @@ export class ImagePicker implements GxComponent {
 
     this.reader.addEventListener(
       "load",
-      function() {
+      function () {
         // Convert image file to base64 string
         elem.src = this.result.toString();
 
