@@ -1,12 +1,20 @@
-import { Component, Host, h, Element, Prop, State, Method } from '@stencil/core';
+import {
+  Component,
+  Host,
+  h,
+  Element,
+  Prop,
+  State,
+  Method
+} from "@stencil/core";
 
 /**
  * @part canvas - The canvas where to make the annotations.
  */
 @Component({
-  tag: 'gx-image-annotations',
-  styleUrl: 'gx-image-annotations.css',
-  shadow: true,
+  tag: "gx-image-annotations",
+  styleUrl: "image-annotations.css",
+  shadow: true
 })
 export class GxImageAnnotations {
   private canvas: HTMLCanvasElement = null;
@@ -45,47 +53,48 @@ export class GxImageAnnotations {
   /**
    * Drawing color.
    */
-  @Prop({ mutable: true }) traceColor = '#000000';
+  @Prop({ mutable: true }) traceColor = "#000000";
 
   /**
    * Drawing thickness.
    */
-  @Prop({ mutable: true }) traceThickness: number = 2;
+  @Prop({ mutable: true }) traceThickness = 2;
 
   /**
    * The source of the background image.
    */
-  @Prop() backgroundImage: string;
+  @Prop() readonly backgroundImage: string;
 
   /**
    * If the annotations are activated or not.
    */
-  @Prop() enabled: boolean = true;
+  @Prop() readonly enabled = true;
 
   /**
    * If the component are visible or not.
    */
-  @Prop() visible: boolean = true;
+  @Prop() readonly visible = true;
 
   /**
    * How the component will hide.
    */
-  @Prop() invisibleMode: "Keep Space" | "Collapse Space" = "Keep Space";
+  @Prop() readonly invisibleMode: "Keep Space" | "Collapse Space" =
+    "Keep Space";
 
   componentDidLoad() {
-    this.canvas = this.el.shadowRoot.querySelector('#canvas');
+    this.canvas = this.el.shadowRoot.querySelector("#canvas");
     this.canvas.width = this.el.clientWidth;
     this.canvas.height = this.el.clientHeight;
     this.canvasAnn = this.canvas.cloneNode();
-    this.canvas.addEventListener('mousedown', this.handleMousedown);
-    this.canvas.addEventListener('mousemove', this.handleMousemove);
-    this.canvas.addEventListener('mouseup', this.finishPaint);
-    this.canvas.addEventListener('mouseout', this.finishPaint);
+    this.canvas.addEventListener("mousedown", this.handleMousedown);
+    this.canvas.addEventListener("mousemove", this.handleMousemove);
+    this.canvas.addEventListener("mouseup", this.finishPaint);
+    this.canvas.addEventListener("mouseout", this.finishPaint);
 
     if (this.backgroundImage) {
       this.baseImage = new Image();
       this.baseImage.src = this.backgroundImage;
-      this.baseImage.addEventListener('load', this.loadImage);
+      this.baseImage.addEventListener("load", this.loadImage);
     }
   }
 
@@ -139,7 +148,6 @@ export class GxImageAnnotations {
 
   private loadImage = () => {
     if (this.baseImage) {
-
       const hostWidth = this.canvas.width;
       const hostHeight = this.canvas.height;
       const imgWidth = this.baseImage.width;
@@ -148,20 +156,17 @@ export class GxImageAnnotations {
       let newLeft = 0;
       let newTop = 0;
 
-      let ratio = imgWidth/imgHeight;
+      let ratio = imgWidth / imgHeight;
       let newImgWidth = hostWidth;
       let newImgHeight = hostHeight;
-      if(imgWidth > imgHeight){
-        ratio = imgHeight/imgWidth;
-        newImgHeight = hostHeight*ratio;
-        newTop = (hostHeight-newImgHeight)/2;
+      if (imgWidth > imgHeight) {
+        ratio = imgHeight / imgWidth;
+        newImgHeight = hostHeight * ratio;
+        newTop = (hostHeight - newImgHeight) / 2;
+      } else {
+        newImgWidth = hostWidth * ratio;
+        newLeft = (hostWidth - newImgWidth) / 2;
       }
-      else{
-        newImgWidth = hostWidth*ratio;
-        newLeft = (hostWidth-newImgWidth)/2;
-      }
-
-
 
       // let newDistWidth = (newImgWidth - hostWidth) / 2;
       // let newDistHeight = (newImgHeight - hostHeight) / 2;
@@ -169,14 +174,24 @@ export class GxImageAnnotations {
       // const wDiff = (this.size.width / 2) * (ratio - 1);
       // const hDiff = (this.size.height / 2) * (ratio - 1);
 
-      const context = this.canvas.getContext('2d');
-      context.drawImage(this.baseImage, 0, 0, this.baseImage.width, this.baseImage.height, newLeft, newTop, newImgWidth, newImgHeight);
+      const context = this.canvas.getContext("2d");
+      context.drawImage(
+        this.baseImage,
+        0,
+        0,
+        this.baseImage.width,
+        this.baseImage.height,
+        newLeft,
+        newTop,
+        newImgWidth,
+        newImgHeight
+      );
     }
   };
 
   private traceChanged = () => {
     this.canvas.toBlob(blob => {
-      if(this.lastSavedImageUrl){
+      if (this.lastSavedImageUrl) {
         URL.revokeObjectURL(this.lastSavedImageUrl);
         this.lastSavedImageUrl = null;
       }
@@ -187,7 +202,7 @@ export class GxImageAnnotations {
     this.cleanPaint(this.canvasAnn);
     this.paintToInd(this.canvasAnn);
     this.canvasAnn.toBlob(blob => {
-      if(this.lastSavedImageAnnUrl){
+      if (this.lastSavedImageAnnUrl) {
         URL.revokeObjectURL(this.lastSavedImageAnnUrl);
         this.lastSavedImageAnnUrl = null;
       }
@@ -197,7 +212,7 @@ export class GxImageAnnotations {
   };
 
   private handleMousedown = (ev: MouseEvent) => {
-    if(this.enabled){
+    if (this.enabled) {
       ev.preventDefault();
       // En este evento solo se ha iniciado el clic, así que dibujamos un punto
       this.xAnterior = this.xActual;
@@ -213,7 +228,7 @@ export class GxImageAnnotations {
         color: this.traceColor,
         thickness: this.traceThickness,
         point: { x: this.xActual, y: this.yActual },
-        paths: [],
+        paths: []
       });
       this.traceInd++;
 
@@ -223,7 +238,7 @@ export class GxImageAnnotations {
   };
 
   private handleMousemove = (ev: MouseEvent) => {
-    if(this.enabled){
+    if (this.enabled) {
       ev.preventDefault();
 
       if (!this.initPaint) {
@@ -235,12 +250,20 @@ export class GxImageAnnotations {
       this.yAnterior = this.yActual;
       this.xActual = this.getRealX(ev.clientX);
       this.yActual = this.getRealY(ev.clientY);
-      this.joinPath(this.canvas, this.xAnterior, this.yAnterior, this.xActual, this.yActual, this.traceColor, this.traceThickness);
+      this.joinPath(
+        this.canvas,
+        this.xAnterior,
+        this.yAnterior,
+        this.xActual,
+        this.yActual,
+        this.traceColor,
+        this.traceThickness
+      );
     }
   };
 
   private finishPaint = (ev: MouseEvent) => {
-    if(this.enabled){
+    if (this.enabled) {
       ev.preventDefault();
       this.initPaint = false;
       this.traceChanged();
@@ -248,7 +271,7 @@ export class GxImageAnnotations {
   };
 
   private cleanPaint = (canvas: HTMLCanvasElement) => {
-    const context = canvas.getContext('2d');
+    const context = canvas.getContext("2d");
     context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   };
 
@@ -257,16 +280,31 @@ export class GxImageAnnotations {
     this.resetTraceList();
   };
 
-  private paintPoint = (canvas: HTMLCanvasElement, xActual: number, yActual: number, color: string, thickness: number) => {
-    const context = canvas.getContext('2d');
+  private paintPoint = (
+    canvas: HTMLCanvasElement,
+    xActual: number,
+    yActual: number,
+    color: string,
+    thickness: number
+  ) => {
+    const context = canvas.getContext("2d");
     context.beginPath();
     context.fillStyle = color;
     context.fillRect(xActual, yActual, thickness, thickness);
     context.closePath();
   };
 
-  private joinPath = (canvas: HTMLCanvasElement, xAnterior: number, yAnterior: number, xActual: number, yActual: number, color: string, thickness: number, addTolist = true) => {
-    const context = canvas.getContext('2d');
+  private joinPath = (
+    canvas: HTMLCanvasElement,
+    xAnterior: number,
+    yAnterior: number,
+    xActual: number,
+    yActual: number,
+    color: string,
+    thickness: number,
+    addTolist = true
+  ) => {
+    const context = canvas.getContext("2d");
     context.beginPath();
     context.moveTo(xAnterior, yAnterior);
     context.lineTo(xActual, yActual);
@@ -281,7 +319,7 @@ export class GxImageAnnotations {
           xAnterior,
           yAnterior,
           xActual,
-          yActual,
+          yActual
         });
       }
     }
@@ -291,9 +329,24 @@ export class GxImageAnnotations {
     let ind = 0;
     while (ind <= this.traceInd) {
       const trace = this.traceList[ind];
-      this.paintPoint(canvas, trace.point.x, trace.point.y, trace.color, trace.thickness);
-      for (let path of trace.paths) {
-        this.joinPath(canvas, path.xAnterior, path.yAnterior, path.xActual, path.yActual, trace.color, trace.thickness, false);
+      this.paintPoint(
+        canvas,
+        trace.point.x,
+        trace.point.y,
+        trace.color,
+        trace.thickness
+      );
+      for (const path of trace.paths) {
+        this.joinPath(
+          canvas,
+          path.xAnterior,
+          path.yAnterior,
+          path.xActual,
+          path.yActual,
+          trace.color,
+          trace.thickness,
+          false
+        );
       }
       ind++;
     }
@@ -313,11 +366,13 @@ export class GxImageAnnotations {
   render() {
     return (
       <Host
-        role="img" aria-label="Image to be annotated"
+        role="img"
+        aria-label="Image to be annotated"
         class={{
           [this.cssClass]: !!this.cssClass,
-          'hide-keep': !this.visible && this.invisibleMode === 'Keep Space',
-          'hide-collapse': !this.visible && this.invisibleMode === 'Collapse Space',
+          "hide-keep": !this.visible && this.invisibleMode === "Keep Space",
+          "hide-collapse":
+            !this.visible && this.invisibleMode === "Collapse Space"
         }}
       >
         <canvas id="canvas" part="canvas"></canvas>

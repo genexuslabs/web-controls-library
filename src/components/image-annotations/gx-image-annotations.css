@@ -1,6 +1,6 @@
 :host {
   display: block;
-  --color: 'transparent';
+  --color: "transparent";
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -11,11 +11,11 @@
 :host(.hide-keep) {
   opacity: 0;
 }
+
 :host(.hide-collapse) {
   display: none;
 }
 
-#canvas{
+#canvas {
   border: 2px solid black;
 }
-
