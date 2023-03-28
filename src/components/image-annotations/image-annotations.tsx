@@ -13,7 +13,7 @@ import {
  */
 @Component({
   tag: "gx-image-annotations",
-  styleUrl: "image-annotations.css",
+  styleUrl: "image-annotations.scss",
   shadow: true
 })
 export class GxImageAnnotations {
