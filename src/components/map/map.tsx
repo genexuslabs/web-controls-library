@@ -256,7 +256,7 @@ export class GridMap implements GxComponent {
       MAP_MARKER_DELETED_EVENT_NAME
     );
 
-    if (!this.selectionLayer || markerHTMLElement.type != "selection-layer") {
+    if (!this.selectionLayer || markerHTMLElement.type !== "selection-layer") {
       this.markersList.set(id, instance);
     }
     event.stopPropagation();
@@ -356,7 +356,7 @@ export class GridMap implements GxComponent {
 
     const drawnItems = new FeatureGroup();
     this.map.addLayer(drawnItems);
-    //TODO: How to import the Draw function without using import * as L from "leaflet"
+    // TODO: How to import the Draw function without using import * as L from "leaflet"
     // Normally the way to use it is L.Control.Draw
     // @ts-expect-error Todo: Improve typing
     const drawControl = new Control.Draw({
@@ -383,7 +383,7 @@ export class GridMap implements GxComponent {
   private fitBounds() {
     // Set the maximum zoom level possible to fit all of the map elements when
     // initialZoom property is set to "showAll"
-    if (this.initialZoom == "showAll" && this.markersList.size > 1) {
+    if (this.initialZoom === "showAll" && this.markersList.size > 1) {
       const markersGroup = new FeatureGroup(
         Array.from(this.markersList.values())
       );
@@ -393,7 +393,7 @@ export class GridMap implements GxComponent {
     // The map zoom is adjusted to display the current device location and the
     // nearest point when initialZoom property is set to "nearestPoint"
     else if (
-      this.initialZoom == "nearestPoint" &&
+      this.initialZoom === "nearestPoint" &&
       this.userLocationCoords &&
       this.markersList.size > 1
     ) {
@@ -405,7 +405,7 @@ export class GridMap implements GxComponent {
 
     // The map zoom is adjusted to display a fixed radius specified on
     // initialZoomRadius property when initialZoom property is set to "radius"
-    else if (this.initialZoom == "radius" && this.markersList.size > 1) {
+    else if (this.initialZoom === "radius" && this.markersList.size > 1) {
       this.map.setView(
         this.fromStringToLatLngTuple(this.userLocationCoords),
         this.initialZoomRadius
@@ -549,7 +549,7 @@ export class GridMap implements GxComponent {
     this.divMapView.addEventListener(
       "click",
       (event: UIEvent) => {
-        if (event.target == this.divMapView) {
+        if (event.target === this.divMapView) {
           event.preventDefault();
           event.stopPropagation();
         }
@@ -629,7 +629,7 @@ export class GridMap implements GxComponent {
     this.preventPopupDisplayWhenClickingOnTheMap();
     this.map.createPane("fromKML");
 
-    /// Set the leaflet default marker icon
+    // Set the leaflet default marker icon
     /* const markerIcon = new Icon({
       iconSize: [25, 41],
       iconAnchor: [10, 41],

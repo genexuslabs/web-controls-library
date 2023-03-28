@@ -12,9 +12,23 @@ module.exports = {
     sourceType: "module" // Allows for the use of imports
   },
   rules: {
+    // - - - - - - - - - - - -
+    // ESLint
+    // - - - - - - - - - - - -
+    camelcase: "warn", // Enforce camelcase naming convention
+    eqeqeq: ["error", "always", { null: "ignore" }], // Require the use of === and !==   "ignore" -------> Do not apply this rule to null
+    "no-console": "warn", // Warning when using console.log, console.warn or console.error
+    "no-debugger": "error", // Error when using debugger;
+    "no-empty": "error", // Disallow empty block statements
+    "no-duplicate-case": "error", // This rule disallows duplicate test expressions in case clauses of switch statements
+    "no-sequences": "error", // Disallow comma operators
     "no-undef": "off", // Allows defining undefined variables
-    "no-console": "warn",
+    "no-unneeded-ternary": "error", // Disallow ternary operators when simpler alternatives exist
+    "spaced-comment": ["error", "always", { exceptions: ["-", "+", "/"] }], // Enforce consistent spacing after the // or /* in a comment
 
+    // - - - - - - - - - - - -
+    // TypeScript ESLint
+    // - - - - - - - - - - - -
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-use-before-define": ["error", { functions: false }],
     "@typescript-eslint/no-unused-vars": [
@@ -24,6 +38,9 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
 
+    // - - - - - - - - - - - -
+    // Prettier
+    // - - - - - - - - - - - -
     "prettier/prettier": [
       "error",
       {
@@ -31,6 +48,9 @@ module.exports = {
       }
     ],
 
+    // - - - - - - - - - - - -
+    // StencilJS
+    // - - - - - - - - - - - -
     "@stencil-community/async-methods": "error", // This rule catches Stencil public methods that are not async
     "@stencil-community/decorators-context": "error", // This rule catches Stencil decorators in bad locations
     "@stencil-community/decorators-style": [

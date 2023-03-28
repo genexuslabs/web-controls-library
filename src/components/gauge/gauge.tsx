@@ -173,7 +173,7 @@ export class Gauge implements GxComponent {
     // Possible improvement here. Check the approach applied in navbar.jsx line 103
     childRange.element.addEventListener("gxGaugeRangeDidUnload", () => {
       this.rangesChildren = this.rangesChildren.filter(
-        elementToSave => elementToSave != childRange
+        elementToSave => elementToSave !== childRange
       );
       this.totalAmount -= childRange.amount;
     });
@@ -220,7 +220,7 @@ export class Gauge implements GxComponent {
     }
 
     if (this.shouldSetGaugeObserver) {
-      if (this.type == "line") {
+      if (this.type === "line") {
         this.setLineGaugeObserver();
       } else {
         this.setCircleGaugeObserver();
@@ -356,6 +356,7 @@ export class Gauge implements GxComponent {
     // get the `labelsSubContainer` reference
     if (
       !this.didLoad ||
+      // eslint-disable-next-line eqeqeq
       (this.labelsOverflow && this.labelsSubContainer == undefined)
     ) {
       return;
@@ -475,7 +476,7 @@ export class Gauge implements GxComponent {
     }
 
     const rotation =
-      this.calcPercentage() == 100
+      this.calcPercentage() === 100
         ? `rotate(${359.5 + ROTATION_FIX}deg)`
         : `rotate(${
             this.calcPercentage() * ONE_PERCENT_OF_CIRCLE_DREGREE + ROTATION_FIX

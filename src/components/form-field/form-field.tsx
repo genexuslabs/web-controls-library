@@ -92,7 +92,7 @@ export class FormField implements GxComponent {
     let result: LabelClasses = labelClassesCache.get(this.cssClass);
 
     // If the value has not yet been calculated
-    if (result == undefined) {
+    if (!result) {
       const splitClasses = this.cssClass.split(" ");
 
       const baseClass = splitClasses.map(tLabel).join(" ");

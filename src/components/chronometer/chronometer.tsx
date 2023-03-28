@@ -109,7 +109,7 @@ export class Chronometer implements GxComponent {
     this.elapsedTime = this.value * this.getUnit();
 
     // Check if the chronometer has started before the first render
-    if (this.state == TimerState.Running) {
+    if (this.state === TimerState.Running) {
       this.start();
     }
   }
