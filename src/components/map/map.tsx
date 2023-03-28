@@ -356,7 +356,7 @@ export class GridMap implements GxComponent {
 
     const drawnItems = new FeatureGroup();
     this.map.addLayer(drawnItems);
-    //TODO: How to import the Draw function without using import * as L from "leaflet"
+    // TODO: How to import the Draw function without using import * as L from "leaflet"
     // Normally the way to use it is L.Control.Draw
     // @ts-expect-error Todo: Improve typing
     const drawControl = new Control.Draw({
@@ -629,7 +629,7 @@ export class GridMap implements GxComponent {
     this.preventPopupDisplayWhenClickingOnTheMap();
     this.map.createPane("fromKML");
 
-    /// Set the leaflet default marker icon
+    // Set the leaflet default marker icon
     /* const markerIcon = new Icon({
       iconSize: [25, 41],
       iconAnchor: [10, 41],

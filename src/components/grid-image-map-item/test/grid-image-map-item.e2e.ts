@@ -83,7 +83,7 @@ describe("gx-grid-image-map-item", () => {
   });
 
   it.skip("takes height property as min-height when its assigned", async () => {
-    //Set height smallest than min-height
+    // Set height smallest than min-height
     const height = "100";
 
     await page.setContent(

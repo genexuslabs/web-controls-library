@@ -172,7 +172,7 @@ export class DynamicForm implements GxComponent {
       /** The element that may be affected by the rule */
       const targeted = this.formFieldElements.get(id.toString());
 
-      //** The parent node of the element that may be affected by the rule */
+      /** The parent node of the element that may be affected by the rule */
       const gxEditForm = this.getEditFormParentNode(
         id.toString()
       ) as HTMLGxEditElement;
