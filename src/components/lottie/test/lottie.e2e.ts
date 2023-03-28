@@ -1,5 +1,5 @@
 import { E2EElement, E2EPage, newE2EPage } from "@stencil/core/testing";
-import { animationData } from "./test-animation";
+import { animationData } from "../test-animation";
 
 describe("gx-lottie", () => {
   let element: E2EElement;
