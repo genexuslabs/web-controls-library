@@ -18,10 +18,14 @@ module.exports = {
     camelcase: "warn", // Enforce camelcase naming convention
     curly: "error", // Enforce consistent brace style for all control statements
     eqeqeq: ["error", "always", { null: "ignore" }], // Require the use of === and !==   "ignore" -------> Do not apply this rule to null
+    "max-depth": ["warn", 3], // Enforce a maximum depth that blocks can be nested. Many developers consider code difficult to read if blocks are nested beyond a certain depth
+    "no-alert": "error", // Disallow the use of alert, confirm, and prompt
     "no-console": "warn", // Warning when using console.log, console.warn or console.error
     "no-debugger": "error", // Error when using debugger;
-    "no-empty": "error", // Disallow empty block statements
     "no-duplicate-case": "error", // This rule disallows duplicate test expressions in case clauses of switch statements
+    "no-empty": "error", // Disallow empty block statements
+    "no-lonely-if": "error", // Disallow if statements as the only statement in else blocks
+    "no-nested-ternary": "warn", // Warns the use of nested ternary expressions
     "no-sequences": "error", // Disallow comma operators
     "no-undef": "off", // Allows defining undefined variables
     "no-unneeded-ternary": "error", // Disallow ternary operators when simpler alternatives exist
