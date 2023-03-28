@@ -5,5 +5,3 @@ export function imagePositionClass(
 ) {
   return `gx-image-position--${imagePosition || DEFAULT_IMAGE_POSITION}`;
 }
-
-export const hideMainImageWhenDisabledClass = "gx-image-position--hide-main";
