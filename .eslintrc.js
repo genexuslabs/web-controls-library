@@ -18,6 +18,7 @@ module.exports = {
     camelcase: "warn", // Enforce camelcase naming convention
     curly: "error", // Enforce consistent brace style for all control statements
     eqeqeq: ["error", "always", { null: "ignore" }], // Require the use of === and !==   "ignore" -------> Do not apply this rule to null
+    "max-depth": ["warn", 3], // Enforce a maximum depth that blocks can be nested. Many developers consider code difficult to read if blocks are nested beyond a certain depth
     "no-console": "warn", // Warning when using console.log, console.warn or console.error
     "no-debugger": "error", // Error when using debugger;
     "no-duplicate-case": "error", // This rule disallows duplicate test expressions in case clauses of switch statements
