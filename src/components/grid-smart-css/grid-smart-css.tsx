@@ -164,11 +164,11 @@ export class GridSmartCss
    */
   private connectResizeObserver(direction: "vertical" | "horizontal") {
     // Vertical grids with auto-grow must not use Resize Observer
-    if (this.resizeObserver || (direction == "vertical" && this.autoGrow)) {
+    if (this.resizeObserver || (direction === "vertical" && this.autoGrow)) {
       return;
     }
 
-    if (direction == "vertical") {
+    if (direction === "vertical") {
       this.resizeObserver = new ResizeObserver(
         this.resizeObserverVerticalDirectionCallback
       );
@@ -254,7 +254,7 @@ export class GridSmartCss
           ref={el => (this.elementToMeasureSize = el as HTMLDivElement)}
         ></div>
 
-        {!this.autoGrow && this.direction == "horizontal" ? (
+        {!this.autoGrow && this.direction === "horizontal" ? (
           <div class="gx-grid-absolute-content">
             <slot name="grid-content" />
           </div>

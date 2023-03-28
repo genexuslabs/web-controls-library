@@ -91,7 +91,7 @@ describe("gx-map", () => {
     expect(selectionMarkerCoords).toEqual(centerCoords);
   });
 
-  //New Tests
+  // New Tests
 
   // TODO: It's supposed that when the user location is set the user-location marker get that location as it's coords
   it.skip("should set the location marker with the default coords set by the navigator location", async () => {
@@ -115,8 +115,7 @@ describe("gx-map", () => {
     const map = await page.find("gx-map");
     expect(map).toBeDefined();
   });
-
-  //TODO: Fix this
+  // TODO: Fix this
   it.skip("trigger gxMapDidLoad event when map the map is opened first time", async () => {
     const mapDidLoad = await page.spyOnEvent("gxMapDidLoad");
     await page.setContent(

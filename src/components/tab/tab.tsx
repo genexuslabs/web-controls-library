@@ -90,7 +90,7 @@ export class Tab
 
     if (
       tabCaptionElement.closest("gx-tab") !== this.element ||
-      tabCaptionElement == this.lastSelectedTabCaption
+      tabCaptionElement === this.lastSelectedTabCaption
     ) {
       return;
     }

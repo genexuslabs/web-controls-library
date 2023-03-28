@@ -266,7 +266,7 @@ export class Edit implements FormComponent, HighlightableComponent {
   }
 
   private handleAutoFill = (event: AnimationEvent) => {
-    this.autoFilled = event.animationName == AUTOFILL_START_ANIMATION_NAME;
+    this.autoFilled = event.animationName === AUTOFILL_START_ANIMATION_NAME;
   };
 
   private handleChange(event: UIEvent) {
@@ -308,7 +308,7 @@ export class Edit implements FormComponent, HighlightableComponent {
         // Add focus to the control through sequential keyboard navigation and visually clicking
         tabindex={
           this.highlightable &&
-          (this.readonly || this.format == "HTML") &&
+          (this.readonly || this.format === "HTML") &&
           !this.disabled
             ? "0"
             : undefined

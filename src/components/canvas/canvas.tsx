@@ -275,7 +275,7 @@ export class Canvas
     /*  If one of the parent elements has display: none, we don't adjust the
         height of the gx-canvas
     */
-    if (this.element.clientHeight == 0) {
+    if (this.element.clientHeight === 0) {
       return;
     }
 
@@ -297,7 +297,7 @@ export class Canvas
       /*  If one of the parent elements has display: none, we don't adjust
           the height of the gx-canvas
       */
-      if (this.element.clientHeight == 0) {
+      if (this.element.clientHeight === 0) {
         return;
       }
 

@@ -15,7 +15,7 @@ describe("gx-gauge", () => {
     expect(await element.find(".line-gauge-container")).toBeTruthy();
   });
 
-  /////////////////// Values test ///////////////////////
+  // - - - - - - - - - - - Values test - - - - - - - - - - -
   it("should set the default and the minimum value", async () => {
     await page.setContent(`
       <gx-gauge show-value="true" show-min-max="true"></gx-gauge>
@@ -79,8 +79,7 @@ describe("gx-gauge", () => {
     expect(maxValueDisplayer.textContent).toEqual(`${100}`);
   });
 
-  /////////////////// Interface tests ///////////////////////
-
+  // - - - - - - - - - - Interface tests - - - - - - - - - -
   it("it should render according to the gauge type specified in the attribute 'type'", async () => {
     await page.setContent("<gx-gauge type='line'></gx-gauge>");
     await page.waitForChanges();

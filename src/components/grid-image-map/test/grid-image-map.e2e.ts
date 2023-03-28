@@ -30,7 +30,7 @@ describe("gx-grid-image-map", () => {
     const backgroundImage = await page.find(".gx-image-map-container>img");
     await page.waitForChanges();
 
-    ///checks if background is set to img tag
+    // Checks if background is set to img tag
     expect(backgroundImage.outerHTML).toContain(src);
   });
 

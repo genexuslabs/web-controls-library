@@ -147,11 +147,11 @@ export class Modal implements GxComponent {
   private updateHtmlOverflow() {
     // If the modal is displayed, but another modal component disabled the
     // scroll on the html (displayedModals > 1), we don't have to disable it
-    if (displayedModals == 1 && bodyOverflowsY()) {
+    if (displayedModals === 1 && bodyOverflowsY()) {
       document.documentElement.classList.add(DISABLE_SCROLL_CLASS);
     }
 
-    if (displayedModals == 0) {
+    if (displayedModals === 0) {
       document.documentElement.classList.remove(DISABLE_SCROLL_CLASS);
     }
   }
@@ -170,16 +170,16 @@ export class Modal implements GxComponent {
       requestAnimationFrame(() => {
         this.needForRAF = true; // RAF now consumes the movement instruction so a new one can come
 
-        const overflowX = this.element.offsetWidth != this.element.scrollWidth;
+        const overflowX = this.element.offsetWidth !== this.element.scrollWidth;
         const overflowY =
-          this.element.offsetHeight != this.element.scrollHeight;
+          this.element.offsetHeight !== this.element.scrollHeight;
 
         // Check if the position of the dialog should be adjusted
-        if (this.contentOverflowsX != overflowX) {
+        if (this.contentOverflowsX !== overflowX) {
           this.contentOverflowsX = overflowX;
           this.element.style.justifyContent = overflowX ? "flex-start" : null;
         }
-        if (this.contentOverflowsY != overflowY) {
+        if (this.contentOverflowsY !== overflowY) {
           this.contentOverflowsY = overflowY;
           this.element.style.alignItems = overflowY ? "flex-start" : null;
         }
@@ -226,7 +226,7 @@ export class Modal implements GxComponent {
   }
 
   componentWillLoad() {
-    this.shouldSetResizeObserver = this.type == "popup";
+    this.shouldSetResizeObserver = this.type === "popup";
     this.presented = this.opened;
 
     if (this.opened) {
@@ -235,7 +235,7 @@ export class Modal implements GxComponent {
     }
 
     // Set the class to disable the scrolling if not defined
-    if (DISABLE_SCROLL_CLASS == "") {
+    if (DISABLE_SCROLL_CLASS === "") {
       DISABLE_SCROLL_CLASS = onMobileDevice()
         ? DISABLE_HTML_SCROLL_MOBILE
         : DISABLE_HTML_SCROLL;
@@ -247,7 +247,7 @@ export class Modal implements GxComponent {
     this.connectObserver();
 
     // No need to set contrast colors
-    if (this.type == "popup" || !this.presented) {
+    if (this.type === "popup" || !this.presented) {
       return;
     }
 
@@ -290,7 +290,7 @@ export class Modal implements GxComponent {
   }
 
   render() {
-    const customDialog = this.type != "popup";
+    const customDialog = this.type !== "popup";
 
     return (
       <Host

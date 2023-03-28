@@ -50,7 +50,7 @@ function replaceSpecialChars(name: string) {
 }
 
 function getElementValue(element: DynamicFormElement) {
-  if (element.type != "boolean") {
+  if (element.type !== "boolean") {
     return element.value
       ? replaceSpecialChars(element.value)
       : element.dftValue

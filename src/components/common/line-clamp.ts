@@ -26,7 +26,7 @@ export function makeLinesClampable(
       const currentContentContainerHeight =
         contentContainerElement.clientHeight;
 
-      if (currentContentContainerHeight == 0) {
+      if (currentContentContainerHeight === 0) {
         return;
       }
 
@@ -36,8 +36,8 @@ export function makeLinesClampable(
           there is not need to update `component.maxLines`
       */
       if (
-        contentContainerHeight == currentContentContainerHeight &&
-        lineMeasuringHeight == currentLineMeasuringHeight
+        contentContainerHeight === currentContentContainerHeight &&
+        lineMeasuringHeight === currentLineMeasuringHeight
       ) {
         return;
       }
