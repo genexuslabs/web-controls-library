@@ -15,7 +15,7 @@ Images are very common in Smart Devices applications and the users of this apps 
 | Property     | Attribute     | Description                                                                           | Type      | Default |
 | ------------ | ------------- | ------------------------------------------------------------------------------------- | --------- | ------- |
 | `enableZoom` | `enable-zoom` | True/False. If this property is true, the user can zoom in/out on the image.          | `boolean` | `false` |
-| `src`        | `src`         | Lets you specify the image URL. _Requiered_                                           | `""`      | `""`    |
+| `src`        | `src`         | Lets you specify the image URL. _Requiered_                                           | `string`  | `""`    |
 | `zoom`       | `zoom`        | Indicates how much you can enlarge an image. (Percentage) _Note: 100% = Normal size_. | `number`  | `100`   |
 
 ---

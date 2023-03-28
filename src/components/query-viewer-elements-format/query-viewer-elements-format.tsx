@@ -5,32 +5,33 @@ import { Component, Event, EventEmitter, Prop } from "@stencil/core";
   shadow: false
 })
 export class QueryViewerElementFormat {
+  // eslint-disable-next-line @stencil-community/required-jsdoc
   @Event() elementChanged: EventEmitter;
 
   /**
    * Format on values
    */
-  @Prop() picture: string;
+  @Prop() readonly picture: string;
   /**
    * How to show subtotals
    */
-  @Prop() subtotals: "Yes" | "Hidden" | "No";
+  @Prop() readonly subtotals: "Yes" | "Hidden" | "No";
   /**
    * If true cand drag to pages
    */
-  @Prop() canDragToPages: boolean;
+  @Prop() readonly canDragToPages: boolean;
   /**
    * Format style
    */
-  @Prop() formatStyle: string;
+  @Prop() readonly formatStyle: string;
   /**
    * Target value
    */
-  @Prop() targetValue: string;
+  @Prop() readonly targetValue: string;
   /**
    * Max value
    */
-  @Prop() maximumValue: string;
+  @Prop() readonly maximumValue: string;
 
   componentDidUpdate() {
     this.elementChanged.emit();

@@ -35,7 +35,8 @@ import { getClasses } from "../common/css-transforms/css-transforms";
   tag: "gx-tab"
 })
 export class Tab
-  implements GxComponent, VisibilityComponent, HighlightableComponent {
+  implements GxComponent, VisibilityComponent, HighlightableComponent
+{
   /**
    *  - Input: Caption Id
    *  - Output: Corresponding tabPage Id

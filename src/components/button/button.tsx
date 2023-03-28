@@ -44,7 +44,8 @@ export class Button
     CustomizableComponent,
     DisableableComponent,
     HighlightableComponent,
-    VisibilityComponent {
+    VisibilityComponent
+{
   /**
    * `true` if the button has disabled image.
    */
@@ -202,15 +203,19 @@ export class Button
           </span>
         )}
 
-        {// Main image
-        this.hasMainImage && (!this.disabled || !this.hasDisabledImage) && (
-          <slot name="main-image" aria-hidden="true" />
-        )}
+        {
+          // Main image
+          this.hasMainImage && (!this.disabled || !this.hasDisabledImage) && (
+            <slot name="main-image" aria-hidden="true" />
+          )
+        }
 
-        {// Disabled image
-        this.hasDisabledImage && this.disabled && (
-          <slot name="disabled-image" aria-hidden="true" />
-        )}
+        {
+          // Disabled image
+          this.hasDisabledImage && this.disabled && (
+            <slot name="disabled-image" aria-hidden="true" />
+          )
+        }
       </Host>
     );
   }

@@ -31,7 +31,8 @@ import { getClasses } from "../common/css-transforms/css-transforms";
   shadow: false
 })
 export class GridImageMap
-  implements GxComponent, GridBase, HighlightableComponent, LongPressComponent {
+  implements GxComponent, GridBase, HighlightableComponent, LongPressComponent
+{
   constructor() {
     this.handleImageLoad = this.handleImageLoad.bind(this);
   }
@@ -110,12 +111,12 @@ export class GridImageMap
   /**
    * This attribute lets you specify the src of the background image.
    */
-  @Prop() src: string;
+  @Prop() readonly src: string;
 
   /**
    * This attribute lets you specify the srcset of the background image.
    */
-  @Prop() srcset: string;
+  @Prop() readonly srcset: string;
 
   /**
    * This property lets you specify a user tip that will be displayed as
@@ -125,7 +126,7 @@ export class GridImageMap
    * When the user zooms into the image map for the first time, this hint will
    * no longer be displayed.
    */
-  @Prop() tooltipText: string = null;
+  @Prop() readonly tooltipText: string = null;
 
   /**
    * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.
@@ -219,7 +220,6 @@ export class GridImageMap
   }
 
   disconnectedCallback() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
       this.resizeObserver = null;

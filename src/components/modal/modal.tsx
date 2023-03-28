@@ -192,7 +192,6 @@ export class Modal implements GxComponent {
   }
 
   private disconnectObserver() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (!this.shouldSetResizeObserver || !this.observer) {
       return;
     }

@@ -5,18 +5,19 @@ import {
   EventEmitter,
   Host,
   Prop,
-  h
+  h,
+  Watch
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 import { parseCoords } from "../common/coordsValidate";
-import { divIcon, marker, DivIcon, LatLngTuple } from "leaflet";
+import { divIcon, DivIcon, LatLngTuple, marker, Marker } from "leaflet";
 
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
 
 const DEFAULT_COORDS: LatLngTuple = [0, 0];
 const MAX_POPUP_SIZE_FACTOR = 0.83;
-
+const MIN_POPUP_SIZE_FACTOR = 0.2;
 // Icons
 const DEFAULT_ICON_SIZE = 20; // 20px
 const DEFAULT_ICON =
@@ -24,6 +25,8 @@ const DEFAULT_ICON =
 
 const USER_LOCATION_ICON =
   '<circle r="8" fill="var(--gx-fill-color)" stroke="var(--gx-stroke-color)" stroke-width="var(--gx-stroke-width)" str cx="8" cy="8"/>';
+
+const SELECTION_ICON = `<path d="M20.6188 8.7C19.5788 4.07 15.5388 2 11.9988 2C11.9988 2 11.9988 2 11.9888 2C8.45877 2 4.42877 4.07 3.37877 8.69C2.19877 13.85 5.35877 18.22 8.21877 20.98C9.27877 22 10.6388 22.51 11.9988 22.51C13.3588 22.51 14.7188 22 15.7688 20.98C18.6288 18.22 21.7888 13.86 20.6188 8.7ZM14.7488 11.75H12.7488V13.75C12.7488 14.16 12.4088 14.5 11.9988 14.5C11.5888 14.5 11.2488 14.16 11.2488 13.75V11.75H9.24877C8.83877 11.75 8.49877 11.41 8.49877 11C8.49877 10.59 8.83877 10.25 9.24877 10.25H11.2488V8.25C11.2488 7.84 11.5888 7.5 11.9988 7.5C12.4088 7.5 12.7488 7.84 12.7488 8.25V10.25H14.7488C15.1588 10.25 15.4988 10.59 15.4988 11C15.4988 11.41 15.1588 11.75 14.7488 11.75Z" fill="#292D32"/>`;
 
 const iconSVGWrapper = (
   body: string,
@@ -38,19 +41,26 @@ const iconDictionary = {
     iconSVGWrapper(DEFAULT_ICON, "default", width, height),
 
   "selection-layer": (width: number, height: number) =>
-    iconSVGWrapper(DEFAULT_ICON, "default", width, height),
+    iconSVGWrapper(SELECTION_ICON, "default", width, height),
 
   "user-location": (width: number, height: number) =>
     iconSVGWrapper(USER_LOCATION_ICON, "user-location", width, height)
 };
-
+let autoMarkerId = 0;
 @Component({
   shadow: false,
   styleUrl: "map-marker.scss",
   tag: "gx-map-marker"
 })
-export class MapMarker implements GxComponent {
-  private markerInstance: any;
+export class GridMapMarker implements GxComponent {
+  private markerId: string;
+
+  private markerInstance: Marker;
+
+  /**
+   * `true` if the `componentDidLoad()` method was called
+   */
+  private didLoad = false;
 
   /**
    * The marker image width.
@@ -62,6 +72,10 @@ export class MapMarker implements GxComponent {
    */
   private iconHeight: number;
 
+  // Refs
+  /** Reference to the marker instance */
+  private popupContainer: HTMLDivElement = null;
+
   @Element() element: HTMLGxMapMarkerElement;
 
   /**
@@ -72,12 +86,17 @@ export class MapMarker implements GxComponent {
   /**
    * The coordinates where the marker will appear in the map.
    */
-  @Prop({ mutable: true }) coords = "0, 0";
+  @Prop() readonly coords: string = "0, 0";
 
   /**
    * The class that the marker will have.
    */
   @Prop() readonly cssClass: string;
+
+  /**
+   * Whether the gx-map-marker's popUp can be shown.
+   */
+  @Prop() readonly showPopup: boolean;
 
   /**
    * This attribute lets you specify the src of the marker image.
@@ -116,6 +135,16 @@ export class MapMarker implements GxComponent {
    */
   @Event() gxMapMarkerDeleted: EventEmitter;
 
+  @Watch("coords")
+  handleCoordsChange(newCoords: string) {
+    if (!this.didLoad) {
+      return;
+    }
+
+    // Update lat and lng
+    this.markerInstance.setLatLng(this.getParsedCoords(newCoords));
+  }
+
   private getHalfSizes(): any {
     const halfIconSizes = {
       height: this.iconHeight / 2,
@@ -124,8 +153,7 @@ export class MapMarker implements GxComponent {
     return halfIconSizes;
   }
 
-  // @ts-expect-error @todo TODO: Improve typing
-  private setupMarker(coords) {
+  private setupMarker(coords: LatLngTuple) {
     this.markerInstance = marker(coords, {
       icon: this.getDivIcon()
     });
@@ -140,7 +168,6 @@ export class MapMarker implements GxComponent {
 
     const halfSizes = this.getHalfSizes();
     const shouldRenderSrcImage = this.srcset || this.src;
-
     const srcAttributes = this.getSrcAttributes();
     const altAttribute = this.alt || "";
 
@@ -190,57 +217,94 @@ export class MapMarker implements GxComponent {
   }
 
   /**
-   * Given the current coords of the `gx-marker` it returns its parsed coords or the default value if they are null.
+   * Given the current coords of the `gx-marker` it returns its parsed coords
+   * or the default value if they are null.
    * @returns The parsed coords of the marker.
    */
-  private getParsedCoords(): string[] | LatLngTuple {
-    const coords = parseCoords(this.coords);
-    return coords !== null ? coords : DEFAULT_COORDS;
+  private getParsedCoords(newCoords: string): LatLngTuple {
+    const coords = parseCoords(newCoords);
+
+    return !!coords ? (coords.map(Number) as LatLngTuple) : DEFAULT_COORDS;
   }
 
+  /**
+   * If showPopup property is true, binds a popup to the map layer with the
+   * passed content using MapMaker's bindPopup method.
+   * Set popupContainer max-width and max-height using the size of the map.
+   */
   private setPopup() {
-    // TODO: In which case does this condition occur?
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
-    if (this.element.firstElementChild) {
-      const maxPopupSize = {
-        height:
-          document.querySelector(".gxMap").clientHeight * MAX_POPUP_SIZE_FACTOR,
-        width:
-          document.querySelector(".gxMap").clientWidth * MAX_POPUP_SIZE_FACTOR
-      };
+    if (this.showPopup) {
+      this.popupContainer.style.setProperty(
+        "max-width",
+        `calc(var(--gx-map-width) * ${MAX_POPUP_SIZE_FACTOR})`
+      );
+      this.popupContainer.style.setProperty(
+        "max-height",
+        `calc(var(--gx-map-height) * ${MAX_POPUP_SIZE_FACTOR})`
+      );
+      this.popupContainer.style.setProperty(
+        "min-width",
+        `calc(var(--gx-map-width) * ${MIN_POPUP_SIZE_FACTOR})`
+      );
 
-      this.markerInstance.bindPopup(this.element, {
+      this.markerInstance.bindPopup(this.popupContainer, {
         keepInView: true,
-        maxHeight: maxPopupSize.height,
-        maxWidth: maxPopupSize.width,
         minWidth: 100
       });
     }
   }
 
-  componentDidLoad() {
-    this.setupMarker(this.getParsedCoords());
+  private closePopup = (event: UIEvent) => {
+    if (
+      event.composedPath().find(el => el === this.element.parentElement) ===
+      undefined
+    ) {
+      return;
+    }
+    this.markerInstance.closePopup();
+  };
 
+  componentWillLoad() {
+    // Sets IDs
+    if (!this.markerId) {
+      this.markerId =
+        this.element.id || `gx-map-marker-auto-id-${autoMarkerId++}`;
+    }
+  }
+
+  componentDidLoad() {
+    this.didLoad = true;
+
+    if (this.showPopup) {
+      this.element.parentElement.addEventListener("click", this.closePopup, {
+        capture: true
+      });
+    }
+
+    this.setupMarker(this.getParsedCoords(this.coords));
     this.setPopup();
+
     if (this.tooltipCaption) {
       this.markerInstance.bindTooltip(this.tooltipCaption, {
         direction: "top"
       });
     }
-    this.gxMapMarkerDidLoad.emit(this.markerInstance);
+    this.gxMapMarkerDidLoad.emit({
+      id: this.markerId,
+      instance: this.markerInstance
+    });
   }
 
   componentDidUpdate() {
-    // Update lat and lng
-    this.markerInstance.setLatLng(this.getParsedCoords());
-
     // Update icon
     this.markerInstance.setIcon(this.getDivIcon());
-    this.setPopup();
   }
 
   disconnectedCallback() {
     this.gxMapMarkerDeleted.emit(this.markerInstance);
+    if (this.showPopup) {
+      this.element.parentElement.removeEventListener("click", this.closePopup);
+    }
   }
 
   render() {
@@ -249,7 +313,12 @@ export class MapMarker implements GxComponent {
 
     return (
       <Host class={!!this.cssClass ? classes.vars : undefined}>
-        <slot />
+        <div
+          class="popup-data-container"
+          ref={el => (this.popupContainer = el as HTMLDivElement)}
+        >
+          <slot />
+        </div>
       </Host>
     );
   }

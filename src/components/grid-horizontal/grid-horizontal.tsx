@@ -26,7 +26,8 @@ export class GridHorizontal
     GridBase,
     ComponentInterface,
     VisibilityComponent,
-    HighlightableComponent {
+    HighlightableComponent
+{
   @Element() element!: HTMLGxGridHorizontalElement;
 
   private scrollbarEl?: HTMLElement;

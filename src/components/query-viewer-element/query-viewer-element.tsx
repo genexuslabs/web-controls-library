@@ -5,111 +5,119 @@ import { Component, Event, EventEmitter, Prop } from "@stencil/core";
   shadow: false
 })
 export class QueryViewerElement {
+  // eslint-disable-next-line @stencil-community/required-jsdoc
   @Event() elementChanged: EventEmitter;
 
   /**
    * Name of the element
    */
-  @Prop() name: string;
+  @Prop() readonly name: string;
   /**
    * Title to show
    */
-  @Prop() elementTitle: string;
+  @Prop() readonly elementTitle: string;
   /**
    * How to show it
    */
-  @Prop() visible: "Always" | "Yes" | "No" | "Never";
+  @Prop() readonly visible: "Always" | "Yes" | "No" | "Never";
   /**
    * Type of the element
    */
-  @Prop() type: "Axis" | "Datum";
+  @Prop() readonly type: "Axis" | "Datum";
   /**
    * Which axis, row or column
    */
-  @Prop() axis: "Rows" | "Columns" | "Pages";
+  @Prop() readonly axis: "Rows" | "Columns" | "Pages";
   /**
    * Aggregation fucntion
    */
-  @Prop() aggregation: "Sum" | "Average" | "Count" | "Max" | "Min";
+  @Prop() readonly aggregation: "Sum" | "Average" | "Count" | "Max" | "Min";
   /**
    * Data field
    */
-  @Prop() dataField: string;
+  @Prop() readonly dataField: string;
   /**
    * Type of the filter
    */
-  @Prop() filterType: "ShowAllValues" | "HideAllValues" | "ShowSomeValues";
+  @Prop() readonly filterType:
+    | "ShowAllValues"
+    | "HideAllValues"
+    | "ShowSomeValues";
   /**
    * Filter values comma separated
    */
-  @Prop() filterValues: string;
+  @Prop() readonly filterValues: string;
   /**
    * Expand collapse type
    */
-  @Prop() expandCollapseType:
+  @Prop() readonly expandCollapseType:
     | "ExpandAllValues"
     | "CollapseAllValues"
     | "ExpandSomeValues";
   /**
    * Expand collapse values comma separated
    */
-  @Prop() expandCollapseValues: string;
+  @Prop() readonly expandCollapseValues: string;
   /**
    * Axis Order type
    */
-  @Prop() axisOrderType: "None" | "Ascending" | "Descending" | "Custom";
+  @Prop() readonly axisOrderType:
+    | "None"
+    | "Ascending"
+    | "Descending"
+    | "Custom";
   /**
    * Axis order values comma separated
    */
-  @Prop() axisOrderValues: string;
+  @Prop() readonly axisOrderValues: string;
   /**
    * Grouping by year
    */
-  @Prop() groupingGroupByYear: boolean;
+  @Prop() readonly groupingGroupByYear: boolean;
   /**
    * Gouping by Year title
    */
-  @Prop() groupingYearTitle: string;
+  @Prop() readonly groupingYearTitle: string;
   /**
    * Grouping by semester
    */
-  @Prop() groupingGroupBySemester: boolean;
+  @Prop() readonly groupingGroupBySemester: boolean;
   /**
    * Grouping by Semster title
    */
-  @Prop() groupingSemesterTitle: string;
+  @Prop() readonly groupingSemesterTitle: string;
   /**
    * Grouping by Quarter
    */
-  @Prop() groupingGroupByQuarter: boolean;
+  @Prop() readonly groupingGroupByQuarter: boolean;
   /**
    * Grouping by Quarter title
    */
-  @Prop() groupingQuarterTitle: string;
+  @Prop() readonly groupingQuarterTitle: string;
   /**
    * Grouping by month
    */
-  @Prop() groupingGroupByMonth: boolean;
+  @Prop() readonly groupingGroupByMonth: boolean;
   /**
    * Grouping by month title
    */
-  @Prop() groupingMonthTitle: string;
+  @Prop() readonly groupingMonthTitle: string;
   /**
    * Grouping by day of week
    */
-  @Prop() groupingGroupByDayOfWeek: boolean;
+  @Prop() readonly groupingGroupByDayOfWeek: boolean;
   /**
    * Grouping by day of week title
    */
-  @Prop() groupingDayOfWeekTitle: string;
+  @Prop() readonly groupingDayOfWeekTitle: string;
   /**
    * Grouping hide vale
    */
-  @Prop() groupingHideValue: boolean;
+  @Prop() readonly groupingHideValue: boolean;
   /**
    * Raise item click
    */
-  @Prop() raiseItemClick: boolean;
+  @Prop() readonly raiseItemClick: boolean;
 
   componentDidUpdate() {
     this.elementChanged.emit();

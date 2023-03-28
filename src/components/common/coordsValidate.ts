@@ -1,14 +1,34 @@
-export function parseCoords(coord: string): string[] {
-  const regExp = /^(\-?\d+(?:\.\d+)?),\s*(\-?\d+(?:\.\d+)?)$/;
-  const result = regExp.exec(coord);
-  if (result !== null) {
-    return result.slice(1);
-  } else {
-    return tryParseGeoJson(coord);
+const COORDINATES_REGEX = /^(\-?\d+(?:\.\d+)?),\s*(\-?\d+(?:\.\d+)?)$/;
+
+/**
+ * Validate that the given string is a LatLong format string and return a string array containing [latitude,longitude], or the result of tryParseGeoJson function if it is not
+ * @param coord String indicating the point latitude and longitude with coma separated
+ * @returns Array of string representing the coordinates or the result of tryParseGeoJson function
+ * @example
+ * INPUT 1 (LatLong string): "-34.91676309400329,-56.1701774597168"
+ * OUTPUT 1: "[-34.91676309400329,-56.1701774597168]"
+ *
+ * INPUT 2 (Invalid value): "any text"
+ * OUTPUT 2: null
+ *
+ * INPUT 3 (GeoJSON string): {"type":"Point","coordinates":[-56.1701774597168,-34.91676309400329]}"
+ * OUTPUT 3: [-56.1701774597168, -34.91676309400329]
+ */
+export function parseCoords(coords: string): string[] {
+  if (!coords) {
+    return null;
   }
+  const result = COORDINATES_REGEX.exec(coords);
+
+  return !!result ? result.slice(1) : null;
 }
 
-function tryParseGeoJson(coord: string) {
+/**
+ * Given a GeoJson string representing the coordinates, if has type property with value (Point,MultiPoint,LineString,MultiLineString,Polygon,MultiPolygon) return an array of string coordinates in [latitude,longitude] representing the coordinates, if has type property with value (FeatureCollection) returns array of string containing features
+ * @param coord GeoJSON string representing the coordinates
+ * @returns Array of string coordinates in [latitude,longitude] format or the GeoJson representation object
+ */
+/* function tryParseGeoJson(coord: string) {
   let geoObject;
 
   try {
@@ -43,4 +63,4 @@ function tryParseGeoJson(coord: string) {
     }
   }
   return geoObject;
-}
+} */
