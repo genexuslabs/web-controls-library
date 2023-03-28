@@ -20,8 +20,8 @@ module.exports = {
     eqeqeq: ["error", "always", { null: "ignore" }], // Require the use of === and !==   "ignore" -------> Do not apply this rule to null
     "no-console": "warn", // Warning when using console.log, console.warn or console.error
     "no-debugger": "error", // Error when using debugger;
-    "no-empty": "error", // Disallow empty block statements
     "no-duplicate-case": "error", // This rule disallows duplicate test expressions in case clauses of switch statements
+    "no-empty": "error", // Disallow empty block statements
     "no-sequences": "error", // Disallow comma operators
     "no-undef": "off", // Allows defining undefined variables
     "no-unneeded-ternary": "error", // Disallow ternary operators when simpler alternatives exist
