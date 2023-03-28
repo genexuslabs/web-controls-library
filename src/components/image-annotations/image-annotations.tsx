@@ -98,8 +98,6 @@ export class GxImageAnnotations {
     }
   }
 
-  componentWillLoad() {}
-
   @Method()
   async cleanAll(): Promise<void> {
     this.resetTrace();
