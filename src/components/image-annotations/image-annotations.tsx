@@ -53,12 +53,12 @@ export class GxImageAnnotations {
   /**
    * Drawing color.
    */
-  @Prop({ mutable: true }) traceColor = "#000000";
+  @Prop() readonly traceColor: string = "#000000";
 
   /**
    * Drawing thickness.
    */
-  @Prop({ mutable: true }) traceThickness = 2;
+  @Prop() readonly traceThickness: number = 2;
 
   /**
    * The source of the background image.
