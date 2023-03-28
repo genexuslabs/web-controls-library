@@ -1,6 +1,6 @@
 import { E2EElement, E2EPage, newE2EPage } from "@stencil/core/testing";
-import { runAlignmentTest } from "../../../../../tests/alignment";
-import { RadioGroup } from "../../../../../tests/templates";
+import { runAlignmentTest } from "../../../../../../tests/alignment";
+import { RadioGroup } from "../../../../../../tests/templates";
 
 describe("gx-radio-option", () => {
   let element: E2EElement;
