@@ -23,6 +23,7 @@ module.exports = {
     "no-debugger": "error", // Error when using debugger;
     "no-duplicate-case": "error", // This rule disallows duplicate test expressions in case clauses of switch statements
     "no-empty": "error", // Disallow empty block statements
+    "no-lonely-if": "error", // Disallow if statements as the only statement in else blocks
     "no-nested-ternary": "warn", // Warns the use of nested ternary expressions
     "no-sequences": "error", // Disallow comma operators
     "no-undef": "off", // Allows defining undefined variables
