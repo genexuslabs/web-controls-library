@@ -1,5 +1,5 @@
 import { newSpecPage } from "@stencil/core/testing";
-import { GxImageAnnotations } from "../gx-image-annotations";
+import { GxImageAnnotations } from "../image-annotations";
 
 describe("gx-image-annotations", () => {
   it("renders", async () => {
