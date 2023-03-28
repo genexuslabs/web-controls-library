@@ -131,7 +131,10 @@ export class GxImageAnnotations {
   @Method()
   async getLastSavedImage(): Promise<string> {
     return new Promise((resolve, reject) => {
-      if (this.lastSavedImageUrl) resolve(this.lastSavedImageUrl);
+      if (this.lastSavedImageUrl) {
+        resolve(this.lastSavedImageUrl);
+      }
+
       reject();
     });
   }
@@ -139,7 +142,10 @@ export class GxImageAnnotations {
   @Method()
   async getLastSavedImageAnnotations(): Promise<string> {
     return new Promise((resolve, reject) => {
-      if (this.lastSavedImageAnnUrl) resolve(this.lastSavedImageAnnUrl);
+      if (this.lastSavedImageAnnUrl) {
+        resolve(this.lastSavedImageAnnUrl);
+      }
+
       reject();
     });
   }
@@ -193,8 +199,11 @@ export class GxImageAnnotations {
         URL.revokeObjectURL(this.lastSavedImageUrl);
         this.lastSavedImageUrl = null;
       }
+
       const url = URL.createObjectURL(blob);
-      if (url) this.lastSavedImageUrl = url;
+      if (url) {
+        this.lastSavedImageUrl = url;
+      }
     });
 
     this.cleanPaint(this.canvasAnn);
@@ -204,8 +213,11 @@ export class GxImageAnnotations {
         URL.revokeObjectURL(this.lastSavedImageAnnUrl);
         this.lastSavedImageAnnUrl = null;
       }
+
       const url = URL.createObjectURL(blob);
-      if (url) this.lastSavedImageAnnUrl = url;
+      if (url) {
+        this.lastSavedImageAnnUrl = url;
+      }
     });
   };
 
