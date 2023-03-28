@@ -74,7 +74,7 @@ export class Message implements GxComponent, DismissableComponent {
     }
 
     // Check if should not set the interval
-    if (this.duration == 0) {
+    if (this.duration === 0) {
       clearInterval(this.interval);
 
       // If duration > 0, check if should set the interval

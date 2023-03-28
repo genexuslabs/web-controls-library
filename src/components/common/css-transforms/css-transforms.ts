@@ -114,7 +114,7 @@ export function getTransformedClassesWithoutFocus(
     transformedClassesWoFocusCache.get(cacheKey);
 
   // If the value has not yet been calculated
-  if (result == undefined) {
+  if (!result) {
     const splittedClasses = cssClass.split(" ").map(tClass);
 
     const transformedCssClass = splittedClasses.join(" ");

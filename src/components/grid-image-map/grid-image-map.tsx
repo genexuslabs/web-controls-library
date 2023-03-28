@@ -177,7 +177,7 @@ export class GridImageMap
   private handleImageLoad(event: UIEvent) {
     const img = event.target as HTMLImageElement;
 
-    if (img.naturalWidth != 0) {
+    if (img.naturalWidth !== 0) {
       this.element.style.setProperty(
         "--image-map-image-width",
         img.naturalWidth.toString()

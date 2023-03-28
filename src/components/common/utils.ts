@@ -62,7 +62,7 @@ export function overrideMethod(
  */
 export function bodyOverflowsY() {
   return (
-    document.documentElement.clientHeight !=
+    document.documentElement.clientHeight !==
     document.documentElement.scrollHeight
   );
 }
@@ -133,7 +133,7 @@ export function setContrastColor(
 ) {
   const color = getComputedStyle(elemToRead).getPropertyValue(propName);
 
-  if (color != undefined) {
+  if (color !== "") {
     const contrast = getContrastColor(color);
     elemToSet.style.setProperty(cssVarName, contrast);
   }
@@ -151,7 +151,7 @@ export function onMobileDevice(): boolean {
 
 export function getLottiePath(computed: CSSStyleDeclaration): string {
   // Anything other than "--gx-animation-type: lottie" is considered a native animation
-  if (computed.getPropertyValue("--gx-animation-type").trim() != "lottie") {
+  if (computed.getPropertyValue("--gx-animation-type").trim() !== "lottie") {
     return "";
   }
 
@@ -216,7 +216,7 @@ export function attachHorizontalScrollWithDragHandler(
       scrollableContainer.scrollLeft = initialScrollLeftPosition - walk;
       scrollableContainerHasBeenDragged =
         scrollableContainerHasBeenDragged ||
-        initialScrollLeftPosition != scrollableContainer.scrollLeft;
+        initialScrollLeftPosition !== scrollableContainer.scrollLeft;
     });
   });
 

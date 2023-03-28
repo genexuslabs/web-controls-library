@@ -103,7 +103,7 @@ export function makeDismissable(component: DismissableComponent) {
     requestAnimationFrame(t => {
       const deltaT = t - initialTimestamp;
       const deltaX = currentX - initialX;
-      const speed = deltaT != 0 ? Math.abs(deltaX / deltaT) : 0;
+      const speed = deltaT !== 0 ? Math.abs(deltaX / deltaT) : 0;
 
       isMouseDown = false;
 

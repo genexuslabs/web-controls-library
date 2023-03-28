@@ -271,7 +271,7 @@ export class GridFlex
   private checkIfShouldModifyTheResizeObserverCallback(
     upcomingScrollDirection: ScrollDirection
   ) {
-    if (this.lastScrollDirection == upcomingScrollDirection) {
+    if (this.lastScrollDirection === upcomingScrollDirection) {
       return;
     }
 
@@ -343,7 +343,7 @@ export class GridFlex
   private getValueIfNotDefault = (
     value: string,
     defaultValue: string
-  ): string | null => (value != defaultValue ? value : null);
+  ): string | null => (value !== defaultValue ? value : null);
 
   private getScrollDirection = (
     flexDirection: FlexDirection,
