@@ -1,11 +1,11 @@
-import { runAlignmentTest } from "../../../../../tests/alignment";
+import { runAlignmentTest } from "../../../../../../tests/alignment";
 import {
   Edit,
   LINE_CLAMP_DELAY,
   LONG_TEXT,
   MEDIUM_TEXT,
   SHORT_TEXT
-} from "../../../../../tests/templates";
+} from "../../../../../../tests/templates";
 
 describe("gx-edit", () => {
   const alignmentTestOptions = {

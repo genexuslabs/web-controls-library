@@ -1,10 +1,10 @@
-import { runAlignmentTest } from "../../../tests/alignment";
+import { runAlignmentTest } from "../../../../tests/alignment";
 import {
   LONG_TEXT,
   MEDIUM_TEXT,
   SHORT_HTML,
   TextBlock
-} from "../../../tests/templates";
+} from "../../../../tests/templates";
 
 describe("gx-textblock", () => {
   const alignmentTestOptionsAutoGrow = {

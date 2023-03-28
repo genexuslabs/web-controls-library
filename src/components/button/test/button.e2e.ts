@@ -1,6 +1,6 @@
 import { newE2EPage } from "@stencil/core/testing";
-import { runAlignmentTest } from "../../../tests/alignment";
-import { Button, SHORT_TEXT } from "../../../tests/templates";
+import { runAlignmentTest } from "../../../../tests/alignment";
+import { Button, SHORT_TEXT } from "../../../../tests/templates";
 
 describe("gx-button", () => {
   const alignmentTestOptions = {

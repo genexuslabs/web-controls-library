@@ -1,12 +1,12 @@
 import { E2EElement, E2EPage, newE2EPage } from "@stencil/core/testing";
-import { runAlignmentTest } from "../../../tests/alignment";
+import { runAlignmentTest } from "../../../../tests/alignment";
 import {
   LINE_CLAMP_DELAY,
   LONG_TEXT,
   MEDIUM_TEXT,
   SHORT_HTML,
   TextBlock
-} from "../../../tests/templates";
+} from "../../../../tests/templates";
 
 describe("gx-textblock", () => {
   let element: E2EElement;

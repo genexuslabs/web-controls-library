@@ -1,5 +1,5 @@
-import { runAlignmentTest } from "../../../../../tests/alignment";
-import { Edit, LONG_TEXT, SHORT_TEXT } from "../../../../../tests/templates";
+import { runAlignmentTest } from "../../../../../../tests/alignment";
+import { Edit, LONG_TEXT, SHORT_TEXT } from "../../../../../../tests/templates";
 
 describe("gx-edit", () => {
   const alignmentTestOptions = {

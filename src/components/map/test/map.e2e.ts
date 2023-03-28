@@ -108,12 +108,14 @@ describe("gx-map", () => {
     expect(selectionMarkerCoords).toEqual(`45.1, 30.4`);
     /* expect(locationChange).toHaveReceivedEvent(); */
   });
+
   it("should display a visible and interactive map", async () => {
     await page.setContent(`<gx-map></gx-map>`);
     // Check that the map element exists
     const map = await page.find("gx-map");
     expect(map).toBeDefined();
   });
+
   //TODO: Fix this
   it.skip("trigger gxMapDidLoad event when map the map is opened first time", async () => {
     const mapDidLoad = await page.spyOnEvent("gxMapDidLoad");
@@ -125,6 +127,7 @@ describe("gx-map", () => {
 
     expect(mapDidLoad).toHaveReceivedEvent();
   });
+
   it("create a selection map-marker when selectionLayer property is set in runtime", async () => {
     await page.setContent(`<gx-map></gx-map>`);
     const map = await page.find("gx-map");
@@ -135,6 +138,7 @@ describe("gx-map", () => {
     const markerDefined = await page.find("gx-map-marker");
     expect(markerDefined).not.toBeNull();
   });
+
   it("create a user location map-marker when showMyLocation property is set in runtime", async () => {
     await page.setContent(`<gx-map></gx-map>`);
     const map = await page.find("gx-map");

@@ -1,5 +1,5 @@
-import { runAlignmentTest } from "../../../tests/alignment";
-import { Button, SHORT_TEXT } from "../../../tests/templates";
+import { runAlignmentTest } from "../../../../tests/alignment";
+import { Button, SHORT_TEXT } from "../../../../tests/templates";
 
 describe("gx-button", () => {
   const alignmentTestOptionsValign = {

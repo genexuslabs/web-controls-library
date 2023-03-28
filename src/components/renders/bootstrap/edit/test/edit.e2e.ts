@@ -1,5 +1,5 @@
 import { newE2EPage } from "@stencil/core/testing";
-import { delay } from "../../../common/utils";
+import { delay } from "../../../../common/utils";
 
 describe("gx-edit", () => {
   let element;
