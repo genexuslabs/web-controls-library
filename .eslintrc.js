@@ -16,7 +16,7 @@ module.exports = {
     // ESLint
     // - - - - - - - - - - - -
     camelcase: "warn", // Enforce camelcase naming convention
-    eqeqeq: ["error", "ignore"], // Require the use of === and !==   "ignore" -------> Do not apply this rule to null
+    eqeqeq: ["error", "always", { null: "ignore" }], // Require the use of === and !==   "ignore" -------> Do not apply this rule to null
     "no-console": "warn", // Warning when using console.log, console.warn or console.error
     "no-debugger": "error", // Error when using debugger;
     "no-empty": "error", // Disallow empty block statements
