@@ -215,7 +215,9 @@ export class DynamicForm implements GxComponent {
 
         // If the condition is true, the element clear they value
         case RuleTypes.RELOAD:
-          if (result) targeted.value = "";
+          if (result) {
+            targeted.value = "";
+          }
           break;
 
         // If the condition is true, the element is hidden, otherwise it is shown
