@@ -1,6 +1,7 @@
 import { E2EElement, E2EPage, newE2EPage } from "@stencil/core/testing";
 import { runAlignmentTest } from "../../../../../../tests/alignment";
 import { RadioGroup } from "../../../../../../tests/templates";
+import { runningScreenshotTests } from "../../../../../../tests/utils";
 
 describe("gx-radio-option", () => {
   let element: E2EElement;
@@ -45,6 +46,10 @@ describe("gx-radio-option", () => {
   //   await page.waitForChanges();
   //   expect(await page.find("input")).toHaveClass("foo-class");
   // });
+
+  if (!runningScreenshotTests()) {
+    return;
+  }
 
   // - - - - - - - Vertical direction - - - - - - -
   runAlignmentTest(

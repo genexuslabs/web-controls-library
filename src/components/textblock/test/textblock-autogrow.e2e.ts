@@ -5,8 +5,15 @@ import {
   SHORT_HTML,
   TextBlock
 } from "../../../../tests/templates";
+import { dummyTest, runningScreenshotTests } from "../../../../tests/utils";
 
 describe("gx-textblock", () => {
+  if (!runningScreenshotTests()) {
+    dummyTest();
+
+    return;
+  }
+
   const alignmentTestOptionsAutoGrow = {
     autoGrow: [true],
     shouldTestAlign: true,
