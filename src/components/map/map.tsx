@@ -23,7 +23,8 @@ import {
   Polyline,
   polyline,
   tileLayer,
-  TileLayer
+  TileLayer,
+  Popup
 } from "leaflet";
 
 // @ts-expect-error Todo: Improve typing
@@ -55,6 +56,7 @@ export class GridMap implements GxComponent {
 
   private didLoad = false;
   private needForRAF = true; // To prevent redundant RAF (request animation frame) calls
+  private popUpTracker = new Popup();
 
   // References to map controls
   private markersList = new Map<string, Marker>();
@@ -327,6 +329,7 @@ export class GridMap implements GxComponent {
 
     this.element.style.setProperty("--gx-map-width", `${width}px`);
     this.element.style.setProperty("--gx-map-height", `${height}px`);
+    this.popUpTracker.update();
   };
 
   private disconnectResizeObserver() {
@@ -661,10 +664,11 @@ export class GridMap implements GxComponent {
     }
 
     // @ts-expect-error @todo TODO: Improve typing
-    this.addMapListener("popupopen", function (e) {
-      const px = this.project(e.target._popup._latlng);
+    this.addMapListener("popupopen", e => {
+      const px = e.target.project(e.target._popup._latlng);
       px.y -= e.target._popup._container.clientHeight / 2;
-      this.panTo(this.unproject(px), { animate: true });
+      e.target.panTo(e.target.unproject(px), { animate: true });
+      this.popUpTracker = e.popup;
     });
     this.didLoad = true;
   }

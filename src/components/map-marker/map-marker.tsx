@@ -249,7 +249,8 @@ export class GridMapMarker implements GxComponent {
 
       this.markerInstance.bindPopup(this.popupContainer, {
         keepInView: true,
-        minWidth: 100
+        minWidth: 100,
+        maxWidth: "auto"
       });
     }
   }
