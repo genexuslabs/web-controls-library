@@ -7,6 +7,7 @@ import {
   SHORT_HTML,
   TextBlock
 } from "../../../../tests/templates";
+import { runningScreenshotTests } from "../../../../tests/utils";
 
 describe("gx-textblock", () => {
   let element: E2EElement;
@@ -33,6 +34,10 @@ describe("gx-textblock", () => {
   it("should work without parameters", () => {
     expect(element.textContent.trim()).toEqual("Hello world!");
   });
+
+  if (!runningScreenshotTests()) {
+    return;
+  }
 
   // - - - - - - - - AutoGrow = FALSE - - - - - - - -
   runAlignmentTest(
