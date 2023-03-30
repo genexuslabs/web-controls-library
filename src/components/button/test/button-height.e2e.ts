@@ -1,7 +1,14 @@
 import { runAlignmentTest } from "../../../../tests/alignment";
 import { Button, SHORT_TEXT } from "../../../../tests/templates";
+import { dummyTest, runningScreenshotTests } from "../../../../tests/utils";
 
 describe("gx-button", () => {
+  if (!runningScreenshotTests()) {
+    dummyTest();
+
+    return;
+  }
+
   const alignmentTestOptionsValign = {
     autoGrow: [false],
     shouldTestAlign: false,

@@ -1,6 +1,7 @@
 import { E2EElement, E2EPage, newE2EPage } from "@stencil/core/testing";
 import { runAlignmentTest } from "../../../../../../tests/alignment";
 import { Checkbox, SHORT_TEXT } from "../../../../../../tests/templates";
+import { runningScreenshotTests } from "../../../../../../tests/utils";
 
 describe("gx-checkbox", () => {
   let page: E2EPage;
@@ -56,6 +57,10 @@ describe("gx-checkbox", () => {
     expect(spy).toHaveReceivedEvent();
     expect(await element.getProperty("value")).toBe(checkedValue);
   });
+
+  if (!runningScreenshotTests()) {
+    return;
+  }
 
   runAlignmentTest(
     Checkbox({

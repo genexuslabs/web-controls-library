@@ -6,8 +6,18 @@ import {
   MEDIUM_TEXT,
   SHORT_TEXT
 } from "../../../../../../tests/templates";
+import {
+  dummyTest,
+  runningScreenshotTests
+} from "../../../../../../tests/utils";
 
 describe("gx-edit", () => {
+  if (!runningScreenshotTests()) {
+    dummyTest();
+
+    return;
+  }
+
   const alignmentTestOptions = {
     autoGrow: [false],
     shouldTestAlign: true,

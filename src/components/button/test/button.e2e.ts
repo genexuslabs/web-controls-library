@@ -1,6 +1,7 @@
 import { newE2EPage } from "@stencil/core/testing";
 import { runAlignmentTest } from "../../../../tests/alignment";
 import { Button, SHORT_TEXT } from "../../../../tests/templates";
+import { runningScreenshotTests } from "../../../../tests/utils";
 
 describe("gx-button", () => {
   const alignmentTestOptions = {
@@ -21,6 +22,10 @@ describe("gx-button", () => {
   // + + + + + + + + + + + + + + + +
   //        WIDTH AND HEIGHT
   // + + + + + + + + + + + + + + + +
+  if (!runningScreenshotTests()) {
+    return;
+  }
+
   // - - - - - - - - Caption - - - - - - - -
   runAlignmentTest(
     Button({
