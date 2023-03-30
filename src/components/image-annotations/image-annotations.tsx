@@ -21,24 +21,14 @@ export class GxImageAnnotations {
   private canvasAnn: any = null;
   private baseImage: HTMLImageElement = null;
   private initPaint = false;
-  private xAnterior = 0;
-  private yAnterior = 0;
-  private xActual = 0;
-  private yActual = 0;
+  private xBefore = 0;
+  private yBefore = 0;
+  private xCurrent = 0;
+  private yCurrent = 0;
   private lastSavedImageUrl: string = null;
   private lastSavedImageAnnUrl: string = null;
 
   @Element() el: HTMLGxImageAnnotationsElement;
-
-  /**
-   * The list of traces that have been painted.
-   */
-  @State() traceList: TraceData[] = [];
-
-  /**
-   * The actual index that the trace list in.
-   */
-  @State() traceInd = -1;
 
   /**
    * The size of the cropper selection will be.
@@ -46,9 +36,40 @@ export class GxImageAnnotations {
   @State() colorsItems: string[] = [];
 
   /**
+   * The list of traces that have been painted.
+   */
+  @State() traceList: TraceData[] = [];
+
+  /**
+   * The current index that the trace list in.
+   */
+  @State() traceInd = -1;
+
+  /**
+   * The source of the background image.
+   */
+  @Prop() readonly backgroundImageSrc: string;
+
+  /**
    * A CSS class to set as the `gx-image-annotations` element class.
    */
   @Prop() readonly cssClass: string;
+
+  /**
+   * If the annotations are activated or not.
+   */
+  @Prop() readonly disabled = false;
+
+  /**
+   * The source of the background image.
+   */
+  @Prop() readonly imageLabel = "Image to be annotated";
+
+  /**
+   * How the component will hide.
+   */
+  @Prop() readonly invisibleMode: "Keep Space" | "Collapse Space" =
+    "Keep Space";
 
   /**
    * Drawing color.
@@ -60,44 +81,29 @@ export class GxImageAnnotations {
    */
   @Prop() readonly traceThickness: number = 2;
 
-  /**
-   * The source of the background image.
-   */
-  @Prop() readonly backgroundImage: string;
-
-  /**
-   * If the annotations are activated or not.
-   */
-  @Prop() readonly enabled = true;
-
-  /**
-   * If the component are visible or not.
-   */
-  @Prop() readonly visible = true;
-
-  /**
-   * How the component will hide.
-   */
-  @Prop() readonly invisibleMode: "Keep Space" | "Collapse Space" =
-    "Keep Space";
-
   componentDidLoad() {
-    this.canvas = this.el.shadowRoot.querySelector("#canvas");
     this.canvas.width = this.el.clientWidth;
     this.canvas.height = this.el.clientHeight;
     this.canvasAnn = this.canvas.cloneNode();
     this.canvas.addEventListener("mousedown", this.handleMousedown);
-    this.canvas.addEventListener("mousemove", this.handleMousemove);
     this.canvas.addEventListener("mouseup", this.finishPaint);
     this.canvas.addEventListener("mouseout", this.finishPaint);
 
-    if (this.backgroundImage) {
+    this.canvas.addEventListener("touchstart", this.handleTouchStart);
+    this.canvas.addEventListener("touchend", this.finishPaint);
+    this.canvas.addEventListener("touchcancel", this.finishPaint);
+    this.canvas.addEventListener("touchleave", this.finishPaint);
+
+    if (this.backgroundImageSrc) {
       this.baseImage = new Image();
-      this.baseImage.src = this.backgroundImage;
+      this.baseImage.src = this.backgroundImageSrc;
       this.baseImage.addEventListener("load", this.loadImage);
     }
   }
 
+  /**
+   * Clean all annotations in canvas and memory.
+   */
   @Method()
   async cleanAll(): Promise<void> {
     this.resetTrace();
@@ -106,6 +112,9 @@ export class GxImageAnnotations {
     this.traceChanged();
   }
 
+  /**
+   * Go back one step, if the array of annotations have any: erase the last annotation.
+   */
   @Method()
   async goBack(): Promise<void> {
     if (this.traceInd >= 0) {
@@ -117,6 +126,9 @@ export class GxImageAnnotations {
     }
   }
 
+  /**
+   * Go foward one step, if the array of annotations have any and user go back previously: recover the annotation in the index where it is.
+   */
   @Method()
   async goTo(): Promise<void> {
     if (this.traceInd < this.traceList.length - 1) {
@@ -128,6 +140,9 @@ export class GxImageAnnotations {
     }
   }
 
+  /**
+   * Get the last image with annotations that have the gx-image-annotations.
+   */
   @Method()
   async getLastSavedImage(): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -139,6 +154,9 @@ export class GxImageAnnotations {
     });
   }
 
+  /**
+   * Get the last annotations only that have the gx-image-annotations.
+   */
   @Method()
   async getLastSavedImageAnnotations(): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -208,7 +226,7 @@ export class GxImageAnnotations {
 
     this.cleanPaint(this.canvasAnn);
     this.paintToInd(this.canvasAnn);
-    this.canvasAnn.toBlob(blob => {
+    this.canvasAnn.toBlob((blob: any) => {
       if (this.lastSavedImageAnnUrl) {
         URL.revokeObjectURL(this.lastSavedImageAnnUrl);
         this.lastSavedImageAnnUrl = null;
@@ -222,59 +240,90 @@ export class GxImageAnnotations {
   };
 
   private handleMousedown = (ev: MouseEvent) => {
-    if (this.enabled) {
+    if (!this.disabled) {
+      this.canvas.addEventListener("mousemove", this.handleMousemove);
       ev.preventDefault();
-      // En este evento solo se ha iniciado el clic, así que dibujamos un punto
-      this.xAnterior = this.xActual;
-      this.yAnterior = this.yActual;
-      this.xActual = this.getRealX(ev.clientX);
-      this.yActual = this.getRealY(ev.clientY);
 
-      // Y establecemos la bandera
-      this.initPaint = true;
-
-      this.resetTraceList();
-      this.traceList.push({
-        color: this.traceColor,
-        thickness: this.traceThickness,
-        point: { x: this.xActual, y: this.yActual },
-        paths: []
-      });
-      this.traceInd++;
-
-      this.paintToInd(this.canvas);
-      this.traceChanged();
+      this.startPainting(ev.clientX, ev.clientY);
     }
+  };
+
+  private handleTouchStart = (ev: TouchEvent) => {
+    if (!this.disabled) {
+      this.canvas.addEventListener("touchmove", this.handleTouchmove);
+      ev.preventDefault();
+
+      const touches = ev.changedTouches;
+      this.startPainting(touches[0].pageX, touches[0].pageY);
+    }
+  };
+
+  private startPainting = (pageX: number, pageY: number) => {
+    // In this event we only have initiated the click, so we will draw a point
+    this.xBefore = this.xCurrent;
+    this.yBefore = this.yCurrent;
+    this.xCurrent = this.getRealX(pageX);
+    this.yCurrent = this.getRealY(pageY);
+
+    // And put the flag
+    this.initPaint = true;
+
+    this.resetTraceList();
+    this.traceList.push({
+      color: this.traceColor,
+      thickness: this.traceThickness,
+      point: { x: this.xCurrent, y: this.yCurrent },
+      paths: []
+    });
+    this.traceInd++;
+
+    this.paintToInd(this.canvas);
+    this.traceChanged();
   };
 
   private handleMousemove = (ev: MouseEvent) => {
-    if (this.enabled) {
+    if (!this.disabled) {
       ev.preventDefault();
 
-      if (!this.initPaint) {
-        return;
-      }
-      // El mouse se está moviendo y el usuario está presionando el botón, así que dibujamos todo
-
-      this.xAnterior = this.xActual;
-      this.yAnterior = this.yActual;
-      this.xActual = this.getRealX(ev.clientX);
-      this.yActual = this.getRealY(ev.clientY);
-      this.joinPath(
-        this.canvas,
-        this.xAnterior,
-        this.yAnterior,
-        this.xActual,
-        this.yActual,
-        this.traceColor,
-        this.traceThickness
-      );
+      this.movePincel(ev.clientX, ev.clientY);
     }
   };
 
-  private finishPaint = (ev: MouseEvent) => {
-    if (this.enabled) {
+  private handleTouchmove = (ev: TouchEvent) => {
+    if (!this.disabled) {
       ev.preventDefault();
+
+      const touches = ev.changedTouches;
+      this.movePincel(touches[0].pageX, touches[0].pageY);
+    }
+  };
+
+  private movePincel = (pageX: number, pageY: number) => {
+    if (!this.initPaint) {
+      return;
+    }
+    // The mouse is moving and user is pushing the button, so we draw all.
+
+    this.xBefore = this.xCurrent;
+    this.yBefore = this.yCurrent;
+    this.xCurrent = this.getRealX(pageX);
+    this.yCurrent = this.getRealY(pageY);
+    this.joinPath(
+      this.canvas,
+      this.xBefore,
+      this.yBefore,
+      this.xCurrent,
+      this.yCurrent,
+      this.traceColor,
+      this.traceThickness
+    );
+  };
+
+  private finishPaint = (ev: MouseEvent) => {
+    if (!this.disabled) {
+      ev.preventDefault();
+      this.canvas.removeEventListener("mousemove", this.handleMousemove);
+      this.canvas.addEventListener("touchmove", this.handleTouchmove);
       this.initPaint = false;
       this.traceChanged();
     }
@@ -292,46 +341,44 @@ export class GxImageAnnotations {
 
   private paintPoint = (
     canvas: HTMLCanvasElement,
-    xActual: number,
-    yActual: number,
+    xCurrent: number,
+    yCurrent: number,
     color: string,
     thickness: number
   ) => {
     const context = canvas.getContext("2d");
     context.beginPath();
     context.fillStyle = color;
-    context.fillRect(xActual, yActual, thickness, thickness);
+    context.fillRect(xCurrent, yCurrent, thickness, thickness);
     context.closePath();
   };
 
   private joinPath = (
     canvas: HTMLCanvasElement,
-    xAnterior: number,
-    yAnterior: number,
-    xActual: number,
-    yActual: number,
+    xBefore: number,
+    yBefore: number,
+    xCurrent: number,
+    yCurrent: number,
     color: string,
     thickness: number,
     addTolist = true
   ) => {
     const context = canvas.getContext("2d");
     context.beginPath();
-    context.moveTo(xAnterior, yAnterior);
-    context.lineTo(xActual, yActual);
+    context.moveTo(xBefore, yBefore);
+    context.lineTo(xCurrent, yCurrent);
     context.strokeStyle = color;
     context.lineWidth = thickness;
     context.stroke();
     context.closePath();
 
-    if (addTolist) {
-      if (this.traceList[this.traceInd]) {
-        this.traceList[this.traceInd].paths.push({
-          xAnterior,
-          yAnterior,
-          xActual,
-          yActual
-        });
-      }
+    if (addTolist && this.traceList[this.traceInd]) {
+      this.traceList[this.traceInd].paths.push({
+        xBefore: xBefore,
+        yBefore: yBefore,
+        xCurrent: xCurrent,
+        yCurrent: yCurrent
+      });
     }
   };
 
@@ -346,18 +393,18 @@ export class GxImageAnnotations {
         trace.color,
         trace.thickness
       );
-      for (const path of trace.paths) {
+      trace.paths.forEach(path =>
         this.joinPath(
           canvas,
-          path.xAnterior,
-          path.yAnterior,
-          path.xActual,
-          path.yActual,
+          path.xBefore,
+          path.yBefore,
+          path.xCurrent,
+          path.yCurrent,
           trace.color,
           trace.thickness,
           false
-        );
-      }
+        )
+      );
       ind++;
     }
   };
@@ -377,15 +424,18 @@ export class GxImageAnnotations {
     return (
       <Host
         role="img"
-        aria-label="Image to be annotated"
+        aria-label={this.imageLabel}
         class={{
-          [this.cssClass]: !!this.cssClass,
-          "hide-keep": !this.visible && this.invisibleMode === "Keep Space",
-          "hide-collapse":
-            !this.visible && this.invisibleMode === "Collapse Space"
+          [this.cssClass]: !!this.cssClass
         }}
       >
-        <canvas id="canvas" part="canvas"></canvas>
+        <canvas
+          id="canvas"
+          part="canvas"
+          ref={canvasElement =>
+            (this.canvas = canvasElement as HTMLCanvasElement)
+          }
+        ></canvas>
       </Host>
     );
   }
@@ -404,8 +454,8 @@ interface TraceDataPoint {
 }
 
 interface TraceDataPath {
-  xAnterior: number;
-  yAnterior: number;
-  xActual: number;
-  yActual: number;
+  xBefore: number;
+  yBefore: number;
+  xCurrent: number;
+  yCurrent: number;
 }

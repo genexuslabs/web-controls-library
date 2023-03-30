@@ -944,6 +944,56 @@ export namespace Components {
      */
     srcset: string;
   }
+  interface GxImageAnnotations {
+    /**
+     * The source of the background image.
+     */
+    backgroundImageSrc: string;
+    /**
+     * Clean all annotations in canvas and memory.
+     */
+    cleanAll: () => Promise<void>;
+    /**
+     * A CSS class to set as the `gx-image-annotations` element class.
+     */
+    cssClass: string;
+    /**
+     * If the annotations are activated or not.
+     */
+    disabled: false;
+    /**
+     * Get the last image with annotations that have the gx-image-annotations.
+     */
+    getLastSavedImage: () => Promise<string>;
+    /**
+     * Get the last annotations only that have the gx-image-annotations.
+     */
+    getLastSavedImageAnnotations: () => Promise<string>;
+    /**
+     * Go back one step, if the array of annotations have any: erase the last annotation.
+     */
+    goBack: () => Promise<void>;
+    /**
+     * Go foward one step, if the array of annotations have any and user go back previously: recover the annotation in the index where it is.
+     */
+    goTo: () => Promise<void>;
+    /**
+     * The source of the background image.
+     */
+    imageLabel: "Image to be annotated";
+    /**
+     * How the component will hide.
+     */
+    invisibleMode: "Keep Space" | "Collapse Space";
+    /**
+     * Drawing color.
+     */
+    traceColor: string;
+    /**
+     * Drawing thickness.
+     */
+    traceThickness: number;
+  }
   interface GxImagePicker {
     /**
      * This attribute lets you specify the alternative text.
@@ -2570,6 +2620,13 @@ declare global {
     prototype: HTMLGxImageElement;
     new (): HTMLGxImageElement;
   };
+  interface HTMLGxImageAnnotationsElement
+    extends Components.GxImageAnnotations,
+      HTMLStencilElement {}
+  var HTMLGxImageAnnotationsElement: {
+    prototype: HTMLGxImageAnnotationsElement;
+    new (): HTMLGxImageAnnotationsElement;
+  };
   interface HTMLGxImagePickerElement
     extends Components.GxImagePicker,
       HTMLStencilElement {}
@@ -2828,6 +2885,7 @@ declare global {
     "gx-header-row-pattern-marker": HTMLGxHeaderRowPatternMarkerElement;
     "gx-icon": HTMLGxIconElement;
     "gx-image": HTMLGxImageElement;
+    "gx-image-annotations": HTMLGxImageAnnotationsElement;
     "gx-image-picker": HTMLGxImagePickerElement;
     "gx-interactive-image": HTMLGxInteractiveImageElement;
     "gx-layout": HTMLGxLayoutElement;
@@ -3891,6 +3949,36 @@ declare namespace LocalJSX {
      * This attribute lets you specify the `srcset` of the `img`. The `srcset` attribute defines the set of images we will allow the browser to choose between, and what size each image is. Each set of image information is separated from the previous one by a comma.
      */
     srcset?: string;
+  }
+  interface GxImageAnnotations {
+    /**
+     * The source of the background image.
+     */
+    backgroundImageSrc?: string;
+    /**
+     * A CSS class to set as the `gx-image-annotations` element class.
+     */
+    cssClass?: string;
+    /**
+     * If the annotations are activated or not.
+     */
+    disabled?: false;
+    /**
+     * The source of the background image.
+     */
+    imageLabel?: "Image to be annotated";
+    /**
+     * How the component will hide.
+     */
+    invisibleMode?: "Keep Space" | "Collapse Space";
+    /**
+     * Drawing color.
+     */
+    traceColor?: string;
+    /**
+     * Drawing thickness.
+     */
+    traceThickness?: number;
   }
   interface GxImagePicker {
     /**
@@ -5353,6 +5441,7 @@ declare namespace LocalJSX {
     "gx-header-row-pattern-marker": GxHeaderRowPatternMarker;
     "gx-icon": GxIcon;
     "gx-image": GxImage;
+    "gx-image-annotations": GxImageAnnotations;
     "gx-image-picker": GxImagePicker;
     "gx-interactive-image": GxInteractiveImage;
     "gx-layout": GxLayout;
@@ -5444,6 +5533,8 @@ declare module "@stencil/core" {
         JSXBase.HTMLAttributes<HTMLGxHeaderRowPatternMarkerElement>;
       "gx-icon": LocalJSX.GxIcon & JSXBase.HTMLAttributes<HTMLGxIconElement>;
       "gx-image": LocalJSX.GxImage & JSXBase.HTMLAttributes<HTMLGxImageElement>;
+      "gx-image-annotations": LocalJSX.GxImageAnnotations &
+        JSXBase.HTMLAttributes<HTMLGxImageAnnotationsElement>;
       "gx-image-picker": LocalJSX.GxImagePicker &
         JSXBase.HTMLAttributes<HTMLGxImagePickerElement>;
       "gx-interactive-image": LocalJSX.GxInteractiveImage &

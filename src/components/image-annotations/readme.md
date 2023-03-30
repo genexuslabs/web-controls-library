@@ -1,4 +1,18 @@
-# gx-image-annotations
+# GX Image Annotations
+
+This is an image annotations component for genexus.
+
+### Node Modules
+
+- Run `npm install gx-image-annotations --save`
+- Then you can use the element anywhere in your template, JSX, html etc
+
+### Example
+
+```html
+<gx-image-annotations trace-color="#000000" background-image="image-path.jpg">
+</gx-image-annotations>
+```
 
 <!-- Auto Generated Below -->
 
