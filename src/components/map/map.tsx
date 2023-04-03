@@ -137,6 +137,11 @@ export class GridMap implements GxComponent {
   @Prop() readonly initialZoomRadius: number = 1;
 
   /**
+   * Size of the grid map elements array when start
+   */
+  @Prop() readonly itemCount: number = 0;
+
+  /**
    * The map provider.
    * _Note: Currently, this property is for setting a custom map provider using an URL._
    */
@@ -261,6 +266,7 @@ export class GridMap implements GxComponent {
     if (!this.selectionLayer || markerHTMLElement.type !== "selection-layer") {
       this.markersList.set(id, instance);
     }
+
     event.stopPropagation();
   }
 
@@ -650,7 +656,6 @@ export class GridMap implements GxComponent {
 
     this.setMapProvider();
     this.map.setMaxZoom(MAX_ZOOM_LEVEL);
-    this.fitBounds();
     this.gxMapDidLoad.emit(this);
 
     if (this.selectionLayer) {
@@ -671,6 +676,10 @@ export class GridMap implements GxComponent {
       this.popUpTracker = e.popup;
     });
     this.didLoad = true;
+  }
+
+  componentDidUpdate(): void {
+    this.fitBounds();
   }
 
   disconnectedCallback() {
