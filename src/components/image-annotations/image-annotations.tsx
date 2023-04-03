@@ -5,7 +5,10 @@ import {
   Element,
   Prop,
   State,
-  Method
+  Method,
+  Watch,
+  Event,
+  EventEmitter
 } from "@stencil/core";
 
 /**
@@ -46,9 +49,22 @@ export class GxImageAnnotations {
   @State() traceInd = -1;
 
   /**
-   * The source of the background image.
+   * Property used for change the traceInd state and go forward or backward.
    */
-  @Prop() readonly backgroundImageSrc: string;
+  @Prop() readonly traceIndex = this.traceInd;
+  @Watch("traceIndex")
+  watchTraceIndHandler(newValue: number) {
+    if (newValue === -10) {
+      this.cleanAll();
+    } else {
+      if (newValue > this.traceInd) {
+        this.goTo();
+      }
+      if (newValue < this.traceInd) {
+        this.goBack();
+      }
+    }
+  }
 
   /**
    * A CSS class to set as the `gx-image-annotations` element class.
@@ -81,62 +97,49 @@ export class GxImageAnnotations {
    */
   @Prop() readonly traceThickness: number = 2;
 
+  /**
+   * The source of the background image.
+   */
+  @Prop() readonly value: string;
+  @Watch("value")
+  watchValueHandler(newValue: string) {
+    this.resetTrace();
+    this.cleanPaint(this.canvas);
+    this.baseImage = new Image();
+    this.baseImage.src = newValue;
+    this.baseImage.addEventListener("load", this.loadImage);
+  }
+
+  /**
+   * Fired when the menu container is opened or closed.
+   */
+  @Event({
+    eventName: "annotationsChange",
+    bubbles: true
+  })
+  annotationsChange: EventEmitter<AnnotationsChangeEvent>;
+
+  /**
+   * Fired when the menu container is opened or closed.
+   */
+  @Event({
+    eventName: "traceIndexChange",
+    bubbles: true
+  })
+  traceIndexChange: EventEmitter<number>;
+
   componentDidLoad() {
     this.canvas.width = this.el.clientWidth;
     this.canvas.height = this.el.clientHeight;
     this.canvasAnn = this.canvas.cloneNode();
     this.canvas.addEventListener("mousedown", this.handleMousedown);
-    this.canvas.addEventListener("mouseup", this.finishPaint);
-    this.canvas.addEventListener("mouseout", this.finishPaint);
 
     this.canvas.addEventListener("touchstart", this.handleTouchStart);
-    this.canvas.addEventListener("touchend", this.finishPaint);
-    this.canvas.addEventListener("touchcancel", this.finishPaint);
-    this.canvas.addEventListener("touchleave", this.finishPaint);
 
-    if (this.backgroundImageSrc) {
+    if (this.value) {
       this.baseImage = new Image();
-      this.baseImage.src = this.backgroundImageSrc;
+      this.baseImage.src = this.value;
       this.baseImage.addEventListener("load", this.loadImage);
-    }
-  }
-
-  /**
-   * Clean all annotations in canvas and memory.
-   */
-  @Method()
-  async cleanAll(): Promise<void> {
-    this.resetTrace();
-    this.cleanPaint(this.canvas);
-    this.loadImage();
-    this.traceChanged();
-  }
-
-  /**
-   * Go back one step, if the array of annotations have any: erase the last annotation.
-   */
-  @Method()
-  async goBack(): Promise<void> {
-    if (this.traceInd >= 0) {
-      this.traceInd--;
-      this.cleanPaint(this.canvas);
-      this.loadImage();
-      this.paintToInd(this.canvas);
-      this.traceChanged();
-    }
-  }
-
-  /**
-   * Go foward one step, if the array of annotations have any and user go back previously: recover the annotation in the index where it is.
-   */
-  @Method()
-  async goTo(): Promise<void> {
-    if (this.traceInd < this.traceList.length - 1) {
-      this.traceInd++;
-      this.cleanPaint(this.canvas);
-      this.loadImage();
-      this.paintToInd(this.canvas);
-      this.traceChanged();
     }
   }
 
@@ -168,6 +171,46 @@ export class GxImageAnnotations {
     });
   }
 
+  /**
+   * Go back one step, if the array of annotations have any: erase the last annotation.
+   */
+  private goBack() {
+    if (this.traceInd >= 0) {
+      this.traceInd--;
+      this.cleanPaint(this.canvas);
+      this.loadImage();
+      this.paintToInd(this.canvas);
+      this.traceChanged();
+    } else {
+      this.traceIndexChange.emit(this.traceInd);
+    }
+  }
+
+  /**
+   * Go foward one step, if the array of annotations have any and user go back previously: recover the annotation in the index where it is.
+   */
+  private goTo() {
+    if (this.traceInd < this.traceList.length - 1) {
+      this.traceInd++;
+      this.cleanPaint(this.canvas);
+      this.loadImage();
+      this.paintToInd(this.canvas);
+      this.traceChanged();
+    } else {
+      this.traceIndexChange.emit(this.traceInd);
+    }
+  }
+
+  /**
+   * Clean all annotations in canvas and memory.
+   */
+  private cleanAll() {
+    this.resetTrace();
+    this.cleanPaint(this.canvas);
+    this.loadImage();
+    this.traceChanged();
+  }
+
   private loadImage = () => {
     if (this.baseImage) {
       const hostWidth = this.canvas.width;
@@ -178,16 +221,31 @@ export class GxImageAnnotations {
       let newLeft = 0;
       let newTop = 0;
 
+      let ratioCanvas = hostWidth / hostHeight;
+
       let ratio = imgWidth / imgHeight;
       let newImgWidth = hostWidth;
       let newImgHeight = hostHeight;
       if (imgWidth > imgHeight) {
         ratio = imgHeight / imgWidth;
-        newImgHeight = hostHeight * ratio;
-        newTop = (hostHeight - newImgHeight) / 2;
+        newImgHeight = hostHeight * ratioCanvas * ratio;
+        if (newImgHeight > hostHeight) {
+          newImgHeight = hostHeight;
+          newImgWidth = newImgHeight / ratio;
+          newLeft = (hostWidth - newImgWidth) / 2;
+        } else {
+          newTop = (hostHeight - newImgHeight) / 2;
+        }
       } else {
-        newImgWidth = hostWidth * ratio;
-        newLeft = (hostWidth - newImgWidth) / 2;
+        ratioCanvas = hostHeight / hostWidth;
+        newImgWidth = hostWidth * ratioCanvas * ratio;
+        if (newImgWidth > hostWidth) {
+          newImgWidth = hostWidth;
+          newImgHeight = newImgWidth / ratio;
+          newTop = (hostHeight - newImgHeight) / 2;
+        } else {
+          newLeft = (hostWidth - newImgWidth) / 2;
+        }
       }
 
       // let newDistWidth = (newImgWidth - hostWidth) / 2;
@@ -209,9 +267,12 @@ export class GxImageAnnotations {
         newImgHeight
       );
     }
+    this.traceChanged();
   };
 
   private traceChanged = () => {
+    this.traceIndexChange.emit(this.traceInd);
+
     this.canvas.toBlob(blob => {
       if (this.lastSavedImageUrl) {
         URL.revokeObjectURL(this.lastSavedImageUrl);
@@ -221,6 +282,10 @@ export class GxImageAnnotations {
       const url = URL.createObjectURL(blob);
       if (url) {
         this.lastSavedImageUrl = url;
+        this.annotationsChange.emit({
+          annotatedImage: this.lastSavedImageUrl,
+          annotations: this.lastSavedImageAnnUrl
+        });
       }
     });
 
@@ -235,6 +300,10 @@ export class GxImageAnnotations {
       const url = URL.createObjectURL(blob);
       if (url) {
         this.lastSavedImageAnnUrl = url;
+        this.annotationsChange.emit({
+          annotatedImage: this.lastSavedImageUrl,
+          annotations: this.lastSavedImageAnnUrl
+        });
       }
     });
   };
@@ -242,6 +311,8 @@ export class GxImageAnnotations {
   private handleMousedown = (ev: MouseEvent) => {
     if (!this.disabled) {
       this.canvas.addEventListener("mousemove", this.handleMousemove);
+      this.canvas.addEventListener("mouseup", this.finishPaint);
+      this.canvas.addEventListener("mouseout", this.finishPaint);
       ev.preventDefault();
 
       this.startPainting(ev.clientX, ev.clientY);
@@ -251,6 +322,9 @@ export class GxImageAnnotations {
   private handleTouchStart = (ev: TouchEvent) => {
     if (!this.disabled) {
       this.canvas.addEventListener("touchmove", this.handleTouchmove);
+      this.canvas.addEventListener("touchend", this.finishPaint);
+      this.canvas.addEventListener("touchcancel", this.finishPaint);
+      this.canvas.addEventListener("touchleave", this.finishPaint);
       ev.preventDefault();
 
       const touches = ev.changedTouches;
@@ -278,7 +352,7 @@ export class GxImageAnnotations {
     this.traceInd++;
 
     this.paintToInd(this.canvas);
-    this.traceChanged();
+    // this.traceChanged();
   };
 
   private handleMousemove = (ev: MouseEvent) => {
@@ -323,15 +397,22 @@ export class GxImageAnnotations {
     if (!this.disabled) {
       ev.preventDefault();
       this.canvas.removeEventListener("mousemove", this.handleMousemove);
-      this.canvas.addEventListener("touchmove", this.handleTouchmove);
+      this.canvas.removeEventListener("mouseup", this.finishPaint);
+      this.canvas.removeEventListener("mouseout", this.finishPaint);
+      this.canvas.removeEventListener("touchmove", this.handleTouchmove);
+      this.canvas.removeEventListener("touchend", this.finishPaint);
+      this.canvas.removeEventListener("touchcancel", this.finishPaint);
+      this.canvas.removeEventListener("touchleave", this.finishPaint);
       this.initPaint = false;
       this.traceChanged();
     }
   };
 
   private cleanPaint = (canvas: HTMLCanvasElement) => {
-    const context = canvas.getContext("2d");
-    context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    if (this.canvas) {
+      const context = canvas.getContext("2d");
+      context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
   };
 
   private resetTrace = () => {
@@ -458,4 +539,9 @@ interface TraceDataPath {
   yBefore: number;
   xCurrent: number;
   yCurrent: number;
+}
+
+export interface AnnotationsChangeEvent {
+  annotations: string;
+  annotatedImage: string;
 }

@@ -17,11 +17,3 @@
   width: 100%;
   height: 100%;
 }
-
-:host(.hide-keep) {
-  opacity: 0;
-}
-
-:host(.hide-collapse) {
-  display: none;
-}
