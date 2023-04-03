@@ -7,7 +7,7 @@ import {
   Listen,
   Watch,
   Event,
-  EventEmitter,
+  EventEmitter
 } from "@stencil/core";
 import { MenuActionActiveEvent } from "../dynamic-menu-action/dynamic-menu-action";
 
@@ -22,7 +22,7 @@ const HOME_KEY_CODE = "Home";
 const END_KEY_CODE = "End";
 
 /**
- * @part menu-content - The container of dynamic-menu.
+ * @part menu-content - The container of gx-dynamic-menu.
  *
  * @slot menuitems - The slot where live the menu actions.
  * @slot menupopup - The slot where live the menu popups.
@@ -30,17 +30,17 @@ const END_KEY_CODE = "End";
 @Component({
   tag: "gx-dynamic-menu",
   styleUrl: "dynamic-menu.scss",
-  shadow: true,
+  shadow: true
 })
 export class DynamicMenu {
-  private menuActions: HTMLDynamicMenuActionElement[] = [];
-  private menuPopups: HTMLDynamicMenuPopupElement[] = [];
+  private menuActions: HTMLGxDynamicMenuActionElement[] = [];
+  private menuPopups: HTMLGxDynamicMenuPopupElement[] = [];
   private openIndex: number = null;
 
-  @Element() el: HTMLDynamicMenuElement;
+  @Element() el: HTMLGxDynamicMenuElement;
 
   /**
-   * A CSS class to set as the `dynamic-menu` element class.
+   * A CSS class to set as the `gx-dynamic-menu` element class.
    */
   @Prop() readonly cssClass: string;
 
@@ -53,9 +53,10 @@ export class DynamicMenu {
   watchPropOpenItemHandler(newValue: string) {
     let targetActionIndex: number = null;
     this.menuActions.forEach(
-      (action: HTMLDynamicMenuActionElement, ind: number) => {
-        if (targetActionIndex === null && action.actionId === newValue)
+      (action: HTMLGxDynamicMenuActionElement, ind: number) => {
+        if (targetActionIndex === null && action.actionId === newValue) {
           targetActionIndex = ind;
+        }
       }
     );
     if (targetActionIndex !== null) {
@@ -75,22 +76,22 @@ export class DynamicMenu {
    */
   @Event({
     eventName: "dynamicMenuActivated",
-    bubbles: true,
+    bubbles: true
   })
   dynamicMenuActivated: EventEmitter<DynamicMenuActivatedEvent>;
 
   componentWillLoad() {
-    const actions: any = this.el.querySelectorAll("dynamic-menu-action");
+    const actions: any = this.el.querySelectorAll("gx-dynamic-menu-action");
     this.menuActions = [...actions];
     window.addEventListener("click", this.onBlur);
   }
 
   componentDidLoad() {
-    this.menuActions.forEach((action) => {
+    this.menuActions.forEach(action => {
       // handle action + popup
       if (action.hasAttribute("aria-controls")) {
-        const popup: HTMLDynamicMenuPopupElement = this.el.querySelector(
-          `dynamic-menu-popup#${action.getAttribute("aria-controls")}`
+        const popup: HTMLGxDynamicMenuPopupElement = this.el.querySelector(
+          `gx-dynamic-menu-popup#${action.getAttribute("aria-controls")}`
         );
         if (popup !== null && popup !== undefined) {
           // save ref controlled popup
@@ -107,7 +108,6 @@ export class DynamicMenu {
   handleActionActivated(event: CustomEvent<MenuActionActiveEvent>) {
     const actionIndex = this.menuActions.indexOf(event.detail.item);
     this.toggleExpand(actionIndex, event.detail.active);
-    this.menuActions[actionIndex].deactivated = !event.detail.active;
   }
 
   /**
@@ -121,7 +121,7 @@ export class DynamicMenu {
   handleActionKeyDown(event: CustomEvent<KeyboardEvent>) {
     const keyboardEvent = event.detail;
     const targetActionIndex = this.menuActions.indexOf(
-      document.activeElement as HTMLDynamicMenuActionElement
+      document.activeElement as HTMLGxDynamicMenuActionElement
     );
 
     // close on escape
@@ -155,7 +155,7 @@ export class DynamicMenu {
     }
   };
 
-  toggleExpand(index: number, expanded: boolean) {
+  private toggleExpand(index: number, expanded: boolean) {
     // close open menu, if applicable
     if (this.openIndex !== index) {
       this.closeOpenAction();
@@ -171,24 +171,33 @@ export class DynamicMenu {
       this.activateMenuPopup(this.menuPopups[index], expanded);
       this.dynamicMenuActivated.emit({
         item: this.menuActions[index].actionId,
-        active: expanded,
+        active: expanded
       });
     }
   }
 
-  closeOpenAction(setItem = true) {
-    if (this.openIndex !== null)
+  private closeOpenAction(setItem = true) {
+    if (this.openIndex !== null) {
       this.menuActions[this.openIndex].deactivated = true;
-    if (setItem) this.openItem = null;
+    }
+    if (setItem) {
+      this.openItem = null;
+    }
   }
 
-  activateMenuPopup(popupItem: HTMLDynamicMenuPopupElement, open: boolean) {
+  private activateMenuPopup(
+    popupItem: HTMLGxDynamicMenuPopupElement,
+    open: boolean
+  ) {
     if (popupItem !== null && popupItem !== undefined) {
       popupItem.opened = open;
     }
   }
 
-  controlFocusByKey(keyboardEvent: KeyboardEvent, currentIndex: number) {
+  private controlFocusByKey(
+    keyboardEvent: KeyboardEvent,
+    currentIndex: number
+  ) {
     switch (keyboardEvent.code) {
       case ARROWUP_KEY_CODE:
       case ARROWLEFT_KEY_CODE:
@@ -228,7 +237,7 @@ export class DynamicMenu {
     return (
       <Host
         class={{
-          [this.cssClass]: !!this.cssClass,
+          [this.cssClass]: !!this.cssClass
         }}
       >
         <div class="menu-content" part="menu-content">

@@ -6,18 +6,18 @@ import { Component, Host, h, Prop } from "@stencil/core";
 @Component({
   tag: "gx-dynamic-menu-popup",
   styleUrl: "dynamic-menu-popup.scss",
-  shadow: true,
+  shadow: true
 })
 export class DynamicMenuPopup {
   /**
-   * A CSS class to set as the `dynamic-menu-popup` element class.
+   * A CSS class to set as the `gx-dynamic-menu-popup` element class.
    */
   @Prop() readonly cssClass: string;
 
   /**
    * This attribute lets you specify if the menu popup is opened
    */
-  @Prop() opened = false;
+  @Prop() readonly opened: boolean = false;
 
   render() {
     return (
@@ -25,7 +25,7 @@ export class DynamicMenuPopup {
         tabindex="0"
         class={{
           [this.cssClass]: !!this.cssClass,
-          hidden: !this.opened,
+          hidden: !this.opened
         }}
       >
         <slot name="data"></slot>

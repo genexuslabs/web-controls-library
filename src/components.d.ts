@@ -5,64 +5,14 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { TimerState } from "./components/chronometer/chronometer-timer-state";
 import { DynamicMenuActivatedEvent } from "./components/dynamic-menu/dynamic-menu";
 import { MenuActionActiveEvent } from "./components/dynamic-menu-action/dynamic-menu-action";
-import { TimerState } from "./components/chronometer/chronometer-timer-state";
 import { EditType, FlexDirection, FlexWrap } from "./common/types";
 import { SwiperOptions } from "swiper";
 import { GridMapElement, LayoutSize } from "./components/common/interfaces";
 import { QueryViewerParameterChangedEvent } from "./components/query-viewer-parameter/query-viewer-parameter";
 export namespace Components {
-  interface DynamicMenu {
-    /**
-     * A CSS class to set as the `dynamic-menu` element class.
-     */
-    cssClass: string;
-    /**
-     * This attribute specifies which must be open by default.
-     */
-    openItem: string;
-  }
-  interface DynamicMenuAction {
-    /**
-     * This attribute specifies the id of the dynamic-menu-action for manage from outside, will be an unique attribute.
-     */
-    actionId: string;
-    /**
-     * A CSS class to set as the `dynamic-menu-action` element class when `inactivated = false`.
-     */
-    activeClass: string;
-    /**
-     * A CSS class to set as the `dynamic-menu-action` element class.
-     */
-    cssClass: string;
-    /**
-     * This attribute lets you specify if the menu action is activated or not.
-     */
-    deactivated: boolean;
-    /**
-     * The subtitle of menu action.
-     */
-    itemSubtitle: string;
-    /**
-     * The title of menu action.
-     */
-    itemTitle: string;
-    /**
-     * This attribute specifies which popup of the dynamic-menu must be open.
-     */
-    popupId: string;
-  }
-  interface DynamicMenuPopup {
-    /**
-     * A CSS class to set as the `dynamic-menu-popup` element class.
-     */
-    cssClass: string;
-    /**
-     * This attribute lets you specify if the menu popup is opened
-     */
-    opened: boolean;
-  }
   interface GxActionSheet {
     /**
      * This attribute lets you specify the label for the close button. Important for accessibility.
@@ -320,6 +270,56 @@ export namespace Components {
      * A css class to set to attributes when a warning occurs
      */
     warningCssClass: string;
+  }
+  interface GxDynamicMenu {
+    /**
+     * A CSS class to set as the `dynamic-menu` element class.
+     */
+    cssClass: string;
+    /**
+     * This attribute specifies which must be open by default.
+     */
+    openItem: string;
+  }
+  interface GxDynamicMenuAction {
+    /**
+     * This attribute specifies the id of the dynamic-menu-action for manage from outside, will be an unique attribute.
+     */
+    actionId: string;
+    /**
+     * A CSS class to set as the `dynamic-menu-action` element class when `inactivated = false`.
+     */
+    activeClass: string;
+    /**
+     * A CSS class to set as the `dynamic-menu-action` element class.
+     */
+    cssClass: string;
+    /**
+     * This attribute lets you specify if the menu action is activated or not.
+     */
+    deactivated: boolean;
+    /**
+     * The subtitle of menu action.
+     */
+    itemSubtitle: string;
+    /**
+     * The title of menu action.
+     */
+    itemTitle: string;
+    /**
+     * This attribute specifies which popup of the dynamic-menu must be open.
+     */
+    popupId: string;
+  }
+  interface GxDynamicMenuPopup {
+    /**
+     * A CSS class to set as the `dynamic-menu-popup` element class.
+     */
+    cssClass: string;
+    /**
+     * This attribute lets you specify if the menu popup is opened
+     */
+    opened: boolean;
   }
   interface GxEdit {
     /**
@@ -2263,14 +2263,6 @@ export namespace Components {
     src: string;
   }
 }
-export interface DynamicMenuCustomEvent<T> extends CustomEvent<T> {
-  detail: T;
-  target: HTMLDynamicMenuElement;
-}
-export interface DynamicMenuActionCustomEvent<T> extends CustomEvent<T> {
-  detail: T;
-  target: HTMLDynamicMenuActionElement;
-}
 export interface GxActionSheetCustomEvent<T> extends CustomEvent<T> {
   detail: T;
   target: HTMLGxActionSheetElement;
@@ -2298,6 +2290,14 @@ export interface GxChronometerCustomEvent<T> extends CustomEvent<T> {
 export interface GxDynamicFormCustomEvent<T> extends CustomEvent<T> {
   detail: T;
   target: HTMLGxDynamicFormElement;
+}
+export interface GxDynamicMenuCustomEvent<T> extends CustomEvent<T> {
+  detail: T;
+  target: HTMLGxDynamicMenuElement;
+}
+export interface GxDynamicMenuActionCustomEvent<T> extends CustomEvent<T> {
+  detail: T;
+  target: HTMLGxDynamicMenuActionElement;
 }
 export interface GxEditCustomEvent<T> extends CustomEvent<T> {
   detail: T;
@@ -2441,27 +2441,6 @@ export interface GxTableCustomEvent<T> extends CustomEvent<T> {
   target: HTMLGxTableElement;
 }
 declare global {
-  interface HTMLDynamicMenuElement
-    extends Components.DynamicMenu,
-      HTMLStencilElement {}
-  var HTMLDynamicMenuElement: {
-    prototype: HTMLDynamicMenuElement;
-    new (): HTMLDynamicMenuElement;
-  };
-  interface HTMLDynamicMenuActionElement
-    extends Components.DynamicMenuAction,
-      HTMLStencilElement {}
-  var HTMLDynamicMenuActionElement: {
-    prototype: HTMLDynamicMenuActionElement;
-    new (): HTMLDynamicMenuActionElement;
-  };
-  interface HTMLDynamicMenuPopupElement
-    extends Components.DynamicMenuPopup,
-      HTMLStencilElement {}
-  var HTMLDynamicMenuPopupElement: {
-    prototype: HTMLDynamicMenuPopupElement;
-    new (): HTMLDynamicMenuPopupElement;
-  };
   interface HTMLGxActionSheetElement
     extends Components.GxActionSheet,
       HTMLStencilElement {}
@@ -2534,6 +2513,27 @@ declare global {
   var HTMLGxDynamicFormElement: {
     prototype: HTMLGxDynamicFormElement;
     new (): HTMLGxDynamicFormElement;
+  };
+  interface HTMLGxDynamicMenuElement
+    extends Components.GxDynamicMenu,
+      HTMLStencilElement {}
+  var HTMLGxDynamicMenuElement: {
+    prototype: HTMLGxDynamicMenuElement;
+    new (): HTMLGxDynamicMenuElement;
+  };
+  interface HTMLGxDynamicMenuActionElement
+    extends Components.GxDynamicMenuAction,
+      HTMLStencilElement {}
+  var HTMLGxDynamicMenuActionElement: {
+    prototype: HTMLGxDynamicMenuActionElement;
+    new (): HTMLGxDynamicMenuActionElement;
+  };
+  interface HTMLGxDynamicMenuPopupElement
+    extends Components.GxDynamicMenuPopup,
+      HTMLStencilElement {}
+  var HTMLGxDynamicMenuPopupElement: {
+    prototype: HTMLGxDynamicMenuPopupElement;
+    new (): HTMLGxDynamicMenuPopupElement;
   };
   interface HTMLGxEditElement extends Components.GxEdit, HTMLStencilElement {}
   var HTMLGxEditElement: {
@@ -2880,9 +2880,6 @@ declare global {
     new (): HTMLGxVideoElement;
   };
   interface HTMLElementTagNameMap {
-    "dynamic-menu": HTMLDynamicMenuElement;
-    "dynamic-menu-action": HTMLDynamicMenuActionElement;
-    "dynamic-menu-popup": HTMLDynamicMenuPopupElement;
     "gx-action-sheet": HTMLGxActionSheetElement;
     "gx-action-sheet-item": HTMLGxActionSheetItemElement;
     "gx-audio": HTMLGxAudioElement;
@@ -2894,6 +2891,9 @@ declare global {
     "gx-checkbox": HTMLGxCheckboxElement;
     "gx-chronometer": HTMLGxChronometerElement;
     "gx-dynamic-form": HTMLGxDynamicFormElement;
+    "gx-dynamic-menu": HTMLGxDynamicMenuElement;
+    "gx-dynamic-menu-action": HTMLGxDynamicMenuActionElement;
+    "gx-dynamic-menu-popup": HTMLGxDynamicMenuPopupElement;
     "gx-edit": HTMLGxEditElement;
     "gx-form-field": HTMLGxFormFieldElement;
     "gx-gauge": HTMLGxGaugeElement;
@@ -2949,74 +2949,6 @@ declare global {
   }
 }
 declare namespace LocalJSX {
-  interface DynamicMenu {
-    /**
-     * A CSS class to set as the `dynamic-menu` element class.
-     */
-    cssClass?: string;
-    /**
-     * Fired when the menu container is opened or closed.
-     */
-    onDynamicMenuActivated?: (
-      event: DynamicMenuCustomEvent<DynamicMenuActivatedEvent>
-    ) => void;
-    /**
-     * This attribute specifies which must be open by default.
-     */
-    openItem?: string;
-  }
-  interface DynamicMenuAction {
-    /**
-     * This attribute specifies the id of the dynamic-menu-action for manage from outside, will be an unique attribute.
-     */
-    actionId?: string;
-    /**
-     * A CSS class to set as the `dynamic-menu-action` element class when `inactivated = false`.
-     */
-    activeClass?: string;
-    /**
-     * A CSS class to set as the `dynamic-menu-action` element class.
-     */
-    cssClass?: string;
-    /**
-     * This attribute lets you specify if the menu action is activated or not.
-     */
-    deactivated?: boolean;
-    /**
-     * The subtitle of menu action.
-     */
-    itemSubtitle?: string;
-    /**
-     * The title of menu action.
-     */
-    itemTitle?: string;
-    /**
-     * Fired when the menu action is activated.
-     */
-    onMenuActionActivated?: (
-      event: DynamicMenuActionCustomEvent<MenuActionActiveEvent>
-    ) => void;
-    /**
-     * Fired when a KeyboardEvent is captured for the menu action.
-     */
-    onMenuActionKeyDown?: (
-      event: DynamicMenuActionCustomEvent<KeyboardEvent>
-    ) => void;
-    /**
-     * This attribute specifies which popup of the dynamic-menu must be open.
-     */
-    popupId?: string;
-  }
-  interface DynamicMenuPopup {
-    /**
-     * A CSS class to set as the `dynamic-menu-popup` element class.
-     */
-    cssClass?: string;
-    /**
-     * This attribute lets you specify if the menu popup is opened
-     */
-    opened?: boolean;
-  }
   interface GxActionSheet {
     /**
      * This attribute lets you specify the label for the close button. Important for accessibility.
@@ -3322,6 +3254,74 @@ declare namespace LocalJSX {
      * A css class to set to attributes when a warning occurs
      */
     warningCssClass?: string;
+  }
+  interface GxDynamicMenu {
+    /**
+     * A CSS class to set as the `dynamic-menu` element class.
+     */
+    cssClass?: string;
+    /**
+     * Fired when the menu container is opened or closed.
+     */
+    onDynamicMenuActivated?: (
+      event: GxDynamicMenuCustomEvent<DynamicMenuActivatedEvent>
+    ) => void;
+    /**
+     * This attribute specifies which must be open by default.
+     */
+    openItem?: string;
+  }
+  interface GxDynamicMenuAction {
+    /**
+     * This attribute specifies the id of the dynamic-menu-action for manage from outside, will be an unique attribute.
+     */
+    actionId?: string;
+    /**
+     * A CSS class to set as the `dynamic-menu-action` element class when `inactivated = false`.
+     */
+    activeClass?: string;
+    /**
+     * A CSS class to set as the `dynamic-menu-action` element class.
+     */
+    cssClass?: string;
+    /**
+     * This attribute lets you specify if the menu action is activated or not.
+     */
+    deactivated?: boolean;
+    /**
+     * The subtitle of menu action.
+     */
+    itemSubtitle?: string;
+    /**
+     * The title of menu action.
+     */
+    itemTitle?: string;
+    /**
+     * Fired when the menu action is activated.
+     */
+    onMenuActionActivated?: (
+      event: GxDynamicMenuActionCustomEvent<MenuActionActiveEvent>
+    ) => void;
+    /**
+     * Fired when a KeyboardEvent is captured for the menu action.
+     */
+    onMenuActionKeyDown?: (
+      event: GxDynamicMenuActionCustomEvent<KeyboardEvent>
+    ) => void;
+    /**
+     * This attribute specifies which popup of the dynamic-menu must be open.
+     */
+    popupId?: string;
+  }
+  interface GxDynamicMenuPopup {
+    /**
+     * A CSS class to set as the `dynamic-menu-popup` element class.
+     */
+    cssClass?: string;
+    /**
+     * This attribute lets you specify if the menu popup is opened
+     */
+    opened?: boolean;
   }
   interface GxEdit {
     /**
@@ -5476,9 +5476,6 @@ declare namespace LocalJSX {
     src?: string;
   }
   interface IntrinsicElements {
-    "dynamic-menu": DynamicMenu;
-    "dynamic-menu-action": DynamicMenuAction;
-    "dynamic-menu-popup": DynamicMenuPopup;
     "gx-action-sheet": GxActionSheet;
     "gx-action-sheet-item": GxActionSheetItem;
     "gx-audio": GxAudio;
@@ -5490,6 +5487,9 @@ declare namespace LocalJSX {
     "gx-checkbox": GxCheckbox;
     "gx-chronometer": GxChronometer;
     "gx-dynamic-form": GxDynamicForm;
+    "gx-dynamic-menu": GxDynamicMenu;
+    "gx-dynamic-menu-action": GxDynamicMenuAction;
+    "gx-dynamic-menu-popup": GxDynamicMenuPopup;
     "gx-edit": GxEdit;
     "gx-form-field": GxFormField;
     "gx-gauge": GxGauge;
@@ -5548,12 +5548,6 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
   export namespace JSX {
     interface IntrinsicElements {
-      "dynamic-menu": LocalJSX.DynamicMenu &
-        JSXBase.HTMLAttributes<HTMLDynamicMenuElement>;
-      "dynamic-menu-action": LocalJSX.DynamicMenuAction &
-        JSXBase.HTMLAttributes<HTMLDynamicMenuActionElement>;
-      "dynamic-menu-popup": LocalJSX.DynamicMenuPopup &
-        JSXBase.HTMLAttributes<HTMLDynamicMenuPopupElement>;
       "gx-action-sheet": LocalJSX.GxActionSheet &
         JSXBase.HTMLAttributes<HTMLGxActionSheetElement>;
       "gx-action-sheet-item": LocalJSX.GxActionSheetItem &
@@ -5574,6 +5568,12 @@ declare module "@stencil/core" {
         JSXBase.HTMLAttributes<HTMLGxChronometerElement>;
       "gx-dynamic-form": LocalJSX.GxDynamicForm &
         JSXBase.HTMLAttributes<HTMLGxDynamicFormElement>;
+      "gx-dynamic-menu": LocalJSX.GxDynamicMenu &
+        JSXBase.HTMLAttributes<HTMLGxDynamicMenuElement>;
+      "gx-dynamic-menu-action": LocalJSX.GxDynamicMenuAction &
+        JSXBase.HTMLAttributes<HTMLGxDynamicMenuActionElement>;
+      "gx-dynamic-menu-popup": LocalJSX.GxDynamicMenuPopup &
+        JSXBase.HTMLAttributes<HTMLGxDynamicMenuPopupElement>;
       "gx-edit": LocalJSX.GxEdit & JSXBase.HTMLAttributes<HTMLGxEditElement>;
       "gx-form-field": LocalJSX.GxFormField &
         JSXBase.HTMLAttributes<HTMLGxFormFieldElement>;

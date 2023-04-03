@@ -1,13 +1,4 @@
-import {
-  Component,
-  Host,
-  h,
-  Prop,
-  Event,
-  Element,
-  State,
-  Watch,
-} from "@stencil/core";
+import { Component, Host, h, Prop, Event, Element } from "@stencil/core";
 import { EventEmitter } from "@stencil/core/internal";
 
 /**
@@ -21,55 +12,45 @@ import { EventEmitter } from "@stencil/core/internal";
 @Component({
   tag: "gx-dynamic-menu-action",
   styleUrl: "dynamic-menu-action.scss",
-  shadow: true,
+  shadow: true
 })
 export class DynamicMenuAction {
-  @Element() el: HTMLDynamicMenuActionElement;
+  @Element() el: HTMLGxDynamicMenuActionElement;
 
   /**
-   * This attribute lets you specify if the menu action is activated or not.
+   * This attribute specifies the id of the gx-dynamic-menu-action for manage from outside, will be an unique attribute.
    */
-  @State() active = false;
+  @Prop() readonly actionId: string;
 
   /**
-   * This attribute specifies the id of the dynamic-menu-action for manage from outside, will be an unique attribute.
-   */
-  @Prop() actionId: string;
-
-  /**
-   * A CSS class to set as the `dynamic-menu-action` element class when `inactivated = false`.
+   * A CSS class to set as the `gx-dynamic-menu-action` element class when `inactivated = false`.
    */
   @Prop() readonly activeClass: string;
 
   /**
-   * A CSS class to set as the `dynamic-menu-action` element class.
+   * A CSS class to set as the `gx-dynamic-menu-action` element class.
    */
   @Prop() readonly cssClass: string;
 
   /**
    * This attribute lets you specify if the menu action is activated or not.
    */
-  @Prop() readonly deactivated: boolean = true;
-
-  @Watch("deactivated")
-  watchInactivatedHandler(newValue: string) {
-    this.active = !newValue;
-  }
+  @Prop({ mutable: true }) deactivated = true;
 
   /**
    * The subtitle of menu action.
    */
-  @Prop() itemSubtitle: string;
+  @Prop() readonly itemSubtitle: string;
 
   /**
    * The title of menu action.
    */
-  @Prop() itemTitle: string;
+  @Prop() readonly itemTitle: string;
 
   /**
-   * This attribute specifies which popup of the dynamic-menu must be open.
+   * This attribute specifies which popup of the gx-dynamic-menu must be open.
    */
-  @Prop() popupId: string;
+  @Prop() readonly popupId: string;
 
   /**
    * Fired when the menu action is activated.
@@ -89,10 +70,10 @@ export class DynamicMenuAction {
   private handleActionClick = (event: PointerEvent) => {
     event.stopPropagation();
     const actionExpanded = this.el.getAttribute("aria-expanded") === "true";
-    this.active = !actionExpanded;
+    this.deactivated = actionExpanded;
     this.menuActionActivated.emit({
-      active: this.active,
-      item: this.el as HTMLDynamicMenuActionElement,
+      active: !this.deactivated,
+      item: this.el as HTMLGxDynamicMenuActionElement
     });
   };
 
@@ -105,11 +86,11 @@ export class DynamicMenuAction {
       <Host
         role="button"
         tabindex="0"
-        aria-expanded={(!!this.active).toString()}
+        aria-expanded={(!this.deactivated).toString()}
         aria-controls={this.popupId}
         class={{
           [this.cssClass]: !!this.cssClass,
-          [this.activeClass]: !!this.activeClass && this.active,
+          [this.activeClass]: !!this.activeClass && !this.deactivated
         }}
       >
         <div class="item-data">
@@ -131,5 +112,5 @@ export class DynamicMenuAction {
 
 export interface MenuActionActiveEvent {
   active: boolean;
-  item: HTMLDynamicMenuActionElement;
+  item: HTMLGxDynamicMenuActionElement;
 }
