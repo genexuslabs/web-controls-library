@@ -45,7 +45,7 @@ export class FormField implements GxComponent {
    * Therefore, to style the `gx-form-field` label, the control applies some
    * transformations to the label to get the appropriate classes.
    */
-  @Prop() cssClass: string = null;
+  @Prop() readonly cssClass: string = null;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -92,7 +92,7 @@ export class FormField implements GxComponent {
     let result: LabelClasses = labelClassesCache.get(this.cssClass);
 
     // If the value has not yet been calculated
-    if (result == undefined) {
+    if (!result) {
       const splitClasses = this.cssClass.split(" ");
 
       const baseClass = splitClasses.map(tLabel).join(" ");
@@ -140,7 +140,6 @@ export class FormField implements GxComponent {
         nativeInput.setAttribute("data-part", "field");
       }
 
-      // eslint-disable-next-line @stencil/strict-boolean-conditions
       if (this.labelPosition === "none" || !this.innerLabel) {
         return;
       }

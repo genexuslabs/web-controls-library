@@ -26,7 +26,8 @@ export class Lottie
     GxComponent,
     ClickableComponent,
     VisibilityComponent,
-    DisableableComponent {
+    DisableableComponent
+{
   private animation: any;
   private animationTotalFrames: number;
 

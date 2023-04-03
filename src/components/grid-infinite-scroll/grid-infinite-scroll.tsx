@@ -141,12 +141,12 @@ export class GridInfiniteScroll implements ComponentInterface {
     //  - The grid's data was removed.         ----> this.itemCount == 0
     //  - Some new data is coming to the grid. ----> newValue != 0 && oldValue == 0
     // In this scenario, we have to re-enable the scroll events and set the resizeObserver
-    if (this.disabled && newValue != 0 && oldValue == 0) {
+    if (this.disabled && newValue !== 0 && oldValue === 0) {
       this.disabled = false;
     }
 
     // The grid data is removed. Reset the variable
-    if (newValue === 0 && oldValue != 0) {
+    if (newValue === 0 && oldValue !== 0) {
       this.firstTimeContentOverflow = true;
       this.lastScrollHeight = 0;
       this.lastScrollTop = 0;
@@ -291,7 +291,7 @@ export class GridInfiniteScroll implements ComponentInterface {
   private getThresholdValue() {
     const parentElementClientHeight = this.getScrollableParentClientHeight();
 
-    return this.thresholdConfiguration == "pixel"
+    return this.thresholdConfiguration === "pixel"
       ? this.thresholdValue
       : parentElementClientHeight * this.thresholdValue;
   }
@@ -356,7 +356,7 @@ export class GridInfiniteScroll implements ComponentInterface {
       node.scrollHeight > node.clientHeight
     ) {
       this.typeOfParentElementAttached =
-        node.tagName == "virtual-scroller" ? "virtual-scroller" : "other";
+        node.tagName === "virtual-scroller" ? "virtual-scroller" : "other";
 
       this.scrollListenerElement = node;
       return node;
@@ -367,7 +367,6 @@ export class GridInfiniteScroll implements ComponentInterface {
   }
 
   private connectResizeObserver() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.resizeObserver) {
       return;
     }
@@ -379,7 +378,7 @@ export class GridInfiniteScroll implements ComponentInterface {
     // Also, Android does not support Inverse Loading in this scenario either.
     if (
       this.infiniteScrollSupport &&
-      this.position == "top" &&
+      this.position === "top" &&
       this.typeOfParentElementAttached !== "window"
     ) {
       this.resizeObserver = new ResizeObserver(
@@ -452,7 +451,7 @@ export class GridInfiniteScroll implements ComponentInterface {
     // difference between scrollHeight and clientHeight
     if (
       this.firstTimeContentOverflow &&
-      currentScrollTop == 0 &&
+      currentScrollTop === 0 &&
       currentClientHeight < currentScrollHeight
     ) {
       this.firstTimeContentOverflow = false;
@@ -500,7 +499,6 @@ export class GridInfiniteScroll implements ComponentInterface {
   };
 
   private disconnectResizeObserver() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
       this.resizeObserver = null;
@@ -579,9 +577,8 @@ export class GridInfiniteScroll implements ComponentInterface {
   }
 
   componentDidLoad() {
-    this.scrollableParentElement = this.getScrollableParentToAttachInfiniteScroll(
-      this.el
-    );
+    this.scrollableParentElement =
+      this.getScrollableParentToAttachInfiniteScroll(this.el);
 
     // Store the gx-layout reference since is necessary to compute the
     // intersection calculates when the infinite scroll is attached on the
@@ -609,7 +606,7 @@ export class GridInfiniteScroll implements ComponentInterface {
       requestAnimationFrame(() => {
         writeTask(() => {
           // Update at the best moment the initial scrollTop
-          if (this.infiniteScrollSupport && this.position == "top") {
+          if (this.infiniteScrollSupport && this.position === "top") {
             this.scrollableParentElement.scrollTop =
               currentScrollHeight - currentClientHeight;
           }

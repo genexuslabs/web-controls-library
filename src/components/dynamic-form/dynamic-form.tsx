@@ -141,13 +141,13 @@ export class DynamicForm implements GxComponent {
 
     const input = document.getElementById(element.id.toString());
 
-    if (input == undefined) {
+    if (!input) {
       return;
     }
 
     input.setAttribute("maxlength", element.length.toString());
 
-    if (element.display == "textarea") {
+    if (element.display === "textarea") {
       input.setAttribute("rows", element.rows.toString());
       input.setAttribute("cols", element.cols.toString());
     }
@@ -172,7 +172,7 @@ export class DynamicForm implements GxComponent {
       /** The element that may be affected by the rule */
       const targeted = this.formFieldElements.get(id.toString());
 
-      //** The parent node of the element that may be affected by the rule */
+      /** The parent node of the element that may be affected by the rule */
       const gxEditForm = this.getEditFormParentNode(
         id.toString()
       ) as HTMLGxEditElement;
@@ -215,7 +215,9 @@ export class DynamicForm implements GxComponent {
 
         // If the condition is true, the element clear they value
         case RuleTypes.RELOAD:
-          if (result) targeted.value = "";
+          if (result) {
+            targeted.value = "";
+          }
           break;
 
         // If the condition is true, the element is hidden, otherwise it is shown
@@ -270,7 +272,7 @@ export class DynamicForm implements GxComponent {
 
     conditions.forEach(condition => {
       const logicalOperator =
-        conditions[conditions.length - 1] != condition
+        conditions[conditions.length - 1] !== condition
           ? this.decodeLogical(condition.cndEval) + " "
           : "";
 
@@ -313,7 +315,7 @@ export class DynamicForm implements GxComponent {
         splited[i].toString()
       );
 
-      if (formFieldElement != undefined) {
+      if (!!formFieldElement) {
         splited[i] = `'${formFieldElement.value}'`;
       }
     }
@@ -337,12 +339,12 @@ export class DynamicForm implements GxComponent {
   }
 
   private decodeOperator(operator: number) {
-    // @ts-expect-error:
+    // @ts-expect-error: Improve typing
     return arithmeticalDictionary[operator];
   }
 
   private decodeLogical(condition: number) {
-    // @ts-expect-error:
+    // @ts-expect-error: Improve typing
     return logicalDictionary[condition];
   }
 

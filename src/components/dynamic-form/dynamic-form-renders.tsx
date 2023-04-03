@@ -50,7 +50,7 @@ function replaceSpecialChars(name: string) {
 }
 
 function getElementValue(element: DynamicFormElement) {
-  if (element.type != "boolean") {
+  if (element.type !== "boolean") {
     return element.value
       ? replaceSpecialChars(element.value)
       : element.dftValue
@@ -66,12 +66,12 @@ function getElementValue(element: DynamicFormElement) {
 }
 
 function getComponentType(type: string, display: string): string {
-  // @ts-expect-error:
+  // @ts-expect-error: Improve typing
   return componentTypeDictionary[`${type}-${display}`] || "GX-EDIT";
 }
 
 function getEditType(type: string): EditType {
-  // @ts-expect-error:
+  // @ts-expect-error: Improve typing
   return typeDictionary[type];
 }
 
@@ -190,7 +190,7 @@ export function renderElement(
   const componentType = getComponentType(element.type, element.display);
 
   if (componentType !== "GX-DYNAMIC-FORM") {
-    // @ts-expect-error:
+    // @ts-expect-error: Improve typing
     return renderDictionary[componentType](element, options);
   }
 

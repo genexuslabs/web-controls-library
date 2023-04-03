@@ -50,7 +50,7 @@ export class Chronometer implements GxComponent {
    * When the chronometer reaches this value,
    * MaxValueText will be shown instead of the Chronometer value.
    */
-  @Prop() readonly maxValue = 0;
+  @Prop() readonly maxValue: number = 0;
 
   /**
    * Text to be displayed when chronometer value reaches maxValue.
@@ -65,7 +65,7 @@ export class Chronometer implements GxComponent {
   /**
    * Defines the interval that the function onTick will be called.
    */
-  @Prop() readonly interval = 1;
+  @Prop() readonly interval: number = 1;
 
   /**
    * State of the Chronometer.
@@ -109,7 +109,7 @@ export class Chronometer implements GxComponent {
     this.elapsedTime = this.value * this.getUnit();
 
     // Check if the chronometer has started before the first render
-    if (this.state == TimerState.Running) {
+    if (this.state === TimerState.Running) {
       this.start();
     }
   }

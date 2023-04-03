@@ -140,7 +140,7 @@ export class ImagePicker implements GxComponent {
    *
    * `uploadingFile` will not allow you to change or remove the current image.
    */
-  @Prop() state: "readyToUse" | "uploadingFile" = "readyToUse";
+  @Prop({ mutable: true }) state: "readyToUse" | "uploadingFile" = "readyToUse";
 
   /**
    * Fired when the image is clicked
@@ -161,7 +161,7 @@ export class ImagePicker implements GxComponent {
   handleSrcChange() {
     // In some cases the Watch method is executed before the component renders,
     // so we need to check the definition of "this.input"
-    if (this.input != undefined) {
+    if (!!this.input) {
       this.input.value = "";
     }
   }
@@ -171,7 +171,7 @@ export class ImagePicker implements GxComponent {
    */
   @Watch("srcset")
   handleSrcsetChange() {
-    if (this.input != undefined) {
+    if (!!this.input) {
       this.input.value = "";
     }
   }
@@ -286,7 +286,7 @@ export class ImagePicker implements GxComponent {
 
     this.reader.addEventListener(
       "load",
-      function() {
+      function () {
         // Convert image file to base64 string
         elem.src = this.result.toString();
 
@@ -322,7 +322,7 @@ export class ImagePicker implements GxComponent {
               class="image-picker-state-container"
               onClick={this.stopPropagation}
             >
-              {this.state != "uploadingFile" ? (
+              {this.state !== "uploadingFile" ? (
                 <button
                   class="image-picker-button"
                   disabled={this.disabled}

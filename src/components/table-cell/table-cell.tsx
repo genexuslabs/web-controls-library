@@ -86,7 +86,6 @@ export class TableCell implements GxComponent {
   }
 
   disconnectedCallback() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.observer) {
       this.observer.disconnect();
       this.observer = null;

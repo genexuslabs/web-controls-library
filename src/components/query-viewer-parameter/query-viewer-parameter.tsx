@@ -5,18 +5,18 @@ import { Component, Event, EventEmitter, Prop, Watch } from "@stencil/core";
   shadow: false
 })
 export class QueryViewerParameter {
-  @Event() parameterValueChanged: EventEmitter<
-    QueryViewerParameterChangedEvent
-  >;
+  // eslint-disable-next-line @stencil-community/required-jsdoc
+  @Event()
+  parameterValueChanged: EventEmitter<QueryViewerParameterChangedEvent>;
 
   /**
    * Name of the parameter
    */
-  @Prop() Name: string;
+  @Prop() readonly Name: string;
   /**
    * Value of the parameter
    */
-  @Prop() Value: string;
+  @Prop() readonly Value: string;
 
   @Watch("Value")
   watchValueHandler(newValue: string, oldValue: string) {

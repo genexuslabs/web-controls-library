@@ -100,31 +100,31 @@ export class QueryViewer implements GxComponent {
   /**
    * Base URL of the server
    */
-  @Prop() baseUrl: any;
+  @Prop() readonly baseUrl: any;
   /**
    * Environmet of the project: JAVA. .Net, NetCore
    */
-  @Prop() env: string;
+  @Prop() readonly env: string;
   /**
    * Language of the QueryViewer
    */
-  @Prop() language: string;
+  @Prop() readonly language: string;
   /**
    * Object of QueryViewer
    */
-  @Prop() object: string;
+  @Prop() readonly object: string;
   /**
    * Name of the Query or Data provider assigned
    */
-  @Prop() objectName: string;
+  @Prop({ mutable: true }) objectName: string;
   /**
    * Type of the QueryViewer: Table, PivotTable, Chart, Card
    */
-  @Prop() type: "Card" | "Chart" | "PivotTable" | "Table" | "Default";
+  @Prop() readonly type: "Card" | "Chart" | "PivotTable" | "Table" | "Default";
   /**
    * If type == Chart, this is the chart type: Bar, Pie, Timeline, etc...
    */
-  @Prop() chartType:
+  @Prop() readonly chartType:
     | "Column"
     | "Column3D"
     | "StackedColumn"
@@ -163,23 +163,23 @@ export class QueryViewer implements GxComponent {
   /**
    * If type == PivotTable or Table, if true there is paging, else everything in one table
    */
-  @Prop() paging: boolean;
+  @Prop() readonly paging: boolean;
   /**
    * If paging true, number of items for a single page
    */
-  @Prop() pageSize: number;
+  @Prop() readonly pageSize: number;
   /**
    * Ax to show data labels
    */
-  @Prop() showDataLabelsIn: string;
+  @Prop() readonly showDataLabelsIn: string;
   /**
    * Timeline
    */
-  @Prop() plotSeries: "InTheSameChart" | "InSeparateCharts";
+  @Prop() readonly plotSeries: "InTheSameChart" | "InSeparateCharts";
   /**
    * Labels for XAxis
    */
-  @Prop() xAxisLabels:
+  @Prop() readonly xAxisLabels:
     | "Horizontally"
     | "Rotated30"
     | "Rotated45"
@@ -188,31 +188,34 @@ export class QueryViewer implements GxComponent {
   /**
    * if true the x Axes intersect at zero
    */
-  @Prop() xAxisIntersectionAtZero: boolean;
+  @Prop() readonly xAxisIntersectionAtZero: boolean;
   /**
    * if true show values on the graph
    */
-  @Prop() showValues: boolean;
+  @Prop() readonly showValues: boolean;
   /**
    * X Axis title
    */
-  @Prop() xAxisTitle: string;
+  @Prop() readonly xAxisTitle: string;
   /**
    * Y Axis title
    */
-  @Prop() yAxisTitle: string;
+  @Prop() readonly yAxisTitle: string;
   /**
    * Type of data to show
    */
-  @Prop() showDataAs: "Values" | "Percentages" | "ValuesAndPercentages";
+  @Prop() readonly showDataAs:
+    | "Values"
+    | "Percentages"
+    | "ValuesAndPercentages";
   /**
    * If true includes trend on the graph
    */
-  @Prop() includeTrend: boolean;
+  @Prop() readonly includeTrend: boolean;
   /**
    * If includeTrend, defines the period of the trend
    */
-  @Prop() trendPeriod:
+  @Prop() readonly trendPeriod:
     | "SinceTheBeginning"
     | "LastYear"
     | "LastSemester"
@@ -226,95 +229,95 @@ export class QueryViewer implements GxComponent {
   /**
    * For timeline for remembering layout
    */
-  @Prop() rememberLayout: boolean;
+  @Prop() readonly rememberLayout: boolean;
   /**
    * Orientation of the graph
    */
-  @Prop() orientation: "Horizontal" | "Vertical";
+  @Prop() readonly orientation: "Horizontal" | "Vertical";
   /**
    * Include spark line
    */
-  @Prop() includeSparkline: boolean;
+  @Prop() readonly includeSparkline: boolean;
   /**
    * Include max and min
    */
-  @Prop() includeMaxMin: boolean;
+  @Prop() readonly includeMaxMin: boolean;
   /**
    * Theme for showing the graph
    */
-  @Prop() theme: string;
+  @Prop() readonly theme: string;
   /**
    * Object type -> Query or DataProvider
    */
-  @Prop() objectType: string;
+  @Prop() readonly objectType: string;
   /**
    * True if it is external query
    */
-  @Prop() isExternalQuery: boolean;
+  @Prop() readonly isExternalQuery: boolean;
   /**
    * Allowing elements order to change
    */
-  @Prop() allowElementsOrderChange: boolean;
+  @Prop() readonly allowElementsOrderChange: boolean;
   /**
    * If type== PivotTable or Table, if true will shrink the table
    */
-  @Prop() autoResize: boolean;
+  @Prop() readonly autoResize: boolean;
   /**
    * If autoResize, in here select the type, Width, height, or both
    */
-  @Prop() autoResizeType: "Both" | "Vertical" | "Horizontal";
+  @Prop() readonly autoResizeType: "Both" | "Vertical" | "Horizontal";
   /**
    * Type of font
    */
-  @Prop() fontFamily: string;
+  @Prop() readonly fontFamily: string;
   /**
    * Font size
    */
-  @Prop() fontSize: number;
+  @Prop() readonly fontSize: number;
   /**
    * Font Color
    */
-  @Prop() fontColor: string;
+  @Prop() readonly fontColor: string;
   /**
    * Auto refresh group
    */
-  @Prop() autoRefreshGroup: string;
+  @Prop() readonly autoRefreshGroup: string;
   /**
    * Allowing or not Comlumn sort
    */
-  @Prop() disableColumnSort: boolean;
+  @Prop() readonly disableColumnSort: boolean;
   /**
    * Allow selection
    */
-  @Prop() allowSelection: boolean;
+  @Prop() readonly allowSelection: boolean;
   /**
    * If type== PivotTable or Table allow to export to XML
    */
-  @Prop() exportToXML: boolean;
+  @Prop() readonly exportToXML: boolean;
   /**
    * If type== PivotTable or Table allow to export to HTML
    */
-  @Prop() exportToHTML: boolean;
+  @Prop() readonly exportToHTML: boolean;
   /**
    * If type== PivotTable or Table allow to export to XLS
    */
-  @Prop() exportToXLS: boolean;
+  @Prop() readonly exportToXLS: boolean;
   /**
    * If type== PivotTable or Table allow to export to XLSX
    */
-  @Prop() exportToXLSX: boolean;
+  @Prop() readonly exportToXLSX: boolean;
   /**
    * If type== PivotTable or Table allow to export to PDF
    */
-  @Prop() exportToPDF: boolean;
+  @Prop() readonly exportToPDF: boolean;
   /**
    * Title of the QueryViewer
    */
-  @Prop() queryTitle: string;
+  @Prop() readonly queryTitle: string;
   /**
    * Version of data
    */
-  @Prop() dataVersionId: number;
+  @Prop() readonly dataVersionId: number;
 
   @Listen("parameterValueChanged")
   parameterValueChangedHandler(eventInfo: CustomEvent) {
@@ -328,7 +331,7 @@ export class QueryViewer implements GxComponent {
     this.getElements();
   }
 
-  configurationChangedHandler() {
+  private configurationChangedHandler() {
     this.getParameters();
     this.getElements();
   }
@@ -351,7 +354,6 @@ export class QueryViewer implements GxComponent {
   }
 
   disconnectedCallback() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.configurationObserver) {
       this.configurationObserver.disconnect();
       this.configurationObserver = undefined;

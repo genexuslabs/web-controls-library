@@ -90,22 +90,26 @@ export class Loading implements GxComponent {
         }}
         aria-hidden={!shouldShowContent ? "true" : undefined}
       >
-        {shouldShowContent && this.lottiePath != "" && (
+        {shouldShowContent && this.lottiePath !== "" && (
           <gx-lottie autoPlay loop path={this.lottiePath} />
         )}
 
         {shouldShowContent &&
-          this.lottiePath == "" &&
+          this.lottiePath === "" &&
           this.showSlotAnimation && <slot />}
 
-        {// Default loading animation if no gx-lottie and slots animation
-        shouldShowContent && this.lottiePath == "" && !this.showSlotAnimation && (
-          <div class="gx-loading-rotate-container">
-            <div class="circle circle-1" />
-            <div class="circle circle-2" />
-            <div class="circle circle-3" />
-          </div>
-        )}
+        {
+          // Default loading animation if no gx-lottie and slots animation
+          shouldShowContent &&
+            this.lottiePath === "" &&
+            !this.showSlotAnimation && (
+              <div class="gx-loading-rotate-container">
+                <div class="circle circle-1" />
+                <div class="circle circle-2" />
+                <div class="circle circle-3" />
+              </div>
+            )
+        }
       </Host>
     );
   }

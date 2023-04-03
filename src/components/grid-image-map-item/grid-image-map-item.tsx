@@ -91,7 +91,7 @@ export class GridImageMapItem implements GxComponent, HighlightableComponent {
    * @todo TODO: Try to reproduce this case and check if there is necessary.
    */
   componentWillLoad() {
-    //Do not show item if item size is bigger than screen size
+    // Do not show item if item size is bigger than screen size
     if (
       window.screen.width >= Number(this.width) ||
       window.screen.height >= Number(this.height)

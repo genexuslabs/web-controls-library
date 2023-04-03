@@ -10,7 +10,7 @@ import { MenuActionActiveEvent } from "./components/dynamic-menu-action/dynamic-
 import { TimerState } from "./components/chronometer/chronometer-timer-state";
 import { EditType, FlexDirection, FlexWrap } from "./common/types";
 import { SwiperOptions } from "swiper";
-import { LayoutSize } from "./components/common/interfaces";
+import { GridMapElement, LayoutSize } from "./components/common/interfaces";
 import { QueryViewerParameterChangedEvent } from "./components/query-viewer-parameter/query-viewer-parameter";
 export namespace Components {
   interface DynamicMenu {
@@ -257,7 +257,7 @@ export namespace Components {
     /**
      * Defines the interval that the function onTick will be called.
      */
-    interval: 1;
+    interval: number;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -265,7 +265,7 @@ export namespace Components {
     /**
      * When the chronometer reaches this value, MaxValueText will be shown instead of the Chronometer value.
      */
-    maxValue: 0;
+    maxValue: number;
     /**
      * Text to be displayed when chronometer value reaches maxValue.
      */
@@ -1070,7 +1070,7 @@ export namespace Components {
     /**
      * Lets you specify the image URL. *Requiered*
      */
-    src: "";
+    src: string;
     /**
      * Indicates how much you can enlarge an image. (Percentage) _Note: 100% = Normal size_.
      */
@@ -1181,21 +1181,41 @@ export namespace Components {
      */
     center: string;
     /**
+     * This attribute determines whether map markers should be grouped. When `true`, the markers will be grouped depending on their proximity.
+     */
+    clusteringPoints: boolean;
+    /**
+     * Enables the possibility to draw the route between two points on the map.
+     */
+    directionLayer: boolean;
+    /**
+     * WKT format string containing the response of Google Maps Directions API call
+     */
+    directionLayerWKTString: string;
+    /**
+     * If `true` allows drawing geometries on the map.
+     */
+    editableGeographies: boolean;
+    /**
      * Enable the High Accuracy in user location. _Note: This property applies when ```watchPosition = true```._
      */
     highAccuracyLocator: boolean;
+    /**
+     * Indicates how the map will be displayed at startup.  | Value           | Details                                                                                                                                       | | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | | `showAll`       | (Default value) the map is adjusted to display all the loaded points (and the current device location if Show My Location is set to True).    | | `nearestPoint`  | The map is adjusted to display the current device location and shows my location and the nearest point.                                       | | `radius`        | The map is adjusted to display a fixed radius, from the specified center. The radius value is specified using the initialZoomRadius property. | | `noInitialZoom` | No specific action is taken regarding the initial zoom.                                                                                       |
+     */
+    initialZoom: "showAll" | "nearestPoint" | "radius" | "noInitialZoom";
+    /**
+     * The radius value if `initialZoom` = `"radius"`.
+     */
+    initialZoomRadius: number;
     /**
      * The map provider. _Note: Currently, this property is for setting a custom map provider using an URL._
      */
     mapProvider: string;
     /**
-     * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._
+     * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._  | Value       | Details                                                                     | | ----------- | --------------------------------------------------------------------------- | | `standard`  | Shows streets.                                                              | | `satellite` | Shows satellite images of the Earth.                                        | | `hybrid`    | Shows streets over the satellite images.                                    |
      */
     mapType: "standard" | "satellite" | "hybrid";
-    /**
-     * The max zoom level available in the map. _Note: 20 is the best value to be used, only lower values are allowed. Is highly recommended to no change this value if you are not sure about the `maxZoom` supported by the map._
-     */
-    maxZoom: number;
     /**
      * A CSS class to set as the `showMyLocation` icon class.
      */
@@ -1216,6 +1236,14 @@ export namespace Components {
      * Enables the possibility to navigate the map and select a location point using the map center.
      */
     selectionLayer: boolean;
+    /**
+     * A CSS class to set as the `selectionLayer` icon class.
+     */
+    selectionTargetImageCssClass: string;
+    /**
+     * This attribute lets you specify the srcset attribute for the `selectionLayer` icon. If not set the `pinImageSrcset` property will be used to specify the srcset attribute for the icon. If none of the properties are specified, a default icon will be used when `selectionLayer = true`
+     */
+    selectionTargetImageSrcset: string;
     /**
      * Indicates if the current location of the device is displayed on the map.
      */
@@ -1254,6 +1282,10 @@ export namespace Components {
      * The class that the marker will have.
      */
     cssClass: string;
+    /**
+     * Whether the gx-map-marker's popUp can be shown.
+     */
+    showPopup: boolean;
     /**
      * This attribute lets you specify the src of the marker image.
      */
@@ -3215,7 +3247,7 @@ declare namespace LocalJSX {
     /**
      * Defines the interval that the function onTick will be called.
      */
-    interval?: 1;
+    interval?: number;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -3223,7 +3255,7 @@ declare namespace LocalJSX {
     /**
      * When the chronometer reaches this value, MaxValueText will be shown instead of the Chronometer value.
      */
-    maxValue?: 0;
+    maxValue?: number;
     /**
      * Text to be displayed when chronometer value reaches maxValue.
      */
@@ -4094,7 +4126,7 @@ declare namespace LocalJSX {
     /**
      * Lets you specify the image URL. *Requiered*
      */
-    src?: "";
+    src?: string;
     /**
      * Indicates how much you can enlarge an image. (Percentage) _Note: 100% = Normal size_.
      */
@@ -4204,39 +4236,59 @@ declare namespace LocalJSX {
      */
     center?: string;
     /**
+     * This attribute determines whether map markers should be grouped. When `true`, the markers will be grouped depending on their proximity.
+     */
+    clusteringPoints?: boolean;
+    /**
+     * Enables the possibility to draw the route between two points on the map.
+     */
+    directionLayer?: boolean;
+    /**
+     * WKT format string containing the response of Google Maps Directions API call
+     */
+    directionLayerWKTString?: string;
+    /**
+     * If `true` allows drawing geometries on the map.
+     */
+    editableGeographies?: boolean;
+    /**
      * Enable the High Accuracy in user location. _Note: This property applies when ```watchPosition = true```._
      */
     highAccuracyLocator?: boolean;
+    /**
+     * Indicates how the map will be displayed at startup.  | Value           | Details                                                                                                                                       | | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | | `showAll`       | (Default value) the map is adjusted to display all the loaded points (and the current device location if Show My Location is set to True).    | | `nearestPoint`  | The map is adjusted to display the current device location and shows my location and the nearest point.                                       | | `radius`        | The map is adjusted to display a fixed radius, from the specified center. The radius value is specified using the initialZoomRadius property. | | `noInitialZoom` | No specific action is taken regarding the initial zoom.                                                                                       |
+     */
+    initialZoom?: "showAll" | "nearestPoint" | "radius" | "noInitialZoom";
+    /**
+     * The radius value if `initialZoom` = `"radius"`.
+     */
+    initialZoomRadius?: number;
     /**
      * The map provider. _Note: Currently, this property is for setting a custom map provider using an URL._
      */
     mapProvider?: string;
     /**
-     * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._
+     * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._  | Value       | Details                                                                     | | ----------- | --------------------------------------------------------------------------- | | `standard`  | Shows streets.                                                              | | `satellite` | Shows satellite images of the Earth.                                        | | `hybrid`    | Shows streets over the satellite images.                                    |
      */
     mapType?: "standard" | "satellite" | "hybrid";
     /**
-     * The max zoom level available in the map. _Note: 20 is the best value to be used, only lower values are allowed. Is highly recommended to no change this value if you are not sure about the `maxZoom` supported by the map._
-     */
-    maxZoom?: number;
-    /**
-     * Emmited when the map is loaded.
+     * Emitted when the map is loaded.
      */
     onGxMapDidLoad?: (event: GxMapCustomEvent<any>) => void;
     /**
-     * Emmited when the map is clicked and return click coords.
+     * Emitted when the map is clicked and return click coords.
      */
     onMapClick?: (event: GxMapCustomEvent<any>) => void;
     /**
-     * Emmited when the map stops from being moved, if selection layer is active.
+     * Emitted when the map stops from being moved, if selection layer is active.
      */
     onSelectionChange?: (event: GxMapCustomEvent<any>) => void;
     /**
-     * Emmited when the map is being moved, if selection layer is active.
+     * Emitted when the map is being moved, if selection layer is active.
      */
     onSelectionInput?: (event: GxMapCustomEvent<any>) => void;
     /**
-     * Emmited when the user location coords change.
+     * Emitted when the user location coords change.
      */
     onUserLocationChange?: (event: GxMapCustomEvent<any>) => void;
     /**
@@ -4260,6 +4312,14 @@ declare namespace LocalJSX {
      */
     selectionLayer?: boolean;
     /**
+     * A CSS class to set as the `selectionLayer` icon class.
+     */
+    selectionTargetImageCssClass?: string;
+    /**
+     * This attribute lets you specify the srcset attribute for the `selectionLayer` icon. If not set the `pinImageSrcset` property will be used to specify the srcset attribute for the icon. If none of the properties are specified, a default icon will be used when `selectionLayer = true`
+     */
+    selectionTargetImageSrcset?: string;
+    /**
      * Indicates if the current location of the device is displayed on the map.
      */
     showMyLocation?: boolean;
@@ -4274,13 +4334,15 @@ declare namespace LocalJSX {
      */
     coords?: string;
     /**
-     * Emmits when the element is deleted from a `<gx-map>`.
+     * Emits when the element is deleted from a `<gx-map>`.
      */
     onGxMapCircleDeleted?: (event: GxMapCircleCustomEvent<any>) => void;
     /**
-     * Emmits when the element is added to a `<gx-map>`.
+     * Emits when the element is added to a `<gx-map>`.
      */
-    onGxMapCircleDidLoad?: (event: GxMapCircleCustomEvent<any>) => void;
+    onGxMapCircleDidLoad?: (
+      event: GxMapCircleCustomEvent<GridMapElement>
+    ) => void;
     /**
      * The radius that the circle will have in the map. It's expressed in meters.
      */
@@ -4292,13 +4354,13 @@ declare namespace LocalJSX {
      */
     coords?: string;
     /**
-     * Emmits when the element is deleted from a `<gx-map>`.
+     * Emits when the element is deleted from a `<gx-map>`.
      */
     onGxMapLineDeleted?: (event: GxMapLineCustomEvent<any>) => void;
     /**
-     * Emmits when the element is added to a `<gx-map>`.
+     * Emits when the element is added to a `<gx-map>`.
      */
-    onGxMapLineDidLoad?: (event: GxMapLineCustomEvent<any>) => void;
+    onGxMapLineDidLoad?: (event: GxMapLineCustomEvent<GridMapElement>) => void;
   }
   interface GxMapMarker {
     /**
@@ -4325,6 +4387,10 @@ declare namespace LocalJSX {
      * Emitted when the element update its data.
      */
     onGxMapMarkerUpdate?: (event: GxMapMarkerCustomEvent<any>) => void;
+    /**
+     * Whether the gx-map-marker's popUp can be shown.
+     */
+    showPopup?: boolean;
     /**
      * This attribute lets you specify the src of the marker image.
      */
@@ -4358,7 +4424,9 @@ declare namespace LocalJSX {
     /**
      * Emitted when the element is added to a `<gx-map>`.
      */
-    onGxMapPolygonDidLoad?: (event: GxMapPolygonCustomEvent<any>) => void;
+    onGxMapPolygonDidLoad?: (
+      event: GxMapPolygonCustomEvent<GridMapElement>
+    ) => void;
   }
   interface GxMessage {
     /**

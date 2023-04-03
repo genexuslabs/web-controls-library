@@ -56,7 +56,8 @@ export class Canvas
     DisableableComponent,
     HighlightableComponent,
     Swipeable,
-    VisibilityComponent {
+    VisibilityComponent
+{
   constructor() {
     this.handleClick = this.handleClick.bind(this);
   }
@@ -274,7 +275,7 @@ export class Canvas
     /*  If one of the parent elements has display: none, we don't adjust the
         height of the gx-canvas
     */
-    if (this.element.clientHeight == 0) {
+    if (this.element.clientHeight === 0) {
       return;
     }
 
@@ -296,7 +297,7 @@ export class Canvas
       /*  If one of the parent elements has display: none, we don't adjust
           the height of the gx-canvas
       */
-      if (this.element.clientHeight == 0) {
+      if (this.element.clientHeight === 0) {
         return;
       }
 
@@ -519,7 +520,6 @@ export class Canvas
   }
 
   private disconnectCanvasObserver() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.watchForCanvasObserver) {
       this.watchForCanvasObserver.disconnect();
       this.watchForCanvasObserver = undefined;
@@ -548,7 +548,9 @@ export class Canvas
     if (parentCell.tagName.toLowerCase() !== "gx-canvas-cell") {
       return;
     }
-    const parentCellHeight = (parentCell as HTMLGxCanvasCellElement).minHeight.trim();
+    const parentCellHeight = (
+      parentCell as HTMLGxCanvasCellElement
+    ).minHeight.trim();
 
     // The parent canvas cell must have an absolute height, not calc or %
     if (parentCellHeight.includes("%")) {
@@ -588,7 +590,6 @@ export class Canvas
   }
 
   disconnectedCallback() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.watchForItemsObserver) {
       this.watchForItemsObserver.disconnect();
       this.watchForItemsObserver = undefined;

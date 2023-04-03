@@ -45,7 +45,7 @@ export class Rating implements FormComponent {
    * If disabled, it will not trigger any user interaction related event
    * (for example, click event).
    */
-  @Prop() disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -55,12 +55,12 @@ export class Rating implements FormComponent {
    * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
-  @Prop() invisibleMode: "collapse" | "keep-space" = "collapse";
+  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * This property determine the number of stars displayed.
    */
-  @Prop() maxValue = 5;
+  @Prop() readonly maxValue: number = 5;
 
   /**
    * The current value displayed by the component.

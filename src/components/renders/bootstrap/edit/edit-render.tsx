@@ -183,6 +183,7 @@ export class EditRender implements Renderer {
               */
               "null-date":
                 dateTypes.includes(edit.type) &&
+                // eslint-disable-next-line eqeqeq
                 (edit.value == undefined || edit.value == "")
             }}
             hidden={edit.readonly}
@@ -190,13 +191,16 @@ export class EditRender implements Renderer {
           >
             {input}
 
-            {// Implements a non-native placeholder for date types
-            dateTypes.includes(edit.type) &&
-              (edit.value == undefined || edit.value == "") && (
-                <div class="date-placeholder-container">
-                  <span>{edit.placeholder}</span>
-                </div>
-              )}
+            {
+              // Implements a non-native placeholder for date types
+              dateTypes.includes(edit.type) &&
+                // eslint-disable-next-line eqeqeq
+                (edit.value == undefined || edit.value == "") && (
+                  <div class="date-placeholder-container">
+                    <span>{edit.placeholder}</span>
+                  </div>
+                )
+            }
           </div>,
           // If showTrigger == true, it sets a trigger button
           edit.showTrigger && (
@@ -235,7 +239,7 @@ export class EditRender implements Renderer {
     const ReadonlyTag = this.getReadonlyTagByFontCategory() as any;
 
     return [
-      edit.readonly && edit.format == "Text" && (
+      edit.readonly && edit.format === "Text" && (
         <div data-readonly="">
           <div class="gx-line-clamp-container gx-edit-readonly-container">
             <ReadonlyTag
