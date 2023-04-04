@@ -1,0 +1,100 @@
+:host {
+  --crop-selector-color: blue;
+  --crop-corner-size: 7px;
+
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  border: 2px solid var(--crop-selector-color);
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.65);
+  outline: rgba(0, 0, 0, 0.65) solid 1px;
+  /* outline-width: 1528px; */
+  cursor: move;
+  box-sizing: border-box;
+}
+
+.corner {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+.corner.corner-tl {
+  left: calc(var(--crop-corner-size) * -1);
+  top: calc(var(--crop-corner-size) * -1);
+}
+.corner.corner-tr {
+  right: calc(var(--crop-corner-size) * -1);
+  top: calc(var(--crop-corner-size) * -1);
+  cursor: nesw-resize;
+}
+.corner.corner-bl {
+  left: calc(var(--crop-corner-size) * -1);
+  bottom: calc(var(--crop-corner-size) * -1);
+  cursor: nesw-resize;
+}
+.corner.corner-br {
+  right: calc(var(--crop-corner-size) * -1);
+  bottom: calc(var(--crop-corner-size) * -1);
+  cursor: nwse-resize;
+}
+.corner .corner-visual {
+  width: calc(var(--crop-corner-size) * 2 - 1px);
+  height: calc(var(--crop-corner-size) * 2 - 1px);
+  background-color: var(--crop-selector-color);
+  border-radius: 50%;
+  z-index: 1;
+}
+.corner.corner-tl .corner-visual {
+  cursor: nwse-resize;
+}
+.corner.corner-tr .corner-visual {
+  cursor: nesw-resize;
+}
+.corner.corner-bl .corner-visual {
+  cursor: nesw-resize;
+}
+.corner.corner-br .corner-visual {
+  cursor: nwse-resize;
+}
+
+#selector-inside {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+}
+#selector-inside.visible {
+  display: block;
+}
+
+.grid {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+}
+.grid.grid-col {
+  flex-direction: column;
+}
+.grid .row {
+  flex: 1;
+  border-right: 2px solid var(--crop-selector-color);
+}
+.grid .row:last-child {
+  border-right: 0;
+}
+.grid.grid-col .row {
+  border-right: 0;
+  border-bottom: 2px solid var(--crop-selector-color);
+}
+.grid.grid-col .row:last-child {
+  border-bottom: 0;
+}

@@ -6,6 +6,9 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { TimerState } from "./components/chronometer/chronometer-timer-state";
+import { GxCropperSize } from "./components/cropper/cropper";
+import { GxCropperImageChangeEvent } from "./components/cropper-image/cropper-image";
+import { GxCropperSelectionIncreaseEvent } from "./components/cropper-selection/cropper-selection";
 import { EditType, FlexDirection, FlexWrap } from "./common/types";
 import { SwiperOptions } from "swiper";
 import { GridMapElement, LayoutSize } from "./components/common/interfaces";
@@ -242,6 +245,92 @@ export namespace Components {
      * The value of the control.
      */
     value: number;
+  }
+  interface GxCropper {
+    /**
+     * This attribute lets you specify if the popup is automatically closed when an action is clicked.
+     */
+    autoClose: boolean;
+    /**
+     * This attribute lets you specify the label for the close button. Important for accessibility.
+     */
+    closeButtonLabel: string;
+    /**
+     * A CSS class to set as the `gx-cropper` element class.
+     */
+    cssClass: string;
+    /**
+     * Get the cropped image.
+     */
+    getLastCropImage: () => Promise<string>;
+    /**
+     * The source for crop the image.
+     */
+    height: number;
+    /**
+     * If the showBehavior is popup, this attribute lets you specify if the popup is opened or closed.
+     */
+    opened: boolean;
+    /**
+     * This attribute lets you specify the height of the popup.
+     */
+    popupHeight: string;
+    /**
+     * This attribute lets you specify the width of the popup.
+     */
+    popupWidth: string;
+    /**
+     * How the cropper will be show.
+     */
+    showBehavior: "popup" | "inline";
+    /**
+     * This attribute lets you specify if a footer is rendered at the bottom of the popup.
+     */
+    showFooter: boolean;
+    /**
+     * This attribute lets you specify if a header is rendered on top of the popup.
+     */
+    showHeader: boolean;
+    /**
+     * The source of the image.
+     */
+    src: string;
+    /**
+     * The width for crop the image.
+     */
+    width: number;
+  }
+  interface GxCropperImage {
+    /**
+     * Change the image zoom when scrolling.
+     */
+    changeWhenScroll: (depth: boolean) => Promise<void>;
+    /**
+     * Move image to the desired position.
+     */
+    moveImage: (left: number, top: number) => Promise<void>;
+    /**
+     * The size for crop the image.
+     */
+    size: GxCropperSize;
+    /**
+     * The source of the image.
+     */
+    src: string;
+  }
+  interface GxCropperSelection {
+    /**
+     * Respect aspect ratio of width and height.
+     */
+    respectAspectRatio: true;
+    /**
+     * Show or not the grid inside the selector cropper.
+     */
+    showInside: boolean;
+    /**
+     * The size for crop the image.
+     */
+    size: GxCropperSize;
   }
   interface GxDynamicForm {
     /**
@@ -2235,6 +2324,18 @@ export interface GxChronometerCustomEvent<T> extends CustomEvent<T> {
   detail: T;
   target: HTMLGxChronometerElement;
 }
+export interface GxCropperCustomEvent<T> extends CustomEvent<T> {
+  detail: T;
+  target: HTMLGxCropperElement;
+}
+export interface GxCropperImageCustomEvent<T> extends CustomEvent<T> {
+  detail: T;
+  target: HTMLGxCropperImageElement;
+}
+export interface GxCropperSelectionCustomEvent<T> extends CustomEvent<T> {
+  detail: T;
+  target: HTMLGxCropperSelectionElement;
+}
 export interface GxDynamicFormCustomEvent<T> extends CustomEvent<T> {
   detail: T;
   target: HTMLGxDynamicFormElement;
@@ -2446,6 +2547,27 @@ declare global {
   var HTMLGxChronometerElement: {
     prototype: HTMLGxChronometerElement;
     new (): HTMLGxChronometerElement;
+  };
+  interface HTMLGxCropperElement
+    extends Components.GxCropper,
+      HTMLStencilElement {}
+  var HTMLGxCropperElement: {
+    prototype: HTMLGxCropperElement;
+    new (): HTMLGxCropperElement;
+  };
+  interface HTMLGxCropperImageElement
+    extends Components.GxCropperImage,
+      HTMLStencilElement {}
+  var HTMLGxCropperImageElement: {
+    prototype: HTMLGxCropperImageElement;
+    new (): HTMLGxCropperImageElement;
+  };
+  interface HTMLGxCropperSelectionElement
+    extends Components.GxCropperSelection,
+      HTMLStencilElement {}
+  var HTMLGxCropperSelectionElement: {
+    prototype: HTMLGxCropperSelectionElement;
+    new (): HTMLGxCropperSelectionElement;
   };
   interface HTMLGxDynamicFormElement
     extends Components.GxDynamicForm,
@@ -2809,6 +2931,9 @@ declare global {
     "gx-card-header": HTMLGxCardHeaderElement;
     "gx-checkbox": HTMLGxCheckboxElement;
     "gx-chronometer": HTMLGxChronometerElement;
+    "gx-cropper": HTMLGxCropperElement;
+    "gx-cropper-image": HTMLGxCropperImageElement;
+    "gx-cropper-selection": HTMLGxCropperSelectionElement;
     "gx-dynamic-form": HTMLGxDynamicFormElement;
     "gx-edit": HTMLGxEditElement;
     "gx-form-field": HTMLGxFormFieldElement;
@@ -3136,6 +3261,108 @@ declare namespace LocalJSX {
      * The value of the control.
      */
     value?: number;
+  }
+  interface GxCropper {
+    /**
+     * This attribute lets you specify if the popup is automatically closed when an action is clicked.
+     */
+    autoClose?: boolean;
+    /**
+     * This attribute lets you specify the label for the close button. Important for accessibility.
+     */
+    closeButtonLabel?: string;
+    /**
+     * A CSS class to set as the `gx-cropper` element class.
+     */
+    cssClass?: string;
+    /**
+     * The source for crop the image.
+     */
+    height?: number;
+    /**
+     * Fired when the image has changed it size nor scale .
+     */
+    onGxCropperImageExported?: (event: GxCropperCustomEvent<string>) => void;
+    /**
+     * Fired when the popup is closed
+     */
+    onGxCropperPopupClose?: (event: GxCropperCustomEvent<any>) => void;
+    /**
+     * Fired when the popup is opened
+     */
+    onGxCropperPopupOpen?: (event: GxCropperCustomEvent<any>) => void;
+    /**
+     * If the showBehavior is popup, this attribute lets you specify if the popup is opened or closed.
+     */
+    opened?: boolean;
+    /**
+     * This attribute lets you specify the height of the popup.
+     */
+    popupHeight?: string;
+    /**
+     * This attribute lets you specify the width of the popup.
+     */
+    popupWidth?: string;
+    /**
+     * How the cropper will be show.
+     */
+    showBehavior?: "popup" | "inline";
+    /**
+     * This attribute lets you specify if a footer is rendered at the bottom of the popup.
+     */
+    showFooter?: boolean;
+    /**
+     * This attribute lets you specify if a header is rendered on top of the popup.
+     */
+    showHeader?: boolean;
+    /**
+     * The source of the image.
+     */
+    src?: string;
+    /**
+     * The width for crop the image.
+     */
+    width?: number;
+  }
+  interface GxCropperImage {
+    /**
+     * Fired when the image has changed it size nor scale .
+     */
+    onGxCropperImageChanged?: (
+      event: GxCropperImageCustomEvent<GxCropperImageChangeEvent>
+    ) => void;
+    /**
+     * Fired when the image has finished load.
+     */
+    onGxCropperImageLoaded?: (event: GxCropperImageCustomEvent<any>) => void;
+    /**
+     * The size for crop the image.
+     */
+    size?: GxCropperSize;
+    /**
+     * The source of the image.
+     */
+    src?: string;
+  }
+  interface GxCropperSelection {
+    /**
+     * Fired when the selector increases it dimensions.
+     */
+    onGxCropperSelectionIncrease?: (
+      event: GxCropperSelectionCustomEvent<GxCropperSelectionIncreaseEvent>
+    ) => void;
+    /**
+     * Respect aspect ratio of width and height.
+     */
+    respectAspectRatio?: true;
+    /**
+     * Show or not the grid inside the selector cropper.
+     */
+    showInside?: boolean;
+    /**
+     * The size for crop the image.
+     */
+    size?: GxCropperSize;
   }
   interface GxDynamicForm {
     /**
@@ -5334,6 +5561,9 @@ declare namespace LocalJSX {
     "gx-card-header": GxCardHeader;
     "gx-checkbox": GxCheckbox;
     "gx-chronometer": GxChronometer;
+    "gx-cropper": GxCropper;
+    "gx-cropper-image": GxCropperImage;
+    "gx-cropper-selection": GxCropperSelection;
     "gx-dynamic-form": GxDynamicForm;
     "gx-edit": GxEdit;
     "gx-form-field": GxFormField;
@@ -5411,6 +5641,12 @@ declare module "@stencil/core" {
         JSXBase.HTMLAttributes<HTMLGxCheckboxElement>;
       "gx-chronometer": LocalJSX.GxChronometer &
         JSXBase.HTMLAttributes<HTMLGxChronometerElement>;
+      "gx-cropper": LocalJSX.GxCropper &
+        JSXBase.HTMLAttributes<HTMLGxCropperElement>;
+      "gx-cropper-image": LocalJSX.GxCropperImage &
+        JSXBase.HTMLAttributes<HTMLGxCropperImageElement>;
+      "gx-cropper-selection": LocalJSX.GxCropperSelection &
+        JSXBase.HTMLAttributes<HTMLGxCropperSelectionElement>;
       "gx-dynamic-form": LocalJSX.GxDynamicForm &
         JSXBase.HTMLAttributes<HTMLGxDynamicFormElement>;
       "gx-edit": LocalJSX.GxEdit & JSXBase.HTMLAttributes<HTMLGxEditElement>;
