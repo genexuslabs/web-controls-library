@@ -41,6 +41,60 @@ export namespace Components {
      */
     src: string;
   }
+  interface GxBarcodeScanner {
+    /**
+     * This attribute lets you specify if the popup is automatically closed when an action is clicked.
+     */
+    autoClose: boolean;
+    /**
+     * Comma-separated values of the barcode types the Scanner should look for.
+     */
+    barcodeTypes: "QR Code, AZTEC, CODE_39, CODE_93, CODE_128, ITF, EAN_13, EAN_8, PDF_417, UPC_A, UPC_E, DATA_MATRIX, MAXICODE, RSS_14, RSS_EXPANDED";
+    /**
+     * Beeps after each read when set to True.
+     */
+    beepOnEachRead: boolean;
+    /**
+     * The source of the beep sound.
+     */
+    beepSrc: string;
+    /**
+     * This attribute lets you specify the label for the close button. Important for accessibility.
+     */
+    closeButtonLabel: string;
+    /**
+     * A CSS class to set as the `gx-banner-scanner` element class.
+     */
+    cssClass: string;
+    /**
+     * When set to As Prompt, it shows an indicator that displays a new screen with the camera viewport. When Inline is selected, the camera viewport is displayed inside the Panel’s layout.
+     */
+    displayMode: "As Prompt" | "Inline";
+    /**
+     * If the showBehavior is popup, this attribute lets you specify if the popup is opened or closed.
+     */
+    opened: boolean;
+    /**
+     * When set to Single read, the control reads the first code and then stops scanning. When Continuous read is selected, it reads all the codes it can while the control is visible, non-stop.
+     */
+    operationMode: "Continuous read" | "Single read";
+    /**
+     * This attribute lets you specify the height of the popup.
+     */
+    popupHeight: string;
+    /**
+     * This attribute lets you specify the width of the popup.
+     */
+    popupWidth: string;
+    /**
+     * This attribute lets you specify if a footer is rendered at the bottom of the popup.
+     */
+    showFooter: boolean;
+    /**
+     * This attribute lets you specify if a header is rendered on top of the popup.
+     */
+    showHeader: boolean;
+  }
   interface GxButton {
     /**
      * A CSS class to set as the `gx-button` element class.
@@ -2219,6 +2273,10 @@ export interface GxActionSheetItemCustomEvent<T> extends CustomEvent<T> {
   detail: T;
   target: HTMLGxActionSheetItemElement;
 }
+export interface GxBarcodeScannerCustomEvent<T> extends CustomEvent<T> {
+  detail: T;
+  target: HTMLGxBarcodeScannerElement;
+}
 export interface GxButtonCustomEvent<T> extends CustomEvent<T> {
   detail: T;
   target: HTMLGxButtonElement;
@@ -2399,6 +2457,13 @@ declare global {
   var HTMLGxAudioElement: {
     prototype: HTMLGxAudioElement;
     new (): HTMLGxAudioElement;
+  };
+  interface HTMLGxBarcodeScannerElement
+    extends Components.GxBarcodeScanner,
+      HTMLStencilElement {}
+  var HTMLGxBarcodeScannerElement: {
+    prototype: HTMLGxBarcodeScannerElement;
+    new (): HTMLGxBarcodeScannerElement;
   };
   interface HTMLGxButtonElement
     extends Components.GxButton,
@@ -2802,6 +2867,7 @@ declare global {
     "gx-action-sheet": HTMLGxActionSheetElement;
     "gx-action-sheet-item": HTMLGxActionSheetItemElement;
     "gx-audio": HTMLGxAudioElement;
+    "gx-barcode-scanner": HTMLGxBarcodeScannerElement;
     "gx-button": HTMLGxButtonElement;
     "gx-canvas": HTMLGxCanvasElement;
     "gx-canvas-cell": HTMLGxCanvasCellElement;
@@ -2906,6 +2972,76 @@ declare namespace LocalJSX {
      * This attribute is for specifies the src of the audio.
      */
     src?: string;
+  }
+  interface GxBarcodeScanner {
+    /**
+     * This attribute lets you specify if the popup is automatically closed when an action is clicked.
+     */
+    autoClose?: boolean;
+    /**
+     * Comma-separated values of the barcode types the Scanner should look for.
+     */
+    barcodeTypes?: "QR Code, AZTEC, CODE_39, CODE_93, CODE_128, ITF, EAN_13, EAN_8, PDF_417, UPC_A, UPC_E, DATA_MATRIX, MAXICODE, RSS_14, RSS_EXPANDED";
+    /**
+     * Beeps after each read when set to True.
+     */
+    beepOnEachRead?: boolean;
+    /**
+     * The source of the beep sound.
+     */
+    beepSrc?: string;
+    /**
+     * This attribute lets you specify the label for the close button. Important for accessibility.
+     */
+    closeButtonLabel?: string;
+    /**
+     * A CSS class to set as the `gx-banner-scanner` element class.
+     */
+    cssClass?: string;
+    /**
+     * When set to As Prompt, it shows an indicator that displays a new screen with the camera viewport. When Inline is selected, the camera viewport is displayed inside the Panel’s layout.
+     */
+    displayMode?: "As Prompt" | "Inline";
+    /**
+     * Fired when the menu action is activated.
+     */
+    onCodeRead?: (event: GxBarcodeScannerCustomEvent<string>) => void;
+    /**
+     * Fired when the popup is closed
+     */
+    onGxBarcodeScannerPopupClose?: (
+      event: GxBarcodeScannerCustomEvent<any>
+    ) => void;
+    /**
+     * Fired when the popup is opened
+     */
+    onGxBarcodeScannerPopupOpen?: (
+      event: GxBarcodeScannerCustomEvent<any>
+    ) => void;
+    /**
+     * If the showBehavior is popup, this attribute lets you specify if the popup is opened or closed.
+     */
+    opened?: boolean;
+    /**
+     * When set to Single read, the control reads the first code and then stops scanning. When Continuous read is selected, it reads all the codes it can while the control is visible, non-stop.
+     */
+    operationMode?: "Continuous read" | "Single read";
+    /**
+     * This attribute lets you specify the height of the popup.
+     */
+    popupHeight?: string;
+    /**
+     * This attribute lets you specify the width of the popup.
+     */
+    popupWidth?: string;
+    /**
+     * This attribute lets you specify if a footer is rendered at the bottom of the popup.
+     */
+    showFooter?: boolean;
+    /**
+     * This attribute lets you specify if a header is rendered on top of the popup.
+     */
+    showHeader?: boolean;
   }
   interface GxButton {
     /**
@@ -5327,6 +5463,7 @@ declare namespace LocalJSX {
     "gx-action-sheet": GxActionSheet;
     "gx-action-sheet-item": GxActionSheetItem;
     "gx-audio": GxAudio;
+    "gx-barcode-scanner": GxBarcodeScanner;
     "gx-button": GxButton;
     "gx-canvas": GxCanvas;
     "gx-canvas-cell": GxCanvasCell;
@@ -5398,6 +5535,8 @@ declare module "@stencil/core" {
       "gx-action-sheet-item": LocalJSX.GxActionSheetItem &
         JSXBase.HTMLAttributes<HTMLGxActionSheetItemElement>;
       "gx-audio": LocalJSX.GxAudio & JSXBase.HTMLAttributes<HTMLGxAudioElement>;
+      "gx-barcode-scanner": LocalJSX.GxBarcodeScanner &
+        JSXBase.HTMLAttributes<HTMLGxBarcodeScannerElement>;
       "gx-button": LocalJSX.GxButton &
         JSXBase.HTMLAttributes<HTMLGxButtonElement>;
       "gx-canvas": LocalJSX.GxCanvas &
