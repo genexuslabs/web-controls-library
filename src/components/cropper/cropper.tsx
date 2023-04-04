@@ -60,6 +60,9 @@ export class GxCropper {
     height: CROPPER_INITIAL_SIZE
   };
 
+  /**
+   * If the cropper is presented or not.
+   */
   @State() presented: boolean;
 
   /**
