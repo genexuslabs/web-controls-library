@@ -1,6 +1,6 @@
 # GX Image Annotations
 
-This is an image annotations component for genexus.
+This component allows you to draw traces on the space in which the control is placed, where the traces can have different colors and thicknesses. Also, the component accepts the option to use an image as a background to draw the traces.
 
 ### Example
 
