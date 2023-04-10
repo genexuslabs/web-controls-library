@@ -27,6 +27,7 @@ export class GxImageAnnotations {
   private currentMousePositionY = 0;
   private lastSavedImageUrl: string = null;
   private lastSavedImageAnnUrl: string = null;
+  private traceIndexChangedFromInside = false;
 
   @Element() el: HTMLGxImageAnnotationsElement;
 
@@ -41,25 +42,19 @@ export class GxImageAnnotations {
   @State() traceList: TraceData[] = [];
 
   /**
-   * The current index that the trace list in.
-   */
-  @State() traceInd = -1;
-
-  /**
    * Property used for change the traceInd state and go forward or backward.
    */
-  @Prop() readonly traceIndex = this.traceInd;
+  @Prop({ mutable: true }) traceIndex = -1;
   @Watch("traceIndex")
-  watchTraceIndHandler(newValue: number) {
-    if (newValue === -10) {
-      this.cleanAll();
+  watchTraceIndHandler(newValue: number, oldValue: number) {
+    if (!this.traceIndexChangedFromInside) {
+      if (newValue === -3) {
+        this.cleanAll();
+      } else {
+        this.moveIndex(oldValue - newValue);
+      }
     } else {
-      if (newValue > this.traceInd) {
-        this.goTo();
-      }
-      if (newValue < this.traceInd) {
-        this.goBack();
-      }
+      this.traceIndexChangedFromInside = false;
     }
   }
 
@@ -139,32 +134,16 @@ export class GxImageAnnotations {
   }
 
   /**
-   * Go back one step, if the array of annotations have any: erase the last annotation.
+   * Move over the array of annotations.
    */
-  private goBack() {
-    if (this.traceInd >= 0) {
-      this.traceInd--;
+  private moveIndex(fowardPositionSum: number) {
+    if (this.traceIndex >= -1 && this.traceIndex <= this.traceList.length - 1) {
       this.cleanPaint(this.canvas);
       this.loadImage();
       this.paintToInd(this.canvas);
       this.traceChanged();
     } else {
-      this.traceIndexChange.emit(this.traceInd);
-    }
-  }
-
-  /**
-   * Go foward one step, if the array of annotations have any and user go back previously: recover the annotation in the index where it is.
-   */
-  private goTo() {
-    if (this.traceInd < this.traceList.length - 1) {
-      this.traceInd++;
-      this.cleanPaint(this.canvas);
-      this.loadImage();
-      this.paintToInd(this.canvas);
-      this.traceChanged();
-    } else {
-      this.traceIndexChange.emit(this.traceInd);
+      this.changeIndexAndEmit(this.traceIndex + fowardPositionSum);
     }
   }
 
@@ -238,8 +217,6 @@ export class GxImageAnnotations {
   };
 
   private traceChanged = () => {
-    this.traceIndexChange.emit(this.traceInd);
-
     this.canvas.toBlob(blob => {
       if (this.lastSavedImageUrl) {
         URL.revokeObjectURL(this.lastSavedImageUrl);
@@ -314,7 +291,8 @@ export class GxImageAnnotations {
       point: { x: this.currentMousePositionX, y: this.currentMousePositionY },
       paths: []
     });
-    this.traceInd++;
+
+    this.changeIndexAndEmit(this.traceIndex + 1);
 
     this.paintToInd(this.canvas);
     // this.traceChanged();
@@ -381,8 +359,14 @@ export class GxImageAnnotations {
   };
 
   private resetTrace = () => {
-    this.traceInd = -1;
+    this.traceIndex = -1;
     this.resetTraceList();
+  };
+
+  private changeIndexAndEmit = (newTaceIndex: number) => {
+    this.traceIndexChangedFromInside = true;
+    this.traceIndex = newTaceIndex;
+    this.traceIndexChange.emit(this.traceIndex);
   };
 
   private paintPoint = (
@@ -423,8 +407,8 @@ export class GxImageAnnotations {
     context.stroke();
     context.closePath();
 
-    if (addTolist && this.traceList[this.traceInd]) {
-      this.traceList[this.traceInd].paths.push({
+    if (addTolist && this.traceList[this.traceIndex]) {
+      this.traceList[this.traceIndex].paths.push({
         lastMousePositionX: lastMousePositionX,
         lastMousePositionY: lastMousePositionY,
         currentMousePositionX: currentMousePositionX,
@@ -434,7 +418,7 @@ export class GxImageAnnotations {
   };
 
   private paintToInd = (canvas: HTMLCanvasElement) => {
-    for (let ind = 0; ind <= this.traceInd; ind++) {
+    for (let ind = 0; ind <= this.traceIndex; ind++) {
       const trace = this.traceList[ind];
       this.paintPoint(
         canvas,
@@ -455,12 +439,11 @@ export class GxImageAnnotations {
           false
         )
       );
-      ind++;
     }
   };
 
   private resetTraceList = () => {
-    this.traceList.splice(this.traceInd + 1);
+    this.traceList.splice(this.traceIndex + 1);
   };
 
   private getRelativePositionX = (clientX: number) => {

@@ -8,6 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { TimerState } from "./components/chronometer/chronometer-timer-state";
 import { EditType, FlexDirection, FlexWrap } from "./common/types";
 import { SwiperOptions } from "swiper";
+import { AnnotationsChangeEvent } from "./components/image-annotations/image-annotations";
 import { GridMapElement, LayoutSize } from "./components/common/interfaces";
 import { QueryViewerParameterChangedEvent } from "./components/query-viewer-parameter/query-viewer-parameter";
 export namespace Components {
@@ -946,14 +947,6 @@ export namespace Components {
   }
   interface GxImageAnnotations {
     /**
-     * The source of the background image.
-     */
-    backgroundImageSrc: string;
-    /**
-     * Clean all annotations in canvas and memory.
-     */
-    cleanAll: () => Promise<void>;
-    /**
      * A CSS class to set as the `gx-image-annotations` element class.
      */
     cssClass: string;
@@ -961,22 +954,6 @@ export namespace Components {
      * If the annotations are activated or not.
      */
     disabled: false;
-    /**
-     * Get the last image with annotations that have the gx-image-annotations.
-     */
-    getLastSavedImage: () => Promise<string>;
-    /**
-     * Get the last annotations only that have the gx-image-annotations.
-     */
-    getLastSavedImageAnnotations: () => Promise<string>;
-    /**
-     * Go back one step, if the array of annotations have any: erase the last annotation.
-     */
-    goBack: () => Promise<void>;
-    /**
-     * Go foward one step, if the array of annotations have any and user go back previously: recover the annotation in the index where it is.
-     */
-    goTo: () => Promise<void>;
     /**
      * The source of the background image.
      */
@@ -990,9 +967,17 @@ export namespace Components {
      */
     traceColor: string;
     /**
+     * Property used for change the traceInd state and go forward or backward.
+     */
+    traceIndex: number;
+    /**
      * Drawing thickness.
      */
     traceThickness: number;
+    /**
+     * The source of the background image.
+     */
+    value: string;
   }
   interface GxImagePicker {
     /**
@@ -2332,6 +2317,10 @@ export interface GxGridSmartCssCustomEvent<T> extends CustomEvent<T> {
 export interface GxHeaderRowPatternMarkerCustomEvent<T> extends CustomEvent<T> {
   detail: T;
   target: HTMLGxHeaderRowPatternMarkerElement;
+}
+export interface GxImageAnnotationsCustomEvent<T> extends CustomEvent<T> {
+  detail: T;
+  target: HTMLGxImageAnnotationsElement;
 }
 export interface GxImagePickerCustomEvent<T> extends CustomEvent<T> {
   detail: T;
@@ -3952,10 +3941,6 @@ declare namespace LocalJSX {
   }
   interface GxImageAnnotations {
     /**
-     * The source of the background image.
-     */
-    backgroundImageSrc?: string;
-    /**
      * A CSS class to set as the `gx-image-annotations` element class.
      */
     cssClass?: string;
@@ -3972,13 +3957,31 @@ declare namespace LocalJSX {
      */
     invisibleMode?: "Keep Space" | "Collapse Space";
     /**
+     * Fired when the menu container is opened or closed.
+     */
+    onAnnotationsChange?: (
+      event: GxImageAnnotationsCustomEvent<AnnotationsChangeEvent>
+    ) => void;
+    /**
+     * Fired when the menu container is opened or closed.
+     */
+    onTraceIndexChange?: (event: GxImageAnnotationsCustomEvent<number>) => void;
+    /**
      * Drawing color.
      */
     traceColor?: string;
     /**
+     * Property used for change the traceInd state and go forward or backward.
+     */
+    traceIndex?: number;
+    /**
      * Drawing thickness.
      */
     traceThickness?: number;
+    /**
+     * The source of the background image.
+     */
+    value?: string;
   }
   interface GxImagePicker {
     /**
