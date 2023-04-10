@@ -112,8 +112,7 @@ export class GxImageAnnotations {
    * Fired when the menu container is opened or closed.
    */
   @Event({
-    eventName: "annotationsChange",
-    bubbles: true
+    eventName: "annotationsChange"
   })
   annotationsChange: EventEmitter<AnnotationsChangeEvent>;
 
@@ -121,8 +120,7 @@ export class GxImageAnnotations {
    * Fired when the menu container is opened or closed.
    */
   @Event({
-    eventName: "traceIndexChange",
-    bubbles: true
+    eventName: "traceIndexChange"
   })
   traceIndexChange: EventEmitter<number>;
 
