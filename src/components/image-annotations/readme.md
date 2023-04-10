@@ -2,11 +2,6 @@
 
 This is an image annotations component for genexus.
 
-### Node Modules
-
-- Run `npm install gx-image-annotations --save`
-- Then you can use the element anywhere in your template, JSX, html etc
-
 ### Example
 
 ```html
