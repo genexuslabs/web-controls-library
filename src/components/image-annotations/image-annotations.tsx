@@ -434,8 +434,7 @@ export class GxImageAnnotations {
   };
 
   private paintToInd = (canvas: HTMLCanvasElement) => {
-    let ind = 0;
-    while (ind <= this.traceInd) {
+    for (let ind = 0; ind <= this.traceInd; ind++) {
       const trace = this.traceList[ind];
       this.paintPoint(
         canvas,
