@@ -5,7 +5,6 @@ import {
   Element,
   Prop,
   State,
-  Method,
   Watch,
   Event,
   EventEmitter
@@ -137,34 +136,6 @@ export class GxImageAnnotations {
       this.baseImage.src = this.value;
       this.baseImage.addEventListener("load", this.loadImage);
     }
-  }
-
-  /**
-   * Get the last image with annotations that have the gx-image-annotations.
-   */
-  @Method()
-  async getLastSavedImage(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      if (this.lastSavedImageUrl) {
-        resolve(this.lastSavedImageUrl);
-      }
-
-      reject();
-    });
-  }
-
-  /**
-   * Get the last annotations only that have the gx-image-annotations.
-   */
-  @Method()
-  async getLastSavedImageAnnotations(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      if (this.lastSavedImageAnnUrl) {
-        resolve(this.lastSavedImageAnnUrl);
-      }
-
-      reject();
-    });
   }
 
   /**
