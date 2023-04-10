@@ -24,10 +24,8 @@ export class GxImageAnnotations {
   private canvasAnn: any = null;
   private baseImage: HTMLImageElement = null;
   private initPaint = false;
-  private xBefore = 0;
-  private yBefore = 0;
-  private xCurrent = 0;
-  private yCurrent = 0;
+  private currentMousePositionX = 0;
+  private currentMousePositionY = 0;
   private lastSavedImageUrl: string = null;
   private lastSavedImageAnnUrl: string = null;
 
@@ -334,10 +332,8 @@ export class GxImageAnnotations {
 
   private startPainting = (pageX: number, pageY: number) => {
     // In this event we only have initiated the click, so we will draw a point
-    this.xBefore = this.xCurrent;
-    this.yBefore = this.yCurrent;
-    this.xCurrent = this.getRealX(pageX);
-    this.yCurrent = this.getRealY(pageY);
+    this.currentMousePositionX = this.getRelativePositionX(pageX);
+    this.currentMousePositionY = this.getRelativePositionY(pageY);
 
     // And put the flag
     this.initPaint = true;
@@ -346,7 +342,7 @@ export class GxImageAnnotations {
     this.traceList.push({
       color: this.traceColor,
       thickness: this.traceThickness,
-      point: { x: this.xCurrent, y: this.yCurrent },
+      point: { x: this.currentMousePositionX, y: this.currentMousePositionY },
       paths: []
     });
     this.traceInd++;
@@ -378,16 +374,16 @@ export class GxImageAnnotations {
     }
     // The mouse is moving and user is pushing the button, so we draw all.
 
-    this.xBefore = this.xCurrent;
-    this.yBefore = this.yCurrent;
-    this.xCurrent = this.getRealX(pageX);
-    this.yCurrent = this.getRealY(pageY);
+    const lastMousePositionX = this.currentMousePositionX;
+    const lastMousePositionY = this.currentMousePositionY;
+    this.currentMousePositionX = this.getRelativePositionX(pageX);
+    this.currentMousePositionY = this.getRelativePositionY(pageY);
     this.joinPath(
       this.canvas,
-      this.xBefore,
-      this.yBefore,
-      this.xCurrent,
-      this.yCurrent,
+      lastMousePositionX,
+      lastMousePositionY,
+      this.currentMousePositionX,
+      this.currentMousePositionY,
       this.traceColor,
       this.traceThickness
     );
@@ -422,32 +418,37 @@ export class GxImageAnnotations {
 
   private paintPoint = (
     canvas: HTMLCanvasElement,
-    xCurrent: number,
-    yCurrent: number,
+    currentMousePositionX: number,
+    currentMousePositionY: number,
     color: string,
     thickness: number
   ) => {
     const context = canvas.getContext("2d");
     context.beginPath();
     context.fillStyle = color;
-    context.fillRect(xCurrent, yCurrent, thickness, thickness);
+    context.fillRect(
+      currentMousePositionX,
+      currentMousePositionY,
+      thickness,
+      thickness
+    );
     context.closePath();
   };
 
   private joinPath = (
     canvas: HTMLCanvasElement,
-    xBefore: number,
-    yBefore: number,
-    xCurrent: number,
-    yCurrent: number,
+    lastMousePositionX: number,
+    lastMousePositionY: number,
+    currentMousePositionX: number,
+    currentMousePositionY: number,
     color: string,
     thickness: number,
     addTolist = true
   ) => {
     const context = canvas.getContext("2d");
     context.beginPath();
-    context.moveTo(xBefore, yBefore);
-    context.lineTo(xCurrent, yCurrent);
+    context.moveTo(lastMousePositionX, lastMousePositionY);
+    context.lineTo(currentMousePositionX, currentMousePositionY);
     context.strokeStyle = color;
     context.lineWidth = thickness;
     context.stroke();
@@ -455,10 +456,10 @@ export class GxImageAnnotations {
 
     if (addTolist && this.traceList[this.traceInd]) {
       this.traceList[this.traceInd].paths.push({
-        xBefore: xBefore,
-        yBefore: yBefore,
-        xCurrent: xCurrent,
-        yCurrent: yCurrent
+        lastMousePositionX: lastMousePositionX,
+        lastMousePositionY: lastMousePositionY,
+        currentMousePositionX: currentMousePositionX,
+        currentMousePositionY: currentMousePositionY
       });
     }
   };
@@ -477,10 +478,10 @@ export class GxImageAnnotations {
       trace.paths.forEach(path =>
         this.joinPath(
           canvas,
-          path.xBefore,
-          path.yBefore,
-          path.xCurrent,
-          path.yCurrent,
+          path.lastMousePositionX,
+          path.lastMousePositionY,
+          path.currentMousePositionX,
+          path.currentMousePositionY,
           trace.color,
           trace.thickness,
           false
@@ -494,10 +495,10 @@ export class GxImageAnnotations {
     this.traceList.splice(this.traceInd + 1);
   };
 
-  private getRealX = (clientX: number) => {
+  private getRelativePositionX = (clientX: number) => {
     return clientX - this.canvas.getBoundingClientRect().left;
   };
-  private getRealY = (clientY: number) => {
+  private getRelativePositionY = (clientY: number) => {
     return clientY - this.canvas.getBoundingClientRect().top;
   };
 
@@ -535,10 +536,10 @@ interface TraceDataPoint {
 }
 
 interface TraceDataPath {
-  xBefore: number;
-  yBefore: number;
-  xCurrent: number;
-  yCurrent: number;
+  lastMousePositionX: number;
+  lastMousePositionY: number;
+  currentMousePositionX: number;
+  currentMousePositionY: number;
 }
 
 export interface AnnotationsChangeEvent {
