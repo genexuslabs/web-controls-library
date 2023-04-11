@@ -42,23 +42,6 @@ export class GxImageAnnotations {
   @State() traceList: TraceData[] = [];
 
   /**
-   * Property used for change the traceInd state and go forward or backward.
-   */
-  @Prop({ mutable: true }) traceIndex = -1;
-  @Watch("traceIndex")
-  watchTraceIndHandler(newValue: number, oldValue: number) {
-    if (!this.traceIndexChangedFromInside) {
-      if (newValue === -3) {
-        this.cleanAll();
-      } else {
-        this.moveIndex(oldValue - newValue);
-      }
-    } else {
-      this.traceIndexChangedFromInside = false;
-    }
-  }
-
-  /**
    * A CSS class to set as the `gx-image-annotations` element class.
    */
   @Prop() readonly cssClass: string;
@@ -87,6 +70,24 @@ export class GxImageAnnotations {
    * Drawing color.
    */
   @Prop() readonly traceColor: string = "#000000";
+
+  /**
+   * Property used for change the traceInd state and go forward or backward.
+   */
+  @Prop({ mutable: true }) traceIndex = -1;
+
+  @Watch("traceIndex")
+  watchTraceIndHandler(newValue: number, oldValue: number) {
+    if (!this.traceIndexChangedFromInside) {
+      if (newValue === -3) {
+        this.cleanAll();
+      } else {
+        this.moveIndex(oldValue - newValue);
+      }
+    } else {
+      this.traceIndexChangedFromInside = false;
+    }
+  }
 
   /**
    * Drawing thickness.
