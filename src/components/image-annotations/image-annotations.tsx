@@ -78,14 +78,15 @@ export class GxImageAnnotations {
 
   @Watch("traceIndex")
   watchTraceIndHandler(newValue: number, oldValue: number) {
-    if (!this.traceIndexChangedFromInside) {
-      if (newValue === -3) {
-        this.cleanAll();
-      } else {
-        this.moveIndex(oldValue - newValue);
-      }
-    } else {
+    if (this.traceIndexChangedFromInside) {
       this.traceIndexChangedFromInside = false;
+      return;
+    }
+
+    if (newValue === -3) {
+      this.cleanAll();
+    } else {
+      this.moveIndex(oldValue - newValue);
     }
   }
 
@@ -174,54 +175,58 @@ export class GxImageAnnotations {
    * Load a background image in the canvas.
    */
   private loadImage = () => {
-    if (this.baseImage) {
-      const hostWidth = this.canvas.width;
-      const hostHeight = this.canvas.height;
-      const imgWidth = this.baseImage.width;
-      const imgHeight = this.baseImage.height;
-
-      let newImgWidth = hostWidth;
-      let newImgHeight = hostHeight;
-      let newLeft = 0;
-      let newTop = 0;
-      let ratio = imgWidth / imgHeight;
-
-      // It's important calculate the image dimensions based on the ratio of the image and the ratio of the canvas.
-      if (imgWidth > imgHeight) {
-        ratio = imgHeight / imgWidth;
-        newImgHeight = (hostWidth * imgHeight) / imgWidth;
-        if (newImgHeight > hostHeight) {
-          newImgHeight = hostHeight;
-          newImgWidth = newImgHeight / ratio;
-          newLeft = (hostWidth - newImgWidth) / 2;
-        } else {
-          newTop = (hostHeight - newImgHeight) / 2;
-        }
-      } else {
-        newImgWidth = hostHeight * ratio;
-        if (newImgWidth > hostWidth) {
-          newImgWidth = hostWidth;
-          newImgHeight = newImgWidth / ratio;
-          newTop = (hostHeight - newImgHeight) / 2;
-        } else {
-          newLeft = (hostWidth - newImgWidth) / 2;
-        }
-      }
-
-      // Draw the image in canvas.
-      const context = this.canvas.getContext("2d");
-      context.drawImage(
-        this.baseImage,
-        0,
-        0,
-        this.baseImage.width,
-        this.baseImage.height,
-        newLeft,
-        newTop,
-        newImgWidth,
-        newImgHeight
-      );
+    if (!this.baseImage) {
+      return;
     }
+
+    const hostWidth = this.canvas.width;
+    const hostHeight = this.canvas.height;
+    const imgWidth = this.baseImage.width;
+    const imgHeight = this.baseImage.height;
+
+    let newImgWidth = hostWidth;
+    let newImgHeight = hostHeight;
+    let newLeft = 0;
+    let newTop = 0;
+    let ratio = imgWidth / imgHeight;
+
+    // It's important calculate the image dimensions based on the ratio of the image and the ratio of the canvas.
+    if (imgWidth > imgHeight) {
+      ratio = imgHeight / imgWidth;
+      newImgHeight = (hostWidth * imgHeight) / imgWidth;
+
+      if (newImgHeight > hostHeight) {
+        newImgHeight = hostHeight;
+        newImgWidth = newImgHeight / ratio;
+        newLeft = (hostWidth - newImgWidth) / 2;
+      } else {
+        newTop = (hostHeight - newImgHeight) / 2;
+      }
+    } else {
+      newImgWidth = hostHeight * ratio;
+
+      if (newImgWidth > hostWidth) {
+        newImgWidth = hostWidth;
+        newImgHeight = newImgWidth / ratio;
+        newTop = (hostHeight - newImgHeight) / 2;
+      } else {
+        newLeft = (hostWidth - newImgWidth) / 2;
+      }
+    }
+
+    // Draw the image in canvas.
+    const context = this.canvas.getContext("2d");
+    context.drawImage(
+      this.baseImage,
+      0,
+      0,
+      this.baseImage.width,
+      this.baseImage.height,
+      newLeft,
+      newTop,
+      newImgWidth,
+      newImgHeight
+    );
   };
 
   private traceChanged = () => {
