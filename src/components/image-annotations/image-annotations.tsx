@@ -10,6 +10,8 @@ import {
   EventEmitter
 } from "@stencil/core";
 
+const EMPTY_TRACE_LIST_INDEX = -3;
+
 /**
  * @part canvas - The canvas where to make the annotations.
  */
@@ -83,7 +85,7 @@ export class GxImageAnnotations {
       return;
     }
 
-    if (newValue === -3) {
+    if (newValue === EMPTY_TRACE_LIST_INDEX) {
       this.cleanAll();
     } else {
       this.moveIndex(oldValue - newValue);
