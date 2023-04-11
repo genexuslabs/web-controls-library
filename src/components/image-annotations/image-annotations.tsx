@@ -461,12 +461,11 @@ export class GxImageAnnotations {
     this.traceList.splice(this.traceIndex + 1);
   };
 
-  private getRelativePositionX = (clientX: number) => {
-    return clientX - this.canvas.getBoundingClientRect().left;
-  };
-  private getRelativePositionY = (clientY: number) => {
-    return clientY - this.canvas.getBoundingClientRect().top;
-  };
+  private getRelativePositionX = (clientX: number) =>
+    clientX - this.canvas.getBoundingClientRect().left;
+
+  private getRelativePositionY = (clientY: number) =>
+    clientY - this.canvas.getBoundingClientRect().top;
 
   render() {
     return (
