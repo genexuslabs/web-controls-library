@@ -1,8 +1,6 @@
 @import "../common/_base";
-@import "../common/_common-styling-config.scss";
-@import "../common/layout-styling-config";
 
-@include visibility-shadow-DOM(grid);
+@include visibility-shadow-DOM(flex);
 
 *,
 ::before,
@@ -11,9 +9,6 @@
 }
 
 :host {
-  --color: "transparent";
-  display: flex;
-  flex-direction: row;
   width: 100%;
   height: 100%;
 }
