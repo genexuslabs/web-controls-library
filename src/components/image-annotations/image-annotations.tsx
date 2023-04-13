@@ -130,14 +130,6 @@ export class GxImageAnnotations {
   traceIndexChange: EventEmitter<number>;
 
   componentDidLoad() {
-    const style = window.getComputedStyle(this.el);
-    const paddingLeft = parseInt(style.paddingLeft);
-    const paddingRight = parseInt(style.paddingRight);
-    const paddingTop = parseInt(style.paddingTop);
-    const paddingBottom = parseInt(style.paddingBottom);
-
-    this.canvas.width = this.el.clientWidth - paddingLeft - paddingRight;
-    this.canvas.height = this.el.clientHeight - paddingTop - paddingBottom;
     this.canvasAnn = this.canvas.cloneNode();
     this.canvas.addEventListener("mousedown", this.handleMousedown);
     this.canvas.addEventListener("touchstart", this.handleTouchStart);
@@ -147,6 +139,29 @@ export class GxImageAnnotations {
       this.baseImage.src = this.value;
       this.baseImage.addEventListener("load", this.loadImage);
     }
+
+    this.canvasChangedObserver();
+  }
+
+  /**
+   * Observer to listener the change of size in canvas.
+   */
+  private canvasChangedObserver() {
+    // Create instance of observer
+    const observer = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        this.canvas.width = entry.contentRect.width;
+        this.canvas.height = entry.contentRect.height;
+      }
+
+      // Reload annotations
+      this.loadImage();
+      this.paintToInd(this.canvas);
+      this.traceChanged();
+    });
+
+    // Start the observation
+    observer.observe(this.canvas);
   }
 
   /**
