@@ -5,8 +5,53 @@ This component allows you to draw traces on the space in which the control is pl
 ### Example
 
 ```html
-<gx-image-annotations trace-color="#000000" background-image="image-path.jpg">
+<gx-image-annotations
+  trace-color="#000000"
+  css-class="gx-image-annotations"
+  value="image-path.jpg"
+>
 </gx-image-annotations>
+```
+
+```js
+<script type="text/javascript">
+  let traceIndex = -1;
+  window.addEventListener('load', () => {
+    let gxImageAnn = document.querySelector("gx-image-annotations");
+    gxImageAnn.addEventListener('annotationsChange', (ev) => {
+      document.getElementById("preview").src = ev.detail.annotatedImage;
+    });
+    gxImageAnn.addEventListener('traceIndexChange', (ev) => {
+      traceIndex = ev.detail;
+      gxImageAnn.setAttribute("trace-index", traceIndex);
+    });
+  }, false);
+
+  function changeColor(color){
+    let gxImageAnn = document.querySelector("gx-image-annotations");
+    gxImageAnn.setAttribute("trace-color", color);
+  }
+  function cleanAll(){
+    traceIndex = -3;
+    ChangeTraceIndex();
+  }
+  function goBack(){
+      traceIndex--;
+      ChangeTraceIndex();
+  }
+  function goTo(){
+    traceIndex++;
+    ChangeTraceIndex();
+  }
+  function ChangeTraceIndex(){
+    let gxImageAnn = document.querySelector("gx-image-annotations");
+    gxImageAnn.setAttribute("trace-index", traceIndex);
+  }
+  function loadImage(imgsrc){
+    let gxImageAnn = document.querySelector("gx-image-annotations");
+    gxImageAnn.setAttribute("value", imgsrc);
+  }
+</script>
 ```
 
 <!-- Auto Generated Below -->
