@@ -21,6 +21,7 @@ const EMPTY_TRACE_LIST_INDEX = -3;
   shadow: true
 })
 export class GxImageAnnotations {
+  private resizeObserver: ResizeObserver = null;
   private canvas: HTMLCanvasElement = null;
   private canvasAnn: any = null;
   private baseImage: HTMLImageElement = null;
@@ -30,6 +31,7 @@ export class GxImageAnnotations {
   private lastSavedImageUrl: string = null;
   private lastSavedImageAnnUrl: string = null;
   private traceIndexChangedFromInside = false;
+  private needForRAF = true; // To prevent redundant RAF (request animation frame) calls
 
   @Element() el: HTMLGxImageAnnotationsElement;
 
@@ -143,38 +145,53 @@ export class GxImageAnnotations {
     this.canvasChangedObserver();
   }
 
+  disconnectedCallback() {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
+  }
+
   /**
    * Observer to listener the change of size in canvas.
    */
   private canvasChangedObserver() {
     // Create instance of observer
-    const observer = new ResizeObserver(entries => {
-      for (const entry of entries) {
-        this.canvas.width = entry.contentRect.width;
-        this.canvas.height = entry.contentRect.height;
+    this.resizeObserver = new ResizeObserver(entries => {
+      if (!entries[0] || !this.needForRAF) {
+        return;
       }
 
-      // Reload annotations
-      this.loadImage();
-      this.paintToInd(this.canvas);
-      this.traceChanged();
+      this.needForRAF = false; // No need to call RAF up until next frame
+
+      requestAnimationFrame(() => {
+        this.needForRAF = true; // RAF now consumes the movement instruction so a new one can come
+
+        this.canvas.width = entries[0].contentRect.width;
+        this.canvas.height = entries[0].contentRect.height;
+
+        // Reload annotations
+        this.loadImage();
+        this.paintToInd(this.canvas);
+        this.traceChanged();
+      });
     });
 
     // Start the observation
-    observer.observe(this.canvas);
+    this.resizeObserver.observe(this.canvas);
   }
 
   /**
    * Move over the array of annotations.
    */
-  private moveIndex(fowardPositionSum: number) {
+  private moveIndex(forwardPositionSum: number) {
     if (this.traceIndex >= -1 && this.traceIndex <= this.traceList.length - 1) {
       this.cleanPaint(this.canvas);
       this.loadImage();
       this.paintToInd(this.canvas);
       this.traceChanged();
     } else {
-      this.changeIndexAndEmit(this.traceIndex + fowardPositionSum);
+      this.changeIndexAndEmit(this.traceIndex + forwardPositionSum);
     }
   }
 
