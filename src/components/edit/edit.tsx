@@ -15,14 +15,16 @@ import {
   makeHighlightable
 } from "../common/highlightable";
 
-import { EditRender } from "../renders/bootstrap/edit/edit-render";
-import { FormComponent } from "../common/interfaces";
-import { cssVariablesWatcher } from "../common/css-variables-watcher";
+import {
+  CustomizableComponent,
+  DisableableComponent
+} from "../common/interfaces";
 import { makeLinesClampable } from "../common/line-clamp";
+
+import { EditType } from "../../common/types";
 
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
-import { EditType } from "../../common/types";
 
 const AUTOFILL_START_ANIMATION_NAME = "AutoFillStart";
 
@@ -31,25 +33,26 @@ const AUTOFILL_START_ANIMATION_NAME = "AutoFillStart";
   styleUrl: "edit.scss",
   tag: "gx-edit"
 })
-export class Edit implements FormComponent, HighlightableComponent {
+export class Edit
+  implements
+    CustomizableComponent,
+    DisableableComponent,
+    HighlightableComponent
+{
   constructor() {
-    this.renderer = new EditRender(this, {
-      handleChange: this.handleChange.bind(this),
-      handleTriggerClick: this.handleTriggerClick.bind(this),
-      handleValueChanging: this.handleValueChanging.bind(this)
-    });
-
-    cssVariablesWatcher(this, [
-      {
-        cssVariableName: "--font-category",
-        propertyName: "fontCategory"
-      }
-    ]);
-
     makeLinesClampable(this, ".gx-line-clamp-container", ".line-measuring");
   }
 
-  private renderer: EditRender;
+  /**
+   * ID for the inner input
+   */
+  private inputId: string;
+
+  /**
+   * Determine the amount of lines to be displayed in the edit when
+   * `readonly="true"` and `line-clamp="true"`
+   */
+  @State() maxLines = 0;
 
   @Element() element: HTMLGxEditElement;
 
@@ -100,23 +103,13 @@ export class Edit implements FormComponent, HighlightableComponent {
    * * `"caption1"`: `span`
    * * `"caption2"`: `span`
    */
-  @Prop({ mutable: true }) fontCategory:
+  @Prop() readonly fontCategory:
     | "headline"
     | "subheadline"
     | "body"
     | "footnote"
     | "caption1"
     | "caption2" = "body";
-
-  /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * This attribute lets you specify if the element is disabled.
@@ -179,7 +172,7 @@ export class Edit implements FormComponent, HighlightableComponent {
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = false;
+  @Prop() readonly highlightable: boolean = false;
 
   /**
    * It specifies the format that will have the edit control.
@@ -197,8 +190,6 @@ export class Edit implements FormComponent, HighlightableComponent {
    * Used as the innerHTML when `format` = `HTML`.
    */
   @Prop() readonly inner: string = "";
-
-  @State() maxLines = 0;
 
   /**
    * The `change` event is emitted when a change to the element's value is
@@ -223,105 +214,14 @@ export class Edit implements FormComponent, HighlightableComponent {
    */
   @Method()
   async getNativeInputId() {
-    return this.renderer.getNativeInputId();
+    return this.inputId;
   }
 
-  private shouldStyleHostElement = false;
-  private shouldAddHighlightedClasses = true;
+  componentWillLoad() {}
 
-  private disabledClass = "disabled-custom";
-
-  componentWillLoad() {
-    this.shouldStyleHostElement = !this.multiline || this.readonly;
-
-    // In case of false, makeHighligtable() function highlights the gx-edit control
-    this.shouldAddHighlightedClasses = !(
-      this.readonly || this.format === "HTML"
-    );
-
-    if (this.format === "HTML" || this.readonly) {
-      this.disabledClass = "disabled";
-    }
-  }
-
-  componentDidLoad() {
-    this.toggleValueSetClass();
-    if (!this.shouldAddHighlightedClasses) {
-      makeHighlightable(this);
-    }
-  }
-
-  @Watch("value")
-  protected valueChanged() {
-    this.renderer.valueChanged();
-    this.toggleValueSetClass();
-  }
-
-  private toggleValueSetClass() {
-    if (this.value === "") {
-      this.element.classList.remove("value-set");
-    } else {
-      this.element.classList.add("value-set");
-    }
-  }
-
-  private handleAutoFill = (event: AnimationEvent) => {
-    this.autoFilled = event.animationName === AUTOFILL_START_ANIMATION_NAME;
-  };
-
-  private handleChange(event: UIEvent) {
-    this.value = this.renderer.getValueFromEvent(event);
-    this.change.emit(event);
-  }
-
-  private handleValueChanging(event: UIEvent) {
-    this.value = this.renderer.getValueFromEvent(event);
-    this.input.emit(event);
-  }
-
-  private handleTriggerClick(event: UIEvent) {
-    if (!this.disabled) {
-      event.stopPropagation();
-    }
-    this.gxTriggerClick.emit(event);
-  }
+  componentDidLoad() {}
 
   render() {
-    /*  Styling for gx-edit control. 
-        If the gx-edit is (readonly || format == "HTML"), we do not add 
-        highlighted classes
-    */
-    const classes = getClasses(this.cssClass);
-
-    return (
-      <Host
-        class={{
-          "gx-edit--auto-fill": this.autoFilled,
-          "gx-edit--single-line":
-            this.type === "date" || this.type === "datetime-local",
-          [this.disabledClass]: this.disabled,
-          [this.cssClass]: this.shouldStyleHostElement && !!this.cssClass,
-          [classes.vars]: this.shouldStyleHostElement
-        }}
-        // Mouse pointer to indicate action
-        data-has-action={this.highlightable && !this.disabled ? "" : undefined}
-        // Add focus to the control through sequential keyboard navigation and visually clicking
-        tabindex={
-          this.highlightable &&
-          (this.readonly || this.format === "HTML") &&
-          !this.disabled
-            ? "0"
-            : undefined
-        }
-        onAnimationStart={this.handleAutoFill}
-      >
-        {this.renderer.render({
-          triggerContent: <slot name="trigger-content" />,
-          shouldStyleHostElement: this.shouldStyleHostElement,
-          cssClass: this.cssClass,
-          vars: classes.vars
-        })}
-      </Host>
-    );
+    return <Host></Host>;
   }
 }
