@@ -21,12 +21,30 @@ import {
 } from "../common/interfaces";
 import { makeLinesClampable } from "../common/line-clamp";
 
-import { EditType } from "../../common/types";
+import { EditType, FontCategory } from "../../common/types";
+import {
+  DISABLED_CLASS,
+  HEIGHT_MEASURING,
+  LINE_MEASURING
+} from "../../common/reserved-names";
 
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
 
 const AUTOFILL_START_ANIMATION_NAME = "AutoFillStart";
+let autoEditId = 0;
+
+const DATE_TYPES = ["datetime-local", "date", "time"];
+
+const MAX_DATE_VALUE: { [key: string]: string } = {
+  date: "9999-12-31",
+  "datetime-local": "9999-12-31T23:59:59"
+};
+
+const MIN_DATE_VALUE: { [key: string]: string } = {
+  date: "0001-01-01",
+  "datetime-local": "0001-01-01T00:00:00"
+};
 
 @Component({
   shadow: false,
@@ -40,8 +58,20 @@ export class Edit
     HighlightableComponent
 {
   constructor() {
-    makeLinesClampable(this, ".gx-line-clamp-container", ".line-measuring");
+    makeLinesClampable(this, ".gx-height-measuring", ".gx-line-measuring");
   }
+
+  private disabledClass: "gx-disabled-custom" | "gx-disabled" =
+    "gx-disabled-custom";
+
+  private readonlyTag = "p";
+
+  // Variables calculated in componentWillLoad
+  private isDateType = false;
+  private isReadonly = false;
+  private shouldAddCursorText = false;
+  private shouldAddHighlightedClasses = false;
+  private shouldAddResize = false;
 
   /**
    * ID for the inner input
@@ -217,11 +247,212 @@ export class Edit
     return this.inputId;
   }
 
-  componentWillLoad() {}
+  @Watch("fontCategory")
+  protected handleFontCategoryChange(newValue: FontCategory) {
+    this.readonlyTag = this.getReadonlyTagByFontCategory(newValue);
+  }
 
-  componentDidLoad() {}
+  // @Watch("value")
+  // protected valueChanged() {
+  //   this.renderer.valueChanged();
+  // }
+
+  private getValueFromEvent = (event: UIEvent): string =>
+    event.target && (event.target as HTMLInputElement).value;
+
+  private handleAutoFill = (event: AnimationEvent) => {
+    this.autoFilled = event.animationName === AUTOFILL_START_ANIMATION_NAME;
+  };
+
+  private handleChange = (event: UIEvent) => {
+    this.value = this.getValueFromEvent(event);
+    this.change.emit(event);
+  };
+
+  private handleValueChanging = (event: UIEvent) => {
+    this.value = this.getValueFromEvent(event);
+    this.input.emit(event);
+  };
+
+  private handleTriggerClick = (event: UIEvent) => {
+    if (!this.disabled) {
+      event.stopPropagation();
+    }
+    this.gxTriggerClick.emit(event);
+  };
+
+  private getReadonlyTagByFontCategory = (fontCategory: FontCategory) =>
+    this.format === "HTML" ? "div" : fontCategory;
+
+  private getReadonlyContent() {
+    let content = this.value;
+
+    if (content && (this.type === "datetime-local" || this.type === "date")) {
+      const dateTime = new Date(this.value);
+
+      if (this.type === "date") {
+        dateTime.setDate(dateTime.getDate() + 1);
+      }
+      const dayMonthYear = new Intl.DateTimeFormat("default", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric"
+      }).format(dateTime);
+
+      content = dayMonthYear;
+
+      if (this.type === "datetime-local") {
+        const hourMins = new Intl.DateTimeFormat("default", {
+          hour: "numeric",
+          minute: "numeric"
+        }).format(dateTime);
+
+        content += ` ${hourMins}`;
+      }
+    }
+    return content;
+  }
+
+  componentWillLoad() {
+    this.isReadonly = this.readonly || this.format === "HTML";
+    this.isDateType = DATE_TYPES.includes(this.type);
+
+    if (this.isReadonly) {
+      // When the edit is readonly, the disabled style must not have opacity
+      this.disabledClass = DISABLED_CLASS;
+
+      // In case of true, makeHighligtable() function highlights the gx-edit control
+      this.shouldAddHighlightedClasses = this.highlightable;
+    } else {
+      this.shouldAddCursorText = !this.isDateType;
+      this.shouldAddResize = this.multiline;
+    }
+
+    if (!this.inputId) {
+      this.inputId = this.element.id
+        ? `${this.element.id}__edit`
+        : `gx-edit-auto-id-${autoEditId++}`;
+    }
+  }
+
+  componentDidLoad() {
+    if (this.shouldAddHighlightedClasses) {
+      makeHighlightable(this);
+    }
+  }
 
   render() {
-    return <Host></Host>;
+    // Styling for gx-edit control
+    const classes = getClasses(this.cssClass);
+
+    const shouldAddFocus = this.shouldAddHighlightedClasses && !this.disabled;
+
+    const attrs = {
+      autocapitalize: this.autocapitalize,
+      autocomplete: this.autocomplete,
+      autocorrect: this.autocorrect,
+      disabled: this.disabled,
+      id: this.inputId,
+
+      // Limit the year to 4 digits
+      max: MAX_DATE_VALUE[this.type],
+
+      // Extend the minimum value of the date
+      min: MIN_DATE_VALUE[this.type],
+
+      onChange: this.handleChange,
+      onInput: this.handleValueChanging,
+      placeholder: this.placeholder,
+      step: DATE_TYPES.includes(this.type) ? "1" : undefined
+    };
+
+    return (
+      <Host
+        class={{
+          "gx-edit--auto-fill": this.autoFilled,
+          "gx-edit--readonly": this.isReadonly,
+          "gx-edit--single-line":
+            this.type === "date" || this.type === "datetime-local",
+          "gx-edit__trigger-button-space": this.showTrigger,
+
+          [this.disabledClass]: this.disabled,
+          [this.cssClass]: !!this.cssClass,
+          [classes.vars]: true
+        }}
+        // Mouse pointer to indicate action
+        data-has-action={shouldAddFocus ? "" : undefined}
+        // Alignment
+        data-text-align=""
+        data-valign={!this.isReadonly && !this.multiline ? "" : undefined}
+        data-valign-readonly={this.isReadonly ? "" : undefined}
+        // Add focus to the control through sequential keyboard navigation and visually clicking
+        tabindex={shouldAddFocus ? "0" : undefined}
+        onAnimationStart={this.handleAutoFill}
+      >
+        {this.isReadonly
+          ? [
+              <this.readonlyTag
+                aria-disabled={this.disabled ? "true" : undefined}
+                class={{
+                  "gx-edit-content": true,
+                  "gx-line-clamp": this.lineClamp
+                }}
+                style={
+                  this.lineClamp && {
+                    "--max-lines": this.maxLines.toString()
+                  }
+                }
+                innerHTML={this.format === "HTML" ? this.inner : undefined}
+              >
+                {this.getReadonlyContent()}
+              </this.readonlyTag>,
+
+              this.lineClamp && [
+                <div class={LINE_MEASURING}>{"A"}</div>,
+                <div class={HEIGHT_MEASURING}></div>
+              ]
+            ]
+          : [
+              this.multiline ? (
+                <textarea {...attrs} class="gx-edit-content" value={this.value}>
+                  {this.value}
+                </textarea>
+              ) : (
+                <input
+                  {...attrs}
+                  class={{
+                    "gx-edit-content": true,
+                    "gx-null-date": this.isDateType && !this.value
+                  }}
+                  type={this.type}
+                  value={this.value}
+                />
+              ),
+
+              this.showTrigger && (
+                <button
+                  class={{
+                    "gx-edit__trigger-button": true,
+                    disabled: this.disabled
+                  }}
+                  type="button"
+                  disabled={this.disabled}
+                  // Mouse pointer to indicate action
+                  data-has-action={!this.disabled ? "" : undefined}
+                  onClick={this.handleTriggerClick}
+                >
+                  <slot name="trigger-content" />
+                </button>
+              ),
+
+              // Implements a non-native placeholder for date types
+              this.isDateType && !this.value && (
+                <p aria-hidden="true" class="gx-edit-date-placeholder">
+                  {this.placeholder}
+                </p>
+              )
+            ]}
+      </Host>
+    );
   }
 }

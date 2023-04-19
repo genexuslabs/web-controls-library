@@ -1,2 +1,117 @@
+@import "../common/_base";
+@import "../common/common-styling-config";
+
+// Used to change the placeholder color in the input controls
+// Opacity property is necessary, because some browsers (e.g., mozilla) change this value
+@mixin placeholder-color {
+  color: var(--placeholder-text-color);
+  opacity: 1;
+}
+
 gx-edit {
+  --gx-edit-trigger-button-width: #{$gx-icon-size};
+  --placeholder-text-color: #757575c0;
+
+  @include visibility(flex);
+  @include line-clamp();
+
+  align-items: stretch;
+  position: relative;
+  align-self: stretch;
+
+  // Remove outline of the focus state. This selector must not have higher
+  // specificity, since it should be overridden by the class applied to the control
+  outline: unset;
+
+  // Necessary to support line-clamp
+  overflow: hidden;
+
+  @include transition-properties();
+
+  // Disable styling for the gx-edit when Format = Text
+  &.gx-disabled-custom {
+    @include disabled-style();
+    pointer-events: none;
+  }
+
+  &.gx-edit--readonly {
+    // Implements the newline() command in GeneXus
+    white-space: break-spaces;
+  }
+
+  & > .gx-height-measuring {
+    display: flex;
+    width: 0;
+    height: 100%;
+    visibility: hidden;
+  }
+
+  &.gx-edit--single-line > .gx-edit-content {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  & > .gx-edit-content {
+    width: 100%;
+
+    &::placeholder {
+      @include placeholder-color();
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - -
+  //    Custom placeholder for date types
+  // - - - - - - - - - - - - - - - - - - - -
+  // Used when the gx-edit has type="datetime-local" | "date" | "time"
+  // and its value is not set
+  & > .gx-null-date {
+    opacity: 0; // Hide the input by default
+    transition: opacity $transition-duration;
+
+    // When the gx-edit is focused, we hide the placeholder
+    &:focus {
+      opacity: 1; // Hide the input when focused
+
+      & ~ .gx-edit-date-placeholder {
+        opacity: 0;
+      }
+    }
+  }
+
+  // Implements a non-native placeholder for date types
+  & > .gx-edit-date-placeholder {
+    display: flex;
+    position: absolute;
+    flex: 1;
+    pointer-events: none;
+    transition: opacity $transition-duration;
+
+    @include placeholder-color();
+  }
+
+  // - - - - - - - - - - - - - - - - - - - -
+  //             Trigger button
+  // - - - - - - - - - - - - - - - - - - - -
+  &.gx-edit__trigger-button-space::after {
+    content: "";
+    height: 100%;
+    margin-inline-start: var(--gx-edit-trigger-button-width);
+    padding-inline-start: inherit;
+  }
+
+  & > .gx-edit__trigger-button {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    padding-inline: inherit;
+    transition: filter $transition-duration;
+
+    &:focus {
+      filter: drop-shadow(0px 0px 4px currentColor);
+    }
+  }
 }
