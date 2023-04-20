@@ -1,24 +1,17 @@
 # GX Cropper
 
-This is a cropper of images for genexus.
-
-### Node Modules
-
-- Run `npm install gx-cropper --save`
-- Then you can use the element anywhere in your template, JSX, html etc
+This is a tool for crop images.
 
 ### Example
 
 ```html
 <gx-cropper
-  src="http://somesite.com/images/some_image.jpg"
+  src="some_image.jpg"
   width="200"
   height="200"
   show-behavior="inline"
->
-  <span slot="header">Recortar imagen</span>
-  <button slot="primary-action" onclick="getImage()">Obtener Imagen</button>
-</gx-cropper>
+></gx-cropper>
+<button onclick="getImage()">Obtener Imagen</button>
 
 <script>
   let cropper = null;
@@ -45,32 +38,26 @@ This is a cropper of images for genexus.
 
 ## Properties
 
-| Property           | Attribute            | Description                                                                                     | Type                  | Default                |
-| ------------------ | -------------------- | ----------------------------------------------------------------------------------------------- | --------------------- | ---------------------- |
-| `autoClose`        | `auto-close`         | This attribute lets you specify if the popup is automatically closed when an action is clicked. | `boolean`             | `undefined`            |
-| `closeButtonLabel` | `close-button-label` | This attribute lets you specify the label for the close button. Important for accessibility.    | `string`              | `undefined`            |
-| `cssClass`         | `css-class`          | A CSS class to set as the `gx-cropper` element class.                                           | `string`              | `undefined`            |
-| `height`           | `height`             | The source for crop the image.                                                                  | `number`              | `CROPPER_INITIAL_SIZE` |
-| `opened`           | `opened`             | If the showBehavior is popup, this attribute lets you specify if the popup is opened or closed. | `boolean`             | `false`                |
-| `popupHeight`      | `popup-height`       | This attribute lets you specify the height of the popup.                                        | `string`              | `null`                 |
-| `popupWidth`       | `popup-width`        | This attribute lets you specify the width of the popup.                                         | `string`              | `null`                 |
-| `showBehavior`     | `show-behavior`      | How the cropper will be show.                                                                   | `"inline" \| "popup"` | `'inline'`             |
-| `showFooter`       | `show-footer`        | This attribute lets you specify if a footer is rendered at the bottom of the popup.             | `boolean`             | `true`                 |
-| `showHeader`       | `show-header`        | This attribute lets you specify if a header is rendered on top of the popup.                    | `boolean`             | `true`                 |
-| `src`              | `src`                | The source of the image.                                                                        | `string`              | `undefined`            |
-| `width`            | `width`              | The width for crop the image.                                                                   | `number`              | `CROPPER_INITIAL_SIZE` |
+| Property       | Attribute       | Description                                           | Type                  | Default                |
+| -------------- | --------------- | ----------------------------------------------------- | --------------------- | ---------------------- |
+| `cssClass`     | `css-class`     | A CSS class to set as the `gx-cropper` element class. | `string`              | `undefined`            |
+| `height`       | `height`        | The source for crop the image.                        | `number`              | `CROPPER_INITIAL_SIZE` |
+| `showBehavior` | `show-behavior` | How the cropper will be show.                         | `"inline" \| "popup"` | `"inline"`             |
+| `src`          | `src`           | The source of the image.                              | `string`              | `undefined`            |
+| `started`      | `started`       | If the showBehavior is popup, calculate dimensions.   | `boolean`             | `false`                |
+| `width`        | `width`         | The width for crop the image.                         | `number`              | `CROPPER_INITIAL_SIZE` |
 
 ## Events
 
 | Event                    | Description                                          | Type                  |
 | ------------------------ | ---------------------------------------------------- | --------------------- |
 | `gxCropperImageExported` | Fired when the image has changed it size nor scale . | `CustomEvent<string>` |
-| `gxCropperPopupClose`    | Fired when the popup is closed                       | `CustomEvent<any>`    |
-| `gxCropperPopupOpen`     | Fired when the popup is opened                       | `CustomEvent<any>`    |
 
 ## Methods
 
 ### `getLastCropImage() => Promise<string>`
+
+Get the cropped image.
 
 #### Returns
 
@@ -78,22 +65,19 @@ Type: `Promise<string>`
 
 ## Shadow Parts
 
-| Part                  | Description |
-| --------------------- | ----------- |
-| `"body"`              |             |
-| `"close-button"`      |             |
-| `"cropper-container"` |             |
-| `"cropper-image"`     |             |
-| `"cropper-selection"` |             |
-| `"footer"`            |             |
-| `"header"`            |             |
+| Part                  | Description                          |
+| --------------------- | ------------------------------------ |
+| `"body"`              | The body of the popup of gx-cropper. |
+| `"cropper-container"` | The container of gx-cropper.         |
+| `"cropper-image"`     | Where reside the image.              |
+| `"cropper-selection"` | The selection tool of gx-cropper.    |
 
 ## Dependencies
 
 ### Depends on
 
-- [gx-cropper-image](../gx-cropper-image)
-- [gx-cropper-selection](../gx-cropper-selection)
+- [gx-cropper-image](../cropper-image)
+- [gx-cropper-selection](../cropper-selection)
 
 ### Graph
 
