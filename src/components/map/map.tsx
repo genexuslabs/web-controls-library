@@ -63,6 +63,8 @@ export class GridMap implements GxComponent {
   private circleList = new Map<string, Circle>();
   private polygonsList = new Map<string, Polygon>();
   private linesList = new Map<string, Polyline>();
+  private loadedMarkersCount = 0;
+  private tileLayerDidLoad = false;
 
   private mapTypesProviders = {
     hybrid:
@@ -158,7 +160,11 @@ export class GridMap implements GxComponent {
    * | `hybrid`    | Shows streets over the satellite images.                                    |
    */
   @Prop() readonly mapType: "standard" | "satellite" | "hybrid" = "standard";
-
+  /**
+   * Check if markers load, binded with infiniteDisabled Angular Grid property
+   *
+   */
+  @Prop() readonly markersDidLoad: boolean;
   /**
    * A CSS class to set as the `showMyLocation` icon class.
    */
@@ -254,7 +260,7 @@ export class GridMap implements GxComponent {
   onMapMarkerDidLoad(event: CustomEvent<GridMapElement>) {
     const markerHTMLElement = event.target as HTMLGxMapMarkerElement;
     const { id, instance } = event.detail;
-
+    // get the event parameter
     this.renderMapElementWhenTheMapDidLoad(
       id,
       instance,
@@ -266,7 +272,19 @@ export class GridMap implements GxComponent {
     if (!this.selectionLayer || markerHTMLElement.type !== "selection-layer") {
       this.markersList.set(id, instance);
     }
+    if (markerHTMLElement.type === "default") {
+      this.loadedMarkersCount++;
+    }
 
+    if (this.didLoad && this.checkIfMarkersDidLoad()) {
+      if (this.tileLayerDidLoad) {
+        this.fitBounds();
+      } else {
+        this.tileLayerApplied.once("tileload", () => {
+          this.fitBounds();
+        });
+      }
+    }
     event.stopPropagation();
   }
 
@@ -319,6 +337,14 @@ export class GridMap implements GxComponent {
 
     this.linesList.set(id, instance);
     event.stopPropagation();
+  }
+
+  private checkIfMarkersDidLoad() {
+    return (
+      !this.markersDidLoad &&
+      this.loadedMarkersCount === this.itemCount &&
+      this.loadedMarkersCount > 0
+    );
   }
 
   private connectResizeObserver() {
@@ -515,6 +541,16 @@ export class GridMap implements GxComponent {
     });
     tileLayerToApply.addTo(this.map);
     this.tileLayerApplied = tileLayerToApply;
+
+    if (this.checkIfMarkersDidLoad()) {
+      this.tileLayerApplied.once("tileload", () => {
+        this.fitBounds();
+      });
+    } else {
+      this.tileLayerApplied.once("tileload", () => {
+        this.tileLayerDidLoad = true;
+      });
+    }
   }
 
   private removeTileLayer() {
@@ -624,16 +660,25 @@ export class GridMap implements GxComponent {
     if (this.checkValidCenter()) {
       this.map = leafletMap(this.divMapView, {
         scrollWheelZoom: this.scrollWheelZoom
-      }).setView(this.fromStringToLatLngTuple(this.center), this.zoom);
+      });
+      this.map.on("load", () => {
+        this.setMapProvider();
+      });
+
+      this.map.setView(this.fromStringToLatLngTuple(this.center), this.zoom);
     }
 
     // Invalid center
     else {
       this.map = leafletMap(this.divMapView, {
         scrollWheelZoom: this.scrollWheelZoom
-      }).setView(DEFAULT_CENTER, this.getZoomLevel());
-    }
+      });
+      this.map.on("load", () => {
+        this.setMapProvider();
+      });
 
+      this.map.setView(DEFAULT_CENTER, this.getZoomLevel());
+    }
     this.activateDrawOnMap();
     this.preventPopupDisplayWhenClickingOnTheMap();
     this.map.createPane("fromKML");
@@ -654,7 +699,6 @@ export class GridMap implements GxComponent {
 
     // zoom the map to the polyline
 
-    this.setMapProvider();
     this.map.setMaxZoom(MAX_ZOOM_LEVEL);
     this.gxMapDidLoad.emit(this);
 
@@ -677,11 +721,6 @@ export class GridMap implements GxComponent {
     });
     this.didLoad = true;
   }
-
-  componentDidUpdate(): void {
-    this.fitBounds();
-  }
-
   disconnectedCallback() {
     navigator.geolocation.clearWatch(this.showMyLocationId);
     this.disconnectResizeObserver();

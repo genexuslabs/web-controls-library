@@ -1157,6 +1157,10 @@ export namespace Components {
      */
     initialZoomRadius: number;
     /**
+     * Size of the grid map elements array when start
+     */
+    itemCount: number;
+    /**
      * The map provider. _Note: Currently, this property is for setting a custom map provider using an URL._
      */
     mapProvider: string;
@@ -1164,6 +1168,10 @@ export namespace Components {
      * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._  | Value       | Details                                                                     | | ----------- | --------------------------------------------------------------------------- | | `standard`  | Shows streets.                                                              | | `satellite` | Shows satellite images of the Earth.                                        | | `hybrid`    | Shows streets over the satellite images.                                    |
      */
     mapType: "standard" | "satellite" | "hybrid";
+    /**
+     * Check if markers load, binded with infiniteDisabled Angular Grid property
+     */
+    markersDidLoad: boolean;
     /**
      * A CSS class to set as the `showMyLocation` icon class.
      */
@@ -4112,6 +4120,10 @@ declare namespace LocalJSX {
      */
     initialZoomRadius?: number;
     /**
+     * Size of the grid map elements array when start
+     */
+    itemCount?: number;
+    /**
      * The map provider. _Note: Currently, this property is for setting a custom map provider using an URL._
      */
     mapProvider?: string;
@@ -4119,6 +4131,10 @@ declare namespace LocalJSX {
      * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._  | Value       | Details                                                                     | | ----------- | --------------------------------------------------------------------------- | | `standard`  | Shows streets.                                                              | | `satellite` | Shows satellite images of the Earth.                                        | | `hybrid`    | Shows streets over the satellite images.                                    |
      */
     mapType?: "standard" | "satellite" | "hybrid";
+    /**
+     * Check if markers load, binded with infiniteDisabled Angular Grid property
+     */
+    markersDidLoad?: boolean;
     /**
      * Emitted when the map is loaded.
      */
