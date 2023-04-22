@@ -34,6 +34,10 @@ gx-edit {
     pointer-events: none;
   }
 
+  &.gx-edit--cursor-text {
+    cursor: text;
+  }
+
   &.gx-edit--readonly {
     // Implements the newline() command in GeneXus
     white-space: break-spaces;

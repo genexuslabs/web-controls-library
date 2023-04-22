@@ -78,6 +78,9 @@ export class Edit
    */
   private inputId: string;
 
+  // Refs
+  private inputRef: HTMLElement = null;
+
   /**
    * Determine the amount of lines to be displayed in the edit when
    * `readonly="true"` and `line-clamp="true"`
@@ -274,6 +277,19 @@ export class Edit
     this.input.emit(event);
   };
 
+  /**
+   * Since the inner input must to support vertical alignment, it can't have
+   * height: 100%, so clicks performed in the container must focus the inner
+   * input.
+   */
+  private focusInnerInputOnClick = (event: UIEvent) => {
+    if (!this.highlightable) {
+      event.stopPropagation();
+    }
+
+    this.inputRef.focus();
+  };
+
   private handleTriggerClick = (event: UIEvent) => {
     if (!this.disabled) {
       event.stopPropagation();
@@ -370,6 +386,7 @@ export class Edit
       <Host
         class={{
           "gx-edit--auto-fill": this.autoFilled,
+          "gx-edit--cursor-text": this.shouldAddCursorText && !this.disabled,
           "gx-edit--readonly": this.isReadonly,
           "gx-edit--single-line":
             this.type === "date" || this.type === "datetime-local",
@@ -387,6 +404,11 @@ export class Edit
         data-valign-readonly={this.isReadonly ? "" : undefined}
         // Add focus to the control through sequential keyboard navigation and visually clicking
         tabindex={shouldAddFocus ? "0" : undefined}
+        onClick={
+          this.shouldAddCursorText && !this.disabled
+            ? this.focusInnerInputOnClick
+            : null
+        }
         onAnimationStart={this.handleAutoFill}
       >
         {this.isReadonly
@@ -414,7 +436,12 @@ export class Edit
             ]
           : [
               this.multiline ? (
-                <textarea {...attrs} class="gx-edit-content" value={this.value}>
+                <textarea
+                  {...attrs}
+                  class="gx-edit-content"
+                  value={this.value}
+                  ref={el => (this.inputRef = el as HTMLElement)}
+                >
                   {this.value}
                 </textarea>
               ) : (
@@ -426,6 +453,7 @@ export class Edit
                   }}
                   type={this.type}
                   value={this.value}
+                  ref={el => (this.inputRef = el as HTMLElement)}
                 />
               ),
 
