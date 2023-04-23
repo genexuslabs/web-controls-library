@@ -38,9 +38,14 @@ gx-card-header > li:not([slot="low-priority-action"]) > gx-button {
   // ensure the content does not overflows
   &[max-height],
   &:not([auto-grow]) {
-    & > gx-textblock::part(content),
-    & > gx-form-field .gx-edit-content {
+    & > gx-textblock::part(content) {
       position: absolute;
+    }
+
+    & > gx-form-field > .gx-edit--readonly > .gx-edit-content {
+      position: absolute;
+      inset-inline: 0; // Not "inset" property, since the control has vertical alignment
+      padding-inline: inherit;
     }
   }
 }

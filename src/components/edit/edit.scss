@@ -13,7 +13,7 @@ gx-edit {
   --placeholder-text-color: #757575c0;
 
   @include visibility(flex);
-  @include line-clamp();
+  @include line-clamp-2();
 
   align-items: stretch;
   position: relative;
