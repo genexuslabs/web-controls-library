@@ -125,31 +125,16 @@ export class Edit
   @Prop() readonly cssClass: string;
 
   /**
-   * Used to define the semantic of the element when readonly=true.
-   *
-   * Font categories are mapped to semantic HTML elements when rendered:
-   *
-   * * `"headline"`: `h1`
-   * * `"subheadline"`: `h2`
-   * * `"body"`: `p`
-   * * `"footnote"`: `footer`
-   * * `"caption1"`: `span`
-   * * `"caption2"`: `span`
-   */
-  @Prop() readonly fontCategory:
-    | "headline"
-    | "subheadline"
-    | "body"
-    | "footnote"
-    | "caption1"
-    | "caption2" = "body";
-
-  /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
   @Prop() readonly disabled = false;
+
+  /**
+   * Used to define the semantic of the element when `readonly="true"`.
+   */
+  @Prop() readonly fontCategory: FontCategory = "p";
 
   /**
    * True to cut text when it overflows, showing an ellipsis (only applies when readonly)
@@ -349,6 +334,9 @@ export class Edit
         ? `${this.element.id}__edit`
         : `gx-edit-auto-id-${autoEditId++}`;
     }
+
+    // Set font category
+    this.handleFontCategoryChange(this.fontCategory);
   }
 
   componentDidLoad() {
