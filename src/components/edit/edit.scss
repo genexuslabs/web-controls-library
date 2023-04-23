@@ -9,6 +9,13 @@
 }
 
 gx-edit {
+  /**
+   * @prop --gx-edit-auto-fill-background-color:
+   * Define the background color when the edit is auto filled.
+   * (#e8f0fe by default)
+   */
+  --gx-edit-auto-fill-background-color: #e8f0fe;
+
   --gx-edit-trigger-button-width: #{$gx-icon-size};
   --placeholder-text-color: #757575c0;
 
@@ -143,5 +150,40 @@ gx-edit {
     &:focus {
       filter: drop-shadow(0px 0px 4px currentColor);
     }
+  }
+
+  // - - - - - - - - - - - - - - - -
+  //            Auto Fill
+  // - - - - - - - - - - - - - - - -
+  & > .gx-edit-content {
+    // Dummy animation to trigger the onAnimationStart event
+    &:-webkit-autofill {
+      animation: AutoFillStart 0.000001s;
+      transition: background-color 99999999s 0s;
+    }
+
+    // Dummy animation to trigger the onAnimationStart event
+    &:not(:-webkit-autofill) {
+      animation: AutoFillCancel 0.000001s;
+    }
+  }
+
+  @keyframes AutoFillStart {
+    0% {
+      visibility: inherit;
+    }
+  }
+  @keyframes AutoFillCancel {
+    0% {
+      visibility: inherit;
+    }
+  }
+
+  // The [area="field"] attribute is used for more specificity. Otherwise, the
+  // style would be removed when the control is focused or hovered
+  &.gx-edit--auto-fill,
+  &[area="field"].gx-edit--auto-fill:focus-within,
+  &[area="field"].gx-edit--auto-fill:hover {
+    background-color: var(--gx-edit-auto-fill-background-color);
   }
 }
