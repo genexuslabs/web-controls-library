@@ -46,8 +46,15 @@ const MIN_DATE_VALUE: { [key: string]: string } = {
   "datetime-local": "0001-01-01T00:00:00"
 };
 
+/**
+ * @part gx-edit__content - The main content displayed in the control. This part applies to each configuration that the gx-edit control may have.
+ * @part gx-edit__date-placeholder - A placeholder displayed when the control is editable (`readonly="false"`), has no value set, and its type is `"datetime-local" | "date" | "time"`.
+ * @part gx-edit__trigger-content - The trigger button displayed on the right side of the control when `show-trigger="true"`.
+ *
+ * @slot trigger-content - The slot used for the content of the trigger button.
+ */
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "edit.scss",
   tag: "gx-edit"
 })
@@ -58,7 +65,12 @@ export class Edit
     HighlightableComponent
 {
   constructor() {
-    makeLinesClampable(this, ".gx-height-measuring", ".gx-line-measuring");
+    makeLinesClampable(
+      this,
+      ".gx-height-measuring",
+      ".gx-line-measuring",
+      true
+    );
   }
 
   private disabledClass: "gx-disabled-custom" | "gx-disabled" =
@@ -135,6 +147,11 @@ export class Edit
    * Used to define the semantic of the element when `readonly="true"`.
    */
   @Prop() readonly fontCategory: FontCategory = "p";
+
+  /**
+   * The text to set as the label of the gx-edit control.
+   */
+  @Prop() readonly labelCaption: string;
 
   /**
    * True to cut text when it overflows, showing an ellipsis (only applies when readonly)
@@ -355,6 +372,7 @@ export class Edit
       autocapitalize: this.autocapitalize,
       autocomplete: this.autocomplete,
       autocorrect: this.autocorrect,
+      "aria-label": this.labelCaption || undefined,
       disabled: this.disabled,
       id: this.inputId,
 
@@ -394,7 +412,7 @@ export class Edit
         // Add focus to the control through sequential keyboard navigation and visually clicking
         tabindex={shouldAddFocus ? "0" : undefined}
         onClick={
-          this.shouldAddCursorText && !this.disabled
+          !this.isReadonly && !this.disabled
             ? this.focusInnerInputOnClick
             : null
         }
@@ -404,10 +422,12 @@ export class Edit
           ? [
               <this.readonlyTag
                 aria-disabled={this.disabled ? "true" : undefined}
+                aria-label={this.labelCaption || undefined}
                 class={{
                   "gx-edit-content": true,
                   "gx-line-clamp": this.lineClamp
                 }}
+                part="gx-edit__content"
                 style={
                   this.lineClamp && {
                     "--max-lines": this.maxLines.toString()
@@ -429,6 +449,7 @@ export class Edit
                   <textarea
                     {...attrs}
                     class="gx-edit-content"
+                    part="gx-edit__content"
                     value={this.value}
                     ref={el => (this.inputRef = el as HTMLElement)}
                   ></textarea>,
@@ -443,6 +464,7 @@ export class Edit
                     "gx-edit-content": true,
                     "gx-null-date": this.isDateType && !this.value
                   }}
+                  part="gx-edit__content"
                   type={this.type}
                   value={this.value}
                   ref={el => (this.inputRef = el as HTMLElement)}
@@ -455,10 +477,9 @@ export class Edit
                     "gx-edit__trigger-button": true,
                     disabled: this.disabled
                   }}
+                  part="gx-edit__trigger-content"
                   type="button"
                   disabled={this.disabled}
-                  // Mouse pointer to indicate action
-                  data-has-action={!this.disabled ? "" : undefined}
                   onClick={this.handleTriggerClick}
                 >
                   <slot name="trigger-content" />
@@ -467,7 +488,11 @@ export class Edit
 
               // Implements a non-native placeholder for date types
               this.isDateType && !this.value && (
-                <p aria-hidden="true" class="gx-edit-date-placeholder">
+                <p
+                  aria-hidden="true"
+                  class="gx-edit-date-placeholder"
+                  part="gx-edit__date-placeholder"
+                >
                   {this.placeholder}
                 </p>
               )

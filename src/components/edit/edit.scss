@@ -8,7 +8,15 @@
   opacity: 1;
 }
 
-gx-edit {
+@include box-sizing();
+
+// This solution would not be needed if the gx-edit with format="HTML" puts its
+// content as an slot, instead of rendering it in the shadow root
+@include reset-browser-defaults();
+
+@include line-clamp-2();
+
+:host {
   /**
    * @prop --gx-edit-auto-fill-background-color:
    * Define the background color when the edit is auto filled.
@@ -19,9 +27,7 @@ gx-edit {
   --gx-edit-trigger-button-width: #{$gx-icon-size};
   --placeholder-text-color: #757575c0;
 
-  @include visibility(flex);
-  @include line-clamp-2();
-
+  display: flex;
   align-items: stretch;
   position: relative;
   align-self: stretch;
@@ -34,156 +40,157 @@ gx-edit {
   overflow: hidden;
 
   @include transition-properties();
+}
 
-  // Disable styling for the gx-edit when Format = Text
-  &.gx-disabled-custom {
-    @include disabled-style();
-    pointer-events: none;
-  }
+// Disable styling for the gx-edit when Format = Text
+:host(.gx-disabled-custom) {
+  @include disabled-style();
+  pointer-events: none;
+}
 
-  &.gx-edit--cursor-text {
-    cursor: text;
-  }
+:host(.gx-edit--cursor-text) {
+  cursor: text;
+}
 
-  &.gx-edit--readonly {
-    // Implements the newline() command in GeneXus
-    white-space: break-spaces;
-  }
+:host(.gx-edit--readonly) {
+  // Implements the newline() command in GeneXus
+  white-space: break-spaces;
+}
 
-  & > .gx-height-measuring {
-    display: flex;
-    width: 0;
-    height: 100%;
-    visibility: hidden;
-  }
+:host(.gx-edit--single-line) > .gx-edit-content {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-  &.gx-edit--single-line > .gx-edit-content {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.gx-height-measuring {
+  display: flex;
+  width: 0;
+  height: 100%;
+  visibility: hidden;
+}
 
-  & > .gx-edit-content {
-    width: 100%;
+.gx-edit-content {
+  width: 100%;
 
-    &::placeholder {
-      @include placeholder-color();
-    }
-  }
-
-  // - - - - - - - - - - - - - - - - - - - -
-  //           Multiline Auto Grow
-  // - - - - - - - - - - - - - - - - - - - -
-  // Hide textarea resize button
-  &.gx-edit--multiline > .gx-edit-content {
-    position: absolute;
-    inset: 0;
-    padding: inherit;
-    resize: unset;
-  }
-
-  // Implements auto-grow when the gx-edit is multiline
-  & > .gx-edit__hidden-multiline {
-    width: 100%;
-    height: 100%;
-
-    // Implement line breaks
-    white-space: pre-wrap;
-
-    // Break words that do not enter in a single line
-    word-break: break-word;
-
-    // Hide from the accessibility tree but take space in the layout
-    visibility: hidden;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - -
-  //    Custom placeholder for date types
-  // - - - - - - - - - - - - - - - - - - - -
-  // Used when the gx-edit has type="datetime-local" | "date" | "time"
-  // and its value is not set
-  & > .gx-null-date {
-    opacity: 0; // Hide the input by default
-    transition: opacity $transition-duration;
-
-    // When the gx-edit is focused, we hide the placeholder
-    &:focus {
-      opacity: 1; // Hide the input when focused
-
-      & ~ .gx-edit-date-placeholder {
-        opacity: 0;
-      }
-    }
-  }
-
-  // Implements a non-native placeholder for date types
-  & > .gx-edit-date-placeholder {
-    display: flex;
-    position: absolute;
-    flex: 1;
-    pointer-events: none;
-    transition: opacity $transition-duration;
-
+  &::placeholder {
     @include placeholder-color();
   }
+}
 
-  // - - - - - - - - - - - - - - - - - - - -
-  //             Trigger button
-  // - - - - - - - - - - - - - - - - - - - -
-  &.gx-edit__trigger-button-space::after {
-    content: "";
-    height: 100%;
-    margin-inline-start: var(--gx-edit-trigger-button-width);
-    padding-inline-start: inherit;
-  }
+// - - - - - - - - - - - - - - - - - - - -
+//           Multiline Auto Grow
+// - - - - - - - - - - - - - - - - - - - -
+// Hide textarea resize button
+:host(.gx-edit--multiline) > .gx-edit-content {
+  position: absolute;
+  inset: 0;
+  padding: inherit;
+  resize: unset;
+}
 
-  & > .gx-edit__trigger-button {
-    display: flex;
-    align-items: center;
-    justify-items: center;
-    position: absolute;
-    inset-block: 0;
-    inset-inline-end: 0;
-    padding-inline: inherit;
-    transition: filter $transition-duration;
+// Implements auto-grow when the gx-edit is multiline
+.gx-edit__hidden-multiline {
+  width: 100%;
+  height: 100%;
 
-    &:focus {
-      filter: drop-shadow(0px 0px 4px currentColor);
+  // Implement line breaks
+  white-space: pre-wrap;
+
+  // Break words that do not enter in a single line
+  word-break: break-word;
+
+  // Hide from the accessibility tree but take space in the layout
+  visibility: hidden;
+}
+
+// - - - - - - - - - - - - - - - - - - - -
+//    Custom placeholder for date types
+// - - - - - - - - - - - - - - - - - - - -
+// Used when the gx-edit has type="datetime-local" | "date" | "time"
+// and its value is not set
+.gx-null-date {
+  opacity: 0; // Hide the input by default
+  transition: opacity $transition-duration;
+
+  // When the gx-edit is focused, we hide the placeholder
+  &:focus {
+    opacity: 1; // Hide the input when focused
+
+    & ~ .gx-edit-date-placeholder {
+      opacity: 0;
     }
   }
+}
 
-  // - - - - - - - - - - - - - - - -
-  //            Auto Fill
-  // - - - - - - - - - - - - - - - -
-  & > .gx-edit-content {
-    // Dummy animation to trigger the onAnimationStart event
-    &:-webkit-autofill {
-      animation: AutoFillStart 0.000001s;
-      transition: background-color 99999999s 0s;
-    }
+// Implements a non-native placeholder for date types
+.gx-edit-date-placeholder {
+  display: flex;
+  position: absolute;
+  flex: 1;
+  pointer-events: none;
+  transition: opacity $transition-duration;
 
-    // Dummy animation to trigger the onAnimationStart event
-    &:not(:-webkit-autofill) {
-      animation: AutoFillCancel 0.000001s;
-    }
+  @include placeholder-color();
+}
+
+// - - - - - - - - - - - - - - - - - - - -
+//             Trigger button
+// - - - - - - - - - - - - - - - - - - - -
+:host(.gx-edit__trigger-button-space)::after {
+  content: "";
+  height: 100%;
+  margin-inline-start: var(--gx-edit-trigger-button-width);
+  padding-inline-start: inherit;
+}
+
+.gx-edit__trigger-button {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  padding-inline: inherit;
+  cursor: pointer;
+  transition: filter $transition-duration;
+
+  &:focus {
+    filter: drop-shadow(0px 0px 4px currentColor);
+  }
+}
+
+// - - - - - - - - - - - - - - - -
+//            Auto Fill
+// - - - - - - - - - - - - - - - -
+.gx-edit-content {
+  // Dummy animation to trigger the onAnimationStart event
+  &:-webkit-autofill {
+    animation: AutoFillStart 0.000001s;
+    transition: background-color 99999999s 0s;
   }
 
-  @keyframes AutoFillStart {
-    0% {
-      visibility: inherit;
-    }
+  // Dummy animation to trigger the onAnimationStart event
+  &:not(:-webkit-autofill) {
+    animation: AutoFillCancel 0.000001s;
   }
-  @keyframes AutoFillCancel {
-    0% {
-      visibility: inherit;
-    }
-  }
+}
 
-  // The [area="field"] attribute is used for more specificity. Otherwise, the
-  // style would be removed when the control is focused or hovered
-  &.gx-edit--auto-fill,
-  &[area="field"].gx-edit--auto-fill:focus-within,
-  &[area="field"].gx-edit--auto-fill:hover {
-    background-color: var(--gx-edit-auto-fill-background-color);
+@keyframes AutoFillStart {
+  0% {
+    visibility: inherit;
   }
+}
+@keyframes AutoFillCancel {
+  0% {
+    visibility: inherit;
+  }
+}
+
+// The [area="field"] attribute is used for more specificity. Otherwise, the
+// style would be removed when the control is focused or hovered
+:host(.gx-edit--auto-fill),
+:host([area="field"].gx-edit--auto-fill:focus-within),
+:host([area="field"].gx-edit--auto-fill:hover) {
+  background-color: var(--gx-edit-auto-fill-background-color);
 }
