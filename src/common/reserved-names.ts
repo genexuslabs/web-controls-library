@@ -1,4 +1,8 @@
 export const DISABLED_CLASS = "gx-disabled";
 
-export const LINE_MEASURING = "gx-line-measuring";
-export const HEIGHT_MEASURING = "gx-height-measuring";
+// - - - - - - - - - - - - - - - - - - - -
+//               Line clamp
+// - - - - - - - - - - - - - - - - - - - -
+export const HEIGHT_MEASURING = "height-measuring";
+export const LINE_CLAMP = "line-clamp";
+export const LINE_MEASURING = "line-measuring";

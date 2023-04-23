@@ -94,7 +94,15 @@
 }
 
 @mixin line-clamp-2() {
-  .gx-line-clamp {
+  // Used to measure the box height, in order to make the lines clampable
+  .height-measuring {
+    display: flex;
+    width: 0;
+    height: 100%;
+    visibility: hidden;
+  }
+
+  .line-clamp {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: var(--max-lines);
@@ -102,7 +110,7 @@
   }
 
   // Used to measure the line height, in order to make the lines clampable
-  .gx-line-measuring {
+  .line-measuring {
     visibility: hidden;
     position: absolute;
   }

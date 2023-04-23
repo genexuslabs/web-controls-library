@@ -25,6 +25,7 @@ import { EditType, FontCategory } from "../../common/types";
 import {
   DISABLED_CLASS,
   HEIGHT_MEASURING,
+  LINE_CLAMP,
   LINE_MEASURING
 } from "../../common/reserved-names";
 
@@ -49,7 +50,7 @@ const MIN_DATE_VALUE: { [key: string]: string } = {
 /**
  * @part gx-edit__content - The main content displayed in the control. This part applies to each configuration that the gx-edit control may have.
  * @part gx-edit__date-placeholder - A placeholder displayed when the control is editable (`readonly="false"`), has no value set, and its type is `"datetime-local" | "date" | "time"`.
- * @part gx-edit__trigger-content - The trigger button displayed on the right side of the control when `show-trigger="true"`.
+ * @part gx-edit__trigger-button - The trigger button displayed on the right side of the control when `show-trigger="true"`.
  *
  * @slot trigger-content - The slot used for the content of the trigger button.
  */
@@ -67,8 +68,8 @@ export class Edit
   constructor() {
     makeLinesClampable(
       this,
-      ".gx-height-measuring",
-      ".gx-line-measuring",
+      "." + HEIGHT_MEASURING,
+      "." + LINE_MEASURING,
       true
     );
   }
@@ -423,9 +424,9 @@ export class Edit
                 aria-disabled={this.disabled ? "true" : undefined}
                 aria-label={this.labelCaption || undefined}
                 class={{
-                  "gx-edit-content": true,
+                  content: true,
                   "readonly-date": this.isDateType,
-                  "gx-line-clamp": this.lineClamp
+                  [LINE_CLAMP]: this.lineClamp
                 }}
                 part="gx-edit__content"
                 style={
@@ -448,21 +449,21 @@ export class Edit
                 [
                   <textarea
                     {...attrs}
-                    class="gx-edit-content"
+                    class="content"
                     part="gx-edit__content"
                     value={this.value}
                     ref={el => (this.inputRef = el as HTMLElement)}
                   ></textarea>,
 
                   // The space at the end of the value is necessary to correctly display the enters
-                  <p class="gx-edit__hidden-multiline">{this.value} </p>
+                  <p class="hidden-multiline">{this.value} </p>
                 ]
               ) : (
                 <input
                   {...attrs}
                   class={{
-                    "gx-edit-content": true,
-                    "gx-null-date": this.isDateType && !this.value
+                    content: true,
+                    "null-date": this.isDateType && !this.value
                   }}
                   part="gx-edit__content"
                   type={this.type}
@@ -474,10 +475,10 @@ export class Edit
               this.showTrigger && (
                 <button
                   class={{
-                    "gx-edit__trigger-button": true,
+                    "trigger-button": true,
                     disabled: this.disabled
                   }}
-                  part="gx-edit__trigger-content"
+                  part="gx-edit__trigger-button"
                   type="button"
                   disabled={this.disabled}
                   onClick={this.handleTriggerClick}
@@ -490,7 +491,7 @@ export class Edit
               this.isDateType && !this.value && (
                 <p
                   aria-hidden="true"
-                  class="gx-edit-date-placeholder"
+                  class="date-placeholder"
                   part="gx-edit__date-placeholder"
                 >
                   {this.placeholder}

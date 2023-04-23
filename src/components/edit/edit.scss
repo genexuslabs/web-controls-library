@@ -57,14 +57,7 @@
   white-space: break-spaces;
 }
 
-.gx-height-measuring {
-  display: flex;
-  width: 0;
-  height: 100%;
-  visibility: hidden;
-}
-
-.gx-edit-content {
+.content {
   width: 100%;
 
   &::placeholder {
@@ -76,7 +69,7 @@
 //           Multiline Auto Grow
 // - - - - - - - - - - - - - - - - - - - -
 // Hide textarea resize button
-:host(.gx-edit--multiline) > .gx-edit-content {
+:host(.gx-edit--multiline) > .content {
   position: absolute;
   inset: 0;
   padding: inherit;
@@ -84,7 +77,7 @@
 }
 
 // Implements auto-grow when the gx-edit is multiline
-.gx-edit__hidden-multiline {
+.hidden-multiline {
   width: 100%;
   height: 100%;
 
@@ -108,7 +101,7 @@
 }
 
 :host(.gx-edit--editable-date),
-:host(.gx-edit--editable-date) > .gx-edit-content {
+:host(.gx-edit--editable-date) > .content {
   cursor: pointer;
 }
 
@@ -117,7 +110,7 @@
 // - - - - - - - - - - - - - - - - - - - -
 // Used when the gx-edit has type="datetime-local" | "date" | "time"
 // and its value is not set
-.gx-null-date {
+.null-date {
   opacity: 0; // Hide the input by default
   transition: opacity $transition-duration;
 
@@ -125,14 +118,14 @@
   &:focus {
     opacity: 1; // Hide the input when focused
 
-    & ~ .gx-edit-date-placeholder {
+    & ~ .date-placeholder {
       opacity: 0;
     }
   }
 }
 
 // Implements a non-native placeholder for date types
-.gx-edit-date-placeholder {
+.date-placeholder {
   display: flex;
   position: absolute;
   flex: 1;
@@ -152,7 +145,7 @@
   padding-inline-start: inherit;
 }
 
-.gx-edit__trigger-button {
+.trigger-button {
   display: flex;
   align-items: center;
   justify-items: center;
@@ -171,7 +164,7 @@
 // - - - - - - - - - - - - - - - -
 //            Auto Fill
 // - - - - - - - - - - - - - - - -
-.gx-edit-content {
+.content {
   // Dummy animation to trigger the onAnimationStart event
   &:-webkit-autofill {
     animation: AutoFillStart 0.000001s;
