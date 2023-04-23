@@ -387,6 +387,7 @@ export class Edit
         class={{
           "gx-edit--auto-fill": this.autoFilled,
           "gx-edit--cursor-text": this.shouldAddCursorText && !this.disabled,
+          "gx-edit--multiline": this.shouldAddResize,
           "gx-edit--readonly": this.isReadonly,
           "gx-edit--single-line":
             this.type === "date" || this.type === "datetime-local",
@@ -436,14 +437,17 @@ export class Edit
             ]
           : [
               this.multiline ? (
-                <textarea
-                  {...attrs}
-                  class="gx-edit-content"
-                  value={this.value}
-                  ref={el => (this.inputRef = el as HTMLElement)}
-                >
-                  {this.value}
-                </textarea>
+                [
+                  <textarea
+                    {...attrs}
+                    class="gx-edit-content"
+                    value={this.value}
+                    ref={el => (this.inputRef = el as HTMLElement)}
+                  ></textarea>,
+
+                  // The space at the end of the value is necessary to correctly display the enters
+                  <p class="gx-edit__hidden-multiline">{this.value} </p>
+                ]
               ) : (
                 <input
                   {...attrs}

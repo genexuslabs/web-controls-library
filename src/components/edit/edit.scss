@@ -65,6 +65,32 @@ gx-edit {
   }
 
   // - - - - - - - - - - - - - - - - - - - -
+  //           Multiline Auto Grow
+  // - - - - - - - - - - - - - - - - - - - -
+  // Hide textarea resize button
+  &.gx-edit--multiline > .gx-edit-content {
+    position: absolute;
+    inset: 0;
+    padding: inherit;
+    resize: unset;
+  }
+
+  // Implements auto-grow when the gx-edit is multiline
+  & > .gx-edit__hidden-multiline {
+    width: 100%;
+    height: 100%;
+
+    // Implement line breaks
+    white-space: pre-wrap;
+
+    // Break words that do not enter in a single line
+    word-break: break-word;
+
+    // Hide from the accessibility tree but take space in the layout
+    visibility: hidden;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - -
   //    Custom placeholder for date types
   // - - - - - - - - - - - - - - - - - - - -
   // Used when the gx-edit has type="datetime-local" | "date" | "time"

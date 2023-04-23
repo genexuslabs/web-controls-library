@@ -34,18 +34,36 @@ gx-card-header > li:not([slot="low-priority-action"]) > gx-button {
 
   flex-direction: row; // Do not change flex-direction. All alignments will break
 
-  // Used when autoGrow = false in the gx-textblock and gx-edit controls to
-  // ensure the content does not overflows
-  &[max-height],
+  &.without-auto-grow-cell,
   &:not([auto-grow]) {
+    // Used when auto-grow = false in the gx-textblock control to ensure the
+    // content does not overflows
     & > gx-textblock::part(content) {
       position: absolute;
     }
 
+    // Used when auto-grow = false and readonly = true in the gx-edit control
+    // to ensure the content does not overflows
     & > gx-form-field > .gx-edit--readonly > .gx-edit-content {
       position: absolute;
       inset-inline: 0; // Not "inset" property, since the control has vertical alignment
       padding-inline: inherit;
+    }
+
+    // WA to disable auto grow in the multiline edit
+    // @todo TODO: Add auto-grow property in the gx-edit to not render the hidden-multiline
+    & > gx-form-field > .gx-edit--multiline > .gx-edit__hidden-multiline {
+      display: none;
+    }
+  }
+
+  // Used when auto-grow = true, readonly = false and multiline = true in the
+  // gx-edit control
+  &.auto-grow-cell,
+  &[auto-grow] {
+    // Multiline Auto Grow for gx-edit
+    & > gx-form-field > .gx-edit--multiline {
+      resize: vertical;
     }
   }
 }
