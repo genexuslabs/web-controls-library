@@ -393,10 +393,9 @@ export class Edit
         class={{
           "gx-edit--auto-fill": this.autoFilled,
           "gx-edit--cursor-text": this.shouldAddCursorText && !this.disabled,
+          "gx-edit--editable-date": this.isDateType && !this.isReadonly,
           "gx-edit--multiline": this.shouldAddResize,
           "gx-edit--readonly": this.isReadonly,
-          "gx-edit--single-line":
-            this.type === "date" || this.type === "datetime-local",
           "gx-edit__trigger-button-space": this.showTrigger,
 
           [this.disabledClass]: this.disabled,
@@ -425,6 +424,7 @@ export class Edit
                 aria-label={this.labelCaption || undefined}
                 class={{
                   "gx-edit-content": true,
+                  "readonly-date": this.isDateType,
                   "gx-line-clamp": this.lineClamp
                 }}
                 part="gx-edit__content"
