@@ -13,5 +13,32 @@
   </head>
   <body>
     <h1>Test page</h1>
+    <gx-cropper
+      src="./assets/1.jpg"
+      width="200"
+      height="200"
+      show-behavior="inline"
+    ></gx-cropper>
+    <button onclick="getImage()">Obtener Imagen</button>
+
+    <script>
+      let cropper = null;
+      window.addEventListener(
+        "load",
+        () => {
+          cropper = document.getElementsByTagName("gx-cropper")[0];
+          document.addEventListener("gxCropperImageExported", () => {
+            console.log("entra evento gxCropperImageExported");
+          });
+        },
+        false
+      );
+
+      function getImage() {
+        if (cropper) {
+          cropper.setAttribute("src", "./assets/2.jpg");
+        }
+      }
+    </script>
   </body>
 </html>

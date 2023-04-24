@@ -248,14 +248,6 @@ export namespace Components {
   }
   interface GxCropper {
     /**
-     * This attribute lets you specify if the popup is automatically closed when an action is clicked.
-     */
-    autoClose: boolean;
-    /**
-     * This attribute lets you specify the label for the close button. Important for accessibility.
-     */
-    closeButtonLabel: string;
-    /**
      * A CSS class to set as the `gx-cropper` element class.
      */
     cssClass: string;
@@ -268,33 +260,17 @@ export namespace Components {
      */
     height: number;
     /**
-     * If the showBehavior is popup, this attribute lets you specify if the popup is opened or closed.
-     */
-    opened: boolean;
-    /**
-     * This attribute lets you specify the height of the popup.
-     */
-    popupHeight: string;
-    /**
-     * This attribute lets you specify the width of the popup.
-     */
-    popupWidth: string;
-    /**
      * How the cropper will be show.
      */
     showBehavior: "popup" | "inline";
     /**
-     * This attribute lets you specify if a footer is rendered at the bottom of the popup.
-     */
-    showFooter: boolean;
-    /**
-     * This attribute lets you specify if a header is rendered on top of the popup.
-     */
-    showHeader: boolean;
-    /**
      * The source of the image.
      */
     src: string;
+    /**
+     * If the showBehavior is popup, calculate dimensions.
+     */
+    started: false;
     /**
      * The width for crop the image.
      */
@@ -3264,14 +3240,6 @@ declare namespace LocalJSX {
   }
   interface GxCropper {
     /**
-     * This attribute lets you specify if the popup is automatically closed when an action is clicked.
-     */
-    autoClose?: boolean;
-    /**
-     * This attribute lets you specify the label for the close button. Important for accessibility.
-     */
-    closeButtonLabel?: string;
-    /**
      * A CSS class to set as the `gx-cropper` element class.
      */
     cssClass?: string;
@@ -3284,41 +3252,17 @@ declare namespace LocalJSX {
      */
     onGxCropperImageExported?: (event: GxCropperCustomEvent<string>) => void;
     /**
-     * Fired when the popup is closed
-     */
-    onGxCropperPopupClose?: (event: GxCropperCustomEvent<any>) => void;
-    /**
-     * Fired when the popup is opened
-     */
-    onGxCropperPopupOpen?: (event: GxCropperCustomEvent<any>) => void;
-    /**
-     * If the showBehavior is popup, this attribute lets you specify if the popup is opened or closed.
-     */
-    opened?: boolean;
-    /**
-     * This attribute lets you specify the height of the popup.
-     */
-    popupHeight?: string;
-    /**
-     * This attribute lets you specify the width of the popup.
-     */
-    popupWidth?: string;
-    /**
      * How the cropper will be show.
      */
     showBehavior?: "popup" | "inline";
     /**
-     * This attribute lets you specify if a footer is rendered at the bottom of the popup.
-     */
-    showFooter?: boolean;
-    /**
-     * This attribute lets you specify if a header is rendered on top of the popup.
-     */
-    showHeader?: boolean;
-    /**
      * The source of the image.
      */
     src?: string;
+    /**
+     * If the showBehavior is popup, calculate dimensions.
+     */
+    started?: false;
     /**
      * The width for crop the image.
      */

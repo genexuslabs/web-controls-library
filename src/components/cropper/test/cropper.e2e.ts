@@ -68,36 +68,23 @@ describe("gx-cropper", () => {
     expect((await cropperContainer.getComputedStyle()).height).toBe(height);
     expect((await cropperContainer.getComputedStyle()).width).toBe(width);
   });
-  it("trigger open envent when opened property is set to true", async () => {
-    page = await newE2EPage();
-    await page.setContent("<gx-cropper></gx-cropper>");
-    const isOpened = await page.spyOnEvent("open");
-    element = await page.find("gx-cropper");
-    element.setProperty("opened", true);
-    await page.waitForChanges();
-    expect(isOpened).toHaveReceivedEvent();
-  });
 
   it("trigger gxCropperImageChanged envent when image change", async () => {
     page = await newE2EPage();
-    await page.setContent(`<gx-cropper src="./assets/tree-middle.jpg" width="200" height="200" show-behavior="popup" >
-    <span slot="header">Crop image</span>
-    <button slot="primaryaction" id="btn-get-crop-popup" onclick="getImage()">Get Image</button>
-  </gx-cropper>`);
-    const imageChanged = await page.spyOnEvent("gxCropperImageChanged");
+
+    await page.setContent(
+      `<gx-cropper src="./assets/1.jpg" width="200" height="200" show-behavior="inline"></gx-cropper>`
+    );
+
     element = await page.find("gx-cropper");
-    element.setProperty("src", "./assets/tree-middle.jpg");
-    await page.waitForChanges();
-    expect(imageChanged).not.toHaveReceivedEvent();
-    element.setProperty("src", "./assets/lighthouse-big.jpg");
+    const imageChanged = await element.spyOnEvent("gxCropperImageExported");
+    element.setAttribute("src", "./assets/2.jpg");
     await page.waitForChanges();
     expect(imageChanged).toHaveReceivedEvent();
   });
   it("change showInside property when gx-cropper-selection is moving", async () => {
     page = await newE2EPage();
     await page.setContent(`<gx-cropper src="./assets/tree-middle.jpg" width="200" height="200" show-behavior="popup" >
-    <span slot="header">Crop image</span>
-    <button slot="primaryaction" id="btn-get-crop-popup" onclick="getImage()">Get Image</button>
   </gx-cropper>`);
     element = await page.find("gx-cropper");
     element.setAttribute("opened", true);
