@@ -9,6 +9,19 @@
   }
 }
 
+@mixin reset-browser-defaults-properties-1() {
+  background-color: unset;
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  margin: 0;
+  padding: 0;
+  outline: 0;
+}
+
 @mixin reset-browser-defaults() {
   button,
   fieldset,
@@ -16,15 +29,7 @@
   select,
   optgroup,
   textarea {
-    background-color: unset;
-    border: none;
-    color: inherit;
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
-    margin: 0;
-    padding: 0;
-    outline: 0;
+    @include reset-browser-defaults-properties-1();
   }
 
   ul,

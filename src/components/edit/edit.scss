@@ -10,11 +10,6 @@
 }
 
 @include box-sizing();
-
-// This solution would not be needed if the gx-edit with format="HTML" puts its
-// content as an slot, instead of rendering it in the shadow root
-@include reset-browser-defaults();
-
 @include line-clamp-2();
 
 :host {
@@ -68,6 +63,27 @@
   @include scrollbar-customization-for-one-element();
 }
 
+.content,
+.trigger-button {
+  @include reset-browser-defaults-properties-1();
+}
+
+// - - - - - - - - - - - - - - - - - - - -
+//              Format = HTML
+// - - - - - - - - - - - - - - - - - - - -
+.html-container {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.html-content {
+  width: 100%;
+}
+
 // - - - - - - - - - - - - - - - - - - - -
 //           Multiline Auto Grow
 // - - - - - - - - - - - - - - - - - - - -
@@ -75,6 +91,7 @@
 :host(.gx-edit--multiline) > .content {
   position: absolute;
   inset: 0;
+  height: 100%; // Necessary for Mozilla Firefox
   padding: inherit;
   resize: unset;
 }

@@ -50,6 +50,12 @@ gx-card-header > li:not([slot="low-priority-action"]) > gx-button {
       padding-inline: inherit;
     }
 
+    // Used when auto-grow = false and format = HTML in the gx-edit control
+    // to ensure the content does not overflows
+    & > gx-form-field > .gx-edit--readonly::part(gx-edit__html-content) {
+      position: absolute;
+    }
+
     // WA to disable auto grow in the multiline edit
     // @todo TODO: Add auto-grow property in the gx-edit to not render the hidden-multiline
     & > gx-form-field > .gx-edit--multiline::part(gx-edit__hidden-multiline) {

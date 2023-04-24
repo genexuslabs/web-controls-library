@@ -48,10 +48,13 @@ const MIN_DATE_VALUE: { [key: string]: string } = {
 };
 
 /**
- * @part gx-edit__content - The main content displayed in the control. This part applies to each configuration that the gx-edit control may have.
+ * @part gx-edit__content - The main content displayed in the control. This part only applies when `format="Text"`.
  * @part gx-edit__date-placeholder - A placeholder displayed when the control is editable (`readonly="false"`), has no value set, and its type is `"datetime-local" | "date" | "time"`.
+ * @part gx-edit__html-container - The container of the main content displayed in the control. This part only applies when `format="HTML"`.
+ * @part gx-edit__html-content - The main content displayed in the control. This part only applies when `format="HTML"`.
  * @part gx-edit__trigger-button - The trigger button displayed on the right side of the control when `show-trigger="true"`.
  *
+ * @slot - The slot for the html content when `format="HTML"`.
  * @slot trigger-content - The slot used for the content of the trigger button.
  */
 @Component({
@@ -221,11 +224,6 @@ export class Edit
    * it is affected by most of the defined properties.
    */
   @Prop() readonly format: "Text" | "HTML" = "Text";
-
-  /**
-   * Used as the innerHTML when `format` = `HTML`.
-   */
-  @Prop() readonly inner: string = "";
 
   /**
    * The `change` event is emitted when a change to the element's value is
@@ -408,7 +406,9 @@ export class Edit
         // Alignment
         data-text-align=""
         data-valign={!this.isReadonly && !this.multiline ? "" : undefined}
-        data-valign-readonly={this.isReadonly ? "" : undefined}
+        data-valign-readonly={
+          this.isReadonly && this.format === "Text" ? "" : undefined
+        }
         // Add focus to the control through sequential keyboard navigation and visually clicking
         tabindex={shouldAddFocus ? "0" : undefined}
         onClick={
@@ -424,19 +424,29 @@ export class Edit
                 aria-disabled={this.disabled ? "true" : undefined}
                 aria-label={this.labelCaption || undefined}
                 class={{
-                  content: true,
+                  content: this.format === "Text",
+                  "html-container": this.format === "HTML",
                   "readonly-date": this.isDateType,
                   [LINE_CLAMP]: this.lineClamp
                 }}
-                part="gx-edit__content"
+                part={
+                  this.format === "Text"
+                    ? "gx-edit__content"
+                    : "gx-edit__html-container gx-valign"
+                }
                 style={
                   this.lineClamp && {
                     "--max-lines": this.maxLines.toString()
                   }
                 }
-                innerHTML={this.format === "HTML" ? this.inner : undefined}
               >
-                {this.getReadonlyContent()}
+                {this.format === "Text" ? (
+                  this.getReadonlyContent()
+                ) : (
+                  <div class="html-content" part="gx-edit__html-content">
+                    <slot />
+                  </div>
+                )}
               </this.readonlyTag>,
 
               this.lineClamp && [
