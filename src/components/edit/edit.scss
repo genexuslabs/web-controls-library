@@ -60,6 +60,11 @@
     @include placeholder-color();
   }
 
+  // Hide native eye icon from password input in MS Edge
+  &::-ms-reveal {
+    display: none;
+  }
+
   @include scrollbar-customization-for-one-element();
 }
 
