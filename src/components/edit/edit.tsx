@@ -188,6 +188,12 @@ export class Edit
   @Prop() readonly showTrigger: boolean;
 
   /**
+   * This attribute lets you specify the label for the trigger button.
+   * Important for accessibility.
+   */
+  @Prop() readonly triggerButtonLabel: string;
+
+  /**
    * The type of control to render. A subset of the types supported by the `input` element is supported:
    *
    * * `"date"`
@@ -484,6 +490,7 @@ export class Edit
 
               this.showTrigger && (
                 <button
+                  aria-label={this.triggerButtonLabel}
                   class={{
                     "trigger-button": true,
                     disabled: this.disabled
