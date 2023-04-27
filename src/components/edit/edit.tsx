@@ -472,7 +472,7 @@ export class Edit
                   ></textarea>,
 
                   // The space at the end of the value is necessary to correctly display the enters
-                  <p class="hidden-multiline">{this.value} </p>
+                  <div class="hidden-multiline">{this.value} </div>
                 ]
               ) : (
                 <input
@@ -506,13 +506,13 @@ export class Edit
 
               // Implements a non-native placeholder for date types
               this.isDateType && !this.value && (
-                <p
+                <div
                   aria-hidden="true"
                   class="date-placeholder"
                   part="gx-edit__date-placeholder"
                 >
                   {this.placeholder}
-                </p>
+                </div>
               )
             ]}
       </Host>
