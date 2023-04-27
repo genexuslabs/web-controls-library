@@ -55,6 +55,7 @@
 
 .content {
   width: 100%;
+  cursor: inherit;
 
   &::placeholder {
     @include placeholder-color();
@@ -125,8 +126,7 @@
   text-overflow: ellipsis;
 }
 
-:host(.gx-edit--editable-date),
-:host(.gx-edit--editable-date) > .content {
+:host(.gx-edit--editable-date) {
   cursor: pointer;
 }
 
