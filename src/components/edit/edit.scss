@@ -212,11 +212,3 @@
     visibility: inherit;
   }
 }
-
-// The [area="field"] attribute is used for more specificity. Otherwise, the
-// style would be removed when the control is focused or hovered
-:host(.gx-edit--auto-fill),
-:host([area="field"].gx-edit--auto-fill:focus-within),
-:host([area="field"].gx-edit--auto-fill:hover) {
-  background-color: var(--gx-edit-auto-fill-background-color);
-}

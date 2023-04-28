@@ -74,6 +74,19 @@ gx-card-header > li:not([slot="low-priority-action"]) > gx-button {
   }
 }
 
+// - - - - - - - - - - - - - - - - - - - -
+//                 gx-edit
+// - - - - - - - - - - - - - - - - - - - -
+// The [area="field"] attribute is used for more specificity. Otherwise, the
+// style would be removed when the control is focused or hovered
+gx-edit[area="field"]:is(
+    .gx-edit--auto-fill,
+    .gx-edit--auto-fill:focus-within,
+    .gx-edit--auto-fill:hover
+  ) {
+  background-color: var(--gx-edit-auto-fill-background-color);
+}
+
 // Style applied to the highlightable controls
 [data-has-action],
 button {

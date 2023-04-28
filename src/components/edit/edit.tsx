@@ -389,6 +389,7 @@ export class Edit
 
       onChange: this.handleChange,
       onInput: this.handleValueChanging,
+      onAnimationStart: this.handleAutoFill,
       placeholder: this.placeholder,
       step: DATE_TYPES.includes(this.type) ? "1" : undefined
     };
@@ -422,7 +423,6 @@ export class Edit
             ? this.focusInnerInputOnClick
             : null
         }
-        onAnimationStart={this.handleAutoFill}
       >
         {this.isReadonly
           ? [
