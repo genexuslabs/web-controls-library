@@ -70,7 +70,7 @@ export class GxCropper {
 
   @Watch("started")
   startedHandler(newValue: boolean, oldValue = false) {
-    if (newValue === oldValue || this.showBehavior === "inline") {
+    if (newValue === oldValue || this.showBehavior === "Inline") {
       return;
     }
 
@@ -85,7 +85,7 @@ export class GxCropper {
   /**
    * How the cropper will be show.
    */
-  @Prop() readonly showBehavior: "popup" | "inline" = "inline";
+  @Prop() readonly showBehavior: "Popup" | "Inline" = "Inline";
 
   /**
    * The source of the image.
