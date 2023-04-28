@@ -3,7 +3,10 @@
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  --crop-corner-size: 7px;
+  --crop-corner-size: 5px;
+  padding: 2px;
+  padding-bottom: calc(var(--crop-corner-size) * 2 + 2px);
+  overflow: hidden;
 }
 
 :host(*) {

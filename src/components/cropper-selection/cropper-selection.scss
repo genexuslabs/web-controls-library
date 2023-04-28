@@ -1,14 +1,14 @@
 :host {
-  --crop-selector-color: blue;
-  --crop-corner-size: 7px;
+  --crop-selector-color: #fefefe;
+  --crop-corner-size: 5px;
 
   display: block;
   position: absolute;
   left: 0;
   top: 0;
-  border: 2px solid var(--crop-selector-color);
+  // border: 2px solid var(--crop-selector-color);
   box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.65);
-  /* outline: rgba(0, 0, 0, 0.65) solid 1px; */
+  outline: rgba(0, 0, 0, 0.65) solid 1px;
   cursor: move;
   box-sizing: border-box;
 }
@@ -22,29 +22,37 @@
   z-index: 1;
 }
 .corner.corner-tl {
-  left: calc(var(--crop-corner-size) * -1);
-  top: calc(var(--crop-corner-size) * -1);
+  left: calc(var(--crop-corner-size) * -1 + 2px);
+  top: calc(var(--crop-corner-size) / 2 * -1);
+  border-top: var(--crop-selector-color) var(--crop-corner-size) solid;
+  border-left: var(--crop-selector-color) var(--crop-corner-size) solid;
 }
 .corner.corner-tr {
-  right: calc(var(--crop-corner-size) * -1);
-  top: calc(var(--crop-corner-size) * -1);
+  right: calc(var(--crop-corner-size) * -1 + 4px);
+  top: calc(var(--crop-corner-size) / 2 * -1);
+  border-top: var(--crop-selector-color) var(--crop-corner-size) solid;
+  border-right: var(--crop-selector-color) var(--crop-corner-size) solid;
   cursor: nesw-resize;
 }
 .corner.corner-bl {
-  left: calc(var(--crop-corner-size) * -1);
-  bottom: calc(var(--crop-corner-size) * -1);
+  left: calc(var(--crop-corner-size) * -1 + 2px);
+  bottom: calc(var(--crop-corner-size) / 2 * -1);
+  border-bottom: var(--crop-selector-color) var(--crop-corner-size) solid;
+  border-left: var(--crop-selector-color) var(--crop-corner-size) solid;
   cursor: nesw-resize;
 }
 .corner.corner-br {
-  right: calc(var(--crop-corner-size) * -1);
-  bottom: calc(var(--crop-corner-size) * -1);
+  right: calc(var(--crop-corner-size) * -1 + 4px);
+  bottom: calc(var(--crop-corner-size) / 2 * -1);
+  border-bottom: var(--crop-selector-color) var(--crop-corner-size) solid;
+  border-right: var(--crop-selector-color) var(--crop-corner-size) solid;
   cursor: nwse-resize;
 }
 .corner .corner-visual {
-  width: calc(var(--crop-corner-size) * 2 - 1px);
-  height: calc(var(--crop-corner-size) * 2 - 1px);
-  background-color: var(--crop-selector-color);
-  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  // background-color: var(--crop-selector-color);
+  // border-radius: 50%;
   z-index: 1;
 }
 .corner.corner-tl .corner-visual {
