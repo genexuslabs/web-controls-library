@@ -5,6 +5,7 @@
   display: inline-flex;
   width: var(--gx-icon-size);
   height: var(--gx-icon-size);
+  pointer-events: none;
 }
 
 svg {

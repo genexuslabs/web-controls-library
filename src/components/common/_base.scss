@@ -85,6 +85,29 @@
   }
 }
 
+@mixin line-clamp-2() {
+  // Used to measure the box height, in order to make the lines clampable
+  .height-measuring {
+    display: flex;
+    width: 0;
+    height: 100%;
+    visibility: hidden;
+  }
+
+  .line-clamp {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--max-lines);
+    overflow: hidden;
+  }
+
+  // Used to measure the line height, in order to make the lines clampable
+  .line-measuring {
+    visibility: hidden;
+    position: absolute;
+  }
+}
+
 @mixin scss-custom-option-control($option-border-radius: 100%) {
   $custom-option-size: min(1em, 20px);
   $disabled-color: #a5a8aac0;

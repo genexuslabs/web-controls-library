@@ -58,20 +58,22 @@ export function makeLinesClampable(
 
   overrideMethod(component, "componentDidLoad", {
     before: () => {
+      const componentElement = component.element;
+
       if (componentHasShadowDOM) {
-        contentContainerElement = component.element.shadowRoot.querySelector(
+        contentContainerElement = componentElement.shadowRoot.querySelector(
           contentContainerElementSelector
         ) as HTMLElement;
 
-        lineMeasuringElement = component.element.shadowRoot.querySelector(
+        lineMeasuringElement = componentElement.shadowRoot.querySelector(
           lineMeasuringElementSelector
         ) as HTMLElement;
       } else {
-        contentContainerElement = component.element.querySelector(
+        contentContainerElement = componentElement.querySelector(
           contentContainerElementSelector
         ) as HTMLElement;
 
-        lineMeasuringElement = component.element.querySelector(
+        lineMeasuringElement = componentElement.querySelector(
           lineMeasuringElementSelector
         ) as HTMLElement;
       }
@@ -88,7 +90,7 @@ export function makeLinesClampable(
       });
 
       // Observe the `content-container` and line height
-      resizeObserverContainer.observe(component.element);
+      resizeObserverContainer.observe(componentElement);
       resizeObserverContainer.observe(lineMeasuringElement);
     }
   });
