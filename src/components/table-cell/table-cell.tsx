@@ -2,8 +2,7 @@ import { Component, Element, Prop, h, Host } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
-  shadow: false,
-  styleUrl: "table-cell.scss",
+  shadow: true,
   tag: "gx-table-cell"
 })
 export class TableCell implements GxComponent {
@@ -33,12 +32,6 @@ export class TableCell implements GxComponent {
    * Ignored if its content has `invisible-mode="collapse"` and is hidden.
    */
   @Prop() readonly minHeight: string = null;
-
-  /**
-   * True to add a fading overlay on the right and bottom area of the cell to signify
-   * that the content is longer than the space allows.
-   */
-  @Prop() readonly showContentFade = false;
 
   /**
    * Defines the vertical alignment of the content of the cell.
@@ -95,10 +88,7 @@ export class TableCell implements GxComponent {
   render() {
     return (
       <Host
-        class={{
-          "gx-cell": true,
-          "gx-long-content-fade": this.showContentFade
-        }}
+        class="gx-cell"
         style={{
           "grid-area": this.area,
           "min-height": this.minHeight,
