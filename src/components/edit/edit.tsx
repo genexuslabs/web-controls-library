@@ -466,7 +466,7 @@ export class Edit
                 [
                   <textarea
                     {...attrs}
-                    class="content"
+                    class="content autofill"
                     part={PART_CONTENT}
                     value={this.value}
                     ref={el => (this.inputRef = el as HTMLElement)}
@@ -479,7 +479,7 @@ export class Edit
                 <input
                   {...attrs}
                   class={{
-                    content: true,
+                    "content autofill": true,
                     "null-date": this.isDateType && !this.value
                   }}
                   part={PART_CONTENT}

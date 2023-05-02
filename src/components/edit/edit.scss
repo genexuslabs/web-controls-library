@@ -189,7 +189,7 @@
 // - - - - - - - - - - - - - - - -
 //            Auto Fill
 // - - - - - - - - - - - - - - - -
-.content {
+.autofill {
   // Dummy animation to trigger the onAnimationStart event
   &:-webkit-autofill {
     animation: AutoFillStart 0.000001s;
