@@ -13,7 +13,7 @@ import {
 const EMPTY_TRACE_LIST_INDEX = -3;
 
 /**
- * @part canvas - The canvas where to make the annotations.
+ * @part gx-image-annotations__canvas - The canvas where to make the annotations.
  */
 @Component({
   tag: "gx-image-annotations",
@@ -506,8 +506,7 @@ export class GxImageAnnotations {
         }}
       >
         <canvas
-          id="canvas"
-          part="canvas"
+          part="gx-image-annotations__canvas"
           ref={canvasElement =>
             (this.canvas = canvasElement as HTMLCanvasElement)
           }
