@@ -21,16 +21,19 @@ const EMPTY_TRACE_LIST_INDEX = -3;
   shadow: true
 })
 export class GxImageAnnotations {
-  private resizeObserver: ResizeObserver = null;
-  private canvas: HTMLCanvasElement = null;
-  private canvasAnn: any = null;
-  private baseImage: HTMLImageElement = null;
   private initPaint = false;
   private currentMousePositionX = 0;
   private currentMousePositionY = 0;
   private lastSavedImageUrl: string = null;
   private lastSavedImageAnnUrl: string = null;
   private traceIndexChangedFromInside = false;
+
+  // Refs
+  private canvas: HTMLCanvasElement = null;
+  private canvasAnn: any = null;
+  private baseImage: HTMLImageElement = null;
+  private resizeObserver: ResizeObserver = null;
+
   private needForRAF = true; // To prevent redundant RAF (request animation frame) calls
 
   @Element() el: HTMLGxImageAnnotationsElement;
@@ -116,20 +119,14 @@ export class GxImageAnnotations {
   }
 
   /**
-   * Fired when the menu container is opened or closed.
+   * Fired when the annotations change.
    */
-  @Event({
-    eventName: "annotationsChange"
-  })
-  annotationsChange: EventEmitter<AnnotationsChangeEvent>;
+  @Event() annotationsChange: EventEmitter<AnnotationsChangeEvent>;
 
   /**
-   * Fired when the menu container is opened or closed.
+   * Fired when the traceIndex property value is changed.
    */
-  @Event({
-    eventName: "traceIndexChange"
-  })
-  traceIndexChange: EventEmitter<number>;
+  @Event() traceIndexChange: EventEmitter<number>;
 
   componentDidLoad() {
     this.canvasAnn = this.canvas.cloneNode();
