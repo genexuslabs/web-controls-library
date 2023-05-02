@@ -52,6 +52,7 @@ const PART_CONTENT = "gx-edit__content";
 /**
  * @part gx-edit__content - The main content displayed in the control. This part only applies when `format="Text"`.
  * @part gx-edit__date-placeholder - A placeholder displayed when the control is editable (`readonly="false"`), has no value set, and its type is `"datetime-local" | "date" | "time"`.
+ * @part gx-edit__hidden-multiline - The auxiliary content rendered in the control to implement the auto-grow. This part only applies when `format="Text"`, `multiline="true"` and `readonly="false"`.
  * @part gx-edit__html-container - The container of the main content displayed in the control. This part only applies when `format="HTML"`.
  * @part gx-edit__html-content - The main content displayed in the control. This part only applies when `format="HTML"`.
  * @part gx-edit__trigger-button - The trigger button displayed on the right side of the control when `show-trigger="true"`.
@@ -473,7 +474,12 @@ export class Edit
                   ></textarea>,
 
                   // The space at the end of the value is necessary to correctly display the enters
-                  <div class="hidden-multiline">{this.value} </div>
+                  <div
+                    class="hidden-multiline"
+                    part="gx-edit__hidden-multiline"
+                  >
+                    {this.value}{" "}
+                  </div>
                 ]
               ) : (
                 <input
