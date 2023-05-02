@@ -10,7 +10,7 @@
 }
 
 @include box-sizing();
-@include line-clamp-2();
+@include line-clamp();
 
 :host {
   /**
