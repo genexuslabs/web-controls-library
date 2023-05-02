@@ -6,7 +6,12 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { TimerState } from "./components/chronometer/chronometer-timer-state";
-import { EditType, FlexDirection, FlexWrap } from "./common/types";
+import {
+  EditType,
+  FlexDirection,
+  FlexWrap,
+  FontCategory
+} from "./common/types";
 import { SwiperOptions } from "swiper";
 import { AnnotationsChangeEvent } from "./components/image-annotations/image-annotations";
 import { GridMapElement, LayoutSize } from "./components/common/interfaces";
@@ -296,15 +301,9 @@ export namespace Components {
      */
     disabled: false;
     /**
-     * Used to define the semantic of the element when readonly=true.  Font categories are mapped to semantic HTML elements when rendered:  * `"headline"`: `h1` * `"subheadline"`: `h2` * `"body"`: `p` * `"footnote"`: `footer` * `"caption1"`: `span` * `"caption2"`: `span`
+     * Used to define the semantic of the element when `readonly="true"`.
      */
-    fontCategory:
-      | "headline"
-      | "subheadline"
-      | "body"
-      | "footnote"
-      | "caption1"
-      | "caption2";
+    fontCategory: FontCategory;
     /**
      * It specifies the format that will have the edit control.  If `format` = `HTML`, the edit control works as an HTML div and the innerHTML will be the same as the `inner` property specifies. Also, it does not allow any input/editable UI since it works as an HTML div.  If `format` = `Text`, the edit control works as a normal input control and it is affected by most of the defined properties.
      */
@@ -316,15 +315,11 @@ export namespace Components {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable: false;
+    highlightable: boolean;
     /**
-     * Used as the innerHTML when `format` = `HTML`.
+     * The text to set as the label of the gx-edit control.
      */
-    inner: string;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    labelCaption: string;
     /**
      * True to cut text when it overflows, showing an ellipsis (only applies when readonly)
      */
@@ -345,6 +340,10 @@ export namespace Components {
      * If true, a trigger button is shown next to the edit field. The button can be customized adding a child element with `slot="trigger-content"` attribute to specify the content inside the trigger button.
      */
     showTrigger: boolean;
+    /**
+     * This attribute lets you specify the label for the trigger button. Important for accessibility.
+     */
+    triggerButtonLabel: string;
     /**
      * The type of control to render. A subset of the types supported by the `input` element is supported:  * `"date"` * `"datetime-local"` * `"email"` * `"file"` * `"number"` * `"password"` * `"search"` * `"tel"` * `"text"` * `"url"`
      */
@@ -1460,11 +1459,11 @@ export namespace Components {
     /**
      * Returns the id of the inner `input` element (if set).
      */
-    getNativeInputId: () => Promise<any>;
+    getNativeInputId: () => Promise<string>;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     * The text to set as the label of the gx-password-edit control.
      */
-    invisibleMode: "collapse" | "keep-space";
+    labelCaption: string;
     /**
      * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
      */
@@ -1481,10 +1480,6 @@ export namespace Components {
      * Text of the reveal button to offer revealing the password.
      */
     revealButtonTextOn: string;
-    /**
-     * Indicates if the value is revealed or masked.
-     */
-    revealed: boolean;
     /**
      * If true, a reveal password button is shown next to the password input. Pressing the reveal button toggles the password mask, allowing the user to view the password text.
      */
@@ -3244,15 +3239,9 @@ declare namespace LocalJSX {
      */
     disabled?: false;
     /**
-     * Used to define the semantic of the element when readonly=true.  Font categories are mapped to semantic HTML elements when rendered:  * `"headline"`: `h1` * `"subheadline"`: `h2` * `"body"`: `p` * `"footnote"`: `footer` * `"caption1"`: `span` * `"caption2"`: `span`
+     * Used to define the semantic of the element when `readonly="true"`.
      */
-    fontCategory?:
-      | "headline"
-      | "subheadline"
-      | "body"
-      | "footnote"
-      | "caption1"
-      | "caption2";
+    fontCategory?: FontCategory;
     /**
      * It specifies the format that will have the edit control.  If `format` = `HTML`, the edit control works as an HTML div and the innerHTML will be the same as the `inner` property specifies. Also, it does not allow any input/editable UI since it works as an HTML div.  If `format` = `Text`, the edit control works as a normal input control and it is affected by most of the defined properties.
      */
@@ -3260,15 +3249,11 @@ declare namespace LocalJSX {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable?: false;
+    highlightable?: boolean;
     /**
-     * Used as the innerHTML when `format` = `HTML`.
+     * The text to set as the label of the gx-edit control.
      */
-    inner?: string;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    labelCaption?: string;
     /**
      * True to cut text when it overflows, showing an ellipsis (only applies when readonly)
      */
@@ -3301,6 +3286,10 @@ declare namespace LocalJSX {
      * If true, a trigger button is shown next to the edit field. The button can be customized adding a child element with `slot="trigger-content"` attribute to specify the content inside the trigger button.
      */
     showTrigger?: boolean;
+    /**
+     * This attribute lets you specify the label for the trigger button. Important for accessibility.
+     */
+    triggerButtonLabel?: string;
     /**
      * The type of control to render. A subset of the types supported by the `input` element is supported:  * `"date"` * `"datetime-local"` * `"email"` * `"file"` * `"number"` * `"password"` * `"search"` * `"tel"` * `"text"` * `"url"`
      */
@@ -4545,9 +4534,9 @@ declare namespace LocalJSX {
      */
     disabled?: false;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     * The text to set as the label of the gx-password-edit control.
      */
-    invisibleMode?: "collapse" | "keep-space";
+    labelCaption?: string;
     /**
      * The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus.
      */
@@ -4572,10 +4561,6 @@ declare namespace LocalJSX {
      * Text of the reveal button to offer revealing the password.
      */
     revealButtonTextOn?: string;
-    /**
-     * Indicates if the value is revealed or masked.
-     */
-    revealed?: boolean;
     /**
      * If true, a reveal password button is shown next to the password input. Pressing the reveal button toggles the password mask, allowing the user to view the password text.
      */

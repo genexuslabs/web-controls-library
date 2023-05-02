@@ -15,41 +15,93 @@ import {
   makeHighlightable
 } from "../common/highlightable";
 
-import { EditRender } from "../renders/bootstrap/edit/edit-render";
-import { FormComponent } from "../common/interfaces";
-import { cssVariablesWatcher } from "../common/css-variables-watcher";
+import {
+  CustomizableComponent,
+  DisableableComponent
+} from "../common/interfaces";
 import { makeLinesClampable } from "../common/line-clamp";
+
+import { EditType, FontCategory } from "../../common/types";
+import {
+  DISABLED_CLASS,
+  HEIGHT_MEASURING,
+  LINE_CLAMP,
+  LINE_MEASURING
+} from "../../common/reserved-names";
 
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
-import { EditType } from "../../common/types";
 
 const AUTOFILL_START_ANIMATION_NAME = "AutoFillStart";
+let autoEditId = 0;
 
+const DATE_TYPES = ["datetime-local", "date", "time"];
+
+const MAX_DATE_VALUE: { [key: string]: string } = {
+  date: "9999-12-31",
+  "datetime-local": "9999-12-31T23:59:59"
+};
+
+const MIN_DATE_VALUE: { [key: string]: string } = {
+  date: "0001-01-01",
+  "datetime-local": "0001-01-01T00:00:00"
+};
+
+/**
+ * @part gx-edit__content - The main content displayed in the control. This part only applies when `format="Text"`.
+ * @part gx-edit__date-placeholder - A placeholder displayed when the control is editable (`readonly="false"`), has no value set, and its type is `"datetime-local" | "date" | "time"`.
+ * @part gx-edit__html-container - The container of the main content displayed in the control. This part only applies when `format="HTML"`.
+ * @part gx-edit__html-content - The main content displayed in the control. This part only applies when `format="HTML"`.
+ * @part gx-edit__trigger-button - The trigger button displayed on the right side of the control when `show-trigger="true"`.
+ *
+ * @slot - The slot for the html content when `format="HTML"`.
+ * @slot trigger-content - The slot used for the content of the trigger button.
+ */
 @Component({
-  shadow: false,
+  shadow: true,
   styleUrl: "edit.scss",
   tag: "gx-edit"
 })
-export class Edit implements FormComponent, HighlightableComponent {
+export class Edit
+  implements
+    CustomizableComponent,
+    DisableableComponent,
+    HighlightableComponent
+{
   constructor() {
-    this.renderer = new EditRender(this, {
-      handleChange: this.handleChange.bind(this),
-      handleTriggerClick: this.handleTriggerClick.bind(this),
-      handleValueChanging: this.handleValueChanging.bind(this)
-    });
-
-    cssVariablesWatcher(this, [
-      {
-        cssVariableName: "--font-category",
-        propertyName: "fontCategory"
-      }
-    ]);
-
-    makeLinesClampable(this, ".gx-line-clamp-container", ".line-measuring");
+    makeLinesClampable(
+      this,
+      "." + HEIGHT_MEASURING,
+      "." + LINE_MEASURING,
+      true
+    );
   }
 
-  private renderer: EditRender;
+  private disabledClass: "gx-disabled-custom" | "gx-disabled" =
+    "gx-disabled-custom";
+
+  private readonlyTag = "p";
+
+  // Variables calculated in componentWillLoad
+  private isDateType = false;
+  private isReadonly = false;
+  private shouldAddCursorText = false;
+  private shouldAddHighlightedClasses = false;
+  private shouldAddResize = false;
+
+  /**
+   * ID for the inner input
+   */
+  private inputId: string;
+
+  // Refs
+  private inputRef: HTMLElement = null;
+
+  /**
+   * Determine the amount of lines to be displayed in the edit when
+   * `readonly="true"` and `line-clamp="true"`
+   */
+  @State() maxLines = 0;
 
   @Element() element: HTMLGxEditElement;
 
@@ -89,41 +141,21 @@ export class Edit implements FormComponent, HighlightableComponent {
   @Prop() readonly cssClass: string;
 
   /**
-   * Used to define the semantic of the element when readonly=true.
-   *
-   * Font categories are mapped to semantic HTML elements when rendered:
-   *
-   * * `"headline"`: `h1`
-   * * `"subheadline"`: `h2`
-   * * `"body"`: `p`
-   * * `"footnote"`: `footer`
-   * * `"caption1"`: `span`
-   * * `"caption2"`: `span`
-   */
-  @Prop({ mutable: true }) fontCategory:
-    | "headline"
-    | "subheadline"
-    | "body"
-    | "footnote"
-    | "caption1"
-    | "caption2" = "body";
-
-  /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
-
-  /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
   @Prop() readonly disabled = false;
+
+  /**
+   * Used to define the semantic of the element when `readonly="true"`.
+   */
+  @Prop() readonly fontCategory: FontCategory = "p";
+
+  /**
+   * The text to set as the label of the gx-edit control.
+   */
+  @Prop() readonly labelCaption: string;
 
   /**
    * True to cut text when it overflows, showing an ellipsis (only applies when readonly)
@@ -156,6 +188,12 @@ export class Edit implements FormComponent, HighlightableComponent {
   @Prop() readonly showTrigger: boolean;
 
   /**
+   * This attribute lets you specify the label for the trigger button.
+   * Important for accessibility.
+   */
+  @Prop() readonly triggerButtonLabel: string;
+
+  /**
    * The type of control to render. A subset of the types supported by the `input` element is supported:
    *
    * * `"date"`
@@ -179,7 +217,7 @@ export class Edit implements FormComponent, HighlightableComponent {
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = false;
+  @Prop() readonly highlightable: boolean = false;
 
   /**
    * It specifies the format that will have the edit control.
@@ -192,13 +230,6 @@ export class Edit implements FormComponent, HighlightableComponent {
    * it is affected by most of the defined properties.
    */
   @Prop() readonly format: "Text" | "HTML" = "Text";
-
-  /**
-   * Used as the innerHTML when `format` = `HTML`.
-   */
-  @Prop() readonly inner: string = "";
-
-  @State() maxLines = 0;
 
   /**
    * The `change` event is emitted when a change to the element's value is
@@ -223,104 +254,267 @@ export class Edit implements FormComponent, HighlightableComponent {
    */
   @Method()
   async getNativeInputId() {
-    return this.renderer.getNativeInputId();
+    return this.inputId;
   }
 
-  private shouldStyleHostElement = false;
-  private shouldAddHighlightedClasses = true;
-
-  private disabledClass = "disabled-custom";
-
-  componentWillLoad() {
-    this.shouldStyleHostElement = !this.multiline || this.readonly;
-
-    // In case of false, makeHighligtable() function highlights the gx-edit control
-    this.shouldAddHighlightedClasses = !(
-      this.readonly || this.format === "HTML"
-    );
-
-    if (this.format === "HTML" || this.readonly) {
-      this.disabledClass = "disabled";
-    }
+  @Watch("fontCategory")
+  protected handleFontCategoryChange(newValue: FontCategory) {
+    this.readonlyTag = this.getReadonlyTagByFontCategory(newValue);
   }
 
-  componentDidLoad() {
-    this.toggleValueSetClass();
-    if (!this.shouldAddHighlightedClasses) {
-      makeHighlightable(this);
-    }
-  }
+  // @Watch("value")
+  // protected valueChanged() {
+  //   this.renderer.valueChanged();
+  // }
 
-  @Watch("value")
-  protected valueChanged() {
-    this.renderer.valueChanged();
-    this.toggleValueSetClass();
-  }
-
-  private toggleValueSetClass() {
-    if (this.value === "") {
-      this.element.classList.remove("value-set");
-    } else {
-      this.element.classList.add("value-set");
-    }
-  }
+  private getValueFromEvent = (event: UIEvent): string =>
+    event.target && (event.target as HTMLInputElement).value;
 
   private handleAutoFill = (event: AnimationEvent) => {
     this.autoFilled = event.animationName === AUTOFILL_START_ANIMATION_NAME;
   };
 
-  private handleChange(event: UIEvent) {
-    this.value = this.renderer.getValueFromEvent(event);
+  private handleChange = (event: UIEvent) => {
+    this.value = this.getValueFromEvent(event);
     this.change.emit(event);
-  }
+  };
 
-  private handleValueChanging(event: UIEvent) {
-    this.value = this.renderer.getValueFromEvent(event);
+  private handleValueChanging = (event: UIEvent) => {
+    this.value = this.getValueFromEvent(event);
     this.input.emit(event);
-  }
+  };
 
-  private handleTriggerClick(event: UIEvent) {
+  /**
+   * Since the inner input must to support vertical alignment, it can't have
+   * height: 100%, so clicks performed in the container must focus the inner
+   * input.
+   */
+  private focusInnerInputOnClick = (event: UIEvent) => {
+    if (!this.highlightable) {
+      event.stopPropagation();
+    }
+
+    this.inputRef.focus();
+  };
+
+  private handleTriggerClick = (event: UIEvent) => {
     if (!this.disabled) {
       event.stopPropagation();
     }
     this.gxTriggerClick.emit(event);
+  };
+
+  private getReadonlyTagByFontCategory = (fontCategory: FontCategory) =>
+    this.format === "HTML" ? "div" : fontCategory;
+
+  private getReadonlyContent() {
+    let content = this.value;
+
+    if (content && (this.type === "datetime-local" || this.type === "date")) {
+      const dateTime = new Date(this.value);
+
+      if (this.type === "date") {
+        dateTime.setDate(dateTime.getDate() + 1);
+      }
+      const dayMonthYear = new Intl.DateTimeFormat("default", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric"
+      }).format(dateTime);
+
+      content = dayMonthYear;
+
+      if (this.type === "datetime-local") {
+        const hourMins = new Intl.DateTimeFormat("default", {
+          hour: "numeric",
+          minute: "numeric"
+        }).format(dateTime);
+
+        content += ` ${hourMins}`;
+      }
+    }
+    return content;
+  }
+
+  componentWillLoad() {
+    this.isReadonly = this.readonly || this.format === "HTML";
+    this.isDateType = DATE_TYPES.includes(this.type);
+
+    if (this.isReadonly) {
+      // When the edit is readonly, the disabled style must not have opacity
+      this.disabledClass = DISABLED_CLASS;
+
+      // In case of true, makeHighligtable() function highlights the gx-edit control
+      this.shouldAddHighlightedClasses = this.highlightable;
+    } else {
+      this.shouldAddCursorText = !this.isDateType;
+      this.shouldAddResize = this.multiline;
+    }
+
+    if (!this.inputId) {
+      this.inputId = this.element.id
+        ? `${this.element.id}__edit`
+        : `gx-edit-auto-id-${autoEditId++}`;
+    }
+
+    // Set font category
+    this.handleFontCategoryChange(this.fontCategory);
+  }
+
+  componentDidLoad() {
+    if (this.shouldAddHighlightedClasses) {
+      makeHighlightable(this);
+    }
   }
 
   render() {
-    /*  Styling for gx-edit control. 
-        If the gx-edit is (readonly || format == "HTML"), we do not add 
-        highlighted classes
-    */
+    // Styling for gx-edit control
     const classes = getClasses(this.cssClass);
+
+    const shouldAddFocus = this.shouldAddHighlightedClasses && !this.disabled;
+
+    const attrs = {
+      autocapitalize: this.autocapitalize,
+      autocomplete: this.autocomplete,
+      autocorrect: this.autocorrect,
+      "aria-label": this.labelCaption || undefined,
+      disabled: this.disabled,
+      id: this.inputId,
+
+      // Limit the year to 4 digits
+      max: MAX_DATE_VALUE[this.type],
+
+      // Extend the minimum value of the date
+      min: MIN_DATE_VALUE[this.type],
+
+      onChange: this.handleChange,
+      onInput: this.handleValueChanging,
+      onAnimationStart: this.handleAutoFill,
+      placeholder: this.placeholder,
+      step: DATE_TYPES.includes(this.type) ? "1" : undefined
+    };
 
     return (
       <Host
         class={{
           "gx-edit--auto-fill": this.autoFilled,
-          "gx-edit--single-line":
-            this.type === "date" || this.type === "datetime-local",
+          "gx-edit--cursor-text": this.shouldAddCursorText && !this.disabled,
+          "gx-edit--editable-date": this.isDateType && !this.isReadonly,
+          "gx-edit--multiline": this.shouldAddResize,
+          "gx-edit--readonly": this.isReadonly,
+          "gx-edit__trigger-button-space": this.showTrigger,
+
           [this.disabledClass]: this.disabled,
-          [this.cssClass]: this.shouldStyleHostElement && !!this.cssClass,
-          [classes.vars]: this.shouldStyleHostElement
+          [this.cssClass]: !!this.cssClass,
+          [classes.vars]: true
         }}
         // Mouse pointer to indicate action
-        data-has-action={this.highlightable && !this.disabled ? "" : undefined}
-        // Add focus to the control through sequential keyboard navigation and visually clicking
-        tabindex={
-          this.highlightable &&
-          (this.readonly || this.format === "HTML") &&
-          !this.disabled
-            ? "0"
-            : undefined
+        data-has-action={shouldAddFocus ? "" : undefined}
+        // Alignment
+        data-text-align=""
+        data-valign={!this.isReadonly && !this.multiline ? "" : undefined}
+        data-valign-readonly={
+          this.isReadonly && this.format === "Text" ? "" : undefined
         }
-        onAnimationStart={this.handleAutoFill}
+        // Add focus to the control through sequential keyboard navigation and visually clicking
+        tabindex={shouldAddFocus ? "0" : undefined}
+        onClick={
+          !this.isReadonly && !this.disabled
+            ? this.focusInnerInputOnClick
+            : null
+        }
       >
-        {this.renderer.render({
-          triggerContent: <slot name="trigger-content" />,
-          shouldStyleHostElement: this.shouldStyleHostElement,
-          cssClass: this.cssClass,
-          vars: classes.vars
-        })}
+        {this.isReadonly
+          ? [
+              <this.readonlyTag
+                aria-disabled={this.disabled ? "true" : undefined}
+                aria-label={this.labelCaption || undefined}
+                class={{
+                  content: this.format === "Text",
+                  "html-container": this.format === "HTML",
+                  "readonly-date": this.isDateType,
+                  [LINE_CLAMP]: this.lineClamp
+                }}
+                part={
+                  this.format === "Text"
+                    ? "gx-edit__content"
+                    : "gx-edit__html-container gx-valign"
+                }
+                style={
+                  this.lineClamp && {
+                    "--max-lines": this.maxLines.toString()
+                  }
+                }
+              >
+                {this.format === "Text" ? (
+                  this.getReadonlyContent()
+                ) : (
+                  <div class="html-content" part="gx-edit__html-content">
+                    <slot />
+                  </div>
+                )}
+              </this.readonlyTag>,
+
+              this.lineClamp && [
+                <div class={LINE_MEASURING}>{"A"}</div>,
+                <div class={HEIGHT_MEASURING}></div>
+              ]
+            ]
+          : [
+              this.multiline ? (
+                [
+                  <textarea
+                    {...attrs}
+                    class="content"
+                    part="gx-edit__content"
+                    value={this.value}
+                    ref={el => (this.inputRef = el as HTMLElement)}
+                  ></textarea>,
+
+                  // The space at the end of the value is necessary to correctly display the enters
+                  <div class="hidden-multiline">{this.value} </div>
+                ]
+              ) : (
+                <input
+                  {...attrs}
+                  class={{
+                    content: true,
+                    "null-date": this.isDateType && !this.value
+                  }}
+                  part="gx-edit__content"
+                  type={this.type}
+                  value={this.value}
+                  ref={el => (this.inputRef = el as HTMLElement)}
+                />
+              ),
+
+              this.showTrigger && (
+                <button
+                  aria-label={this.triggerButtonLabel}
+                  class={{
+                    "trigger-button": true,
+                    disabled: this.disabled
+                  }}
+                  part="gx-edit__trigger-button"
+                  type="button"
+                  disabled={this.disabled}
+                  onClick={this.handleTriggerClick}
+                >
+                  <slot name="trigger-content" />
+                </button>
+              ),
+
+              // Implements a non-native placeholder for date types
+              this.isDateType && !this.value && (
+                <div
+                  aria-hidden="true"
+                  class="date-placeholder"
+                  part="gx-edit__date-placeholder"
+                >
+                  {this.placeholder}
+                </div>
+              )
+            ]}
       </Host>
     );
   }
