@@ -122,8 +122,8 @@ export class Modal implements GxComponent {
     if (newValue) {
       clearTimeout(this.dismissTimer);
       this.presented = true;
-      displayedModals++;
-      this.updateHtmlOverflow();
+
+      this.handleModalOpen();
 
       // Emit the event
       this.open.emit();
@@ -134,9 +134,7 @@ export class Modal implements GxComponent {
 
         this.presented = false;
 
-        // Check if should re-enable the scroll on the html
-        displayedModals--;
-        this.updateHtmlOverflow();
+        this.handleModalClose();
 
         // Emit the event after the dismiss animation has finished
         this.close.emit();
@@ -144,6 +142,22 @@ export class Modal implements GxComponent {
     }
   }
 
+  private handleModalOpen() {
+    displayedModals++;
+
+    this.updateHtmlOverflow();
+  }
+
+  private handleModalClose() {
+    displayedModals--;
+
+    // Check if should re-enable the scroll on the html
+    this.updateHtmlOverflow();
+  }
+
+  /**
+   * Hide the vertical scrollbar when opening the first modal, if necessary
+   */
   private updateHtmlOverflow() {
     // If the modal is displayed, but another modal component disabled the
     // scroll on the html (displayedModals > 1), we don't have to disable it
@@ -220,8 +234,7 @@ export class Modal implements GxComponent {
 
     // Check if should re-enable the scroll on the html
     if (this.presented) {
-      displayedModals--;
-      this.updateHtmlOverflow();
+      this.handleModalClose();
     }
   }
 
@@ -230,8 +243,7 @@ export class Modal implements GxComponent {
     this.presented = this.opened;
 
     if (this.opened) {
-      displayedModals++;
-      this.updateHtmlOverflow();
+      this.handleModalOpen();
     }
 
     // Set the class to disable the scrolling if not defined
