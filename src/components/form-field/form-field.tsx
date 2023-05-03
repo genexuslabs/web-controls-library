@@ -21,6 +21,8 @@ interface LabelClasses {
  */
 const labelClassesCache = new Map<string, LabelClasses>();
 
+const EDIT_TAG_NAME = "gx-edit";
+
 let autoFormFieldId = 0;
 
 @Component({
@@ -113,6 +115,10 @@ export class FormField implements GxComponent {
     return result;
   }
 
+  private shouldFocusTheInnerControlOnLabelClick = (innerControl: any) =>
+    (innerControl as HTMLElement).tagName.toLowerCase() === EDIT_TAG_NAME &&
+    !innerControl.readonly;
+
   componentWillLoad() {
     // Sets IDs
     if (!this.formFieldId) {
@@ -127,6 +133,7 @@ export class FormField implements GxComponent {
 
   async componentDidLoad() {
     const innerControl: any = this.element.querySelector("[area='field']");
+
     if (innerControl && innerControl.getNativeInputId) {
       const nativeInputId = await innerControl.getNativeInputId();
 
@@ -144,8 +151,18 @@ export class FormField implements GxComponent {
         return;
       }
 
-      this.innerLabel.setAttribute("for", nativeInputId);
-      this.innerLabel = null;
+      // Check if the accessibility must be re-implemented
+      if (this.shouldFocusTheInnerControlOnLabelClick(innerControl)) {
+        this.innerLabel.addEventListener("click", (event: MouseEvent) => {
+          event.stopPropagation();
+          innerControl.click();
+        });
+      }
+      // The control does not have Shadow DOM
+      else {
+        this.innerLabel.setAttribute("for", nativeInputId);
+        this.innerLabel = null;
+      }
     }
   }
 
