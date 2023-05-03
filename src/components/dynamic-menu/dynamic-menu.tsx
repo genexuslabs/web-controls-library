@@ -59,11 +59,12 @@ export class DynamicMenu {
         }
       }
     );
-    if (targetActionIndex !== null) {
-      // Close the action open
-      this.closeOpenAction(false);
-      this.toggleExpand(this.openIndex, false);
 
+    // Close the action open
+    this.closeOpenAction(false);
+    this.toggleExpand(this.openIndex, false);
+
+    if (targetActionIndex !== null) {
       this.openIndex = targetActionIndex;
       this.menuActions[targetActionIndex].deactivated = false;
       this.toggleExpand(targetActionIndex, true);
