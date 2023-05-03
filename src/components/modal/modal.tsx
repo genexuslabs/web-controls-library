@@ -16,6 +16,8 @@ import {
   setContrastColor
 } from "../common/utils";
 
+const ESCAPE_KEY = "Escape";
+
 const WAIT_TO_REMOVE_MODAL = 300; // 300ms
 const bodyId = "body";
 const headerId = "header";
@@ -146,6 +148,10 @@ export class Modal implements GxComponent {
     displayedModals++;
 
     this.updateHtmlOverflow();
+
+    document.body.addEventListener("keydown", this.closeModalOnEscapeKey, {
+      capture: true
+    });
   }
 
   private handleModalClose() {
@@ -153,6 +159,10 @@ export class Modal implements GxComponent {
 
     // Check if should re-enable the scroll on the html
     this.updateHtmlOverflow();
+
+    document.body.removeEventListener("keydown", this.closeModalOnEscapeKey, {
+      capture: true
+    });
   }
 
   /**
@@ -169,6 +179,12 @@ export class Modal implements GxComponent {
       document.documentElement.classList.remove(DISABLE_SCROLL_CLASS);
     }
   }
+
+  private closeModalOnEscapeKey = (event: KeyboardEvent) => {
+    if (event.code === ESCAPE_KEY) {
+      this.closeModal(event);
+    }
+  };
 
   private connectObserver() {
     if (!this.shouldSetResizeObserver || this.observer || !this.opened) {
