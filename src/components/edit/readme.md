@@ -74,13 +74,14 @@ Type: `Promise<string>`
 
 ## Shadow Parts
 
-| Part                          | Description                                                                                                                                          |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `"gx-edit__content"`          | The main content displayed in the control. This part only applies when `format="Text"`.                                                              |
-| `"gx-edit__date-placeholder"` | A placeholder displayed when the control is editable (`readonly="false"`), has no value set, and its type is `"datetime-local" \| "date" \| "time"`. |
-| `"gx-edit__html-container"`   | The container of the main content displayed in the control. This part only applies when `format="HTML"`.                                             |
-| `"gx-edit__html-content"`     | The main content displayed in the control. This part only applies when `format="HTML"`.                                                              |
-| `"gx-edit__trigger-button"`   | The trigger button displayed on the right side of the control when `show-trigger="true"`.                                                            |
+| Part                          | Description                                                                                                                                                       |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `"gx-edit__content"`          | The main content displayed in the control. This part only applies when `format="Text"`.                                                                           |
+| `"gx-edit__date-placeholder"` | A placeholder displayed when the control is editable (`readonly="false"`), has no value set, and its type is `"datetime-local" \| "date" \| "time"`.              |
+| `"gx-edit__hidden-multiline"` | The auxiliary content rendered in the control to implement the auto-grow. This part only applies when `format="Text"`, `multiline="true"` and `readonly="false"`. |
+| `"gx-edit__html-container"`   | The container of the main content displayed in the control. This part only applies when `format="HTML"`.                                                          |
+| `"gx-edit__html-content"`     | The main content displayed in the control. This part only applies when `format="HTML"`.                                                                           |
+| `"gx-edit__trigger-button"`   | The trigger button displayed on the right side of the control when `show-trigger="true"`.                                                                         |
 
 ## CSS Custom Properties
 

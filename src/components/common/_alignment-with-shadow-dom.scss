@@ -2,18 +2,21 @@
 @mixin text-align-with-shadow-DOM() {
   &[align="left"] {
     > gx-textblock {
+      justify-content: flex-start;
       text-align: start;
     }
   }
 
   &[align="center"] {
     > gx-textblock {
+      justify-content: center;
       text-align: center;
     }
   }
 
   &[align="right"] {
     > gx-textblock {
+      justify-content: flex-end;
       text-align: end;
     }
   }
@@ -22,21 +25,21 @@
 /// Helper mixin to ease vertical alignment of shadow DOM components
 @mixin valign-with-shadow-DOM() {
   &[valign="top"] {
-    > ::part(valign),
+    > gx-textblock,
     ::part(gx-valign) {
       align-items: flex-start;
     }
   }
 
   &[valign="middle"] {
-    > ::part(valign),
+    > gx-textblock,
     ::part(gx-valign) {
       align-items: center;
     }
   }
 
   &[valign="bottom"] {
-    > ::part(valign),
+    > gx-textblock,
     ::part(gx-valign) {
       align-items: flex-end;
     }
