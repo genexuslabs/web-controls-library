@@ -22,6 +22,7 @@ import { imagePositionClass } from "../common/image-position";
 
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
+import { DISABLED_CLASS } from "../../common/reserved-names";
 
 const ENTER_KEY_CODE = "Enter";
 const SPACE_KEY_CODE = "Space";
@@ -179,7 +180,7 @@ export class Button
         class={{
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,
-          disabled: this.disabled,
+          [DISABLED_CLASS]: this.disabled,
 
           // Strings with only white spaces are taken as null captions
           "empty-caption": isEmptyCaption,
