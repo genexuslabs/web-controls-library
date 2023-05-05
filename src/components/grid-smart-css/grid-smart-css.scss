@@ -1,7 +1,7 @@
 @import "../common/layout-styling-config";
 @import "../grid-base/grid-base.scss";
 
-$grid-horizontal-content-selector: "& > .gx-grid-horizontal-content > [slot='grid-content']";
+$grid-horizontal-content-selector: "& > [slot='grid-content'], & > .gx-grid-absolute-content > [slot='grid-content']";
 
 gx-grid-smart-css {
   /**
@@ -29,7 +29,15 @@ gx-grid-smart-css {
    */
   --gx-overflow-style: #{$default-overflow-style};
 
-  @include visibility(flex);
+  @include visibility(grid);
+
+  // - - - - - - - - - - - - - - - -
+  //        Measure grid size
+  // - - - - - - - - - - - - - - - -
+  & > .gx-grid-measure-size {
+    display: flex;
+    height: 100%;
+  }
 
   #{$grid-content-selector} {
     display: grid;
@@ -81,6 +89,10 @@ gx-grid-smart-css {
 //        Vertical Orientation
 // - - - - - - - - - - - - - - - - - -
 gx-grid-smart-css[direction="vertical"] {
+  // Necessary to enforce that the "gx-grid-measure-size" will not
+  // occupy any available width
+  grid-template-columns: 0 1fr;
+
   &[auto-grow] {
     overflow: visible; // Override default behavior in this case
   }
@@ -166,19 +178,29 @@ gx-grid-smart-css[direction="vertical"] {
 //       Horizontal Orientation
 // - - - - - - - - - - - - - - - - - -
 gx-grid-smart-css[direction="horizontal"] {
-  & > .gx-grid-horizontal-content {
+  // Necessary to enforce that the "gx-grid-measure-size" will not
+  // occupy any available height
+  grid-template-rows: 0 1fr;
+
+  // Applies when Auto Grow = False
+  & > .gx-grid-absolute-content {
     display: flex;
     position: relative;
-    flex: 1;
+    width: 100%;
+    height: 100%;
+
+    & > [slot="grid-content"] {
+      position: absolute;
+    }
   }
 
   #{$grid-horizontal-content-selector} {
     display: grid;
-    position: absolute;
-    flex: 1;
+    width: 100%;
+    height: 100%;
     max-width: 100%;
     grid-auto-flow: column;
-    overflow-x: auto;
+    overflow: auto;
 
     // Hide the scrollbars by default.
     // TODO: In the future, these values must be configured with the

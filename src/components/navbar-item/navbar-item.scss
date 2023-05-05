@@ -18,6 +18,23 @@ $gx-navbar-active-color: black;
   color: $gx-navbar-active-color;
 }
 
+:host(.small-layout-size) {
+  flex: 1;
+  justify-content: center;
+
+  & > .navbar-item {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    &-icon {
+      margin-block-end: 5px;
+      margin-inline-end: 0;
+    }
+  }
+}
+
 :host {
   --gx-navbar-item-icon-size-big: 24px;
   --gx-navbar-item-icon-size-small: 18px;
@@ -27,54 +44,37 @@ $gx-navbar-active-color: black;
   outline: none;
   padding-inline: 12px;
   @include transition-properties();
+}
 
-  @media screen and (max-width: $gx-xsmall-breakpoint) {
-    flex: 1;
-    justify-content: center;
+button {
+  appearance: none;
+  border: 0;
+  background-color: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.navbar-item {
+  display: inline-flex;
+  align-items: center;
+  flex: 1;
+  color: inherit;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  text-decoration: none;
+
+  &--active {
+    background-color: $gx-navbar-active-background-color;
+    color: $gx-navbar-active-color;
   }
 
-  button {
-    appearance: none;
-    border: 0;
-    background-color: transparent;
-    color: inherit;
-    font: inherit;
-  }
-
-  .navbar-item {
-    display: inline-flex;
-    align-items: center;
-    flex: 1;
-    color: inherit;
-    cursor: pointer;
-    overflow: hidden;
-    outline: none;
-    text-decoration: none;
-
-    &--active {
-      background-color: $gx-navbar-active-background-color;
-      color: $gx-navbar-active-color;
-    }
-
-    &-icon {
-      display: inline-block;
-      height: var(--gx-navbar-item-icon-size-small);
-      width: var(--gx-navbar-item-icon-size-small);
-      object-fit: contain;
-      margin-inline-end: 12px;
-    }
-
-    @media screen and (max-width: $gx-xsmall-breakpoint) {
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-
-      &-icon {
-        margin-bottom: 5px;
-        margin-inline-end: 0;
-      }
-    }
+  &-icon {
+    display: inline-block;
+    height: var(--gx-navbar-item-icon-size-small);
+    width: var(--gx-navbar-item-icon-size-small);
+    object-fit: contain;
+    margin-inline-end: 12px;
   }
 }
 

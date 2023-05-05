@@ -2,7 +2,7 @@
 
 :host {
   display: block;
-  border-bottom: 1px solid var(--gx-action-sheet-item-border-color);
+  border-block-end: 1px solid var(--gx-action-sheet-item-border-color);
   padding: 10px 0;
   flex: 1;
   text-align: center;
@@ -13,7 +13,7 @@
 }
 
 :host(.last-action) {
-  border-bottom-width: 0;
+  border-block-end-width: 0;
 }
 
 :host(.danger) {

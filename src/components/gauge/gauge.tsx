@@ -37,45 +37,45 @@ export class Gauge implements GxComponent {
   /**
    * This property allows selecting the gauge type. The allowed values are `circle` or `line` (defautl).
    */
-  @Prop() type: "line" | "circle" = "line";
+  @Prop() readonly type: "line" | "circle" = "line";
 
   /**
    *  Set `true` to display the current value. Default is `false`.
    *
    */
-  @Prop() showValue = false;
+  @Prop() readonly showValue: boolean = false;
 
   /**
    *  Set `true` to display the minimum and maximum value. Default is `false`.
    *
    */
-  @Prop() showMinMax = false;
+  @Prop() readonly showMinMax: boolean = false;
 
   /**
    * The minimum value of the gauge
    * 0 by Default
    */
-  @Prop() minValue = 0;
+  @Prop() readonly minValue: number = 0;
 
   /**
    * The current value of the gauge
    *
    */
-  @Prop() value: number;
+  @Prop() readonly value: number;
 
   /**
    * Allows specify the width of the circumference _(When gauge is circle type)_ or the width of the bar _(When gauge is Line type)_ in % relative the component size.
    *
    */
-  @Prop() thickness = 10;
+  @Prop() readonly thickness: number = 10;
 
   /**
    * The maximum value of the gauge.
    * This prop allows specify the maximum value that the gauge will handle. If there is no value specified it will be calculated by the sum of all gx-ranges values
    */
-  @Prop() maxValue: number;
+  @Prop() readonly maxValue: number;
 
-  @State() rangesChildren = [];
+  @State() rangesChildren: any[] = []; // It has the following type: GaugeRange[]
 
   @State() labelsOverflow = false;
 
@@ -166,13 +166,14 @@ export class Gauge implements GxComponent {
   private SVGcircle: SVGCircleElement;
 
   @Listen("gxGaugeRangeDidLoad")
+  // @ts-expect-error It has type { detail: GaugeRange }, but to prevent any issue the error message is avoided
   onGaugeRangeDidLoad({ detail: childRange }) {
     this.rangesChildren = [...this.rangesChildren, childRange];
     this.totalAmount += childRange.amount;
     // Possible improvement here. Check the approach applied in navbar.jsx line 103
     childRange.element.addEventListener("gxGaugeRangeDidUnload", () => {
       this.rangesChildren = this.rangesChildren.filter(
-        elementToSave => elementToSave != childRange
+        elementToSave => elementToSave !== childRange
       );
       this.totalAmount -= childRange.amount;
     });
@@ -219,7 +220,7 @@ export class Gauge implements GxComponent {
     }
 
     if (this.shouldSetGaugeObserver) {
-      if (this.type == "line") {
+      if (this.type === "line") {
         this.setLineGaugeObserver();
       } else {
         this.setCircleGaugeObserver();
@@ -271,7 +272,6 @@ export class Gauge implements GxComponent {
   }
 
   private disconnectObserver() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.watchForItemsObserver) {
       this.watchForItemsObserver.disconnect();
       this.watchForItemsObserver = undefined;
@@ -311,8 +311,8 @@ export class Gauge implements GxComponent {
       this.calcPercentage() >= 100 ? 100 : this.calcPercentage();
 
     // This does not include the gauge padding
-    const gaugeWidth = this.linearCurrentValueContainer.getBoundingClientRect()
-      .width;
+    const gaugeWidth =
+      this.linearCurrentValueContainer.getBoundingClientRect().width;
 
     const distanceToTheValueCenter = (gaugeWidth / 100) * percentage;
 
@@ -356,6 +356,7 @@ export class Gauge implements GxComponent {
     // get the `labelsSubContainer` reference
     if (
       !this.didLoad ||
+      // eslint-disable-next-line eqeqeq
       (this.labelsOverflow && this.labelsSubContainer == undefined)
     ) {
       return;
@@ -373,7 +374,7 @@ export class Gauge implements GxComponent {
   }
 
   private addCircleRanges(
-    { amount, color },
+    { amount, color }: { amount: number; color: string },
     position: number,
     radius: number,
     childNumber: string // Identifies the number of child to animate it at the start
@@ -397,15 +398,16 @@ export class Gauge implements GxComponent {
         style={{
           "--child-number": childNumber,
           "--stroke-dasharray-initial": `0, ${circleLength}`,
-          "--stroke-dasharray": `${circleLength *
-            valuePercentage}, ${circleLength}`
+          "--stroke-dasharray": `${
+            circleLength * valuePercentage
+          }, ${circleLength}`
         }}
       />
     );
   }
 
   private addLineRanges(
-    { amount, color },
+    { amount, color }: { amount: number; color: string },
     position: number,
     childNumber: string // Identifies the number of child to animate it at the start
   ): any {
@@ -424,7 +426,7 @@ export class Gauge implements GxComponent {
   }
 
   private addLineRangesLabels(
-    { amount, color, name },
+    { amount, color, name }: { amount: number; color: string; name: string },
     position: number,
     childNumber: string // Identifies the number of child to animate it at the start
   ): any {
@@ -445,9 +447,7 @@ export class Gauge implements GxComponent {
     );
   }
 
-  private renderCircle(
-    childRanges: Array<HTMLGxGaugeRangeElement>
-  ): HTMLElement {
+  private renderCircle(childRanges: HTMLGxGaugeRangeElement[]): HTMLElement {
     const FULL_CIRCLE_RADIO = 100 / 2;
     const svgRanges = [];
     const ONE_PERCENT_OF_CIRCLE_DREGREE = 3.6;
@@ -476,10 +476,11 @@ export class Gauge implements GxComponent {
     }
 
     const rotation =
-      this.calcPercentage() == 100
+      this.calcPercentage() === 100
         ? `rotate(${359.5 + ROTATION_FIX}deg)`
-        : `rotate(${this.calcPercentage() * ONE_PERCENT_OF_CIRCLE_DREGREE +
-            ROTATION_FIX}deg)`;
+        : `rotate(${
+            this.calcPercentage() * ONE_PERCENT_OF_CIRCLE_DREGREE + ROTATION_FIX
+          }deg)`;
 
     // Styling for gx-gauge control.
     const classes = getClasses(this.cssClass);
@@ -534,7 +535,7 @@ export class Gauge implements GxComponent {
     );
   }
 
-  private renderLine(childRanges) {
+  private renderLine(childRanges: HTMLGxGaugeRangeElement[]) {
     const divRanges = [];
     const divRangesLabel = [];
     this.totalAmount = 0;

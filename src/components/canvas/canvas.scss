@@ -19,10 +19,6 @@
   @include transition-properties();
 }
 
-:host(.disabled) {
-  pointer-events: none;
-}
-
 .canvas-cells-container {
   position: relative;
   height: 100%;

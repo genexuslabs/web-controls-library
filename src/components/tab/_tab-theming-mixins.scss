@@ -49,14 +49,14 @@
     }
 
     &::part(nav-tabs-table-filler) {
-      border-top-color: var(--tab-strip-separator-color);
-      border-bottom-color: #00000000; // transparent
+      border-block-start-color: var(--tab-strip-separator-color);
+      border-block-end-color: #00000000; // transparent
     }
 
     // Styling for bottom captions
     & > gx-tab-caption {
-      border-top-color: var(--tab-strip-separator-color);
-      border-bottom-color: transparent;
+      border-block-start-color: var(--tab-strip-separator-color);
+      border-block-end-color: transparent;
     }
   }
 }

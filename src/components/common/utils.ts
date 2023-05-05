@@ -12,17 +12,21 @@ export function debounce(
   wait: number,
   immediate = false
 ): () => void {
-  let timeout;
-  return function(...args) {
-    const later = function() {
+  let timeout: NodeJS.Timeout;
+
+  return function (...args) {
+    const later = function () {
       timeout = null;
       if (!immediate) {
         func.apply(this, args);
       }
     }.bind(this);
+
     const callNow = immediate && !timeout;
+
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
+
     if (callNow) {
       func.apply(this, args);
     }
@@ -58,7 +62,7 @@ export function overrideMethod(
  */
 export function bodyOverflowsY() {
   return (
-    document.documentElement.clientHeight !=
+    document.documentElement.clientHeight !==
     document.documentElement.scrollHeight
   );
 }
@@ -129,7 +133,7 @@ export function setContrastColor(
 ) {
   const color = getComputedStyle(elemToRead).getPropertyValue(propName);
 
-  if (color != undefined) {
+  if (color !== "") {
     const contrast = getContrastColor(color);
     elemToSet.style.setProperty(cssVarName, contrast);
   }
@@ -147,7 +151,7 @@ export function onMobileDevice(): boolean {
 
 export function getLottiePath(computed: CSSStyleDeclaration): string {
   // Anything other than "--gx-animation-type: lottie" is considered a native animation
-  if (computed.getPropertyValue("--gx-animation-type").trim() != "lottie") {
+  if (computed.getPropertyValue("--gx-animation-type").trim() !== "lottie") {
     return "";
   }
 
@@ -180,7 +184,7 @@ export function attachHorizontalScrollWithDragHandler(
 
   /** Relative to the left edge of the entire document */
   let initialXPosition: number;
-  let initialScrollLeftPosition;
+  let initialScrollLeftPosition: number;
 
   scrollableContainer.addEventListener("mousedown", (event: MouseEvent) => {
     // Reset variable as in some scenarios it might be true
@@ -212,7 +216,7 @@ export function attachHorizontalScrollWithDragHandler(
       scrollableContainer.scrollLeft = initialScrollLeftPosition - walk;
       scrollableContainerHasBeenDragged =
         scrollableContainerHasBeenDragged ||
-        initialScrollLeftPosition != scrollableContainer.scrollLeft;
+        initialScrollLeftPosition !== scrollableContainer.scrollLeft;
     });
   });
 
@@ -265,4 +269,4 @@ export function attachHorizontalScrollWithWheelHandler(
   });
 }
 
-export const delay = ms => new Promise(res => setTimeout(res, ms));
+export const delay = (ms: number) => new Promise(res => setTimeout(res, ms));

@@ -21,7 +21,8 @@ import {
   tag: "gx-radio-option"
 })
 export class RadioOption
-  implements GxComponent, DisableableComponent, VisibilityComponent {
+  implements GxComponent, DisableableComponent, VisibilityComponent
+{
   constructor() {
     this.renderer = new RadioOptionRender(this);
   }

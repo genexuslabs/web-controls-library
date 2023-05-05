@@ -7,6 +7,7 @@ export const animationData = {
   w: 44,
   h: 44,
   ddd: 0,
+  // @ts-expect-error
   assets: [],
   layers: [
     {

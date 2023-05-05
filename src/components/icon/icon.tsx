@@ -27,22 +27,22 @@ export class Icon {
    * The color of the icon.
    *
    */
-  @Prop() color: string;
+  @Prop() readonly color: string;
 
   /**
    * A label for the icon, for screen readers to use.
    */
-  @Prop() label = "";
+  @Prop() readonly label: string = "";
 
   /**
    * If enabled, the icon will be loaded lazily when it's visible in the viewport.
    */
-  @Prop() lazy = false;
+  @Prop() readonly lazy: boolean = false;
 
   /**
    * The type of icon. Possible values: the name each of the icons in /assets.
    */
-  @Prop() type = "none";
+  @Prop() readonly type: string = "none";
 
   @State() private isVisible = false;
 
@@ -59,7 +59,6 @@ export class Icon {
   }
 
   disconnectedCallback() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.io) {
       this.io.disconnect();
       this.io = undefined;

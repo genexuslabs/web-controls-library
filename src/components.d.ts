@@ -6,7 +6,15 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { TimerState } from "./components/chronometer/chronometer-timer-state";
+import {
+  EditType,
+  FlexDirection,
+  FlexWrap,
+  FontCategory
+} from "./common/types";
 import { SwiperOptions } from "swiper";
+import { GridMapElement, LayoutSize } from "./components/common/interfaces";
+import { QueryViewerParameterChangedEvent } from "./components/query-viewer-parameter/query-viewer-parameter";
 export namespace Components {
   interface GxActionSheet {
     /**
@@ -77,6 +85,10 @@ export namespace Components {
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled: boolean;
+    /**
+     * True to highlight control when an action is fired.
+     */
+    highlightable: false;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -198,7 +210,7 @@ export namespace Components {
     /**
      * Defines the interval that the function onTick will be called.
      */
-    interval: 1;
+    interval: number;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -206,7 +218,7 @@ export namespace Components {
     /**
      * When the chronometer reaches this value, MaxValueText will be shown instead of the Chronometer value.
      */
-    maxValue: 0;
+    maxValue: number;
     /**
      * Text to be displayed when chronometer value reaches maxValue.
      */
@@ -288,15 +300,9 @@ export namespace Components {
      */
     disabled: false;
     /**
-     * Used to define the semantic of the element when readonly=true.  Font categories are mapped to semantic HTML elements when rendered:  * `"headline"`: `h1` * `"subheadline"`: `h2` * `"body"`: `p` * `"footnote"`: `footer` * `"caption1"`: `span` * `"caption2"`: `span`
+     * Used to define the semantic of the element when `readonly="true"`.
      */
-    fontCategory:
-      | "headline"
-      | "subheadline"
-      | "body"
-      | "footnote"
-      | "caption1"
-      | "caption2";
+    fontCategory: FontCategory;
     /**
      * It specifies the format that will have the edit control.  If `format` = `HTML`, the edit control works as an HTML div and the innerHTML will be the same as the `inner` property specifies. Also, it does not allow any input/editable UI since it works as an HTML div.  If `format` = `Text`, the edit control works as a normal input control and it is affected by most of the defined properties.
      */
@@ -308,15 +314,11 @@ export namespace Components {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable: false;
+    highlightable: boolean;
     /**
-     * Used as the innerHTML when `format` = `HTML`.
+     * The text to set as the label of the gx-edit control.
      */
-    inner: string;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    labelCaption: string;
     /**
      * True to cut text when it overflows, showing an ellipsis (only applies when readonly)
      */
@@ -338,20 +340,13 @@ export namespace Components {
      */
     showTrigger: boolean;
     /**
+     * This attribute lets you specify the label for the trigger button. Important for accessibility.
+     */
+    triggerButtonLabel: string;
+    /**
      * The type of control to render. A subset of the types supported by the `input` element is supported:  * `"date"` * `"datetime-local"` * `"email"` * `"file"` * `"number"` * `"password"` * `"search"` * `"tel"` * `"text"` * `"url"`
      */
-    type:
-      | "date"
-      | "datetime-local"
-      | "email"
-      | "file"
-      | "number"
-      | "password"
-      | "search"
-      | "tel"
-      | "text"
-      | "time"
-      | "url";
+    type: EditType;
     /**
      * The initial value of the control.
      */
@@ -447,6 +442,20 @@ export namespace Components {
   }
   interface GxGridFlex {
     /**
+     * This aligns a flex container’s lines within when there is extra space in the cross-axis, similar to how justify-content aligns individual items within the main-axis.  | Value           | Details                                                                                  | | --------------- | ---------------------------------------------------------------------------------------- | | `center`        | Lines are packed toward the center of the flex container.                                | | `flex-end`      | Lines are packed toward the start of the flex container.                                 | | `flex-start`    | Lines are packed toward the end of the flex container.                                   | | `space-around`  | Lines are evenly distributed in the flex container, with half-size spaces on either end. | | `space-between` | Lines are evenly distributed in the flex container.                                      | | `stretch`       | Lines stretch to take up the remaining space.                                            |
+     */
+    alignContent:
+      | "center"
+      | "flex-end"
+      | "flex-start"
+      | "space-around"
+      | "space-between"
+      | "stretch";
+    /**
+     * This attribute lets you define the default behavior for how flex items are laid out along the cross axis on the current line. Think of it as the justify-content version for the cross-axis (perpendicular to the main-axis).  | Value           | Details                                                                                                                                                            | | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | | `baseline`      | Controls are aligned such as their baselines align. This is useful to have several texts from different controls aligned taking into account different font sizes. | | `center`        | Controls are positioned at the center of the container.                                                                                                            | | `flex-end`      | Controls are positioned at the end of the container.                                                                                                               | | `flex-start`    | Controls are positioned at the beginning of the container.                                                                                                         | | `stretch`       | Controls are stretched to fit the container. In other words, children match the size of their container in the cross axis.                                         |
+     */
+    alignItems: "baseline" | "center" | "flex-end" | "flex-start" | "stretch";
+    /**
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
      */
     autoGrow: false;
@@ -459,15 +468,29 @@ export namespace Components {
      */
     cssClass: string;
     /**
-     * This establishes the main-axis, thus defining the direction flex items are placed in the flex container.  Flexbox is (aside from optional wrapping) a single-direction layout concept.  Think of flex items as primarily laying out either in horizontal rows or vertical columns.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `row` | The flex container's main-axis is defined to be the same as the text direction. The main-start and main-end points are the same as the content direction.                | | `column`   | The flex container's main-axis is the same as the block-axis. The main-start and main-end points are the same as the before and after points of the writing-mode. |
+     * Determines the direction of the main-axis (and the cross-axis, perpendicular to the main-axis). The direction children items are placed inside the Flexbox layout.  | Value            | Details                                                                                | | ---------------- | -------------------------------------------------------------------------------------- | | `column`         | Controls are displayed vertically, as a column (from top to bottom).                   | | `column-reverse` | Controls are displayed vertically, as a column, in reverse order (from bottom to top). | | `row`            | Controls are displayed horizontally, as a row (from left to right).                    | | `row-reverse`    | Controls are displayed horizontally, as a row, in reverse order (from right to left).  |
      */
-    flexDirection: "row" | "column";
+    flexDirection: FlexDirection;
+    /**
+     * Determine whether the flex container is single-line or multi-line, and the direction of the cross axis. This attribute specifies what happens when children overflow the size of the container along the main-axis of the layout container. By default, flex items will all try to fit onto one line. You can change that and allow the items to wrap as needed with this attribute.  | Value          | Details                                                       | | -------------- | ------------------------------------------------------------- | | `nowrap`       | All flex items will be on one line                            | | `wrap`         | Flex items will wrap onto multiple lines, from top to bottom. | | `wrap-reverse` | Flex items will wrap onto multiple lines from bottom to top.  |
+     */
+    flexWrap: FlexWrap;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode: "collapse" | "keep-space";
     /**
-     * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
+     * This attribute lets you define the alignment along the main axis. It helps distribute extra free space leftover when either all the flex items on a line are inflexible, or are flexible but have reached their maximum size. It also exerts some control over the alignment of items when they overflow the line.  | Value           | Details                                                                  | | --------------- | ------------------------------------------------------------------------ | | `center`        | Controls are positioned at the center of the container.                  | | `flex-end`      | Controls are positioned at the end of the container.                     | | `flex-start`    | Controls are positioned at the beginning of the container.               | | `space-around`  | Controls are positioned with space before, between, and after the lines. | | `space-between` | Controls are positioned with space between the lines.                    | | `space-evenly`  | Controls are positioned with space evenly around them.                   |
+     */
+    justifyContent:
+      | "center"
+      | "flex-end"
+      | "flex-start"
+      | "space-around"
+      | "space-between"
+      | "space-evenly";
+    /**
+     * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value      | Details                                                                                          | | ---------- | ------------------------------------------------------------------------------------------------ | | `loading`  | The grid is waiting the server for the grid data. Grid loading mask will be shown.               | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
      */
     loadingState: "loading" | "loaded";
     /**
@@ -484,6 +507,9 @@ export namespace Components {
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
      */
     autoGrow: false;
+    /**
+     * This method must be called after new grid data was fetched by the infinite scroller.
+     */
     complete: () => Promise<void>;
     /**
      * A CSS class to set as the `gx-grid-fs` element class.
@@ -957,7 +983,7 @@ export namespace Components {
     /**
      * This attribute lets you specify the modal title.
      */
-    modalTitle: any;
+    modalTitle: string;
     /**
      * This attribute lets you specify if the image is readonly. If readonly, it will not allow to use the edit button. In fact, the edit button will not be shown.
      */
@@ -991,7 +1017,7 @@ export namespace Components {
     /**
      * Lets you specify the image URL. *Requiered*
      */
-    src: "";
+    src: string;
     /**
      * Indicates how much you can enlarge an image. (Percentage) _Note: 100% = Normal size_.
      */
@@ -999,25 +1025,37 @@ export namespace Components {
   }
   interface GxLayout {
     /**
-     * True to hide the bottom target
-     */
-    bottomHidden: false;
-    /**
-     * `true` if the bottom navbar is visible in the application.
+     * `true` if the bottom navbar is visible in the application. This property can only be true if `layoutSize` == `"small"`
      */
     bottomNavbarVisible: boolean;
     /**
-     * True to hide the left target
+     * `false` to hide the bottom target
      */
-    leftHidden: boolean;
+    bottomVisible: false;
     /**
-     * True to hide the right target
+     * This attribute lets you specify if the header row pattern is enabled in the top navbar.
      */
-    rightHidden: boolean;
+    enableHeaderRowPattern: boolean;
     /**
-     * True to hide the top target
+     * This attribute lets you specify the layout size of the application. Each layout size will set different behaviors in the gx-layout control.
      */
-    topHidden: false;
+    layoutSize: LayoutSize;
+    /**
+     * `false` to hide the left target
+     */
+    leftVisible: boolean;
+    /**
+     * `false` to hide the right target
+     */
+    rightVisible: boolean;
+    /**
+     * `true` if the top navbar is visible in the application.
+     */
+    topNavbarVisible: boolean;
+    /**
+     * `false` to hide the top target.
+     */
+    topVisible: false;
   }
   interface GxLoading {
     /**
@@ -1090,21 +1128,41 @@ export namespace Components {
      */
     center: string;
     /**
+     * This attribute determines whether map markers should be grouped. When `true`, the markers will be grouped depending on their proximity.
+     */
+    clusteringPoints: boolean;
+    /**
+     * Enables the possibility to draw the route between two points on the map.
+     */
+    directionLayer: boolean;
+    /**
+     * WKT format string containing the response of Google Maps Directions API call
+     */
+    directionLayerWKTString: string;
+    /**
+     * If `true` allows drawing geometries on the map.
+     */
+    editableGeographies: boolean;
+    /**
      * Enable the High Accuracy in user location. _Note: This property applies when ```watchPosition = true```._
      */
     highAccuracyLocator: boolean;
+    /**
+     * Indicates how the map will be displayed at startup.  | Value           | Details                                                                                                                                       | | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | | `showAll`       | (Default value) the map is adjusted to display all the loaded points (and the current device location if Show My Location is set to True).    | | `nearestPoint`  | The map is adjusted to display the current device location and shows my location and the nearest point.                                       | | `radius`        | The map is adjusted to display a fixed radius, from the specified center. The radius value is specified using the initialZoomRadius property. | | `noInitialZoom` | No specific action is taken regarding the initial zoom.                                                                                       |
+     */
+    initialZoom: "showAll" | "nearestPoint" | "radius" | "noInitialZoom";
+    /**
+     * The radius value if `initialZoom` = `"radius"`.
+     */
+    initialZoomRadius: number;
     /**
      * The map provider. _Note: Currently, this property is for setting a custom map provider using an URL._
      */
     mapProvider: string;
     /**
-     * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._
+     * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._  | Value       | Details                                                                     | | ----------- | --------------------------------------------------------------------------- | | `standard`  | Shows streets.                                                              | | `satellite` | Shows satellite images of the Earth.                                        | | `hybrid`    | Shows streets over the satellite images.                                    |
      */
     mapType: "standard" | "satellite" | "hybrid";
-    /**
-     * The max zoom level available in the map. _Note: 20 is the best value to be used, only lower values are allowed. Is highly recommended to no change this value if you are not sure about the `maxZoom` supported by the map._
-     */
-    maxZoom: number;
     /**
      * A CSS class to set as the `showMyLocation` icon class.
      */
@@ -1126,6 +1184,14 @@ export namespace Components {
      */
     selectionLayer: boolean;
     /**
+     * A CSS class to set as the `selectionLayer` icon class.
+     */
+    selectionTargetImageCssClass: string;
+    /**
+     * This attribute lets you specify the srcset attribute for the `selectionLayer` icon. If not set the `pinImageSrcset` property will be used to specify the srcset attribute for the icon. If none of the properties are specified, a default icon will be used when `selectionLayer = true`
+     */
+    selectionTargetImageSrcset: string;
+    /**
      * Indicates if the current location of the device is displayed on the map.
      */
     showMyLocation: boolean;
@@ -1133,6 +1199,16 @@ export namespace Components {
      * The initial zoom level in the map.
      */
     zoom: number;
+  }
+  interface GxMapCircle {
+    /**
+     * The coordinates where the circle will appear in the map.
+     */
+    coords: string;
+    /**
+     * The radius that the circle will have in the map. It's expressed in meters.
+     */
+    radius: number;
   }
   interface GxMapLine {
     /**
@@ -1153,6 +1229,10 @@ export namespace Components {
      * The class that the marker will have.
      */
     cssClass: string;
+    /**
+     * Whether the gx-map-marker's popUp can be shown.
+     */
+    showPopup: boolean;
     /**
      * This attribute lets you specify the src of the marker image.
      */
@@ -1262,6 +1342,10 @@ export namespace Components {
      */
     headerRowPatternCssClass: string;
     /**
+     * This attribute lets you specify the layout size of the application. Each layout size will set different behaviors in the gx-layout control.
+     */
+    layoutSize: LayoutSize;
+    /**
      * `true` if the left target of the gx-layout is visible in the application.
      */
     leftTargetVisible: boolean;
@@ -1323,6 +1407,10 @@ export namespace Components {
      * This attribute lets you specify the srcset attribute of an icon for the navbar item.
      */
     iconSrcset: string;
+    /**
+     * This attribute lets you specify the layout size of the application. Each layout size will set different behaviors in the gx-navbar-item control.
+     */
+    layoutSize: LayoutSize;
   }
   interface GxPasswordEdit {
     /**
@@ -1336,11 +1424,11 @@ export namespace Components {
     /**
      * Returns the id of the inner `input` element (if set).
      */
-    getNativeInputId: () => Promise<any>;
+    getNativeInputId: () => Promise<string>;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     * The text to set as the label of the gx-password-edit control.
      */
-    invisibleMode: "collapse" | "keep-space";
+    labelCaption: string;
     /**
      * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
      */
@@ -1357,10 +1445,6 @@ export namespace Components {
      * Text of the reveal button to offer revealing the password.
      */
     revealButtonTextOn: string;
-    /**
-     * Indicates if the value is revealed or masked.
-     */
-    revealed: boolean;
     /**
      * If true, a reveal password button is shown next to the password input. Pressing the reveal button toggles the password mask, allowing the user to view the password text.
      */
@@ -1819,6 +1903,10 @@ export interface GxMapCustomEvent<T> extends CustomEvent<T> {
   detail: T;
   target: HTMLGxMapElement;
 }
+export interface GxMapCircleCustomEvent<T> extends CustomEvent<T> {
+  detail: T;
+  target: HTMLGxMapCircleElement;
+}
 export interface GxMapLineCustomEvent<T> extends CustomEvent<T> {
   detail: T;
   target: HTMLGxMapLineElement;
@@ -2109,6 +2197,13 @@ declare global {
     prototype: HTMLGxMapElement;
     new (): HTMLGxMapElement;
   };
+  interface HTMLGxMapCircleElement
+    extends Components.GxMapCircle,
+      HTMLStencilElement {}
+  var HTMLGxMapCircleElement: {
+    prototype: HTMLGxMapCircleElement;
+    new (): HTMLGxMapCircleElement;
+  };
   interface HTMLGxMapLineElement
     extends Components.GxMapLine,
       HTMLStencilElement {}
@@ -2291,6 +2386,7 @@ declare global {
     "gx-loading": HTMLGxLoadingElement;
     "gx-lottie": HTMLGxLottieElement;
     "gx-map": HTMLGxMapElement;
+    "gx-map-circle": HTMLGxMapCircleElement;
     "gx-map-line": HTMLGxMapLineElement;
     "gx-map-marker": HTMLGxMapMarkerElement;
     "gx-map-polygon": HTMLGxMapPolygonElement;
@@ -2401,6 +2497,10 @@ declare namespace LocalJSX {
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled?: boolean;
+    /**
+     * True to highlight control when an action is fired.
+     */
+    highlightable?: false;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -2542,7 +2642,7 @@ declare namespace LocalJSX {
     /**
      * Defines the interval that the function onTick will be called.
      */
-    interval?: 1;
+    interval?: number;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -2550,7 +2650,7 @@ declare namespace LocalJSX {
     /**
      * When the chronometer reaches this value, MaxValueText will be shown instead of the Chronometer value.
      */
-    maxValue?: 0;
+    maxValue?: number;
     /**
      * Text to be displayed when chronometer value reaches maxValue.
      */
@@ -2644,15 +2744,9 @@ declare namespace LocalJSX {
      */
     disabled?: false;
     /**
-     * Used to define the semantic of the element when readonly=true.  Font categories are mapped to semantic HTML elements when rendered:  * `"headline"`: `h1` * `"subheadline"`: `h2` * `"body"`: `p` * `"footnote"`: `footer` * `"caption1"`: `span` * `"caption2"`: `span`
+     * Used to define the semantic of the element when `readonly="true"`.
      */
-    fontCategory?:
-      | "headline"
-      | "subheadline"
-      | "body"
-      | "footnote"
-      | "caption1"
-      | "caption2";
+    fontCategory?: FontCategory;
     /**
      * It specifies the format that will have the edit control.  If `format` = `HTML`, the edit control works as an HTML div and the innerHTML will be the same as the `inner` property specifies. Also, it does not allow any input/editable UI since it works as an HTML div.  If `format` = `Text`, the edit control works as a normal input control and it is affected by most of the defined properties.
      */
@@ -2660,15 +2754,11 @@ declare namespace LocalJSX {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable?: false;
+    highlightable?: boolean;
     /**
-     * Used as the innerHTML when `format` = `HTML`.
+     * The text to set as the label of the gx-edit control.
      */
-    inner?: string;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    labelCaption?: string;
     /**
      * True to cut text when it overflows, showing an ellipsis (only applies when readonly)
      */
@@ -2702,20 +2792,13 @@ declare namespace LocalJSX {
      */
     showTrigger?: boolean;
     /**
+     * This attribute lets you specify the label for the trigger button. Important for accessibility.
+     */
+    triggerButtonLabel?: string;
+    /**
      * The type of control to render. A subset of the types supported by the `input` element is supported:  * `"date"` * `"datetime-local"` * `"email"` * `"file"` * `"number"` * `"password"` * `"search"` * `"tel"` * `"text"` * `"url"`
      */
-    type?:
-      | "date"
-      | "datetime-local"
-      | "email"
-      | "file"
-      | "number"
-      | "password"
-      | "search"
-      | "tel"
-      | "text"
-      | "time"
-      | "url";
+    type?: EditType;
     /**
      * The initial value of the control.
      */
@@ -2827,6 +2910,20 @@ declare namespace LocalJSX {
   }
   interface GxGridFlex {
     /**
+     * This aligns a flex container’s lines within when there is extra space in the cross-axis, similar to how justify-content aligns individual items within the main-axis.  | Value           | Details                                                                                  | | --------------- | ---------------------------------------------------------------------------------------- | | `center`        | Lines are packed toward the center of the flex container.                                | | `flex-end`      | Lines are packed toward the start of the flex container.                                 | | `flex-start`    | Lines are packed toward the end of the flex container.                                   | | `space-around`  | Lines are evenly distributed in the flex container, with half-size spaces on either end. | | `space-between` | Lines are evenly distributed in the flex container.                                      | | `stretch`       | Lines stretch to take up the remaining space.                                            |
+     */
+    alignContent?:
+      | "center"
+      | "flex-end"
+      | "flex-start"
+      | "space-around"
+      | "space-between"
+      | "stretch";
+    /**
+     * This attribute lets you define the default behavior for how flex items are laid out along the cross axis on the current line. Think of it as the justify-content version for the cross-axis (perpendicular to the main-axis).  | Value           | Details                                                                                                                                                            | | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | | `baseline`      | Controls are aligned such as their baselines align. This is useful to have several texts from different controls aligned taking into account different font sizes. | | `center`        | Controls are positioned at the center of the container.                                                                                                            | | `flex-end`      | Controls are positioned at the end of the container.                                                                                                               | | `flex-start`    | Controls are positioned at the beginning of the container.                                                                                                         | | `stretch`       | Controls are stretched to fit the container. In other words, children match the size of their container in the cross axis.                                         |
+     */
+    alignItems?: "baseline" | "center" | "flex-end" | "flex-start" | "stretch";
+    /**
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
      */
     autoGrow?: false;
@@ -2835,15 +2932,29 @@ declare namespace LocalJSX {
      */
     cssClass?: string;
     /**
-     * This establishes the main-axis, thus defining the direction flex items are placed in the flex container.  Flexbox is (aside from optional wrapping) a single-direction layout concept.  Think of flex items as primarily laying out either in horizontal rows or vertical columns.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `row` | The flex container's main-axis is defined to be the same as the text direction. The main-start and main-end points are the same as the content direction.                | | `column`   | The flex container's main-axis is the same as the block-axis. The main-start and main-end points are the same as the before and after points of the writing-mode. |
+     * Determines the direction of the main-axis (and the cross-axis, perpendicular to the main-axis). The direction children items are placed inside the Flexbox layout.  | Value            | Details                                                                                | | ---------------- | -------------------------------------------------------------------------------------- | | `column`         | Controls are displayed vertically, as a column (from top to bottom).                   | | `column-reverse` | Controls are displayed vertically, as a column, in reverse order (from bottom to top). | | `row`            | Controls are displayed horizontally, as a row (from left to right).                    | | `row-reverse`    | Controls are displayed horizontally, as a row, in reverse order (from right to left).  |
      */
-    flexDirection?: "row" | "column";
+    flexDirection?: FlexDirection;
+    /**
+     * Determine whether the flex container is single-line or multi-line, and the direction of the cross axis. This attribute specifies what happens when children overflow the size of the container along the main-axis of the layout container. By default, flex items will all try to fit onto one line. You can change that and allow the items to wrap as needed with this attribute.  | Value          | Details                                                       | | -------------- | ------------------------------------------------------------- | | `nowrap`       | All flex items will be on one line                            | | `wrap`         | Flex items will wrap onto multiple lines, from top to bottom. | | `wrap-reverse` | Flex items will wrap onto multiple lines from bottom to top.  |
+     */
+    flexWrap?: FlexWrap;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode?: "collapse" | "keep-space";
     /**
-     * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
+     * This attribute lets you define the alignment along the main axis. It helps distribute extra free space leftover when either all the flex items on a line are inflexible, or are flexible but have reached their maximum size. It also exerts some control over the alignment of items when they overflow the line.  | Value           | Details                                                                  | | --------------- | ------------------------------------------------------------------------ | | `center`        | Controls are positioned at the center of the container.                  | | `flex-end`      | Controls are positioned at the end of the container.                     | | `flex-start`    | Controls are positioned at the beginning of the container.               | | `space-around`  | Controls are positioned with space before, between, and after the lines. | | `space-between` | Controls are positioned with space between the lines.                    | | `space-evenly`  | Controls are positioned with space evenly around them.                   |
+     */
+    justifyContent?:
+      | "center"
+      | "flex-end"
+      | "flex-start"
+      | "space-around"
+      | "space-between"
+      | "space-evenly";
+    /**
+     * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value      | Details                                                                                          | | ---------- | ------------------------------------------------------------------------------------------------ | | `loading`  | The grid is waiting the server for the grid data. Grid loading mask will be shown.               | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
      */
     loadingState?: "loading" | "loaded";
     /**
@@ -3362,7 +3473,7 @@ declare namespace LocalJSX {
     /**
      * This attribute lets you specify the modal title.
      */
-    modalTitle?: any;
+    modalTitle?: string;
     /**
      * Fired when the image is clicked
      */
@@ -3404,7 +3515,7 @@ declare namespace LocalJSX {
     /**
      * Lets you specify the image URL. *Requiered*
      */
-    src?: "";
+    src?: string;
     /**
      * Indicates how much you can enlarge an image. (Percentage) _Note: 100% = Normal size_.
      */
@@ -3412,39 +3523,45 @@ declare namespace LocalJSX {
   }
   interface GxLayout {
     /**
-     * True to hide the bottom target
-     */
-    bottomHidden?: false;
-    /**
-     * `true` if the bottom navbar is visible in the application.
+     * `true` if the bottom navbar is visible in the application. This property can only be true if `layoutSize` == `"small"`
      */
     bottomNavbarVisible?: boolean;
     /**
-     * True to hide the left target
+     * `false` to hide the bottom target
      */
-    leftHidden?: boolean;
+    bottomVisible?: false;
     /**
-     * Fired when the leftHidden property is changed
+     * This attribute lets you specify if the header row pattern is enabled in the top navbar.
+     */
+    enableHeaderRowPattern?: boolean;
+    /**
+     * This attribute lets you specify the layout size of the application. Each layout size will set different behaviors in the gx-layout control.
+     */
+    layoutSize?: LayoutSize;
+    /**
+     * `false` to hide the left target
+     */
+    leftVisible?: boolean;
+    /**
+     * Fired when the leftVisible property is changed
      */
     onLeftHiddenChange?: (event: GxLayoutCustomEvent<any>) => void;
     /**
-     * Fired when the rightHidden property is changed
+     * Fired when the rightVisible property is changed
      */
     onRightHiddenChange?: (event: GxLayoutCustomEvent<any>) => void;
     /**
-     * Fired when the viewport size is less than the vertical targets breakpoint.
+     * `false` to hide the right target
      */
-    onVerticalTargetsBreakpointMatchChange?: (
-      event: GxLayoutCustomEvent<any>
-    ) => void;
+    rightVisible?: boolean;
     /**
-     * True to hide the right target
+     * `true` if the top navbar is visible in the application.
      */
-    rightHidden?: boolean;
+    topNavbarVisible?: boolean;
     /**
-     * True to hide the top target
+     * `false` to hide the top target.
      */
-    topHidden?: false;
+    topVisible?: false;
   }
   interface GxLoading {
     /**
@@ -3508,39 +3625,59 @@ declare namespace LocalJSX {
      */
     center?: string;
     /**
+     * This attribute determines whether map markers should be grouped. When `true`, the markers will be grouped depending on their proximity.
+     */
+    clusteringPoints?: boolean;
+    /**
+     * Enables the possibility to draw the route between two points on the map.
+     */
+    directionLayer?: boolean;
+    /**
+     * WKT format string containing the response of Google Maps Directions API call
+     */
+    directionLayerWKTString?: string;
+    /**
+     * If `true` allows drawing geometries on the map.
+     */
+    editableGeographies?: boolean;
+    /**
      * Enable the High Accuracy in user location. _Note: This property applies when ```watchPosition = true```._
      */
     highAccuracyLocator?: boolean;
+    /**
+     * Indicates how the map will be displayed at startup.  | Value           | Details                                                                                                                                       | | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | | `showAll`       | (Default value) the map is adjusted to display all the loaded points (and the current device location if Show My Location is set to True).    | | `nearestPoint`  | The map is adjusted to display the current device location and shows my location and the nearest point.                                       | | `radius`        | The map is adjusted to display a fixed radius, from the specified center. The radius value is specified using the initialZoomRadius property. | | `noInitialZoom` | No specific action is taken regarding the initial zoom.                                                                                       |
+     */
+    initialZoom?: "showAll" | "nearestPoint" | "radius" | "noInitialZoom";
+    /**
+     * The radius value if `initialZoom` = `"radius"`.
+     */
+    initialZoomRadius?: number;
     /**
      * The map provider. _Note: Currently, this property is for setting a custom map provider using an URL._
      */
     mapProvider?: string;
     /**
-     * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._
+     * Map type to be used. _Note: If you set a map provider, the selected map type will be ignored._  | Value       | Details                                                                     | | ----------- | --------------------------------------------------------------------------- | | `standard`  | Shows streets.                                                              | | `satellite` | Shows satellite images of the Earth.                                        | | `hybrid`    | Shows streets over the satellite images.                                    |
      */
     mapType?: "standard" | "satellite" | "hybrid";
     /**
-     * The max zoom level available in the map. _Note: 20 is the best value to be used, only lower values are allowed. Is highly recommended to no change this value if you are not sure about the `maxZoom` supported by the map._
-     */
-    maxZoom?: number;
-    /**
-     * Emmited when the map is loaded.
+     * Emitted when the map is loaded.
      */
     onGxMapDidLoad?: (event: GxMapCustomEvent<any>) => void;
     /**
-     * Emmited when the map is clicked and return click coords.
+     * Emitted when the map is clicked and return click coords.
      */
     onMapClick?: (event: GxMapCustomEvent<any>) => void;
     /**
-     * Emmited when the map stops from being moved, if selection layer is active.
+     * Emitted when the map stops from being moved, if selection layer is active.
      */
     onSelectionChange?: (event: GxMapCustomEvent<any>) => void;
     /**
-     * Emmited when the map is being moved, if selection layer is active.
+     * Emitted when the map is being moved, if selection layer is active.
      */
     onSelectionInput?: (event: GxMapCustomEvent<any>) => void;
     /**
-     * Emmited when the user location coords change.
+     * Emitted when the user location coords change.
      */
     onUserLocationChange?: (event: GxMapCustomEvent<any>) => void;
     /**
@@ -3564,6 +3701,14 @@ declare namespace LocalJSX {
      */
     selectionLayer?: boolean;
     /**
+     * A CSS class to set as the `selectionLayer` icon class.
+     */
+    selectionTargetImageCssClass?: string;
+    /**
+     * This attribute lets you specify the srcset attribute for the `selectionLayer` icon. If not set the `pinImageSrcset` property will be used to specify the srcset attribute for the icon. If none of the properties are specified, a default icon will be used when `selectionLayer = true`
+     */
+    selectionTargetImageSrcset?: string;
+    /**
      * Indicates if the current location of the device is displayed on the map.
      */
     showMyLocation?: boolean;
@@ -3572,19 +3717,39 @@ declare namespace LocalJSX {
      */
     zoom?: number;
   }
+  interface GxMapCircle {
+    /**
+     * The coordinates where the circle will appear in the map.
+     */
+    coords?: string;
+    /**
+     * Emits when the element is deleted from a `<gx-map>`.
+     */
+    onGxMapCircleDeleted?: (event: GxMapCircleCustomEvent<any>) => void;
+    /**
+     * Emits when the element is added to a `<gx-map>`.
+     */
+    onGxMapCircleDidLoad?: (
+      event: GxMapCircleCustomEvent<GridMapElement>
+    ) => void;
+    /**
+     * The radius that the circle will have in the map. It's expressed in meters.
+     */
+    radius?: number;
+  }
   interface GxMapLine {
     /**
      * The coordinates where the line/polyline will appear in the map.
      */
     coords?: string;
     /**
-     * Emmits when the element is deleted from a `<gx-map>`.
+     * Emits when the element is deleted from a `<gx-map>`.
      */
     onGxMapLineDeleted?: (event: GxMapLineCustomEvent<any>) => void;
     /**
-     * Emmits when the element is added to a `<gx-map>`.
+     * Emits when the element is added to a `<gx-map>`.
      */
-    onGxMapLineDidLoad?: (event: GxMapLineCustomEvent<any>) => void;
+    onGxMapLineDidLoad?: (event: GxMapLineCustomEvent<GridMapElement>) => void;
   }
   interface GxMapMarker {
     /**
@@ -3611,6 +3776,10 @@ declare namespace LocalJSX {
      * Emitted when the element update its data.
      */
     onGxMapMarkerUpdate?: (event: GxMapMarkerCustomEvent<any>) => void;
+    /**
+     * Whether the gx-map-marker's popUp can be shown.
+     */
+    showPopup?: boolean;
     /**
      * This attribute lets you specify the src of the marker image.
      */
@@ -3644,7 +3813,9 @@ declare namespace LocalJSX {
     /**
      * Emitted when the element is added to a `<gx-map>`.
      */
-    onGxMapPolygonDidLoad?: (event: GxMapPolygonCustomEvent<any>) => void;
+    onGxMapPolygonDidLoad?: (
+      event: GxMapPolygonCustomEvent<GridMapElement>
+    ) => void;
   }
   interface GxMessage {
     /**
@@ -3736,6 +3907,10 @@ declare namespace LocalJSX {
      */
     headerRowPatternCssClass?: string;
     /**
+     * This attribute lets you specify the layout size of the application. Each layout size will set different behaviors in the gx-layout control.
+     */
+    layoutSize?: LayoutSize;
+    /**
      * `true` if the left target of the gx-layout is visible in the application.
      */
     leftTargetVisible?: boolean;
@@ -3805,6 +3980,10 @@ declare namespace LocalJSX {
      * This attribute lets you specify the srcset attribute of an icon for the navbar item.
      */
     iconSrcset?: string;
+    /**
+     * This attribute lets you specify the layout size of the application. Each layout size will set different behaviors in the gx-navbar-item control.
+     */
+    layoutSize?: LayoutSize;
   }
   interface GxPasswordEdit {
     /**
@@ -3816,9 +3995,9 @@ declare namespace LocalJSX {
      */
     disabled?: false;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     * The text to set as the label of the gx-password-edit control.
      */
-    invisibleMode?: "collapse" | "keep-space";
+    labelCaption?: string;
     /**
      * The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus.
      */
@@ -3843,10 +4022,6 @@ declare namespace LocalJSX {
      * Text of the reveal button to offer revealing the password.
      */
     revealButtonTextOn?: string;
-    /**
-     * Indicates if the value is revealed or masked.
-     */
-    revealed?: boolean;
     /**
      * If true, a reveal password button is shown next to the password input. Pressing the reveal button toggles the password mask, allowing the user to view the password text.
      */
@@ -4320,6 +4495,7 @@ declare namespace LocalJSX {
     "gx-loading": GxLoading;
     "gx-lottie": GxLottie;
     "gx-map": GxMap;
+    "gx-map-circle": GxMapCircle;
     "gx-map-line": GxMapLine;
     "gx-map-marker": GxMapMarker;
     "gx-map-polygon": GxMapPolygon;
@@ -4410,6 +4586,8 @@ declare module "@stencil/core" {
       "gx-lottie": LocalJSX.GxLottie &
         JSXBase.HTMLAttributes<HTMLGxLottieElement>;
       "gx-map": LocalJSX.GxMap & JSXBase.HTMLAttributes<HTMLGxMapElement>;
+      "gx-map-circle": LocalJSX.GxMapCircle &
+        JSXBase.HTMLAttributes<HTMLGxMapCircleElement>;
       "gx-map-line": LocalJSX.GxMapLine &
         JSXBase.HTMLAttributes<HTMLGxMapLineElement>;
       "gx-map-marker": LocalJSX.GxMapMarker &

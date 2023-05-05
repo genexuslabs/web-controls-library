@@ -23,6 +23,7 @@ gx-form-field {
   align-self: stretch;
   max-height: 100%;
   flex: 1;
+  height: 100%;
 
   &.gx-label-position {
     // Adjust label position to the opposite cell
@@ -85,8 +86,7 @@ gx-form-field {
 [align="left"],
 :not([align]) {
   & > gx-form-field {
-    [data-part="field"],
-    .gx-edit-readonly-container {
+    [data-part="field"] {
       text-align: start;
     }
 
@@ -101,8 +101,7 @@ gx-form-field {
 
 [align="center"] {
   & > gx-form-field {
-    [data-part="field"],
-    .gx-edit-readonly-container {
+    [data-part="field"] {
       text-align: center;
     }
 
@@ -117,8 +116,7 @@ gx-form-field {
 
 [align="right"] {
   & > gx-form-field {
-    [data-part="field"],
-    .gx-edit-readonly-container {
+    [data-part="field"] {
       text-align: end;
     }
 
@@ -133,7 +131,6 @@ gx-form-field {
 
 [valign="top"] {
   & > gx-form-field {
-    .gx-edit-readonly-container,
     [data-part="container"],
     gx-checkbox > .option-and-label-container {
       align-items: flex-start;
@@ -157,7 +154,6 @@ gx-form-field {
 
 [valign="middle"] {
   & > gx-form-field {
-    .gx-edit-readonly-container,
     [data-part="container"],
     gx-checkbox > .option-and-label-container {
       align-items: center;
@@ -181,7 +177,6 @@ gx-form-field {
 
 [valign="bottom"] {
   & > gx-form-field {
-    .gx-edit-readonly-container,
     [data-part="container"],
     gx-checkbox {
       align-items: flex-end;

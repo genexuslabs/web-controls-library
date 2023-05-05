@@ -22,7 +22,8 @@ import { VisibilityComponent } from "../common/interfaces";
   tag: "gx-grid-smart-css"
 })
 export class GridSmartCss
-  implements GridBase, ComponentInterface, VisibilityComponent {
+  implements GridBase, ComponentInterface, VisibilityComponent
+{
   constructor() {
     this.handleGxInfinite = this.handleGxInfinite.bind(this);
   }
@@ -35,7 +36,7 @@ export class GridSmartCss
   private resizeObserver: ResizeObserver = null;
 
   // Refs
-  private horizontalGridContent: HTMLDivElement = null;
+  private elementToMeasureSize: HTMLDivElement;
   private scrollableContainer: HTMLElement = null;
 
   @Element() element!: HTMLGxGridSmartCssElement;
@@ -141,9 +142,11 @@ export class GridSmartCss
    */
   @Method()
   async complete() {
-    this.element
-      .querySelector(':scope > [slot="grid-content"] gx-grid-infinite-scroll"')
-      ["complete"]();
+    (
+      this.element.querySelector(
+        ':scope > [slot="grid-content"] gx-grid-infinite-scroll"'
+      ) as HTMLGxGridInfiniteScrollElement
+    )["complete"]();
   }
 
   private isHorizontal(): boolean {
@@ -157,34 +160,30 @@ export class GridSmartCss
    * possible, we have to sync the grid viewport width with a CSS variable.
    *
    * The same concept applies for `direction = "vertical"` and the grid's height.
+   * This last scenario only works if auto-grow="false".
    */
   private connectResizeObserver(direction: "vertical" | "horizontal") {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
-    if (this.resizeObserver) {
+    // Vertical grids with auto-grow must not use Resize Observer
+    if (this.resizeObserver || (direction === "vertical" && this.autoGrow)) {
       return;
     }
 
-    if (direction == "vertical") {
+    if (direction === "vertical") {
       this.resizeObserver = new ResizeObserver(
         this.resizeObserverVerticalDirectionCallback
       );
     } else {
-      const resizeObserverCallback = this.autoGrow
-        ? this.resizeObserverHorizontalDirectionAutoGrowCallback
-        : this.resizeObserverHorizontalDirectionCallback;
-
-      this.resizeObserver = new ResizeObserver(resizeObserverCallback);
+      this.resizeObserver = new ResizeObserver(
+        this.resizeObserverHorizontalDirectionCallback
+      );
     }
 
-    this.resizeObserver.observe(this.scrollableContainer);
+    this.resizeObserver.observe(this.elementToMeasureSize);
   }
 
   // Callback for direction = "vertical"
   private resizeObserverVerticalDirectionCallback = () => {
-    // The resizeObserver must not be set when Auto Grow = True. Otherwise,
-    // since the grid's height will always change, the resize observer will
-    // enter in loop
-    if (!this.needForRAF || this.autoGrow) {
+    if (!this.needForRAF) {
       return;
     }
     this.needForRAF = false; // No need to call RAF up until next frame
@@ -195,12 +194,12 @@ export class GridSmartCss
 
       this.element.style.setProperty(
         "--gx-grid-smart-css-viewport-size",
-        `${this.scrollableContainer.clientHeight}px`
+        `${this.elementToMeasureSize.clientHeight}px`
       );
     });
   };
 
-  // Callback for direction = "horizontal" and autoGrow = false
+  // Callback for direction = "horizontal"
   private resizeObserverHorizontalDirectionCallback = () => {
     if (!this.needForRAF) {
       return;
@@ -209,7 +208,7 @@ export class GridSmartCss
 
     // Update CSS variable in the best moment
     requestAnimationFrame(() => {
-      const clientWidth = this.horizontalGridContent.clientWidth;
+      const clientWidth = this.elementToMeasureSize.clientWidth;
 
       this.needForRAF = true; // RAF now consumes the movement instruction so a new one can come
 
@@ -217,35 +216,10 @@ export class GridSmartCss
         "--gx-grid-smart-css-viewport-size",
         `${clientWidth}px`
       );
-    });
-  };
-
-  // Callback for direction = "horizontal" and autoGrow = true
-  private resizeObserverHorizontalDirectionAutoGrowCallback = () => {
-    if (!this.needForRAF) {
-      return;
-    }
-    this.needForRAF = false; // No need to call RAF up until next frame
-
-    // Update CSS variable in the best moment
-    requestAnimationFrame(() => {
-      const clientWidth = this.horizontalGridContent.clientWidth;
-
-      this.needForRAF = true; // RAF now consumes the movement instruction so a new one can come
-
-      this.element.style.setProperty(
-        "--gx-grid-smart-css-viewport-size",
-        `${clientWidth}px`
-      );
-
-      // Update the height of the horizontal content container, because the
-      // scrollableContainer has "position: absolute"
-      this.horizontalGridContent.style.height = `${this.scrollableContainer.scrollHeight}px`;
     });
   };
 
   private disconnectResizeObserver() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
       this.resizeObserver = null;
@@ -267,18 +241,21 @@ export class GridSmartCss
   }
 
   disconnectedCallback() {
-    this.scrollableContainer = null;
     this.disconnectResizeObserver();
+    this.elementToMeasureSize = null;
   }
 
   render() {
     return (
       <Host {...GridBaseHelper.hostData(this)}>
-        {this.direction == "horizontal" ? (
-          <div
-            class="gx-grid-horizontal-content"
-            ref={el => (this.horizontalGridContent = el as HTMLDivElement)}
-          >
+        <div
+          aria-hidden="true"
+          class="gx-grid-measure-size"
+          ref={el => (this.elementToMeasureSize = el as HTMLDivElement)}
+        ></div>
+
+        {!this.autoGrow && this.direction === "horizontal" ? (
+          <div class="gx-grid-absolute-content">
             <slot name="grid-content" />
           </div>
         ) : (
@@ -286,9 +263,8 @@ export class GridSmartCss
         )}
 
         <slot name="grid-empty-loading-placeholder" />
-        <div class="grid-empty-placeholder">
-          <slot name="grid-content-empty" />
-        </div>
+
+        <slot name="grid-content-empty" />
       </Host>
     );
   }
