@@ -26,21 +26,24 @@
 @mixin valign-with-shadow-DOM() {
   &[valign="top"] {
     > gx-textblock,
-    ::part(gx-valign) {
+    > ::part(gx-valign),
+    > gx-form-field > ::part(gx-valign) {
       align-items: flex-start;
     }
   }
 
   &[valign="middle"] {
     > gx-textblock,
-    ::part(gx-valign) {
+    > ::part(gx-valign),
+    > gx-form-field > ::part(gx-valign) {
       align-items: center;
     }
   }
 
   &[valign="bottom"] {
     > gx-textblock,
-    ::part(gx-valign) {
+    > ::part(gx-valign),
+    > gx-form-field > ::part(gx-valign) {
       align-items: flex-end;
     }
   }
