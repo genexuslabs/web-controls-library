@@ -11,7 +11,7 @@ import {
   h
 } from "@stencil/core";
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
-import Swiper, { FreeMode, Grid, SwiperOptions } from "swiper";
+import Swiper, { FreeMode, Grid, Pagination, SwiperOptions } from "swiper";
 
 import { HighlightableComponent } from "../common/highlightable";
 import { VisibilityComponent } from "../common/interfaces";
@@ -109,7 +109,7 @@ export class GridHorizontal
   @Prop({ mutable: true }) orientation: "portrait" | "landscape" = "portrait";
 
   /**
-   * If `true`, show the pagination buttons.
+   * If `true`, show the pagination buttons (page controller).
    */
   @Prop() readonly pager = true;
 
@@ -465,7 +465,7 @@ export class GridHorizontal
       this.orientation === "portrait" ? this.rows : this.rowsLandscape;
 
     const swiperOptions: SwiperOptions = {
-      modules: [FreeMode, Grid],
+      modules: [FreeMode, Grid, Pagination],
 
       autoHeight: false,
       autoplay: false,
@@ -557,8 +557,10 @@ export class GridHorizontal
 
     if (this.pager) {
       swiperOptions.pagination = {
-        clickable: false,
+        bulletElement: "button",
+        clickable: true,
         el: this.paginationEl,
+        enabled: true,
         hideOnClick: false,
         type: "bullets"
       };
@@ -640,15 +642,18 @@ export class GridHorizontal
           >
             <slot name="grid-content" />
           </div>,
+
           this.pager && (
             <div
-              class="gx-grid-paging swiper-pagination"
+              class="swiper-pagination"
               ref={el => (this.paginationEl = el)}
             />
           ),
+
           this.scrollbar && (
             <div class="swiper-scrollbar" ref={el => (this.scrollbarEl = el)} />
           ),
+
           <slot name="grid-empty-loading-placeholder" />,
 
           <slot name="grid-content-empty" />,
