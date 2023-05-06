@@ -11,7 +11,7 @@ import {
   h
 } from "@stencil/core";
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
-import Swiper, { SwiperOptions } from "swiper";
+import Swiper, { FreeMode, Grid, SwiperOptions } from "swiper";
 
 import { HighlightableComponent } from "../common/highlightable";
 import { VisibilityComponent } from "../common/interfaces";
@@ -465,27 +465,36 @@ export class GridHorizontal
       this.orientation === "portrait" ? this.rows : this.rowsLandscape;
 
     const swiperOptions: SwiperOptions = {
+      modules: [FreeMode, Grid],
+
       autoHeight: false,
       autoplay: false,
       centeredSlides: false,
       direction: this.optionValueDefault(this.direction, "horizontal"),
       effect: undefined,
-      freeMode: !this.snapToGrid,
-      freeModeMomentum: false,
-      freeModeMomentumRatio: 1,
-      freeModeMomentumBounce: true,
-      freeModeMomentumBounceRatio: 1,
-      freeModeMomentumVelocityRatio: 1,
-      freeModeSticky: false,
-      freeModeMinimumVelocity: 0.02,
+
+      freeMode: {
+        enabled: !this.snapToGrid,
+        minimumVelocity: 0.02,
+        momentum: false,
+        momentumRatio: 1,
+        momentumBounce: true,
+        momentumBounceRatio: 1,
+        momentumVelocityRatio: 1,
+        sticky: false
+      },
+
+      grid: {
+        rows: this.optionValueDefault(slidesPerColumnOrientation, 1),
+        fill: this.fillMode
+      },
+
       initialSlide: this.getSwiperCurrentPage() * this.itemsPerGroup,
       loop: false,
       parallax: false,
       setWrapperSize: false,
       slidesOffsetAfter: 0,
       slidesOffsetBefore: 0,
-      slidesPerColumn: this.optionValueDefault(slidesPerColumnOrientation, 1),
-      slidesPerColumnFill: this.fillMode,
       slidesPerGroup: this.optionValueDefault(this.itemsPerGroup, 1),
       slidesPerView: this.optionValueDefault(this.columns, 1),
       spaceBetween: 0,
@@ -624,7 +633,7 @@ export class GridHorizontal
         {[
           <div
             class={{
-              "gx-grid-horizontal-content swiper-container": true,
+              "gx-grid-horizontal-content swiper": true,
               "gx-grid-horizontal--no-auto-grow": !this.autoGrow
             }}
             ref={el => (this.horizontalGridContent = el as HTMLDivElement)}
