@@ -1,3 +1,18 @@
+export type EditType =
+  | "date"
+  | "datetime-local"
+  | "email"
+  | "file"
+  | "number"
+  | "password"
+  | "search"
+  | "tel"
+  | "text"
+  | "time"
+  | "url";
+
+export type FontCategory = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p";
+
 /**
  * | Value            | Details                                                                                |
  * | ---------------- | -------------------------------------------------------------------------------------- |

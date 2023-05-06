@@ -185,7 +185,7 @@ export class NavBar implements GxComponent {
       this.element,
       "gx-navbar-item",
       () => this.checkChildActions()
-    );
+    ) as MutationObserver;
 
     // - - - - - - - - - -   HANDLERS   - - - - - - - - - -
     attachHorizontalScrollWithDragHandler(this.navbarLinks);
@@ -203,7 +203,6 @@ export class NavBar implements GxComponent {
   disconnectedCallback() {
     document.body.removeEventListener("click", this.handleBodyClick);
 
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (this.watchForItemsObserver) {
       this.watchForItemsObserver.disconnect();
       this.watchForItemsObserver = undefined;

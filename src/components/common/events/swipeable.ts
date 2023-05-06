@@ -5,8 +5,8 @@ export function makeSwipeable(comp: Swipeable) {
   element.addEventListener("touchstart", startTouch);
   element.addEventListener("touchmove", moveTouch);
 
-  let initialX = null;
-  let initialY = null;
+  let initialX: number = null;
+  let initialY: number = null;
 
   function startTouch(e: TouchEvent) {
     initialX = e.touches[0].clientX;
@@ -38,15 +38,14 @@ export function makeSwipeable(comp: Swipeable) {
         // swiped right
         comp.swipeRight.emit(event);
       }
-    } else {
+
       // sliding vertically
-      if (diffY > 0) {
-        // swiped up
-        comp.swipeUp.emit(event);
-      } else {
-        // swiped down
-        comp.swipeDown.emit(event);
-      }
+    } else if (diffY > 0) {
+      // swiped up
+      comp.swipeUp.emit(event);
+    } else {
+      // swiped down
+      comp.swipeDown.emit(event);
     }
 
     initialX = null;

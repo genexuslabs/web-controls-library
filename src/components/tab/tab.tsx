@@ -35,7 +35,8 @@ import { getClasses } from "../common/css-transforms/css-transforms";
   tag: "gx-tab"
 })
 export class Tab
-  implements GxComponent, VisibilityComponent, HighlightableComponent {
+  implements GxComponent, VisibilityComponent, HighlightableComponent
+{
   /**
    *  - Input: Caption Id
    *  - Output: Corresponding tabPage Id
@@ -89,7 +90,7 @@ export class Tab
 
     if (
       tabCaptionElement.closest("gx-tab") !== this.element ||
-      tabCaptionElement == this.lastSelectedTabCaption
+      tabCaptionElement === this.lastSelectedTabCaption
     ) {
       return;
     }

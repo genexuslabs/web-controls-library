@@ -22,6 +22,7 @@ import { imagePositionClass } from "../common/image-position";
 
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
+import { DISABLED_CLASS } from "../../common/reserved-names";
 
 const ENTER_KEY_CODE = "Enter";
 const SPACE_KEY_CODE = "Space";
@@ -44,7 +45,8 @@ export class Button
     CustomizableComponent,
     DisableableComponent,
     HighlightableComponent,
-    VisibilityComponent {
+    VisibilityComponent
+{
   /**
    * `true` if the button has disabled image.
    */
@@ -178,7 +180,7 @@ export class Button
         class={{
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,
-          disabled: this.disabled,
+          [DISABLED_CLASS]: this.disabled,
 
           // Strings with only white spaces are taken as null captions
           "empty-caption": isEmptyCaption,
@@ -202,15 +204,19 @@ export class Button
           </span>
         )}
 
-        {// Main image
-        this.hasMainImage && (!this.disabled || !this.hasDisabledImage) && (
-          <slot name="main-image" aria-hidden="true" />
-        )}
+        {
+          // Main image
+          this.hasMainImage && (!this.disabled || !this.hasDisabledImage) && (
+            <slot name="main-image" aria-hidden="true" />
+          )
+        }
 
-        {// Disabled image
-        this.hasDisabledImage && this.disabled && (
-          <slot name="disabled-image" aria-hidden="true" />
-        )}
+        {
+          // Disabled image
+          this.hasDisabledImage && this.disabled && (
+            <slot name="disabled-image" aria-hidden="true" />
+          )
+        }
       </Host>
     );
   }

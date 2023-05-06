@@ -6,27 +6,27 @@ export function makeLinesClampable(
   contentContainerElementSelector: string,
   lineMeasuringElementSelector: string,
   componentHasShadowDOM = false
-) {
+): void | { applyLineClamp: () => void } {
   if (!component.lineClamp) {
     return;
   }
 
   // Used to know the sizes of the `content-container`
-  let contentContainerElement;
+  let contentContainerElement: HTMLElement;
 
   // Used to measure the line height
-  let lineMeasuringElement;
+  let lineMeasuringElement: HTMLElement;
 
   // Used to keep the state of the component
   let contentContainerHeight = -1;
   let lineMeasuringHeight = -1;
 
-  const applyLineClamp = debounce(function() {
+  const applyLineClamp = debounce(function () {
     requestAnimationFrame(function applyLineClampImpl() {
       const currentContentContainerHeight =
         contentContainerElement.clientHeight;
 
-      if (currentContentContainerHeight == 0) {
+      if (currentContentContainerHeight === 0) {
         return;
       }
 
@@ -36,8 +36,8 @@ export function makeLinesClampable(
           there is not need to update `component.maxLines`
       */
       if (
-        contentContainerHeight == currentContentContainerHeight &&
-        lineMeasuringHeight == currentLineMeasuringHeight
+        contentContainerHeight === currentContentContainerHeight &&
+        lineMeasuringHeight === currentLineMeasuringHeight
       ) {
         return;
       }
@@ -58,20 +58,22 @@ export function makeLinesClampable(
 
   overrideMethod(component, "componentDidLoad", {
     before: () => {
+      const componentElement = component.element;
+
       if (componentHasShadowDOM) {
-        contentContainerElement = component.element.shadowRoot.querySelector(
+        contentContainerElement = componentElement.shadowRoot.querySelector(
           contentContainerElementSelector
         ) as HTMLElement;
 
-        lineMeasuringElement = component.element.shadowRoot.querySelector(
+        lineMeasuringElement = componentElement.shadowRoot.querySelector(
           lineMeasuringElementSelector
         ) as HTMLElement;
       } else {
-        contentContainerElement = component.element.querySelector(
+        contentContainerElement = componentElement.querySelector(
           contentContainerElementSelector
         ) as HTMLElement;
 
-        lineMeasuringElement = component.element.querySelector(
+        lineMeasuringElement = componentElement.querySelector(
           lineMeasuringElementSelector
         ) as HTMLElement;
       }
@@ -88,14 +90,13 @@ export function makeLinesClampable(
       });
 
       // Observe the `content-container` and line height
-      resizeObserverContainer.observe(component.element);
+      resizeObserverContainer.observe(componentElement);
       resizeObserverContainer.observe(lineMeasuringElement);
     }
   });
 
   overrideMethod(component, "disconnectedCallback", {
     before: () => {
-      // eslint-disable-next-line @stencil/strict-boolean-conditions
       if (resizeObserverContainer) {
         resizeObserverContainer.disconnect();
         resizeObserverContainer = undefined;

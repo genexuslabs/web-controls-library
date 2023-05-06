@@ -56,7 +56,7 @@ function setupEvent(
 ) {
   document.body.addEventListener(startEventName, startEvent => {
     fireCustomEvent(HIGHLIGHT_EVENT_NAME, startEvent.target as HTMLElement);
-    const mouseUpHandler = endEvent => {
+    const mouseUpHandler = (endEvent: Event) => {
       fireCustomEvent(UNHIGHTLIGHT_EVENT_NAME, endEvent.target as HTMLElement);
       document.body.removeEventListener(endEventName1, mouseUpHandler);
       document.body.removeEventListener(endEventName2, mouseUpHandler);

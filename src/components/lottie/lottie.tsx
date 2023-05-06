@@ -26,7 +26,8 @@ export class Lottie
     GxComponent,
     ClickableComponent,
     VisibilityComponent,
-    DisableableComponent {
+    DisableableComponent
+{
   private animation: any;
   private animationTotalFrames: number;
 
@@ -152,7 +153,7 @@ export class Lottie
     this.animation.stop();
   }
 
-  private durationToFrames(duration) {
+  private durationToFrames(duration: number) {
     return Math.trunc(this.animationTotalFrames * duration);
   }
 

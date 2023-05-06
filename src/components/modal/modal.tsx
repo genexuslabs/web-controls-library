@@ -16,6 +16,8 @@ import {
   setContrastColor
 } from "../common/utils";
 
+const ESCAPE_KEY = "Escape";
+
 const WAIT_TO_REMOVE_MODAL = 300; // 300ms
 const bodyId = "body";
 const headerId = "header";
@@ -122,8 +124,8 @@ export class Modal implements GxComponent {
     if (newValue) {
       clearTimeout(this.dismissTimer);
       this.presented = true;
-      displayedModals++;
-      this.updateHtmlOverflow();
+
+      this.handleModalOpen();
 
       // Emit the event
       this.open.emit();
@@ -134,9 +136,7 @@ export class Modal implements GxComponent {
 
         this.presented = false;
 
-        // Check if should re-enable the scroll on the html
-        displayedModals--;
-        this.updateHtmlOverflow();
+        this.handleModalClose();
 
         // Emit the event after the dismiss animation has finished
         this.close.emit();
@@ -144,17 +144,47 @@ export class Modal implements GxComponent {
     }
   }
 
+  private handleModalOpen() {
+    displayedModals++;
+
+    this.updateHtmlOverflow();
+
+    document.body.addEventListener("keydown", this.closeModalOnEscapeKey, {
+      capture: true
+    });
+  }
+
+  private handleModalClose() {
+    displayedModals--;
+
+    // Check if should re-enable the scroll on the html
+    this.updateHtmlOverflow();
+
+    document.body.removeEventListener("keydown", this.closeModalOnEscapeKey, {
+      capture: true
+    });
+  }
+
+  /**
+   * Hide the vertical scrollbar when opening the first modal, if necessary
+   */
   private updateHtmlOverflow() {
     // If the modal is displayed, but another modal component disabled the
     // scroll on the html (displayedModals > 1), we don't have to disable it
-    if (displayedModals == 1 && bodyOverflowsY()) {
+    if (displayedModals === 1 && bodyOverflowsY()) {
       document.documentElement.classList.add(DISABLE_SCROLL_CLASS);
     }
 
-    if (displayedModals == 0) {
+    if (displayedModals === 0) {
       document.documentElement.classList.remove(DISABLE_SCROLL_CLASS);
     }
   }
+
+  private closeModalOnEscapeKey = (event: KeyboardEvent) => {
+    if (event.code === ESCAPE_KEY) {
+      this.closeModal(event);
+    }
+  };
 
   private connectObserver() {
     if (!this.shouldSetResizeObserver || this.observer || !this.opened) {
@@ -170,16 +200,16 @@ export class Modal implements GxComponent {
       requestAnimationFrame(() => {
         this.needForRAF = true; // RAF now consumes the movement instruction so a new one can come
 
-        const overflowX = this.element.offsetWidth != this.element.scrollWidth;
+        const overflowX = this.element.offsetWidth !== this.element.scrollWidth;
         const overflowY =
-          this.element.offsetHeight != this.element.scrollHeight;
+          this.element.offsetHeight !== this.element.scrollHeight;
 
         // Check if the position of the dialog should be adjusted
-        if (this.contentOverflowsX != overflowX) {
+        if (this.contentOverflowsX !== overflowX) {
           this.contentOverflowsX = overflowX;
           this.element.style.justifyContent = overflowX ? "flex-start" : null;
         }
-        if (this.contentOverflowsY != overflowY) {
+        if (this.contentOverflowsY !== overflowY) {
           this.contentOverflowsY = overflowY;
           this.element.style.alignItems = overflowY ? "flex-start" : null;
         }
@@ -192,7 +222,6 @@ export class Modal implements GxComponent {
   }
 
   private disconnectObserver() {
-    // eslint-disable-next-line @stencil/strict-boolean-conditions
     if (!this.shouldSetResizeObserver || !this.observer) {
       return;
     }
@@ -221,22 +250,20 @@ export class Modal implements GxComponent {
 
     // Check if should re-enable the scroll on the html
     if (this.presented) {
-      displayedModals--;
-      this.updateHtmlOverflow();
+      this.handleModalClose();
     }
   }
 
   componentWillLoad() {
-    this.shouldSetResizeObserver = this.type == "popup";
+    this.shouldSetResizeObserver = this.type === "popup";
     this.presented = this.opened;
 
     if (this.opened) {
-      displayedModals++;
-      this.updateHtmlOverflow();
+      this.handleModalOpen();
     }
 
     // Set the class to disable the scrolling if not defined
-    if (DISABLE_SCROLL_CLASS == "") {
+    if (DISABLE_SCROLL_CLASS === "") {
       DISABLE_SCROLL_CLASS = onMobileDevice()
         ? DISABLE_HTML_SCROLL_MOBILE
         : DISABLE_HTML_SCROLL;
@@ -248,7 +275,7 @@ export class Modal implements GxComponent {
     this.connectObserver();
 
     // No need to set contrast colors
-    if (this.type == "popup" || !this.presented) {
+    if (this.type === "popup" || !this.presented) {
       return;
     }
 
@@ -291,7 +318,7 @@ export class Modal implements GxComponent {
   }
 
   render() {
-    const customDialog = this.type != "popup";
+    const customDialog = this.type !== "popup";
 
     return (
       <Host

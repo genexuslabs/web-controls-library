@@ -24,7 +24,8 @@ import { getClasses } from "../common/css-transforms/css-transforms";
   tag: "gx-radio-group"
 })
 export class RadioGroup
-  implements GxComponent, DisableableComponent, VisibilityComponent {
+  implements GxComponent, DisableableComponent, VisibilityComponent
+{
   private radios: any[] = [];
   private didLoad: boolean;
 

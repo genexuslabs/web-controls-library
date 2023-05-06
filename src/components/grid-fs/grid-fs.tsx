@@ -24,12 +24,13 @@ export class GridFreeStyle
     GridBase,
     ComponentInterface,
     VisibilityComponent,
-    HighlightableComponent {
+    HighlightableComponent
+{
   constructor() {
     this.handleGxInfinite = this.handleGxInfinite.bind(this);
   }
 
-  viewPortInitialized = false;
+  private viewPortInitialized = false;
 
   @Element() element!: HTMLGxGridFsElement;
 
@@ -94,14 +95,16 @@ export class GridFreeStyle
    */
   @Event({ bubbles: false }) gxInfiniteThresholdReached: EventEmitter<void>;
 
-  /*
+  /**
    * This method must be called after new grid data was fetched by the infinite scroller.
    */
   @Method()
   async complete() {
-    this.element
-      .querySelector(":scope > gx-grid-infinite-scroll")
-      ["complete"]();
+    (
+      this.element.querySelector(
+        ":scope > gx-grid-infinite-scroll"
+      ) as HTMLGxGridInfiniteScrollElement
+    )["complete"]();
   }
 
   private ensureViewPort() {

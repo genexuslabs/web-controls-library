@@ -18,9 +18,23 @@ import {
 } from "../common/highlightable";
 import { LineClampComponent, makeLinesClampable } from "../common/line-clamp";
 
+import {
+  DISABLED_CLASS,
+  HEIGHT_MEASURING,
+  LINE_CLAMP,
+  LINE_MEASURING
+} from "../../common/reserved-names";
+
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
 
+/**
+ * @part gx-textblock__content - The main content displayed in the control. This part only applies when `format="Text"`.
+ * @part gx-textblock__html-container - The container of the main content displayed in the control. This part only applies when `format="HTML"`.
+ * @part gx-textblock__html-content - The main content displayed in the control. This part only applies when `format="HTML"`.
+ *
+ * @slot - The slot for the html content when `format="HTML"`.
+ */
 @Component({
   shadow: true,
   styleUrl: "textblock.scss",
@@ -32,17 +46,20 @@ export class TextBlock
     DisableableComponent,
     VisibilityComponent,
     LineClampComponent,
-    HighlightableComponent {
+    HighlightableComponent
+{
   constructor() {
     makeLinesClampable(
       this,
-      ".gx-textblock-container",
-      ".line-measuring",
+      "." + HEIGHT_MEASURING,
+      "." + LINE_MEASURING,
       true
     );
   }
 
   @Element() element: HTMLGxTextblockElement;
+
+  @State() maxLines = 0;
 
   /**
    * A CSS class to set as the `gx-textblock` element class.
@@ -50,9 +67,27 @@ export class TextBlock
   @Prop() readonly cssClass: string;
 
   /**
-   * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
+   * This attribute lets you specify if the element is disabled.
+   * If disabled, it will not fire any user interaction related event
+   * (for example, click event).
    */
-  @Prop() readonly href = "";
+  @Prop({ reflect: true }) readonly disabled = false;
+
+  /**
+   * It specifies the format that will have the textblock control.
+   *
+   *  - If `format` = `HTML`, the textblock control works as an HTML div and
+   *    the innerHTML will be taken from the default slot.
+   *
+   *  - If `format` = `Text`, the control works as a normal textblock control
+   *    and it is affected by most of the defined properties.
+   */
+  @Prop() readonly format: "Text" | "HTML" = "Text";
+
+  /**
+   * True to highlight control when an action is fired.
+   */
+  @Prop() readonly highlightable = false;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -65,104 +100,69 @@ export class TextBlock
   @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
-   * This attribute lets you specify if the element is disabled.
-   * If disabled, it will not fire any user interaction related event
-   * (for example, click event).
-   */
-  @Prop({ reflect: true }) readonly disabled = false;
-
-  /**
    * True to cut text when it overflows, showing an ellipsis.
    */
   @Prop() readonly lineClamp = false;
 
-  /**
-   * True to highlight control when an action is fired.
-   */
-  @Prop() readonly highlightable = false;
-
-  /**
-   * It specifies the format that will have the textblock control.
-   *
-   * If `format` = `HTML`, the textblock control works as an HTML div and the
-   * innerHTML will be the same as the `inner` property specifies.
-   *
-   * If `format` = `Text`, the control works as a normal textblock control and
-   * it is affected by most of the defined properties.
-   */
-  @Prop() readonly format: "Text" | "HTML" = "Text";
-
-  /**
-   * Used as the innerHTML when `format` = `HTML`.
-   */
-  @Prop() readonly inner: string = "";
-
-  @State() maxLines = 0;
-
   @Listen("click", { capture: true })
   handleClick(event: UIEvent) {
-    event.preventDefault();
     if (this.disabled) {
       event.stopPropagation();
       return;
     }
-  }
-  private shouldLineClamp: boolean;
-
-  componentWillLoad() {
-    this.shouldLineClamp = this.format === "Text" && this.lineClamp;
   }
 
   componentDidLoad() {
     makeHighlightable(this);
   }
 
+  /**
+   * This function is called either when `format="HTML"` or when
+   * `lineClamp="true"`.
+   * @returns The textblock content based on the current state.
+   */
+  private getContent = () =>
+    this.format === "Text" ? (
+      [
+        <div class={LINE_MEASURING}>{"A"}</div>,
+        <div class={HEIGHT_MEASURING}></div>,
+        <p
+          class={`content ${LINE_CLAMP}`}
+          part="gx-textblock__content"
+          style={{ "--max-lines": this.maxLines.toString() }}
+        >
+          <slot />
+        </p>
+      ]
+    ) : (
+      <div class="html-container" part="gx-textblock__html-container gx-valign">
+        <div class="html-content" part="gx-textblock__html-content">
+          <slot />
+        </div>
+      </div>
+    );
+
   render() {
     // Styling for gx-textblock control.
     const classes = getClasses(this.cssClass);
 
-    const body = (
-      <div class="gx-textblock-container" part="valign">
-        {this.lineClamp && <div class="line-measuring">{"A"}</div>}
-        {this.format === "Text" ? (
-          <span
-            class={{
-              "gx-textblock-content": true,
-              "gx-line-clamp": this.shouldLineClamp
-            }}
-            style={
-              this.shouldLineClamp
-                ? {
-                    "--max-lines": this.maxLines.toString()
-                  }
-                : undefined
-            }
-            part="content"
-          >
-            <slot />
-          </span>
-        ) : (
-          <div
-            class="gx-textblock-content"
-            innerHTML={this.inner}
-            part="content"
-          ></div>
-        )}
-      </div>
-    );
+    const justRenderTheSlot = this.format === "Text" && !this.lineClamp;
+    const shouldAddFocus = this.highlightable && !this.disabled;
 
     return (
       <Host
+        role={justRenderTheSlot ? "paragraph" : null}
+        aria-disabled={this.disabled ? "true" : null}
         class={{
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,
-          disabled: this.disabled
+          [DISABLED_CLASS]: this.disabled
         }}
-        data-has-action={this.highlightable ? "" : undefined}
+        data-has-action={shouldAddFocus ? "" : undefined}
         // Add focus to the control through sequential keyboard navigation and visually clicking
-        tabindex={this.highlightable && !this.disabled ? "0" : undefined}
+        tabindex={shouldAddFocus ? "0" : undefined}
       >
-        {this.href ? <a href={this.href}>{body}</a> : body}
+        {justRenderTheSlot ? <slot /> : this.getContent()}
       </Host>
     );
   }

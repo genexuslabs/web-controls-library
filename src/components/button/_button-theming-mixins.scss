@@ -1,0 +1,13 @@
+@import "../common/css-transforms/scss-transforms";
+
+////
+/// @group theming-mixins
+////
+
+/// Helper mixin to ease styling button custom elements
+/// @param {string} $disabled-class Disabled class of the button
+@mixin gx-button($disabled-class) {
+  @at-root gx-button#{&}#{$gx-disabled-class} {
+    @extend #{$disabled-class} !optional;
+  }
+}

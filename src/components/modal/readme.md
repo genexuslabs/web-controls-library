@@ -19,14 +19,10 @@ predefined slots:
 
 ```html
 <gx-modal auto-close="true" opened="true">
-  <span slot="header">
-    Sample modal dialog
-  </span>
+  <span slot="header"> Sample modal dialog </span>
   <gx-button slot="primary-action">Confirm</gx-button>
   <gx-button slot="secondary-action">Cancel</gx-button>
-  <div slot="body">
-    This is the modal dialog's content
-  </div>
+  <div slot="body">This is the modal dialog's content</div>
 </gx-modal>
 ```
 

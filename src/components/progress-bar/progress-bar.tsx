@@ -101,7 +101,7 @@ export class ProgressBar implements GxComponent {
     );
 
     const percentage =
-      calculatedMaxValue != 0
+      calculatedMaxValue !== 0
         ? Math.round((calculatedValue * 100) / calculatedMaxValue)
         : 100;
 
@@ -161,7 +161,7 @@ export class ProgressBar implements GxComponent {
               </span>
             )}
 
-            {this.didLoad && this.lottiePath == "" && (
+            {this.didLoad && this.lottiePath === "" && (
               <div
                 {...accessibilityAttributes}
                 class={{
@@ -197,7 +197,7 @@ export class ProgressBar implements GxComponent {
               </div>
             )}
 
-            {this.didLoad && this.lottiePath != "" && (
+            {this.didLoad && this.lottiePath !== "" && (
               <gx-lottie
                 {...accessibilityAttributes}
                 class={{

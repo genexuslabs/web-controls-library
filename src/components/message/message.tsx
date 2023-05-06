@@ -41,7 +41,7 @@ export class Message implements GxComponent, DismissableComponent {
   /**
    * This attribute lets you specify the text of the message.
    */
-  @Prop() messageText: string = null;
+  @Prop() readonly messageText: string = null;
 
   @State() triggerDismiss = false;
 
@@ -74,7 +74,7 @@ export class Message implements GxComponent, DismissableComponent {
     }
 
     // Check if should not set the interval
-    if (this.duration == 0) {
+    if (this.duration === 0) {
       clearInterval(this.interval);
 
       // If duration > 0, check if should set the interval

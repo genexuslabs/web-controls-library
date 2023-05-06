@@ -86,10 +86,7 @@ export function getClasses(cssClass: string): CssClasses {
 
   // If the value has not yet been calculated
   if (result === undefined) {
-    const vars = cssClass
-      .split(" ")
-      .map(tVars)
-      .join(" ");
+    const vars = cssClass.split(" ").map(tVars).join(" ");
 
     // Cache for the corresponding value
     result = { vars };
@@ -113,12 +110,11 @@ export function getTransformedClassesWithoutFocus(
     return { transformedCssClass: "", vars: "" };
   }
   const cacheKey = `${tClass.name}_${cssClass}`;
-  let result: CssTransformedClassesWithoutFocus = transformedClassesWoFocusCache.get(
-    cacheKey
-  );
+  let result: CssTransformedClassesWithoutFocus =
+    transformedClassesWoFocusCache.get(cacheKey);
 
   // If the value has not yet been calculated
-  if (result == undefined) {
+  if (!result) {
     const splittedClasses = cssClass.split(" ").map(tClass);
 
     const transformedCssClass = splittedClasses.join(" ");

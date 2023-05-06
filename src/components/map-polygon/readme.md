@@ -54,10 +54,10 @@ This element represents a polygon inside a `<gx-map>` element.
 
 ## Events
 
-| Event                 | Description                                            | Type               |
-| --------------------- | ------------------------------------------------------ | ------------------ |
-| `gxMapPolygonDeleted` | Emitted when the element is deleted from a `<gx-map>`. | `CustomEvent<any>` |
-| `gxMapPolygonDidLoad` | Emitted when the element is added to a `<gx-map>`.     | `CustomEvent<any>` |
+| Event                 | Description                                            | Type                          |
+| --------------------- | ------------------------------------------------------ | ----------------------------- |
+| `gxMapPolygonDeleted` | Emitted when the element is deleted from a `<gx-map>`. | `CustomEvent<any>`            |
+| `gxMapPolygonDidLoad` | Emitted when the element is added to a `<gx-map>`.     | `CustomEvent<GridMapElement>` |
 
 ---
 
