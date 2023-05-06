@@ -109,9 +109,10 @@ export class GridHorizontal
   @Prop({ mutable: true }) orientation: "portrait" | "landscape" = "portrait";
 
   /**
-   * If `true`, show the pagination buttons (page controller).
+   * A CSS class to set as the  Page Controller element class when
+   * `showPageController = "true"`.
    */
-  @Prop() readonly pager = true;
+  @Prop() readonly pageControllerClass: string;
 
   /**
    * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes.
@@ -133,6 +134,11 @@ export class GridHorizontal
    * If `true`, show the scrollbar.
    */
   @Prop() readonly scrollbar = false;
+
+  /**
+   * If `true`, show the pagination buttons (page controller).
+   */
+  @Prop() readonly showPageController = true;
 
   /**
    * Set to false to enable slides in free mode position.
@@ -555,7 +561,7 @@ export class GridHorizontal
       }
     };
 
-    if (this.pager) {
+    if (this.showPageController) {
       swiperOptions.pagination = {
         bulletElement: "button",
         clickable: true,
@@ -643,9 +649,12 @@ export class GridHorizontal
             <slot name="grid-content" />
           </div>,
 
-          this.pager && (
+          this.showPageController && (
             <div
-              class="swiper-pagination"
+              class={{
+                "swiper-pagination": true,
+                [this.pageControllerClass]: !!this.pageControllerClass
+              }}
               ref={el => (this.paginationEl = el)}
             />
           ),
