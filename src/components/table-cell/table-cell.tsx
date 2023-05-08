@@ -2,7 +2,7 @@ import { Component, Element, Prop, h, Host } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
 @Component({
-  shadow: true,
+  shadow: false,
   tag: "gx-table-cell"
 })
 export class TableCell implements GxComponent {
