@@ -18,19 +18,25 @@ A SASS mixin called `gx-textblock` is provided in `theming/theming-mixins.scss` 
 | --------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------ |
 | `cssClass`      | `css-class`      | A CSS class to set as the `gx-textblock` element class.                                                                                                                                                                                                                                                                                                                                      | `string`                     | `undefined`  |
 | `disabled`      | `disabled`       | This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).                                                                                                                                                                                                                                     | `boolean`                    | `false`      |
-| `format`        | `format`         | It specifies the format that will have the textblock control. If `format` = `HTML`, the textblock control works as an HTML div and the innerHTML will be the same as the `inner` property specifies. If `format` = `Text`, the control works as a normal textblock control and it is affected by most of the defined properties.                                                             | `"HTML" \| "Text"`           | `"Text"`     |
+| `format`        | `format`         | It specifies the format that will have the textblock control. - If `format` = `HTML`, the textblock control works as an HTML div and the innerHTML will be taken from the default slot. - If `format` = `Text`, the control works as a normal textblock control and it is affected by most of the defined properties.                                                                        | `"HTML" \| "Text"`           | `"Text"`     |
 | `highlightable` | `highlightable`  | True to highlight control when an action is fired.                                                                                                                                                                                                                                                                                                                                           | `boolean`                    | `false`      |
-| `href`          | `href`           | This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.                                                                                                                                                                                                                                                                                              | `""`                         | `""`         |
-| `inner`         | `inner`          | Used as the innerHTML when `format` = `HTML`.                                                                                                                                                                                                                                                                                                                                                | `string`                     | `""`         |
 | `invisibleMode` | `invisible-mode` | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \| | `"collapse" \| "keep-space"` | `"collapse"` |
 | `lineClamp`     | `line-clamp`     | True to cut text when it overflows, showing an ellipsis.                                                                                                                                                                                                                                                                                                                                     | `boolean`                    | `false`      |
 
+## Slots
+
+| Slot | Description                                         |
+| ---- | --------------------------------------------------- |
+|      | The slot for the html content when `format="HTML"`. |
+
 ## Shadow Parts
 
-| Part        | Description |
-| ----------- | ----------- |
-| `"content"` |             |
-| `"valign"`  |             |
+| Part                             | Description                                                                                              |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `"gx-textblock__content"`        | The main content displayed in the control. This part only applies when `format="Text"`.                  |
+| `"gx-textblock__html-container"` | The container of the main content displayed in the control. This part only applies when `format="HTML"`. |
+| `"gx-textblock__html-content"`   | The main content displayed in the control. This part only applies when `format="HTML"`.                  |
+| `"gx-valign"`                    |                                                                                                          |
 
 ## Dependencies
 

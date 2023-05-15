@@ -11,10 +11,11 @@
     @if $text-align != null {
       > gx-textblock {
         text-align: $text-align;
+        justify-content: $justify-content;
       }
     }
     @if $align-items != null {
-      > gx-textblock::part(valign) {
+      > gx-textblock {
         align-items: $align-items;
       }
     }

@@ -169,29 +169,28 @@ export class Image
 
     const withoutAutoGrow = this.scaleType !== "tile" && !this.autoGrow;
 
-    const shouldRenderTheImg = this.srcset || this.src;
+    const imageSrc = this.srcset || this.src;
+    const shouldAddLazyLoadingClass = !this.imageDidLoad && !!imageSrc;
 
-    const body = shouldRenderTheImg
-      ? [
-          <img
-            class={{
-              "inner-image": true,
-              "gx-image-tile": this.scaleType === "tile"
-            }}
-            style={{
-              backgroundImage:
-                this.scaleType === "tile" ? `url(${this.src})` : null,
-              opacity: !this.imageDidLoad ? "0" : null
-            }}
-            alt={this.alt}
-            loading="lazy"
-            src={this.src || undefined}
-            srcset={this.srcset || undefined}
-            onClick={this.handleClick}
-            onLoad={this.handleImageLoad}
-          />
-        ]
-      : [];
+    const body = !!imageSrc && (
+      <img
+        class={{
+          "inner-image": true,
+          "gx-image-tile": this.scaleType === "tile"
+        }}
+        style={{
+          backgroundImage:
+            this.scaleType === "tile" ? `url(${this.src})` : null,
+          opacity: !this.imageDidLoad ? "0" : null
+        }}
+        alt={this.alt}
+        loading="lazy"
+        src={this.src || undefined}
+        srcset={this.srcset || undefined}
+        onClick={this.handleClick}
+        onLoad={this.handleImageLoad}
+      />
+    );
 
     return (
       <Host
@@ -199,7 +198,7 @@ export class Image
           [classes.vars]: true,
           disabled: this.disabled,
           "gx-img-no-auto-grow": withoutAutoGrow,
-          [LAZY_LOADING_CLASS]: !withoutAutoGrow && !this.imageDidLoad
+          [LAZY_LOADING_CLASS]: !withoutAutoGrow && shouldAddLazyLoadingClass
         }}
       >
         <div
@@ -221,7 +220,7 @@ export class Image
             <div
               class={{
                 "gx-image-no-auto-grow-container": true,
-                [LAZY_LOADING_CLASS]: !this.imageDidLoad
+                [LAZY_LOADING_CLASS]: shouldAddLazyLoadingClass
               }}
             >
               {body}
