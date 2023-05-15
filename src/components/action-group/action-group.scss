@@ -1,0 +1,71 @@
+:host {
+  display: flex;
+  position: relative;
+}
+
+.actions-container {
+  display: flex;
+  flex: 1;
+}
+
+:host(.btn-actions-position-end) {
+  flex-direction: row-reverse;
+}
+
+:host(.overflow-behavior-add-scroll) .actions-container {
+  overflow-x: auto;
+  overflow-y: inherit;
+}
+
+:host(.overflow-behavior-multiline) .actions-container {
+  flex-wrap: wrap;
+}
+
+:host(.overflow-behavior-responsive-collapse) .actions-container {
+  flex-wrap: wrap;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  height: max-content;
+}
+
+.more-action-btn {
+  flex-shrink: 0;
+  width: 30px;
+  min-height: 20px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+.more-action-btn.hide {
+  display: none;
+}
+
+.more-action-btn-line {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: #aaa;
+}
+.more-action-btn:hover .more-action-btn-line {
+  background-color: #555;
+}
+
+.more-action-btn .more-action-btn-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+.more-action-btn .more-action-btn-container > gx-action-group-menu {
+  position: absolute;
+  top: 0;
+  left: 5px;
+}
+
+.separator {
+  width: 1px;
+  height: 100%;
+}

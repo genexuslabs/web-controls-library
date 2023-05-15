@@ -1,0 +1,24 @@
+:host {
+  position: absolute;
+  display: none;
+  z-index: 2;
+  background-color: #fefefe;
+  box-shadow: #efefef 2px 2px 8px, #aaaaaa 1px 1px 4px;
+  border-radius: 4px;
+}
+
+:host(.open) {
+  display: block;
+}
+
+:host(.disposed-vertical) {
+  top: 100%;
+  left: 0;
+  margin-top: 1px;
+}
+
+:host(.disposed-horizontal) {
+  top: 0;
+  left: 100%;
+  margin-left: 2px;
+}

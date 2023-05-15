@@ -5,6 +5,10 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import {
+  ActionGroupItemKeyDownEvent,
+  ActionGroupItemTargetEvent
+} from "./components/action-group-item/action-group-item";
 import { TimerState } from "./components/chronometer/chronometer-timer-state";
 import {
   EditType,
@@ -16,6 +20,100 @@ import { SwiperOptions } from "swiper";
 import { GridMapElement, LayoutSize } from "./components/common/interfaces";
 import { QueryViewerParameterChangedEvent } from "./components/query-viewer-parameter/query-viewer-parameter";
 export namespace Components {
+  interface GxActionGroup {
+    /**
+     * The aria label for the accessibility of the component.
+     */
+    caption: "";
+    /**
+     * When it's true and an action is activated close the actions menu.
+     */
+    closeOnActionActivated: boolean;
+    /**
+     * If the menu is opened or closed.
+     */
+    closed: boolean;
+    /**
+     * A CSS class to set as the `gx-action-group` element class.
+     */
+    cssClass: string;
+    /**
+     * This attribute determines how items behave when the content of the ActionGroup overflows horizontal. This property is needed to make the control responsive to changes in the Width of the container of ActionGroup.  | Value                 | Details                                                                                          | | --------------------- | ------------------------------------------------------------------------------------------------ | | `Add Scroll`          | The items of the ActionGroup that overflow horizontally are shown by means of a scroll.          | | `Multiline`           | The ActionGroup items that overflow horizontally are shown in a second line of the control.      | | `Responsive Collapse` | The Action Group items, when they start to overflow the control, are placed in the More Actions. |
+     */
+    itemsOverflowBehavior: "Add Scroll" | "Multiline" | "Responsive Collapse";
+    /**
+     * This attribute determines the position of the More Actions button in the Action Group.  | Value   | Details                                                               | | --------| --------------------------------------------------------------------- | | `Start` | The More Actions Button is displayed to the left of the ActionGroup.  | | `End`   | The More Actions Button is displayed to the right of the ActionGroup. |
+     */
+    moreActionsButtonPosition: "Start" | "End";
+    /**
+     * The index of item action that is targeted.
+     */
+    openIndex: number;
+    /**
+     * When it's true and an action is hovered show the actions menu.
+     */
+    showActionsMenuOnHover: boolean;
+  }
+  interface GxActionGroupItem {
+    /**
+     * A CSS class to set as the `gx-action-group-item` element class when it is un the first level (disposedTop = true).
+     */
+    cssClass: string;
+    /**
+     * This attribute lets you specify if the action item is activated or not.
+     */
+    deactivated: boolean;
+    /**
+     * This attribute lets you specify if the action item is disabled or not.
+     */
+    disabled: boolean;
+    /**
+     * Visual position of the menu of item. When action item is in the first level disposedTop = true.
+     */
+    disposedTop: boolean;
+    /**
+     * A CSS class to set as the `gx-action-group-item` element class when it is inside a gx-action-group-menu.
+     */
+    groupedClass: string;
+    /**
+     * The url for item navigate.
+     */
+    link: string;
+    /**
+     * When it's true and an the action is hovered show the menu.
+     */
+    showActionsMenuOnHover: boolean;
+  }
+  interface GxActionGroupMenu {
+    /**
+     * The aria label for the accessibility of the component.
+     */
+    caption: "";
+    /**
+     * If the menu is opened or closed.
+     */
+    closed: boolean;
+    /**
+     * A CSS class to set as the `gx-action-group-menu` element class.
+     */
+    cssClass: string;
+    /**
+     * Visual disposition of the menu.
+     */
+    disposedTop: boolean;
+    /**
+     * The index of item action that is targeted.
+     */
+    openIndex: number;
+    /**
+     * Used when the gx-action-group scroll changed, then update the position of menu.
+     */
+    parentScroll: number;
+    /**
+     * Used when the gx-action-group scroll changed, then update the position of menu.
+     */
+    parentSize: number;
+  }
   interface GxActionSheet {
     /**
      * This attribute lets you specify the label for the close button. Important for accessibility.
@@ -2153,10 +2251,6 @@ export namespace Components {
      */
     minHeight: string;
     /**
-     * True to add a fading overlay on the right and bottom area of the cell to signify that the content is longer than the space allows.
-     */
-    showContentFade: false;
-    /**
      * Defines the vertical alignment of the content of the cell.
      */
     valign: "top" | "bottom" | "middle";
@@ -2171,21 +2265,13 @@ export namespace Components {
      */
     disabled: false;
     /**
-     * It specifies the format that will have the textblock control.  If `format` = `HTML`, the textblock control works as an HTML div and the innerHTML will be the same as the `inner` property specifies.  If `format` = `Text`, the control works as a normal textblock control and it is affected by most of the defined properties.
+     * It specifies the format that will have the textblock control.   - If `format` = `HTML`, the textblock control works as an HTML div and    the innerHTML will be taken from the default slot.   - If `format` = `Text`, the control works as a normal textblock control    and it is affected by most of the defined properties.
      */
     format: "Text" | "HTML";
     /**
      * True to highlight control when an action is fired.
      */
     highlightable: false;
-    /**
-     * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
-     */
-    href: "";
-    /**
-     * Used as the innerHTML when `format` = `HTML`.
-     */
-    inner: string;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -2205,6 +2291,10 @@ export namespace Components {
      */
     src: string;
   }
+}
+export interface GxActionGroupItemCustomEvent<T> extends CustomEvent<T> {
+  detail: T;
+  target: HTMLGxActionGroupItemElement;
 }
 export interface GxActionSheetCustomEvent<T> extends CustomEvent<T> {
   detail: T;
@@ -2376,6 +2466,27 @@ export interface GxTableCustomEvent<T> extends CustomEvent<T> {
   target: HTMLGxTableElement;
 }
 declare global {
+  interface HTMLGxActionGroupElement
+    extends Components.GxActionGroup,
+      HTMLStencilElement {}
+  var HTMLGxActionGroupElement: {
+    prototype: HTMLGxActionGroupElement;
+    new (): HTMLGxActionGroupElement;
+  };
+  interface HTMLGxActionGroupItemElement
+    extends Components.GxActionGroupItem,
+      HTMLStencilElement {}
+  var HTMLGxActionGroupItemElement: {
+    prototype: HTMLGxActionGroupItemElement;
+    new (): HTMLGxActionGroupItemElement;
+  };
+  interface HTMLGxActionGroupMenuElement
+    extends Components.GxActionGroupMenu,
+      HTMLStencilElement {}
+  var HTMLGxActionGroupMenuElement: {
+    prototype: HTMLGxActionGroupMenuElement;
+    new (): HTMLGxActionGroupMenuElement;
+  };
   interface HTMLGxActionSheetElement
     extends Components.GxActionSheet,
       HTMLStencilElement {}
@@ -2794,6 +2905,9 @@ declare global {
     new (): HTMLGxVideoElement;
   };
   interface HTMLElementTagNameMap {
+    "gx-action-group": HTMLGxActionGroupElement;
+    "gx-action-group-item": HTMLGxActionGroupItemElement;
+    "gx-action-group-menu": HTMLGxActionGroupMenuElement;
     "gx-action-sheet": HTMLGxActionSheetElement;
     "gx-action-sheet-item": HTMLGxActionSheetItemElement;
     "gx-audio": HTMLGxAudioElement;
@@ -2860,6 +2974,118 @@ declare global {
   }
 }
 declare namespace LocalJSX {
+  interface GxActionGroup {
+    /**
+     * The aria label for the accessibility of the component.
+     */
+    caption?: "";
+    /**
+     * When it's true and an action is activated close the actions menu.
+     */
+    closeOnActionActivated?: boolean;
+    /**
+     * If the menu is opened or closed.
+     */
+    closed?: boolean;
+    /**
+     * A CSS class to set as the `gx-action-group` element class.
+     */
+    cssClass?: string;
+    /**
+     * This attribute determines how items behave when the content of the ActionGroup overflows horizontal. This property is needed to make the control responsive to changes in the Width of the container of ActionGroup.  | Value                 | Details                                                                                          | | --------------------- | ------------------------------------------------------------------------------------------------ | | `Add Scroll`          | The items of the ActionGroup that overflow horizontally are shown by means of a scroll.          | | `Multiline`           | The ActionGroup items that overflow horizontally are shown in a second line of the control.      | | `Responsive Collapse` | The Action Group items, when they start to overflow the control, are placed in the More Actions. |
+     */
+    itemsOverflowBehavior?: "Add Scroll" | "Multiline" | "Responsive Collapse";
+    /**
+     * This attribute determines the position of the More Actions button in the Action Group.  | Value   | Details                                                               | | --------| --------------------------------------------------------------------- | | `Start` | The More Actions Button is displayed to the left of the ActionGroup.  | | `End`   | The More Actions Button is displayed to the right of the ActionGroup. |
+     */
+    moreActionsButtonPosition?: "Start" | "End";
+    /**
+     * The index of item action that is targeted.
+     */
+    openIndex?: number;
+    /**
+     * When it's true and an action is hovered show the actions menu.
+     */
+    showActionsMenuOnHover?: boolean;
+  }
+  interface GxActionGroupItem {
+    /**
+     * A CSS class to set as the `gx-action-group-item` element class when it is un the first level (disposedTop = true).
+     */
+    cssClass?: string;
+    /**
+     * This attribute lets you specify if the action item is activated or not.
+     */
+    deactivated?: boolean;
+    /**
+     * This attribute lets you specify if the action item is disabled or not.
+     */
+    disabled?: boolean;
+    /**
+     * Visual position of the menu of item. When action item is in the first level disposedTop = true.
+     */
+    disposedTop?: boolean;
+    /**
+     * A CSS class to set as the `gx-action-group-item` element class when it is inside a gx-action-group-menu.
+     */
+    groupedClass?: string;
+    /**
+     * The url for item navigate.
+     */
+    link?: string;
+    /**
+     * Fired when a KeyboardEvent is captured for the action item.
+     */
+    onActionGroupItemKeyDown?: (
+      event: GxActionGroupItemCustomEvent<ActionGroupItemKeyDownEvent>
+    ) => void;
+    /**
+     * Fired when the item is selected.
+     */
+    onActionGroupItemSelected?: (
+      event: GxActionGroupItemCustomEvent<HTMLGxActionGroupItemElement>
+    ) => void;
+    /**
+     * Fired when the item is targeted or not.
+     */
+    onActionGroupItemTargeted?: (
+      event: GxActionGroupItemCustomEvent<ActionGroupItemTargetEvent>
+    ) => void;
+    /**
+     * When it's true and an the action is hovered show the menu.
+     */
+    showActionsMenuOnHover?: boolean;
+  }
+  interface GxActionGroupMenu {
+    /**
+     * The aria label for the accessibility of the component.
+     */
+    caption?: "";
+    /**
+     * If the menu is opened or closed.
+     */
+    closed?: boolean;
+    /**
+     * A CSS class to set as the `gx-action-group-menu` element class.
+     */
+    cssClass?: string;
+    /**
+     * Visual disposition of the menu.
+     */
+    disposedTop?: boolean;
+    /**
+     * The index of item action that is targeted.
+     */
+    openIndex?: number;
+    /**
+     * Used when the gx-action-group scroll changed, then update the position of menu.
+     */
+    parentScroll?: number;
+    /**
+     * Used when the gx-action-group scroll changed, then update the position of menu.
+     */
+    parentSize?: number;
+  }
   interface GxActionSheet {
     /**
      * This attribute lets you specify the label for the close button. Important for accessibility.
@@ -5256,10 +5482,6 @@ declare namespace LocalJSX {
      */
     minHeight?: string;
     /**
-     * True to add a fading overlay on the right and bottom area of the cell to signify that the content is longer than the space allows.
-     */
-    showContentFade?: false;
-    /**
      * Defines the vertical alignment of the content of the cell.
      */
     valign?: "top" | "bottom" | "middle";
@@ -5274,21 +5496,13 @@ declare namespace LocalJSX {
      */
     disabled?: false;
     /**
-     * It specifies the format that will have the textblock control.  If `format` = `HTML`, the textblock control works as an HTML div and the innerHTML will be the same as the `inner` property specifies.  If `format` = `Text`, the control works as a normal textblock control and it is affected by most of the defined properties.
+     * It specifies the format that will have the textblock control.   - If `format` = `HTML`, the textblock control works as an HTML div and    the innerHTML will be taken from the default slot.   - If `format` = `Text`, the control works as a normal textblock control    and it is affected by most of the defined properties.
      */
     format?: "Text" | "HTML";
     /**
      * True to highlight control when an action is fired.
      */
     highlightable?: false;
-    /**
-     * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
-     */
-    href?: "";
-    /**
-     * Used as the innerHTML when `format` = `HTML`.
-     */
-    inner?: string;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -5309,6 +5523,9 @@ declare namespace LocalJSX {
     src?: string;
   }
   interface IntrinsicElements {
+    "gx-action-group": GxActionGroup;
+    "gx-action-group-item": GxActionGroupItem;
+    "gx-action-group-menu": GxActionGroupMenu;
     "gx-action-sheet": GxActionSheet;
     "gx-action-sheet-item": GxActionSheetItem;
     "gx-audio": GxAudio;
@@ -5378,6 +5595,12 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
   export namespace JSX {
     interface IntrinsicElements {
+      "gx-action-group": LocalJSX.GxActionGroup &
+        JSXBase.HTMLAttributes<HTMLGxActionGroupElement>;
+      "gx-action-group-item": LocalJSX.GxActionGroupItem &
+        JSXBase.HTMLAttributes<HTMLGxActionGroupItemElement>;
+      "gx-action-group-menu": LocalJSX.GxActionGroupMenu &
+        JSXBase.HTMLAttributes<HTMLGxActionGroupMenuElement>;
       "gx-action-sheet": LocalJSX.GxActionSheet &
         JSXBase.HTMLAttributes<HTMLGxActionSheetElement>;
       "gx-action-sheet-item": LocalJSX.GxActionSheetItem &

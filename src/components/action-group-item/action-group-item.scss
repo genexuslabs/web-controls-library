@@ -1,0 +1,17 @@
+:host {
+  display: block;
+  padding: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  box-sizing: border-box;
+  position: relative;
+  user-select: none;
+}
+:host(:hover),
+:host(.hover) {
+  background-color: #efefef;
+}
+:host(.first-level-action) {
+  border-radius: 4px;
+  position: inherit;
+}
