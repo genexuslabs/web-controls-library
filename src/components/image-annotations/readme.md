@@ -58,53 +58,32 @@ This component allows you to draw traces on the space in which the control is pl
 
 ## Properties
 
-| Property          | Attribute          | Description                                                     | Type                               | Default        |
-| ----------------- | ------------------ | --------------------------------------------------------------- | ---------------------------------- | -------------- |
-| `backgroundImage` | `background-image` | The source of the background image.                             | `string`                           | `undefined`    |
-| `cssClass`        | `css-class`        | A CSS class to set as the `gx-image-annotations` element class. | `string`                           | `undefined`    |
-| `enabled`         | `enabled`          | If the annotations are activated or not.                        | `boolean`                          | `true`         |
-| `invisibleMode`   | `invisible-mode`   | How the component will hide.                                    | `"Collapse Space" \| "Keep Space"` | `"Keep Space"` |
-| `traceColor`      | `trace-color`      | Drawing color.                                                  | `string`                           | `"#000000"`    |
-| `traceThickness`  | `trace-thickness`  | Drawing thickness.                                              | `number`                           | `2`            |
-| `visible`         | `visible`          | If the component are visible or not.                            | `boolean`                          | `true`         |
+| Property         | Attribute         | Description                                                                                                                                                                                                                                                                                                                                                                                  | Type                         | Default                   |
+| ---------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------------------- |
+| `disabled`       | `disabled`        | If the annotations are activated or not.                                                                                                                                                                                                                                                                                                                                                     | `boolean`                    | `false`                   |
+| `fontFamily`     | `font-family`     | Specifies the `fontFamily` for the texts                                                                                                                                                                                                                                                                                                                                                     | `string`                     | `"Arial"`                 |
+| `fontSize`       | `font-size`       | Specifies the `fontSize` for the texts                                                                                                                                                                                                                                                                                                                                                       | `number`                     | `16`                      |
+| `imageLabel`     | `image-label`     | The source of the background image.                                                                                                                                                                                                                                                                                                                                                          | `"Image to be annotated"`    | `"Image to be annotated"` |
+| `invisibleMode`  | `invisible-mode`  | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \| | `"collapse" \| "keep-space"` | `"collapse"`              |
+| `lines`          | --                | Specifies the lines that will be drawn on the gx-image-annotations control                                                                                                                                                                                                                                                                                                                   | `ImageAnnotationLine[]`      | `[]`                      |
+| `texts`          | --                | Specifies the texts that will be drawn on the gx-image-annotations control                                                                                                                                                                                                                                                                                                                   | `ImageAnnotationText[]`      | `[]`                      |
+| `traceColor`     | `trace-color`     | Drawing color.                                                                                                                                                                                                                                                                                                                                                                               | `string`                     | `"#000000"`               |
+| `traceIndex`     | `trace-index`     | Property used for change the traceInd state and go forward or backward.                                                                                                                                                                                                                                                                                                                      | `number`                     | `-1`                      |
+| `traceThickness` | `trace-thickness` | Drawing thickness.                                                                                                                                                                                                                                                                                                                                                                           | `number`                     | `2`                       |
+| `value`          | `value`           | The source of the background image.                                                                                                                                                                                                                                                                                                                                                          | `string`                     | `undefined`               |
 
-## Methods
+## Events
 
-### `cleanAll() => Promise<void>`
-
-#### Returns
-
-Type: `Promise<void>`
-
-### `getLastSavedImage() => Promise<string>`
-
-#### Returns
-
-Type: `Promise<string>`
-
-### `getLastSavedImageAnnotations() => Promise<string>`
-
-#### Returns
-
-Type: `Promise<string>`
-
-### `goBack() => Promise<void>`
-
-#### Returns
-
-Type: `Promise<void>`
-
-### `goTo() => Promise<void>`
-
-#### Returns
-
-Type: `Promise<void>`
+| Event               | Description                                          | Type                                  |
+| ------------------- | ---------------------------------------------------- | ------------------------------------- |
+| `annotationsChange` | Fired when the annotations change.                   | `CustomEvent<AnnotationsChangeEvent>` |
+| `traceIndexChange`  | Fired when the traceIndex property value is changed. | `CustomEvent<number>`                 |
 
 ## Shadow Parts
 
-| Part       | Description                               |
-| ---------- | ----------------------------------------- |
-| `"canvas"` | The canvas where to make the annotations. |
+| Part                          | Description                               |
+| ----------------------------- | ----------------------------------------- |
+| `"image-annotations__canvas"` | The canvas where to make the annotations. |
 
 ---
 
