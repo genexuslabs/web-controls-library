@@ -12,8 +12,10 @@ import {
 
 const EMPTY_TRACE_LIST_INDEX = -3;
 
+const PERCENTAGE_VALUE_REGEX = /[0-9]*\.?[0-9]*%/g;
+
 /**
- * @part gx-image-annotations__canvas - The canvas where to make the annotations.
+ * @part image-annotations__canvas - The canvas where to make the annotations.
  */
 @Component({
   tag: "gx-image-annotations",
@@ -49,14 +51,31 @@ export class GxImageAnnotations {
   @State() traceList: TraceData[] = [];
 
   /**
-   * A CSS class to set as the `gx-image-annotations` element class.
-   */
-  @Prop() readonly cssClass: string;
-
-  /**
    * If the annotations are activated or not.
    */
   @Prop() readonly disabled = false;
+
+  /**
+   * Specifies the `fontFamily` for the texts
+   */
+  @Prop() readonly fontFamily: string = "Arial";
+
+  @Watch("fontFamily")
+  handleFontFamilyChange() {
+    this.loadTexts();
+    this.traceChanged();
+  }
+
+  /**
+   * Specifies the `fontSize` for the texts
+   */
+  @Prop() readonly fontSize: number = 16;
+
+  @Watch("fontSize")
+  handleFontSizeChange() {
+    this.loadTexts();
+    this.traceChanged();
+  }
 
   /**
    * The source of the background image.
@@ -72,6 +91,28 @@ export class GxImageAnnotations {
    * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
    */
   @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
+
+  /**
+   * Specifies the lines that will be drawn on the gx-image-annotations control
+   */
+  @Prop() readonly lines: ImageAnnotationLine[] = [];
+
+  @Watch("lines")
+  handleLinesChange() {
+    this.loadLines();
+    this.traceChanged();
+  }
+
+  /**
+   * Specifies the texts that will be drawn on the gx-image-annotations control
+   */
+  @Prop() readonly texts: ImageAnnotationText[] = [];
+
+  @Watch("texts")
+  handleTextsChange() {
+    this.loadTexts();
+    this.traceChanged();
+  }
 
   /**
    * Drawing color.
@@ -136,7 +177,7 @@ export class GxImageAnnotations {
     if (this.value) {
       this.baseImage = new Image();
       this.baseImage.src = this.value;
-      this.baseImage.addEventListener("load", this.loadImage);
+      this.baseImage.addEventListener("load", this.loadAll);
     }
 
     this.canvasChangedObserver();
@@ -168,7 +209,7 @@ export class GxImageAnnotations {
         this.canvas.height = entries[0].contentRect.height;
 
         // Reload annotations
-        this.loadImage();
+        this.loadAll();
         this.paintToInd(this.canvas);
         this.traceChanged();
       });
@@ -198,17 +239,30 @@ export class GxImageAnnotations {
   private cleanAll() {
     this.resetTrace();
     this.cleanPaint(this.canvas);
-    this.loadImage();
+    this.loadAll();
     this.traceChanged();
   }
 
   /**
-   * Load a background image in the canvas.
+   * Load a text, lines and background image in the canvas.
    */
-  private loadImage = () => {
+  private loadAll = () => {
+    // Add the texts
+    this.loadTexts();
+
+    // Add the lines
+    this.loadLines();
+
+    // Add the background image
+    this.loadImage();
+  };
+
+  private loadImage() {
+    // If no image, return
     if (!this.baseImage) {
       return;
     }
+    const context = this.canvas.getContext("2d");
 
     const hostWidth = this.canvas.width;
     const hostHeight = this.canvas.height;
@@ -246,7 +300,6 @@ export class GxImageAnnotations {
     }
 
     // Draw the image in canvas.
-    const context = this.canvas.getContext("2d");
     context.drawImage(
       this.baseImage,
       0,
@@ -258,7 +311,98 @@ export class GxImageAnnotations {
       newImgWidth,
       newImgHeight
     );
-  };
+  }
+
+  private loadTexts() {
+    if (!this.texts) {
+      return;
+    }
+    const context = this.canvas.getContext("2d");
+
+    this.texts.forEach(text => {
+      // Set text alignment
+      context.textAlign = (
+        text.TextAlign || "Start"
+      ).toLowerCase() as CanvasTextAlign;
+
+      // Set the font
+      context.font =
+        text.FontSize && text.FontFamily
+          ? `${text.FontSize}px ${text.FontFamily}`
+          : `${this.fontSize}px ${this.fontFamily}`;
+
+      const lines = text.FillText.split("\n");
+
+      // Draw each line with vertical separation
+      lines.forEach((line, index) => {
+        const initialY = this.fontSize + (text.OffSetY || 0);
+        const separation = this.fontSize + (text.SeparationBetweenLines || 0);
+
+        const offSetX = text.OffSetX || 0;
+
+        context.fillText(
+          line,
+          text.TextAlign === "Center"
+            ? this.canvas.width / 2 + offSetX
+            : offSetX,
+          initialY + index * separation
+        );
+      });
+    });
+  }
+
+  private loadLines() {
+    if (!this.lines) {
+      return;
+    }
+    const context = this.canvas.getContext("2d");
+
+    this.lines.forEach(line => {
+      context.beginPath();
+
+      context.moveTo(
+        this.getLineValue(line.FromX, "X"),
+        this.getLineValue(line.FromY, "Y")
+      );
+      context.lineTo(
+        this.getLineValue(line.ToX, "X"),
+        this.getLineValue(line.ToY, "Y")
+      );
+
+      context.strokeStyle = line.Color ?? "#000000";
+      context.stroke();
+    });
+  }
+
+  private getLineValue(line: string, axis: "X" | "Y"): number {
+    let trimmedLine = line.trim();
+    const hasPercentage = trimmedLine.includes("%");
+
+    if (!hasPercentage) {
+      return Number(trimmedLine);
+    }
+    const percentagesToReplace = trimmedLine.match(PERCENTAGE_VALUE_REGEX);
+
+    percentagesToReplace.forEach(valueToReplaceWithPercentage => {
+      // Remove % and parse to number
+      const valueToReplace =
+        Number(valueToReplaceWithPercentage.replace("%", "")) / 100;
+
+      // Calculate value in pixels
+      const computedValue =
+        axis === "X"
+          ? valueToReplace * this.canvas.width
+          : valueToReplace * this.canvas.height;
+
+      // Replace percentages with values in pixel
+      trimmedLine = trimmedLine.replace(
+        valueToReplaceWithPercentage,
+        computedValue.toString()
+      );
+    });
+
+    return eval(trimmedLine);
+  }
 
   private traceChanged = () => {
     this.canvas.toBlob(blob => {
@@ -399,6 +543,9 @@ export class GxImageAnnotations {
     if (this.canvas) {
       const context = canvas.getContext("2d");
       context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+      // Clear paths
+      context.beginPath();
     }
   };
 
@@ -498,15 +645,10 @@ export class GxImageAnnotations {
 
   render() {
     return (
-      <Host
-        role="img"
-        aria-label={this.imageLabel}
-        class={{
-          [this.cssClass]: !!this.cssClass
-        }}
-      >
+      <Host role="img" aria-label={this.imageLabel}>
         <canvas
-          part="gx-image-annotations__canvas"
+          class="canvas"
+          part="image-annotations__canvas"
           ref={canvasElement =>
             (this.canvas = canvasElement as HTMLCanvasElement)
           }
@@ -538,4 +680,22 @@ interface TraceDataPath {
 export interface AnnotationsChangeEvent {
   annotations: string;
   annotatedImage: string;
+}
+
+export interface ImageAnnotationText {
+  FillText: string;
+  FontFamily?: string;
+  FontSize?: number;
+  OffSetX?: number;
+  OffSetY?: number;
+  SeparationBetweenLines?: number;
+  TextAlign?: "Start" | "Center" | "End";
+}
+
+export interface ImageAnnotationLine {
+  FromX: string;
+  FromY: string;
+  ToX: string;
+  ToY: string;
+  Color?: string;
 }
