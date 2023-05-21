@@ -13,9 +13,12 @@ import {
   FontCategory
 } from "./common/types";
 import { SwiperOptions } from "swiper";
-import { AnnotationsChangeEvent } from "./components/image-annotations/image-annotations";
+import {
+  AnnotationsChangeEvent,
+  ImageAnnotationLine,
+  ImageAnnotationText
+} from "./components/image-annotations/image-annotations";
 import { GridMapElement, LayoutSize } from "./components/common/interfaces";
-import { QueryViewerParameterChangedEvent } from "./components/query-viewer-parameter/query-viewer-parameter";
 export namespace Components {
   interface GxActionSheet {
     /**
@@ -946,21 +949,33 @@ export namespace Components {
   }
   interface GxImageAnnotations {
     /**
-     * A CSS class to set as the `gx-image-annotations` element class.
-     */
-    cssClass: string;
-    /**
      * If the annotations are activated or not.
      */
     disabled: false;
+    /**
+     * Specifies the `fontFamily` for the texts
+     */
+    fontFamily: string;
+    /**
+     * Specifies the `fontSize` for the texts
+     */
+    fontSize: number;
     /**
      * The source of the background image.
      */
     imageLabel: "Image to be annotated";
     /**
-     * How the component will hide.
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
-    invisibleMode: "Keep Space" | "Collapse Space";
+    invisibleMode: "collapse" | "keep-space";
+    /**
+     * Specifies the lines that will be drawn on the gx-image-annotations control
+     */
+    lines: ImageAnnotationLine[];
+    /**
+     * Specifies the texts that will be drawn on the gx-image-annotations control
+     */
+    texts: ImageAnnotationText[];
     /**
      * Drawing color.
      */
@@ -1797,10 +1812,6 @@ export namespace Components {
      */
     minHeight: string;
     /**
-     * True to add a fading overlay on the right and bottom area of the cell to signify that the content is longer than the space allows.
-     */
-    showContentFade: false;
-    /**
      * Defines the vertical alignment of the content of the cell.
      */
     valign: "top" | "bottom" | "middle";
@@ -1815,21 +1826,13 @@ export namespace Components {
      */
     disabled: false;
     /**
-     * It specifies the format that will have the textblock control.  If `format` = `HTML`, the textblock control works as an HTML div and the innerHTML will be the same as the `inner` property specifies.  If `format` = `Text`, the control works as a normal textblock control and it is affected by most of the defined properties.
+     * It specifies the format that will have the textblock control.   - If `format` = `HTML`, the textblock control works as an HTML div and    the innerHTML will be taken from the default slot.   - If `format` = `Text`, the control works as a normal textblock control    and it is affected by most of the defined properties.
      */
     format: "Text" | "HTML";
     /**
      * True to highlight control when an action is fired.
      */
     highlightable: false;
-    /**
-     * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
-     */
-    href: "";
-    /**
-     * Used as the innerHTML when `format` = `HTML`.
-     */
-    inner: string;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -3482,31 +3485,43 @@ declare namespace LocalJSX {
   }
   interface GxImageAnnotations {
     /**
-     * A CSS class to set as the `gx-image-annotations` element class.
-     */
-    cssClass?: string;
-    /**
      * If the annotations are activated or not.
      */
     disabled?: false;
+    /**
+     * Specifies the `fontFamily` for the texts
+     */
+    fontFamily?: string;
+    /**
+     * Specifies the `fontSize` for the texts
+     */
+    fontSize?: number;
     /**
      * The source of the background image.
      */
     imageLabel?: "Image to be annotated";
     /**
-     * How the component will hide.
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
-    invisibleMode?: "Keep Space" | "Collapse Space";
+    invisibleMode?: "collapse" | "keep-space";
     /**
-     * Fired when the menu container is opened or closed.
+     * Specifies the lines that will be drawn on the gx-image-annotations control
+     */
+    lines?: ImageAnnotationLine[];
+    /**
+     * Fired when the annotations change.
      */
     onAnnotationsChange?: (
       event: GxImageAnnotationsCustomEvent<AnnotationsChangeEvent>
     ) => void;
     /**
-     * Fired when the menu container is opened or closed.
+     * Fired when the traceIndex property value is changed.
      */
     onTraceIndexChange?: (event: GxImageAnnotationsCustomEvent<number>) => void;
+    /**
+     * Specifies the texts that will be drawn on the gx-image-annotations control
+     */
+    texts?: ImageAnnotationText[];
     /**
      * Drawing color.
      */
@@ -4498,10 +4513,6 @@ declare namespace LocalJSX {
      */
     minHeight?: string;
     /**
-     * True to add a fading overlay on the right and bottom area of the cell to signify that the content is longer than the space allows.
-     */
-    showContentFade?: false;
-    /**
      * Defines the vertical alignment of the content of the cell.
      */
     valign?: "top" | "bottom" | "middle";
@@ -4516,21 +4527,13 @@ declare namespace LocalJSX {
      */
     disabled?: false;
     /**
-     * It specifies the format that will have the textblock control.  If `format` = `HTML`, the textblock control works as an HTML div and the innerHTML will be the same as the `inner` property specifies.  If `format` = `Text`, the control works as a normal textblock control and it is affected by most of the defined properties.
+     * It specifies the format that will have the textblock control.   - If `format` = `HTML`, the textblock control works as an HTML div and    the innerHTML will be taken from the default slot.   - If `format` = `Text`, the control works as a normal textblock control    and it is affected by most of the defined properties.
      */
     format?: "Text" | "HTML";
     /**
      * True to highlight control when an action is fired.
      */
     highlightable?: false;
-    /**
-     * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
-     */
-    href?: "";
-    /**
-     * Used as the innerHTML when `format` = `HTML`.
-     */
-    inner?: string;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
