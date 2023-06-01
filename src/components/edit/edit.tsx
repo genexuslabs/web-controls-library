@@ -98,7 +98,7 @@ export class Edit
   private inputId: string;
 
   // Refs
-  private inputRef: HTMLElement = null;
+  private inputRef: HTMLInputElement = null;
 
   /**
    * Determine the amount of lines to be displayed in the edit when
@@ -216,6 +216,26 @@ export class Edit
    * The initial value of the control.
    */
   @Prop({ mutable: true }) value: string;
+  @Watch("value")
+  handleValueChange() {
+    if (this.isReadonly || !this.inputRef) {
+      return;
+    }
+
+    /**
+     * Synchronize the input value with value prop. This use case is only
+     * needed when the value prop is changed outside of the component.
+     * Without this verification, the following case would occur:
+     *  - ValueChanging. Input ref: "X"
+     *  - Render. Value prop: "X"
+     *  - (Enter key event resets the value). Value prop: "" <---- The Angular's UIModel now has value = ""
+     *  - ChangeEvent. Input ref: "X"
+     *  Result: Angular's UIModel has value = "", but the control has value = "X"
+     */
+    if (this.inputRef.value !== this.value) {
+      this.inputRef.value = this.value;
+    }
+  }
 
   /**
    * True to highlight control when an action is fired.
