@@ -532,7 +532,7 @@ export class GridHorizontal
       // This aditionally triggers previous: watchSlidesVisibility: false
       // https://swiperjs.com/swiper-api#param-watchSlidesProgress
       watchSlidesProgress: false,
-      watchOverflow: this.pager,
+      watchOverflow: this.showPageController,
       preventClicks: true,
       preventClicksPropagation: true,
       slideToClickedSlide: false,
