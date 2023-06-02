@@ -47,9 +47,12 @@ const MIN_DATE_VALUE: { [key: string]: string } = {
   "datetime-local": "0001-01-01T00:00:00"
 };
 
+const PART_CONTENT = "gx-edit__content";
+
 /**
  * @part gx-edit__content - The main content displayed in the control. This part only applies when `format="Text"`.
  * @part gx-edit__date-placeholder - A placeholder displayed when the control is editable (`readonly="false"`), has no value set, and its type is `"datetime-local" | "date" | "time"`.
+ * @part gx-edit__hidden-multiline - The auxiliary content rendered in the control to implement the auto-grow. This part only applies when `format="Text"`, `multiline="true"` and `readonly="false"`.
  * @part gx-edit__html-container - The container of the main content displayed in the control. This part only applies when `format="HTML"`.
  * @part gx-edit__html-content - The main content displayed in the control. This part only applies when `format="HTML"`.
  * @part gx-edit__trigger-button - The trigger button displayed on the right side of the control when `show-trigger="true"`.
@@ -428,7 +431,6 @@ export class Edit
           ? [
               <this.readonlyTag
                 aria-disabled={this.disabled ? "true" : undefined}
-                aria-label={this.labelCaption || undefined}
                 class={{
                   content: this.format === "Text",
                   "html-container": this.format === "HTML",
@@ -437,7 +439,7 @@ export class Edit
                 }}
                 part={
                   this.format === "Text"
-                    ? "gx-edit__content"
+                    ? PART_CONTENT
                     : "gx-edit__html-container gx-valign"
                 }
                 style={
@@ -465,23 +467,28 @@ export class Edit
                 [
                   <textarea
                     {...attrs}
-                    class="content"
-                    part="gx-edit__content"
+                    class="content autofill"
+                    part={PART_CONTENT}
                     value={this.value}
                     ref={el => (this.inputRef = el as HTMLElement)}
                   ></textarea>,
 
                   // The space at the end of the value is necessary to correctly display the enters
-                  <div class="hidden-multiline">{this.value} </div>
+                  <div
+                    class="hidden-multiline"
+                    part="gx-edit__hidden-multiline"
+                  >
+                    {this.value}{" "}
+                  </div>
                 ]
               ) : (
                 <input
                   {...attrs}
                   class={{
-                    content: true,
+                    "content autofill": true,
                     "null-date": this.isDateType && !this.value
                   }}
-                  part="gx-edit__content"
+                  part={PART_CONTENT}
                   type={this.type}
                   value={this.value}
                   ref={el => (this.inputRef = el as HTMLElement)}

@@ -15,8 +15,12 @@ import {
   FontCategory
 } from "./common/types";
 import { SwiperOptions } from "swiper";
+import {
+  AnnotationsChangeEvent,
+  ImageAnnotationLine,
+  ImageAnnotationText
+} from "./components/image-annotations/image-annotations";
 import { GridMapElement, LayoutSize } from "./components/common/interfaces";
-import { QueryViewerParameterChangedEvent } from "./components/query-viewer-parameter/query-viewer-parameter";
 export namespace Components {
   interface GxActionSheet {
     /**
@@ -995,6 +999,52 @@ export namespace Components {
      */
     srcset: string;
   }
+  interface GxImageAnnotations {
+    /**
+     * If the annotations are activated or not.
+     */
+    disabled: false;
+    /**
+     * Specifies the `fontFamily` for the texts
+     */
+    fontFamily: string;
+    /**
+     * Specifies the `fontSize` for the texts
+     */
+    fontSize: number;
+    /**
+     * The source of the background image.
+     */
+    imageLabel: "Image to be annotated";
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode: "collapse" | "keep-space";
+    /**
+     * Specifies the lines that will be drawn on the gx-image-annotations control
+     */
+    lines: ImageAnnotationLine[];
+    /**
+     * Specifies the texts that will be drawn on the gx-image-annotations control
+     */
+    texts: ImageAnnotationText[];
+    /**
+     * Drawing color.
+     */
+    traceColor: string;
+    /**
+     * Property used for change the traceInd state and go forward or backward.
+     */
+    traceIndex: number;
+    /**
+     * Drawing thickness.
+     */
+    traceThickness: number;
+    /**
+     * The source of the background image.
+     */
+    value: string;
+  }
   interface GxImagePicker {
     /**
      * This attribute lets you specify the alternative text.
@@ -1536,397 +1586,6 @@ export namespace Components {
      */
     value: number;
   }
-  interface GxQueryViewer {
-    /**
-     * Allowing elements order to change
-     */
-    allowElementsOrderChange: boolean;
-    /**
-     * Allow selection
-     */
-    allowSelection: boolean;
-    /**
-     * Auto refresh group
-     */
-    autoRefreshGroup: string;
-    /**
-     * If type== PivotTable or Table, if true will shrink the table
-     */
-    autoResize: boolean;
-    /**
-     * If autoResize, in here select the type, Width, height, or both
-     */
-    autoResizeType: "Both" | "Vertical" | "Horizontal";
-    /**
-     * Base URL of the server
-     */
-    baseUrl: any;
-    /**
-     * If type == Chart, this is the chart type: Bar, Pie, Timeline, etc...
-     */
-    chartType:
-      | "Column"
-      | "Column3D"
-      | "StackedColumn"
-      | "StackedColumn3D"
-      | "StackedColumn100"
-      | "Bar"
-      | "StackedBar"
-      | "StackedBar100"
-      | "Area"
-      | "StackedArea"
-      | "StackedArea100"
-      | "SmoothArea"
-      | "StepArea"
-      | "Line"
-      | "StackedLine"
-      | "StackedLine100"
-      | "SmoothLine"
-      | "StepLine"
-      | "Pie"
-      | "Pie3D"
-      | "Doughnut"
-      | "Doughnut3D"
-      | "LinearGauge"
-      | "CircularGauge"
-      | "Radar"
-      | "FilledRadar"
-      | "PolarArea"
-      | "Funnel"
-      | "Pyramid"
-      | "ColumnLine"
-      | "Column3DLine"
-      | "Timeline"
-      | "SmoothTimeline"
-      | "StepTimeline"
-      | "Sparkline";
-    /**
-     * Version of data
-     */
-    dataVersionId: number;
-    /**
-     * Allowing or not Comlumn sort
-     */
-    disableColumnSort: boolean;
-    /**
-     * Environmet of the project: JAVA. .Net, NetCore
-     */
-    env: string;
-    /**
-     * If type== PivotTable or Table allow to export to HTML
-     */
-    exportToHTML: boolean;
-    /**
-     * If type== PivotTable or Table allow to export to PDF
-     */
-    exportToPDF: boolean;
-    /**
-     * If type== PivotTable or Table allow to export to XLS
-     */
-    exportToXLS: boolean;
-    /**
-     * If type== PivotTable or Table allow to export to XLSX
-     */
-    exportToXLSX: boolean;
-    /**
-     * If type== PivotTable or Table allow to export to XML
-     */
-    exportToXML: boolean;
-    /**
-     * Font Color
-     */
-    fontColor: string;
-    /**
-     * Type of font
-     */
-    fontFamily: string;
-    /**
-     * Font size
-     */
-    fontSize: number;
-    /**
-     * Include max and min
-     */
-    includeMaxMin: boolean;
-    /**
-     * Include spark line
-     */
-    includeSparkline: boolean;
-    /**
-     * If true includes trend on the graph
-     */
-    includeTrend: boolean;
-    /**
-     * True if it is external query
-     */
-    isExternalQuery: boolean;
-    /**
-     * Language of the QueryViewer
-     */
-    language: string;
-    /**
-     * Object of QueryViewer
-     */
-    object: string;
-    /**
-     * Name of the Query or Data provider assigned
-     */
-    objectName: string;
-    /**
-     * Object type -> Query or DataProvider
-     */
-    objectType: string;
-    /**
-     * Orientation of the graph
-     */
-    orientation: "Horizontal" | "Vertical";
-    /**
-     * If paging true, number of items for a single page
-     */
-    pageSize: number;
-    /**
-     * If type == PivotTable or Table, if true there is paging, else everything in one table
-     */
-    paging: boolean;
-    /**
-     * Timeline
-     */
-    plotSeries: "InTheSameChart" | "InSeparateCharts";
-    /**
-     * Title of the QueryViewer
-     */
-    queryTitle: string;
-    /**
-     * For timeline for remembering layout
-     */
-    rememberLayout: boolean;
-    /**
-     * Type of data to show
-     */
-    showDataAs: "Values" | "Percentages" | "ValuesAndPercentages";
-    /**
-     * Ax to show data labels
-     */
-    showDataLabelsIn: string;
-    /**
-     * if true show values on the graph
-     */
-    showValues: boolean;
-    /**
-     * Theme for showing the graph
-     */
-    theme: string;
-    /**
-     * If includeTrend, defines the period of the trend
-     */
-    trendPeriod:
-      | "SinceTheBeginning"
-      | "LastYear"
-      | "LastSemester"
-      | "LastQuarter"
-      | "LastMonth"
-      | "LastWeek"
-      | "LastDay"
-      | "LastHour"
-      | "LastMinute"
-      | "LastSecond";
-    /**
-     * Type of the QueryViewer: Table, PivotTable, Chart, Card
-     */
-    type: "Card" | "Chart" | "PivotTable" | "Table" | "Default";
-    /**
-     * if true the x Axes intersect at zero
-     */
-    xAxisIntersectionAtZero: boolean;
-    /**
-     * Labels for XAxis
-     */
-    xAxisLabels:
-      | "Horizontally"
-      | "Rotated30"
-      | "Rotated45"
-      | "Rotated60"
-      | "Vertically";
-    /**
-     * X Axis title
-     */
-    xAxisTitle: string;
-    /**
-     * Y Axis title
-     */
-    yAxisTitle: string;
-  }
-  interface GxQueryViewerElement {
-    /**
-     * Aggregation fucntion
-     */
-    aggregation: "Sum" | "Average" | "Count" | "Max" | "Min";
-    /**
-     * Which axis, row or column
-     */
-    axis: "Rows" | "Columns" | "Pages";
-    /**
-     * Axis Order type
-     */
-    axisOrderType: "None" | "Ascending" | "Descending" | "Custom";
-    /**
-     * Axis order values comma separated
-     */
-    axisOrderValues: string;
-    /**
-     * Data field
-     */
-    dataField: string;
-    /**
-     * Title to show
-     */
-    elementTitle: string;
-    /**
-     * Expand collapse type
-     */
-    expandCollapseType:
-      | "ExpandAllValues"
-      | "CollapseAllValues"
-      | "ExpandSomeValues";
-    /**
-     * Expand collapse values comma separated
-     */
-    expandCollapseValues: string;
-    /**
-     * Type of the filter
-     */
-    filterType: "ShowAllValues" | "HideAllValues" | "ShowSomeValues";
-    /**
-     * Filter values comma separated
-     */
-    filterValues: string;
-    /**
-     * Grouping by day of week title
-     */
-    groupingDayOfWeekTitle: string;
-    /**
-     * Grouping by day of week
-     */
-    groupingGroupByDayOfWeek: boolean;
-    /**
-     * Grouping by month
-     */
-    groupingGroupByMonth: boolean;
-    /**
-     * Grouping by Quarter
-     */
-    groupingGroupByQuarter: boolean;
-    /**
-     * Grouping by semester
-     */
-    groupingGroupBySemester: boolean;
-    /**
-     * Grouping by year
-     */
-    groupingGroupByYear: boolean;
-    /**
-     * Grouping hide vale
-     */
-    groupingHideValue: boolean;
-    /**
-     * Grouping by month title
-     */
-    groupingMonthTitle: string;
-    /**
-     * Grouping by Quarter title
-     */
-    groupingQuarterTitle: string;
-    /**
-     * Grouping by Semster title
-     */
-    groupingSemesterTitle: string;
-    /**
-     * Gouping by Year title
-     */
-    groupingYearTitle: string;
-    /**
-     * Name of the element
-     */
-    name: string;
-    /**
-     * Raise item click
-     */
-    raiseItemClick: boolean;
-    /**
-     * Type of the element
-     */
-    type: "Axis" | "Datum";
-    /**
-     * How to show it
-     */
-    visible: "Always" | "Yes" | "No" | "Never";
-  }
-  interface GxQueryViewerElementFormat {
-    /**
-     * If true cand drag to pages
-     */
-    canDragToPages: boolean;
-    /**
-     * Format style
-     */
-    formatStyle: string;
-    /**
-     * Max value
-     */
-    maximumValue: string;
-    /**
-     * Format on values
-     */
-    picture: string;
-    /**
-     * How to show subtotals
-     */
-    subtotals: "Yes" | "Hidden" | "No";
-    /**
-     * Target value
-     */
-    targetValue: string;
-  }
-  interface GxQueryViewerFormatStyle {
-    /**
-     * If Conditional true for applying to row or column
-     */
-    applyToRowOrColumn: boolean;
-    /**
-     * If Format the operator of the element
-     */
-    operator: "EQ" | "LT" | "GT" | "LE" | "GE" | "NE" | "IN";
-    /**
-     * Style or Css class
-     */
-    styleOrClass: string;
-    /**
-     * Type of the element Conditional or Format
-     */
-    type: "Values" | "Conditional";
-    /**
-     * If Conditional Value to format
-     */
-    value: string;
-    /**
-     * If format first value
-     */
-    value1: string;
-    /**
-     * If format second value
-     */
-    value2: string;
-  }
-  interface GxQueryViewerParameter {
-    /**
-     * Name of the parameter
-     */
-    Name: string;
-    /**
-     * Value of the parameter
-     */
-    Value: string;
-  }
   interface GxRadioGroup {
     /**
      * A CSS class to set as the `gx-radio-group` element class.
@@ -2205,10 +1864,6 @@ export namespace Components {
      */
     minHeight: string;
     /**
-     * True to add a fading overlay on the right and bottom area of the cell to signify that the content is longer than the space allows.
-     */
-    showContentFade: false;
-    /**
      * Defines the vertical alignment of the content of the cell.
      */
     valign: "top" | "bottom" | "middle";
@@ -2223,21 +1878,13 @@ export namespace Components {
      */
     disabled: false;
     /**
-     * It specifies the format that will have the textblock control.  If `format` = `HTML`, the textblock control works as an HTML div and the innerHTML will be the same as the `inner` property specifies.  If `format` = `Text`, the control works as a normal textblock control and it is affected by most of the defined properties.
+     * It specifies the format that will have the textblock control.   - If `format` = `HTML`, the textblock control works as an HTML div and    the innerHTML will be taken from the default slot.   - If `format` = `Text`, the control works as a normal textblock control    and it is affected by most of the defined properties.
      */
     format: "Text" | "HTML";
     /**
      * True to highlight control when an action is fired.
      */
     highlightable: false;
-    /**
-     * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
-     */
-    href: "";
-    /**
-     * Used as the innerHTML when `format` = `HTML`.
-     */
-    inner: string;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -2338,6 +1985,10 @@ export interface GxHeaderRowPatternMarkerCustomEvent<T> extends CustomEvent<T> {
   detail: T;
   target: HTMLGxHeaderRowPatternMarkerElement;
 }
+export interface GxImageAnnotationsCustomEvent<T> extends CustomEvent<T> {
+  detail: T;
+  target: HTMLGxImageAnnotationsElement;
+}
 export interface GxImagePickerCustomEvent<T> extends CustomEvent<T> {
   detail: T;
   target: HTMLGxImagePickerElement;
@@ -2381,23 +2032,6 @@ export interface GxNavbarCustomEvent<T> extends CustomEvent<T> {
 export interface GxPasswordEditCustomEvent<T> extends CustomEvent<T> {
   detail: T;
   target: HTMLGxPasswordEditElement;
-}
-export interface GxQueryViewerElementCustomEvent<T> extends CustomEvent<T> {
-  detail: T;
-  target: HTMLGxQueryViewerElementElement;
-}
-export interface GxQueryViewerElementFormatCustomEvent<T>
-  extends CustomEvent<T> {
-  detail: T;
-  target: HTMLGxQueryViewerElementFormatElement;
-}
-export interface GxQueryViewerFormatStyleCustomEvent<T> extends CustomEvent<T> {
-  detail: T;
-  target: HTMLGxQueryViewerFormatStyleElement;
-}
-export interface GxQueryViewerParameterCustomEvent<T> extends CustomEvent<T> {
-  detail: T;
-  target: HTMLGxQueryViewerParameterElement;
 }
 export interface GxRadioGroupCustomEvent<T> extends CustomEvent<T> {
   detail: T;
@@ -2646,6 +2280,13 @@ declare global {
     prototype: HTMLGxImageElement;
     new (): HTMLGxImageElement;
   };
+  interface HTMLGxImageAnnotationsElement
+    extends Components.GxImageAnnotations,
+      HTMLStencilElement {}
+  var HTMLGxImageAnnotationsElement: {
+    prototype: HTMLGxImageAnnotationsElement;
+    new (): HTMLGxImageAnnotationsElement;
+  };
   interface HTMLGxImagePickerElement
     extends Components.GxImagePicker,
       HTMLStencilElement {}
@@ -2753,41 +2394,6 @@ declare global {
   var HTMLGxProgressBarElement: {
     prototype: HTMLGxProgressBarElement;
     new (): HTMLGxProgressBarElement;
-  };
-  interface HTMLGxQueryViewerElement
-    extends Components.GxQueryViewer,
-      HTMLStencilElement {}
-  var HTMLGxQueryViewerElement: {
-    prototype: HTMLGxQueryViewerElement;
-    new (): HTMLGxQueryViewerElement;
-  };
-  interface HTMLGxQueryViewerElementElement
-    extends Components.GxQueryViewerElement,
-      HTMLStencilElement {}
-  var HTMLGxQueryViewerElementElement: {
-    prototype: HTMLGxQueryViewerElementElement;
-    new (): HTMLGxQueryViewerElementElement;
-  };
-  interface HTMLGxQueryViewerElementFormatElement
-    extends Components.GxQueryViewerElementFormat,
-      HTMLStencilElement {}
-  var HTMLGxQueryViewerElementFormatElement: {
-    prototype: HTMLGxQueryViewerElementFormatElement;
-    new (): HTMLGxQueryViewerElementFormatElement;
-  };
-  interface HTMLGxQueryViewerFormatStyleElement
-    extends Components.GxQueryViewerFormatStyle,
-      HTMLStencilElement {}
-  var HTMLGxQueryViewerFormatStyleElement: {
-    prototype: HTMLGxQueryViewerFormatStyleElement;
-    new (): HTMLGxQueryViewerFormatStyleElement;
-  };
-  interface HTMLGxQueryViewerParameterElement
-    extends Components.GxQueryViewerParameter,
-      HTMLStencilElement {}
-  var HTMLGxQueryViewerParameterElement: {
-    prototype: HTMLGxQueryViewerParameterElement;
-    new (): HTMLGxQueryViewerParameterElement;
   };
   interface HTMLGxRadioGroupElement
     extends Components.GxRadioGroup,
@@ -2907,6 +2513,7 @@ declare global {
     "gx-header-row-pattern-marker": HTMLGxHeaderRowPatternMarkerElement;
     "gx-icon": HTMLGxIconElement;
     "gx-image": HTMLGxImageElement;
+    "gx-image-annotations": HTMLGxImageAnnotationsElement;
     "gx-image-picker": HTMLGxImagePickerElement;
     "gx-interactive-image": HTMLGxInteractiveImageElement;
     "gx-layout": HTMLGxLayoutElement;
@@ -2923,11 +2530,6 @@ declare global {
     "gx-navbar-item": HTMLGxNavbarItemElement;
     "gx-password-edit": HTMLGxPasswordEditElement;
     "gx-progress-bar": HTMLGxProgressBarElement;
-    "gx-query-viewer": HTMLGxQueryViewerElement;
-    "gx-query-viewer-element": HTMLGxQueryViewerElementElement;
-    "gx-query-viewer-element-format": HTMLGxQueryViewerElementFormatElement;
-    "gx-query-viewer-format-style": HTMLGxQueryViewerFormatStyleElement;
-    "gx-query-viewer-parameter": HTMLGxQueryViewerParameterElement;
     "gx-radio-group": HTMLGxRadioGroupElement;
     "gx-radio-option": HTMLGxRadioOptionElement;
     "gx-rating": HTMLGxRatingElement;
@@ -4033,6 +3635,62 @@ declare namespace LocalJSX {
      */
     srcset?: string;
   }
+  interface GxImageAnnotations {
+    /**
+     * If the annotations are activated or not.
+     */
+    disabled?: false;
+    /**
+     * Specifies the `fontFamily` for the texts
+     */
+    fontFamily?: string;
+    /**
+     * Specifies the `fontSize` for the texts
+     */
+    fontSize?: number;
+    /**
+     * The source of the background image.
+     */
+    imageLabel?: "Image to be annotated";
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode?: "collapse" | "keep-space";
+    /**
+     * Specifies the lines that will be drawn on the gx-image-annotations control
+     */
+    lines?: ImageAnnotationLine[];
+    /**
+     * Fired when the annotations change.
+     */
+    onAnnotationsChange?: (
+      event: GxImageAnnotationsCustomEvent<AnnotationsChangeEvent>
+    ) => void;
+    /**
+     * Fired when the traceIndex property value is changed.
+     */
+    onTraceIndexChange?: (event: GxImageAnnotationsCustomEvent<number>) => void;
+    /**
+     * Specifies the texts that will be drawn on the gx-image-annotations control
+     */
+    texts?: ImageAnnotationText[];
+    /**
+     * Drawing color.
+     */
+    traceColor?: string;
+    /**
+     * Property used for change the traceInd state and go forward or backward.
+     */
+    traceIndex?: number;
+    /**
+     * Drawing thickness.
+     */
+    traceThickness?: number;
+    /**
+     * The source of the background image.
+     */
+    value?: string;
+  }
   interface GxImagePicker {
     /**
      * This attribute lets you specify the alternative text.
@@ -4661,407 +4319,6 @@ declare namespace LocalJSX {
      */
     value?: number;
   }
-  interface GxQueryViewer {
-    /**
-     * Allowing elements order to change
-     */
-    allowElementsOrderChange?: boolean;
-    /**
-     * Allow selection
-     */
-    allowSelection?: boolean;
-    /**
-     * Auto refresh group
-     */
-    autoRefreshGroup?: string;
-    /**
-     * If type== PivotTable or Table, if true will shrink the table
-     */
-    autoResize?: boolean;
-    /**
-     * If autoResize, in here select the type, Width, height, or both
-     */
-    autoResizeType?: "Both" | "Vertical" | "Horizontal";
-    /**
-     * Base URL of the server
-     */
-    baseUrl?: any;
-    /**
-     * If type == Chart, this is the chart type: Bar, Pie, Timeline, etc...
-     */
-    chartType?:
-      | "Column"
-      | "Column3D"
-      | "StackedColumn"
-      | "StackedColumn3D"
-      | "StackedColumn100"
-      | "Bar"
-      | "StackedBar"
-      | "StackedBar100"
-      | "Area"
-      | "StackedArea"
-      | "StackedArea100"
-      | "SmoothArea"
-      | "StepArea"
-      | "Line"
-      | "StackedLine"
-      | "StackedLine100"
-      | "SmoothLine"
-      | "StepLine"
-      | "Pie"
-      | "Pie3D"
-      | "Doughnut"
-      | "Doughnut3D"
-      | "LinearGauge"
-      | "CircularGauge"
-      | "Radar"
-      | "FilledRadar"
-      | "PolarArea"
-      | "Funnel"
-      | "Pyramid"
-      | "ColumnLine"
-      | "Column3DLine"
-      | "Timeline"
-      | "SmoothTimeline"
-      | "StepTimeline"
-      | "Sparkline";
-    /**
-     * Version of data
-     */
-    dataVersionId?: number;
-    /**
-     * Allowing or not Comlumn sort
-     */
-    disableColumnSort?: boolean;
-    /**
-     * Environmet of the project: JAVA. .Net, NetCore
-     */
-    env?: string;
-    /**
-     * If type== PivotTable or Table allow to export to HTML
-     */
-    exportToHTML?: boolean;
-    /**
-     * If type== PivotTable or Table allow to export to PDF
-     */
-    exportToPDF?: boolean;
-    /**
-     * If type== PivotTable or Table allow to export to XLS
-     */
-    exportToXLS?: boolean;
-    /**
-     * If type== PivotTable or Table allow to export to XLSX
-     */
-    exportToXLSX?: boolean;
-    /**
-     * If type== PivotTable or Table allow to export to XML
-     */
-    exportToXML?: boolean;
-    /**
-     * Font Color
-     */
-    fontColor?: string;
-    /**
-     * Type of font
-     */
-    fontFamily?: string;
-    /**
-     * Font size
-     */
-    fontSize?: number;
-    /**
-     * Include max and min
-     */
-    includeMaxMin?: boolean;
-    /**
-     * Include spark line
-     */
-    includeSparkline?: boolean;
-    /**
-     * If true includes trend on the graph
-     */
-    includeTrend?: boolean;
-    /**
-     * True if it is external query
-     */
-    isExternalQuery?: boolean;
-    /**
-     * Language of the QueryViewer
-     */
-    language?: string;
-    /**
-     * Object of QueryViewer
-     */
-    object?: string;
-    /**
-     * Name of the Query or Data provider assigned
-     */
-    objectName?: string;
-    /**
-     * Object type -> Query or DataProvider
-     */
-    objectType?: string;
-    /**
-     * Orientation of the graph
-     */
-    orientation?: "Horizontal" | "Vertical";
-    /**
-     * If paging true, number of items for a single page
-     */
-    pageSize?: number;
-    /**
-     * If type == PivotTable or Table, if true there is paging, else everything in one table
-     */
-    paging?: boolean;
-    /**
-     * Timeline
-     */
-    plotSeries?: "InTheSameChart" | "InSeparateCharts";
-    /**
-     * Title of the QueryViewer
-     */
-    queryTitle?: string;
-    /**
-     * For timeline for remembering layout
-     */
-    rememberLayout?: boolean;
-    /**
-     * Type of data to show
-     */
-    showDataAs?: "Values" | "Percentages" | "ValuesAndPercentages";
-    /**
-     * Ax to show data labels
-     */
-    showDataLabelsIn?: string;
-    /**
-     * if true show values on the graph
-     */
-    showValues?: boolean;
-    /**
-     * Theme for showing the graph
-     */
-    theme?: string;
-    /**
-     * If includeTrend, defines the period of the trend
-     */
-    trendPeriod?:
-      | "SinceTheBeginning"
-      | "LastYear"
-      | "LastSemester"
-      | "LastQuarter"
-      | "LastMonth"
-      | "LastWeek"
-      | "LastDay"
-      | "LastHour"
-      | "LastMinute"
-      | "LastSecond";
-    /**
-     * Type of the QueryViewer: Table, PivotTable, Chart, Card
-     */
-    type?: "Card" | "Chart" | "PivotTable" | "Table" | "Default";
-    /**
-     * if true the x Axes intersect at zero
-     */
-    xAxisIntersectionAtZero?: boolean;
-    /**
-     * Labels for XAxis
-     */
-    xAxisLabels?:
-      | "Horizontally"
-      | "Rotated30"
-      | "Rotated45"
-      | "Rotated60"
-      | "Vertically";
-    /**
-     * X Axis title
-     */
-    xAxisTitle?: string;
-    /**
-     * Y Axis title
-     */
-    yAxisTitle?: string;
-  }
-  interface GxQueryViewerElement {
-    /**
-     * Aggregation fucntion
-     */
-    aggregation?: "Sum" | "Average" | "Count" | "Max" | "Min";
-    /**
-     * Which axis, row or column
-     */
-    axis?: "Rows" | "Columns" | "Pages";
-    /**
-     * Axis Order type
-     */
-    axisOrderType?: "None" | "Ascending" | "Descending" | "Custom";
-    /**
-     * Axis order values comma separated
-     */
-    axisOrderValues?: string;
-    /**
-     * Data field
-     */
-    dataField?: string;
-    /**
-     * Title to show
-     */
-    elementTitle?: string;
-    /**
-     * Expand collapse type
-     */
-    expandCollapseType?:
-      | "ExpandAllValues"
-      | "CollapseAllValues"
-      | "ExpandSomeValues";
-    /**
-     * Expand collapse values comma separated
-     */
-    expandCollapseValues?: string;
-    /**
-     * Type of the filter
-     */
-    filterType?: "ShowAllValues" | "HideAllValues" | "ShowSomeValues";
-    /**
-     * Filter values comma separated
-     */
-    filterValues?: string;
-    /**
-     * Grouping by day of week title
-     */
-    groupingDayOfWeekTitle?: string;
-    /**
-     * Grouping by day of week
-     */
-    groupingGroupByDayOfWeek?: boolean;
-    /**
-     * Grouping by month
-     */
-    groupingGroupByMonth?: boolean;
-    /**
-     * Grouping by Quarter
-     */
-    groupingGroupByQuarter?: boolean;
-    /**
-     * Grouping by semester
-     */
-    groupingGroupBySemester?: boolean;
-    /**
-     * Grouping by year
-     */
-    groupingGroupByYear?: boolean;
-    /**
-     * Grouping hide vale
-     */
-    groupingHideValue?: boolean;
-    /**
-     * Grouping by month title
-     */
-    groupingMonthTitle?: string;
-    /**
-     * Grouping by Quarter title
-     */
-    groupingQuarterTitle?: string;
-    /**
-     * Grouping by Semster title
-     */
-    groupingSemesterTitle?: string;
-    /**
-     * Gouping by Year title
-     */
-    groupingYearTitle?: string;
-    /**
-     * Name of the element
-     */
-    name?: string;
-    onElementChanged?: (event: GxQueryViewerElementCustomEvent<any>) => void;
-    /**
-     * Raise item click
-     */
-    raiseItemClick?: boolean;
-    /**
-     * Type of the element
-     */
-    type?: "Axis" | "Datum";
-    /**
-     * How to show it
-     */
-    visible?: "Always" | "Yes" | "No" | "Never";
-  }
-  interface GxQueryViewerElementFormat {
-    /**
-     * If true cand drag to pages
-     */
-    canDragToPages?: boolean;
-    /**
-     * Format style
-     */
-    formatStyle?: string;
-    /**
-     * Max value
-     */
-    maximumValue?: string;
-    onElementChanged?: (
-      event: GxQueryViewerElementFormatCustomEvent<any>
-    ) => void;
-    /**
-     * Format on values
-     */
-    picture?: string;
-    /**
-     * How to show subtotals
-     */
-    subtotals?: "Yes" | "Hidden" | "No";
-    /**
-     * Target value
-     */
-    targetValue?: string;
-  }
-  interface GxQueryViewerFormatStyle {
-    /**
-     * If Conditional true for applying to row or column
-     */
-    applyToRowOrColumn?: boolean;
-    onElementChanged?: (
-      event: GxQueryViewerFormatStyleCustomEvent<any>
-    ) => void;
-    /**
-     * If Format the operator of the element
-     */
-    operator?: "EQ" | "LT" | "GT" | "LE" | "GE" | "NE" | "IN";
-    /**
-     * Style or Css class
-     */
-    styleOrClass?: string;
-    /**
-     * Type of the element Conditional or Format
-     */
-    type?: "Values" | "Conditional";
-    /**
-     * If Conditional Value to format
-     */
-    value?: string;
-    /**
-     * If format first value
-     */
-    value1?: string;
-    /**
-     * If format second value
-     */
-    value2?: string;
-  }
-  interface GxQueryViewerParameter {
-    /**
-     * Name of the parameter
-     */
-    Name?: string;
-    /**
-     * Value of the parameter
-     */
-    Value?: string;
-    onParameterValueChanged?: (
-      event: GxQueryViewerParameterCustomEvent<QueryViewerParameterChangedEvent>
-    ) => void;
-  }
   interface GxRadioGroup {
     /**
      * A CSS class to set as the `gx-radio-group` element class.
@@ -5408,10 +4665,6 @@ declare namespace LocalJSX {
      */
     minHeight?: string;
     /**
-     * True to add a fading overlay on the right and bottom area of the cell to signify that the content is longer than the space allows.
-     */
-    showContentFade?: false;
-    /**
      * Defines the vertical alignment of the content of the cell.
      */
     valign?: "top" | "bottom" | "middle";
@@ -5426,21 +4679,13 @@ declare namespace LocalJSX {
      */
     disabled?: false;
     /**
-     * It specifies the format that will have the textblock control.  If `format` = `HTML`, the textblock control works as an HTML div and the innerHTML will be the same as the `inner` property specifies.  If `format` = `Text`, the control works as a normal textblock control and it is affected by most of the defined properties.
+     * It specifies the format that will have the textblock control.   - If `format` = `HTML`, the textblock control works as an HTML div and    the innerHTML will be taken from the default slot.   - If `format` = `Text`, the control works as a normal textblock control    and it is affected by most of the defined properties.
      */
     format?: "Text" | "HTML";
     /**
      * True to highlight control when an action is fired.
      */
     highlightable?: false;
-    /**
-     * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
-     */
-    href?: "";
-    /**
-     * Used as the innerHTML when `format` = `HTML`.
-     */
-    inner?: string;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -5493,6 +4738,7 @@ declare namespace LocalJSX {
     "gx-header-row-pattern-marker": GxHeaderRowPatternMarker;
     "gx-icon": GxIcon;
     "gx-image": GxImage;
+    "gx-image-annotations": GxImageAnnotations;
     "gx-image-picker": GxImagePicker;
     "gx-interactive-image": GxInteractiveImage;
     "gx-layout": GxLayout;
@@ -5509,11 +4755,6 @@ declare namespace LocalJSX {
     "gx-navbar-item": GxNavbarItem;
     "gx-password-edit": GxPasswordEdit;
     "gx-progress-bar": GxProgressBar;
-    "gx-query-viewer": GxQueryViewer;
-    "gx-query-viewer-element": GxQueryViewerElement;
-    "gx-query-viewer-element-format": GxQueryViewerElementFormat;
-    "gx-query-viewer-format-style": GxQueryViewerFormatStyle;
-    "gx-query-viewer-parameter": GxQueryViewerParameter;
     "gx-radio-group": GxRadioGroup;
     "gx-radio-option": GxRadioOption;
     "gx-rating": GxRating;
@@ -5590,6 +4831,8 @@ declare module "@stencil/core" {
         JSXBase.HTMLAttributes<HTMLGxHeaderRowPatternMarkerElement>;
       "gx-icon": LocalJSX.GxIcon & JSXBase.HTMLAttributes<HTMLGxIconElement>;
       "gx-image": LocalJSX.GxImage & JSXBase.HTMLAttributes<HTMLGxImageElement>;
+      "gx-image-annotations": LocalJSX.GxImageAnnotations &
+        JSXBase.HTMLAttributes<HTMLGxImageAnnotationsElement>;
       "gx-image-picker": LocalJSX.GxImagePicker &
         JSXBase.HTMLAttributes<HTMLGxImagePickerElement>;
       "gx-interactive-image": LocalJSX.GxInteractiveImage &
@@ -5620,16 +4863,6 @@ declare module "@stencil/core" {
         JSXBase.HTMLAttributes<HTMLGxPasswordEditElement>;
       "gx-progress-bar": LocalJSX.GxProgressBar &
         JSXBase.HTMLAttributes<HTMLGxProgressBarElement>;
-      "gx-query-viewer": LocalJSX.GxQueryViewer &
-        JSXBase.HTMLAttributes<HTMLGxQueryViewerElement>;
-      "gx-query-viewer-element": LocalJSX.GxQueryViewerElement &
-        JSXBase.HTMLAttributes<HTMLGxQueryViewerElementElement>;
-      "gx-query-viewer-element-format": LocalJSX.GxQueryViewerElementFormat &
-        JSXBase.HTMLAttributes<HTMLGxQueryViewerElementFormatElement>;
-      "gx-query-viewer-format-style": LocalJSX.GxQueryViewerFormatStyle &
-        JSXBase.HTMLAttributes<HTMLGxQueryViewerFormatStyleElement>;
-      "gx-query-viewer-parameter": LocalJSX.GxQueryViewerParameter &
-        JSXBase.HTMLAttributes<HTMLGxQueryViewerParameterElement>;
       "gx-radio-group": LocalJSX.GxRadioGroup &
         JSXBase.HTMLAttributes<HTMLGxRadioGroupElement>;
       "gx-radio-option": LocalJSX.GxRadioOption &
