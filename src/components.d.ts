@@ -610,9 +610,9 @@ export namespace Components {
      */
     orientation: "portrait" | "landscape";
     /**
-     * If `true`, show the pagination buttons.
+     * A CSS class to set as the  Page Controller element class when `showPageController = "true"`.
      */
-    pager: true;
+    pageControllerClass: string;
     /**
      * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
      */
@@ -629,6 +629,10 @@ export namespace Components {
      * If `true`, show the scrollbar.
      */
     scrollbar: false;
+    /**
+     * If `true`, show the pagination buttons (page controller).
+     */
+    showPageController: true;
     /**
      * Transition to the next slide.
      * @param speed The transition duration (in ms).
@@ -3174,9 +3178,9 @@ declare namespace LocalJSX {
      */
     orientation?: "portrait" | "landscape";
     /**
-     * If `true`, show the pagination buttons.
+     * A CSS class to set as the  Page Controller element class when `showPageController = "true"`.
      */
-    pager?: true;
+    pageControllerClass?: string;
     /**
      * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
      */
@@ -3193,6 +3197,10 @@ declare namespace LocalJSX {
      * If `true`, show the scrollbar.
      */
     scrollbar?: false;
+    /**
+     * If `true`, show the pagination buttons (page controller).
+     */
+    showPageController?: true;
     /**
      * Set to false to enable slides in free mode position.
      */
