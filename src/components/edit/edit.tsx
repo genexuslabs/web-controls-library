@@ -98,7 +98,7 @@ export class Edit
   private inputId: string;
 
   // Refs
-  private inputRef: HTMLInputElement = null;
+  private inputRef: HTMLInputElement | HTMLTextAreaElement = null;
 
   /**
    * Determine the amount of lines to be displayed in the edit when
@@ -490,7 +490,7 @@ export class Edit
                     class="content autofill"
                     part={PART_CONTENT}
                     value={this.value}
-                    ref={el => (this.inputRef = el as HTMLElement)}
+                    ref={el => (this.inputRef = el)}
                   ></textarea>,
 
                   // The space at the end of the value is necessary to correctly display the enters
@@ -511,7 +511,7 @@ export class Edit
                   part={PART_CONTENT}
                   type={this.type}
                   value={this.value}
-                  ref={el => (this.inputRef = el as HTMLElement)}
+                  ref={el => (this.inputRef = el)}
                 />
               ),
 
