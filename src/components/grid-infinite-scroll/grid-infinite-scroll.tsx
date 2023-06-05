@@ -23,27 +23,39 @@ export class GridInfiniteScroll implements ComponentInterface {
   @Element() el!: HTMLGxGridInfiniteScrollElement;
 
   /**
-   * This property must be bounded to grid item count property.
-   * It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the initial batch does not overflow the main container
+   * If `true`, the infinite scroll will be hidden and scroll event listeners
+   * will be removed.
+   *
+   * Set this to `false` to disable the infinite scroll from actively trying to
+   * receive new data while reaching the threshold. This is useful when it is
+   * known that there is no more data that can be added, and the infinite
+   * scroll is no longer needed.
    */
-  @Prop() readonly itemCount: number = 0;
+  @Prop() readonly canFetchMoreData: boolean = false;
 
   /**
-   * The threshold distance from the bottom
-   * of the content to call the `infinite` output event when scrolled.
-   * The threshold value can be either a percent, or
-   * in pixels. For example, use the value of `10%` for the `infinite`
-   * output event to get called when the user has scrolled 10%
-   * from the bottom of the page. Use the value `100px` when the
-   * scroll is within 100 pixels from the bottom of the page.
+   * This property must be bounded to grid item count property.
+   * It's unique purpose is to update the position of the control in the
+   * inverse loading scenario (`position === "top"`).
    */
-  @Prop() readonly threshold: string = "15%";
+  @Prop() readonly recordCount: number = 0;
 
   /**
    * The position of the infinite scroll element.
-   * The value can be either `top` or `bottom`.
+   * The value can be either `top` or `bottom`. When `position === "top"`, the
+   * control also implements inverse loading.
    */
   @Prop() readonly position: "top" | "bottom" = "bottom";
+
+  /**
+   * The threshold distance from the bottom of the content to call the
+   * `infinite` output event when scrolled.
+   * The threshold value can be either a percent, or in pixels. For example,
+   * use the value of `10%` for the `infinite` output event to get called when
+   * the user has scrolled 10% from the bottom of the page. Use the value
+   * `100px` when the scroll is within 100 pixels from the bottom of the page.
+   */
+  @Prop() readonly threshold: string = "15%";
 
   /**
    * Emitted when the scroll reaches the threshold distance. From within your
