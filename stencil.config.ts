@@ -36,9 +36,6 @@ export const config: Config = {
       components: ["gx-grid-image-map", "gx-grid-image-map-item"]
     },
     {
-      components: ["gx-grid-infinite-scroll", "gx-grid-infinite-scroll-content"]
-    },
-    {
       components: ["gx-grid-smart-cell", "gx-grid-empty-indicator"]
     },
     {
