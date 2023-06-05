@@ -4,14 +4,16 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Method,
   Prop,
   State,
   Watch,
-  Host,
   h,
   writeTask
 } from "@stencil/core";
+
+const PRECISION_OFFSET = 2;
 
 @Component({
   shadow: true,
@@ -24,14 +26,22 @@ export class GridInfiniteScroll implements ComponentInterface {
    */
   private didLoad = false;
 
+  private hasInfiniteScroll = false;
+
   /**
    * `true` if the parent grid is gx-grid-smart-css and has
    * `direction = "vertical"`
    */
   private infiniteScrollSupport = true;
 
+  // Stored values
+  private lastClientHeight = 0;
+  private lastScrollHeight = 0;
+  private lastScrollTop = 0;
+
   // Observers
   private ioWatcher: IntersectionObserver;
+  private resizeWatcher: ResizeObserver;
 
   // Refs
   private scrollableParent: Element | HTMLElement;
@@ -181,6 +191,8 @@ export class GridInfiniteScroll implements ComponentInterface {
 
     requestAnimationFrame(() => {
       writeTask(() => {
+        this.hasInfiniteScroll = true;
+
         const options: IntersectionObserverInit = {
           root: this.scrollableParent,
           rootMargin: this.threshold
@@ -248,6 +260,121 @@ export class GridInfiniteScroll implements ComponentInterface {
     return this.getScrollableParentToAttachInfiniteScroll(node.parentElement);
   }
 
+  private trackLastScrollTop = () => {
+    this.lastScrollTop = this.scrollableParent.scrollTop;
+  };
+
+  private setInverseLoading() {
+    // Inverse loading is not supported when the scroll is attached to the window.
+    // The current implementation "supports" this scenario, but since this use
+    // case changes the position of the scroll every time the grid retrieves
+    // data, unexpected behaviors will occur.
+    // Also, Android does not support Inverse Loading in this scenario either.
+    if (this.typeOfParentElementAttached === "window") {
+      return;
+    }
+
+    this.resizeWatcher = new ResizeObserver(() => {
+      // Current values
+      const currentClientHeight = this.scrollableParent.clientHeight;
+      const currentScrollHeight = this.scrollableParent.scrollHeight;
+
+      const firstTimeThatContentOverflows =
+        this.lastClientHeight === this.lastScrollHeight &&
+        currentClientHeight < currentScrollHeight;
+
+      // Must set the scroll at the bottom position
+      if (firstTimeThatContentOverflows) {
+        const newScrollTop = currentScrollHeight - currentClientHeight;
+
+        this.lastClientHeight = currentClientHeight;
+        this.lastScrollHeight = currentScrollHeight;
+        this.scrollableParent.scrollTop = newScrollTop;
+        return;
+      }
+
+      const scrollWasAtTheBottom =
+        this.lastScrollHeight <=
+        this.lastClientHeight + this.lastScrollTop + PRECISION_OFFSET;
+
+      // The scroll is only adjusted if the grid has a data provider or the
+      // scroll was at the bottom position. When the grid has a data provider
+      // items can be loaded via infinite scroll, so the scroll position needs
+      // adjusted when new items are added
+      if (this.hasInfiniteScroll || scrollWasAtTheBottom) {
+        const scrollOffset = currentScrollHeight - this.lastScrollHeight;
+        const clientHeightOffset =
+          currentClientHeight < this.lastClientHeight
+            ? this.lastClientHeight - currentClientHeight
+            : 0;
+
+        const newScrollTop =
+          this.lastScrollTop +
+          scrollOffset +
+          clientHeightOffset +
+          (scrollWasAtTheBottom ? PRECISION_OFFSET : 0);
+
+        this.scrollableParent.scrollTop = newScrollTop;
+      }
+
+      this.lastClientHeight = currentClientHeight;
+      this.lastScrollHeight = currentScrollHeight;
+    });
+
+    /**
+     * In the virtual scroller this element represents the container
+     * (`.scrollable-content`) of the cells:
+     * ```
+     *   <gx-grid-smart-css>
+     *     <virtual-scroller slot="grid-content">
+     *       <div class="total-padding"></div>
+     *       <div class="scrollable-content">
+     *         <gx-grid-smart-cell>...</gx-grid-smart-cell>
+     *         <gx-grid-smart-cell>...</gx-grid-smart-cell>
+     *         ...
+     *       </div>
+     *     </virtual-scroller>
+     *     ...
+     *   </gx-grid-smart-css>
+     * ```
+     *
+     * When there is no virtual scroller, this element represents the cell
+     * container (`[slot="grid-content"]`)
+     * ```
+     *   <gx-grid-smart-css>
+     *     <div slot="grid-content">
+     *       <gx-grid-smart-cell>...</gx-grid-smart-cell>
+     *       <gx-grid-smart-cell>...</gx-grid-smart-cell>
+     *       ...
+     *       <gx-grid-infinite-scroll></gx-grid-infinite-scroll>
+     *     </div>
+     *     ...
+     *   </gx-grid-smart-css>
+     * ```
+     */
+    const overflowingContent: Element =
+      this.typeOfParentElementAttached === "virtual-scroller"
+        ? this.scrollableParent.lastElementChild
+        : this.el.parentElement;
+
+    this.resizeWatcher.observe(overflowingContent);
+    this.resizeWatcher.observe(this.scrollableParent);
+
+    this.scrollableParent.addEventListener("scroll", this.trackLastScrollTop);
+  }
+
+  private disconnectInverseLoading() {
+    if (this.resizeWatcher) {
+      this.resizeWatcher.disconnect();
+      this.resizeWatcher = null;
+
+      this.scrollableParent.removeEventListener(
+        "scroll",
+        this.trackLastScrollTop
+      );
+    }
+  }
+
   componentDidLoad() {
     this.didLoad = true;
 
@@ -269,6 +396,11 @@ export class GridInfiniteScroll implements ComponentInterface {
       this.el
     );
 
+    // Inverse Loading
+    if (this.position === "top") {
+      this.setInverseLoading();
+    }
+
     // Infinite Scroll
     if (this.canFetchMoreData) {
       this.setInfiniteScroll();
@@ -277,6 +409,7 @@ export class GridInfiniteScroll implements ComponentInterface {
 
   disconnectedCallback() {
     this.disconnectInfiniteScroll();
+    this.disconnectInverseLoading();
   }
 
   render() {
