@@ -126,7 +126,7 @@ gx-grid-smart-css[direction="vertical"] {
 
       // "width: 100%" for the infinite scroll. Useful when
       // Item Layout Mode = Multiple By Quantity
-      & > grid-infinite-scroll {
+      & > gx-grid-infinite-scroll {
         grid-column-start: 1;
         grid-column-end: calc(var(--gx-grid-css-items) + 1);
       }

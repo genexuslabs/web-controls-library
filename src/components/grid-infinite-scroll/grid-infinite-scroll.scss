@@ -8,17 +8,18 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+  height: 0; // Not loading by default
 
   // Since the gx-grid-smart-css will no longer use "display: grid" to position
   // its items, the infinite scroll should not use "flex: 1" to stretch to the
   // container width. Otherwise, the infinite scroll loader will be placed as
   // a normal cell
   width: 100%;
+  pointer-events: none;
 }
 
 // "Hide" the infinite scroll, but with the possibility to check its position
 // in the parent's scroll
-:host(.not-loading) {
-  height: 0;
-  pointer-events: none;
+:host(.gx-loading) {
+  height: auto;
 }
