@@ -30,13 +30,6 @@ $grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller), & > * 
   }
 }
 
-.gx-grid-base.gx-grid-empty {
-  #{$grid-content-selector},
-  .gx-grid-paging {
-    @include visibility(none);
-  }
-}
-
 // The grid is loading, hide its content
 .gx-grid-base.gx-grid-initial-load > pinch-zoom > .gx-image-map-container, // Used by gx-grid-image-map
 .gx-grid-base.gx-grid-initial-load {

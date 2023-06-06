@@ -10,16 +10,11 @@ import {
 } from "../common/highlightable";
 
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
-import lazySizes from "lazysizes";
 
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
 
-const LAZY_LOAD_CLASS = "gx-lazyload";
-const LAZY_LOADING_CLASS = "gx-lazyloading";
-const LAZY_LOADED_CLASS = "gx-lazyloaded";
-
-const lazyLoadedImages = new Set<string>();
+const LAZY_LOADING_CLASS = "gx-lazy-loading-image";
 
 @Component({
   shadow: false,
@@ -48,10 +43,14 @@ export class Image
 
     this.handleClick = this.handleClick.bind(this);
     this.handleImageLoad = this.handleImageLoad.bind(this);
-
-    this.handleLazyLoaded = this.handleLazyLoaded.bind(this);
-    document.addEventListener("lazyloaded", this.handleLazyLoaded);
   }
+
+  /**
+   * `true` if the image has been loaded
+   */
+  private imageDidLoad = false;
+
+  private innerImageContainer: HTMLDivElement = null;
 
   @Element() element: HTMLGxImageElement;
 
@@ -138,23 +137,22 @@ export class Image
     }
   }
 
-  /**
-   * `true` if the image has been loaded
-   */
-  private imageDidLoad = false;
-
-  private innerImageContainer: HTMLDivElement = null;
-
   private handleImageLoad(event: UIEvent) {
-    const img = event.target as HTMLImageElement;
+    if (this.imageDidLoad) {
+      return;
+    }
+    this.imageDidLoad = true;
     // if (!this.autoGrow) {
     //   // Some image formats do not specify intrinsic dimensions. The naturalWidth property returns 0 in those cases.
     //   if (img.naturalWidth !== 0) {
     //   }
     // }
+
+    const img = event.target as HTMLImageElement;
+
     img.style.setProperty("display", "block");
+    img.parentElement.classList.remove(LAZY_LOADING_CLASS);
     img.style.removeProperty("opacity");
-    this.imageDidLoad = true;
   }
 
   componentDidLoad() {
@@ -162,56 +160,45 @@ export class Image
   }
 
   disconnectedCallback() {
-    document.removeEventListener("lazyloaded", this.handleLazyLoaded);
     this.innerImageContainer = null;
   }
 
   render() {
-    const shouldLazyLoad = this.shouldLazyLoad();
-
     // Styling for gx-image control.
     const classes = getClasses(this.cssClass);
 
-    const withoutAutogrow = this.scaleType !== "tile" && !this.autoGrow;
+    const withoutAutoGrow = this.scaleType !== "tile" && !this.autoGrow;
 
-    const shouldRenderTheImg = this.srcset || this.src;
+    const imageSrc = this.srcset || this.src;
+    const shouldAddLazyLoadingClass = !this.imageDidLoad && !!imageSrc;
 
-    const body = shouldRenderTheImg
-      ? [
-          <img
-            class={{
-              "inner-image": true,
-              [LAZY_LOAD_CLASS]: shouldLazyLoad,
-              "gx-image-tile": this.scaleType === "tile"
-            }}
-            style={{
-              backgroundImage:
-                this.scaleType === "tile" ? `url(${this.src})` : null,
-              opacity: !this.imageDidLoad ? "0" : null
-            }}
-            onClick={this.handleClick}
-            onLoad={this.handleImageLoad}
-            // With lazy loading
-            data-src={shouldLazyLoad && this.src ? this.src : undefined}
-            data-srcset={
-              shouldLazyLoad && this.srcset ? this.srcset : undefined
-            }
-            // Without lazy loading
-            src={!shouldLazyLoad && this.src ? this.src : undefined}
-            srcset={!shouldLazyLoad && this.srcset ? this.srcset : undefined}
-            alt={this.alt}
-          />,
-          <span class="gx-image-loading-indicator" />
-        ]
-      : [];
+    const body = !!imageSrc && (
+      <img
+        class={{
+          "inner-image": true,
+          "gx-image-tile": this.scaleType === "tile"
+        }}
+        style={{
+          backgroundImage:
+            this.scaleType === "tile" ? `url(${this.src})` : null,
+          opacity: !this.imageDidLoad ? "0" : null
+        }}
+        alt={this.alt}
+        loading="lazy"
+        src={this.src || undefined}
+        srcset={this.srcset || undefined}
+        onClick={this.handleClick}
+        onLoad={this.handleImageLoad}
+      />
+    );
 
     return (
       <Host
         class={{
           [classes.vars]: true,
           disabled: this.disabled,
-          "gx-img-lazyloading": shouldLazyLoad,
-          "gx-img-no-auto-grow": withoutAutogrow
+          "gx-img-no-auto-grow": withoutAutoGrow,
+          [LAZY_LOADING_CLASS]: !withoutAutoGrow && shouldAddLazyLoadingClass
         }}
       >
         <div
@@ -229,46 +216,22 @@ export class Image
           tabindex={this.highlightable && !this.disabled ? "0" : undefined}
           ref={el => (this.innerImageContainer = el as HTMLDivElement)}
         >
-          {withoutAutogrow ? (
-            <div class="gx-image-no-auto-grow-container">{body}</div>
+          {withoutAutoGrow ? (
+            <div
+              class={{
+                "gx-image-no-auto-grow-container": true,
+                [LAZY_LOADING_CLASS]: shouldAddLazyLoadingClass
+              }}
+            >
+              {body}
+            </div>
           ) : (
             body
           )}
+
           {this.showImagePickerButton && <slot />}
         </div>
       </Host>
     );
   }
-
-  private shouldLazyLoad(): boolean {
-    // Lazy load is disabled
-    if (!this.lazyLoad) {
-      return false;
-    }
-
-    // Do not lazy load already loaded images
-    if (lazyLoadedImages.has(this.srcset) || lazyLoadedImages.has(this.src)) {
-      return false;
-    }
-
-    const img: HTMLImageElement = this.element.querySelector("img");
-    return img === null || img.classList.contains(LAZY_LOAD_CLASS);
-  }
-
-  private handleLazyLoaded(event: CustomEvent) {
-    const img: HTMLImageElement = this.element.querySelector("img");
-
-    if (event.target === img) {
-      this.element.classList.remove("gx-img-lazyloading");
-
-      const imageSrc = this.srcset || this.src;
-
-      // Store the srcset or src of the lazy loaded image
-      lazyLoadedImages.add(imageSrc);
-    }
-  }
 }
-
-lazySizes.cfg.lazyClass = LAZY_LOAD_CLASS;
-lazySizes.cfg.loadingClass = LAZY_LOADING_CLASS;
-lazySizes.cfg.loadedClass = LAZY_LOADED_CLASS;

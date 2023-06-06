@@ -1,9 +1,6 @@
-import { runAlignmentTest } from "../../../../../../tests/alignment";
-import { Edit, LONG_HTML, SHORT_HTML } from "../../../../../../tests/templates";
-import {
-  dummyTest,
-  runningScreenshotTests
-} from "../../../../../../tests/utils";
+import { runAlignmentTest } from "../../../../tests/alignment";
+import { Edit, LONG_HTML, SHORT_HTML } from "../../../../tests/templates";
+import { dummyTest, runningScreenshotTests } from "../../../../tests/utils";
 
 describe("gx-edit", () => {
   if (!runningScreenshotTests()) {

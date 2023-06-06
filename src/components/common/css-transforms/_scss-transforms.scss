@@ -19,6 +19,8 @@ $gx-vars: "--vars";
 
 $gx-no-action: "data-no-action";
 
+$gx-disabled-class: ".gx-disabled";
+
 /// Replace `$search` with `$replace` in `$string`
 /// @param {String} $string - Initial string
 /// @param {String} $search - Substring to replace
