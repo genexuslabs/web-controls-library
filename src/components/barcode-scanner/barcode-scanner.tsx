@@ -6,8 +6,7 @@ import {
   State,
   Prop,
   Event,
-  EventEmitter,
-  Watch
+  EventEmitter
 } from "@stencil/core";
 import { Html5Qrcode } from "html5-qrcode";
 
@@ -55,33 +54,10 @@ export class GxBarcodeScanner {
   @Prop() readonly cssClass: string;
 
   /**
-   * When set to As Prompt, it shows an indicator that displays a new screen with the camera viewport. When Inline is selected, the camera viewport is displayed inside the Panel’s layout.
-   */
-  @Prop() readonly displayMode: "As Prompt" | "Inline" = "Inline";
-
-  /**
    * When set to Single read, the control reads the first code and then stops scanning. When Continuous read is selected, it reads all the codes it can while the control is visible, non-stop.
    */
   @Prop() readonly operationMode: "Continuous read" | "Single read" =
     "Single read";
-
-  /**
-   * If the displayMode is 'As Prompt', this attribute lets you specify if the scanner is started or not.
-   */
-  @Prop() readonly started = false;
-
-  @Watch("started")
-  openedHandler(newValue: boolean, oldValue = false) {
-    if (newValue === oldValue || this.displayMode === "Inline") {
-      return;
-    }
-
-    if (newValue) {
-      this.initScanner();
-    } else if (this.html5QrCode) {
-      this.html5QrCode.stop();
-    }
-  }
 
   /**
    * Fired when the menu action is activated.
@@ -94,9 +70,11 @@ export class GxBarcodeScanner {
       this.scannerId = readerContainer.getAttribute("id");
     }
     this.audio = this.el.shadowRoot.querySelector("#audio") as HTMLAudioElement;
-    if (this.displayMode === "Inline") {
-      this.initScanner();
-    }
+    this.initScanner();
+  }
+
+  disconnectedCallback() {
+    this.html5QrCode.stop();
   }
 
   private initScanner = (): void => {
