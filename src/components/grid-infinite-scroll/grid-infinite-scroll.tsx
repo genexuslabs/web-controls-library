@@ -156,7 +156,7 @@ export class GridInfiniteScroll implements ComponentInterface {
    */
   private checkIfCanFetchMoreData() {
     // The infinite scroll was disconnected
-    if (!this.canFetchMoreData) {
+    if (!this.canFetchMoreData || !this.ioWatcher) {
       return;
     }
     this.ioWatcher.unobserve(this.el);
