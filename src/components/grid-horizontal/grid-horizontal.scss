@@ -3,12 +3,27 @@
 @import "../grid-base/grid-base.scss";
 @import "../../../node_modules/swiper/swiper.min.css";
 
+$swiper-pagination-bullet-size: 12px;
+$swiper-pagination-bullet-margin-inline: $swiper-pagination-bullet-size * 0.5;
+
 gx-grid-horizontal {
   /**
    * @prop --gx-overflow-style: Determine if the overflow will be hidden or visible.
    * By default, the gx-grid-horizontal hide its content overflow.
    */
   --gx-overflow-style: #{$default-overflow-style};
+
+  /**
+   * @prop --gx-page-controller-indicator-selected-color:
+   * The fill color used for the page controller indicator when selected.
+   */
+  --gx-page-controller-indicator-selected-color: #616161;
+
+  /**
+   * @prop --gx-page-controller-indicator-unselected-color:
+   * The fill color used for the page controller indicator when unselected.
+   */
+  --gx-page-controller-indicator-unselected-color: #99999950;
 
   // With "display: grid" we ensure that the layout doesn't break when using
   // relative size columns in the parent gx-table
@@ -39,10 +54,41 @@ gx-grid-horizontal {
 
   // grid cell
   .swiper-slide {
-    //Reset CSS required properties.
+    // Reset CSS required properties.
     flex-grow: 0;
     flex-basis: auto;
   }
+}
+
+// - - - - - - - - - - - - - - - - - - - -
+//               Pagination
+// - - - - - - - - - - - - - - - - - - - -
+// Hide pagination when loading or empty
+:is(.gx-grid-initial-load, .gx-grid-empty) > .swiper-pagination {
+  display: none;
+}
+
+.swiper-pagination {
+  text-align: center;
+}
+
+.swiper-pagination-bullet {
+  display: inline-block;
+  width: $swiper-pagination-bullet-size;
+  height: $swiper-pagination-bullet-size;
+  background-color: var(--gx-page-controller-indicator-unselected-color);
+  border-radius: 50%;
+  margin-inline: $swiper-pagination-bullet-margin-inline;
+  transition: background-color $transition-duration,
+    box-shadow $transition-duration;
+
+  &:focus-within {
+    box-shadow: 0 0 0px 3px var(--gx-page-controller-indicator-unselected-color);
+  }
+}
+
+.swiper-pagination-bullet-active {
+  background-color: var(--gx-page-controller-indicator-selected-color);
 }
 
 // When the grid-smart-cells have the rows-landscape or the rows-portrait

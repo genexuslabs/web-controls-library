@@ -11,7 +11,7 @@ import {
   h
 } from "@stencil/core";
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
-import Swiper, { SwiperOptions } from "swiper";
+import Swiper, { FreeMode, Grid, Pagination, SwiperOptions } from "swiper";
 
 import { HighlightableComponent } from "../common/highlightable";
 import { VisibilityComponent } from "../common/interfaces";
@@ -109,9 +109,10 @@ export class GridHorizontal
   @Prop({ mutable: true }) orientation: "portrait" | "landscape" = "portrait";
 
   /**
-   * If `true`, show the pagination buttons.
+   * A CSS class to set as the  Page Controller element class when
+   * `showPageController = "true"`.
    */
-  @Prop() readonly pager = true;
+  @Prop() readonly pageControllerClass: string;
 
   /**
    * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes.
@@ -133,6 +134,11 @@ export class GridHorizontal
    * If `true`, show the scrollbar.
    */
   @Prop() readonly scrollbar = false;
+
+  /**
+   * If `true`, show the pagination buttons (page controller).
+   */
+  @Prop() readonly showPageController = true;
 
   /**
    * Set to false to enable slides in free mode position.
@@ -465,27 +471,36 @@ export class GridHorizontal
       this.orientation === "portrait" ? this.rows : this.rowsLandscape;
 
     const swiperOptions: SwiperOptions = {
+      modules: [FreeMode, Grid, Pagination],
+
       autoHeight: false,
       autoplay: false,
       centeredSlides: false,
       direction: this.optionValueDefault(this.direction, "horizontal"),
       effect: undefined,
-      freeMode: !this.snapToGrid,
-      freeModeMomentum: false,
-      freeModeMomentumRatio: 1,
-      freeModeMomentumBounce: true,
-      freeModeMomentumBounceRatio: 1,
-      freeModeMomentumVelocityRatio: 1,
-      freeModeSticky: false,
-      freeModeMinimumVelocity: 0.02,
+
+      freeMode: {
+        enabled: !this.snapToGrid,
+        minimumVelocity: 0.02,
+        momentum: false,
+        momentumRatio: 1,
+        momentumBounce: true,
+        momentumBounceRatio: 1,
+        momentumVelocityRatio: 1,
+        sticky: false
+      },
+
+      grid: {
+        rows: this.optionValueDefault(slidesPerColumnOrientation, 1),
+        fill: this.fillMode
+      },
+
       initialSlide: this.getSwiperCurrentPage() * this.itemsPerGroup,
       loop: false,
       parallax: false,
       setWrapperSize: false,
       slidesOffsetAfter: 0,
       slidesOffsetBefore: 0,
-      slidesPerColumn: this.optionValueDefault(slidesPerColumnOrientation, 1),
-      slidesPerColumnFill: this.fillMode,
       slidesPerGroup: this.optionValueDefault(this.itemsPerGroup, 1),
       slidesPerView: this.optionValueDefault(this.columns, 1),
       spaceBetween: 0,
@@ -517,7 +532,7 @@ export class GridHorizontal
       // This aditionally triggers previous: watchSlidesVisibility: false
       // https://swiperjs.com/swiper-api#param-watchSlidesProgress
       watchSlidesProgress: false,
-      watchOverflow: this.pager,
+      watchOverflow: this.showPageController,
       preventClicks: true,
       preventClicksPropagation: true,
       slideToClickedSlide: false,
@@ -546,10 +561,12 @@ export class GridHorizontal
       }
     };
 
-    if (this.pager) {
+    if (this.showPageController) {
       swiperOptions.pagination = {
-        clickable: false,
+        bulletElement: "button",
+        clickable: true,
         el: this.paginationEl,
+        enabled: true,
         hideOnClick: false,
         type: "bullets"
       };
@@ -624,22 +641,28 @@ export class GridHorizontal
         {[
           <div
             class={{
-              "gx-grid-horizontal-content swiper-container": true,
+              "gx-grid-horizontal-content swiper": true,
               "gx-grid-horizontal--no-auto-grow": !this.autoGrow
             }}
             ref={el => (this.horizontalGridContent = el as HTMLDivElement)}
           >
             <slot name="grid-content" />
           </div>,
-          this.pager && (
+
+          this.showPageController && (
             <div
-              class="gx-grid-paging swiper-pagination"
+              class={{
+                "swiper-pagination": true,
+                [this.pageControllerClass]: !!this.pageControllerClass
+              }}
               ref={el => (this.paginationEl = el)}
             />
           ),
+
           this.scrollbar && (
             <div class="swiper-scrollbar" ref={el => (this.scrollbarEl = el)} />
           ),
+
           <slot name="grid-empty-loading-placeholder" />,
 
           <slot name="grid-content-empty" />,
