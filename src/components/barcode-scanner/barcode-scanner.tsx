@@ -93,7 +93,7 @@ export class GxBarcodeScanner {
         this.html5QrCode.start(
           cameraId,
           {
-            fps: 10, // Optional, frame per seconds for qr code scanning
+            fps: 30, // Optional, frame per seconds for qr code scanning
             qrbox: { width: 250, height: 250 } // Optional, if you want bounded box UI
           },
           decodedText => {
