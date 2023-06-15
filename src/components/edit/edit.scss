@@ -23,6 +23,8 @@
   --gx-edit-trigger-button-width: #{$gx-icon-size};
   --placeholder-text-color: #757575c0;
 
+  @include elevation();
+
   display: flex;
   align-items: stretch;
   position: relative;
