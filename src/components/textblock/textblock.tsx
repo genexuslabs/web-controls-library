@@ -8,14 +8,14 @@ import {
   h
 } from "@stencil/core";
 import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+import {
   DisableableComponent,
   Component as GxComponent,
   VisibilityComponent
 } from "../common/interfaces";
-import {
-  HighlightableComponent,
-  makeHighlightable
-} from "../common/highlightable";
 import { LineClampComponent, makeLinesClampable } from "../common/line-clamp";
 
 import {
@@ -71,7 +71,7 @@ export class TextBlock
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop({ reflect: true }) readonly disabled = false;
+  @Prop({ reflect: true }) readonly disabled: boolean = false;
 
   /**
    * It specifies the format that will have the textblock control.
@@ -87,7 +87,7 @@ export class TextBlock
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = false;
+  @Prop() readonly highlightable: boolean = false;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -102,7 +102,7 @@ export class TextBlock
   /**
    * True to cut text when it overflows, showing an ellipsis.
    */
-  @Prop() readonly lineClamp = false;
+  @Prop() readonly lineClamp: boolean = false;
 
   @Listen("click", { capture: true })
   handleClick(event: UIEvent) {

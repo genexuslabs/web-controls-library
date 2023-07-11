@@ -40,7 +40,7 @@ export class GridFreeStyle
    * If set to `false`, it won't grow automatically and it will show scrollbars
    * if the content overflows.
    */
-  @Prop() readonly autoGrow = false;
+  @Prop() readonly autoGrow: boolean = false;
 
   /**
    * A CSS class to set as the `gx-grid-fs` element class.
@@ -88,7 +88,7 @@ export class GridFreeStyle
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = false;
+  @Prop() readonly highlightable: boolean = false;
 
   /**
    * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.

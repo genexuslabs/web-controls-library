@@ -1,8 +1,8 @@
 import { Component, Element, Host, Prop, h } from "@stencil/core";
 
 import {
-  Component as GxComponent,
-  DisableableComponent
+  DisableableComponent,
+  Component as GxComponent
 } from "../common/interfaces";
 
 @Component({
@@ -18,7 +18,7 @@ export class Video implements GxComponent, DisableableComponent {
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * This attribute is for specifies the src of the video.

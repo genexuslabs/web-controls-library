@@ -9,13 +9,13 @@ import {
   h
 } from "@stencil/core";
 import {
-  Component as GxComponent,
-  VisibilityComponent
-} from "../common/interfaces";
-import {
   HighlightableComponent,
   makeHighlightable
 } from "../common/highlightable";
+import {
+  Component as GxComponent,
+  VisibilityComponent
+} from "../common/interfaces";
 
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
@@ -67,7 +67,7 @@ export class Tab
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = false;
+  @Prop() readonly highlightable: boolean = false;
 
   /**
    * Defines how the tabs will be distributed in the Strip.

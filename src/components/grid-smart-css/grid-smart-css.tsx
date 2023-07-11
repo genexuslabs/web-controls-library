@@ -7,8 +7,8 @@ import {
   Host,
   Method,
   Prop,
-  h,
-  Watch
+  Watch,
+  h
 } from "@stencil/core";
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
@@ -47,7 +47,7 @@ export class GridSmartCss
    * If set to `false`, it won't grow automatically and it will show scrollbars
    * if the content overflows.
    */
-  @Prop() readonly autoGrow = false;
+  @Prop() readonly autoGrow: boolean = false;
 
   /**
    * A CSS class to set as the `gx-grid-smart-css` element class.
@@ -116,7 +116,7 @@ export class GridSmartCss
   /**
    * Scroll snapping allows to lock the viewport to certain elements or locations after a user has finished scrolling
    */
-  @Prop({ reflect: true }) readonly snapToGrid = false;
+  @Prop({ reflect: true }) readonly snapToGrid: boolean = false;
 
   /**
    * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.

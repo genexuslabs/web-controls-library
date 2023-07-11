@@ -41,7 +41,7 @@ export class Group implements GxComponent, HighlightableComponent {
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = false;
+  @Prop() readonly highlightable: boolean = false;
 
   private fieldsetElement: HTMLFieldSetElement;
 

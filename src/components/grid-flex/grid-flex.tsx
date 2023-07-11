@@ -7,13 +7,13 @@ import {
   Host,
   Method,
   Prop,
-  h,
-  Watch
+  Watch,
+  h
 } from "@stencil/core";
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
-import { VisibilityComponent } from "../common/interfaces";
 import { FlexDirection, FlexWrap, ScrollDirection } from "../../common/types";
+import { VisibilityComponent } from "../common/interfaces";
 
 const VERTICAL_SCROLL: ScrollDirection = "vertical";
 const HORIZONTAL_SCROLL: ScrollDirection = "horizontal";
@@ -121,7 +121,7 @@ export class GridFlex
    * If set to `false`, it won't grow automatically and it will show scrollbars
    * if the content overflows.
    */
-  @Prop() readonly autoGrow = false;
+  @Prop() readonly autoGrow: boolean = false;
 
   /**
    * A CSS class to set as the `gx-grid-flex` element class.

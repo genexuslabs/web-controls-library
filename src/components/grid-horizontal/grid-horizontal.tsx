@@ -10,8 +10,8 @@ import {
   Watch,
   h
 } from "@stencil/core";
-import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 import Swiper, { FreeMode, Grid, Pagination, SwiperOptions } from "swiper";
+import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
 import { HighlightableComponent } from "../common/highlightable";
 import { VisibilityComponent } from "../common/interfaces";
@@ -133,22 +133,22 @@ export class GridHorizontal
   /**
    * If `true`, show the scrollbar.
    */
-  @Prop() readonly scrollbar = false;
+  @Prop() readonly scrollbar: boolean = false;
 
   /**
    * If `true`, show the pagination buttons (page controller).
    */
-  @Prop() readonly showPageController = true;
+  @Prop() readonly showPageController: boolean = true;
 
   /**
    * Set to false to enable slides in free mode position.
    */
-  @Prop() readonly snapToGrid = true;
+  @Prop() readonly snapToGrid: boolean = true;
 
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = false;
+  @Prop() readonly highlightable: boolean = false;
 
   /**
    * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.

@@ -17,7 +17,7 @@ export class Card implements GxComponent {
   /**
    * True to show the card header. False to hide it.
    */
-  @Prop() readonly showHeader = true;
+  @Prop() readonly showHeader: boolean = true;
 
   render() {
     return (

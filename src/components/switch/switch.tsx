@@ -3,10 +3,10 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Method,
   Prop,
-  h,
-  Host
+  h
 } from "@stencil/core";
 import { FormComponent } from "../common/interfaces";
 
@@ -53,7 +53,7 @@ export class Switch implements FormComponent {
    * If disabled, it will not trigger any user interaction related event
    * (for example, click event).
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.

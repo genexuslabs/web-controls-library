@@ -9,8 +9,8 @@ import {
   State,
   Watch
 } from "@stencil/core";
-import { SelectRender } from "../renders/bootstrap/select/select-render";
 import { FormComponent } from "../common/interfaces";
+import { SelectRender } from "../renders/bootstrap/select/select-render";
 
 @Component({
   shadow: false,
@@ -52,7 +52,7 @@ export class Select implements FormComponent {
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * This attribute indicates that the user cannot modify the value of the control.

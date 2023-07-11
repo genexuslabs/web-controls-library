@@ -15,7 +15,7 @@ export class Audio implements GxComponent, DisableableComponent {
   /**
    * This attribute lets you specify if the element is disabled.
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * This attribute is for specifies the src of the audio.
