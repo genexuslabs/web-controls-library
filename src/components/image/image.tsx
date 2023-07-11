@@ -1,13 +1,13 @@
 import { Component, Element, Host, Listen, Prop, h } from "@stencil/core";
 import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+import {
   DisableableComponent,
   Component as GxComponent,
   VisibilityComponent
 } from "../common/interfaces";
-import {
-  HighlightableComponent,
-  makeHighlightable
-} from "../common/highlightable";
 
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
 
@@ -65,7 +65,7 @@ export class Image
    * If false, the component will never force its height to match the image's intrinsic size. The width, however,
    * will match the intrinsic width. In GeneXus terms, it will auto grow horizontally, but not vertically.
    */
-  @Prop() readonly autoGrow = true;
+  @Prop() readonly autoGrow: boolean = true;
 
   /**
    * A CSS class to set as the `gx-image` element class.
@@ -77,7 +77,7 @@ export class Image
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -92,7 +92,7 @@ export class Image
   /**
    * True to lazy load the image, when it enters the viewport.
    */
-  @Prop() readonly lazyLoad = true;
+  @Prop() readonly lazyLoad: boolean = true;
 
   /**
    * This attribute allows specifing how the image is sized according to its container.
@@ -127,7 +127,7 @@ export class Image
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = false;
+  @Prop() readonly highlightable: boolean = false;
 
   @Listen("click", { capture: true })
   handleClick(event: UIEvent) {

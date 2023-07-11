@@ -3,26 +3,26 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Prop,
-  h,
-  Host
+  h
 } from "@stencil/core";
-import {
-  Component as GxComponent,
-  CustomizableComponent,
-  DisableableComponent,
-  VisibilityComponent
-} from "../common/interfaces";
 import {
   HighlightableComponent,
   makeHighlightable
 } from "../common/highlightable";
+import {
+  CustomizableComponent,
+  DisableableComponent,
+  Component as GxComponent,
+  VisibilityComponent
+} from "../common/interfaces";
 
 import { imagePositionClass } from "../common/image-position";
 
 // Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
 import { DISABLED_CLASS } from "../../common/reserved-names";
+import { getClasses } from "../common/css-transforms/css-transforms";
 
 const ENTER_KEY_CODE = "Enter";
 const SPACE_KEY_CODE = "Space";
@@ -80,7 +80,7 @@ export class Button
    * (for example, click event). If a disabled image has been specified,
    * it will be shown, hiding the base image (if specified).
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * This attribute lets you specify the relative location of the image to the text.
@@ -103,7 +103,7 @@ export class Button
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = true;
+  @Prop() readonly highlightable: boolean = true;
 
   /**
    * This attribute lets you specify the width.

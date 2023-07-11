@@ -21,13 +21,13 @@ import {
 } from "../common/interfaces";
 import { makeLinesClampable } from "../common/line-clamp";
 
-import { EditType, FontCategory } from "../../common/types";
 import {
   DISABLED_CLASS,
   HEIGHT_MEASURING,
   LINE_CLAMP,
   LINE_MEASURING
 } from "../../common/reserved-names";
+import { EditType, FontCategory } from "../../common/types";
 
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
@@ -148,7 +148,7 @@ export class Edit
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * Used to define the semantic of the element when `readonly="true"`.
@@ -163,7 +163,7 @@ export class Edit
   /**
    * True to cut text when it overflows, showing an ellipsis (only applies when readonly)
    */
-  @Prop() readonly lineClamp = false;
+  @Prop() readonly lineClamp: boolean = false;
 
   /**
    * Controls if the element accepts multiline text.

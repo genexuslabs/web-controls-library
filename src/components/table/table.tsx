@@ -8,17 +8,17 @@ import {
   Prop,
   h
 } from "@stencil/core";
-import {
-  DisableableComponent,
-  Component as GxComponent,
-  CustomizableComponent,
-  VisibilityComponent
-} from "../common/interfaces";
+import { Swipeable, makeSwipeable } from "../common/events/swipeable";
 import {
   HighlightableComponent,
   makeHighlightable
 } from "../common/highlightable";
-import { Swipeable, makeSwipeable } from "../common/events/swipeable";
+import {
+  CustomizableComponent,
+  DisableableComponent,
+  Component as GxComponent,
+  VisibilityComponent
+} from "../common/interfaces";
 
 import { DISABLED_CLASS } from "../../common/reserved-names";
 
@@ -68,12 +68,12 @@ export class Table
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = false;
+  @Prop() readonly highlightable: boolean = false;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.

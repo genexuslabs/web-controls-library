@@ -41,7 +41,7 @@ export class ImagePicker implements GxComponent {
    * If false, the component will never force its height to match the image's intrinsic size. The width, however,
    * will match the intrinsic width. In GeneXus terms, it will auto grow horizontally, but not vertically.
    */
-  @Prop() readonly autoGrow = true;
+  @Prop() readonly autoGrow: boolean = true;
 
   /**
    * A CSS class to set as the `gx-image-picker` element class.
@@ -53,7 +53,7 @@ export class ImagePicker implements GxComponent {
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -68,7 +68,7 @@ export class ImagePicker implements GxComponent {
   /**
    * True to lazy load the image, when it enters the viewport.
    */
-  @Prop() readonly lazyLoad = true;
+  @Prop() readonly lazyLoad: boolean = true;
 
   /**
    * This attribute allows specifing how the image is sized according to its container.
@@ -90,14 +90,14 @@ export class ImagePicker implements GxComponent {
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = false;
+  @Prop() readonly highlightable: boolean = false;
 
   /**
    * This attribute lets you specify if the image is readonly.
    * If readonly, it will not allow to use the edit button.
    * In fact, the edit button will not be shown.
    */
-  @Prop() readonly readonly = false;
+  @Prop() readonly readonly: boolean = false;
 
   /**
    * This attribute lets you specify the modal title.

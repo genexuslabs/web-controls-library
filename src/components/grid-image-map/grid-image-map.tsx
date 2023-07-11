@@ -1,26 +1,26 @@
 import {
   Component,
-  Host,
-  h,
-  Prop,
   Element,
   Event,
   EventEmitter,
+  Host,
   Listen,
-  State
+  Prop,
+  State,
+  h
 } from "@stencil/core";
 import "custom-pinch-zoom-element";
 
-import { Component as GxComponent } from "../common/interfaces";
-import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
-import {
-  HighlightableComponent,
-  makeHighlightable
-} from "../common/highlightable";
 import {
   LongPressComponent,
   makeLongPressable
 } from "../common/events/long-press";
+import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+import { Component as GxComponent } from "../common/interfaces";
+import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
@@ -62,7 +62,7 @@ export class GridImageMap
    * if the content overflows.
    * This property is not currently supported in the gx-image-map control.
    */
-  @Prop() readonly autoGrow = false;
+  @Prop() readonly autoGrow: boolean = false;
 
   /**
    * A CSS class to set as the `gx-grid-image-map` element class.

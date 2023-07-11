@@ -3,16 +3,16 @@ import {
   Element,
   Event,
   EventEmitter,
-  Listen,
   Host,
+  Listen,
   Method,
   Prop,
   State,
   h
 } from "@stencil/core";
 import {
-  Component as GxComponent,
-  DisableableComponent
+  DisableableComponent,
+  Component as GxComponent
 } from "../common/interfaces";
 
 @Component({
@@ -41,7 +41,7 @@ export class PasswordEdit implements GxComponent, DisableableComponent {
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * The text to set as the label of the gx-password-edit control.

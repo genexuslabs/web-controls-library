@@ -11,18 +11,18 @@ import {
   h
 } from "@stencil/core";
 import {
-  Component as GxComponent,
   ClickableComponent,
+  CustomizableComponent,
   DisableableComponent,
-  VisibilityComponent,
-  CustomizableComponent
+  Component as GxComponent,
+  VisibilityComponent
 } from "../common/interfaces";
 
+import { Swipeable, makeSwipeable } from "../common/events/swipeable";
 import {
   HighlightableComponent,
   makeHighlightable
 } from "../common/highlightable";
-import { Swipeable, makeSwipeable } from "../common/events/swipeable";
 
 import { DISABLED_CLASS } from "../../common/reserved-names";
 
@@ -79,7 +79,7 @@ export class Canvas
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = false;
+  @Prop() readonly highlightable: boolean = false;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -163,7 +163,7 @@ export class Canvas
   private autoGrowMechanismStarted = false;
 
   /*  Used to optimize height adjustments. This variable stores the "absolute"
-      maximum height of all gx-canvas-cells with auto-grow = False 
+      maximum height of all gx-canvas-cells with auto-grow = False
   */
   private canvasFixedMinHeight = 0;
 
@@ -221,7 +221,7 @@ export class Canvas
         - If `top="calc(50% + -100px)"` and `min-height="200px"` -> 200 + 0.5 * innerContainerCurrentHeight + -100px
         - If `top="25px"`               and `min-height="200px"` -> 225
         - If `top="25%"`                and `min-height="75%"`   -> 0
-  
+
       `maxCanvasCellHeight` determines the max value of all "absolute heights".
       We use this variable to update the gx-canvas minHeight and to determinate
       if there is a gx-canvas-cell with auto-grow = False that is taller than
@@ -310,7 +310,7 @@ export class Canvas
       }
 
       /*  If the canvas decreased its height and there is a gx-canvas-cell that
-          provokes overflow-y, we fix the canvas height 
+          provokes overflow-y, we fix the canvas height
       */
       const maxHeightConstraint = this.getMaxHeightConstraint();
       if (
@@ -418,7 +418,7 @@ export class Canvas
 
   /*  This functions is called the first time that
         this.canvasFixedHeight != null
-  
+
       Due to at this point we have to resize the gx-canvas, we fix the relative
       values of top, min-height and max-height in all the gx-canvas-cell
 

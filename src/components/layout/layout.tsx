@@ -32,7 +32,7 @@ export class Layout implements GxComponent {
   /**
    * `false` to hide the bottom target
    */
-  @Prop() readonly bottomVisible = false;
+  @Prop() readonly bottomVisible: boolean = false;
 
   /**
    * This attribute lets you specify if the header row pattern is enabled in
@@ -64,7 +64,7 @@ export class Layout implements GxComponent {
   /**
    * `false` to hide the top target.
    */
-  @Prop() readonly topVisible = false;
+  @Prop() readonly topVisible: boolean = false;
 
   @State() isMaskVisible = this.rightVisible || this.leftVisible;
 
