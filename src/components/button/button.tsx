@@ -30,9 +30,15 @@ const SPACE_KEY_CODE = "Space";
 /**
  * @part caption - The caption displayed at the center of the control.
  *
+ * @part main-image - The image displayed in the position indicated by the
+ * `imagePosition` property. This part is only available if the main image src
+ * is defined and the {control is not disabled | the disabled image is not defined}
+ *
+ * @part disabled-image - The image displayed in the position indicated by the
+ * `imagePosition` property. This part is only available if the disabled image src
+ * is defined and the control is disabled
+ *
  * @slot - The slot for the caption displayed.
- * @slot main-image - The slot for the main `img`.
- * @slot disabled-image - The slot for the disabled `img`.
  */
 @Component({
   shadow: true,
@@ -47,22 +53,27 @@ export class Button
     HighlightableComponent,
     VisibilityComponent
 {
-  /**
-   * `true` if the button has disabled image.
-   */
-  private hasDisabledImage = false;
-
-  /**
-   * `true` if the button has main image.
-   */
-  private hasMainImage = false;
-
   @Element() element: HTMLGxButtonElement;
+
+  /**
+   * The caption of the button
+   */
+  @Prop() readonly caption: string;
 
   /**
    * A CSS class to set as the `gx-button` element class.
    */
   @Prop() readonly cssClass: string;
+
+  /**
+   * This attribute lets you specify the `src` of the disabled image.
+   */
+  @Prop() readonly disabledImageSrc: string;
+
+  /**
+   * This attribute lets you specify the `srcset` of the disabled image.
+   */
+  @Prop() readonly disabledImageSrcset: string;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -104,6 +115,16 @@ export class Button
    * True to highlight control when an action is fired.
    */
   @Prop() readonly highlightable: boolean = true;
+
+  /**
+   * This attribute lets you specify the `src` of the main image.
+   */
+  @Prop() readonly mainImageSrc: string;
+
+  /**
+   * This attribute lets you specify the `srcset` of the main image.
+   */
+  @Prop() readonly mainImageSrcset: string;
 
   /**
    * This attribute lets you specify the width.
@@ -150,18 +171,6 @@ export class Button
     this.click.emit();
   };
 
-  componentWillLoad() {
-    const mainImage = this.element.querySelector(
-      ":scope > [slot='main-image']"
-    );
-    const disabledImage = this.element.querySelector(
-      ":scope > [slot='disabled-image']"
-    );
-
-    this.hasMainImage = mainImage !== null;
-    this.hasDisabledImage = disabledImage !== null;
-  }
-
   componentDidLoad() {
     makeHighlightable(this);
   }
@@ -170,8 +179,9 @@ export class Button
     // Styling for gx-button control.
     const classes = getClasses(this.cssClass);
 
-    /** True if the button does not have any text */
-    const isEmptyCaption = this.element.textContent.trim() === "";
+    const emptyCaption = this.caption.trim() === "";
+    const mainImage = this.mainImageSrc || this.mainImageSrcset;
+    const disabledImage = this.disabledImageSrc || this.disabledImageSrcset;
 
     return (
       <Host
@@ -183,10 +193,10 @@ export class Button
           [DISABLED_CLASS]: this.disabled,
 
           // Strings with only white spaces are taken as null captions
-          "empty-caption": isEmptyCaption,
+          "gx-empty-caption": emptyCaption,
 
           [imagePositionClass(this.imagePosition)]:
-            this.hasMainImage || this.hasDisabledImage
+            !!mainImage || !!disabledImage
         }}
         style={{
           "--width": !!this.width ? this.width : null,
@@ -198,25 +208,33 @@ export class Button
         onKeyDown={!this.disabled ? this.handleKeyDown : undefined}
         onKeyUp={!this.disabled ? this.handleKeyUp : undefined}
       >
-        {!isEmptyCaption && (
+        {!emptyCaption && (
           <span class="caption" part="caption">
-            <slot />
+            {this.caption}
           </span>
         )}
 
-        {
-          // Main image
-          this.hasMainImage && (!this.disabled || !this.hasDisabledImage) && (
-            <slot name="main-image" aria-hidden="true" />
-          )
-        }
-
-        {
+        {this.disabled && !!disabledImage ? (
           // Disabled image
-          this.hasDisabledImage && this.disabled && (
-            <slot name="disabled-image" aria-hidden="true" />
+          <img
+            aria-hidden="true"
+            alt=""
+            loading="lazy"
+            src={this.disabledImageSrc || undefined}
+            srcset={this.disabledImageSrcset || undefined}
+          />
+        ) : (
+          // Main image
+          !!mainImage && (
+            <img
+              aria-hidden="true"
+              alt=""
+              loading="lazy"
+              src={this.mainImageSrc || undefined}
+              srcset={this.mainImageSrcset || undefined}
+            />
           )
-        }
+        )}
       </Host>
     );
   }
