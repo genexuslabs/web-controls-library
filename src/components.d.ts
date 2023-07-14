@@ -1724,7 +1724,7 @@ export namespace Components {
      */
     invisibleMode: "collapse" | "keep-space";
     /**
-     * Defines how the tabs will be distributed in the Strip.  | Value        | Details                                                                            | | ------------ | ---------------------------------------------------------------------------------- | | `scoll`      | Allows scrolling the tab control when the number of tabs exceeds the screen width. | | `fixed-size` | Tabs are fixed size. Used with any amount of tabs.                                 |
+     * Defines how the tabs will be distributed in the Strip.  | Value        | Details                                                                            | | ------------ | ---------------------------------------------------------------------------------- | | `scroll`     | Allows scrolling the tab control when the number of tabs exceeds the screen width. | | `fixed-size` | Tabs are fixed size. Used with any amount of tabs.                                 |
      */
     tabsDistribution: "scroll" | "fixed-size";
   }
@@ -4405,7 +4405,7 @@ declare namespace LocalJSX {
      */
     onTabChange?: (event: GxTabCustomEvent<any>) => void;
     /**
-     * Defines how the tabs will be distributed in the Strip.  | Value        | Details                                                                            | | ------------ | ---------------------------------------------------------------------------------- | | `scoll`      | Allows scrolling the tab control when the number of tabs exceeds the screen width. | | `fixed-size` | Tabs are fixed size. Used with any amount of tabs.                                 |
+     * Defines how the tabs will be distributed in the Strip.  | Value        | Details                                                                            | | ------------ | ---------------------------------------------------------------------------------- | | `scroll`     | Allows scrolling the tab control when the number of tabs exceeds the screen width. | | `fixed-size` | Tabs are fixed size. Used with any amount of tabs.                                 |
      */
     tabsDistribution?: "scroll" | "fixed-size";
   }
