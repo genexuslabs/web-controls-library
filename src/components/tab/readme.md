@@ -15,10 +15,13 @@ tab content, using the `gx-tab-page` element.
 <gx-tab>
   <gx-tab-caption slot="caption">Tab Page 1</gx-tab-caption>
   <gx-tab-page slot="page"> First tab page </gx-tab-page>
+
   <gx-tab-caption slot="caption" selected="true">Tab Page 2</gx-tab-caption>
   <gx-tab-page slot="page"> Second tab page </gx-tab-page>
+
   <gx-tab-caption slot="caption">Tab Page 3</gx-tab-caption>
   <gx-tab-page slot="page"> Third tab page </gx-tab-page>
+
   <gx-tab-caption slot="caption" disabled>Tab Page 4 (disabled)</gx-tab-caption>
   <gx-tab-page slot="page"> Forth tab page (disabled) </gx-tab-page>
 </gx-tab>
@@ -33,7 +36,7 @@ tab content, using the `gx-tab-page` element.
 | `cssClass`         | `css-class`         | A CSS class to set as the `gx-tab` element class.                                                                                                                                                                                                                                                                                                                                            | `string`                     | `undefined`  |
 | `highlightable`    | `highlightable`     | True to highlight control when an action is fired.                                                                                                                                                                                                                                                                                                                                           | `boolean`                    | `false`      |
 | `invisibleMode`    | `invisible-mode`    | This attribute lets you specify how this element will behave when hidden. \| Value \| Details \| \| ------------ \| --------------------------------------------------------------------------- \| \| `keep-space` \| The element remains in the document flow, and it does occupy space. \| \| `collapse` \| The element is removed form the document flow, and it doesn't occupy space. \| | `"collapse" \| "keep-space"` | `"collapse"` |
-| `tabsDistribution` | `tabs-distribution` | Defines how the tabs will be distributed in the Strip. \| Value \| Details \| \| ------------ \| ---------------------------------------------------------------------------------- \| \| `scoll` \| Allows scrolling the tab control when the number of tabs exceeds the screen width. \| \| `fixed-size` \| Tabs are fixed size. Used with any amount of tabs. \|                          | `"fixed-size" \| "scroll"`   | `"scroll"`   |
+| `tabsDistribution` | `tabs-distribution` | Defines how the tabs will be distributed in the Strip. \| Value \| Details \| \| ------------ \| ---------------------------------------------------------------------------------- \| \| `scroll` \| Allows scrolling the tab control when the number of tabs exceeds the screen width. \| \| `fixed-size` \| Tabs are fixed size. Used with any amount of tabs. \|                         | `"fixed-size" \| "scroll"`   | `"scroll"`   |
 
 ## Events
 
