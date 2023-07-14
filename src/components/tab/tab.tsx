@@ -38,10 +38,15 @@ export class Tab
   implements GxComponent, VisibilityComponent, HighlightableComponent
 {
   /**
-   *  - Input: Caption Id
-   *  - Output: Corresponding tabPage Id
+   * `true` if the `componentDidLoad()` method was called
    */
-  private tabCaptionIdToTabPageId = new Map<string, string>();
+  private didLoad = false;
+
+  /**
+   *  - Input: Caption Id
+   *  - Output: Corresponding tabPage element
+   */
+  private captionToPage = new Map<string, HTMLGxTabPageElement>();
 
   // Refs
   private lastSelectedTabCaption: HTMLGxTabCaptionElement;
@@ -74,7 +79,7 @@ export class Tab
    *
    * | Value        | Details                                                                            |
    * | ------------ | ---------------------------------------------------------------------------------- |
-   * | `scoll`      | Allows scrolling the tab control when the number of tabs exceeds the screen width. |
+   * | `scroll`     | Allows scrolling the tab control when the number of tabs exceeds the screen width. |
    * | `fixed-size` | Tabs are fixed size. Used with any amount of tabs.                                 |
    */
   @Prop() readonly tabsDistribution: "scroll" | "fixed-size" = "scroll";
@@ -99,22 +104,25 @@ export class Tab
     this.tabChange.emit(event);
   }
 
-  private setSelectedTab(tabCaptionElement: HTMLGxTabCaptionElement) {
+  private setSelectedTab(selectedTabCaption: HTMLGxTabCaptionElement) {
     // Unselect last tabCaption and tabPage elements
     this.lastSelectedTabCaption.selected = false;
     this.lastSelectedTabPage.selected = false;
 
     // Update last tabCaption and tabPage elements
-    const tabPageId = this.tabCaptionIdToTabPageId.get(tabCaptionElement.id);
-    this.lastSelectedTabCaption = tabCaptionElement;
-    this.lastSelectedTabPage = this.element.querySelector(`#${tabPageId}`);
+    this.lastSelectedTabCaption = selectedTabCaption;
+    this.lastSelectedTabPage = this.captionToPage.get(selectedTabCaption.id);
 
     // Select new tabCaption and tabPage elements
     this.lastSelectedTabCaption.selected = true;
     this.lastSelectedTabPage.selected = true;
   }
 
-  private linkCaptionsWithTabPages() {
+  private linkCaptionsWithTabPages = () => {
+    if (!this.didLoad) {
+      return;
+    }
+
     const captionSlots = this.getCaptionSlots();
     const pageSlots = this.getPageSlots();
 
@@ -128,7 +136,7 @@ export class Tab
       captionElement.setAttribute("aria-controls", pageElement.id);
       pageElement.setAttribute("aria-labelledby", captionElement.id);
 
-      this.tabCaptionIdToTabPageId.set(captionElement.id, pageElement.id);
+      this.captionToPage.set(captionElement.id, pageElement);
 
       // Determine which tab page is selected
       if (captionElement.selected) {
@@ -138,7 +146,7 @@ export class Tab
         this.lastSelectedTabPage.selected = true;
       }
     });
-  }
+  };
 
   private getCaptionSlots(): HTMLGxTabCaptionElement[] {
     return Array.from(
@@ -151,6 +159,8 @@ export class Tab
   }
 
   componentDidLoad() {
+    this.didLoad = true;
+
     makeHighlightable(this);
     this.linkCaptionsWithTabPages();
   }
@@ -190,7 +200,7 @@ export class Tab
           </div>
         </div>
         <div class="gx-tab-content" part="tab-content">
-          <slot name="page" />
+          <slot name="page" onSlotchange={this.linkCaptionsWithTabPages} />
         </div>
       </Host>
     );
