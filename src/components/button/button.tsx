@@ -5,6 +5,7 @@ import {
   EventEmitter,
   Host,
   Prop,
+  State,
   h
 } from "@stencil/core";
 import {
@@ -54,6 +55,8 @@ export class Button
     VisibilityComponent
 {
   @Element() element: HTMLGxButtonElement;
+
+  @State() emptySlot = false;
 
   /**
    * The caption of the button
@@ -110,6 +113,16 @@ export class Button
     | "after"
     | "below"
     | "behind" = "above";
+
+  /**
+   * It specifies the format that will have the gx-button control.
+   *  - If `format` = `HTML`, the button control works as an HTML div and
+   *    the caption will be taken from the default slot.
+   *
+   *  - If `format` = `Text`, the control will take its caption using the
+   *    `caption` property.
+   */
+  @Prop() readonly format: "Text" | "HTML" = "Text";
 
   /**
    * True to highlight control when an action is fired.
@@ -171,6 +184,16 @@ export class Button
     this.click.emit();
   };
 
+  private checkEmptySlot = () => {
+    this.emptySlot = this.element.innerHTML.trim() === "";
+  };
+
+  componentWillLoad() {
+    if (this.format === "HTML") {
+      this.checkEmptySlot();
+    }
+  }
+
   componentDidLoad() {
     makeHighlightable(this);
   }
@@ -193,7 +216,8 @@ export class Button
           [DISABLED_CLASS]: this.disabled,
 
           // Strings with only white spaces are taken as null captions
-          "gx-empty-caption": emptyCaption,
+          "gx-empty-caption":
+            this.format === "HTML" ? this.emptySlot : emptyCaption,
 
           [imagePositionClass(this.imagePosition)]:
             !!mainImage || !!disabledImage
@@ -208,11 +232,17 @@ export class Button
         onKeyDown={!this.disabled ? this.handleKeyDown : undefined}
         onKeyUp={!this.disabled ? this.handleKeyUp : undefined}
       >
-        {!emptyCaption && (
-          <span class="caption" part="caption">
-            {this.caption}
-          </span>
-        )}
+        {this.format === "HTML"
+          ? !this.emptySlot && (
+              <div part="caption">
+                <slot onSlotchange={this.checkEmptySlot} />
+              </div>
+            )
+          : !emptyCaption && (
+              <span class="caption" part="caption">
+                {this.caption}
+              </span>
+            )}
 
         {this.disabled && !!disabledImage ? (
           // Disabled image
