@@ -35,7 +35,7 @@ gx-card-header > li:not([slot="low-priority-action"]) > gx-button {
   flex-direction: row; // Do not change flex-direction. All alignments will break
 
   &.without-auto-grow-cell,
-  &:not([auto-grow]) {
+  gx-table-cell#{&}:not([auto-grow]) {
     // Used when auto-grow = false and readonly = true in the gx-edit control
     // to ensure the content does not overflows
     & > gx-form-field > .gx-edit--readonly::part(gx-edit__content) {
