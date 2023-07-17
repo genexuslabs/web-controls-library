@@ -4,6 +4,7 @@
 @import "../components/common/layout-styling-config";
 
 @include base-styling-for-application();
+@include scrollbar-customization();
 
 // - - - - - - - - - - - - - - - - - - - -
 //               Card header
