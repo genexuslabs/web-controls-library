@@ -82,16 +82,6 @@ export class Canvas
   @Prop() readonly highlightable: boolean = false;
 
   /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
-
-  /**
    * This attribute defines when the layout has been fully loaded. Useful for
    * determining if the canvas control can set the auto-grow mechanism
    */

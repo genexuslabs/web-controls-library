@@ -13,7 +13,6 @@ import {
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
 import { FlexDirection, FlexWrap, ScrollDirection } from "../../common/types";
-import { VisibilityComponent } from "../common/interfaces";
 
 const VERTICAL_SCROLL: ScrollDirection = "vertical";
 const HORIZONTAL_SCROLL: ScrollDirection = "horizontal";
@@ -54,9 +53,7 @@ const propertiesToScrollDirectionMap = {
   styleUrl: "grid-flex.scss",
   tag: "gx-grid-flex"
 })
-export class GridFlex
-  implements GridBase, ComponentInterface, VisibilityComponent
-{
+export class GridFlex implements GridBase, ComponentInterface {
   /**
    * `true` if the `componentDidLoad()` method was called
    */
@@ -156,16 +153,6 @@ export class GridFlex
    * | `wrap-reverse` | Flex items will wrap onto multiple lines from bottom to top.  |
    */
   @Prop() readonly flexWrap: FlexWrap = DEFAULT_FLEX_WRAP;
-
-  /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * This attribute lets you define the alignment along the main axis. It helps

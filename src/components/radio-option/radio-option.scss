@@ -1,7 +1,6 @@
 @import "../common/_base";
 
 gx-radio-option {
-  @include visibility(block);
-
+  display: block;
   @include scss-custom-option-control();
 }

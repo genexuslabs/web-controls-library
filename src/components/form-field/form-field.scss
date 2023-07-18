@@ -1,4 +1,3 @@
-@import "../common/_base";
 @import "../common/common-styling-config";
 
 gx-form-field {
@@ -18,7 +17,7 @@ gx-form-field {
    */
   --gx-form-field-label-width-column: 25%;
 
-  @include visibility(grid);
+  display: grid;
   justify-self: stretch;
   align-self: stretch;
   max-height: 100%;

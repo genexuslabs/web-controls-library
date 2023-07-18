@@ -3,9 +3,9 @@
 
 gx-checkbox {
   @include elevation();
-  @include visibility(flex);
   @include scss-custom-option-control(25%);
 
+  display: flex;
   flex: 1;
 
   // Remove outline of the focus state. This selector must not have higher

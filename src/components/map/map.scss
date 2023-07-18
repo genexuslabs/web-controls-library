@@ -1,4 +1,3 @@
-@import "../common/_base";
 @import "../../../node_modules/leaflet/dist/leaflet.css";
 @import "../../../node_modules/leaflet-draw/dist/leaflet.draw-src.css";
 @import "./map-marker-cluster";
@@ -28,7 +27,7 @@ gx-map {
    */
   --gx-stroke-width: 2.5;
 
-  @include visibility(flex);
+  display: flex;
   height: 100%;
 
   & > .gxMap {

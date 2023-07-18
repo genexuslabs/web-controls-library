@@ -5,8 +5,7 @@ import {
 } from "../common/highlightable";
 import {
   DisableableComponent,
-  Component as GxComponent,
-  VisibilityComponent
+  Component as GxComponent
 } from "../common/interfaces";
 
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
@@ -22,11 +21,7 @@ const LAZY_LOADING_CLASS = "gx-lazy-loading-image";
   tag: "gx-image"
 })
 export class Image
-  implements
-    GxComponent,
-    DisableableComponent,
-    VisibilityComponent,
-    HighlightableComponent
+  implements GxComponent, DisableableComponent, HighlightableComponent
 {
   constructor() {
     cssVariablesWatcher(
@@ -78,16 +73,6 @@ export class Image
    * (for example, click event).
    */
   @Prop() readonly disabled: boolean = false;
-
-  /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * True to lazy load the image, when it enters the viewport.

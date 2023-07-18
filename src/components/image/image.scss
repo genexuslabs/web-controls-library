@@ -4,13 +4,13 @@
 gx-image {
   --elevation: 0;
   @include elevation();
-  @include visibility(flex);
   // It emulates "flex: 1" when the --width variable is not defined
   --width: 1;
 
   // It emulates "align-self: stretch" when the --height variable is not defined
   --height: stretch;
 
+  display: flex;
   flex: 1;
   align-self: stretch;
   width: 100%;

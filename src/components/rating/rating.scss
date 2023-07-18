@@ -13,8 +13,6 @@ $rating-selected-color: #e4ac13;
 */
 $rating-unselected-color: rgba(80, 80, 80, 0.4);
 
-@include visibility-shadow-DOM(flex);
-
 :host(.disabled) {
   pointer-events: none;
 }
@@ -38,9 +36,10 @@ $rating-unselected-color: rgba(80, 80, 80, 0.4);
   */
   --star-separation: 2px;
 
-  @include transition-properties();
+  display: flex;
   flex: 1;
   align-self: stretch;
+  @include transition-properties();
 }
 
 .stars-container {

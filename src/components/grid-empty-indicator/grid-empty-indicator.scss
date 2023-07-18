@@ -59,7 +59,7 @@
 }
 
 gx-grid-empty-indicator {
-  @include visibility(flex);
+  display: flex;
   position: relative;
   flex: 1;
   height: 100%;

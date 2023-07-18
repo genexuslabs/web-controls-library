@@ -1,15 +1,13 @@
-@import "../common/_base";
-
 @mixin size($width, $height) {
   height: $height;
   width: $width;
 }
 
 gx-interactive-image {
+  display: flex;
   height: auto;
   width: auto;
 
-  @include visibility(flex);
   overflow: hidden;
 
   img {

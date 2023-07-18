@@ -12,8 +12,7 @@ import bodymovin from "lottie-web/build/player/lottie_light";
 import {
   ClickableComponent,
   DisableableComponent,
-  Component as GxComponent,
-  VisibilityComponent
+  Component as GxComponent
 } from "../common/interfaces";
 
 @Component({
@@ -22,11 +21,7 @@ import {
   tag: "gx-lottie"
 })
 export class Lottie
-  implements
-    GxComponent,
-    ClickableComponent,
-    VisibilityComponent,
-    DisableableComponent
+  implements GxComponent, ClickableComponent, DisableableComponent
 {
   private animation: any;
   private animationTotalFrames: number;
@@ -47,16 +42,6 @@ export class Lottie
    *
    */
   @Prop() readonly autoPlay: boolean = true;
-
-  /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * This attribute lets you specify if the element is disabled.

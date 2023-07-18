@@ -48,42 +48,6 @@ export class CanvasCell implements GxComponent {
    */
   @Prop() readonly width: string = "100%";
 
-  private observer: MutationObserver;
-
-  private setupObserver(childElement: any) {
-    if (
-      childElement &&
-      childElement.getAttribute("invisible-mode") === "collapse"
-    ) {
-      this.observer = new MutationObserver(() => {
-        this.setVisibilityBasedOnChildElement(childElement);
-      });
-
-      this.observer.observe(childElement, {
-        attributes: true,
-        attributeFilter: ["hidden"],
-        childList: false,
-        subtree: false
-      });
-    }
-  }
-
-  private setVisibilityBasedOnChildElement(childElement: any) {
-    // "null" will fallback to the default visibility, which is "flex"
-    this.element.style.display = childElement.hidden ? "none" : null;
-  }
-
-  componentDidLoad() {
-    this.setupObserver(this.element.firstElementChild);
-  }
-
-  disconnectedCallback() {
-    if (this.observer) {
-      this.observer.disconnect();
-      this.observer = undefined;
-    }
-  }
-
   render() {
     return (
       <Host

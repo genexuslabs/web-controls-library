@@ -12,7 +12,6 @@ import {
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
 import { HighlightableComponent } from "../common/highlightable";
-import { VisibilityComponent } from "../common/interfaces";
 
 @Component({
   shadow: false,
@@ -20,11 +19,7 @@ import { VisibilityComponent } from "../common/interfaces";
   tag: "gx-grid-fs"
 })
 export class GridFreeStyle
-  implements
-    GridBase,
-    ComponentInterface,
-    VisibilityComponent,
-    HighlightableComponent
+  implements GridBase, ComponentInterface, HighlightableComponent
 {
   constructor() {
     this.handleGxInfinite = this.handleGxInfinite.bind(this);
@@ -46,16 +41,6 @@ export class GridFreeStyle
    * A CSS class to set as the `gx-grid-fs` element class.
    */
   @Prop() readonly cssClass: string;
-
-  /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.

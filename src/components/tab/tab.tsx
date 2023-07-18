@@ -12,10 +12,7 @@ import {
   HighlightableComponent,
   makeHighlightable
 } from "../common/highlightable";
-import {
-  Component as GxComponent,
-  VisibilityComponent
-} from "../common/interfaces";
+import { Component as GxComponent } from "../common/interfaces";
 
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
@@ -34,9 +31,7 @@ import { getClasses } from "../common/css-transforms/css-transforms";
   styleUrl: "tab.scss",
   tag: "gx-tab"
 })
-export class Tab
-  implements GxComponent, VisibilityComponent, HighlightableComponent
-{
+export class Tab implements GxComponent, HighlightableComponent {
   /**
    * `true` if the `componentDidLoad()` method was called
    */
@@ -58,16 +53,6 @@ export class Tab
    * A CSS class to set as the `gx-tab` element class.
    */
   @Prop() readonly cssClass: string;
-
-  /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * True to highlight control when an action is fired.

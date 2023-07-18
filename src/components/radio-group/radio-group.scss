@@ -3,7 +3,7 @@
 
 gx-radio-group {
   @include elevation();
-  @include visibility(flex);
+  display: flex;
   flex: 1;
   @include transition-properties();
 

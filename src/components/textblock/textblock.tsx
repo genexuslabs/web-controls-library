@@ -13,8 +13,7 @@ import {
 } from "../common/highlightable";
 import {
   DisableableComponent,
-  Component as GxComponent,
-  VisibilityComponent
+  Component as GxComponent
 } from "../common/interfaces";
 import { LineClampComponent, makeLinesClampable } from "../common/line-clamp";
 
@@ -44,7 +43,6 @@ export class TextBlock
   implements
     GxComponent,
     DisableableComponent,
-    VisibilityComponent,
     LineClampComponent,
     HighlightableComponent
 {
@@ -88,16 +86,6 @@ export class TextBlock
    * True to highlight control when an action is fired.
    */
   @Prop() readonly highlightable: boolean = false;
-
-  /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * True to cut text when it overflows, showing an ellipsis.

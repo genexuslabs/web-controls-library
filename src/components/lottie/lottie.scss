@@ -1,8 +1,6 @@
-@import "../common/_base";
-
-@include visibility-shadow-DOM(flex);
-
 :host {
+  display: flex;
+
   & > div {
     flex-grow: 1;
   }

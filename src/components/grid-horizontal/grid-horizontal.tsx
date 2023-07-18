@@ -14,7 +14,6 @@ import Swiper, { FreeMode, Grid, Pagination, SwiperOptions } from "swiper";
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
 import { HighlightableComponent } from "../common/highlightable";
-import { VisibilityComponent } from "../common/interfaces";
 import { getWindowsOrientation } from "../common/utils";
 
 @Component({
@@ -22,11 +21,7 @@ import { getWindowsOrientation } from "../common/utils";
   tag: "gx-grid-horizontal"
 })
 export class GridHorizontal
-  implements
-    GridBase,
-    ComponentInterface,
-    VisibilityComponent,
-    HighlightableComponent
+  implements GridBase, ComponentInterface, HighlightableComponent
 {
   @Element() element!: HTMLGxGridHorizontalElement;
 
@@ -61,16 +56,6 @@ export class GridHorizontal
    * 1-Indexed number of currently active page
    */
   @Prop({ mutable: true }) currentPage = 1;
-
-  /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * Grid loading state. It's purpose is to know whether the grid loading animation or the grid empty placeholder should be shown.

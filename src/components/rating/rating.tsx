@@ -48,16 +48,6 @@ export class Rating implements FormComponent {
   @Prop() readonly disabled: boolean = false;
 
   /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
-
-  /**
    * This property determine the number of stars displayed.
    */
   @Prop() readonly maxValue: number = 5;

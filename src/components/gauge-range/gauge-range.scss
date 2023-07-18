@@ -1,5 +1,3 @@
-@import "../common/_base";
-
 gx-gauge-range {
-  @include visibility(block);
+  display: block;
 }

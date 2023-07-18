@@ -56,16 +56,6 @@ export class ImagePicker implements GxComponent {
   @Prop() readonly disabled: boolean = false;
 
   /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
-
-  /**
    * True to lazy load the image, when it enters the viewport.
    */
   @Prop() readonly lazyLoad: boolean = true;
@@ -308,7 +298,6 @@ export class ImagePicker implements GxComponent {
           autoGrow={this.autoGrow}
           cssClass={this.cssClass}
           disabled={this.disabled}
-          invisibleMode={this.invisibleMode}
           lazyLoad={this.lazyLoad}
           scaleType={this.scaleType}
           showImagePickerButton={this.shouldShowImagePickerButton}

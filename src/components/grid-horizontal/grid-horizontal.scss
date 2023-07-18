@@ -27,7 +27,7 @@ gx-grid-horizontal {
 
   // With "display: grid" we ensure that the layout doesn't break when using
   // relative size columns in the parent gx-table
-  @include visibility(grid);
+  display: grid;
   grid-template-rows: 1fr min-content 0;
 
   // Show the loading on grid load

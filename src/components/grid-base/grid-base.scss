@@ -1,4 +1,3 @@
-@import "../common/_base";
 @import "../common/common-styling-config";
 
 $grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller), & > * > .scrollable-content";
@@ -26,7 +25,7 @@ $grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller), & > * 
 .gx-grid-base.gx-grid-empty:not(.gx-grid-loading) > pinch-zoom, // Used by gx-grid-image-map
 .gx-grid-base.gx-grid-empty:not(.gx-grid-loading) {
   & > :first-child {
-    @include visibility(none);
+    display: none;
   }
 }
 
@@ -36,7 +35,7 @@ $grid-content-selector: "& > [slot='grid-content']:not(virtual-scroller), & > * 
   // WA to not hide gx-loading on gx-grid-image-map load. This is needed since,
   // the gx-loading is inside the pinch-zoom element, but it should be outside
   & > :not(pinch-zoom):first-child {
-    @include visibility(none);
+    display: none;
   }
 }
 

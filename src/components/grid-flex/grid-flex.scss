@@ -1,9 +1,4 @@
-@import "../common/base";
 @import "../common/layout-styling-config";
-
-// With "display: grid" we ensure that the layout doesn't break when using
-// relative size columns in the parent gx-table
-@include visibility-shadow-DOM(grid);
 
 :host {
   /**
@@ -93,6 +88,10 @@
    * By default, the gx-grid-flex hide its content overflow.
    */
   --gx-overflow-style: #{$default-overflow-style};
+
+  // With "display: grid" we ensure that the layout doesn't break when using
+  // relative size columns in the parent gx-table
+  display: grid;
 }
 
 // - - - - - - - - - - - - - - - -

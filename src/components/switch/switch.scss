@@ -19,7 +19,7 @@ gx-switch {
   $slider-width: min(2em, 40px);
   $slider-height: min(0.5em, 10px);
 
-  @include visibility(flex);
+  display: flex;
   flex: 1;
   width: 100%;
   @include transition-properties();

@@ -14,8 +14,7 @@ import {
 import {
   CustomizableComponent,
   DisableableComponent,
-  Component as GxComponent,
-  VisibilityComponent
+  Component as GxComponent
 } from "../common/interfaces";
 
 import { imagePositionClass } from "../common/image-position";
@@ -44,8 +43,7 @@ export class Button
     GxComponent,
     CustomizableComponent,
     DisableableComponent,
-    HighlightableComponent,
-    VisibilityComponent
+    HighlightableComponent
 {
   /**
    * `true` if the button has disabled image.
@@ -63,16 +61,6 @@ export class Button
    * A CSS class to set as the `gx-button` element class.
    */
   @Prop() readonly cssClass: string;
-
-  /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * This attribute lets you specify if the element is disabled.

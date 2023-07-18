@@ -29,7 +29,7 @@ gx-grid-smart-css {
    */
   --gx-overflow-style: #{$default-overflow-style};
 
-  @include visibility(grid);
+  display: grid;
 
   // - - - - - - - - - - - - - - - -
   //        Measure grid size

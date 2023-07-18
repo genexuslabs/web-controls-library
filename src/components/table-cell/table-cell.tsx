@@ -6,8 +6,6 @@ import { Component as GxComponent } from "../common/interfaces";
   tag: "gx-table-cell"
 })
 export class TableCell implements GxComponent {
-  private observer: MutationObserver = null;
-
   @Element() element: HTMLGxTableCellElement;
 
   /**
@@ -29,7 +27,6 @@ export class TableCell implements GxComponent {
 
   /**
    * This attribute defines the minimum height of the cell when its contents are visible.
-   * Ignored if its content has `invisible-mode="collapse"` and is hidden.
    */
   @Prop() readonly minHeight: string = null;
 
@@ -37,53 +34,6 @@ export class TableCell implements GxComponent {
    * Defines the vertical alignment of the content of the cell.
    */
   @Prop({ reflect: true }) readonly valign: "top" | "bottom" | "middle";
-
-  componentDidLoad() {
-    const childElement: any = this.element.firstElementChild;
-
-    if (childElement?.getAttribute("invisible-mode") !== "collapse") {
-      return;
-    }
-
-    this.setVisibilityBasedOnChildElement(childElement);
-
-    this.setupObserver(childElement);
-  }
-
-  /**
-   * Based on the visibility of the child element, it sets the visibility of
-   * the gx-table-cell control.
-   * @param childElement The direct child element of the control.
-   */
-  private setVisibilityBasedOnChildElement(childElement: any) {
-    // "null" will fallback to the default visibility, which is "flex"
-    this.element.style.display = childElement.hidden ? "none" : null;
-  }
-
-  /**
-   * Set a MutationObserver to watch for changes to the hidden attribute on the
-   * direct child element.
-   * @param childElement The direct child element of the control.
-   */
-  private setupObserver(childElement: any) {
-    this.observer = new MutationObserver(() => {
-      this.setVisibilityBasedOnChildElement(childElement);
-    });
-
-    this.observer.observe(childElement, {
-      attributes: true,
-      attributeFilter: ["hidden"],
-      childList: false,
-      subtree: false
-    });
-  }
-
-  disconnectedCallback() {
-    if (this.observer) {
-      this.observer.disconnect();
-      this.observer = null;
-    }
-  }
 
   render() {
     return (

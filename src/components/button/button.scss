@@ -1,8 +1,6 @@
 @import "../common/_base";
 @import "../common/common-styling-config";
 
-@include visibility-shadow-DOM(grid);
-
 :host {
   /**
    * @prop --gx-button-image-size: Button image size
@@ -23,6 +21,7 @@
   --height: stretch;
 
   @include elevation();
+  display: grid;
   place-items: center;
   align-content: center;
   justify-content: center;

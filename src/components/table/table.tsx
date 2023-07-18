@@ -16,8 +16,7 @@ import {
 import {
   CustomizableComponent,
   DisableableComponent,
-  Component as GxComponent,
-  VisibilityComponent
+  Component as GxComponent
 } from "../common/interfaces";
 
 import { DISABLED_CLASS } from "../../common/reserved-names";
@@ -35,7 +34,6 @@ export class Table
     GxComponent,
     DisableableComponent,
     CustomizableComponent,
-    VisibilityComponent,
     HighlightableComponent,
     Swipeable
 {
@@ -74,16 +72,6 @@ export class Table
    * True to highlight control when an action is fired.
    */
   @Prop() readonly highlightable: boolean = false;
-
-  /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * This attribute lets you determine whether the gx-table control has a scroll or not.
