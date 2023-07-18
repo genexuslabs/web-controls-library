@@ -31,6 +31,7 @@ gx-card-header > li:not([slot="low-priority-action"]) > gx-button {
   @include align-inner-control-in-cell();
   @include text-align-with-shadow-DOM();
   @include valign-with-shadow-DOM();
+  @include invisible-mode();
 
   flex-direction: row; // Do not change flex-direction. All alignments will break
 
