@@ -204,7 +204,7 @@ export class Button
     // Styling for gx-button control.
     const classes = getClasses(this.cssClass);
 
-    const emptyCaption = this.caption.trim() === "";
+    const emptyCaption = this.caption?.trim() === "";
     const mainImage = this.mainImageSrc || this.mainImageSrcset;
     const disabledImage = this.disabledImageSrc || this.disabledImageSrcset;
 
