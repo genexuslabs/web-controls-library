@@ -124,6 +124,12 @@ export class Button
    *    `caption` property.
    */
   @Prop() readonly format: "Text" | "HTML" = "Text";
+  @Watch("format")
+  handleFormatChange(newFormat: "Text" | "HTML") {
+    if (newFormat === "HTML") {
+      this.checkEmptySlot();
+    }
+  }
 
   /**
    * True to highlight control when an action is fired.
@@ -154,13 +160,6 @@ export class Button
    * Emitted when the element is clicked, the enter key is pressed or the space key is pressed and released.
    */
   @Event() click: EventEmitter;
-
-  @Watch("format")
-  handleFormatChange(newFormat: "Text" | "HTML") {
-    if (newFormat === "HTML") {
-      this.checkEmptySlot();
-    }
-  }
 
   private handleKeyDown = (event: KeyboardEvent) => {
     // The action button is activated by space on the keyup event, but the
