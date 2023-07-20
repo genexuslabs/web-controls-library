@@ -52,6 +52,10 @@ export namespace Components {
   }
   interface GxButton {
     /**
+     * The caption of the button
+     */
+    caption: string;
+    /**
      * A CSS class to set as the `gx-button` element class.
      */
     cssClass: string;
@@ -59,6 +63,18 @@ export namespace Components {
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event). If a disabled image has been specified, it will be shown, hiding the base image (if specified).
      */
     disabled: boolean;
+    /**
+     * This attribute lets you specify the `src` of the disabled image.
+     */
+    disabledImageSrc: string;
+    /**
+     * This attribute lets you specify the `srcset` of the disabled image.
+     */
+    disabledImageSrcset: string;
+    /**
+     * It specifies the format that will have the gx-button control.  - If `format` = `HTML`, the button control works as an HTML div and    the caption will be taken from the default slot.   - If `format` = `Text`, the control will take its caption using the    `caption` property.
+     */
+    format: "Text" | "HTML";
     /**
      * This attribute lets you specify the height.
      */
@@ -75,6 +91,14 @@ export namespace Components {
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode: "collapse" | "keep-space";
+    /**
+     * This attribute lets you specify the `src` of the main image.
+     */
+    mainImageSrc: string;
+    /**
+     * This attribute lets you specify the `srcset` of the main image.
+     */
+    mainImageSrcset: string;
     /**
      * This attribute lets you specify the width.
      */
@@ -2510,6 +2534,10 @@ declare namespace LocalJSX {
   }
   interface GxButton {
     /**
+     * The caption of the button
+     */
+    caption?: string;
+    /**
      * A CSS class to set as the `gx-button` element class.
      */
     cssClass?: string;
@@ -2517,6 +2545,18 @@ declare namespace LocalJSX {
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event). If a disabled image has been specified, it will be shown, hiding the base image (if specified).
      */
     disabled?: boolean;
+    /**
+     * This attribute lets you specify the `src` of the disabled image.
+     */
+    disabledImageSrc?: string;
+    /**
+     * This attribute lets you specify the `srcset` of the disabled image.
+     */
+    disabledImageSrcset?: string;
+    /**
+     * It specifies the format that will have the gx-button control.  - If `format` = `HTML`, the button control works as an HTML div and    the caption will be taken from the default slot.   - If `format` = `Text`, the control will take its caption using the    `caption` property.
+     */
+    format?: "Text" | "HTML";
     /**
      * This attribute lets you specify the height.
      */
@@ -2533,6 +2573,14 @@ declare namespace LocalJSX {
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode?: "collapse" | "keep-space";
+    /**
+     * This attribute lets you specify the `src` of the main image.
+     */
+    mainImageSrc?: string;
+    /**
+     * This attribute lets you specify the `srcset` of the main image.
+     */
+    mainImageSrcset?: string;
     /**
      * Emitted when the element is clicked, the enter key is pressed or the space key is pressed and released.
      */
