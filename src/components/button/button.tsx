@@ -39,7 +39,7 @@ const SPACE_KEY_CODE = "Space";
  * `imagePosition` property. This part is only available if the disabled image src
  * is defined and the control is disabled
  *
- * @slot - The slot for the caption displayed.
+ * @slot - The slot for the caption displayed. Only works if `format="HTML"`.
  */
 @Component({
   shadow: true,
