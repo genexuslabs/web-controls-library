@@ -6,6 +6,7 @@ import {
   Host,
   Prop,
   State,
+  Watch,
   h
 } from "@stencil/core";
 import {
@@ -154,6 +155,13 @@ export class Button
    */
   @Event() click: EventEmitter;
 
+  @Watch("format")
+  handleFormatChange(newFormat: "Text" | "HTML") {
+    if (newFormat === "HTML") {
+      this.checkEmptySlot();
+    }
+  }
+
   private handleKeyDown = (event: KeyboardEvent) => {
     // The action button is activated by space on the keyup event, but the
     // default action for space is already triggered on keydown. It needs to be
@@ -187,12 +195,6 @@ export class Button
   private checkEmptySlot = () => {
     this.emptySlot = this.element.innerHTML.trim() === "";
   };
-
-  componentWillLoad() {
-    if (this.format === "HTML") {
-      this.checkEmptySlot();
-    }
-  }
 
   componentDidLoad() {
     makeHighlightable(this);
@@ -232,17 +234,17 @@ export class Button
         onKeyDown={!this.disabled ? this.handleKeyDown : undefined}
         onKeyUp={!this.disabled ? this.handleKeyUp : undefined}
       >
-        {this.format === "HTML"
-          ? !this.emptySlot && (
-              <div part="caption">
-                <slot onSlotchange={this.checkEmptySlot} />
-              </div>
-            )
-          : !emptyCaption && (
-              <span class="caption" part="caption">
-                {this.caption}
-              </span>
-            )}
+        {this.format === "HTML" ? (
+          <div part="caption">
+            <slot onSlotchange={this.checkEmptySlot} />
+          </div>
+        ) : (
+          !emptyCaption && (
+            <span class="caption" part="caption">
+              {this.caption}
+            </span>
+          )
+        )}
 
         {this.disabled && !!disabledImage ? (
           // Disabled image
