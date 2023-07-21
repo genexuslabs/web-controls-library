@@ -21,6 +21,8 @@ import {
 } from "../common/interfaces";
 
 import {
+  AccessibleNameByComponent,
+  AccessibleNameComponent,
   AccessibleRole,
   AccessibleRoleComponent
 } from "../../common/interfaces";
@@ -37,6 +39,8 @@ import { getClasses } from "../common/css-transforms/css-transforms";
 export class Table
   implements
     GxComponent,
+    AccessibleNameByComponent,
+    AccessibleNameComponent,
     AccessibleRoleComponent,
     DisableableComponent,
     CustomizableComponent,
@@ -45,6 +49,19 @@ export class Table
     Swipeable
 {
   @Element() element: HTMLGxTableElement;
+
+  /**
+   * Specifies the accessible name property value by providing the ID of the
+   * HTMLElement that has the accessible name text.
+   */
+  @Prop() readonly accessibleNameBy: string;
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   */
+  @Prop() readonly accessibleName: string;
 
   /**
    * Specifies the semantics of the control. Specifying the Role allows
@@ -164,6 +181,8 @@ export class Table
     return (
       <Host
         role={this.accessibleRole}
+        aria-label={this.accessibleName}
+        aria-labelledby={this.accessibleNameBy}
         class={{
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,
