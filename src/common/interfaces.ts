@@ -18,6 +18,14 @@ export interface AccessibleNameComponent {
   accessibleName: string;
 }
 
+export interface AccessibleNameByComponent {
+  /**
+   * Specifies the accessible name property value by providing the ID of the
+   * HTMLElement that has the accessible name text.
+   */
+  accessibleNameBy: string;
+}
+
 export interface AccessibleRoleComponent {
   /**
    * Specifies the semantics of the control. Specifying the Role allows
