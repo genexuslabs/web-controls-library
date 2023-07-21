@@ -9,6 +9,15 @@ export type AccessibleRole =
 
 export type AccessibleRoleCell = "listitem";
 
+export interface AccessibleNameComponent {
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   */
+  accessibleName: string;
+}
+
 export interface AccessibleRoleComponent {
   /**
    * Specifies the semantics of the control. Specifying the Role allows
