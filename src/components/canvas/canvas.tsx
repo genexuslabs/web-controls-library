@@ -24,6 +24,10 @@ import {
   makeHighlightable
 } from "../common/highlightable";
 
+import {
+  AccessibleRole,
+  AccessibleRoleComponent
+} from "../../common/interfaces";
 import { DISABLED_CLASS } from "../../common/reserved-names";
 
 // Class transforms
@@ -51,6 +55,7 @@ const WITHOUT_AUTOGROW_CANVAS_CELLS = ":scope > .without-auto-grow-cell";
 export class Canvas
   implements
     GxComponent,
+    AccessibleRoleComponent,
     ClickableComponent,
     CustomizableComponent,
     DisableableComponent,
@@ -63,6 +68,13 @@ export class Canvas
   }
 
   @Element() element: HTMLGxCanvasElement;
+
+  /**
+   * Specifies the semantics of the control. Specifying the Role allows
+   * assistive technologies to give information about how to use the control to
+   * the user.
+   */
+  @Prop() readonly accessibleRole: AccessibleRole;
 
   /**
    * A CSS class to set as the `gx-canvas` element class.
@@ -604,6 +616,7 @@ export class Canvas
 
     return (
       <Host
+        role={this.accessibleRole}
         class={{
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,

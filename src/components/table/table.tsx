@@ -20,6 +20,10 @@ import {
   VisibilityComponent
 } from "../common/interfaces";
 
+import {
+  AccessibleRole,
+  AccessibleRoleComponent
+} from "../../common/interfaces";
 import { DISABLED_CLASS } from "../../common/reserved-names";
 
 // Class transforms
@@ -33,6 +37,7 @@ import { getClasses } from "../common/css-transforms/css-transforms";
 export class Table
   implements
     GxComponent,
+    AccessibleRoleComponent,
     DisableableComponent,
     CustomizableComponent,
     VisibilityComponent,
@@ -40,6 +45,13 @@ export class Table
     Swipeable
 {
   @Element() element: HTMLGxTableElement;
+
+  /**
+   * Specifies the semantics of the control. Specifying the Role allows
+   * assistive technologies to give information about how to use the control to
+   * the user.
+   */
+  @Prop() readonly accessibleRole: AccessibleRole;
 
   /**
    * Like the `grid-templates-areas` CSS property, this attribute defines a grid
@@ -151,6 +163,7 @@ export class Table
 
     return (
       <Host
+        role={this.accessibleRole}
         class={{
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,
