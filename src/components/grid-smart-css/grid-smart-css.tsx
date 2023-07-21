@@ -16,13 +16,23 @@ import { attachHorizontalScrollWithDragHandler } from "../common/utils";
 
 import { VisibilityComponent } from "../common/interfaces";
 
+import {
+  AccessibleNameByComponent,
+  AccessibleNameComponent
+} from "../../common/interfaces";
+
 @Component({
   shadow: false,
   styleUrl: "grid-smart-css.scss",
   tag: "gx-grid-smart-css"
 })
 export class GridSmartCss
-  implements GridBase, ComponentInterface, VisibilityComponent
+  implements
+    GridBase,
+    AccessibleNameByComponent,
+    AccessibleNameComponent,
+    ComponentInterface,
+    VisibilityComponent
 {
   constructor() {
     this.handleGxInfinite = this.handleGxInfinite.bind(this);
@@ -40,6 +50,19 @@ export class GridSmartCss
   private scrollableContainer: HTMLElement = null;
 
   @Element() element!: HTMLGxGridSmartCssElement;
+
+  /**
+   * Specifies the accessible name property value by providing the ID of the
+   * HTMLElement that has the accessible name text.
+   */
+  @Prop() readonly accessibleNameBy: string;
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   */
+  @Prop() readonly accessibleName: string;
 
   /**
    * This attribute defines if the control size will grow automatically,

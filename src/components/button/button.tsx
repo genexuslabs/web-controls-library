@@ -22,6 +22,8 @@ import {
 
 import { imagePositionClass } from "../common/image-position";
 
+import { AccessibleNameComponent } from "../../common/interfaces";
+
 // Class transforms
 import { DISABLED_CLASS } from "../../common/reserved-names";
 import { getClasses } from "../common/css-transforms/css-transforms";
@@ -50,6 +52,7 @@ const SPACE_KEY_CODE = "Space";
 export class Button
   implements
     GxComponent,
+    AccessibleNameComponent,
     CustomizableComponent,
     DisableableComponent,
     HighlightableComponent,
@@ -58,6 +61,13 @@ export class Button
   @Element() element: HTMLGxButtonElement;
 
   @State() emptySlot = false;
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   */
+  @Prop() readonly accessibleName: string;
 
   /**
    * The caption of the button
@@ -211,6 +221,13 @@ export class Button
       <Host
         role="button"
         aria-disabled={this.disabled ? "true" : undefined}
+        aria-label={
+          // Only set aria-label when necessary
+          this.accessibleName?.trim() !== "" &&
+          (this.accessibleName !== this.caption || this.format === "HTML")
+            ? this.accessibleName
+            : null
+        }
         class={{
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,

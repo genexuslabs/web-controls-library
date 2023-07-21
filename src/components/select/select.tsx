@@ -10,6 +10,9 @@ import {
   Watch
 } from "@stencil/core";
 import { FormComponent } from "../common/interfaces";
+
+import { AccessibleNameComponent } from "../../common/interfaces";
+
 import { SelectRender } from "../renders/bootstrap/select/select-render";
 
 @Component({
@@ -17,7 +20,7 @@ import { SelectRender } from "../renders/bootstrap/select/select-render";
   styleUrl: "select.scss",
   tag: "gx-select"
 })
-export class Select implements FormComponent {
+export class Select implements AccessibleNameComponent, FormComponent {
   constructor() {
     this.renderer = new SelectRender(this);
   }
@@ -31,6 +34,14 @@ export class Select implements FormComponent {
   private didLoad: boolean;
 
   @Element() element: HTMLGxSelectElement;
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   * Only works if `readonly="false"`.
+   */
+  @Prop() readonly accessibleName: string;
 
   /**
    * A CSS class to set as the `gx-select` element class.

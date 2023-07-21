@@ -12,8 +12,13 @@ import {
 } from "@stencil/core";
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
-import { FlexDirection, FlexWrap, ScrollDirection } from "../../common/types";
 import { VisibilityComponent } from "../common/interfaces";
+
+import {
+  AccessibleNameByComponent,
+  AccessibleNameComponent
+} from "../../common/interfaces";
+import { FlexDirection, FlexWrap, ScrollDirection } from "../../common/types";
 
 const VERTICAL_SCROLL: ScrollDirection = "vertical";
 const HORIZONTAL_SCROLL: ScrollDirection = "horizontal";
@@ -55,7 +60,12 @@ const propertiesToScrollDirectionMap = {
   tag: "gx-grid-flex"
 })
 export class GridFlex
-  implements GridBase, ComponentInterface, VisibilityComponent
+  implements
+    GridBase,
+    AccessibleNameByComponent,
+    AccessibleNameComponent,
+    ComponentInterface,
+    VisibilityComponent
 {
   /**
    * `true` if the `componentDidLoad()` method was called
@@ -71,6 +81,19 @@ export class GridFlex
   private elementToMeasureSize: HTMLElement = null;
 
   @Element() element!: HTMLGxGridFlexElement;
+
+  /**
+   * Specifies the accessible name property value by providing the ID of the
+   * HTMLElement that has the accessible name text.
+   */
+  @Prop() readonly accessibleNameBy: string;
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   */
+  @Prop() readonly accessibleName: string;
 
   /**
    * This aligns a flex container’s lines within when there is extra space in

@@ -21,6 +21,7 @@ import {
 } from "../common/interfaces";
 import { makeLinesClampable } from "../common/line-clamp";
 
+import { AccessibleNameComponent } from "../../common/interfaces";
 import {
   DISABLED_CLASS,
   HEIGHT_MEASURING,
@@ -67,6 +68,7 @@ const PART_CONTENT = "gx-edit__content";
 })
 export class Edit
   implements
+    AccessibleNameComponent,
     CustomizableComponent,
     DisableableComponent,
     HighlightableComponent
@@ -114,6 +116,14 @@ export class Edit
   @State() autoFilled = false;
 
   /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   * Only works if `readonly="false"` and `format="Text"`.
+   */
+  @Prop() readonly accessibleName: string;
+
+  /**
    * Allows to specify the role of the element when inside a `gx-form-field` element
    */
   @Prop({ reflect: true }) readonly area: "field";
@@ -154,11 +164,6 @@ export class Edit
    * Used to define the semantic of the element when `readonly="true"`.
    */
   @Prop() readonly fontCategory: FontCategory = "p";
-
-  /**
-   * The text to set as the label of the gx-edit control.
-   */
-  @Prop() readonly labelCaption: string;
 
   /**
    * True to cut text when it overflows, showing an ellipsis (only applies when readonly)
@@ -400,7 +405,7 @@ export class Edit
       autocapitalize: this.autocapitalize,
       autocomplete: this.autocomplete,
       autocorrect: this.autocorrect,
-      "aria-label": this.labelCaption || undefined,
+      "aria-label": this.accessibleName || undefined,
       disabled: this.disabled,
       id: this.inputId,
 
