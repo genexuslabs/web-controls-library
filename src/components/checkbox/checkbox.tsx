@@ -10,6 +10,9 @@ import {
   h
 } from "@stencil/core";
 import { FormComponent } from "../common/interfaces";
+
+import { AccessibleNameComponent } from "../../common/interfaces";
+
 import { CheckBoxRender } from "../renders/bootstrap/checkbox/checkbox-render";
 
 // Class transforms
@@ -20,7 +23,7 @@ import { getClasses } from "../common/css-transforms/css-transforms";
   styleUrl: "checkbox.scss",
   tag: "gx-checkbox"
 })
-export class CheckBox implements FormComponent {
+export class CheckBox implements AccessibleNameComponent, FormComponent {
   constructor() {
     this.renderer = new CheckBoxRender(this, {
       handleChange: this.handleChange.bind(this)
@@ -30,6 +33,13 @@ export class CheckBox implements FormComponent {
   private renderer: CheckBoxRender;
 
   @Element() element: HTMLGxCheckboxElement;
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   */
+  @Prop() readonly accessibleName: string;
 
   /**
    * Specifies the label of the checkbox.
