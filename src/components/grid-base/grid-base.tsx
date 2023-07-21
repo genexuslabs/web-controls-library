@@ -5,10 +5,17 @@ import {
 
 import { EventEmitter } from "@stencil/core";
 
+import {
+  AccessibleNameByComponent,
+  AccessibleNameComponent
+} from "../../common/interfaces";
+
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
 
-export interface GridBase {
+export interface GridBase
+  extends AccessibleNameByComponent,
+    AccessibleNameComponent {
   element: HTMLElement;
 
   /**
@@ -76,6 +83,8 @@ export class GridBaseHelper {
 
     return {
       role: "grid",
+      "aria-label": cmp.accessibleName,
+      "aria-labelledby": cmp.accessibleNameBy,
       class: {
         "gx-grid-base": true,
         [cmp.cssClass]: !!cmp.cssClass,
