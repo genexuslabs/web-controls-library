@@ -223,7 +223,8 @@ export class Button
         aria-disabled={this.disabled ? "true" : undefined}
         aria-label={
           // Only set aria-label when necessary
-          this.accessibleName !== this.caption || this.format === "HTML"
+          this.accessibleName?.trim() !== "" &&
+          (this.accessibleName !== this.caption || this.format === "HTML")
             ? this.accessibleName
             : null
         }
