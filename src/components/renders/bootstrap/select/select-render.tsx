@@ -69,7 +69,7 @@ export class SelectRender implements Renderer {
       let datalistId: string;
 
       const attris = {
-        "aria-disabled": this.component.disabled ? "true" : undefined,
+        "aria-label": this.component.accessibleName,
         class: {
           "gx-select-control": true,
           [this.component.cssClass]: !!this.component.cssClass,
@@ -91,6 +91,7 @@ export class SelectRender implements Renderer {
       return this.component.suggest
         ? [
             <input
+              aria-label={this.component.accessibleName}
               list={datalistId}
               disabled={this.component.disabled}
               placeholder={this.component.placeholder}
