@@ -14,8 +14,7 @@ import {
   ClickableComponent,
   CustomizableComponent,
   DisableableComponent,
-  Component as GxComponent,
-  VisibilityComponent
+  Component as GxComponent
 } from "../common/interfaces";
 
 import { Swipeable, makeSwipeable } from "../common/events/swipeable";
@@ -64,8 +63,7 @@ export class Canvas
     CustomizableComponent,
     DisableableComponent,
     HighlightableComponent,
-    Swipeable,
-    VisibilityComponent
+    Swipeable
 {
   constructor() {
     this.handleClick = this.handleClick.bind(this);
