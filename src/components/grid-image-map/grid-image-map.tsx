@@ -22,6 +22,11 @@ import {
 import { Component as GxComponent } from "../common/interfaces";
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
+import {
+  AccessibleNameByComponent,
+  AccessibleNameComponent
+} from "../../common/interfaces";
+
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
 
@@ -31,7 +36,13 @@ import { getClasses } from "../common/css-transforms/css-transforms";
   shadow: false
 })
 export class GridImageMap
-  implements GxComponent, GridBase, HighlightableComponent, LongPressComponent
+  implements
+    GxComponent,
+    AccessibleNameByComponent,
+    AccessibleNameComponent,
+    GridBase,
+    HighlightableComponent,
+    LongPressComponent
 {
   constructor() {
     this.handleImageLoad = this.handleImageLoad.bind(this);
@@ -54,6 +65,19 @@ export class GridImageMap
    * any wheel event.
    */
   @State() mouseIsOverImageMap = false;
+
+  /**
+   * Specifies the accessible name property value by providing the ID of the
+   * HTMLElement that has the accessible name text.
+   */
+  @Prop() readonly accessibleNameBy: string;
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   */
+  @Prop() readonly accessibleName: string;
 
   /**
    * This attribute defines if the control size will grow automatically,

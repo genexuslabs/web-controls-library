@@ -12,12 +12,14 @@ import {
 
 import { Component as GxComponent } from "../common/interfaces";
 
+import { AccessibleNameComponent } from "../../common/interfaces";
+
 @Component({
   shadow: false,
   styleUrl: "image-picker.scss",
   tag: "gx-image-picker"
 })
-export class ImagePicker implements GxComponent {
+export class ImagePicker implements GxComponent, AccessibleNameComponent {
   // Used to read the images
   private reader = new FileReader();
 
@@ -34,6 +36,13 @@ export class ImagePicker implements GxComponent {
    * This attribute lets you specify the alternative text.
    */
   @Prop({ mutable: true, reflect: true }) alt = "";
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   */
+  @Prop() readonly accessibleName: string;
 
   /**
    * If true, the component will be sized to match the image's intrinsic size when not constrained
@@ -294,6 +303,7 @@ export class ImagePicker implements GxComponent {
     return (
       <Host onClick={this.stopPropagation}>
         <gx-image
+          accessibleName={this.accessibleName}
           alt={this.alt}
           autoGrow={this.autoGrow}
           cssClass={this.cssClass}

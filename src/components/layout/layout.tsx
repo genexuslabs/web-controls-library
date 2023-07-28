@@ -52,6 +52,13 @@ export class Layout implements GxComponent {
   @Prop({ mutable: true }) leftVisible = false;
 
   /**
+   * This attribute lets you specify whether the main content should be
+   * contained in a tag that has role=`"main"`.
+   * If `false`, the main content will be contained in a generic tag (<div>).
+   */
+  @Prop() readonly renderMainRole: boolean = true;
+
+  /**
    * `false` to hide the right target
    */
   @Prop({ mutable: true }) rightVisible = false;
@@ -149,12 +156,16 @@ export class Layout implements GxComponent {
             this.topNavbarVisible && !this.enableHeaderRowPattern
         }}
       >
-        <main class="target center" part="main">
+        <div
+          role={this.renderMainRole ? "main" : null}
+          class="target center"
+          part="main"
+        >
           <slot />
           {this.isMaskVisible && notLargeLayoutSize && (
             <div class="mask" part="mask" onClick={this.closeTargets}></div>
           )}
-        </main>
+        </div>
 
         {this.topVisible && (
           <header class="target top" part="header">

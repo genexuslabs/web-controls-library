@@ -5,6 +5,8 @@ import {
   EventEmitter,
   Host,
   Prop,
+  State,
+  Watch,
   h
 } from "@stencil/core";
 import {
@@ -19,6 +21,8 @@ import {
 
 import { imagePositionClass } from "../common/image-position";
 
+import { AccessibleNameComponent } from "../../common/interfaces";
+
 // Class transforms
 import { DISABLED_CLASS } from "../../common/reserved-names";
 import { getClasses } from "../common/css-transforms/css-transforms";
@@ -29,9 +33,15 @@ const SPACE_KEY_CODE = "Space";
 /**
  * @part caption - The caption displayed at the center of the control.
  *
- * @slot - The slot for the caption displayed.
- * @slot main-image - The slot for the main `img`.
- * @slot disabled-image - The slot for the disabled `img`.
+ * @part main-image - The image displayed in the position indicated by the
+ * `imagePosition` property. This part is only available if the main image src
+ * is defined and the {control is not disabled | the disabled image is not defined}
+ *
+ * @part disabled-image - The image displayed in the position indicated by the
+ * `imagePosition` property. This part is only available if the disabled image src
+ * is defined and the control is disabled
+ *
+ * @slot - The slot for the caption displayed. Only works if `format="HTML"`.
  */
 @Component({
   shadow: true,
@@ -41,26 +51,41 @@ const SPACE_KEY_CODE = "Space";
 export class Button
   implements
     GxComponent,
+    AccessibleNameComponent,
     CustomizableComponent,
     DisableableComponent,
     HighlightableComponent
 {
-  /**
-   * `true` if the button has disabled image.
-   */
-  private hasDisabledImage = false;
-
-  /**
-   * `true` if the button has main image.
-   */
-  private hasMainImage = false;
-
   @Element() element: HTMLGxButtonElement;
+
+  @State() emptySlot = false;
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   */
+  @Prop() readonly accessibleName: string;
+
+  /**
+   * The caption of the button
+   */
+  @Prop() readonly caption: string;
 
   /**
    * A CSS class to set as the `gx-button` element class.
    */
   @Prop() readonly cssClass: string;
+
+  /**
+   * This attribute lets you specify the `src` of the disabled image.
+   */
+  @Prop() readonly disabledImageSrc: string;
+
+  /**
+   * This attribute lets you specify the `srcset` of the disabled image.
+   */
+  @Prop() readonly disabledImageSrcset: string;
 
   /**
    * This attribute lets you specify if the element is disabled.
@@ -89,9 +114,35 @@ export class Button
     | "behind" = "above";
 
   /**
+   * It specifies the format that will have the gx-button control.
+   *  - If `format` = `HTML`, the button control works as an HTML div and
+   *    the caption will be taken from the default slot.
+   *
+   *  - If `format` = `Text`, the control will take its caption using the
+   *    `caption` property.
+   */
+  @Prop() readonly format: "Text" | "HTML" = "Text";
+  @Watch("format")
+  handleFormatChange(newFormat: "Text" | "HTML") {
+    if (newFormat === "HTML") {
+      this.checkEmptySlot();
+    }
+  }
+
+  /**
    * True to highlight control when an action is fired.
    */
   @Prop() readonly highlightable: boolean = true;
+
+  /**
+   * This attribute lets you specify the `src` of the main image.
+   */
+  @Prop() readonly mainImageSrc: string;
+
+  /**
+   * This attribute lets you specify the `srcset` of the main image.
+   */
+  @Prop() readonly mainImageSrcset: string;
 
   /**
    * This attribute lets you specify the width.
@@ -138,17 +189,9 @@ export class Button
     this.click.emit();
   };
 
-  componentWillLoad() {
-    const mainImage = this.element.querySelector(
-      ":scope > [slot='main-image']"
-    );
-    const disabledImage = this.element.querySelector(
-      ":scope > [slot='disabled-image']"
-    );
-
-    this.hasMainImage = mainImage !== null;
-    this.hasDisabledImage = disabledImage !== null;
-  }
+  private checkEmptySlot = () => {
+    this.emptySlot = this.element.innerHTML.trim() === "";
+  };
 
   componentDidLoad() {
     makeHighlightable(this);
@@ -158,23 +201,32 @@ export class Button
     // Styling for gx-button control.
     const classes = getClasses(this.cssClass);
 
-    /** True if the button does not have any text */
-    const isEmptyCaption = this.element.textContent.trim() === "";
+    const emptyCaption = this.caption?.trim() === "";
+    const mainImage = this.mainImageSrc || this.mainImageSrcset;
+    const disabledImage = this.disabledImageSrc || this.disabledImageSrcset;
 
     return (
       <Host
         role="button"
         aria-disabled={this.disabled ? "true" : undefined}
+        aria-label={
+          // Only set aria-label when necessary
+          this.accessibleName?.trim() !== "" &&
+          (this.accessibleName !== this.caption || this.format === "HTML")
+            ? this.accessibleName
+            : null
+        }
         class={{
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,
           [DISABLED_CLASS]: this.disabled,
 
           // Strings with only white spaces are taken as null captions
-          "empty-caption": isEmptyCaption,
+          "gx-empty-caption":
+            this.format === "HTML" ? this.emptySlot : emptyCaption,
 
           [imagePositionClass(this.imagePosition)]:
-            this.hasMainImage || this.hasDisabledImage
+            !!mainImage || !!disabledImage
         }}
         style={{
           "--width": !!this.width ? this.width : null,
@@ -186,25 +238,39 @@ export class Button
         onKeyDown={!this.disabled ? this.handleKeyDown : undefined}
         onKeyUp={!this.disabled ? this.handleKeyUp : undefined}
       >
-        {!isEmptyCaption && (
-          <span class="caption" part="caption">
-            <slot />
-          </span>
+        {this.format === "HTML" ? (
+          <div part="caption">
+            <slot onSlotchange={this.checkEmptySlot} />
+          </div>
+        ) : (
+          !emptyCaption && (
+            <span class="caption" part="caption">
+              {this.caption}
+            </span>
+          )
         )}
 
-        {
-          // Main image
-          this.hasMainImage && (!this.disabled || !this.hasDisabledImage) && (
-            <slot name="main-image" aria-hidden="true" />
-          )
-        }
-
-        {
+        {this.disabled && !!disabledImage ? (
           // Disabled image
-          this.hasDisabledImage && this.disabled && (
-            <slot name="disabled-image" aria-hidden="true" />
+          <img
+            aria-hidden="true"
+            alt=""
+            loading="lazy"
+            src={this.disabledImageSrc || undefined}
+            srcset={this.disabledImageSrcset || undefined}
+          />
+        ) : (
+          // Main image
+          !!mainImage && (
+            <img
+              aria-hidden="true"
+              alt=""
+              loading="lazy"
+              src={this.mainImageSrc || undefined}
+              srcset={this.mainImageSrcset || undefined}
+            />
           )
-        }
+        )}
       </Host>
     );
   }

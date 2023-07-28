@@ -45,6 +45,11 @@ export class CheckBoxRender implements Renderer {
 
     const attris = {
       "aria-disabled": checkbox.disabled ? "true" : undefined,
+      "aria-label":
+        checkbox.accessibleName?.trim() !== "" &&
+        checkbox.accessibleName !== checkbox.caption
+          ? checkbox.accessibleName
+          : null,
       class: "hidden-input",
       "data-native-element": "",
       disabled: checkbox.disabled || checkbox.readonly,

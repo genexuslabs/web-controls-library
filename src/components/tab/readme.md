@@ -15,10 +15,13 @@ tab content, using the `gx-tab-page` element.
 <gx-tab>
   <gx-tab-caption slot="caption">Tab Page 1</gx-tab-caption>
   <gx-tab-page slot="page"> First tab page </gx-tab-page>
+
   <gx-tab-caption slot="caption" selected="true">Tab Page 2</gx-tab-caption>
   <gx-tab-page slot="page"> Second tab page </gx-tab-page>
+
   <gx-tab-caption slot="caption">Tab Page 3</gx-tab-caption>
   <gx-tab-page slot="page"> Third tab page </gx-tab-page>
+
   <gx-tab-caption slot="caption" disabled>Tab Page 4 (disabled)</gx-tab-caption>
   <gx-tab-page slot="page"> Forth tab page (disabled) </gx-tab-page>
 </gx-tab>
@@ -28,11 +31,13 @@ tab content, using the `gx-tab-page` element.
 
 ## Properties
 
-| Property           | Attribute           | Description                                                                                                                                                                                                                                                                                                                                                          | Type                       | Default     |
-| ------------------ | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- | ----------- |
-| `cssClass`         | `css-class`         | A CSS class to set as the `gx-tab` element class.                                                                                                                                                                                                                                                                                                                    | `string`                   | `undefined` |
-| `highlightable`    | `highlightable`     | True to highlight control when an action is fired.                                                                                                                                                                                                                                                                                                                   | `boolean`                  | `false`     |
-| `tabsDistribution` | `tabs-distribution` | Defines how the tabs will be distributed in the Strip. \| Value \| Details \| \| ------------ \| ---------------------------------------------------------------------------------- \| \| `scroll` \| Allows scrolling the tab control when the number of tabs exceeds the screen width. \| \| `fixed-size` \| Tabs are fixed size. Used with any amount of tabs. \| | `"fixed-size" \| "scroll"` | `"scroll"`  |
+| Property           | Attribute            | Description                                                                                                                                                                                                                                                                                                                                                          | Type                       | Default     |
+| ------------------ | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- | ----------- |
+| `accessibleName`   | `accessible-name`    | Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.                                                                                                                                                                                                    | `string`                   | `undefined` |
+| `accessibleNameBy` | `accessible-name-by` | Specifies the accessible name property value by providing the ID of the HTMLElement that has the accessible name text.                                                                                                                                                                                                                                               | `string`                   | `undefined` |
+| `cssClass`         | `css-class`          | A CSS class to set as the `gx-tab` element class.                                                                                                                                                                                                                                                                                                                    | `string`                   | `undefined` |
+| `highlightable`    | `highlightable`      | True to highlight control when an action is fired.                                                                                                                                                                                                                                                                                                                   | `boolean`                  | `false`     |
+| `tabsDistribution` | `tabs-distribution`  | Defines how the tabs will be distributed in the Strip. \| Value \| Details \| \| ------------ \| ---------------------------------------------------------------------------------- \| \| `scroll` \| Allows scrolling the tab control when the number of tabs exceeds the screen width. \| \| `fixed-size` \| Tabs are fixed size. Used with any amount of tabs. \| | `"fixed-size" \| "scroll"` | `"scroll"`  |
 
 ## Events
 

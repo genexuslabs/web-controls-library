@@ -10,6 +10,8 @@ import {
 
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
 
+import { AccessibleNameComponent } from "../../common/interfaces";
+
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
 
@@ -21,7 +23,11 @@ const LAZY_LOADING_CLASS = "gx-lazy-loading-image";
   tag: "gx-image"
 })
 export class Image
-  implements GxComponent, DisableableComponent, HighlightableComponent
+  implements
+    GxComponent,
+    AccessibleNameComponent,
+    DisableableComponent,
+    HighlightableComponent
 {
   constructor() {
     cssVariablesWatcher(
@@ -48,6 +54,13 @@ export class Image
   private innerImageContainer: HTMLDivElement = null;
 
   @Element() element: HTMLGxImageElement;
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   */
+  @Prop() readonly accessibleName: string;
 
   /**
    * This attribute lets you specify the alternative text.
@@ -159,6 +172,7 @@ export class Image
 
     const body = !!imageSrc && (
       <img
+        aria-label={this.accessibleName}
         class={{
           "inner-image": true,
           "gx-image-tile": this.scaleType === "tile"

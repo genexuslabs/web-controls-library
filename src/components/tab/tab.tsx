@@ -14,6 +14,11 @@ import {
 } from "../common/highlightable";
 import { Component as GxComponent } from "../common/interfaces";
 
+import {
+  AccessibleNameByComponent,
+  AccessibleNameComponent
+} from "../../common/interfaces";
+
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
 
@@ -31,7 +36,13 @@ import { getClasses } from "../common/css-transforms/css-transforms";
   styleUrl: "tab.scss",
   tag: "gx-tab"
 })
-export class Tab implements GxComponent, HighlightableComponent {
+export class Tab
+  implements
+    GxComponent,
+    AccessibleNameByComponent,
+    AccessibleNameComponent,
+    HighlightableComponent
+{
   /**
    * `true` if the `componentDidLoad()` method was called
    */
@@ -48,6 +59,19 @@ export class Tab implements GxComponent, HighlightableComponent {
   private lastSelectedTabPage: HTMLGxTabPageElement;
 
   @Element() element: HTMLGxTabElement;
+
+  /**
+   * Specifies the accessible name property value by providing the ID of the
+   * HTMLElement that has the accessible name text.
+   */
+  @Prop() readonly accessibleNameBy: string;
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   */
+  @Prop() readonly accessibleName: string;
 
   /**
    * A CSS class to set as the `gx-tab` element class.
@@ -161,6 +185,8 @@ export class Tab implements GxComponent, HighlightableComponent {
     return (
       <Host
         role="tablist"
+        aria-label={this.accessibleName}
+        aria-labelledby={this.accessibleNameBy}
         class={{
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true
