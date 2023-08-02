@@ -1,13 +1,13 @@
 import {
   Component,
-  Host,
-  h,
   Element,
+  Event,
+  EventEmitter,
+  Host,
   Prop,
   State,
   Watch,
-  Event,
-  EventEmitter
+  h
 } from "@stencil/core";
 
 const EMPTY_TRACE_LIST_INDEX = -3;
@@ -53,7 +53,7 @@ export class GxImageAnnotations {
   /**
    * If the annotations are activated or not.
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * Specifies the `fontFamily` for the texts

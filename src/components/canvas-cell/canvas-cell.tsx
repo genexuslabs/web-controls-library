@@ -1,13 +1,25 @@
 import { Component, Element, Prop, h, Host } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
+import {
+  AccessibleRoleCell,
+  AccessibleRoleCellComponent
+} from "../../common/interfaces";
+
 @Component({
   shadow: true,
   styleUrl: "canvas-cell.scss",
   tag: "gx-canvas-cell"
 })
-export class CanvasCell implements GxComponent {
+export class CanvasCell implements GxComponent, AccessibleRoleCellComponent {
   @Element() element: HTMLGxCanvasCellElement;
+
+  /**
+   * Specifies the semantics of the control. Specifying the Role allows
+   * assistive technologies to give information about how to use the control to
+   * the user.
+   */
+  @Prop() readonly accessibleRole: AccessibleRoleCell;
 
   /**
    * Defines the horizontal alignment of the content of the cell.
@@ -87,6 +99,7 @@ export class CanvasCell implements GxComponent {
   render() {
     return (
       <Host
+        role={this.accessibleRole}
         class={{
           "gx-cell": true,
           "auto-grow-cell": this.maxHeight == null,

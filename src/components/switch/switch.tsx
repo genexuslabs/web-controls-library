@@ -3,12 +3,14 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Method,
   Prop,
-  h,
-  Host
+  h
 } from "@stencil/core";
 import { FormComponent } from "../common/interfaces";
+
+import { AccessibleNameComponent } from "../../common/interfaces";
 
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
@@ -20,7 +22,7 @@ let autoSwitchId = 0;
   styleUrl: "switch.scss",
   tag: "gx-switch"
 })
-export class Switch implements FormComponent {
+export class Switch implements AccessibleNameComponent, FormComponent {
   constructor() {
     if (!this.inputId) {
       this.inputId = this.element.id
@@ -32,6 +34,13 @@ export class Switch implements FormComponent {
   private inputId: string;
 
   @Element() element: HTMLGxSwitchElement;
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   */
+  @Prop() readonly accessibleName: string;
 
   /**
    * Caption displayed when the switch is 'on'
@@ -53,7 +62,7 @@ export class Switch implements FormComponent {
    * If disabled, it will not trigger any user interaction related event
    * (for example, click event).
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -117,8 +126,9 @@ export class Switch implements FormComponent {
 
     const inputAttrs = {
       role: "switch",
-      "aria-checked": checked ? "true" : "false",
-      "aria-disabled": this.disabled ? "true" : "false",
+      "aria-label": this.accessibleName,
+      "aria-checked": checked ? "true" : "false", // TODO: Check if it's necessary
+      "aria-disabled": this.disabled ? "true" : "false", // TODO: Check if it's necessary
       "aria-valuetext": checked ? this.checkedCaption : this.unCheckedCaption,
       checked: checked,
       disabled: this.disabled,
@@ -148,7 +158,11 @@ export class Switch implements FormComponent {
         >
           <input {...inputAttrs} />
           <span class="gx-switch-slider" aria-hidden="true"></span>
-          <span aria-hidden="true">
+          <span
+            // The values are hidden from the accessibility tree, because the
+            // switch has the aria-valuetext attribute
+            aria-hidden="true"
+          >
             {checked ? this.checkedCaption : this.unCheckedCaption}
           </span>
         </label>

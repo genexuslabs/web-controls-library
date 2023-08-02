@@ -10,6 +10,8 @@ import {
 } from "@stencil/core";
 import { FormComponent } from "../common/interfaces";
 
+import { AccessibleNameComponent } from "../../common/interfaces";
+
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
 
@@ -20,7 +22,7 @@ let autoRatingId = 0;
   styleUrl: "rating.scss",
   tag: "gx-rating"
 })
-export class Rating implements FormComponent {
+export class Rating implements AccessibleNameComponent, FormComponent {
   constructor() {
     this.handleClick = this.handleClick.bind(this);
 
@@ -34,6 +36,13 @@ export class Rating implements FormComponent {
   private inputId: string;
 
   @Element() element: HTMLGxRatingElement;
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   */
+  @Prop() readonly accessibleName: string;
 
   /**
    * A CSS class to set as the `gx-rating` element class.
@@ -110,6 +119,7 @@ export class Rating implements FormComponent {
         data-score={this.value !== 0 ? this.value : undefined}
       >
         <input
+          aria-label={this.accessibleName}
           id={this.inputId}
           type="range"
           disabled={this.disabled}

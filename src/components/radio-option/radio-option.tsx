@@ -3,17 +3,17 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Prop,
   Watch,
-  Host,
   h
 } from "@stencil/core";
-import { RadioOptionRender } from "../renders/bootstrap/radio-option/radio-option-render";
 import {
-  Component as GxComponent,
   DisableableComponent,
+  Component as GxComponent,
   VisibilityComponent
 } from "../common/interfaces";
+import { RadioOptionRender } from "../renders/bootstrap/radio-option/radio-option-render";
 
 @Component({
   shadow: false,
@@ -56,7 +56,7 @@ export class RadioOption
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * The name of the inner input of type radio
