@@ -12,6 +12,7 @@ import {
   h,
   writeTask
 } from "@stencil/core";
+import { DataState, UI_LIST_DATA_STATE } from "./types";
 
 const PRECISION_OFFSET = 2;
 
@@ -26,8 +27,6 @@ export class GridInfiniteScroll implements ComponentInterface {
    */
   private didLoad = false;
 
-  private hasInfiniteScroll = false;
-
   /**
    * `true` if the parent grid is gx-grid-smart-css and has
    * `direction = "vertical"`
@@ -38,6 +37,8 @@ export class GridInfiniteScroll implements ComponentInterface {
   private lastClientHeight = 0;
   private lastScrollHeight = 0;
   private lastScrollTop = 0;
+
+  private newRecords = false;
 
   // Observers
   private ioWatcher: IntersectionObserver;
@@ -62,22 +63,31 @@ export class GridInfiniteScroll implements ComponentInterface {
    * known that there is no more data that can be added, and the infinite
    * scroll is no longer needed.
    */
-  @Prop() readonly canFetchMoreData: boolean = false;
-  @Watch("canFetchMoreData")
-  handleCanFetchMoreDataChange(canFetch: boolean) {
+  @Prop() readonly dataState: DataState = UI_LIST_DATA_STATE.initial;
+
+  @Watch("dataState")
+  handleCanFetchMoreDataChange(newDataState: DataState) {
     if (!this.didLoad) {
       return;
     }
 
-    // The grid has data provider and there is data that can be loaded
-    if (canFetch) {
-      this.setInfiniteScroll();
-    }
     // All data was fully loaded
-    else {
+    if (newDataState === UI_LIST_DATA_STATE.allRecordsLoaded) {
       this.disconnectInfiniteScroll();
     }
+    // The grid has data provider and there is data that can be loaded
+    else if (this.canFetch()) {
+      this.setInfiniteScroll();
+    }
   }
+
+  /**
+   * `true` if the infinite scroll is used in a grid that has data provider.
+   * This attribute determine the utility of the infinite scroll, because in
+   * certain configurations the infinite scroll can be used only to implement
+   * the inverse loading utility.
+   */
+  @Prop() readonly dataProvider: boolean = false;
 
   /**
    * This property must be bounded to grid item count property.
@@ -97,6 +107,8 @@ export class GridInfiniteScroll implements ComponentInterface {
     if (this.position === "top") {
       this.el.style.gridRowStart = `-${newValue + 2}`;
     }
+
+    this.newRecords = true;
   }
 
   /**
@@ -117,7 +129,7 @@ export class GridInfiniteScroll implements ComponentInterface {
   @Prop() readonly threshold: string = "15%";
   @Watch("threshold")
   protected thresholdChanged() {
-    if (!this.canFetchMoreData && !this.waitingForData) {
+    if (this.dataState === UI_LIST_DATA_STATE.allRecordsLoaded) {
       return;
     }
     // @todo TODO: Check if this works when a new threshold comes
@@ -148,6 +160,9 @@ export class GridInfiniteScroll implements ComponentInterface {
     this.checkIfCanFetchMoreData();
   }
 
+  private canFetch = () =>
+    this.dataProvider && this.dataState === UI_LIST_DATA_STATE.moreDataToFetch;
+
   /**
    * This functions unobserves and re-observes the infinite scroll element when
    * new items are added in the grid. Without this configuration, if the grid
@@ -156,7 +171,7 @@ export class GridInfiniteScroll implements ComponentInterface {
    */
   private checkIfCanFetchMoreData() {
     // The infinite scroll was disconnected
-    if (!this.canFetchMoreData || !this.ioWatcher) {
+    if (!this.canFetch() || !this.ioWatcher) {
       return;
     }
     this.ioWatcher.unobserve(this.el);
@@ -165,7 +180,7 @@ export class GridInfiniteScroll implements ComponentInterface {
     requestAnimationFrame(() => {
       writeTask(() => {
         // The infinite scroll was disconnected
-        if (!this.canFetchMoreData || !this.ioWatcher) {
+        if (!this.canFetch() || !this.ioWatcher) {
           return;
         }
 
@@ -191,8 +206,6 @@ export class GridInfiniteScroll implements ComponentInterface {
 
     requestAnimationFrame(() => {
       writeTask(() => {
-        this.hasInfiniteScroll = true;
-
         const options: IntersectionObserverInit = {
           root: this.scrollableParent,
           rootMargin: this.threshold
@@ -262,6 +275,20 @@ export class GridInfiniteScroll implements ComponentInterface {
 
   private trackLastScrollTop = () => {
     this.lastScrollTop = this.scrollableParent.scrollTop;
+
+    // If the grid added new records, don't track the scrollHeight changes
+    if (this.newRecords) {
+      // Wait until the resize observer has executed its adjustment to keep
+      // tracking the scrollHeight
+      requestAnimationFrame(() => {
+        writeTask(() => {
+          this.newRecords = false;
+        });
+      });
+      return;
+    }
+
+    this.lastScrollHeight = this.scrollableParent.scrollHeight;
   };
 
   private setInverseLoading() {
@@ -301,7 +328,7 @@ export class GridInfiniteScroll implements ComponentInterface {
       // scroll was at the bottom position. When the grid has a data provider
       // items can be loaded via infinite scroll, so the scroll position needs
       // adjusted when new items are added
-      if (this.hasInfiniteScroll || scrollWasAtTheBottom) {
+      if (this.dataProvider || scrollWasAtTheBottom) {
         const scrollOffset = currentScrollHeight - this.lastScrollHeight;
         const clientHeightOffset =
           currentClientHeight < this.lastClientHeight
@@ -402,7 +429,7 @@ export class GridInfiniteScroll implements ComponentInterface {
     }
 
     // Infinite Scroll
-    if (this.canFetchMoreData) {
+    if (this.canFetch()) {
       this.setInfiniteScroll();
     }
   }
@@ -418,7 +445,7 @@ export class GridInfiniteScroll implements ComponentInterface {
         class={this.waitingForData ? "gx-loading" : undefined}
         aria-hidden={!this.waitingForData ? "true" : undefined}
       >
-        {this.waitingForData && <slot />}
+        {this.dataProvider && <slot />}
       </Host>
     );
   }
