@@ -14,6 +14,7 @@ import {
   FontCategory
 } from "./common/types";
 import { SwiperOptions } from "swiper";
+import { DataState } from "./components/grid-infinite-scroll/types";
 import {
   AnnotationsChangeEvent,
   ImageAnnotationLine,
@@ -856,31 +857,26 @@ export namespace Components {
      */
     complete: () => Promise<void>;
     /**
-     * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
+     * `true` if the infinite scroll is used in a grid that has data provider. This attribute determine the utility of the infinite scroll, because in certain configurations the infinite scroll can be used only to implement the inverse loading utility.
      */
-    disabled: boolean;
+    dataProvider: boolean;
     /**
-     * This property must be bounded to grid item count property. It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the initial batch does not overflow the main container
+     * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to `false` to disable the infinite scroll from actively trying to receive new data while reaching the threshold. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
      */
-    itemCount: number;
+    dataState: DataState;
     /**
-     * The main layout selector where the infinite scroll is contained.
-     */
-    layoutSelector: string;
-    /**
-     * The position of the infinite scroll element. The value can be either `top` or `bottom`.
+     * The position of the infinite scroll element. The value can be either `top` or `bottom`. When `position === "top"`, the control also implements inverse loading.
      */
     position: "top" | "bottom";
+    /**
+     * This property must be bounded to grid item count property. It's unique purpose is to update the position of the control in the inverse loading scenario (`position === "top"`).
+     */
+    recordCount: number;
     /**
      * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
      */
     threshold: string;
-    /**
-     * The View Port parent element selector where the infinite component would be attached to and listening to Scroll Events.
-     */
-    viewportSelector: string;
   }
-  interface GxGridInfiniteScrollContent {}
   interface GxGridSmartCell {
     /**
      * The CSS class of gx-grid parent element.
@@ -2301,13 +2297,6 @@ declare global {
     prototype: HTMLGxGridInfiniteScrollElement;
     new (): HTMLGxGridInfiniteScrollElement;
   };
-  interface HTMLGxGridInfiniteScrollContentElement
-    extends Components.GxGridInfiniteScrollContent,
-      HTMLStencilElement {}
-  var HTMLGxGridInfiniteScrollContentElement: {
-    prototype: HTMLGxGridInfiniteScrollContentElement;
-    new (): HTMLGxGridInfiniteScrollContentElement;
-  };
   interface HTMLGxGridSmartCellElement
     extends Components.GxGridSmartCell,
       HTMLStencilElement {}
@@ -2567,7 +2556,6 @@ declare global {
     "gx-grid-image-map": HTMLGxGridImageMapElement;
     "gx-grid-image-map-item": HTMLGxGridImageMapItemElement;
     "gx-grid-infinite-scroll": HTMLGxGridInfiniteScrollElement;
-    "gx-grid-infinite-scroll-content": HTMLGxGridInfiniteScrollContentElement;
     "gx-grid-smart-cell": HTMLGxGridSmartCellElement;
     "gx-grid-smart-css": HTMLGxGridSmartCssElement;
     "gx-group": HTMLGxGroupElement;
@@ -3523,35 +3511,30 @@ declare namespace LocalJSX {
   }
   interface GxGridInfiniteScroll {
     /**
-     * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
+     * `true` if the infinite scroll is used in a grid that has data provider. This attribute determine the utility of the infinite scroll, because in certain configurations the infinite scroll can be used only to implement the inverse loading utility.
      */
-    disabled?: boolean;
+    dataProvider?: boolean;
     /**
-     * This property must be bounded to grid item count property. It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the initial batch does not overflow the main container
+     * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to `false` to disable the infinite scroll from actively trying to receive new data while reaching the threshold. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
      */
-    itemCount?: number;
-    /**
-     * The main layout selector where the infinite scroll is contained.
-     */
-    layoutSelector?: string;
+    dataState?: DataState;
     /**
      * Emitted when the scroll reaches the threshold distance. From within your infinite handler, you must call the infinite scroll's `complete()` method when your async operation has completed.
      */
     onGxInfinite?: (event: GxGridInfiniteScrollCustomEvent<void>) => void;
     /**
-     * The position of the infinite scroll element. The value can be either `top` or `bottom`.
+     * The position of the infinite scroll element. The value can be either `top` or `bottom`. When `position === "top"`, the control also implements inverse loading.
      */
     position?: "top" | "bottom";
+    /**
+     * This property must be bounded to grid item count property. It's unique purpose is to update the position of the control in the inverse loading scenario (`position === "top"`).
+     */
+    recordCount?: number;
     /**
      * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
      */
     threshold?: string;
-    /**
-     * The View Port parent element selector where the infinite component would be attached to and listening to Scroll Events.
-     */
-    viewportSelector?: string;
   }
-  interface GxGridInfiniteScrollContent {}
   interface GxGridSmartCell {
     /**
      * The CSS class of gx-grid parent element.
@@ -4865,7 +4848,6 @@ declare namespace LocalJSX {
     "gx-grid-image-map": GxGridImageMap;
     "gx-grid-image-map-item": GxGridImageMapItem;
     "gx-grid-infinite-scroll": GxGridInfiniteScroll;
-    "gx-grid-infinite-scroll-content": GxGridInfiniteScrollContent;
     "gx-grid-smart-cell": GxGridSmartCell;
     "gx-grid-smart-css": GxGridSmartCss;
     "gx-group": GxGroup;
@@ -4948,8 +4930,6 @@ declare module "@stencil/core" {
         JSXBase.HTMLAttributes<HTMLGxGridImageMapItemElement>;
       "gx-grid-infinite-scroll": LocalJSX.GxGridInfiniteScroll &
         JSXBase.HTMLAttributes<HTMLGxGridInfiniteScrollElement>;
-      "gx-grid-infinite-scroll-content": LocalJSX.GxGridInfiniteScrollContent &
-        JSXBase.HTMLAttributes<HTMLGxGridInfiniteScrollContentElement>;
       "gx-grid-smart-cell": LocalJSX.GxGridSmartCell &
         JSXBase.HTMLAttributes<HTMLGxGridSmartCellElement>;
       "gx-grid-smart-css": LocalJSX.GxGridSmartCss &
