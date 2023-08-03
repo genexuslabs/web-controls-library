@@ -17,6 +17,11 @@ import { HighlightableComponent } from "../common/highlightable";
 import { VisibilityComponent } from "../common/interfaces";
 import { getWindowsOrientation } from "../common/utils";
 
+import {
+  AccessibleNameByComponent,
+  AccessibleNameComponent
+} from "../../common/interfaces";
+
 @Component({
   styleUrl: "grid-horizontal.scss",
   tag: "gx-grid-horizontal"
@@ -24,6 +29,8 @@ import { getWindowsOrientation } from "../common/utils";
 export class GridHorizontal
   implements
     GridBase,
+    AccessibleNameByComponent,
+    AccessibleNameComponent,
     ComponentInterface,
     VisibilityComponent,
     HighlightableComponent
@@ -38,6 +45,19 @@ export class GridHorizontal
   // Refs
   private horizontalGridContent: HTMLDivElement = null;
   private scrollableContainer: HTMLElement = null;
+
+  /**
+   * Specifies the accessible name property value by providing the ID of the
+   * HTMLElement that has the accessible name text.
+   */
+  @Prop() readonly accessibleNameBy: string;
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   */
+  @Prop() readonly accessibleName: string;
 
   /**
    * This attribute defines if the control size will grow automatically,

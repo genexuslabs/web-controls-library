@@ -15,12 +15,16 @@ import {
   Component as GxComponent
 } from "../common/interfaces";
 
+import { AccessibleNameComponent } from "../../common/interfaces";
+
 @Component({
   shadow: false,
   styleUrl: "password-edit.scss",
   tag: "gx-password-edit"
 })
-export class PasswordEdit implements GxComponent, DisableableComponent {
+export class PasswordEdit
+  implements GxComponent, AccessibleNameComponent, DisableableComponent
+{
   // Refs
   private innerEdit: HTMLGxEditElement;
 
@@ -30,6 +34,14 @@ export class PasswordEdit implements GxComponent, DisableableComponent {
    * Indicates if the value is revealed or masked.
    */
   @State() revealed = false;
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   * Only works if `readonly="false"`.
+   */
+  @Prop() readonly accessibleName: string;
 
   /**
    * A CSS class to set as the `gx-password-edit` element class.
@@ -42,11 +54,6 @@ export class PasswordEdit implements GxComponent, DisableableComponent {
    * (for example, click event).
    */
   @Prop() readonly disabled: boolean = false;
-
-  /**
-   * The text to set as the label of the gx-password-edit control.
-   */
-  @Prop() readonly labelCaption: string;
 
   /**
    * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder)
@@ -142,6 +149,7 @@ export class PasswordEdit implements GxComponent, DisableableComponent {
         }
       >
         <gx-edit
+          accessibleName={this.accessibleName}
           area="field"
           css-class={this.cssClass}
           disabled={this.disabled}

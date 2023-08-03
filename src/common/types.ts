@@ -33,3 +33,5 @@ export type FlexDirection = "column" | "column-reverse" | "row" | "row-reverse";
 export type FlexWrap = "nowrap" | "wrap" | "wrap-reverse";
 
 export type ScrollDirection = "vertical" | "horizontal";
+
+export type ObjectValues<T> = T[keyof T];
