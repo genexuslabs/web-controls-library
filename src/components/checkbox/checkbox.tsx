@@ -83,6 +83,12 @@ export class CheckBox implements AccessibleNameComponent, DisableableComponent {
   @Prop({ mutable: true }) value: string;
 
   /**
+   * Emitted when the element is clicked or the space key is pressed and
+   * released.
+   */
+  @Event() click: EventEmitter;
+
+  /**
    * The `input` event is emitted when a change to the element's value is
    * committed by the user.
    */
@@ -111,6 +117,17 @@ export class CheckBox implements AccessibleNameComponent, DisableableComponent {
   private getValue = (checked: boolean) =>
     checked ? this.checkedValue : this.unCheckedValue;
 
+  /**
+   * Checks if it is necessary to prevent the click from bubbling
+   */
+  private handleClick = (event: UIEvent) => {
+    if (this.readonly || this.disabled) {
+      return;
+    }
+
+    event.stopPropagation();
+  };
+
   private handleChange = (event: UIEvent) => {
     event.stopPropagation();
 
@@ -123,6 +140,10 @@ export class CheckBox implements AccessibleNameComponent, DisableableComponent {
     inputRef.value = value; // Update input's value before emitting the event
 
     this.input.emit(event);
+
+    if (this.highlightable) {
+      this.click.emit();
+    }
   };
 
   render() {
@@ -166,6 +187,7 @@ export class CheckBox implements AccessibleNameComponent, DisableableComponent {
             checked={this.checked}
             disabled={this.disabled || this.readonly}
             value={this.value}
+            onClick={this.handleClick}
             onInput={this.handleChange}
           />
           <div
@@ -178,7 +200,11 @@ export class CheckBox implements AccessibleNameComponent, DisableableComponent {
         </div>
 
         {this.caption && (
-          <label class="gx-checkbox__label" htmlFor={this.checkboxId}>
+          <label
+            class="gx-checkbox__label"
+            htmlFor={this.checkboxId}
+            onClick={this.handleClick}
+          >
             {this.caption}
           </label>
         )}
