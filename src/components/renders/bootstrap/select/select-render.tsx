@@ -10,9 +10,7 @@ let autoSelectId = 0;
 export class SelectRender implements Renderer {
   constructor(private component: Select) {
     if (!this.selectId && !this.component.readonly) {
-      this.selectId = this.component.element.id
-        ? `${this.component.element.id}__select`
-        : `gx-select-auto-id-${autoSelectId++}`;
+      this.selectId = `gx-select-auto-id-${autoSelectId++}`;
     }
   }
 

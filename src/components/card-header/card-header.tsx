@@ -7,7 +7,7 @@ import {
 const actionSelector = (priority: string) =>
   `:scope > [slot='${priority}-priority-action']`;
 
-let autoCardHeaderId = 0;
+const CARD_DROPDOWN = "dropdown";
 
 /**
  * @part list-of-actions - The container for the list of actions.
@@ -25,8 +25,6 @@ let autoCardHeaderId = 0;
   tag: "gx-card-header"
 })
 export class CardHeader implements GxComponent, CustomizableComponent {
-  private cardHeaderId: string;
-
   private hasHighPriorityActions: boolean;
   private hasNormalPriorityActions: boolean;
   private hasLowPriorityActions: boolean;
@@ -62,12 +60,6 @@ export class CardHeader implements GxComponent, CustomizableComponent {
     this.hasLowPriorityActions = this.checkIfTheCardHasActions(
       actionSelector("low")
     );
-
-    // Set the ID, if the card has low actions
-    if (this.hasLowPriorityActions) {
-      this.cardHeaderId =
-        this.element.id || `gx-card-auto-id-${autoCardHeaderId++}`;
-    }
   }
 
   componentDidLoad() {
@@ -138,7 +130,7 @@ export class CardHeader implements GxComponent, CustomizableComponent {
               // would be removed from the accessibility tree
               <li role="listitem" class="low-actions-container">
                 <button
-                  aria-controls={this.cardHeaderId}
+                  aria-controls={CARD_DROPDOWN}
                   aria-expanded={this.showLowActions.toString()}
                   aria-label={this.actionToggleButtonLabel}
                   type="button"
@@ -156,7 +148,7 @@ export class CardHeader implements GxComponent, CustomizableComponent {
                 </button>
 
                 <ul
-                  id={this.cardHeaderId}
+                  id={CARD_DROPDOWN}
                   class="dropdown"
                   part="low-actions-dropdown"
                   hidden={!this.showLowActions}
