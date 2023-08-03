@@ -9,9 +9,12 @@ import {
   Host,
   h
 } from "@stencil/core";
+import { DISABLED_CLASS } from "../../common/reserved-names";
 import { DisableableComponent } from "../common/interfaces";
 
 import { AccessibleNameComponent } from "../../common/interfaces";
+
+let autoCheckBoxId = 0;
 
 @Component({
   shadow: false,
@@ -98,14 +101,88 @@ export class CheckBox implements AccessibleNameComponent, DisableableComponent {
     this.checked = this.value === this.checkedValue;
   }
 
+  componentWillLoad() {
+    // ID for gx-checkbox's label
+    this.checkboxId = `gx-checkbox-auto-id-${autoCheckBoxId++}`;
+
+    this.checked = this.value === this.checkedValue;
+  }
+
+  private getValue = (checked: boolean) =>
+    checked ? this.checkedValue : this.unCheckedValue;
+
+  private handleChange = (event: UIEvent) => {
+    event.stopPropagation();
+
+    const inputRef = event.target as HTMLInputElement;
+    const checked = inputRef.checked;
+    const value = this.getValue(checked);
+
+    this.checked = checked;
+    this.value = value;
+    inputRef.value = value; // Update input's value before emitting the event
+
+    this.input.emit(event);
+  };
+
   render() {
+    const shouldAddFocusWhenReadonly =
+      this.highlightable && this.readonly && !this.disabled;
+
     return (
       <Host
         class={{
           [this.cssClass]: !!this.cssClass,
-          [DISABLED_CLASS]: this.disabled
+          [DISABLED_CLASS]: this.disabled,
+          "gx-checkbox--actionable":
+            (!this.readonly && !this.disabled) ||
+            (this.readonly && this.highlightable)
         }}
-      ></Host>
+        // Mouse pointer to indicate action
+        data-has-action={shouldAddFocusWhenReadonly ? "" : undefined}
+        // Add focus to the control through sequential keyboard navigation and visually clicking
+        tabindex={shouldAddFocusWhenReadonly ? "0" : undefined}
+        // Alignment
+        data-align
+        data-valign-readonly={this.readonly ? "" : undefined}
+        data-valign={!this.readonly ? "" : undefined}
+      >
+        <div
+          class={{
+            "gx-checkbox__container": true,
+            "gx-checkbox__container--checked": this.checked
+          }}
+        >
+          <input
+            aria-label={
+              this.accessibleName?.trim() !== "" &&
+              this.accessibleName !== this.caption
+                ? this.accessibleName
+                : null
+            }
+            id={this.checkboxId}
+            class="gx-checkbox__input"
+            type="checkbox"
+            checked={this.checked}
+            disabled={this.disabled || this.readonly}
+            value={this.value}
+            onInput={this.handleChange}
+          />
+          <div
+            class={{
+              "gx-checkbox__option": true,
+              "gx-checkbox__option--checked": this.checked
+            }}
+            aria-hidden="true"
+          ></div>
+        </div>
+
+        {this.caption && (
+          <label class="gx-checkbox__label" htmlFor={this.checkboxId}>
+            {this.caption}
+          </label>
+        )}
+      </Host>
     );
   }
 }

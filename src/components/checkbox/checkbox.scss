@@ -1,2 +1,86 @@
+@import "../common/_base";
+@import "../common/common-styling-config";
+
+$option-size: min(1em, 20px);
+$option-icon-size: min(0.5em, 10px);
+$option-icon-half-size: min(0.25em, 5px);
+
+$option-checked-background-color: var(--option-checked-color, #ffa7c0);
+$option-checked-border-color: var(--option-border-color, #adb5bd);
+$option-checked-color: #fff;
+$option-checked-box-shadow: var(--option-highlight-color, #000);
+$option-checked-box-shadow-size: min(0.15em, 4px);
+
+$space-between-container-and-label: min(0.35em, 7px);
+
 gx-checkbox {
+  @include elevation();
+  @include visibility(flex);
+
+  align-self: stretch;
+
+  // Remove outline of the focus state. This selector must not have higher
+  // specificity, since it should be overridden by the class applied to the control
+  outline: unset;
+
+  // Avoid zooming on double tap
+  touch-action: manipulation;
+
+  // Remove text selection on double click
+  user-select: none;
+
+  @include transition-properties();
+
+  &.gx-checkbox--actionable :is(.gx-checkbox__input, .gx-checkbox__label) {
+    cursor: pointer;
+  }
+
+  & > .gx-checkbox__container {
+    position: relative;
+    width: $option-size;
+    height: $option-size;
+    border: 1px solid $option-checked-border-color;
+    border-radius: 25%;
+
+    @include transition-properties();
+    transition-timing-function: ease-in-out;
+
+    &--checked {
+      background-color: $option-checked-background-color;
+      border-color: $option-checked-background-color;
+    }
+
+    &:focus-within {
+      box-shadow: 0 0 0 $option-checked-box-shadow-size
+        $option-checked-box-shadow;
+    }
+
+    & > .gx-checkbox__input {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
+
+    & > .gx-checkbox__option {
+      position: absolute;
+      inset: calc(50% - $option-icon-half-size);
+      width: $option-icon-size;
+      height: $option-icon-size;
+      background-color: $option-checked-color;
+      -webkit-mask: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' %3E%3Cpath fill='currentColor' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26l2.974 2.99L8 2.193z' /%3E%3C/svg%3E");
+      opacity: 0;
+      pointer-events: none;
+
+      transition: opacity $transition-duration;
+
+      &--checked {
+        opacity: 1;
+      }
+    }
+  }
+
+  & > .gx-checkbox__label {
+    margin-inline-start: $space-between-container-and-label;
+  }
 }
