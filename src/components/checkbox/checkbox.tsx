@@ -3,34 +3,26 @@ import {
   Element,
   Event,
   EventEmitter,
-  Host,
   Method,
   Prop,
   Watch,
+  Host,
   h
 } from "@stencil/core";
-import { FormComponent } from "../common/interfaces";
+import { DISABLED_CLASS } from "../../common/reserved-names";
+import { DisableableComponent } from "../common/interfaces";
 
 import { AccessibleNameComponent } from "../../common/interfaces";
 
-import { CheckBoxRender } from "../renders/bootstrap/checkbox/checkbox-render";
-
-// Class transforms
-import { getClasses } from "../common/css-transforms/css-transforms";
+let autoCheckBoxId = 0;
 
 @Component({
   shadow: false,
   styleUrl: "checkbox.scss",
   tag: "gx-checkbox"
 })
-export class CheckBox implements AccessibleNameComponent, FormComponent {
-  constructor() {
-    this.renderer = new CheckBoxRender(this, {
-      handleChange: this.handleChange.bind(this)
-    });
-  }
-
-  private renderer: CheckBoxRender;
+export class CheckBox implements AccessibleNameComponent, DisableableComponent {
+  private checkboxId: string;
 
   @Element() element: HTMLGxCheckboxElement;
 
@@ -74,16 +66,6 @@ export class CheckBox implements AccessibleNameComponent, FormComponent {
   @Prop() readonly highlightable: boolean = false;
 
   /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
-
-  /**
    * This attribute indicates that the user cannot modify the value of the control.
    * Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly)
    * attribute for `input` elements.
@@ -101,7 +83,14 @@ export class CheckBox implements AccessibleNameComponent, FormComponent {
   @Prop({ mutable: true }) value: string;
 
   /**
-   * The `input` event is emitted when a change to the element's value is committed by the user.
+   * Emitted when the element is clicked or the space key is pressed and
+   * released.
+   */
+  @Event() click: EventEmitter;
+
+  /**
+   * The `input` event is emitted when a change to the element's value is
+   * committed by the user.
    */
   @Event() input: EventEmitter;
 
@@ -110,16 +99,7 @@ export class CheckBox implements AccessibleNameComponent, FormComponent {
    */
   @Method()
   async getNativeInputId() {
-    return this.renderer.getNativeInputId();
-  }
-
-  @Watch("checked")
-  protected checkedChanged() {
-    this.renderer.checkedChanged();
-  }
-
-  componentWillLoad() {
-    this.checked = this.value === this.checkedValue;
+    return this.checkboxId;
   }
 
   @Watch("value")
@@ -127,38 +107,107 @@ export class CheckBox implements AccessibleNameComponent, FormComponent {
     this.checked = this.value === this.checkedValue;
   }
 
-  private handleChange(event: UIEvent) {
-    event.stopPropagation();
-    this.checked = this.renderer.getValueFromEvent(event);
-    this.updateValue();
-    this.input.emit(event);
+  componentWillLoad() {
+    // ID for gx-checkbox's label
+    this.checkboxId = `gx-checkbox-auto-id-${autoCheckBoxId++}`;
+
+    this.checked = this.value === this.checkedValue;
   }
 
-  private updateValue() {
-    this.value = this.checked ? this.checkedValue : this.unCheckedValue;
-  }
+  private getValue = (checked: boolean) =>
+    checked ? this.checkedValue : this.unCheckedValue;
+
+  /**
+   * Checks if it is necessary to prevent the click from bubbling
+   */
+  private handleClick = (event: UIEvent) => {
+    if (this.readonly || this.disabled) {
+      return;
+    }
+
+    event.stopPropagation();
+  };
+
+  private handleChange = (event: UIEvent) => {
+    event.stopPropagation();
+
+    const inputRef = event.target as HTMLInputElement;
+    const checked = inputRef.checked;
+    const value = this.getValue(checked);
+
+    this.checked = checked;
+    this.value = value;
+    inputRef.value = value; // Update input's value before emitting the event
+
+    this.input.emit(event);
+
+    if (this.highlightable) {
+      this.click.emit();
+    }
+  };
 
   render() {
-    // Styling for gx-checkbox control.
-    const classes = getClasses(this.cssClass);
+    const shouldAddFocusWhenReadonly =
+      this.highlightable && this.readonly && !this.disabled;
 
     return (
       <Host
         class={{
           [this.cssClass]: !!this.cssClass,
-          [classes.vars]: true,
-          disabled: this.disabled
+          [DISABLED_CLASS]: this.disabled,
+          "gx-checkbox--actionable":
+            (!this.readonly && !this.disabled) ||
+            (this.readonly && this.highlightable)
         }}
         // Mouse pointer to indicate action
-        data-has-action={this.highlightable && !this.disabled ? "" : undefined}
+        data-has-action={shouldAddFocusWhenReadonly ? "" : undefined}
         // Add focus to the control through sequential keyboard navigation and visually clicking
-        tabindex={
-          this.highlightable && this.readonly && !this.disabled
-            ? "0"
-            : undefined
-        }
+        tabindex={shouldAddFocusWhenReadonly ? "0" : undefined}
+        // Alignment
+        data-align
+        data-valign-readonly={this.readonly ? "" : undefined}
+        data-valign={!this.readonly ? "" : undefined}
       >
-        {this.renderer.render()}
+        <div
+          class={{
+            "gx-checkbox__container": true,
+            "gx-checkbox__container--checked": this.checked
+          }}
+        >
+          <input
+            aria-label={
+              this.accessibleName?.trim() !== "" &&
+              this.accessibleName !== this.caption
+                ? this.accessibleName
+                : null
+            }
+            id={this.checkboxId}
+            class="gx-checkbox__input"
+            type="checkbox"
+            checked={this.checked}
+            disabled={this.disabled || this.readonly}
+            value={this.value}
+            onClick={this.handleClick}
+            onInput={this.handleChange}
+          />
+          <div
+            class={{
+              "gx-checkbox__option": true,
+              "gx-checkbox__option--checked": this.checked
+            }}
+            aria-hidden="true"
+          ></div>
+        </div>
+
+        {this.caption && (
+          <label
+            class="gx-checkbox__label"
+            htmlFor={this.checkboxId}
+            onClick={this.handleClick}
+          >
+            {this.caption}
+          </label>
+        )}
       </Host>
     );
   }

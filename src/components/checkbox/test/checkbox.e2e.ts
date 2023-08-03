@@ -1,7 +1,7 @@
 import { E2EElement, E2EPage, newE2EPage } from "@stencil/core/testing";
-import { runAlignmentTest } from "../../../../../../tests/alignment";
-import { Checkbox, SHORT_TEXT } from "../../../../../../tests/templates";
-import { runningScreenshotTests } from "../../../../../../tests/utils";
+import { runAlignmentTest } from "../../../../tests/alignment";
+import { Checkbox, SHORT_TEXT } from "../../../../tests/templates";
+import { runningScreenshotTests } from "../../../../tests/utils";
 
 describe("gx-checkbox", () => {
   let page: E2EPage;
