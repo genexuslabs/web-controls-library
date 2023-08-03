@@ -25,9 +25,7 @@ let autoSwitchId = 0;
 export class Switch implements AccessibleNameComponent, FormComponent {
   constructor() {
     if (!this.inputId) {
-      this.inputId = this.element.id
-        ? `${this.element.id}_switch`
-        : `gx-switch-auto-id-${autoSwitchId++}`;
+      this.inputId = `gx-switch-auto-id-${autoSwitchId++}`;
     }
   }
 
