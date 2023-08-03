@@ -240,10 +240,6 @@ export namespace Components {
      */
     highlightable: boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
-    /**
      * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
      */
     readonly: boolean;
@@ -2849,9 +2845,9 @@ declare namespace LocalJSX {
      */
     highlightable?: boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     * Emitted when the element is clicked or the space key is pressed and released.
      */
-    invisibleMode?: "collapse" | "keep-space";
+    onClick?: (event: GxCheckboxCustomEvent<any>) => void;
     /**
      * The `input` event is emitted when a change to the element's value is committed by the user.
      */
