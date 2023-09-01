@@ -44,6 +44,20 @@ Type: `Promise<void>`
 | --------------------- | --------------------------------------------------------- |
 | `--gx-grid-css-items` | Number of Columns to be shown in the Main axis direction. |
 
+## Dependencies
+
+### Used by
+
+- [gx-test-grid-chat](../test/test-grid-chat)
+
+### Graph
+
+```mermaid
+graph TD;
+  gx-test-grid-chat --> gx-grid-infinite-scroll
+  style gx-grid-infinite-scroll fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_

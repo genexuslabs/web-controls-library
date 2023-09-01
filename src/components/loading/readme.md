@@ -66,6 +66,10 @@ loadingEl.value = 1;
 
 ## Dependencies
 
+### Used by
+
+- [gx-test-grid-chat](../test/test-grid-chat)
+
 ### Depends on
 
 - [gx-lottie](../lottie)
@@ -75,6 +79,7 @@ loadingEl.value = 1;
 ```mermaid
 graph TD;
   gx-loading --> gx-lottie
+  gx-test-grid-chat --> gx-loading
   style gx-loading fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

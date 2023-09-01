@@ -95,6 +95,7 @@ Type: `Promise<string>`
 
 - [gx-dynamic-form](../dynamic-form)
 - [gx-password-edit](../password-edit)
+- [gx-test-grid-chat](../test/test-grid-chat)
 
 ### Graph
 
@@ -102,6 +103,7 @@ Type: `Promise<string>`
 graph TD;
   gx-dynamic-form --> gx-edit
   gx-password-edit --> gx-edit
+  gx-test-grid-chat --> gx-edit
   style gx-edit fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
