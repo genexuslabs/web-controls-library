@@ -74,6 +74,20 @@ Type: `Promise<void>`
 | `--gx-grid-css-min-size` | This attribute value is used to determine the number of columns to be shown in a Smart Grid with Multiple by Size in Items Layout Mode. The grid will fit as many columns as possible with at least this width, 0 means to use all width.      |
 | `--gx-overflow-style`    | Determine if the overflow will be hidden or visible. By default, the gx-grid-smart-css hide its content overflow.                                                                                                                              |
 
+## Dependencies
+
+### Used by
+
+- [gx-test-grid-chat](../test/test-grid-chat)
+
+### Graph
+
+```mermaid
+graph TD;
+  gx-test-grid-chat --> gx-grid-smart-css
+  style gx-grid-smart-css fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_
