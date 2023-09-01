@@ -21,7 +21,7 @@ export class TestGridChat {
   @Prop({ mutable: true }) record: TestGridChatMessage[] = [];
 
   private sendMessage = (event: KeyboardEvent) => {
-    if (event.key !== ENTER_KEY) {
+    if (event.key !== ENTER_KEY || event.shiftKey) {
       return;
     }
     event.preventDefault();
@@ -62,6 +62,7 @@ export class TestGridChat {
             accessibleName="Message"
             placeholder="Send a message"
             onKeyDown={this.sendMessage}
+            multiline
           ></gx-edit>
         </gx-form-field>
       </Host>
