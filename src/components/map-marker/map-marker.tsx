@@ -250,16 +250,14 @@ export class GridMapMarker implements GxComponent {
       this.markerInstance.bindPopup(this.popupContainer, {
         keepInView: true,
         minWidth: 100,
+        // @ts-expect-error: @todo For some reason this is necessary to properly align the popups on the map
         maxWidth: "auto"
       });
     }
   }
 
   private closePopup = (event: UIEvent) => {
-    if (
-      event.composedPath().find(el => el === this.element.parentElement) ===
-      undefined
-    ) {
+    if (event.composedPath().includes(this.popupContainer)) {
       return;
     }
     this.markerInstance.closePopup();
