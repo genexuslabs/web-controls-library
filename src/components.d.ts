@@ -21,6 +21,7 @@ import {
   ImageAnnotationText
 } from "./components/image-annotations/image-annotations";
 import { GridMapElement, LayoutSize } from "./components/common/interfaces";
+import { TestGridChatMessage } from "./components/test/test-grid-chat/types";
 export namespace Components {
   interface GxActionSheet {
     /**
@@ -1957,6 +1958,12 @@ export namespace Components {
      */
     valign: "top" | "bottom" | "middle";
   }
+  interface GxTestGridChat {
+    /**
+     * Specifies the record that the chat will display.
+     */
+    record: TestGridChatMessage[];
+  }
   interface GxTextblock {
     /**
      * A CSS class to set as the `gx-textblock` element class.
@@ -2525,6 +2532,13 @@ declare global {
     prototype: HTMLGxTableCellElement;
     new (): HTMLGxTableCellElement;
   };
+  interface HTMLGxTestGridChatElement
+    extends Components.GxTestGridChat,
+      HTMLStencilElement {}
+  var HTMLGxTestGridChatElement: {
+    prototype: HTMLGxTestGridChatElement;
+    new (): HTMLGxTestGridChatElement;
+  };
   interface HTMLGxTextblockElement
     extends Components.GxTextblock,
       HTMLStencilElement {}
@@ -2594,6 +2608,7 @@ declare global {
     "gx-tab-page": HTMLGxTabPageElement;
     "gx-table": HTMLGxTableElement;
     "gx-table-cell": HTMLGxTableCellElement;
+    "gx-test-grid-chat": HTMLGxTestGridChatElement;
     "gx-textblock": HTMLGxTextblockElement;
     "gx-video": HTMLGxVideoElement;
   }
@@ -4797,6 +4812,12 @@ declare namespace LocalJSX {
      */
     valign?: "top" | "bottom" | "middle";
   }
+  interface GxTestGridChat {
+    /**
+     * Specifies the record that the chat will display.
+     */
+    record?: TestGridChatMessage[];
+  }
   interface GxTextblock {
     /**
      * A CSS class to set as the `gx-textblock` element class.
@@ -4894,6 +4915,7 @@ declare namespace LocalJSX {
     "gx-tab-page": GxTabPage;
     "gx-table": GxTable;
     "gx-table-cell": GxTableCell;
+    "gx-test-grid-chat": GxTestGridChat;
     "gx-textblock": GxTextblock;
     "gx-video": GxVideo;
   }
@@ -5003,6 +5025,8 @@ declare module "@stencil/core" {
       "gx-table": LocalJSX.GxTable & JSXBase.HTMLAttributes<HTMLGxTableElement>;
       "gx-table-cell": LocalJSX.GxTableCell &
         JSXBase.HTMLAttributes<HTMLGxTableCellElement>;
+      "gx-test-grid-chat": LocalJSX.GxTestGridChat &
+        JSXBase.HTMLAttributes<HTMLGxTestGridChatElement>;
       "gx-textblock": LocalJSX.GxTextblock &
         JSXBase.HTMLAttributes<HTMLGxTextblockElement>;
       "gx-video": LocalJSX.GxVideo & JSXBase.HTMLAttributes<HTMLGxVideoElement>;
