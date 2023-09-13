@@ -55,12 +55,8 @@
   @include transition-properties();
 }
 
-:host(.empty-caption) {
+:host(.gx-empty-caption) {
   --gx-button-image-size: 100%;
-}
-
-:host(.disabled) {
-  pointer-events: none;
 }
 
 // - - - - - - - - - - - - - - - -
@@ -80,7 +76,7 @@
 }
 
 :host(.gx-image-position--behind) {
-  ::slotted(img) {
+  img {
     position: absolute;
   }
 
@@ -98,7 +94,7 @@
 }
 
 // Customize images
-::slotted(img) {
+img {
   width: var(--gx-button-image-size);
   height: var(--gx-button-image-size);
   margin: var(--gx-button-image-margin);

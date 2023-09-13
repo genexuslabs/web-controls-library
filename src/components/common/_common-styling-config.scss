@@ -1,50 +1,35 @@
 // - - - - - - - - - - - - - - - -
 //          Base styling
 // - - - - - - - - - - - - - - - -
-@mixin base-styling-for-application() {
-  [hidden] {
-    display: none !important;
-  }
-
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
-      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-      "Noto Color Emoji";
-    text-align: start;
-
-    // Hide vertical scrollbar on page load. Useful to reduce CLS on app load
-    margin: 0;
-  }
-
-  // This selector works at app load time. Useful to reduce CLS on app load
+@mixin box-sizing() {
   *,
   ::after,
   ::before {
     box-sizing: border-box;
   }
+}
 
-  textarea {
-    overflow: auto;
-    resize: vertical;
-  }
+@mixin reset-browser-defaults-properties-1() {
+  background-color: unset;
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  margin: 0;
+  padding: 0;
+  outline: 0;
+}
 
-  // - - - - - - Reset browser defaults - - - - - -
+@mixin reset-browser-defaults() {
   button,
   fieldset,
   input,
   select,
   optgroup,
   textarea {
-    background-color: unset;
-    border: none;
-    color: inherit;
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
-    margin: 0;
-    padding: 0;
-    outline: 0;
+    @include reset-browser-defaults-properties-1();
   }
 
   ul,
@@ -62,6 +47,34 @@
     padding: 0;
     margin: 0;
   }
+}
+
+@mixin base-styling-for-application() {
+  [hidden] {
+    display: none !important;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+      "Noto Color Emoji";
+    text-align: start;
+
+    // Hide vertical scrollbar on page load. Useful to reduce CLS on app load
+    margin: 0;
+  }
+
+  // This selector works at app load time. Useful to reduce CLS on app load
+  @include box-sizing();
+
+  textarea {
+    overflow: auto;
+    resize: vertical;
+  }
+
+  // - - - - - - Reset browser defaults - - - - - -
+  @include reset-browser-defaults();
 }
 
 // - - - - - - - - - - - - - - - -

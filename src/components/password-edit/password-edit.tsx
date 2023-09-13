@@ -3,17 +3,19 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Listen,
   Method,
   Prop,
-  Watch
+  State,
+  h
 } from "@stencil/core";
-import { PasswordEditRender } from "../renders/bootstrap/password-edit/password-edit-render";
 import {
-  Component as GxComponent,
   DisableableComponent,
-  VisibilityComponent
+  Component as GxComponent
 } from "../common/interfaces";
+
+import { AccessibleNameComponent } from "../../common/interfaces";
 
 @Component({
   shadow: false,
@@ -21,15 +23,25 @@ import {
   tag: "gx-password-edit"
 })
 export class PasswordEdit
-  implements GxComponent, DisableableComponent, VisibilityComponent
+  implements GxComponent, AccessibleNameComponent, DisableableComponent
 {
-  constructor() {
-    this.renderer = new PasswordEditRender(this);
-  }
-
-  private renderer: PasswordEditRender;
+  // Refs
+  private innerEdit: HTMLGxEditElement;
 
   @Element() element: HTMLGxPasswordEditElement;
+
+  /**
+   * Indicates if the value is revealed or masked.
+   */
+  @State() revealed = false;
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   * Only works if `readonly="false"`.
+   */
+  @Prop() readonly accessibleName: string;
 
   /**
    * A CSS class to set as the `gx-password-edit` element class.
@@ -37,21 +49,11 @@ export class PasswordEdit
   @Prop() readonly cssClass: string;
 
   /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
-
-  /**
    * This attribute lets you specify if the element is disabled.
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder)
@@ -65,11 +67,6 @@ export class PasswordEdit
    * attribute for `input` elements.
    */
   @Prop() readonly readonly: boolean;
-
-  /**
-   * Indicates if the value is revealed or masked.
-   */
-  @Prop({ mutable: true }) revealed = false;
 
   /**
    * Text of the reveal button to offer revealing the password.
@@ -111,24 +108,72 @@ export class PasswordEdit
    */
   @Method()
   async getNativeInputId() {
-    return this.renderer.getNativeInputId();
-  }
-
-  @Watch("value")
-  protected valueChanged() {
-    this.renderer.valueChanged();
+    return this.innerEdit.getNativeInputId();
   }
 
   @Listen("gxTriggerClick")
-  protected handleTriggerClick() {
+  protected handleTriggerClick(event: UIEvent) {
+    event.stopPropagation();
     this.revealed = !this.revealed;
   }
 
-  render() {
-    return this.renderer.render();
+  private getValueFromEvent(event: CustomEvent<any>): string {
+    return event.target && (event.target as HTMLInputElement).value;
   }
 
+  private handleChange = (event: CustomEvent<any>) => {
+    event.stopPropagation();
+
+    this.value = this.getValueFromEvent(event);
+    this.change.emit(event);
+  };
+
+  private handleInput = (event: CustomEvent<any>) => {
+    event.stopPropagation();
+
+    this.value = this.getValueFromEvent(event);
+    this.input.emit(event);
+  };
+
   disconnectedCallback() {
-    this.renderer.disconnectedCallback();
+    this.innerEdit = null;
+  }
+
+  render() {
+    return (
+      <Host
+        class={
+          this.revealed
+            ? "gx-password-edit--revealed"
+            : "gx-password-edit--hidden"
+        }
+      >
+        <gx-edit
+          accessibleName={this.accessibleName}
+          area="field"
+          css-class={this.cssClass}
+          disabled={this.disabled}
+          placeholder={this.placeholder}
+          readonly={this.readonly}
+          show-trigger={!this.readonly && this.showRevealButton}
+          trigger-button-label={
+            this.revealed ? this.revealButtonTextOff : this.revealButtonTextOn
+          }
+          type={this.revealed ? "text" : "password"}
+          value={this.value}
+          onChange={this.handleChange}
+          onInput={this.handleInput}
+          ref={input => (this.innerEdit = input as any)}
+        >
+          {!this.readonly && this.showRevealButton && (
+            <div
+              slot="trigger-content"
+              aria-hidden="true"
+              class="gx-password-edit__icon"
+            ></div>
+          )}
+        </gx-edit>
+      </Host>
+    );
   }
 }

@@ -1,6 +1,7 @@
 import { E2EElement, E2EPage, newE2EPage } from "@stencil/core/testing";
 import { runAlignmentTest } from "../../../../../../tests/alignment";
 import { Select } from "../../../../../../tests/templates";
+import { runningScreenshotTests } from "../../../../../../tests/utils";
 
 describe("gx-select", () => {
   let element: E2EElement;
@@ -67,6 +68,10 @@ describe("gx-select", () => {
     expect(dataList).toBeTruthy();
     expect(input.getAttribute("list")).toEqual(dataList.getAttribute("id"));
   });
+
+  if (!runningScreenshotTests()) {
+    return;
+  }
 
   runAlignmentTest(Select({}), "Select", "", "", alignmentTestOptions);
 

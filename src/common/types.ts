@@ -11,6 +11,8 @@ export type EditType =
   | "time"
   | "url";
 
+export type FontCategory = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p";
+
 /**
  * | Value            | Details                                                                                |
  * | ---------------- | -------------------------------------------------------------------------------------- |
@@ -31,3 +33,5 @@ export type FlexDirection = "column" | "column-reverse" | "row" | "row-reverse";
 export type FlexWrap = "nowrap" | "wrap" | "wrap-reverse";
 
 export type ScrollDirection = "vertical" | "horizontal";
+
+export type ObjectValues<T> = T[keyof T];

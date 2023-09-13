@@ -61,12 +61,14 @@ A SASS mixin called `gx-form-field` is provided in `./_form-field-label-theming-
 ### Used by
 
 - [gx-dynamic-form](../dynamic-form)
+- [gx-test-grid-chat](../test/test-grid-chat)
 
 ### Graph
 
 ```mermaid
 graph TD;
   gx-dynamic-form --> gx-form-field
+  gx-test-grid-chat --> gx-form-field
   style gx-form-field fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

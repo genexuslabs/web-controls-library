@@ -11,7 +11,20 @@
     <script type="module" src="/build/gx-web-controls.esm.js"></script>
     <script nomodule src="/build/gx-web-controls.js"></script>
   </head>
+
+  <style>
+    body {
+      display: grid;
+      grid-template-rows: min-content 1fr;
+      min-height: 100vh;
+      margin: 0;
+    }
+  </style>
+
   <body>
-    <h1>Test page</h1>
+    <!-- <a href="./pages/test-grid-chat">Grid Chat</a> -->
+
+    <h1>Grid Chat</h1>
+    <gx-test-grid-chat></gx-test-grid-chat>
   </body>
 </html>

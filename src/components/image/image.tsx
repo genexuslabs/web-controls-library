@@ -1,25 +1,22 @@
 import { Component, Element, Host, Listen, Prop, h } from "@stencil/core";
 import {
+  HighlightableComponent,
+  makeHighlightable
+} from "../common/highlightable";
+import {
   DisableableComponent,
   Component as GxComponent,
   VisibilityComponent
 } from "../common/interfaces";
-import {
-  HighlightableComponent,
-  makeHighlightable
-} from "../common/highlightable";
 
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
-import lazySizes from "lazysizes";
+
+import { AccessibleNameComponent } from "../../common/interfaces";
 
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
 
-const LAZY_LOAD_CLASS = "gx-lazyload";
-const LAZY_LOADING_CLASS = "gx-lazyloading";
-const LAZY_LOADED_CLASS = "gx-lazyloaded";
-
-const lazyLoadedImages = new Set<string>();
+const LAZY_LOADING_CLASS = "gx-lazy-loading-image";
 
 @Component({
   shadow: false,
@@ -29,6 +26,7 @@ const lazyLoadedImages = new Set<string>();
 export class Image
   implements
     GxComponent,
+    AccessibleNameComponent,
     DisableableComponent,
     VisibilityComponent,
     HighlightableComponent
@@ -48,12 +46,23 @@ export class Image
 
     this.handleClick = this.handleClick.bind(this);
     this.handleImageLoad = this.handleImageLoad.bind(this);
-
-    this.handleLazyLoaded = this.handleLazyLoaded.bind(this);
-    document.addEventListener("lazyloaded", this.handleLazyLoaded);
   }
 
+  /**
+   * `true` if the image has been loaded
+   */
+  private imageDidLoad = false;
+
+  private innerImageContainer: HTMLDivElement = null;
+
   @Element() element: HTMLGxImageElement;
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   */
+  @Prop() readonly accessibleName: string;
 
   /**
    * This attribute lets you specify the alternative text.
@@ -66,7 +75,7 @@ export class Image
    * If false, the component will never force its height to match the image's intrinsic size. The width, however,
    * will match the intrinsic width. In GeneXus terms, it will auto grow horizontally, but not vertically.
    */
-  @Prop() readonly autoGrow = true;
+  @Prop() readonly autoGrow: boolean = true;
 
   /**
    * A CSS class to set as the `gx-image` element class.
@@ -78,7 +87,7 @@ export class Image
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -93,7 +102,7 @@ export class Image
   /**
    * True to lazy load the image, when it enters the viewport.
    */
-  @Prop() readonly lazyLoad = true;
+  @Prop() readonly lazyLoad: boolean = true;
 
   /**
    * This attribute allows specifing how the image is sized according to its container.
@@ -128,7 +137,7 @@ export class Image
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = false;
+  @Prop() readonly highlightable: boolean = false;
 
   @Listen("click", { capture: true })
   handleClick(event: UIEvent) {
@@ -138,23 +147,22 @@ export class Image
     }
   }
 
-  /**
-   * `true` if the image has been loaded
-   */
-  private imageDidLoad = false;
-
-  private innerImageContainer: HTMLDivElement = null;
-
   private handleImageLoad(event: UIEvent) {
-    const img = event.target as HTMLImageElement;
+    if (this.imageDidLoad) {
+      return;
+    }
+    this.imageDidLoad = true;
     // if (!this.autoGrow) {
     //   // Some image formats do not specify intrinsic dimensions. The naturalWidth property returns 0 in those cases.
     //   if (img.naturalWidth !== 0) {
     //   }
     // }
+
+    const img = event.target as HTMLImageElement;
+
     img.style.setProperty("display", "block");
+    img.parentElement.classList.remove(LAZY_LOADING_CLASS);
     img.style.removeProperty("opacity");
-    this.imageDidLoad = true;
   }
 
   componentDidLoad() {
@@ -162,56 +170,46 @@ export class Image
   }
 
   disconnectedCallback() {
-    document.removeEventListener("lazyloaded", this.handleLazyLoaded);
     this.innerImageContainer = null;
   }
 
   render() {
-    const shouldLazyLoad = this.shouldLazyLoad();
-
     // Styling for gx-image control.
     const classes = getClasses(this.cssClass);
 
-    const withoutAutogrow = this.scaleType !== "tile" && !this.autoGrow;
+    const withoutAutoGrow = this.scaleType !== "tile" && !this.autoGrow;
 
-    const shouldRenderTheImg = this.srcset || this.src;
+    const imageSrc = this.srcset || this.src;
+    const shouldAddLazyLoadingClass = !this.imageDidLoad && !!imageSrc;
 
-    const body = shouldRenderTheImg
-      ? [
-          <img
-            class={{
-              "inner-image": true,
-              [LAZY_LOAD_CLASS]: shouldLazyLoad,
-              "gx-image-tile": this.scaleType === "tile"
-            }}
-            style={{
-              backgroundImage:
-                this.scaleType === "tile" ? `url(${this.src})` : null,
-              opacity: !this.imageDidLoad ? "0" : null
-            }}
-            onClick={this.handleClick}
-            onLoad={this.handleImageLoad}
-            // With lazy loading
-            data-src={shouldLazyLoad && this.src ? this.src : undefined}
-            data-srcset={
-              shouldLazyLoad && this.srcset ? this.srcset : undefined
-            }
-            // Without lazy loading
-            src={!shouldLazyLoad && this.src ? this.src : undefined}
-            srcset={!shouldLazyLoad && this.srcset ? this.srcset : undefined}
-            alt={this.alt}
-          />,
-          <span class="gx-image-loading-indicator" />
-        ]
-      : [];
+    const body = !!imageSrc && (
+      <img
+        aria-label={this.accessibleName}
+        class={{
+          "inner-image": true,
+          "gx-image-tile": this.scaleType === "tile"
+        }}
+        style={{
+          backgroundImage:
+            this.scaleType === "tile" ? `url(${this.src})` : null,
+          opacity: !this.imageDidLoad ? "0" : null
+        }}
+        alt={this.alt}
+        loading="lazy"
+        src={this.src || undefined}
+        srcset={this.srcset || undefined}
+        onClick={this.handleClick}
+        onLoad={this.handleImageLoad}
+      />
+    );
 
     return (
       <Host
         class={{
           [classes.vars]: true,
           disabled: this.disabled,
-          "gx-img-lazyloading": shouldLazyLoad,
-          "gx-img-no-auto-grow": withoutAutogrow
+          "gx-img-no-auto-grow": withoutAutoGrow,
+          [LAZY_LOADING_CLASS]: !withoutAutoGrow && shouldAddLazyLoadingClass
         }}
       >
         <div
@@ -229,46 +227,22 @@ export class Image
           tabindex={this.highlightable && !this.disabled ? "0" : undefined}
           ref={el => (this.innerImageContainer = el as HTMLDivElement)}
         >
-          {withoutAutogrow ? (
-            <div class="gx-image-no-auto-grow-container">{body}</div>
+          {withoutAutoGrow ? (
+            <div
+              class={{
+                "gx-image-no-auto-grow-container": true,
+                [LAZY_LOADING_CLASS]: shouldAddLazyLoadingClass
+              }}
+            >
+              {body}
+            </div>
           ) : (
             body
           )}
+
           {this.showImagePickerButton && <slot />}
         </div>
       </Host>
     );
   }
-
-  private shouldLazyLoad(): boolean {
-    // Lazy load is disabled
-    if (!this.lazyLoad) {
-      return false;
-    }
-
-    // Do not lazy load already loaded images
-    if (lazyLoadedImages.has(this.srcset) || lazyLoadedImages.has(this.src)) {
-      return false;
-    }
-
-    const img: HTMLImageElement = this.element.querySelector("img");
-    return img === null || img.classList.contains(LAZY_LOAD_CLASS);
-  }
-
-  private handleLazyLoaded(event: CustomEvent) {
-    const img: HTMLImageElement = this.element.querySelector("img");
-
-    if (event.target === img) {
-      this.element.classList.remove("gx-img-lazyloading");
-
-      const imageSrc = this.srcset || this.src;
-
-      // Store the srcset or src of the lazy loaded image
-      lazyLoadedImages.add(imageSrc);
-    }
-  }
 }
-
-lazySizes.cfg.lazyClass = LAZY_LOAD_CLASS;
-lazySizes.cfg.loadingClass = LAZY_LOADING_CLASS;
-lazySizes.cfg.loadedClass = LAZY_LOADED_CLASS;

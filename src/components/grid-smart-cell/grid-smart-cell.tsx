@@ -37,7 +37,7 @@ export class GridSmartCell
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = false;
+  @Prop() readonly highlightable: boolean = false;
 
   /**
    * This attribute lets you specify the index of the cell. Useful when Inverse
@@ -49,7 +49,7 @@ export class GridSmartCell
    * Whether this row is even position or not. This is specially required in Virtual scroll scenarios
    * where the position in the DOM is not the real position in the collection.
    */
-  @Prop({ reflect: true }) readonly isRowEven = false;
+  @Prop({ reflect: true }) readonly isRowEven: boolean = false;
 
   /**
    * Number of Columns to be shown in the grid. Useful when Inverse Loading is
@@ -60,7 +60,7 @@ export class GridSmartCell
   /**
    * True to show horizontal line.
    */
-  @Prop() readonly showHorizontalLine = false;
+  @Prop() readonly showHorizontalLine: boolean = false;
 
   componentWillLoad() {
     // Not null when inverse loading is enabled

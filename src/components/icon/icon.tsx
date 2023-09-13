@@ -25,14 +25,8 @@ export class Icon {
 
   /**
    * The color of the icon.
-   *
    */
   @Prop() readonly color: string;
-
-  /**
-   * A label for the icon, for screen readers to use.
-   */
-  @Prop() readonly label: string = "";
 
   /**
    * If enabled, the icon will be loaded lazily when it's visible in the viewport.
@@ -124,7 +118,7 @@ export class Icon {
 
   render() {
     return (
-      <Host aria-label={this.label || this.type}>
+      <Host aria-hidden="true">
         <div
           class="svg-icon-native"
           style={

@@ -13,6 +13,20 @@
 | `itemsPerRow`        | `items-per-row`        | Number of Columns to be shown in the grid. Useful when Inverse Loading is enabled on the grid.                                                                             | `number`  | `null`      |
 | `showHorizontalLine` | `show-horizontal-line` | True to show horizontal line.                                                                                                                                              | `boolean` | `false`     |
 
+## Dependencies
+
+### Used by
+
+- [gx-test-grid-chat](../test/test-grid-chat)
+
+### Graph
+
+```mermaid
+graph TD;
+  gx-test-grid-chat --> gx-grid-smart-cell
+  style gx-grid-smart-cell fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_

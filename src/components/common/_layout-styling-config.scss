@@ -33,10 +33,12 @@ $default-overflow-style: visible;
 // - - - - - - - - - - - - - - - -
 //    Scrollbars customization
 // - - - - - - - - - - - - - - - -
+$scrollbar-size: 8px;
+
 @mixin scrollbar-customization() {
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: $scrollbar-size;
+    height: $scrollbar-size;
   }
 
   ::-webkit-scrollbar-track {
@@ -44,6 +46,23 @@ $default-overflow-style: visible;
   }
 
   ::-webkit-scrollbar-thumb {
+    background-color: var(--gx-scrollbar-thumb-color);
+  }
+}
+
+@mixin scrollbar-customization-for-one-element() {
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    width: $scrollbar-size;
+    height: $scrollbar-size;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--gx-scrollbar-background-color);
+  }
+
+  &::-webkit-scrollbar-thumb {
     background-color: var(--gx-scrollbar-thumb-color);
   }
 }

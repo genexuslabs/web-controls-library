@@ -10,9 +10,7 @@ let autoSelectId = 0;
 export class SelectRender implements Renderer {
   constructor(private component: Select) {
     if (!this.selectId && !this.component.readonly) {
-      this.selectId = this.component.element.id
-        ? `${this.component.element.id}__select`
-        : `gx-select-auto-id-${autoSelectId++}`;
+      this.selectId = `gx-select-auto-id-${autoSelectId++}`;
     }
   }
 
@@ -69,7 +67,7 @@ export class SelectRender implements Renderer {
       let datalistId: string;
 
       const attris = {
-        "aria-disabled": this.component.disabled ? "true" : undefined,
+        "aria-label": this.component.accessibleName,
         class: {
           "gx-select-control": true,
           [this.component.cssClass]: !!this.component.cssClass,
@@ -91,6 +89,7 @@ export class SelectRender implements Renderer {
       return this.component.suggest
         ? [
             <input
+              aria-label={this.component.accessibleName}
               list={datalistId}
               disabled={this.component.disabled}
               placeholder={this.component.placeholder}

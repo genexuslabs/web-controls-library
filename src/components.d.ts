@@ -5,11 +5,22 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { AccessibleRole, AccessibleRoleCell } from "./common/interfaces";
 import { TimerState } from "./components/chronometer/chronometer-timer-state";
-import { EditType, FlexDirection, FlexWrap } from "./common/types";
+import {
+  EditType,
+  FlexDirection,
+  FlexWrap,
+  FontCategory
+} from "./common/types";
 import { SwiperOptions } from "swiper";
+import { DataState } from "./components/grid-infinite-scroll/types";
+import {
+  AnnotationsChangeEvent,
+  ImageAnnotationLine,
+  ImageAnnotationText
+} from "./components/image-annotations/image-annotations";
 import { GridMapElement, LayoutSize } from "./components/common/interfaces";
-import { QueryViewerParameterChangedEvent } from "./components/query-viewer-parameter/query-viewer-parameter";
 export namespace Components {
   interface GxActionSheet {
     /**
@@ -29,13 +40,17 @@ export namespace Components {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, gxClick event).
      */
-    disabled: false;
+    disabled: boolean;
   }
   interface GxAudio {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName: string;
+    /**
      * This attribute lets you specify if the element is disabled.
      */
-    disabled: false;
+    disabled: boolean;
     /**
      * This attribute is for specifies the src of the audio.
      */
@@ -43,13 +58,33 @@ export namespace Components {
   }
   interface GxButton {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName: string;
+    /**
+     * The caption of the button
+     */
+    caption: string;
+    /**
      * A CSS class to set as the `gx-button` element class.
      */
     cssClass: string;
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event). If a disabled image has been specified, it will be shown, hiding the base image (if specified).
      */
-    disabled: false;
+    disabled: boolean;
+    /**
+     * This attribute lets you specify the `src` of the disabled image.
+     */
+    disabledImageSrc: string;
+    /**
+     * This attribute lets you specify the `srcset` of the disabled image.
+     */
+    disabledImageSrcset: string;
+    /**
+     * It specifies the format that will have the gx-button control.  - If `format` = `HTML`, the button control works as an HTML div and    the caption will be taken from the default slot.   - If `format` = `Text`, the control will take its caption using the    `caption` property.
+     */
+    format: "Text" | "HTML";
     /**
      * This attribute lets you specify the height.
      */
@@ -57,7 +92,7 @@ export namespace Components {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable: true;
+    highlightable: boolean;
     /**
      * This attribute lets you specify the relative location of the image to the text.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `above`  | The image is located above the text.                    | | `before` | The image is located before the text, in the same line. | | `after`  | The image is located after the text, in the same line.  | | `below`  | The image is located below the text.                    | | `behind` | The image is located behind the text.                   |
      */
@@ -67,11 +102,31 @@ export namespace Components {
      */
     invisibleMode: "collapse" | "keep-space";
     /**
+     * This attribute lets you specify the `src` of the main image.
+     */
+    mainImageSrc: string;
+    /**
+     * This attribute lets you specify the `srcset` of the main image.
+     */
+    mainImageSrcset: string;
+    /**
      * This attribute lets you specify the width.
      */
     width: string;
   }
   interface GxCanvas {
+    /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName: string;
+    /**
+     * Specifies the accessible name property value by providing the ID of the HTMLElement that has the accessible name text.
+     */
+    accessibleNameBy: string;
+    /**
+     * Specifies the semantics of the control. Specifying the Role allows assistive technologies to give information about how to use the control to the user.
+     */
+    accessibleRole: AccessibleRole;
     /**
      * A CSS class to set as the `gx-canvas` element class.
      */
@@ -83,7 +138,7 @@ export namespace Components {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable: false;
+    highlightable: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -102,6 +157,10 @@ export namespace Components {
     width: string;
   }
   interface GxCanvasCell {
+    /**
+     * Specifies the semantics of the control. Specifying the Role allows assistive technologies to give information about how to use the control to the user.
+     */
+    accessibleRole: AccessibleRoleCell;
     /**
      * Defines the horizontal alignment of the content of the cell.
      */
@@ -135,7 +194,7 @@ export namespace Components {
     /**
      * True to show the card header. False to hide it.
      */
-    showHeader: true;
+    showHeader: boolean;
   }
   interface GxCardHeader {
     /**
@@ -148,6 +207,10 @@ export namespace Components {
     cssClass: string;
   }
   interface GxCheckbox {
+    /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName: string;
     /**
      * Specifies the label of the checkbox.
      */
@@ -167,7 +230,7 @@ export namespace Components {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled: false;
+    disabled: boolean;
     /**
      * Returns the id of the inner `input` element (if set).
      */
@@ -175,15 +238,11 @@ export namespace Components {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable: false;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    highlightable: boolean;
     /**
      * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
      */
-    readonly: false;
+    readonly: boolean;
     /**
      * The value when the checkbox is 'off'
      */
@@ -271,6 +330,10 @@ export namespace Components {
   }
   interface GxEdit {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element. Only works if `readonly="false"` and `format="Text"`.
+     */
+    accessibleName: string;
+    /**
      * Allows to specify the role of the element when inside a `gx-form-field` element
      */
     area: "field";
@@ -293,17 +356,11 @@ export namespace Components {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled: false;
+    disabled: boolean;
     /**
-     * Used to define the semantic of the element when readonly=true.  Font categories are mapped to semantic HTML elements when rendered:  * `"headline"`: `h1` * `"subheadline"`: `h2` * `"body"`: `p` * `"footnote"`: `footer` * `"caption1"`: `span` * `"caption2"`: `span`
+     * Used to define the semantic of the element when `readonly="true"`.
      */
-    fontCategory:
-      | "headline"
-      | "subheadline"
-      | "body"
-      | "footnote"
-      | "caption1"
-      | "caption2";
+    fontCategory: FontCategory;
     /**
      * It specifies the format that will have the edit control.  If `format` = `HTML`, the edit control works as an HTML div and the innerHTML will be the same as the `inner` property specifies. Also, it does not allow any input/editable UI since it works as an HTML div.  If `format` = `Text`, the edit control works as a normal input control and it is affected by most of the defined properties.
      */
@@ -315,19 +372,11 @@ export namespace Components {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable: false;
-    /**
-     * Used as the innerHTML when `format` = `HTML`.
-     */
-    inner: string;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    highlightable: boolean;
     /**
      * True to cut text when it overflows, showing an ellipsis (only applies when readonly)
      */
-    lineClamp: false;
+    lineClamp: boolean;
     /**
      * Controls if the element accepts multiline text.
      */
@@ -344,6 +393,10 @@ export namespace Components {
      * If true, a trigger button is shown next to the edit field. The button can be customized adding a child element with `slot="trigger-content"` attribute to specify the content inside the trigger button.
      */
     showTrigger: boolean;
+    /**
+     * This attribute lets you specify the label for the trigger button. Important for accessibility.
+     */
+    triggerButtonLabel: string;
     /**
      * The type of control to render. A subset of the types supported by the `input` element is supported:  * `"date"` * `"datetime-local"` * `"email"` * `"file"` * `"number"` * `"password"` * `"search"` * `"tel"` * `"text"` * `"url"`
      */
@@ -443,6 +496,14 @@ export namespace Components {
   }
   interface GxGridFlex {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName: string;
+    /**
+     * Specifies the accessible name property value by providing the ID of the HTMLElement that has the accessible name text.
+     */
+    accessibleNameBy: string;
+    /**
      * This aligns a flex container’s lines within when there is extra space in the cross-axis, similar to how justify-content aligns individual items within the main-axis.  | Value           | Details                                                                                  | | --------------- | ---------------------------------------------------------------------------------------- | | `center`        | Lines are packed toward the center of the flex container.                                | | `flex-end`      | Lines are packed toward the start of the flex container.                                 | | `flex-start`    | Lines are packed toward the end of the flex container.                                   | | `space-around`  | Lines are evenly distributed in the flex container, with half-size spaces on either end. | | `space-between` | Lines are evenly distributed in the flex container.                                      | | `stretch`       | Lines stretch to take up the remaining space.                                            |
      */
     alignContent:
@@ -459,7 +520,7 @@ export namespace Components {
     /**
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
      */
-    autoGrow: false;
+    autoGrow: boolean;
     /**
      * This method must be called after new grid data was fetched by the infinite scroller.
      */
@@ -505,9 +566,17 @@ export namespace Components {
   }
   interface GxGridFs {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName: string;
+    /**
+     * Specifies the accessible name property value by providing the ID of the HTMLElement that has the accessible name text.
+     */
+    accessibleNameBy: string;
+    /**
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
      */
-    autoGrow: false;
+    autoGrow: boolean;
     /**
      * This method must be called after new grid data was fetched by the infinite scroller.
      */
@@ -519,7 +588,7 @@ export namespace Components {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable: false;
+    highlightable: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -538,6 +607,14 @@ export namespace Components {
     threshold: string;
   }
   interface GxGridHorizontal {
+    /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName: string;
+    /**
+     * Specifies the accessible name property value by providing the ID of the HTMLElement that has the accessible name text.
+     */
+    accessibleNameBy: string;
     /**
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
      */
@@ -569,7 +646,7 @@ export namespace Components {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable: false;
+    highlightable: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -607,9 +684,9 @@ export namespace Components {
      */
     orientation: "portrait" | "landscape";
     /**
-     * If `true`, show the pagination buttons.
+     * A CSS class to set as the  Page Controller element class when `showPageController = "true"`.
      */
-    pager: true;
+    pageControllerClass: string;
     /**
      * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
      */
@@ -625,7 +702,11 @@ export namespace Components {
     /**
      * If `true`, show the scrollbar.
      */
-    scrollbar: false;
+    scrollbar: boolean;
+    /**
+     * If `true`, show the pagination buttons (page controller).
+     */
+    showPageController: boolean;
     /**
      * Transition to the next slide.
      * @param speed The transition duration (in ms).
@@ -652,7 +733,7 @@ export namespace Components {
     /**
      * Set to false to enable slides in free mode position.
      */
-    snapToGrid: true;
+    snapToGrid: boolean;
     /**
      * Start auto play.
      */
@@ -688,9 +769,17 @@ export namespace Components {
   }
   interface GxGridImageMap {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName: string;
+    /**
+     * Specifies the accessible name property value by providing the ID of the HTMLElement that has the accessible name text.
+     */
+    accessibleNameBy: string;
+    /**
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows. This property is not currently supported in the gx-image-map control.
      */
-    autoGrow: false;
+    autoGrow: boolean;
     /**
      * A CSS class to set as the `gx-grid-image-map` element class.
      */
@@ -764,31 +853,26 @@ export namespace Components {
      */
     complete: () => Promise<void>;
     /**
-     * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
+     * `true` if the infinite scroll is used in a grid that has data provider. This attribute determine the utility of the infinite scroll, because in certain configurations the infinite scroll can be used only to implement the inverse loading utility.
      */
-    disabled: boolean;
+    dataProvider: boolean;
     /**
-     * This property must be bounded to grid item count property. It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the initial batch does not overflow the main container
+     * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to `false` to disable the infinite scroll from actively trying to receive new data while reaching the threshold. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
      */
-    itemCount: number;
+    dataState: DataState;
     /**
-     * The main layout selector where the infinite scroll is contained.
-     */
-    layoutSelector: string;
-    /**
-     * The position of the infinite scroll element. The value can be either `top` or `bottom`.
+     * The position of the infinite scroll element. The value can be either `top` or `bottom`. When `position === "top"`, the control also implements inverse loading.
      */
     position: "top" | "bottom";
+    /**
+     * This property must be bounded to grid item count property. It's unique purpose is to update the position of the control in the inverse loading scenario (`position === "top"`).
+     */
+    recordCount: number;
     /**
      * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
      */
     threshold: string;
-    /**
-     * The View Port parent element selector where the infinite component would be attached to and listening to Scroll Events.
-     */
-    viewportSelector: string;
   }
-  interface GxGridInfiniteScrollContent {}
   interface GxGridSmartCell {
     /**
      * The CSS class of gx-grid parent element.
@@ -797,7 +881,7 @@ export namespace Components {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable: false;
+    highlightable: boolean;
     /**
      * This attribute lets you specify the index of the cell. Useful when Inverse Loading is enabled on the grid.
      */
@@ -805,7 +889,7 @@ export namespace Components {
     /**
      * Whether this row is even position or not. This is specially required in Virtual scroll scenarios where the position in the DOM is not the real position in the collection.
      */
-    isRowEven: false;
+    isRowEven: boolean;
     /**
      * Number of Columns to be shown in the grid. Useful when Inverse Loading is enabled on the grid.
      */
@@ -813,13 +897,21 @@ export namespace Components {
     /**
      * True to show horizontal line.
      */
-    showHorizontalLine: false;
+    showHorizontalLine: boolean;
   }
   interface GxGridSmartCss {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName: string;
+    /**
+     * Specifies the accessible name property value by providing the ID of the HTMLElement that has the accessible name text.
+     */
+    accessibleNameBy: string;
+    /**
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
      */
-    autoGrow: false;
+    autoGrow: boolean;
     /**
      * This method must be called after new grid data was fetched by the infinite scroller.
      */
@@ -855,7 +947,7 @@ export namespace Components {
     /**
      * Scroll snapping allows to lock the viewport to certain elements or locations after a user has finished scrolling
      */
-    snapToGrid: false;
+    snapToGrid: boolean;
     /**
      * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
      */
@@ -877,7 +969,7 @@ export namespace Components {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable: false;
+    highlightable: boolean;
   }
   interface GxHeaderRowPatternMarker {}
   interface GxIcon {
@@ -885,10 +977,6 @@ export namespace Components {
      * The color of the icon.
      */
     color: string;
-    /**
-     * A label for the icon, for screen readers to use.
-     */
-    label: string;
     /**
      * If enabled, the icon will be loaded lazily when it's visible in the viewport.
      */
@@ -900,13 +988,17 @@ export namespace Components {
   }
   interface GxImage {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName: string;
+    /**
      * This attribute lets you specify the alternative text.
      */
     alt: string;
     /**
      * If true, the component will be sized to match the image's intrinsic size when not constrained via CSS dimension properties (for example, height or width). If false, the component will never force its height to match the image's intrinsic size. The width, however, will match the intrinsic width. In GeneXus terms, it will auto grow horizontally, but not vertically.
      */
-    autoGrow: true;
+    autoGrow: boolean;
     /**
      * A CSS class to set as the `gx-image` element class.
      */
@@ -914,11 +1006,11 @@ export namespace Components {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled: false;
+    disabled: boolean;
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable: false;
+    highlightable: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -926,7 +1018,7 @@ export namespace Components {
     /**
      * True to lazy load the image, when it enters the viewport.
      */
-    lazyLoad: true;
+    lazyLoad: boolean;
     /**
      * This attribute allows specifing how the image is sized according to its container. `contain`, `cover`, `fill` and `none` map directly to the values of the CSS `object-fit` property. The `tile` value repeats the image, both vertically and horizontally, creating a tile effect.
      */
@@ -944,7 +1036,57 @@ export namespace Components {
      */
     srcset: string;
   }
+  interface GxImageAnnotations {
+    /**
+     * If the annotations are activated or not.
+     */
+    disabled: boolean;
+    /**
+     * Specifies the `fontFamily` for the texts
+     */
+    fontFamily: string;
+    /**
+     * Specifies the `fontSize` for the texts
+     */
+    fontSize: number;
+    /**
+     * The source of the background image.
+     */
+    imageLabel: "Image to be annotated";
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode: "collapse" | "keep-space";
+    /**
+     * Specifies the lines that will be drawn on the gx-image-annotations control
+     */
+    lines: ImageAnnotationLine[];
+    /**
+     * Specifies the texts that will be drawn on the gx-image-annotations control
+     */
+    texts: ImageAnnotationText[];
+    /**
+     * Drawing color.
+     */
+    traceColor: string;
+    /**
+     * Property used for change the traceInd state and go forward or backward.
+     */
+    traceIndex: number;
+    /**
+     * Drawing thickness.
+     */
+    traceThickness: number;
+    /**
+     * The source of the background image.
+     */
+    value: string;
+  }
   interface GxImagePicker {
+    /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName: string;
     /**
      * This attribute lets you specify the alternative text.
      */
@@ -952,7 +1094,7 @@ export namespace Components {
     /**
      * If true, the component will be sized to match the image's intrinsic size when not constrained via CSS dimension properties (for example, height or width). If false, the component will never force its height to match the image's intrinsic size. The width, however, will match the intrinsic width. In GeneXus terms, it will auto grow horizontally, but not vertically.
      */
-    autoGrow: true;
+    autoGrow: boolean;
     /**
      * This attribute lets you specify the description of the cancel action button in the modal.
      */
@@ -968,11 +1110,11 @@ export namespace Components {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled: false;
+    disabled: boolean;
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable: false;
+    highlightable: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -980,7 +1122,7 @@ export namespace Components {
     /**
      * True to lazy load the image, when it enters the viewport.
      */
-    lazyLoad: true;
+    lazyLoad: boolean;
     /**
      * This attribute lets you specify the modal title.
      */
@@ -988,7 +1130,7 @@ export namespace Components {
     /**
      * This attribute lets you specify if the image is readonly. If readonly, it will not allow to use the edit button. In fact, the edit button will not be shown.
      */
-    readonly: false;
+    readonly: boolean;
     /**
      * This attribute lets you specify the description of the remove image button in the modal.
      */
@@ -1032,7 +1174,7 @@ export namespace Components {
     /**
      * `false` to hide the bottom target
      */
-    bottomVisible: false;
+    bottomVisible: boolean;
     /**
      * This attribute lets you specify if the header row pattern is enabled in the top navbar.
      */
@@ -1046,6 +1188,10 @@ export namespace Components {
      */
     leftVisible: boolean;
     /**
+     * This attribute lets you specify whether the main content should be contained in a tag that has role=`"main"`. If `false`, the main content will be contained in a generic tag (<div>).
+     */
+    renderMainRole: boolean;
+    /**
      * `false` to hide the right target
      */
     rightVisible: boolean;
@@ -1056,7 +1202,7 @@ export namespace Components {
     /**
      * `false` to hide the top target.
      */
-    topVisible: false;
+    topVisible: boolean;
   }
   interface GxLoading {
     /**
@@ -1092,7 +1238,7 @@ export namespace Components {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled: false;
+    disabled: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -1381,7 +1527,7 @@ export namespace Components {
     /**
      * This attribute lets you specify if one or two lines will be used to render the navigation bar. Useful when there are links and also actions, to have links in the first line, and actions in the second
      */
-    singleLine: true;
+    singleLine: boolean;
     /**
      * This attribute lets you specify the label for the left target toggle button. Important for accessibility.
      */
@@ -1391,7 +1537,7 @@ export namespace Components {
     /**
      * Indicates if the navbar item is the active one (for example, when the item represents the current page)
      */
-    active: false;
+    active: boolean;
     /**
      * A CSS class to set as the `gx-navbar-item` element class.
      */
@@ -1399,7 +1545,7 @@ export namespace Components {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable: true;
+    highlightable: boolean;
     /**
      * This attribute lets you specify the URL of the navbar item.
      */
@@ -1423,21 +1569,21 @@ export namespace Components {
   }
   interface GxPasswordEdit {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element. Only works if `readonly="false"`.
+     */
+    accessibleName: string;
+    /**
      * A CSS class to set as the `gx-password-edit` element class.
      */
     cssClass: string;
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled: false;
+    disabled: boolean;
     /**
      * Returns the id of the inner `input` element (if set).
      */
-    getNativeInputId: () => Promise<any>;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
+    getNativeInputId: () => Promise<string>;
     /**
      * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
      */
@@ -1454,10 +1600,6 @@ export namespace Components {
      * Text of the reveal button to offer revealing the password.
      */
     revealButtonTextOn: string;
-    /**
-     * Indicates if the value is revealed or masked.
-     */
-    revealed: boolean;
     /**
      * If true, a reveal password button is shown next to the password input. Pressing the reveal button toggles the password mask, allowing the user to view the password text.
      */
@@ -1497,397 +1639,6 @@ export namespace Components {
      */
     value: number;
   }
-  interface GxQueryViewer {
-    /**
-     * Allowing elements order to change
-     */
-    allowElementsOrderChange: boolean;
-    /**
-     * Allow selection
-     */
-    allowSelection: boolean;
-    /**
-     * Auto refresh group
-     */
-    autoRefreshGroup: string;
-    /**
-     * If type== PivotTable or Table, if true will shrink the table
-     */
-    autoResize: boolean;
-    /**
-     * If autoResize, in here select the type, Width, height, or both
-     */
-    autoResizeType: "Both" | "Vertical" | "Horizontal";
-    /**
-     * Base URL of the server
-     */
-    baseUrl: any;
-    /**
-     * If type == Chart, this is the chart type: Bar, Pie, Timeline, etc...
-     */
-    chartType:
-      | "Column"
-      | "Column3D"
-      | "StackedColumn"
-      | "StackedColumn3D"
-      | "StackedColumn100"
-      | "Bar"
-      | "StackedBar"
-      | "StackedBar100"
-      | "Area"
-      | "StackedArea"
-      | "StackedArea100"
-      | "SmoothArea"
-      | "StepArea"
-      | "Line"
-      | "StackedLine"
-      | "StackedLine100"
-      | "SmoothLine"
-      | "StepLine"
-      | "Pie"
-      | "Pie3D"
-      | "Doughnut"
-      | "Doughnut3D"
-      | "LinearGauge"
-      | "CircularGauge"
-      | "Radar"
-      | "FilledRadar"
-      | "PolarArea"
-      | "Funnel"
-      | "Pyramid"
-      | "ColumnLine"
-      | "Column3DLine"
-      | "Timeline"
-      | "SmoothTimeline"
-      | "StepTimeline"
-      | "Sparkline";
-    /**
-     * Version of data
-     */
-    dataVersionId: number;
-    /**
-     * Allowing or not Comlumn sort
-     */
-    disableColumnSort: boolean;
-    /**
-     * Environmet of the project: JAVA. .Net, NetCore
-     */
-    env: string;
-    /**
-     * If type== PivotTable or Table allow to export to HTML
-     */
-    exportToHTML: boolean;
-    /**
-     * If type== PivotTable or Table allow to export to PDF
-     */
-    exportToPDF: boolean;
-    /**
-     * If type== PivotTable or Table allow to export to XLS
-     */
-    exportToXLS: boolean;
-    /**
-     * If type== PivotTable or Table allow to export to XLSX
-     */
-    exportToXLSX: boolean;
-    /**
-     * If type== PivotTable or Table allow to export to XML
-     */
-    exportToXML: boolean;
-    /**
-     * Font Color
-     */
-    fontColor: string;
-    /**
-     * Type of font
-     */
-    fontFamily: string;
-    /**
-     * Font size
-     */
-    fontSize: number;
-    /**
-     * Include max and min
-     */
-    includeMaxMin: boolean;
-    /**
-     * Include spark line
-     */
-    includeSparkline: boolean;
-    /**
-     * If true includes trend on the graph
-     */
-    includeTrend: boolean;
-    /**
-     * True if it is external query
-     */
-    isExternalQuery: boolean;
-    /**
-     * Language of the QueryViewer
-     */
-    language: string;
-    /**
-     * Object of QueryViewer
-     */
-    object: string;
-    /**
-     * Name of the Query or Data provider assigned
-     */
-    objectName: string;
-    /**
-     * Object type -> Query or DataProvider
-     */
-    objectType: string;
-    /**
-     * Orientation of the graph
-     */
-    orientation: "Horizontal" | "Vertical";
-    /**
-     * If paging true, number of items for a single page
-     */
-    pageSize: number;
-    /**
-     * If type == PivotTable or Table, if true there is paging, else everything in one table
-     */
-    paging: boolean;
-    /**
-     * Timeline
-     */
-    plotSeries: "InTheSameChart" | "InSeparateCharts";
-    /**
-     * Title of the QueryViewer
-     */
-    queryTitle: string;
-    /**
-     * For timeline for remembering layout
-     */
-    rememberLayout: boolean;
-    /**
-     * Type of data to show
-     */
-    showDataAs: "Values" | "Percentages" | "ValuesAndPercentages";
-    /**
-     * Ax to show data labels
-     */
-    showDataLabelsIn: string;
-    /**
-     * if true show values on the graph
-     */
-    showValues: boolean;
-    /**
-     * Theme for showing the graph
-     */
-    theme: string;
-    /**
-     * If includeTrend, defines the period of the trend
-     */
-    trendPeriod:
-      | "SinceTheBeginning"
-      | "LastYear"
-      | "LastSemester"
-      | "LastQuarter"
-      | "LastMonth"
-      | "LastWeek"
-      | "LastDay"
-      | "LastHour"
-      | "LastMinute"
-      | "LastSecond";
-    /**
-     * Type of the QueryViewer: Table, PivotTable, Chart, Card
-     */
-    type: "Card" | "Chart" | "PivotTable" | "Table" | "Default";
-    /**
-     * if true the x Axes intersect at zero
-     */
-    xAxisIntersectionAtZero: boolean;
-    /**
-     * Labels for XAxis
-     */
-    xAxisLabels:
-      | "Horizontally"
-      | "Rotated30"
-      | "Rotated45"
-      | "Rotated60"
-      | "Vertically";
-    /**
-     * X Axis title
-     */
-    xAxisTitle: string;
-    /**
-     * Y Axis title
-     */
-    yAxisTitle: string;
-  }
-  interface GxQueryViewerElement {
-    /**
-     * Aggregation fucntion
-     */
-    aggregation: "Sum" | "Average" | "Count" | "Max" | "Min";
-    /**
-     * Which axis, row or column
-     */
-    axis: "Rows" | "Columns" | "Pages";
-    /**
-     * Axis Order type
-     */
-    axisOrderType: "None" | "Ascending" | "Descending" | "Custom";
-    /**
-     * Axis order values comma separated
-     */
-    axisOrderValues: string;
-    /**
-     * Data field
-     */
-    dataField: string;
-    /**
-     * Title to show
-     */
-    elementTitle: string;
-    /**
-     * Expand collapse type
-     */
-    expandCollapseType:
-      | "ExpandAllValues"
-      | "CollapseAllValues"
-      | "ExpandSomeValues";
-    /**
-     * Expand collapse values comma separated
-     */
-    expandCollapseValues: string;
-    /**
-     * Type of the filter
-     */
-    filterType: "ShowAllValues" | "HideAllValues" | "ShowSomeValues";
-    /**
-     * Filter values comma separated
-     */
-    filterValues: string;
-    /**
-     * Grouping by day of week title
-     */
-    groupingDayOfWeekTitle: string;
-    /**
-     * Grouping by day of week
-     */
-    groupingGroupByDayOfWeek: boolean;
-    /**
-     * Grouping by month
-     */
-    groupingGroupByMonth: boolean;
-    /**
-     * Grouping by Quarter
-     */
-    groupingGroupByQuarter: boolean;
-    /**
-     * Grouping by semester
-     */
-    groupingGroupBySemester: boolean;
-    /**
-     * Grouping by year
-     */
-    groupingGroupByYear: boolean;
-    /**
-     * Grouping hide vale
-     */
-    groupingHideValue: boolean;
-    /**
-     * Grouping by month title
-     */
-    groupingMonthTitle: string;
-    /**
-     * Grouping by Quarter title
-     */
-    groupingQuarterTitle: string;
-    /**
-     * Grouping by Semster title
-     */
-    groupingSemesterTitle: string;
-    /**
-     * Gouping by Year title
-     */
-    groupingYearTitle: string;
-    /**
-     * Name of the element
-     */
-    name: string;
-    /**
-     * Raise item click
-     */
-    raiseItemClick: boolean;
-    /**
-     * Type of the element
-     */
-    type: "Axis" | "Datum";
-    /**
-     * How to show it
-     */
-    visible: "Always" | "Yes" | "No" | "Never";
-  }
-  interface GxQueryViewerElementFormat {
-    /**
-     * If true cand drag to pages
-     */
-    canDragToPages: boolean;
-    /**
-     * Format style
-     */
-    formatStyle: string;
-    /**
-     * Max value
-     */
-    maximumValue: string;
-    /**
-     * Format on values
-     */
-    picture: string;
-    /**
-     * How to show subtotals
-     */
-    subtotals: "Yes" | "Hidden" | "No";
-    /**
-     * Target value
-     */
-    targetValue: string;
-  }
-  interface GxQueryViewerFormatStyle {
-    /**
-     * If Conditional true for applying to row or column
-     */
-    applyToRowOrColumn: boolean;
-    /**
-     * If Format the operator of the element
-     */
-    operator: "EQ" | "LT" | "GT" | "LE" | "GE" | "NE" | "IN";
-    /**
-     * Style or Css class
-     */
-    styleOrClass: string;
-    /**
-     * Type of the element Conditional or Format
-     */
-    type: "Values" | "Conditional";
-    /**
-     * If Conditional Value to format
-     */
-    value: string;
-    /**
-     * If format first value
-     */
-    value1: string;
-    /**
-     * If format second value
-     */
-    value2: string;
-  }
-  interface GxQueryViewerParameter {
-    /**
-     * Name of the parameter
-     */
-    Name: string;
-    /**
-     * Value of the parameter
-     */
-    Value: string;
-  }
   interface GxRadioGroup {
     /**
      * A CSS class to set as the `gx-radio-group` element class.
@@ -1900,7 +1651,7 @@ export namespace Components {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled: false;
+    disabled: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -1930,7 +1681,7 @@ export namespace Components {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled: false;
+    disabled: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -1945,6 +1696,10 @@ export namespace Components {
     value: string;
   }
   interface GxRating {
+    /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName: string;
     /**
      * A CSS class to set as the `gx-rating` element class.
      */
@@ -1972,13 +1727,17 @@ export namespace Components {
   }
   interface GxSelect {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element. Only works if `readonly="false"`.
+     */
+    accessibleName: string;
+    /**
      * A CSS class to set as the `gx-select` element class.
      */
     cssClass: string;
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled: false;
+    disabled: boolean;
     /**
      * Returns the id of the inner `input` element (if set).
      */
@@ -2012,7 +1771,7 @@ export namespace Components {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled: false;
+    disabled: boolean;
     /**
      * Indicates that the control is selected by default.
      */
@@ -2023,6 +1782,10 @@ export namespace Components {
     value: string;
   }
   interface GxSwitch {
+    /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName: string;
     /**
      * Caption displayed when the switch is 'on'
      */
@@ -2038,7 +1801,7 @@ export namespace Components {
     /**
      * This attribute allows you specify if the element is disabled. If disabled, it will not trigger any user interaction related event (for example, click event).
      */
-    disabled: false;
+    disabled: boolean;
     /**
      * Returns the id of the inner `input` element (if set).
      */
@@ -2062,19 +1825,27 @@ export namespace Components {
   }
   interface GxTab {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName: string;
+    /**
+     * Specifies the accessible name property value by providing the ID of the HTMLElement that has the accessible name text.
+     */
+    accessibleNameBy: string;
+    /**
      * A CSS class to set as the `gx-tab` element class.
      */
     cssClass: string;
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable: false;
+    highlightable: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode: "collapse" | "keep-space";
     /**
-     * Defines how the tabs will be distributed in the Strip.  | Value        | Details                                                                            | | ------------ | ---------------------------------------------------------------------------------- | | `scoll`      | Allows scrolling the tab control when the number of tabs exceeds the screen width. | | `fixed-size` | Tabs are fixed size. Used with any amount of tabs.                                 |
+     * Defines how the tabs will be distributed in the Strip.  | Value        | Details                                                                            | | ------------ | ---------------------------------------------------------------------------------- | | `scroll`     | Allows scrolling the tab control when the number of tabs exceeds the screen width. | | `fixed-size` | Tabs are fixed size. Used with any amount of tabs.                                 |
      */
     tabsDistribution: "scroll" | "fixed-size";
   }
@@ -2116,6 +1887,18 @@ export namespace Components {
   }
   interface GxTable {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName: string;
+    /**
+     * Specifies the accessible name property value by providing the ID of the HTMLElement that has the accessible name text.
+     */
+    accessibleNameBy: string;
+    /**
+     * Specifies the semantics of the control. Specifying the Role allows assistive technologies to give information about how to use the control to the user.
+     */
+    accessibleRole: AccessibleRole;
+    /**
      * Like the `grid-templates-areas` CSS property, this attribute defines a grid template by referencing the names of the areas which are specified with the cells [area attribute](../table-cell/readme.md#area). Repeating the name of an area causes the content to span those cells. A period signifies an empty cell. The syntax itself provides a visualization of the structure of the grid.
      */
     areasTemplate: string;
@@ -2130,11 +1913,11 @@ export namespace Components {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled: false;
+    disabled: boolean;
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable: false;
+    highlightable: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -2149,6 +1932,10 @@ export namespace Components {
     rowsTemplate: string;
   }
   interface GxTableCell {
+    /**
+     * Specifies the semantics of the control. Specifying the Role allows assistive technologies to give information about how to use the control to the user.
+     */
+    accessibleRole: AccessibleRoleCell;
     /**
      * Defines the horizontal alignment of the content of the cell.
      */
@@ -2166,10 +1953,6 @@ export namespace Components {
      */
     minHeight: string;
     /**
-     * True to add a fading overlay on the right and bottom area of the cell to signify that the content is longer than the space allows.
-     */
-    showContentFade: false;
-    /**
      * Defines the vertical alignment of the content of the cell.
      */
     valign: "top" | "bottom" | "middle";
@@ -2182,23 +1965,15 @@ export namespace Components {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled: false;
+    disabled: boolean;
     /**
-     * It specifies the format that will have the textblock control.  If `format` = `HTML`, the textblock control works as an HTML div and the innerHTML will be the same as the `inner` property specifies.  If `format` = `Text`, the control works as a normal textblock control and it is affected by most of the defined properties.
+     * It specifies the format that will have the textblock control.   - If `format` = `HTML`, the textblock control works as an HTML div and    the innerHTML will be taken from the default slot.   - If `format` = `Text`, the control works as a normal textblock control    and it is affected by most of the defined properties.
      */
     format: "Text" | "HTML";
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable: false;
-    /**
-     * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
-     */
-    href: "";
-    /**
-     * Used as the innerHTML when `format` = `HTML`.
-     */
-    inner: string;
+    highlightable: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -2206,13 +1981,17 @@ export namespace Components {
     /**
      * True to cut text when it overflows, showing an ellipsis.
      */
-    lineClamp: false;
+    lineClamp: boolean;
   }
   interface GxVideo {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName: string;
+    /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled: false;
+    disabled: boolean;
     /**
      * This attribute is for specifies the src of the video.
      */
@@ -2291,6 +2070,10 @@ export interface GxHeaderRowPatternMarkerCustomEvent<T> extends CustomEvent<T> {
   detail: T;
   target: HTMLGxHeaderRowPatternMarkerElement;
 }
+export interface GxImageAnnotationsCustomEvent<T> extends CustomEvent<T> {
+  detail: T;
+  target: HTMLGxImageAnnotationsElement;
+}
 export interface GxImagePickerCustomEvent<T> extends CustomEvent<T> {
   detail: T;
   target: HTMLGxImagePickerElement;
@@ -2334,23 +2117,6 @@ export interface GxNavbarCustomEvent<T> extends CustomEvent<T> {
 export interface GxPasswordEditCustomEvent<T> extends CustomEvent<T> {
   detail: T;
   target: HTMLGxPasswordEditElement;
-}
-export interface GxQueryViewerElementCustomEvent<T> extends CustomEvent<T> {
-  detail: T;
-  target: HTMLGxQueryViewerElementElement;
-}
-export interface GxQueryViewerElementFormatCustomEvent<T>
-  extends CustomEvent<T> {
-  detail: T;
-  target: HTMLGxQueryViewerElementFormatElement;
-}
-export interface GxQueryViewerFormatStyleCustomEvent<T> extends CustomEvent<T> {
-  detail: T;
-  target: HTMLGxQueryViewerFormatStyleElement;
-}
-export interface GxQueryViewerParameterCustomEvent<T> extends CustomEvent<T> {
-  detail: T;
-  target: HTMLGxQueryViewerParameterElement;
 }
 export interface GxRadioGroupCustomEvent<T> extends CustomEvent<T> {
   detail: T;
@@ -2535,13 +2301,6 @@ declare global {
     prototype: HTMLGxGridInfiniteScrollElement;
     new (): HTMLGxGridInfiniteScrollElement;
   };
-  interface HTMLGxGridInfiniteScrollContentElement
-    extends Components.GxGridInfiniteScrollContent,
-      HTMLStencilElement {}
-  var HTMLGxGridInfiniteScrollContentElement: {
-    prototype: HTMLGxGridInfiniteScrollContentElement;
-    new (): HTMLGxGridInfiniteScrollContentElement;
-  };
   interface HTMLGxGridSmartCellElement
     extends Components.GxGridSmartCell,
       HTMLStencilElement {}
@@ -2577,6 +2336,13 @@ declare global {
   var HTMLGxImageElement: {
     prototype: HTMLGxImageElement;
     new (): HTMLGxImageElement;
+  };
+  interface HTMLGxImageAnnotationsElement
+    extends Components.GxImageAnnotations,
+      HTMLStencilElement {}
+  var HTMLGxImageAnnotationsElement: {
+    prototype: HTMLGxImageAnnotationsElement;
+    new (): HTMLGxImageAnnotationsElement;
   };
   interface HTMLGxImagePickerElement
     extends Components.GxImagePicker,
@@ -2686,41 +2452,6 @@ declare global {
     prototype: HTMLGxProgressBarElement;
     new (): HTMLGxProgressBarElement;
   };
-  interface HTMLGxQueryViewerElement
-    extends Components.GxQueryViewer,
-      HTMLStencilElement {}
-  var HTMLGxQueryViewerElement: {
-    prototype: HTMLGxQueryViewerElement;
-    new (): HTMLGxQueryViewerElement;
-  };
-  interface HTMLGxQueryViewerElementElement
-    extends Components.GxQueryViewerElement,
-      HTMLStencilElement {}
-  var HTMLGxQueryViewerElementElement: {
-    prototype: HTMLGxQueryViewerElementElement;
-    new (): HTMLGxQueryViewerElementElement;
-  };
-  interface HTMLGxQueryViewerElementFormatElement
-    extends Components.GxQueryViewerElementFormat,
-      HTMLStencilElement {}
-  var HTMLGxQueryViewerElementFormatElement: {
-    prototype: HTMLGxQueryViewerElementFormatElement;
-    new (): HTMLGxQueryViewerElementFormatElement;
-  };
-  interface HTMLGxQueryViewerFormatStyleElement
-    extends Components.GxQueryViewerFormatStyle,
-      HTMLStencilElement {}
-  var HTMLGxQueryViewerFormatStyleElement: {
-    prototype: HTMLGxQueryViewerFormatStyleElement;
-    new (): HTMLGxQueryViewerFormatStyleElement;
-  };
-  interface HTMLGxQueryViewerParameterElement
-    extends Components.GxQueryViewerParameter,
-      HTMLStencilElement {}
-  var HTMLGxQueryViewerParameterElement: {
-    prototype: HTMLGxQueryViewerParameterElement;
-    new (): HTMLGxQueryViewerParameterElement;
-  };
   interface HTMLGxRadioGroupElement
     extends Components.GxRadioGroup,
       HTMLStencilElement {}
@@ -2829,13 +2560,13 @@ declare global {
     "gx-grid-image-map": HTMLGxGridImageMapElement;
     "gx-grid-image-map-item": HTMLGxGridImageMapItemElement;
     "gx-grid-infinite-scroll": HTMLGxGridInfiniteScrollElement;
-    "gx-grid-infinite-scroll-content": HTMLGxGridInfiniteScrollContentElement;
     "gx-grid-smart-cell": HTMLGxGridSmartCellElement;
     "gx-grid-smart-css": HTMLGxGridSmartCssElement;
     "gx-group": HTMLGxGroupElement;
     "gx-header-row-pattern-marker": HTMLGxHeaderRowPatternMarkerElement;
     "gx-icon": HTMLGxIconElement;
     "gx-image": HTMLGxImageElement;
+    "gx-image-annotations": HTMLGxImageAnnotationsElement;
     "gx-image-picker": HTMLGxImagePickerElement;
     "gx-interactive-image": HTMLGxInteractiveImageElement;
     "gx-layout": HTMLGxLayoutElement;
@@ -2852,11 +2583,6 @@ declare global {
     "gx-navbar-item": HTMLGxNavbarItemElement;
     "gx-password-edit": HTMLGxPasswordEditElement;
     "gx-progress-bar": HTMLGxProgressBarElement;
-    "gx-query-viewer": HTMLGxQueryViewerElement;
-    "gx-query-viewer-element": HTMLGxQueryViewerElementElement;
-    "gx-query-viewer-element-format": HTMLGxQueryViewerElementFormatElement;
-    "gx-query-viewer-format-style": HTMLGxQueryViewerFormatStyleElement;
-    "gx-query-viewer-parameter": HTMLGxQueryViewerParameterElement;
     "gx-radio-group": HTMLGxRadioGroupElement;
     "gx-radio-option": HTMLGxRadioOptionElement;
     "gx-rating": HTMLGxRatingElement;
@@ -2899,7 +2625,7 @@ declare namespace LocalJSX {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, gxClick event).
      */
-    disabled?: false;
+    disabled?: boolean;
     /**
      * Fired when the action sheet item is clicked
      */
@@ -2907,9 +2633,13 @@ declare namespace LocalJSX {
   }
   interface GxAudio {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName?: string;
+    /**
      * This attribute lets you specify if the element is disabled.
      */
-    disabled?: false;
+    disabled?: boolean;
     /**
      * This attribute is for specifies the src of the audio.
      */
@@ -2917,13 +2647,33 @@ declare namespace LocalJSX {
   }
   interface GxButton {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName?: string;
+    /**
+     * The caption of the button
+     */
+    caption?: string;
+    /**
      * A CSS class to set as the `gx-button` element class.
      */
     cssClass?: string;
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event). If a disabled image has been specified, it will be shown, hiding the base image (if specified).
      */
-    disabled?: false;
+    disabled?: boolean;
+    /**
+     * This attribute lets you specify the `src` of the disabled image.
+     */
+    disabledImageSrc?: string;
+    /**
+     * This attribute lets you specify the `srcset` of the disabled image.
+     */
+    disabledImageSrcset?: string;
+    /**
+     * It specifies the format that will have the gx-button control.  - If `format` = `HTML`, the button control works as an HTML div and    the caption will be taken from the default slot.   - If `format` = `Text`, the control will take its caption using the    `caption` property.
+     */
+    format?: "Text" | "HTML";
     /**
      * This attribute lets you specify the height.
      */
@@ -2931,7 +2681,7 @@ declare namespace LocalJSX {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable?: true;
+    highlightable?: boolean;
     /**
      * This attribute lets you specify the relative location of the image to the text.  | Value    | Details                                                 | | -------- | ------------------------------------------------------- | | `above`  | The image is located above the text.                    | | `before` | The image is located before the text, in the same line. | | `after`  | The image is located after the text, in the same line.  | | `below`  | The image is located below the text.                    | | `behind` | The image is located behind the text.                   |
      */
@@ -2940,6 +2690,14 @@ declare namespace LocalJSX {
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
     invisibleMode?: "collapse" | "keep-space";
+    /**
+     * This attribute lets you specify the `src` of the main image.
+     */
+    mainImageSrc?: string;
+    /**
+     * This attribute lets you specify the `srcset` of the main image.
+     */
+    mainImageSrcset?: string;
     /**
      * Emitted when the element is clicked, the enter key is pressed or the space key is pressed and released.
      */
@@ -2951,6 +2709,18 @@ declare namespace LocalJSX {
   }
   interface GxCanvas {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName?: string;
+    /**
+     * Specifies the accessible name property value by providing the ID of the HTMLElement that has the accessible name text.
+     */
+    accessibleNameBy?: string;
+    /**
+     * Specifies the semantics of the control. Specifying the Role allows assistive technologies to give information about how to use the control to the user.
+     */
+    accessibleRole?: AccessibleRole;
+    /**
      * A CSS class to set as the `gx-canvas` element class.
      */
     cssClass?: string;
@@ -2961,7 +2731,7 @@ declare namespace LocalJSX {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable?: false;
+    highlightable?: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -3005,6 +2775,10 @@ declare namespace LocalJSX {
   }
   interface GxCanvasCell {
     /**
+     * Specifies the semantics of the control. Specifying the Role allows assistive technologies to give information about how to use the control to the user.
+     */
+    accessibleRole?: AccessibleRoleCell;
+    /**
      * Defines the horizontal alignment of the content of the cell.
      */
     align?: "left" | "right" | "center";
@@ -3037,7 +2811,7 @@ declare namespace LocalJSX {
     /**
      * True to show the card header. False to hide it.
      */
-    showHeader?: true;
+    showHeader?: boolean;
   }
   interface GxCardHeader {
     /**
@@ -3050,6 +2824,10 @@ declare namespace LocalJSX {
     cssClass?: string;
   }
   interface GxCheckbox {
+    /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName?: string;
     /**
      * Specifies the label of the checkbox.
      */
@@ -3069,15 +2847,15 @@ declare namespace LocalJSX {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled?: false;
+    disabled?: boolean;
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable?: false;
+    highlightable?: boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     * Emitted when the element is clicked or the space key is pressed and released.
      */
-    invisibleMode?: "collapse" | "keep-space";
+    onClick?: (event: GxCheckboxCustomEvent<any>) => void;
     /**
      * The `input` event is emitted when a change to the element's value is committed by the user.
      */
@@ -3085,7 +2863,7 @@ declare namespace LocalJSX {
     /**
      * This attribute indicates that the user cannot modify the value of the control. Same as [readonly](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-readonly) attribute for `input` elements.
      */
-    readonly?: false;
+    readonly?: boolean;
     /**
      * The value when the checkbox is 'off'
      */
@@ -3181,6 +2959,10 @@ declare namespace LocalJSX {
   }
   interface GxEdit {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element. Only works if `readonly="false"` and `format="Text"`.
+     */
+    accessibleName?: string;
+    /**
      * Allows to specify the role of the element when inside a `gx-form-field` element
      */
     area?: "field";
@@ -3203,17 +2985,11 @@ declare namespace LocalJSX {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled?: false;
+    disabled?: boolean;
     /**
-     * Used to define the semantic of the element when readonly=true.  Font categories are mapped to semantic HTML elements when rendered:  * `"headline"`: `h1` * `"subheadline"`: `h2` * `"body"`: `p` * `"footnote"`: `footer` * `"caption1"`: `span` * `"caption2"`: `span`
+     * Used to define the semantic of the element when `readonly="true"`.
      */
-    fontCategory?:
-      | "headline"
-      | "subheadline"
-      | "body"
-      | "footnote"
-      | "caption1"
-      | "caption2";
+    fontCategory?: FontCategory;
     /**
      * It specifies the format that will have the edit control.  If `format` = `HTML`, the edit control works as an HTML div and the innerHTML will be the same as the `inner` property specifies. Also, it does not allow any input/editable UI since it works as an HTML div.  If `format` = `Text`, the edit control works as a normal input control and it is affected by most of the defined properties.
      */
@@ -3221,19 +2997,11 @@ declare namespace LocalJSX {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable?: false;
-    /**
-     * Used as the innerHTML when `format` = `HTML`.
-     */
-    inner?: string;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    highlightable?: boolean;
     /**
      * True to cut text when it overflows, showing an ellipsis (only applies when readonly)
      */
-    lineClamp?: false;
+    lineClamp?: boolean;
     /**
      * Controls if the element accepts multiline text.
      */
@@ -3262,6 +3030,10 @@ declare namespace LocalJSX {
      * If true, a trigger button is shown next to the edit field. The button can be customized adding a child element with `slot="trigger-content"` attribute to specify the content inside the trigger button.
      */
     showTrigger?: boolean;
+    /**
+     * This attribute lets you specify the label for the trigger button. Important for accessibility.
+     */
+    triggerButtonLabel?: string;
     /**
      * The type of control to render. A subset of the types supported by the `input` element is supported:  * `"date"` * `"datetime-local"` * `"email"` * `"file"` * `"number"` * `"password"` * `"search"` * `"tel"` * `"text"` * `"url"`
      */
@@ -3377,6 +3149,14 @@ declare namespace LocalJSX {
   }
   interface GxGridFlex {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName?: string;
+    /**
+     * Specifies the accessible name property value by providing the ID of the HTMLElement that has the accessible name text.
+     */
+    accessibleNameBy?: string;
+    /**
      * This aligns a flex container’s lines within when there is extra space in the cross-axis, similar to how justify-content aligns individual items within the main-axis.  | Value           | Details                                                                                  | | --------------- | ---------------------------------------------------------------------------------------- | | `center`        | Lines are packed toward the center of the flex container.                                | | `flex-end`      | Lines are packed toward the start of the flex container.                                 | | `flex-start`    | Lines are packed toward the end of the flex container.                                   | | `space-around`  | Lines are evenly distributed in the flex container, with half-size spaces on either end. | | `space-between` | Lines are evenly distributed in the flex container.                                      | | `stretch`       | Lines stretch to take up the remaining space.                                            |
      */
     alignContent?:
@@ -3393,7 +3173,7 @@ declare namespace LocalJSX {
     /**
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
      */
-    autoGrow?: false;
+    autoGrow?: boolean;
     /**
      * A CSS class to set as the `gx-grid-flex` element class.
      */
@@ -3439,9 +3219,17 @@ declare namespace LocalJSX {
   }
   interface GxGridFs {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName?: string;
+    /**
+     * Specifies the accessible name property value by providing the ID of the HTMLElement that has the accessible name text.
+     */
+    accessibleNameBy?: string;
+    /**
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
      */
-    autoGrow?: false;
+    autoGrow?: boolean;
     /**
      * A CSS class to set as the `gx-grid-fs` element class.
      */
@@ -3449,7 +3237,7 @@ declare namespace LocalJSX {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable?: false;
+    highlightable?: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -3473,6 +3261,14 @@ declare namespace LocalJSX {
   }
   interface GxGridHorizontal {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName?: string;
+    /**
+     * Specifies the accessible name property value by providing the ID of the HTMLElement that has the accessible name text.
+     */
+    accessibleNameBy?: string;
+    /**
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
      */
     autoGrow?: boolean;
@@ -3495,7 +3291,7 @@ declare namespace LocalJSX {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable?: false;
+    highlightable?: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -3591,9 +3387,9 @@ declare namespace LocalJSX {
      */
     orientation?: "portrait" | "landscape";
     /**
-     * If `true`, show the pagination buttons.
+     * A CSS class to set as the  Page Controller element class when `showPageController = "true"`.
      */
-    pager?: true;
+    pageControllerClass?: string;
     /**
      * Grid current row count. This property is used in order to be able to re-render the Grid every time the Grid data changes. If not specified, then grid empty and loading placeholders will not work correctly.
      */
@@ -3609,17 +3405,29 @@ declare namespace LocalJSX {
     /**
      * If `true`, show the scrollbar.
      */
-    scrollbar?: false;
+    scrollbar?: boolean;
+    /**
+     * If `true`, show the pagination buttons (page controller).
+     */
+    showPageController?: boolean;
     /**
      * Set to false to enable slides in free mode position.
      */
-    snapToGrid?: true;
+    snapToGrid?: boolean;
   }
   interface GxGridImageMap {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName?: string;
+    /**
+     * Specifies the accessible name property value by providing the ID of the HTMLElement that has the accessible name text.
+     */
+    accessibleNameBy?: string;
+    /**
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows. This property is not currently supported in the gx-image-map control.
      */
-    autoGrow?: false;
+    autoGrow?: boolean;
     /**
      * A CSS class to set as the `gx-grid-image-map` element class.
      */
@@ -3707,35 +3515,30 @@ declare namespace LocalJSX {
   }
   interface GxGridInfiniteScroll {
     /**
-     * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
+     * `true` if the infinite scroll is used in a grid that has data provider. This attribute determine the utility of the infinite scroll, because in certain configurations the infinite scroll can be used only to implement the inverse loading utility.
      */
-    disabled?: boolean;
+    dataProvider?: boolean;
     /**
-     * This property must be bounded to grid item count property. It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the initial batch does not overflow the main container
+     * If `true`, the infinite scroll will be hidden and scroll event listeners will be removed.  Set this to `false` to disable the infinite scroll from actively trying to receive new data while reaching the threshold. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.
      */
-    itemCount?: number;
-    /**
-     * The main layout selector where the infinite scroll is contained.
-     */
-    layoutSelector?: string;
+    dataState?: DataState;
     /**
      * Emitted when the scroll reaches the threshold distance. From within your infinite handler, you must call the infinite scroll's `complete()` method when your async operation has completed.
      */
     onGxInfinite?: (event: GxGridInfiniteScrollCustomEvent<void>) => void;
     /**
-     * The position of the infinite scroll element. The value can be either `top` or `bottom`.
+     * The position of the infinite scroll element. The value can be either `top` or `bottom`. When `position === "top"`, the control also implements inverse loading.
      */
     position?: "top" | "bottom";
+    /**
+     * This property must be bounded to grid item count property. It's unique purpose is to update the position of the control in the inverse loading scenario (`position === "top"`).
+     */
+    recordCount?: number;
     /**
      * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
      */
     threshold?: string;
-    /**
-     * The View Port parent element selector where the infinite component would be attached to and listening to Scroll Events.
-     */
-    viewportSelector?: string;
   }
-  interface GxGridInfiniteScrollContent {}
   interface GxGridSmartCell {
     /**
      * The CSS class of gx-grid parent element.
@@ -3744,7 +3547,7 @@ declare namespace LocalJSX {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable?: false;
+    highlightable?: boolean;
     /**
      * This attribute lets you specify the index of the cell. Useful when Inverse Loading is enabled on the grid.
      */
@@ -3752,7 +3555,7 @@ declare namespace LocalJSX {
     /**
      * Whether this row is even position or not. This is specially required in Virtual scroll scenarios where the position in the DOM is not the real position in the collection.
      */
-    isRowEven?: false;
+    isRowEven?: boolean;
     /**
      * Number of Columns to be shown in the grid. Useful when Inverse Loading is enabled on the grid.
      */
@@ -3760,13 +3563,21 @@ declare namespace LocalJSX {
     /**
      * True to show horizontal line.
      */
-    showHorizontalLine?: false;
+    showHorizontalLine?: boolean;
   }
   interface GxGridSmartCss {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName?: string;
+    /**
+     * Specifies the accessible name property value by providing the ID of the HTMLElement that has the accessible name text.
+     */
+    accessibleNameBy?: string;
+    /**
      * This attribute defines if the control size will grow automatically, to adjust to its content size. If set to `false`, it won't grow automatically and it will show scrollbars if the content overflows.
      */
-    autoGrow?: false;
+    autoGrow?: boolean;
     /**
      * A CSS class to set as the `gx-grid-smart-css` element class.
      */
@@ -3804,7 +3615,7 @@ declare namespace LocalJSX {
     /**
      * Scroll snapping allows to lock the viewport to certain elements or locations after a user has finished scrolling
      */
-    snapToGrid?: false;
+    snapToGrid?: boolean;
     /**
      * The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page.
      */
@@ -3826,7 +3637,7 @@ declare namespace LocalJSX {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable?: false;
+    highlightable?: boolean;
   }
   interface GxHeaderRowPatternMarker {
     /**
@@ -3842,10 +3653,6 @@ declare namespace LocalJSX {
      */
     color?: string;
     /**
-     * A label for the icon, for screen readers to use.
-     */
-    label?: string;
-    /**
      * If enabled, the icon will be loaded lazily when it's visible in the viewport.
      */
     lazy?: boolean;
@@ -3856,13 +3663,17 @@ declare namespace LocalJSX {
   }
   interface GxImage {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName?: string;
+    /**
      * This attribute lets you specify the alternative text.
      */
     alt?: string;
     /**
      * If true, the component will be sized to match the image's intrinsic size when not constrained via CSS dimension properties (for example, height or width). If false, the component will never force its height to match the image's intrinsic size. The width, however, will match the intrinsic width. In GeneXus terms, it will auto grow horizontally, but not vertically.
      */
-    autoGrow?: true;
+    autoGrow?: boolean;
     /**
      * A CSS class to set as the `gx-image` element class.
      */
@@ -3870,11 +3681,11 @@ declare namespace LocalJSX {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled?: false;
+    disabled?: boolean;
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable?: false;
+    highlightable?: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -3882,7 +3693,7 @@ declare namespace LocalJSX {
     /**
      * True to lazy load the image, when it enters the viewport.
      */
-    lazyLoad?: true;
+    lazyLoad?: boolean;
     /**
      * This attribute allows specifing how the image is sized according to its container. `contain`, `cover`, `fill` and `none` map directly to the values of the CSS `object-fit` property. The `tile` value repeats the image, both vertically and horizontally, creating a tile effect.
      */
@@ -3900,7 +3711,67 @@ declare namespace LocalJSX {
      */
     srcset?: string;
   }
+  interface GxImageAnnotations {
+    /**
+     * If the annotations are activated or not.
+     */
+    disabled?: boolean;
+    /**
+     * Specifies the `fontFamily` for the texts
+     */
+    fontFamily?: string;
+    /**
+     * Specifies the `fontSize` for the texts
+     */
+    fontSize?: number;
+    /**
+     * The source of the background image.
+     */
+    imageLabel?: "Image to be annotated";
+    /**
+     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
+     */
+    invisibleMode?: "collapse" | "keep-space";
+    /**
+     * Specifies the lines that will be drawn on the gx-image-annotations control
+     */
+    lines?: ImageAnnotationLine[];
+    /**
+     * Fired when the annotations change.
+     */
+    onAnnotationsChange?: (
+      event: GxImageAnnotationsCustomEvent<AnnotationsChangeEvent>
+    ) => void;
+    /**
+     * Fired when the traceIndex property value is changed.
+     */
+    onTraceIndexChange?: (event: GxImageAnnotationsCustomEvent<number>) => void;
+    /**
+     * Specifies the texts that will be drawn on the gx-image-annotations control
+     */
+    texts?: ImageAnnotationText[];
+    /**
+     * Drawing color.
+     */
+    traceColor?: string;
+    /**
+     * Property used for change the traceInd state and go forward or backward.
+     */
+    traceIndex?: number;
+    /**
+     * Drawing thickness.
+     */
+    traceThickness?: number;
+    /**
+     * The source of the background image.
+     */
+    value?: string;
+  }
   interface GxImagePicker {
+    /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName?: string;
     /**
      * This attribute lets you specify the alternative text.
      */
@@ -3908,7 +3779,7 @@ declare namespace LocalJSX {
     /**
      * If true, the component will be sized to match the image's intrinsic size when not constrained via CSS dimension properties (for example, height or width). If false, the component will never force its height to match the image's intrinsic size. The width, however, will match the intrinsic width. In GeneXus terms, it will auto grow horizontally, but not vertically.
      */
-    autoGrow?: true;
+    autoGrow?: boolean;
     /**
      * This attribute lets you specify the description of the cancel action button in the modal.
      */
@@ -3924,11 +3795,11 @@ declare namespace LocalJSX {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled?: false;
+    disabled?: boolean;
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable?: false;
+    highlightable?: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -3936,7 +3807,7 @@ declare namespace LocalJSX {
     /**
      * True to lazy load the image, when it enters the viewport.
      */
-    lazyLoad?: true;
+    lazyLoad?: boolean;
     /**
      * This attribute lets you specify the modal title.
      */
@@ -3952,7 +3823,7 @@ declare namespace LocalJSX {
     /**
      * This attribute lets you specify if the image is readonly. If readonly, it will not allow to use the edit button. In fact, the edit button will not be shown.
      */
-    readonly?: false;
+    readonly?: boolean;
     /**
      * This attribute lets you specify the description of the remove image button in the modal.
      */
@@ -3996,7 +3867,7 @@ declare namespace LocalJSX {
     /**
      * `false` to hide the bottom target
      */
-    bottomVisible?: false;
+    bottomVisible?: boolean;
     /**
      * This attribute lets you specify if the header row pattern is enabled in the top navbar.
      */
@@ -4018,6 +3889,10 @@ declare namespace LocalJSX {
      */
     onRightHiddenChange?: (event: GxLayoutCustomEvent<any>) => void;
     /**
+     * This attribute lets you specify whether the main content should be contained in a tag that has role=`"main"`. If `false`, the main content will be contained in a generic tag (<div>).
+     */
+    renderMainRole?: boolean;
+    /**
      * `false` to hide the right target
      */
     rightVisible?: boolean;
@@ -4028,7 +3903,7 @@ declare namespace LocalJSX {
     /**
      * `false` to hide the top target.
      */
-    topVisible?: false;
+    topVisible?: boolean;
   }
   interface GxLoading {
     /**
@@ -4064,7 +3939,7 @@ declare namespace LocalJSX {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled?: false;
+    disabled?: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -4420,7 +4295,7 @@ declare namespace LocalJSX {
     /**
      * This attribute lets you specify if one or two lines will be used to render the navigation bar. Useful when there are links and also actions, to have links in the first line, and actions in the second
      */
-    singleLine?: true;
+    singleLine?: boolean;
     /**
      * This attribute lets you specify the label for the left target toggle button. Important for accessibility.
      */
@@ -4430,7 +4305,7 @@ declare namespace LocalJSX {
     /**
      * Indicates if the navbar item is the active one (for example, when the item represents the current page)
      */
-    active?: false;
+    active?: boolean;
     /**
      * A CSS class to set as the `gx-navbar-item` element class.
      */
@@ -4438,7 +4313,7 @@ declare namespace LocalJSX {
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable?: true;
+    highlightable?: boolean;
     /**
      * This attribute lets you specify the URL of the navbar item.
      */
@@ -4462,17 +4337,17 @@ declare namespace LocalJSX {
   }
   interface GxPasswordEdit {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element. Only works if `readonly="false"`.
+     */
+    accessibleName?: string;
+    /**
      * A CSS class to set as the `gx-password-edit` element class.
      */
     cssClass?: string;
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled?: false;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
+    disabled?: boolean;
     /**
      * The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus.
      */
@@ -4497,10 +4372,6 @@ declare namespace LocalJSX {
      * Text of the reveal button to offer revealing the password.
      */
     revealButtonTextOn?: string;
-    /**
-     * Indicates if the value is revealed or masked.
-     */
-    revealed?: boolean;
     /**
      * If true, a reveal password button is shown next to the password input. Pressing the reveal button toggles the password mask, allowing the user to view the password text.
      */
@@ -4540,407 +4411,6 @@ declare namespace LocalJSX {
      */
     value?: number;
   }
-  interface GxQueryViewer {
-    /**
-     * Allowing elements order to change
-     */
-    allowElementsOrderChange?: boolean;
-    /**
-     * Allow selection
-     */
-    allowSelection?: boolean;
-    /**
-     * Auto refresh group
-     */
-    autoRefreshGroup?: string;
-    /**
-     * If type== PivotTable or Table, if true will shrink the table
-     */
-    autoResize?: boolean;
-    /**
-     * If autoResize, in here select the type, Width, height, or both
-     */
-    autoResizeType?: "Both" | "Vertical" | "Horizontal";
-    /**
-     * Base URL of the server
-     */
-    baseUrl?: any;
-    /**
-     * If type == Chart, this is the chart type: Bar, Pie, Timeline, etc...
-     */
-    chartType?:
-      | "Column"
-      | "Column3D"
-      | "StackedColumn"
-      | "StackedColumn3D"
-      | "StackedColumn100"
-      | "Bar"
-      | "StackedBar"
-      | "StackedBar100"
-      | "Area"
-      | "StackedArea"
-      | "StackedArea100"
-      | "SmoothArea"
-      | "StepArea"
-      | "Line"
-      | "StackedLine"
-      | "StackedLine100"
-      | "SmoothLine"
-      | "StepLine"
-      | "Pie"
-      | "Pie3D"
-      | "Doughnut"
-      | "Doughnut3D"
-      | "LinearGauge"
-      | "CircularGauge"
-      | "Radar"
-      | "FilledRadar"
-      | "PolarArea"
-      | "Funnel"
-      | "Pyramid"
-      | "ColumnLine"
-      | "Column3DLine"
-      | "Timeline"
-      | "SmoothTimeline"
-      | "StepTimeline"
-      | "Sparkline";
-    /**
-     * Version of data
-     */
-    dataVersionId?: number;
-    /**
-     * Allowing or not Comlumn sort
-     */
-    disableColumnSort?: boolean;
-    /**
-     * Environmet of the project: JAVA. .Net, NetCore
-     */
-    env?: string;
-    /**
-     * If type== PivotTable or Table allow to export to HTML
-     */
-    exportToHTML?: boolean;
-    /**
-     * If type== PivotTable or Table allow to export to PDF
-     */
-    exportToPDF?: boolean;
-    /**
-     * If type== PivotTable or Table allow to export to XLS
-     */
-    exportToXLS?: boolean;
-    /**
-     * If type== PivotTable or Table allow to export to XLSX
-     */
-    exportToXLSX?: boolean;
-    /**
-     * If type== PivotTable or Table allow to export to XML
-     */
-    exportToXML?: boolean;
-    /**
-     * Font Color
-     */
-    fontColor?: string;
-    /**
-     * Type of font
-     */
-    fontFamily?: string;
-    /**
-     * Font size
-     */
-    fontSize?: number;
-    /**
-     * Include max and min
-     */
-    includeMaxMin?: boolean;
-    /**
-     * Include spark line
-     */
-    includeSparkline?: boolean;
-    /**
-     * If true includes trend on the graph
-     */
-    includeTrend?: boolean;
-    /**
-     * True if it is external query
-     */
-    isExternalQuery?: boolean;
-    /**
-     * Language of the QueryViewer
-     */
-    language?: string;
-    /**
-     * Object of QueryViewer
-     */
-    object?: string;
-    /**
-     * Name of the Query or Data provider assigned
-     */
-    objectName?: string;
-    /**
-     * Object type -> Query or DataProvider
-     */
-    objectType?: string;
-    /**
-     * Orientation of the graph
-     */
-    orientation?: "Horizontal" | "Vertical";
-    /**
-     * If paging true, number of items for a single page
-     */
-    pageSize?: number;
-    /**
-     * If type == PivotTable or Table, if true there is paging, else everything in one table
-     */
-    paging?: boolean;
-    /**
-     * Timeline
-     */
-    plotSeries?: "InTheSameChart" | "InSeparateCharts";
-    /**
-     * Title of the QueryViewer
-     */
-    queryTitle?: string;
-    /**
-     * For timeline for remembering layout
-     */
-    rememberLayout?: boolean;
-    /**
-     * Type of data to show
-     */
-    showDataAs?: "Values" | "Percentages" | "ValuesAndPercentages";
-    /**
-     * Ax to show data labels
-     */
-    showDataLabelsIn?: string;
-    /**
-     * if true show values on the graph
-     */
-    showValues?: boolean;
-    /**
-     * Theme for showing the graph
-     */
-    theme?: string;
-    /**
-     * If includeTrend, defines the period of the trend
-     */
-    trendPeriod?:
-      | "SinceTheBeginning"
-      | "LastYear"
-      | "LastSemester"
-      | "LastQuarter"
-      | "LastMonth"
-      | "LastWeek"
-      | "LastDay"
-      | "LastHour"
-      | "LastMinute"
-      | "LastSecond";
-    /**
-     * Type of the QueryViewer: Table, PivotTable, Chart, Card
-     */
-    type?: "Card" | "Chart" | "PivotTable" | "Table" | "Default";
-    /**
-     * if true the x Axes intersect at zero
-     */
-    xAxisIntersectionAtZero?: boolean;
-    /**
-     * Labels for XAxis
-     */
-    xAxisLabels?:
-      | "Horizontally"
-      | "Rotated30"
-      | "Rotated45"
-      | "Rotated60"
-      | "Vertically";
-    /**
-     * X Axis title
-     */
-    xAxisTitle?: string;
-    /**
-     * Y Axis title
-     */
-    yAxisTitle?: string;
-  }
-  interface GxQueryViewerElement {
-    /**
-     * Aggregation fucntion
-     */
-    aggregation?: "Sum" | "Average" | "Count" | "Max" | "Min";
-    /**
-     * Which axis, row or column
-     */
-    axis?: "Rows" | "Columns" | "Pages";
-    /**
-     * Axis Order type
-     */
-    axisOrderType?: "None" | "Ascending" | "Descending" | "Custom";
-    /**
-     * Axis order values comma separated
-     */
-    axisOrderValues?: string;
-    /**
-     * Data field
-     */
-    dataField?: string;
-    /**
-     * Title to show
-     */
-    elementTitle?: string;
-    /**
-     * Expand collapse type
-     */
-    expandCollapseType?:
-      | "ExpandAllValues"
-      | "CollapseAllValues"
-      | "ExpandSomeValues";
-    /**
-     * Expand collapse values comma separated
-     */
-    expandCollapseValues?: string;
-    /**
-     * Type of the filter
-     */
-    filterType?: "ShowAllValues" | "HideAllValues" | "ShowSomeValues";
-    /**
-     * Filter values comma separated
-     */
-    filterValues?: string;
-    /**
-     * Grouping by day of week title
-     */
-    groupingDayOfWeekTitle?: string;
-    /**
-     * Grouping by day of week
-     */
-    groupingGroupByDayOfWeek?: boolean;
-    /**
-     * Grouping by month
-     */
-    groupingGroupByMonth?: boolean;
-    /**
-     * Grouping by Quarter
-     */
-    groupingGroupByQuarter?: boolean;
-    /**
-     * Grouping by semester
-     */
-    groupingGroupBySemester?: boolean;
-    /**
-     * Grouping by year
-     */
-    groupingGroupByYear?: boolean;
-    /**
-     * Grouping hide vale
-     */
-    groupingHideValue?: boolean;
-    /**
-     * Grouping by month title
-     */
-    groupingMonthTitle?: string;
-    /**
-     * Grouping by Quarter title
-     */
-    groupingQuarterTitle?: string;
-    /**
-     * Grouping by Semster title
-     */
-    groupingSemesterTitle?: string;
-    /**
-     * Gouping by Year title
-     */
-    groupingYearTitle?: string;
-    /**
-     * Name of the element
-     */
-    name?: string;
-    onElementChanged?: (event: GxQueryViewerElementCustomEvent<any>) => void;
-    /**
-     * Raise item click
-     */
-    raiseItemClick?: boolean;
-    /**
-     * Type of the element
-     */
-    type?: "Axis" | "Datum";
-    /**
-     * How to show it
-     */
-    visible?: "Always" | "Yes" | "No" | "Never";
-  }
-  interface GxQueryViewerElementFormat {
-    /**
-     * If true cand drag to pages
-     */
-    canDragToPages?: boolean;
-    /**
-     * Format style
-     */
-    formatStyle?: string;
-    /**
-     * Max value
-     */
-    maximumValue?: string;
-    onElementChanged?: (
-      event: GxQueryViewerElementFormatCustomEvent<any>
-    ) => void;
-    /**
-     * Format on values
-     */
-    picture?: string;
-    /**
-     * How to show subtotals
-     */
-    subtotals?: "Yes" | "Hidden" | "No";
-    /**
-     * Target value
-     */
-    targetValue?: string;
-  }
-  interface GxQueryViewerFormatStyle {
-    /**
-     * If Conditional true for applying to row or column
-     */
-    applyToRowOrColumn?: boolean;
-    onElementChanged?: (
-      event: GxQueryViewerFormatStyleCustomEvent<any>
-    ) => void;
-    /**
-     * If Format the operator of the element
-     */
-    operator?: "EQ" | "LT" | "GT" | "LE" | "GE" | "NE" | "IN";
-    /**
-     * Style or Css class
-     */
-    styleOrClass?: string;
-    /**
-     * Type of the element Conditional or Format
-     */
-    type?: "Values" | "Conditional";
-    /**
-     * If Conditional Value to format
-     */
-    value?: string;
-    /**
-     * If format first value
-     */
-    value1?: string;
-    /**
-     * If format second value
-     */
-    value2?: string;
-  }
-  interface GxQueryViewerParameter {
-    /**
-     * Name of the parameter
-     */
-    Name?: string;
-    /**
-     * Value of the parameter
-     */
-    Value?: string;
-    onParameterValueChanged?: (
-      event: GxQueryViewerParameterCustomEvent<QueryViewerParameterChangedEvent>
-    ) => void;
-  }
   interface GxRadioGroup {
     /**
      * A CSS class to set as the `gx-radio-group` element class.
@@ -4953,7 +4423,7 @@ declare namespace LocalJSX {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled?: false;
+    disabled?: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -4987,7 +4457,7 @@ declare namespace LocalJSX {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled?: false;
+    disabled?: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -5019,6 +4489,10 @@ declare namespace LocalJSX {
   }
   interface GxRating {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName?: string;
+    /**
      * A CSS class to set as the `gx-rating` element class.
      */
     cssClass?: string;
@@ -5045,13 +4519,17 @@ declare namespace LocalJSX {
   }
   interface GxSelect {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element. Only works if `readonly="false"`.
+     */
+    accessibleName?: string;
+    /**
      * A CSS class to set as the `gx-select` element class.
      */
     cssClass?: string;
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled?: false;
+    disabled?: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -5085,7 +4563,7 @@ declare namespace LocalJSX {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled?: false;
+    disabled?: boolean;
     /**
      * The `change` event is emitted when a change to the element's value is committed by the user.
      */
@@ -5117,6 +4595,10 @@ declare namespace LocalJSX {
   }
   interface GxSwitch {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName?: string;
+    /**
      * Caption displayed when the switch is 'on'
      */
     checkedCaption?: string;
@@ -5131,7 +4613,7 @@ declare namespace LocalJSX {
     /**
      * This attribute allows you specify if the element is disabled. If disabled, it will not trigger any user interaction related event (for example, click event).
      */
-    disabled?: false;
+    disabled?: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -5155,13 +4637,21 @@ declare namespace LocalJSX {
   }
   interface GxTab {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName?: string;
+    /**
+     * Specifies the accessible name property value by providing the ID of the HTMLElement that has the accessible name text.
+     */
+    accessibleNameBy?: string;
+    /**
      * A CSS class to set as the `gx-tab` element class.
      */
     cssClass?: string;
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable?: false;
+    highlightable?: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -5171,7 +4661,7 @@ declare namespace LocalJSX {
      */
     onTabChange?: (event: GxTabCustomEvent<any>) => void;
     /**
-     * Defines how the tabs will be distributed in the Strip.  | Value        | Details                                                                            | | ------------ | ---------------------------------------------------------------------------------- | | `scoll`      | Allows scrolling the tab control when the number of tabs exceeds the screen width. | | `fixed-size` | Tabs are fixed size. Used with any amount of tabs.                                 |
+     * Defines how the tabs will be distributed in the Strip.  | Value        | Details                                                                            | | ------------ | ---------------------------------------------------------------------------------- | | `scroll`     | Allows scrolling the tab control when the number of tabs exceeds the screen width. | | `fixed-size` | Tabs are fixed size. Used with any amount of tabs.                                 |
      */
     tabsDistribution?: "scroll" | "fixed-size";
   }
@@ -5217,6 +4707,18 @@ declare namespace LocalJSX {
   }
   interface GxTable {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName?: string;
+    /**
+     * Specifies the accessible name property value by providing the ID of the HTMLElement that has the accessible name text.
+     */
+    accessibleNameBy?: string;
+    /**
+     * Specifies the semantics of the control. Specifying the Role allows assistive technologies to give information about how to use the control to the user.
+     */
+    accessibleRole?: AccessibleRole;
+    /**
      * Like the `grid-templates-areas` CSS property, this attribute defines a grid template by referencing the names of the areas which are specified with the cells [area attribute](../table-cell/readme.md#area). Repeating the name of an area causes the content to span those cells. A period signifies an empty cell. The syntax itself provides a visualization of the structure of the grid.
      */
     areasTemplate?: string;
@@ -5231,11 +4733,11 @@ declare namespace LocalJSX {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled?: false;
+    disabled?: boolean;
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable?: false;
+    highlightable?: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -5271,6 +4773,10 @@ declare namespace LocalJSX {
   }
   interface GxTableCell {
     /**
+     * Specifies the semantics of the control. Specifying the Role allows assistive technologies to give information about how to use the control to the user.
+     */
+    accessibleRole?: AccessibleRoleCell;
+    /**
      * Defines the horizontal alignment of the content of the cell.
      */
     align?: "left" | "right" | "center";
@@ -5287,10 +4793,6 @@ declare namespace LocalJSX {
      */
     minHeight?: string;
     /**
-     * True to add a fading overlay on the right and bottom area of the cell to signify that the content is longer than the space allows.
-     */
-    showContentFade?: false;
-    /**
      * Defines the vertical alignment of the content of the cell.
      */
     valign?: "top" | "bottom" | "middle";
@@ -5303,23 +4805,15 @@ declare namespace LocalJSX {
     /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled?: false;
+    disabled?: boolean;
     /**
-     * It specifies the format that will have the textblock control.  If `format` = `HTML`, the textblock control works as an HTML div and the innerHTML will be the same as the `inner` property specifies.  If `format` = `Text`, the control works as a normal textblock control and it is affected by most of the defined properties.
+     * It specifies the format that will have the textblock control.   - If `format` = `HTML`, the textblock control works as an HTML div and    the innerHTML will be taken from the default slot.   - If `format` = `Text`, the control works as a normal textblock control    and it is affected by most of the defined properties.
      */
     format?: "Text" | "HTML";
     /**
      * True to highlight control when an action is fired.
      */
-    highlightable?: false;
-    /**
-     * This attribute lets you specify an URL. If a URL is specified, the textblock acts as an anchor.
-     */
-    href?: "";
-    /**
-     * Used as the innerHTML when `format` = `HTML`.
-     */
-    inner?: string;
+    highlightable?: boolean;
     /**
      * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
      */
@@ -5327,13 +4821,17 @@ declare namespace LocalJSX {
     /**
      * True to cut text when it overflows, showing an ellipsis.
      */
-    lineClamp?: false;
+    lineClamp?: boolean;
   }
   interface GxVideo {
     /**
+     * Specifies a short string, typically 1 to 3 words, that authors associate with an element to provide users of assistive technologies with a label for the element.
+     */
+    accessibleName?: string;
+    /**
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
-    disabled?: false;
+    disabled?: boolean;
     /**
      * This attribute is for specifies the src of the video.
      */
@@ -5362,13 +4860,13 @@ declare namespace LocalJSX {
     "gx-grid-image-map": GxGridImageMap;
     "gx-grid-image-map-item": GxGridImageMapItem;
     "gx-grid-infinite-scroll": GxGridInfiniteScroll;
-    "gx-grid-infinite-scroll-content": GxGridInfiniteScrollContent;
     "gx-grid-smart-cell": GxGridSmartCell;
     "gx-grid-smart-css": GxGridSmartCss;
     "gx-group": GxGroup;
     "gx-header-row-pattern-marker": GxHeaderRowPatternMarker;
     "gx-icon": GxIcon;
     "gx-image": GxImage;
+    "gx-image-annotations": GxImageAnnotations;
     "gx-image-picker": GxImagePicker;
     "gx-interactive-image": GxInteractiveImage;
     "gx-layout": GxLayout;
@@ -5385,11 +4883,6 @@ declare namespace LocalJSX {
     "gx-navbar-item": GxNavbarItem;
     "gx-password-edit": GxPasswordEdit;
     "gx-progress-bar": GxProgressBar;
-    "gx-query-viewer": GxQueryViewer;
-    "gx-query-viewer-element": GxQueryViewerElement;
-    "gx-query-viewer-element-format": GxQueryViewerElementFormat;
-    "gx-query-viewer-format-style": GxQueryViewerFormatStyle;
-    "gx-query-viewer-parameter": GxQueryViewerParameter;
     "gx-radio-group": GxRadioGroup;
     "gx-radio-option": GxRadioOption;
     "gx-rating": GxRating;
@@ -5449,8 +4942,6 @@ declare module "@stencil/core" {
         JSXBase.HTMLAttributes<HTMLGxGridImageMapItemElement>;
       "gx-grid-infinite-scroll": LocalJSX.GxGridInfiniteScroll &
         JSXBase.HTMLAttributes<HTMLGxGridInfiniteScrollElement>;
-      "gx-grid-infinite-scroll-content": LocalJSX.GxGridInfiniteScrollContent &
-        JSXBase.HTMLAttributes<HTMLGxGridInfiniteScrollContentElement>;
       "gx-grid-smart-cell": LocalJSX.GxGridSmartCell &
         JSXBase.HTMLAttributes<HTMLGxGridSmartCellElement>;
       "gx-grid-smart-css": LocalJSX.GxGridSmartCss &
@@ -5460,6 +4951,8 @@ declare module "@stencil/core" {
         JSXBase.HTMLAttributes<HTMLGxHeaderRowPatternMarkerElement>;
       "gx-icon": LocalJSX.GxIcon & JSXBase.HTMLAttributes<HTMLGxIconElement>;
       "gx-image": LocalJSX.GxImage & JSXBase.HTMLAttributes<HTMLGxImageElement>;
+      "gx-image-annotations": LocalJSX.GxImageAnnotations &
+        JSXBase.HTMLAttributes<HTMLGxImageAnnotationsElement>;
       "gx-image-picker": LocalJSX.GxImagePicker &
         JSXBase.HTMLAttributes<HTMLGxImagePickerElement>;
       "gx-interactive-image": LocalJSX.GxInteractiveImage &
@@ -5490,16 +4983,6 @@ declare module "@stencil/core" {
         JSXBase.HTMLAttributes<HTMLGxPasswordEditElement>;
       "gx-progress-bar": LocalJSX.GxProgressBar &
         JSXBase.HTMLAttributes<HTMLGxProgressBarElement>;
-      "gx-query-viewer": LocalJSX.GxQueryViewer &
-        JSXBase.HTMLAttributes<HTMLGxQueryViewerElement>;
-      "gx-query-viewer-element": LocalJSX.GxQueryViewerElement &
-        JSXBase.HTMLAttributes<HTMLGxQueryViewerElementElement>;
-      "gx-query-viewer-element-format": LocalJSX.GxQueryViewerElementFormat &
-        JSXBase.HTMLAttributes<HTMLGxQueryViewerElementFormatElement>;
-      "gx-query-viewer-format-style": LocalJSX.GxQueryViewerFormatStyle &
-        JSXBase.HTMLAttributes<HTMLGxQueryViewerFormatStyleElement>;
-      "gx-query-viewer-parameter": LocalJSX.GxQueryViewerParameter &
-        JSXBase.HTMLAttributes<HTMLGxQueryViewerParameterElement>;
       "gx-radio-group": LocalJSX.GxRadioGroup &
         JSXBase.HTMLAttributes<HTMLGxRadioGroupElement>;
       "gx-radio-option": LocalJSX.GxRadioOption &

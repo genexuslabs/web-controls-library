@@ -9,15 +9,18 @@ import {
   State,
   Watch
 } from "@stencil/core";
-import { SelectRender } from "../renders/bootstrap/select/select-render";
 import { FormComponent } from "../common/interfaces";
+
+import { AccessibleNameComponent } from "../../common/interfaces";
+
+import { SelectRender } from "../renders/bootstrap/select/select-render";
 
 @Component({
   shadow: false,
   styleUrl: "select.scss",
   tag: "gx-select"
 })
-export class Select implements FormComponent {
+export class Select implements AccessibleNameComponent, FormComponent {
   constructor() {
     this.renderer = new SelectRender(this);
   }
@@ -31,6 +34,14 @@ export class Select implements FormComponent {
   private didLoad: boolean;
 
   @Element() element: HTMLGxSelectElement;
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   * Only works if `readonly="false"`.
+   */
+  @Prop() readonly accessibleName: string;
 
   /**
    * A CSS class to set as the `gx-select` element class.
@@ -52,7 +63,7 @@ export class Select implements FormComponent {
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * This attribute indicates that the user cannot modify the value of the control.
@@ -163,19 +174,16 @@ export class Select implements FormComponent {
         // initialized as checked
         option.selected = false;
       }
-    } else {
-      // if the select does not have a value
-      // let's look for options initialized as checked
-      if (option.selected) {
-        // this option was initialized as checked,
-        // so let's set the select's value
-        // equals to the checked option value
-        this.value = option.value;
-      }
-      // If there is no option checked
-      // and no value was set in the select,
-      // it will keep undefined until any
-      // change or checked option
+
+      // If the select does not have a value let's look for options initialized
+      // as checked
+    } else if (option.selected) {
+      // This option was initialized as checked, so let's set the select's
+      // value equals to the checked option value
+      this.value = option.value;
+
+      // If there is no option checked and no value was set in the select, it
+      // will keep undefined until any change or checked option
     }
     this.updateOptions(this.getChildOptions());
   }

@@ -1,15 +1,26 @@
 import { Component, Element, Prop, h, Host } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
+import {
+  AccessibleRoleCell,
+  AccessibleRoleCellComponent
+} from "../../common/interfaces";
+
 @Component({
   shadow: false,
-  styleUrl: "table-cell.scss",
   tag: "gx-table-cell"
 })
-export class TableCell implements GxComponent {
+export class TableCell implements GxComponent, AccessibleRoleCellComponent {
   private observer: MutationObserver = null;
 
   @Element() element: HTMLGxTableCellElement;
+
+  /**
+   * Specifies the semantics of the control. Specifying the Role allows
+   * assistive technologies to give information about how to use the control to
+   * the user.
+   */
+  @Prop() readonly accessibleRole: AccessibleRoleCell;
 
   /**
    * Like the `grid-area` CSS property, this attribute gives a name to the item,
@@ -33,12 +44,6 @@ export class TableCell implements GxComponent {
    * Ignored if its content has `invisible-mode="collapse"` and is hidden.
    */
   @Prop() readonly minHeight: string = null;
-
-  /**
-   * True to add a fading overlay on the right and bottom area of the cell to signify
-   * that the content is longer than the space allows.
-   */
-  @Prop() readonly showContentFade = false;
 
   /**
    * Defines the vertical alignment of the content of the cell.
@@ -95,10 +100,8 @@ export class TableCell implements GxComponent {
   render() {
     return (
       <Host
-        class={{
-          "gx-cell": true,
-          "gx-long-content-fade": this.showContentFade
-        }}
+        role={this.accessibleRole}
+        class="gx-cell"
         style={{
           "grid-area": this.area,
           "min-height": this.minHeight,

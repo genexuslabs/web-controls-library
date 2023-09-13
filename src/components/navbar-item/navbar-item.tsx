@@ -1,14 +1,14 @@
 import { Component, Element, Host, Prop, h } from "@stencil/core";
-import { Component as GxComponent, LayoutSize } from "../common/interfaces";
 import {
   HighlightableComponent,
   makeHighlightable
 } from "../common/highlightable";
+import { Component as GxComponent, LayoutSize } from "../common/interfaces";
 
 // Class transforms
 import {
-  getClasses,
-  HIGHLIGHT_CLASS_NAME
+  HIGHLIGHT_CLASS_NAME,
+  getClasses
 } from "../common/css-transforms/css-transforms";
 
 @Component({
@@ -22,7 +22,7 @@ export class NavBarItem implements GxComponent, HighlightableComponent {
   /**
    * Indicates if the navbar item is the active one (for example, when the item represents the current page)
    */
-  @Prop() readonly active = false;
+  @Prop() readonly active: boolean = false;
 
   /**
    * A CSS class to set as the `gx-navbar-item` element class.
@@ -32,7 +32,7 @@ export class NavBarItem implements GxComponent, HighlightableComponent {
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = true;
+  @Prop() readonly highlightable: boolean = true;
 
   /**
    * This attribute lets you specify the URL of the navbar item.

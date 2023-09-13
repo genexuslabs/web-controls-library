@@ -3,9 +3,9 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Prop,
-  h,
-  Host
+  h
 } from "@stencil/core";
 import { Component as GxComponent } from "../common/interfaces";
 
@@ -30,7 +30,7 @@ export class ActionSheetItem implements GxComponent {
    * If disabled, it will not fire any user interaction related event
    * (for example, gxClick event).
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * Fired when the action sheet item is clicked

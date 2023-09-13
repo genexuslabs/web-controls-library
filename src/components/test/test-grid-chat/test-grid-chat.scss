@@ -1,0 +1,30 @@
+:host {
+  display: grid;
+  grid-template-rows: 1fr min-content;
+}
+
+.scroll {
+  position: relative;
+  overflow: auto;
+}
+
+.absolute-content {
+  position: absolute;
+  inset: 0;
+}
+
+gx-grid-smart-cell {
+  padding-inline: 16px;
+  padding-block: 8px;
+  margin: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+gx-edit {
+  padding-inline: 8px;
+  padding-block: 4px;
+  margin: 4px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+}
