@@ -1,9 +1,5 @@
 import { Component, Element, Host, Prop, h } from "@stencil/core";
-
-export type TestGridChatMessage = {
-  direction: "start" | "end";
-  message: string;
-};
+import { TestGridChatMessage } from "./types";
 
 const ENTER_KEY = "Enter";
 
