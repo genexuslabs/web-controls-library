@@ -23,7 +23,8 @@ import {
   Polyline,
   polyline,
   tileLayer,
-  TileLayer
+  TileLayer,
+  Popup
 } from "leaflet";
 
 // @ts-expect-error Todo: Improve typing
@@ -55,12 +56,15 @@ export class GridMap implements GxComponent {
 
   private didLoad = false;
   private needForRAF = true; // To prevent redundant RAF (request animation frame) calls
+  private popUpTracker = new Popup();
 
   // References to map controls
   private markersList = new Map<string, Marker>();
   private circleList = new Map<string, Circle>();
   private polygonsList = new Map<string, Polygon>();
   private linesList = new Map<string, Polyline>();
+  private loadedMarkersCount = 0;
+  private tileLayerDidLoad = false;
 
   private mapTypesProviders = {
     hybrid:
@@ -135,6 +139,11 @@ export class GridMap implements GxComponent {
   @Prop() readonly initialZoomRadius: number = 1;
 
   /**
+   * Size of the grid map elements array when start
+   */
+  @Prop() readonly itemCount: number = 0;
+
+  /**
    * The map provider.
    * _Note: Currently, this property is for setting a custom map provider using an URL._
    */
@@ -151,7 +160,11 @@ export class GridMap implements GxComponent {
    * | `hybrid`    | Shows streets over the satellite images.                                    |
    */
   @Prop() readonly mapType: "standard" | "satellite" | "hybrid" = "standard";
-
+  /**
+   * Check if markers load, binded with infiniteDisabled Angular Grid property
+   *
+   */
+  @Prop() readonly markersDidLoad: boolean;
   /**
    * A CSS class to set as the `showMyLocation` icon class.
    */
@@ -247,7 +260,7 @@ export class GridMap implements GxComponent {
   onMapMarkerDidLoad(event: CustomEvent<GridMapElement>) {
     const markerHTMLElement = event.target as HTMLGxMapMarkerElement;
     const { id, instance } = event.detail;
-
+    // get the event parameter
     this.renderMapElementWhenTheMapDidLoad(
       id,
       instance,
@@ -258,6 +271,19 @@ export class GridMap implements GxComponent {
 
     if (!this.selectionLayer || markerHTMLElement.type !== "selection-layer") {
       this.markersList.set(id, instance);
+    }
+    if (markerHTMLElement.type === "default") {
+      this.loadedMarkersCount++;
+    }
+
+    if (this.didLoad && this.checkIfMarkersDidLoad()) {
+      if (this.tileLayerDidLoad) {
+        this.fitBounds();
+      } else {
+        this.tileLayerApplied.once("tileload", () => {
+          this.fitBounds();
+        });
+      }
     }
     event.stopPropagation();
   }
@@ -313,6 +339,14 @@ export class GridMap implements GxComponent {
     event.stopPropagation();
   }
 
+  private checkIfMarkersDidLoad() {
+    return (
+      !this.markersDidLoad &&
+      this.loadedMarkersCount === this.itemCount &&
+      this.loadedMarkersCount > 0
+    );
+  }
+
   private connectResizeObserver() {
     if (this.resizeObserver) {
       return;
@@ -327,6 +361,7 @@ export class GridMap implements GxComponent {
 
     this.element.style.setProperty("--gx-map-width", `${width}px`);
     this.element.style.setProperty("--gx-map-height", `${height}px`);
+    this.popUpTracker.update();
   };
 
   private disconnectResizeObserver() {
@@ -506,6 +541,16 @@ export class GridMap implements GxComponent {
     });
     tileLayerToApply.addTo(this.map);
     this.tileLayerApplied = tileLayerToApply;
+
+    if (this.checkIfMarkersDidLoad()) {
+      this.tileLayerApplied.once("tileload", () => {
+        this.fitBounds();
+      });
+    } else {
+      this.tileLayerApplied.once("tileload", () => {
+        this.tileLayerDidLoad = true;
+      });
+    }
   }
 
   private removeTileLayer() {
@@ -615,16 +660,25 @@ export class GridMap implements GxComponent {
     if (this.checkValidCenter()) {
       this.map = leafletMap(this.divMapView, {
         scrollWheelZoom: this.scrollWheelZoom
-      }).setView(this.fromStringToLatLngTuple(this.center), this.zoom);
+      });
+      this.map.on("load", () => {
+        this.setMapProvider();
+      });
+
+      this.map.setView(this.fromStringToLatLngTuple(this.center), this.zoom);
     }
 
     // Invalid center
     else {
       this.map = leafletMap(this.divMapView, {
         scrollWheelZoom: this.scrollWheelZoom
-      }).setView(DEFAULT_CENTER, this.getZoomLevel());
-    }
+      });
+      this.map.on("load", () => {
+        this.setMapProvider();
+      });
 
+      this.map.setView(DEFAULT_CENTER, this.getZoomLevel());
+    }
     this.activateDrawOnMap();
     this.preventPopupDisplayWhenClickingOnTheMap();
     this.map.createPane("fromKML");
@@ -645,9 +699,7 @@ export class GridMap implements GxComponent {
 
     // zoom the map to the polyline
 
-    this.setMapProvider();
     this.map.setMaxZoom(MAX_ZOOM_LEVEL);
-    this.fitBounds();
     this.gxMapDidLoad.emit(this);
 
     if (this.selectionLayer) {
@@ -661,14 +713,14 @@ export class GridMap implements GxComponent {
     }
 
     // @ts-expect-error @todo TODO: Improve typing
-    this.addMapListener("popupopen", function (e) {
-      const px = this.project(e.target._popup._latlng);
+    this.addMapListener("popupopen", e => {
+      const px = e.target.project(e.target._popup._latlng);
       px.y -= e.target._popup._container.clientHeight / 2;
-      this.panTo(this.unproject(px), { animate: true });
+      e.target.panTo(e.target.unproject(px), { animate: true });
+      this.popUpTracker = e.popup;
     });
     this.didLoad = true;
   }
-
   disconnectedCallback() {
     navigator.geolocation.clearWatch(this.showMyLocationId);
     this.disconnectResizeObserver();
