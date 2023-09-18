@@ -307,3 +307,21 @@
     --gx-overflow-style: visible;
   }
 }
+
+/// Helper mixin to ease styling readonly custom elements
+/// @param {string} $class Base class of the readonly properties
+@mixin readonly($class) {
+  &[readonly="true"] {
+    @extend #{$class} !optional;
+  }
+
+  // WA: Necessary for gx-select
+  [readonly="true"] > & {
+    @extend #{$class} !optional;
+  }
+
+  // WA: Necessary for gx-edit
+  &.gx-edit--readonly {
+    @extend #{$class} !optional;
+  }
+}
