@@ -31,7 +31,6 @@ export class Select implements AccessibleNameComponent, FormComponent {
   private anOptionHasBeenSelected = false;
 
   @State() protected options: any[] = [];
-  private didLoad: boolean;
 
   @Element() element: HTMLGxSelectElement;
 
@@ -150,10 +149,6 @@ export class Select implements AccessibleNameComponent, FormComponent {
         };
       })
     );
-    if (this.didLoad) {
-      // emit the new value
-      this.input.emit({ value: this.value });
-    }
   }
 
   @Listen("gxSelectDidLoad")
@@ -222,10 +217,6 @@ export class Select implements AccessibleNameComponent, FormComponent {
   @Method()
   async getNativeInputId() {
     return this.renderer.getNativeInputId();
-  }
-
-  componentDidLoad() {
-    this.didLoad = true;
   }
 
   render() {
