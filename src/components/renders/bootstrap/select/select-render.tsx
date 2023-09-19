@@ -41,6 +41,7 @@ export class SelectRender implements Renderer {
   }
 
   private handleChange(event: UIEvent) {
+    event.stopPropagation();
     this.component.value = this.getValueFromEvent(event);
     this.component.input.emit(event);
   }
@@ -76,7 +77,7 @@ export class SelectRender implements Renderer {
         },
         disabled: this.component.disabled,
         id: this.selectId,
-        onChange: this.handleChange.bind(this),
+        onInput: this.handleChange.bind(this),
         ref: (select: HTMLSelectElement) => {
           select.value = this.component.value;
         }

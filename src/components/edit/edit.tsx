@@ -308,6 +308,7 @@ export class Edit
   };
 
   private handleValueChanging = (event: UIEvent) => {
+    event.stopPropagation();
     this.value = this.getValueFromEvent(event);
     this.input.emit(event);
   };
