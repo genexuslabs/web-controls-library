@@ -266,6 +266,7 @@ export class Button
           // Disabled image
           <img
             aria-hidden="true"
+            part="disabled-img"
             alt=""
             loading="lazy"
             src={this.disabledImageSrc || undefined}
@@ -276,6 +277,7 @@ export class Button
           !!mainImage && (
             <img
               aria-hidden="true"
+              part="main-img"
               alt=""
               loading="lazy"
               src={this.mainImageSrc || undefined}
