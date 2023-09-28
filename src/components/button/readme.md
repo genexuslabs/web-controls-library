@@ -88,7 +88,9 @@ If the main image is the only image specified, it will be displayed both when th
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `"caption"`        | The caption displayed at the center of the control.                                                                                                                                                                |
 | `"disabled-image"` | The image displayed in the position indicated by the `imagePosition` property. This part is only available if the disabled image src is defined and the control is disabled                                        |
+| `"disabled-img"`   |                                                                                                                                                                                                                    |
 | `"main-image"`     | The image displayed in the position indicated by the `imagePosition` property. This part is only available if the main image src is defined and the {control is not disabled \| the disabled image is not defined} |
+| `"main-img"`       |                                                                                                                                                                                                                    |
 
 ## CSS Custom Properties
 
