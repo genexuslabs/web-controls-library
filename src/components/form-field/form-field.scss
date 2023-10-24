@@ -23,7 +23,6 @@ gx-form-field {
   align-self: stretch;
   max-height: 100%;
   flex: 1;
-  height: 100%;
 
   &.gx-label-position {
     // Adjust label position to the opposite cell
@@ -92,7 +91,6 @@ gx-form-field {
 
     gx-radio-group[direction="vertical"] [data-part="option-control"],
     gx-radio-group[direction="horizontal"],
-    gx-checkbox,
     gx-gauge {
       justify-content: flex-start;
     }
@@ -107,7 +105,6 @@ gx-form-field {
 
     gx-radio-group[direction="vertical"] [data-part="option-control"],
     gx-radio-group[direction="horizontal"],
-    gx-checkbox,
     gx-gauge {
       justify-content: center;
     }
@@ -122,7 +119,6 @@ gx-form-field {
 
     gx-radio-group[direction="vertical"] [data-part="option-control"],
     gx-radio-group[direction="horizontal"],
-    gx-checkbox,
     gx-gauge {
       justify-content: flex-end;
     }
@@ -131,8 +127,7 @@ gx-form-field {
 
 [valign="top"] {
   & > gx-form-field {
-    [data-part="container"],
-    gx-checkbox > .option-and-label-container {
+    [data-part="container"] {
       align-items: flex-start;
     }
 
@@ -154,8 +149,7 @@ gx-form-field {
 
 [valign="middle"] {
   & > gx-form-field {
-    [data-part="container"],
-    gx-checkbox > .option-and-label-container {
+    [data-part="container"] {
       align-items: center;
     }
 
@@ -177,8 +171,7 @@ gx-form-field {
 
 [valign="bottom"] {
   & > gx-form-field {
-    [data-part="container"],
-    gx-checkbox {
+    [data-part="container"] {
       align-items: flex-end;
     }
 
@@ -201,11 +194,6 @@ gx-form-field {
 // If the inner control is readonly, the default vertical alignment might vary
 :not([valign]) {
   & > gx-form-field {
-    // gx-checkbox's default is center
-    gx-checkbox[readonly="true"] > .option-and-label-container {
-      align-items: flex-start;
-    }
-
     [data-part="container"] {
       align-items: center;
     }

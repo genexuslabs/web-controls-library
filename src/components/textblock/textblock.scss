@@ -18,6 +18,9 @@
   // Remove outline of the focus state
   outline: none;
 
+  // Implements the newline() command in GeneXus
+  white-space: break-spaces;
+
   @include transition-properties();
 }
 

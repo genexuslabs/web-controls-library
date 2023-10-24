@@ -3,14 +3,14 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Prop,
   Watch,
-  h,
-  Host
+  h
 } from "@stencil/core";
 import {
-  Component as GxComponent,
-  DisableableComponent
+  DisableableComponent,
+  Component as GxComponent
 } from "../common/interfaces";
 
 @Component({
@@ -35,7 +35,7 @@ export class SelectOption implements GxComponent, DisableableComponent {
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * The initial value of the control.

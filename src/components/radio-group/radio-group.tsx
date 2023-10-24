@@ -3,15 +3,15 @@ import {
   Element,
   Event,
   EventEmitter,
+  Host,
   Listen,
   Prop,
   Watch,
-  h,
-  Host
+  h
 } from "@stencil/core";
 import {
-  Component as GxComponent,
   DisableableComponent,
+  Component as GxComponent,
   VisibilityComponent
 } from "../common/interfaces";
 
@@ -60,7 +60,7 @@ export class RadioGroup
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * The name that will be set to all the inner inputs of type radio

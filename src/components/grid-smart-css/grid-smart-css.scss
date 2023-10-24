@@ -115,18 +115,10 @@ gx-grid-smart-css[direction="vertical"] {
 
   // - - - - - Inverse Loading settings - - - - -
   &.gx-grid-inverse-loading {
-    // Necessary to make work the "align-content" property when Inverse Loading
-    // is enabled
-    & > virtual-scroller > .scrollable-content {
-      min-height: 100%;
-    }
-
     #{$grid-content-selector} {
-      align-content: flex-end;
-
       // "width: 100%" for the infinite scroll. Useful when
       // Item Layout Mode = Multiple By Quantity
-      & > grid-infinite-scroll {
+      & > gx-grid-infinite-scroll {
         grid-column-start: 1;
         grid-column-end: calc(var(--gx-grid-css-items) + 1);
       }

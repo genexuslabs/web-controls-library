@@ -11,8 +11,8 @@ import {
 import bodymovin from "lottie-web/build/player/lottie_light";
 import {
   ClickableComponent,
-  Component as GxComponent,
   DisableableComponent,
+  Component as GxComponent,
   VisibilityComponent
 } from "../common/interfaces";
 
@@ -63,7 +63,7 @@ export class Lottie
    * If disabled, it will not fire any user interaction related event
    * (for example, click event).
    */
-  @Prop() readonly disabled = false;
+  @Prop() readonly disabled: boolean = false;
 
   /**
    * This attribute lets you specify if the animation will loop

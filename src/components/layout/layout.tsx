@@ -32,7 +32,7 @@ export class Layout implements GxComponent {
   /**
    * `false` to hide the bottom target
    */
-  @Prop() readonly bottomVisible = false;
+  @Prop() readonly bottomVisible: boolean = false;
 
   /**
    * This attribute lets you specify if the header row pattern is enabled in
@@ -52,6 +52,13 @@ export class Layout implements GxComponent {
   @Prop({ mutable: true }) leftVisible = false;
 
   /**
+   * This attribute lets you specify whether the main content should be
+   * contained in a tag that has role=`"main"`.
+   * If `false`, the main content will be contained in a generic tag (<div>).
+   */
+  @Prop() readonly renderMainRole: boolean = true;
+
+  /**
    * `false` to hide the right target
    */
   @Prop({ mutable: true }) rightVisible = false;
@@ -64,7 +71,7 @@ export class Layout implements GxComponent {
   /**
    * `false` to hide the top target.
    */
-  @Prop() readonly topVisible = false;
+  @Prop() readonly topVisible: boolean = false;
 
   @State() isMaskVisible = this.rightVisible || this.leftVisible;
 
@@ -149,12 +156,16 @@ export class Layout implements GxComponent {
             this.topNavbarVisible && !this.enableHeaderRowPattern
         }}
       >
-        <main class="target center" part="main">
+        <div
+          role={this.renderMainRole ? "main" : null}
+          class="target center"
+          part="main"
+        >
           <slot />
           {this.isMaskVisible && notLargeLayoutSize && (
             <div class="mask" part="mask" onClick={this.closeTargets}></div>
           )}
-        </main>
+        </div>
 
         {this.topVisible && (
           <header class="target top" part="header">

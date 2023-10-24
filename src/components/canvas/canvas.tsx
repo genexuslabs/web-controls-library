@@ -11,19 +11,25 @@ import {
   h
 } from "@stencil/core";
 import {
-  Component as GxComponent,
   ClickableComponent,
+  CustomizableComponent,
   DisableableComponent,
-  VisibilityComponent,
-  CustomizableComponent
+  Component as GxComponent,
+  VisibilityComponent
 } from "../common/interfaces";
 
+import { Swipeable, makeSwipeable } from "../common/events/swipeable";
 import {
   HighlightableComponent,
   makeHighlightable
 } from "../common/highlightable";
-import { Swipeable, makeSwipeable } from "../common/events/swipeable";
 
+import {
+  AccessibleNameByComponent,
+  AccessibleNameComponent,
+  AccessibleRole,
+  AccessibleRoleComponent
+} from "../../common/interfaces";
 import { DISABLED_CLASS } from "../../common/reserved-names";
 
 // Class transforms
@@ -51,6 +57,9 @@ const WITHOUT_AUTOGROW_CANVAS_CELLS = ":scope > .without-auto-grow-cell";
 export class Canvas
   implements
     GxComponent,
+    AccessibleNameByComponent,
+    AccessibleNameComponent,
+    AccessibleRoleComponent,
     ClickableComponent,
     CustomizableComponent,
     DisableableComponent,
@@ -63,6 +72,26 @@ export class Canvas
   }
 
   @Element() element: HTMLGxCanvasElement;
+
+  /**
+   * Specifies the accessible name property value by providing the ID of the
+   * HTMLElement that has the accessible name text.
+   */
+  @Prop() readonly accessibleNameBy: string;
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   */
+  @Prop() readonly accessibleName: string;
+
+  /**
+   * Specifies the semantics of the control. Specifying the Role allows
+   * assistive technologies to give information about how to use the control to
+   * the user.
+   */
+  @Prop() readonly accessibleRole: AccessibleRole;
 
   /**
    * A CSS class to set as the `gx-canvas` element class.
@@ -79,7 +108,7 @@ export class Canvas
   /**
    * True to highlight control when an action is fired.
    */
-  @Prop() readonly highlightable = false;
+  @Prop() readonly highlightable: boolean = false;
 
   /**
    * This attribute lets you specify how this element will behave when hidden.
@@ -163,7 +192,7 @@ export class Canvas
   private autoGrowMechanismStarted = false;
 
   /*  Used to optimize height adjustments. This variable stores the "absolute"
-      maximum height of all gx-canvas-cells with auto-grow = False 
+      maximum height of all gx-canvas-cells with auto-grow = False
   */
   private canvasFixedMinHeight = 0;
 
@@ -221,7 +250,7 @@ export class Canvas
         - If `top="calc(50% + -100px)"` and `min-height="200px"` -> 200 + 0.5 * innerContainerCurrentHeight + -100px
         - If `top="25px"`               and `min-height="200px"` -> 225
         - If `top="25%"`                and `min-height="75%"`   -> 0
-  
+
       `maxCanvasCellHeight` determines the max value of all "absolute heights".
       We use this variable to update the gx-canvas minHeight and to determinate
       if there is a gx-canvas-cell with auto-grow = False that is taller than
@@ -310,7 +339,7 @@ export class Canvas
       }
 
       /*  If the canvas decreased its height and there is a gx-canvas-cell that
-          provokes overflow-y, we fix the canvas height 
+          provokes overflow-y, we fix the canvas height
       */
       const maxHeightConstraint = this.getMaxHeightConstraint();
       if (
@@ -418,7 +447,7 @@ export class Canvas
 
   /*  This functions is called the first time that
         this.canvasFixedHeight != null
-  
+
       Due to at this point we have to resize the gx-canvas, we fix the relative
       values of top, min-height and max-height in all the gx-canvas-cell
 
@@ -604,6 +633,9 @@ export class Canvas
 
     return (
       <Host
+        role={this.accessibleRole}
+        aria-label={this.accessibleName}
+        aria-labelledby={this.accessibleNameBy}
         class={{
           [this.cssClass]: !!this.cssClass,
           [classes.vars]: true,

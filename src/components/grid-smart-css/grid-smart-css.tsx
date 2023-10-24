@@ -7,8 +7,8 @@ import {
   Host,
   Method,
   Prop,
-  h,
-  Watch
+  Watch,
+  h
 } from "@stencil/core";
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
@@ -16,13 +16,23 @@ import { attachHorizontalScrollWithDragHandler } from "../common/utils";
 
 import { VisibilityComponent } from "../common/interfaces";
 
+import {
+  AccessibleNameByComponent,
+  AccessibleNameComponent
+} from "../../common/interfaces";
+
 @Component({
   shadow: false,
   styleUrl: "grid-smart-css.scss",
   tag: "gx-grid-smart-css"
 })
 export class GridSmartCss
-  implements GridBase, ComponentInterface, VisibilityComponent
+  implements
+    GridBase,
+    AccessibleNameByComponent,
+    AccessibleNameComponent,
+    ComponentInterface,
+    VisibilityComponent
 {
   constructor() {
     this.handleGxInfinite = this.handleGxInfinite.bind(this);
@@ -42,12 +52,25 @@ export class GridSmartCss
   @Element() element!: HTMLGxGridSmartCssElement;
 
   /**
+   * Specifies the accessible name property value by providing the ID of the
+   * HTMLElement that has the accessible name text.
+   */
+  @Prop() readonly accessibleNameBy: string;
+
+  /**
+   * Specifies a short string, typically 1 to 3 words, that authors associate
+   * with an element to provide users of assistive technologies with a label
+   * for the element.
+   */
+  @Prop() readonly accessibleName: string;
+
+  /**
    * This attribute defines if the control size will grow automatically,
    * to adjust to its content size.
    * If set to `false`, it won't grow automatically and it will show scrollbars
    * if the content overflows.
    */
-  @Prop() readonly autoGrow = false;
+  @Prop() readonly autoGrow: boolean = false;
 
   /**
    * A CSS class to set as the `gx-grid-smart-css` element class.
@@ -116,7 +139,7 @@ export class GridSmartCss
   /**
    * Scroll snapping allows to lock the viewport to certain elements or locations after a user has finished scrolling
    */
-  @Prop({ reflect: true }) readonly snapToGrid = false;
+  @Prop({ reflect: true }) readonly snapToGrid: boolean = false;
 
   /**
    * This Handler will be called every time grid threshold is reached. Needed for infinite scrolling grids.

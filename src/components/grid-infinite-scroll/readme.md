@@ -7,14 +7,13 @@ The expression assigned to the gxInfinite event is called when the user reaches 
 
 ## Properties
 
-| Property           | Attribute           | Description                                                                                                                                                                                                                                                                                                                                                                                               | Type                | Default       |
-| ------------------ | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- | ------------- |
-| `disabled`         | `disabled`          | If `true`, the infinite scroll will be hidden and scroll event listeners will be removed. Set this to true to disable the infinite scroll from actively trying to receive new data while scrolling. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.                                                                            | `boolean`           | `false`       |
-| `itemCount`        | `item-count`        | This property must be bounded to grid item count property. It's unique purpose is to trigger gxInfinite as many times as needed to fullfill the Container space when the initial batch does not overflow the main container                                                                                                                                                                               | `number`            | `0`           |
-| `layoutSelector`   | `layout-selector`   | The main layout selector where the infinite scroll is contained.                                                                                                                                                                                                                                                                                                                                          | `string`            | `"gx-layout"` |
-| `position`         | `position`          | The position of the infinite scroll element. The value can be either `top` or `bottom`.                                                                                                                                                                                                                                                                                                                   | `"bottom" \| "top"` | `"bottom"`    |
-| `threshold`        | `threshold`         | The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page. | `string`            | `"15%"`       |
-| `viewportSelector` | `viewport-selector` | The View Port parent element selector where the infinite component would be attached to and listening to Scroll Events.                                                                                                                                                                                                                                                                                   | `string`            | `undefined`   |
+| Property       | Attribute       | Description                                                                                                                                                                                                                                                                                                                                                                                               | Type                                                        | Default                      |
+| -------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ---------------------------- |
+| `dataProvider` | `data-provider` | `true` if the infinite scroll is used in a grid that has data provider. This attribute determine the utility of the infinite scroll, because in certain configurations the infinite scroll can be used only to implement the inverse loading utility.                                                                                                                                                     | `boolean`                                                   | `false`                      |
+| `dataState`    | `data-state`    | If `true`, the infinite scroll will be hidden and scroll event listeners will be removed. Set this to `false` to disable the infinite scroll from actively trying to receive new data while reaching the threshold. This is useful when it is known that there is no more data that can be added, and the infinite scroll is no longer needed.                                                            | `"all-records-loaded" \| "initial" \| "more-data-to-fetch"` | `UI_LIST_DATA_STATE.initial` |
+| `position`     | `position`      | The position of the infinite scroll element. The value can be either `top` or `bottom`. When `position === "top"`, the control also implements inverse loading.                                                                                                                                                                                                                                           | `"bottom" \| "top"`                                         | `"bottom"`                   |
+| `recordCount`  | `record-count`  | This property must be bounded to grid item count property. It's unique purpose is to update the position of the control in the inverse loading scenario (`position === "top"`).                                                                                                                                                                                                                           | `number`                                                    | `0`                          |
+| `threshold`    | `threshold`     | The threshold distance from the bottom of the content to call the `infinite` output event when scrolled. The threshold value can be either a percent, or in pixels. For example, use the value of `10%` for the `infinite` output event to get called when the user has scrolled 10% from the bottom of the page. Use the value `100px` when the scroll is within 100 pixels from the bottom of the page. | `string`                                                    | `"15%"`                      |
 
 ## Events
 
@@ -44,6 +43,20 @@ Type: `Promise<void>`
 | Name                  | Description                                               |
 | --------------------- | --------------------------------------------------------- |
 | `--gx-grid-css-items` | Number of Columns to be shown in the Main axis direction. |
+
+## Dependencies
+
+### Used by
+
+- [gx-test-grid-chat](../test/test-grid-chat)
+
+### Graph
+
+```mermaid
+graph TD;
+  gx-test-grid-chat --> gx-grid-infinite-scroll
+  style gx-grid-infinite-scroll fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ---
 

@@ -1,12 +1,12 @@
 import {
   Component,
   Element,
-  Prop,
-  h,
-  Host,
   Event,
   EventEmitter,
-  State
+  Host,
+  Prop,
+  State,
+  h
 } from "@stencil/core";
 import { Component as GxComponent, LayoutSize } from "../common/interfaces";
 import { watchForItems } from "../common/watch-items";
@@ -122,7 +122,7 @@ export class NavBar implements GxComponent {
    * This attribute lets you specify if one or two lines will be used to render the navigation bar.
    * Useful when there are links and also actions, to have links in the first line, and actions in the second
    */
-  @Prop() readonly singleLine = true;
+  @Prop() readonly singleLine: boolean = true;
 
   /**
    * This attribute lets you specify the label for the left target toggle button. Important for accessibility.
