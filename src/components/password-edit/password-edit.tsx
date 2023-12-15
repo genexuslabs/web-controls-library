@@ -16,6 +16,7 @@ import {
 } from "../common/interfaces";
 
 import { AccessibleNameComponent } from "../../common/interfaces";
+import { EditInputMode } from "../../common/types";
 
 @Component({
   shadow: false,
@@ -54,6 +55,26 @@ export class PasswordEdit
    * (for example, click event).
    */
   @Prop() readonly disabled: boolean = false;
+
+  /**
+   * This property defines the maximum string length that the user can enter
+   * into the control. Only works when `readonly === false`.
+   */
+  @Prop() readonly maxLength: number = undefined;
+
+  /**
+   * This attribute hints at the type of data that might be entered by the user
+   * while editing the element or its contents. This allows a browser to
+   * display an appropriate virtual keyboard. Only works when
+   * `readonly === false`.
+   */
+  @Prop() readonly mode: EditInputMode = undefined;
+
+  /**
+   * This attribute specifies a regular expression the form control's value
+   * should match. Only works when `readonly === false`.
+   */
+  @Prop() readonly pattern: string = undefined;
 
   /**
    * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder)
@@ -153,6 +174,9 @@ export class PasswordEdit
           area="field"
           css-class={this.cssClass}
           disabled={this.disabled}
+          maxLength={this.maxLength}
+          mode={this.mode}
+          pattern={this.pattern}
           placeholder={this.placeholder}
           readonly={this.readonly}
           show-trigger={!this.readonly && this.showRevealButton}

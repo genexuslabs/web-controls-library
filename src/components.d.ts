@@ -8,6 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { AccessibleRole, AccessibleRoleCell } from "./common/interfaces";
 import { TimerState } from "./components/chronometer/chronometer-timer-state";
 import {
+  EditInputMode,
   EditType,
   FlexDirection,
   FlexWrap,
@@ -379,9 +380,21 @@ export namespace Components {
      */
     lineClamp: boolean;
     /**
+     * This property defines the maximum string length that the user can enter into the control. Only works when `readonly === false` and `format === "Text"`.
+     */
+    maxLength: number;
+    /**
+     * This attribute hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard. Only works when `readonly === false`, `multiline === false` and `format === "Text"`.
+     */
+    mode: EditInputMode;
+    /**
      * Controls if the element accepts multiline text.
      */
     multiline: boolean;
+    /**
+     * This attribute specifies a regular expression the form control's value should match. Only works when `readonly === false`, `multiline === false` and `format === "Text"`.
+     */
+    pattern: string;
     /**
      * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
      */
@@ -1585,6 +1598,18 @@ export namespace Components {
      * Returns the id of the inner `input` element (if set).
      */
     getNativeInputId: () => Promise<string>;
+    /**
+     * This property defines the maximum string length that the user can enter into the control. Only works when `readonly === false`.
+     */
+    maxLength: number;
+    /**
+     * This attribute hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard. Only works when `readonly === false`.
+     */
+    mode: EditInputMode;
+    /**
+     * This attribute specifies a regular expression the form control's value should match. Only works when `readonly === false`.
+     */
+    pattern: string;
     /**
      * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
      */
@@ -3018,6 +3043,14 @@ declare namespace LocalJSX {
      */
     lineClamp?: boolean;
     /**
+     * This property defines the maximum string length that the user can enter into the control. Only works when `readonly === false` and `format === "Text"`.
+     */
+    maxLength?: number;
+    /**
+     * This attribute hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard. Only works when `readonly === false`, `multiline === false` and `format === "Text"`.
+     */
+    mode?: EditInputMode;
+    /**
      * Controls if the element accepts multiline text.
      */
     multiline?: boolean;
@@ -3033,6 +3066,10 @@ declare namespace LocalJSX {
      * The `input` event is fired synchronously when the value is changed.
      */
     onInput?: (event: GxEditCustomEvent<any>) => void;
+    /**
+     * This attribute specifies a regular expression the form control's value should match. Only works when `readonly === false`, `multiline === false` and `format === "Text"`.
+     */
+    pattern?: string;
     /**
      * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
      */
@@ -4364,6 +4401,14 @@ declare namespace LocalJSX {
      */
     disabled?: boolean;
     /**
+     * This property defines the maximum string length that the user can enter into the control. Only works when `readonly === false`.
+     */
+    maxLength?: number;
+    /**
+     * This attribute hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard. Only works when `readonly === false`.
+     */
+    mode?: EditInputMode;
+    /**
      * The `change` event is emitted when a change to the element's value is committed by the user. Unlike the `input` event, the `change` event is not necessarily fired for each change to an element's value but when the control loses focus.
      */
     onChange?: (event: GxPasswordEditCustomEvent<any>) => void;
@@ -4371,6 +4416,10 @@ declare namespace LocalJSX {
      * The `input` event is fired synchronously when the value is changed.
      */
     onInput?: (event: GxPasswordEditCustomEvent<any>) => void;
+    /**
+     * This attribute specifies a regular expression the form control's value should match. Only works when `readonly === false`.
+     */
+    pattern?: string;
     /**
      * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
      */
