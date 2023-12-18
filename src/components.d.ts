@@ -488,6 +488,10 @@ export namespace Components {
   }
   interface GxGridEmptyIndicator {
     /**
+     * This attribute defines if the control size will grow automatically, to adjust to its content size.
+     */
+    autoGrow: boolean;
+    /**
      * This attribute lets you specify the `src` of the image to be shown.
      */
     image: "";
@@ -3178,6 +3182,10 @@ declare namespace LocalJSX {
     onGxGaugeRangeDidUpdate?: (event: GxGaugeRangeCustomEvent<any>) => void;
   }
   interface GxGridEmptyIndicator {
+    /**
+     * This attribute defines if the control size will grow automatically, to adjust to its content size.
+     */
+    autoGrow?: boolean;
     /**
      * This attribute lets you specify the `src` of the image to be shown.
      */
