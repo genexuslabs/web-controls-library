@@ -37,6 +37,12 @@
       }
     }
   }
+
+  & > .gx-empty-indicator--auto-grow {
+    display: grid;
+    grid-template-rows: max-content max-content;
+    place-content: center;
+  }
 }
 
 [align="left"] > .gx-grid-empty {
