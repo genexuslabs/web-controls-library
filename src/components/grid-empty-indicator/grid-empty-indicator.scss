@@ -6,31 +6,42 @@
   $justify-content: null,
   $align-items: null
 ) {
-  & > .gx-empty-indicator > .gx-empty-item {
-    // Alignment for the gx-textblock control
-    @if $text-align != null {
-      > gx-textblock {
-        text-align: $text-align;
-        justify-content: $justify-content;
-      }
-    }
-    @if $align-items != null {
-      > gx-textblock {
-        align-items: $align-items;
-      }
-    }
+  & > .gx-empty-indicator {
+    @include visibility(flex);
+    position: relative;
 
-    // Alignment for the gx-image control
-    @if $justify-content != null or $align-items != null {
-      > gx-image {
-        @if $justify-content != null {
+    > .gx-empty-item {
+      // Alignment for the gx-textblock control
+      @if $text-align != null {
+        > gx-textblock {
+          text-align: $text-align;
           justify-content: $justify-content;
         }
-        @if $align-items != null {
-          align-self: $align-items;
+      }
+      @if $align-items != null {
+        > gx-textblock {
+          align-items: $align-items;
+        }
+      }
+
+      // Alignment for the gx-image control
+      @if $justify-content != null or $align-items != null {
+        > gx-image {
+          @if $justify-content != null {
+            justify-content: $justify-content;
+          }
+          @if $align-items != null {
+            align-self: $align-items;
+          }
         }
       }
     }
+  }
+
+  & > .gx-empty-indicator--auto-grow {
+    display: grid;
+    grid-template-rows: max-content max-content;
+    place-content: center;
   }
 }
 
@@ -59,8 +70,6 @@
 }
 
 gx-grid-empty-indicator {
-  @include visibility(flex);
-  position: relative;
   flex: 1;
   height: 100%;
 

@@ -1,4 +1,5 @@
 import { Component, ComponentInterface, h, Host, Prop } from "@stencil/core";
+import { JSXBase } from "@stencil/core/internal";
 
 @Component({
   shadow: false,
@@ -6,6 +7,12 @@ import { Component, ComponentInterface, h, Host, Prop } from "@stencil/core";
   tag: "gx-grid-empty-indicator"
 })
 export class GridEmptyIndicator implements ComponentInterface {
+  /**
+   * This attribute defines if the control size will grow automatically,
+   * to adjust to its content size.
+   */
+  @Prop() readonly autoGrow: boolean = false;
+
   /**
    * Text to be displayed
    */
@@ -31,24 +38,30 @@ export class GridEmptyIndicator implements ComponentInterface {
    */
   @Prop() readonly imageClass = "";
 
+  private renderItem = (item: JSXBase.HTMLAttributes<any>) =>
+    this.autoGrow ? item : <div class="gx-empty-item">{item}</div>;
+
   render() {
     return (
-      <Host class="gx-empty-indicator">
-        {(this.imageSet || this.image) && (
-          <div class="gx-empty-item">
+      <Host
+        class={{
+          "gx-empty-indicator": !this.autoGrow,
+          "gx-empty-indicator--auto-grow": this.autoGrow
+        }}
+      >
+        {(this.imageSet || this.image) &&
+          this.renderItem(
             <gx-image
               cssClass={this.imageClass}
               src={this.image}
               srcset={this.imageSet}
             ></gx-image>
-          </div>
-        )}
+          )}
 
-        {this.text && (
-          <div class="gx-empty-item">
+        {this.text &&
+          this.renderItem(
             <gx-textblock cssClass={this.textClass}>{this.text}</gx-textblock>
-          </div>
-        )}
+          )}
       </Host>
     );
   }
