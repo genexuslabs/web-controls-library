@@ -10,6 +10,9 @@ import {
   Watch,
   h
 } from "@stencil/core";
+import { formatNumericField } from "@genexus/web-standard-functions/dist/lib-esm/numeric/formatNumericField";
+import { formatNumericFieldBigNumber } from "@genexus/web-standard-functions/dist/lib-esm/bigNumber/formatNumericField";
+import { GxBigNumber } from "@genexus/web-standard-functions/dist/lib-esm/types/gxbignumber";
 import {
   HighlightableComponent,
   makeHighlightable
@@ -102,11 +105,15 @@ export class Edit
   // Refs
   private inputRef: HTMLInputElement | HTMLTextAreaElement = null;
 
+  @State() isFocusOnControl = false;
+
   /**
    * Determine the amount of lines to be displayed in the edit when
    * `readonly="true"` and `line-clamp="true"`
    */
   @State() maxLines = 0;
+
+  @State() pictureValue: string;
 
   @Element() element: HTMLGxEditElement;
 
@@ -132,6 +139,7 @@ export class Edit
    * Specifies the auto-capitalization behavior. Same as [autocapitalize](https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/Attributes.html#//apple_ref/doc/uid/TP40008058-autocapitalize)
    * attribute for `input` elements. Only supported by Safari and Chrome.
    */
+  // eslint-disable-next-line @stencil-community/reserved-member-names
   @Prop() readonly autocapitalize: string;
 
   /**
@@ -146,6 +154,7 @@ export class Edit
    * is entering/editing the text value. Sames as [autocorrect](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocorrect)
    * attribute for `input` elements.
    */
+  // eslint-disable-next-line @stencil-community/reserved-member-names
   @Prop() readonly autocorrect: string;
 
   /**
@@ -244,7 +253,9 @@ export class Edit
    */
   @Prop({ mutable: true }) value: string;
   @Watch("value")
-  handleValueChange() {
+  handleValueChange(newValue: string) {
+    this.computePictureValue(newValue);
+
     if (this.isReadonly || !this.inputRef) {
       return;
     }
@@ -280,6 +291,12 @@ export class Edit
    * it is affected by most of the defined properties.
    */
   @Prop() readonly format: "Text" | "HTML" = "Text";
+
+  /**
+   * Specifies a picture to apply for the value of the control. Only works if
+   * `format === "Text"`, `type === "Text"` and `mode === "numeric"`.
+   */
+  @Prop() readonly picture?: string;
 
   /**
    * The `change` event is emitted when a change to the element's value is
@@ -366,6 +383,10 @@ export class Edit
     this.format === "HTML" ? "div" : fontCategory;
 
   private getReadonlyContent() {
+    if (this.hasPictureApplied()) {
+      return this.pictureValue;
+    }
+
     let content = this.value;
 
     if (content && (this.type === "datetime-local" || this.type === "date")) {
@@ -394,7 +415,41 @@ export class Edit
     return content;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - -
+  //                  Pictures
+  // - - - - - - - - - - - - - - - - - - - - - -
+  private hasPictureApplied = () =>
+    this.format === "Text" &&
+    this.picture &&
+    this.type === "text" &&
+    this.mode === "numeric";
+
+  private computePictureValue(value: string | number) {
+    if (!this.hasPictureApplied()) {
+      return;
+    }
+
+    if (typeof value === "number") {
+      this.pictureValue = formatNumericField(value, this.picture).trim();
+    } else {
+      this.pictureValue = formatNumericFieldBigNumber(
+        value as any as GxBigNumber,
+        this.picture
+      ).trim();
+    }
+  }
+
+  private showPictureOnFocus = () => {
+    this.isFocusOnControl = true;
+  };
+
+  private removePictureOnBlur = () => {
+    this.isFocusOnControl = false;
+  };
+
   componentWillLoad() {
+    this.computePictureValue(this.value);
+
     this.isReadonly = this.readonly || this.format === "HTML";
     this.isDateType = DATE_TYPES.includes(this.type);
 
@@ -453,6 +508,8 @@ export class Edit
       placeholder: this.placeholder,
       step: DATE_TYPES.includes(this.type) ? "1" : undefined
     };
+
+    const shouldDisplayPicture = this.hasPictureApplied();
 
     return (
       <Host
@@ -545,11 +602,29 @@ export class Edit
                     "content autofill": true,
                     "null-date": this.isDateType && !this.value
                   }}
+                  onFocus={
+                    shouldDisplayPicture &&
+                    !this.disabled &&
+                    !this.isFocusOnControl
+                      ? this.showPictureOnFocus
+                      : null
+                  }
+                  onBlur={
+                    shouldDisplayPicture &&
+                    !this.disabled &&
+                    this.isFocusOnControl
+                      ? this.removePictureOnBlur
+                      : null
+                  }
                   part={PART_CONTENT}
                   inputMode={this.mode}
                   pattern={this.pattern}
                   type={this.type}
-                  value={this.value}
+                  value={
+                    shouldDisplayPicture && !this.isFocusOnControl
+                      ? this.pictureValue
+                      : this.value
+                  }
                   ref={el => (this.inputRef = el)}
                 />
               ),
