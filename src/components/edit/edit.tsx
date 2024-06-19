@@ -10,6 +10,8 @@ import {
   Watch,
   h
 } from "@stencil/core";
+import { formatNumericField } from "@genexus/web-standard-functions/dist/lib-esm/numeric/formatNumericField";
+import { formatNumericFieldBigNumber } from "@genexus/web-standard-functions/dist/lib-esm/bigNumber/formatNumericField";
 import { GxBigNumber } from "@genexus/web-standard-functions/dist/lib-esm/types/gxbignumber";
 import {
   HighlightableComponent,
@@ -33,14 +35,6 @@ import {
 // Class transforms
 import { getClasses } from "../common/css-transforms/css-transforms";
 import { EditInputMode, EditType, FontCategory } from "../../common/types";
-
-let formatNumericFieldBigNumber:
-  | ((value: GxBigNumber, picture: string) => string)
-  | undefined;
-
-let formatNumericField:
-  | ((value: number, picture: string) => string)
-  | undefined;
 
 const AUTOFILL_START_ANIMATION_NAME = "AutoFillStart";
 let autoEditId = 0;
@@ -430,26 +424,14 @@ export class Edit
     this.type === "text" &&
     this.mode === "numeric";
 
-  private async computePictureValue(value: string | number) {
+  private computePictureValue(value: string | number) {
     if (!this.hasPictureApplied()) {
       return;
     }
 
     if (typeof value === "number") {
-      formatNumericField ??= (
-        await import(
-          "@genexus/web-standard-functions/dist/lib-esm/numeric/formatNumericField"
-        )
-      ).formatNumericField;
-
       this.pictureValue = formatNumericField(value, this.picture).trim();
     } else {
-      formatNumericFieldBigNumber ??= (
-        await import(
-          "@genexus/web-standard-functions/dist/lib-esm/bigNumber/formatNumericField"
-        )
-      ).formatNumericFieldBigNumber;
-
       this.pictureValue = formatNumericFieldBigNumber(
         value as any as GxBigNumber,
         this.picture
@@ -465,8 +447,8 @@ export class Edit
     this.isFocusOnControl = false;
   };
 
-  async componentWillLoad() {
-    await this.computePictureValue(this.value);
+  componentWillLoad() {
+    this.computePictureValue(this.value);
 
     this.isReadonly = this.readonly || this.format === "HTML";
     this.isDateType = DATE_TYPES.includes(this.type);
