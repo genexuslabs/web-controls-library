@@ -396,6 +396,10 @@ export namespace Components {
      */
     pattern: string;
     /**
+     * Specifies a picture to apply for the value of the control. Only works if `format === "Text"`, `type === "Text"` and `mode === "numeric"`.
+     */
+    picture?: string;
+    /**
      * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
      */
     placeholder: string;
@@ -3074,6 +3078,10 @@ declare namespace LocalJSX {
      * This attribute specifies a regular expression the form control's value should match. Only works when `readonly === false`, `multiline === false` and `format === "Text"`.
      */
     pattern?: string;
+    /**
+     * Specifies a picture to apply for the value of the control. Only works if `format === "Text"`, `type === "Text"` and `mode === "numeric"`.
+     */
+    picture?: string;
     /**
      * A hint to the user of what can be entered in the control. Same as [placeholder](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) attribute for `input` elements.
      */
