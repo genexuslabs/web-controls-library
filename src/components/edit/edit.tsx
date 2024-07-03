@@ -422,7 +422,7 @@ export class Edit
     this.format === "Text" &&
     this.picture &&
     this.type === "text" &&
-    this.mode === "numeric";
+    (this.mode === "numeric" || this.mode === "decimal");
 
   private computePictureValue(value: string | number) {
     if (!this.hasPictureApplied()) {
