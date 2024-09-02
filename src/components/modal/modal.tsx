@@ -29,7 +29,10 @@ let displayedModals = 0;
 const DISABLE_HTML_SCROLL = "gx-disable-scroll";
 const DISABLE_HTML_SCROLL_MOBILE = "gx-disable-scroll-mobile";
 
-let DISABLE_SCROLL_CLASS = "";
+// Set the class to disable the scrolling
+const DISABLE_SCROLL_CLASS = onMobileDevice()
+  ? DISABLE_HTML_SCROLL_MOBILE
+  : DISABLE_HTML_SCROLL;
 
 @Component({
   shadow: true,
@@ -260,13 +263,6 @@ export class Modal implements GxComponent {
 
     if (this.opened) {
       this.handleModalOpen();
-    }
-
-    // Set the class to disable the scrolling if not defined
-    if (DISABLE_SCROLL_CLASS === "") {
-      DISABLE_SCROLL_CLASS = onMobileDevice()
-        ? DISABLE_HTML_SCROLL_MOBILE
-        : DISABLE_HTML_SCROLL;
     }
   }
 
