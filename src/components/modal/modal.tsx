@@ -41,6 +41,7 @@ const DISABLE_SCROLL_CLASS = onMobileDevice()
 })
 export class Modal implements GxComponent {
   private dismissTimer: NodeJS.Timeout = null;
+  private didLoad = false;
 
   // To prevent redundant RAF (request animation frame) calls
   private needForRAF = true;
@@ -120,7 +121,7 @@ export class Modal implements GxComponent {
 
   @Watch("opened")
   openedHandler(newValue: boolean, oldValue = false) {
-    if (newValue === oldValue) {
+    if (newValue === oldValue || !this.didLoad) {
       return;
     }
 
@@ -304,9 +305,11 @@ export class Modal implements GxComponent {
     // The modal might be opened when it is first rendered, due to in some
     // cases it was open when the UI was refreshed.
     if (this.opened) {
-      this.updateHtmlOverflow();
+      this.handleModalOpen();
       this.open.emit();
     }
+
+    this.didLoad = true;
   }
 
   render() {
