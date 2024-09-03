@@ -260,10 +260,6 @@ export class Modal implements GxComponent {
   componentWillLoad() {
     this.shouldSetResizeObserver = this.type === "popup";
     this.presented = this.opened;
-
-    if (this.opened) {
-      this.handleModalOpen();
-    }
   }
 
   componentDidRender() {
