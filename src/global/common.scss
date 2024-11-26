@@ -3,167 +3,170 @@
 @import "../components/common/common-styling-config";
 @import "../components/common/layout-styling-config";
 
-@include base-styling-for-application();
-@include scrollbar-customization();
+@layer web-controls-library;
+@layer web-controls-library {
+  @include base-styling-for-application();
+  @include scrollbar-customization();
 
-// - - - - - - - - - - - - - - - - - - - -
-//               Card header
-// - - - - - - - - - - - - - - - - - - - -
-// Needed to stretch the dropdown width to the width of the buttons
-gx-card-header > li[slot="low-priority-action"] > gx-button::part(caption) {
-  overflow: unset;
-}
+  // - - - - - - - - - - - - - - - - - - - -
+  //               Card header
+  // - - - - - - - - - - - - - - - - - - - -
+  // Needed to stretch the dropdown width to the width of the buttons
+  gx-card-header > li[slot="low-priority-action"] > gx-button::part(caption) {
+    overflow: unset;
+  }
 
-gx-card-header > li:not([slot="low-priority-action"]) > gx-button {
-  // The default width of the gx-buttons in the gx-card-header must be
-  // "fit-content". Otherwise, they will take all the available width
-  --width: fit-content;
+  gx-card-header > li:not([slot="low-priority-action"]) > gx-button {
+    // The default width of the gx-buttons in the gx-card-header must be
+    // "fit-content". Otherwise, they will take all the available width
+    --width: fit-content;
 
-  // Default separation between gx-card-header elements.
-  // This margin is applied on the buttons (and not in the <li>) to allow the
-  // user to override this CSS when setting a cssClass on the buttons
-  margin-inline-start: 5px;
-}
+    // Default separation between gx-card-header elements.
+    // This margin is applied on the buttons (and not in the <li>) to allow the
+    // user to override this CSS when setting a cssClass on the buttons
+    margin-inline-start: 5px;
+  }
 
-// - - - - - - - - - - - - - - - - - - - -
-//          Cells (table, canvas)
-// - - - - - - - - - - - - - - - - - - - -
-.gx-cell {
-  @include align-inner-control-in-cell();
-  @include text-align-with-shadow-DOM();
-  @include valign-with-shadow-DOM();
+  // - - - - - - - - - - - - - - - - - - - -
+  //          Cells (table, canvas)
+  // - - - - - - - - - - - - - - - - - - - -
+  .gx-cell {
+    @include align-inner-control-in-cell();
+    @include text-align-with-shadow-DOM();
+    @include valign-with-shadow-DOM();
 
-  flex-direction: row; // Do not change flex-direction. All alignments will break
+    flex-direction: row; // Do not change flex-direction. All alignments will break
 
-  &.without-auto-grow-cell,
-  gx-table-cell#{&}:not([auto-grow]) {
-    // Used when auto-grow = false and readonly = true in the gx-edit control
-    // to ensure the content does not overflows
-    & > gx-form-field > .gx-edit--readonly::part(gx-edit__content) {
-      position: absolute;
-      inset-inline: 0; // Not "inset" property, since the control has vertical alignment
-      padding-inline: inherit;
+    &.without-auto-grow-cell,
+    gx-table-cell#{&}:not([auto-grow]) {
+      // Used when auto-grow = false and readonly = true in the gx-edit control
+      // to ensure the content does not overflows
+      & > gx-form-field > .gx-edit--readonly::part(gx-edit__content) {
+        position: absolute;
+        inset-inline: 0; // Not "inset" property, since the control has vertical alignment
+        padding-inline: inherit;
+      }
+
+      // Used when auto-grow = false and format = HTML in the gx-edit and
+      // gx-textblock control to ensure the content does not overflows
+      & > gx-form-field > ::part(gx-edit__html-content),
+      & > ::part(gx-textblock__html-content) {
+        position: absolute;
+      }
+
+      // WA to disable auto grow in the multiline edit
+      // @todo TODO: Add auto-grow property in the gx-edit to not render the hidden-multiline
+      & > gx-form-field > .gx-edit--multiline::part(gx-edit__hidden-multiline) {
+        display: none;
+      }
     }
 
-    // Used when auto-grow = false and format = HTML in the gx-edit and
-    // gx-textblock control to ensure the content does not overflows
-    & > gx-form-field > ::part(gx-edit__html-content),
-    & > ::part(gx-textblock__html-content) {
-      position: absolute;
-    }
-
-    // WA to disable auto grow in the multiline edit
-    // @todo TODO: Add auto-grow property in the gx-edit to not render the hidden-multiline
-    & > gx-form-field > .gx-edit--multiline::part(gx-edit__hidden-multiline) {
-      display: none;
+    // Used when auto-grow = true, readonly = false and multiline = true in the
+    // gx-edit control
+    &.auto-grow-cell,
+    &[auto-grow] {
+      // Multiline Auto Grow for gx-edit
+      & > gx-form-field > .gx-edit--multiline {
+        resize: vertical;
+      }
     }
   }
 
-  // Used when auto-grow = true, readonly = false and multiline = true in the
-  // gx-edit control
-  &.auto-grow-cell,
-  &[auto-grow] {
-    // Multiline Auto Grow for gx-edit
-    & > gx-form-field > .gx-edit--multiline {
-      resize: vertical;
+  // - - - - - - - - - - - - - - - - - - - -
+  //                 gx-edit
+  // - - - - - - - - - - - - - - - - - - - -
+  // The [area="field"] attribute is used for more specificity. Otherwise, the
+  // style would be removed when the control is focused or hovered
+  gx-edit[area="field"]:is(
+      .gx-edit--auto-fill,
+      .gx-edit--auto-fill:focus-within,
+      .gx-edit--auto-fill:hover
+    ) {
+    background-color: var(--gx-edit-auto-fill-background-color);
+  }
+
+  // Style applied to the highlightable controls
+  [data-has-action],
+  button {
+    cursor: pointer;
+  }
+
+  // Style applied when controls are disabled. At this moment it's only used by
+  // gx-canvas and gx-table
+  .gx-disabled {
+    pointer-events: none;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - -
+  //                  Grids
+  // - - - - - - - - - - - - - - - - - - - -
+  // When the Flex Grid has a horizontal scroll, we need the width of the Flex
+  // Grid to compute the relative size of its cells
+  .gx-grid-flex--horizontal-scroll > div > .gx-grid-row[relative-size] {
+    min-width: calc(
+      var(--gx-grid-flex-viewport-size) * var(--gx-grid-item-relative-size)
+    );
+    width: calc(
+      var(--gx-grid-flex-viewport-size) * var(--gx-grid-item-relative-size)
+    );
+  }
+
+  // When the Flex Grid has a vertical scroll, we need the height of the Flex
+  // Grid to compute the relative size of its cells. The height property must not
+  // be added, to allow the cells to have Auto Grow
+  .gx-grid-flex--vertical-scroll > div > .gx-grid-row[relative-size] {
+    min-height: calc(
+      var(--gx-grid-flex-viewport-size) * var(--gx-grid-item-relative-size)
+    );
+  }
+
+  // - - - - - - - - - - - - - - - - - - - -
+  //                 Message
+  // - - - - - - - - - - - - - - - - - - - -
+  gx-navbar + gx-message {
+    inset-block-start: $gx-navbar-main-height;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - -
+  //                  Modal
+  // - - - - - - - - - - - - - - - - - - - -
+  // Disable html's scrollbars when a gx-modal is presented and the html has
+  // content that overflows vertically. Does not apply to mobile devices
+  html.gx-disable-scroll {
+    gx-navbar,
+    gx-layout {
+      padding-right: 8px; // We use the physical property since the scroll does not change its position with RTL
     }
   }
-}
 
-// - - - - - - - - - - - - - - - - - - - -
-//                 gx-edit
-// - - - - - - - - - - - - - - - - - - - -
-// The [area="field"] attribute is used for more specificity. Otherwise, the
-// style would be removed when the control is focused or hovered
-gx-edit[area="field"]:is(
-    .gx-edit--auto-fill,
-    .gx-edit--auto-fill:focus-within,
-    .gx-edit--auto-fill:hover
-  ) {
-  background-color: var(--gx-edit-auto-fill-background-color);
-}
-
-// Style applied to the highlightable controls
-[data-has-action],
-button {
-  cursor: pointer;
-}
-
-// Style applied when controls are disabled. At this moment it's only used by
-// gx-canvas and gx-table
-.gx-disabled {
-  pointer-events: none;
-}
-
-// - - - - - - - - - - - - - - - - - - - -
-//                  Grids
-// - - - - - - - - - - - - - - - - - - - -
-// When the Flex Grid has a horizontal scroll, we need the width of the Flex
-// Grid to compute the relative size of its cells
-.gx-grid-flex--horizontal-scroll > div > .gx-grid-row[relative-size] {
-  min-width: calc(
-    var(--gx-grid-flex-viewport-size) * var(--gx-grid-item-relative-size)
-  );
-  width: calc(
-    var(--gx-grid-flex-viewport-size) * var(--gx-grid-item-relative-size)
-  );
-}
-
-// When the Flex Grid has a vertical scroll, we need the height of the Flex
-// Grid to compute the relative size of its cells. The height property must not
-// be added, to allow the cells to have Auto Grow
-.gx-grid-flex--vertical-scroll > div > .gx-grid-row[relative-size] {
-  min-height: calc(
-    var(--gx-grid-flex-viewport-size) * var(--gx-grid-item-relative-size)
-  );
-}
-
-// - - - - - - - - - - - - - - - - - - - -
-//                 Message
-// - - - - - - - - - - - - - - - - - - - -
-gx-navbar + gx-message {
-  inset-block-start: $gx-navbar-main-height;
-}
-
-// - - - - - - - - - - - - - - - - - - - -
-//                  Modal
-// - - - - - - - - - - - - - - - - - - - -
-// Disable html's scrollbars when a gx-modal is presented and the html has
-// content that overflows vertically. Does not apply to mobile devices
-html.gx-disable-scroll {
-  gx-navbar,
-  gx-layout {
-    padding-right: 8px; // We use the physical property since the scroll does not change its position with RTL
-  }
-}
-
-html.gx-disable-scroll,
-html.gx-disable-scroll-mobile {
-  overflow: hidden;
-}
-
-// Hide gx-modal's scrollbars
-gx-modal::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
-}
-
-// - - - - - - - - - - - - - - - - - - - -
-//                   RTL
-// - - - - - - - - - - - - - - - - - - - -
-html[dir="rtl"] {
-  // WA to improve RTL support in the gx-navbar back-button
-  gx-navbar::part(back-button) {
-    rotate: 180deg;
+  html.gx-disable-scroll,
+  html.gx-disable-scroll-mobile {
+    overflow: hidden;
   }
 
-  // WA to improve RTL support in the left aside when hidden
-  gx-layout::part(left) {
-    --gx-vertical-hidden-position-X: 100%;
+  // Hide gx-modal's scrollbars
+  gx-modal::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
   }
 
-  // WA to improve RTL support in the right aside when hidden
-  gx-layout::part(right) {
-    --gx-vertical-hidden-position-X: -100%;
+  // - - - - - - - - - - - - - - - - - - - -
+  //                   RTL
+  // - - - - - - - - - - - - - - - - - - - -
+  html[dir="rtl"] {
+    // WA to improve RTL support in the gx-navbar back-button
+    gx-navbar::part(back-button) {
+      rotate: 180deg;
+    }
+
+    // WA to improve RTL support in the left aside when hidden
+    gx-layout::part(left) {
+      --gx-vertical-hidden-position-X: 100%;
+    }
+
+    // WA to improve RTL support in the right aside when hidden
+    gx-layout::part(right) {
+      --gx-vertical-hidden-position-X: -100%;
+    }
   }
 }
