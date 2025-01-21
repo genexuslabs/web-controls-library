@@ -64,12 +64,12 @@
   @if $valid-align == true or $valid-valign == true {
     @at-root #{&}#{$gx-label-container}.gx-label-container {
       @if $valid-align == true {
-        text-align: map-get($text-align-array, $label-align);
-        justify-self: map-get($horizontal-align-array, $label-align);
+        text-align: map.get($text-align-array, $label-align);
+        justify-self: map.get($horizontal-align-array, $label-align);
       }
 
       @if $valid-valign == true {
-        align-items: map-get($vertical-align-array, $label-valign);
+        align-items: map.get($vertical-align-array, $label-valign);
       }
     }
   }
