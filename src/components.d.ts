@@ -100,10 +100,6 @@ export namespace Components {
      */
     imagePosition: "above" | "before" | "after" | "below" | "behind";
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
-    /**
      * This attribute lets you specify the `src` of the main image.
      */
     mainImageSrc: string;
@@ -141,10 +137,6 @@ export namespace Components {
      * True to highlight control when an action is fired.
      */
     highlightable: boolean;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
     /**
      * This attribute defines when the layout has been fully loaded. Useful for determining if the canvas control can set the auto-grow mechanism
      */
@@ -267,10 +259,6 @@ export namespace Components {
      * Defines the interval that the function onTick will be called.
      */
     interval: number;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
     /**
      * When the chronometer reaches this value, MaxValueText will be shown instead of the Chronometer value.
      */
@@ -430,10 +418,6 @@ export namespace Components {
      */
     cssClass: string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
-    /**
      * The text to set as the label of the field.
      */
     labelCaption: string;
@@ -560,10 +544,6 @@ export namespace Components {
      */
     flexWrap: FlexWrap;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
-    /**
      * This attribute lets you define the alignment along the main axis. It helps distribute extra free space leftover when either all the flex items on a line are inflexible, or are flexible but have reached their maximum size. It also exerts some control over the alignment of items when they overflow the line.  | Value           | Details                                                                  | | --------------- | ------------------------------------------------------------------------ | | `center`        | Controls are positioned at the center of the container.                  | | `flex-end`      | Controls are positioned at the end of the container.                     | | `flex-start`    | Controls are positioned at the beginning of the container.               | | `space-around`  | Controls are positioned with space before, between, and after the lines. | | `space-between` | Controls are positioned with space between the lines.                    | | `space-evenly`  | Controls are positioned with space evenly around them.                   |
      */
     justifyContent:
@@ -611,10 +591,6 @@ export namespace Components {
      * True to highlight control when an action is fired.
      */
     highlightable: boolean;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
     /**
      * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
      */
@@ -669,10 +645,6 @@ export namespace Components {
      * True to highlight control when an action is fired.
      */
     highlightable: boolean;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
     /**
      * Get whether or not the current slide is the last slide.
      */
@@ -951,10 +923,6 @@ export namespace Components {
      */
     inverseLoading: boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
-    /**
      * Grid Item Layout Mode: Single, Multiple by quantity, multiple by size.
      */
     itemLayoutMode: "single" | "mbyq" | "mbys";
@@ -1034,10 +1002,6 @@ export namespace Components {
      */
     highlightable: boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
-    /**
      * True to lazy load the image, when it enters the viewport.
      */
     lazyLoad: boolean;
@@ -1075,10 +1039,6 @@ export namespace Components {
      * The source of the background image.
      */
     imageLabel: "Image to be annotated";
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
     /**
      * Specifies the lines that will be drawn on the gx-image-annotations control
      */
@@ -1137,10 +1097,6 @@ export namespace Components {
      * True to highlight control when an action is fired.
      */
     highlightable: boolean;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
     /**
      * True to lazy load the image, when it enters the viewport.
      */
@@ -1261,10 +1217,6 @@ export namespace Components {
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled: boolean;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
     /**
      * This attribute lets you specify if the animation will loop
      */
@@ -1687,10 +1639,6 @@ export namespace Components {
      */
     disabled: boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
-    /**
      * The name that will be set to all the inner inputs of type radio
      */
     name: string;
@@ -1716,10 +1664,6 @@ export namespace Components {
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled: boolean;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
     /**
      * The name of the inner input of type radio
      */
@@ -1747,10 +1691,6 @@ export namespace Components {
      */
     getNativeInputId: () => Promise<string>;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
-    /**
      * This property determine the number of stars displayed.
      */
     maxValue: number;
@@ -1776,10 +1716,6 @@ export namespace Components {
      * Returns the id of the inner `input` element (if set).
      */
     getNativeInputId: () => Promise<string>;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
     /**
      * Text that appears in the form control when it has no value set
      */
@@ -1841,10 +1777,6 @@ export namespace Components {
      */
     getNativeInputId: () => Promise<string>;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
-    /**
      * Caption displayed when the switch is 'off'
      */
     unCheckedCaption: string;
@@ -1874,10 +1806,6 @@ export namespace Components {
      * True to highlight control when an action is fired.
      */
     highlightable: boolean;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
     /**
      * Defines how the tabs will be distributed in the Strip.  | Value        | Details                                                                            | | ------------ | ---------------------------------------------------------------------------------- | | `scroll`     | Allows scrolling the tab control when the number of tabs exceeds the screen width. | | `fixed-size` | Tabs are fixed size. Used with any amount of tabs.                                 |
      */
@@ -1953,10 +1881,6 @@ export namespace Components {
      */
     highlightable: boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
-    /**
      * This attribute lets you determine whether the gx-table control has a scroll or not.  | Value    | Details                                                                                                           | | -------- | ----------------------------------------------------------------------------------------------------------------- | | `scroll` | The table provides scrollable behavior. When the table height exceeds the space available, a scroll bar is shown. | | `clip`   | The table doesn't provide scroll in any case; content is clipped at the bottom.                                   |
      */
     overflowBehavior: "scroll" | "clip";
@@ -2014,10 +1938,6 @@ export namespace Components {
      * True to highlight control when an action is fired.
      */
     highlightable: boolean;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode: "collapse" | "keep-space";
     /**
      * True to cut text when it overflows, showing an ellipsis.
      */
@@ -2735,10 +2655,6 @@ declare namespace LocalJSX {
      */
     imagePosition?: "above" | "before" | "after" | "below" | "behind";
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
-    /**
      * This attribute lets you specify the `src` of the main image.
      */
     mainImageSrc?: string;
@@ -2780,10 +2696,6 @@ declare namespace LocalJSX {
      * True to highlight control when an action is fired.
      */
     highlightable?: boolean;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
     /**
      * This attribute defines when the layout has been fully loaded. Useful for determining if the canvas control can set the auto-grow mechanism
      */
@@ -2930,10 +2842,6 @@ declare namespace LocalJSX {
      * Defines the interval that the function onTick will be called.
      */
     interval?: number;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
     /**
      * When the chronometer reaches this value, MaxValueText will be shown instead of the Chronometer value.
      */
@@ -3113,10 +3021,6 @@ declare namespace LocalJSX {
      */
     cssClass?: string;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
-    /**
      * The text to set as the label of the field.
      */
     labelCaption?: string;
@@ -3255,10 +3159,6 @@ declare namespace LocalJSX {
      */
     flexWrap?: FlexWrap;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
-    /**
      * This attribute lets you define the alignment along the main axis. It helps distribute extra free space leftover when either all the flex items on a line are inflexible, or are flexible but have reached their maximum size. It also exerts some control over the alignment of items when they overflow the line.  | Value           | Details                                                                  | | --------------- | ------------------------------------------------------------------------ | | `center`        | Controls are positioned at the center of the container.                  | | `flex-end`      | Controls are positioned at the end of the container.                     | | `flex-start`    | Controls are positioned at the beginning of the container.               | | `space-around`  | Controls are positioned with space before, between, and after the lines. | | `space-between` | Controls are positioned with space between the lines.                    | | `space-evenly`  | Controls are positioned with space evenly around them.                   |
      */
     justifyContent?:
@@ -3306,10 +3206,6 @@ declare namespace LocalJSX {
      * True to highlight control when an action is fired.
      */
     highlightable?: boolean;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
     /**
      * Grid loading State. It's purpose is to know rather the Grid Loading animation or the Grid Empty placeholder should be shown.  | Value        | Details                                                                                        | | ------------ | ---------------------------------------------------------------------------------------------- | | `loading` | The grid is waiting the server for the grid data. Grid loading mask will be shown.                | | `loaded`   | The grid data has been loaded. If the grid has no records, the empty place holder will be shown. |
      */
@@ -3360,10 +3256,6 @@ declare namespace LocalJSX {
      * True to highlight control when an action is fired.
      */
     highlightable?: boolean;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
     /**
      * Set numbers of items to define and enable group sliding. Useful to use with rowsPerPage > 1
      */
@@ -3659,10 +3551,6 @@ declare namespace LocalJSX {
      */
     inverseLoading?: boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
-    /**
      * Grid Item Layout Mode: Single, Multiple by quantity, multiple by size.
      */
     itemLayoutMode?: "single" | "mbyq" | "mbys";
@@ -3755,10 +3643,6 @@ declare namespace LocalJSX {
      */
     highlightable?: boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
-    /**
      * True to lazy load the image, when it enters the viewport.
      */
     lazyLoad?: boolean;
@@ -3796,10 +3680,6 @@ declare namespace LocalJSX {
      * The source of the background image.
      */
     imageLabel?: "Image to be annotated";
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
     /**
      * Specifies the lines that will be drawn on the gx-image-annotations control
      */
@@ -3868,10 +3748,6 @@ declare namespace LocalJSX {
      * True to highlight control when an action is fired.
      */
     highlightable?: boolean;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
     /**
      * True to lazy load the image, when it enters the viewport.
      */
@@ -4008,10 +3884,6 @@ declare namespace LocalJSX {
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled?: boolean;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
     /**
      * This attribute lets you specify if the animation will loop
      */
@@ -4505,10 +4377,6 @@ declare namespace LocalJSX {
      */
     disabled?: boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
-    /**
      * The name that will be set to all the inner inputs of type radio
      */
     name?: string;
@@ -4538,10 +4406,6 @@ declare namespace LocalJSX {
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled?: boolean;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
     /**
      * The name of the inner input of type radio
      */
@@ -4581,10 +4445,6 @@ declare namespace LocalJSX {
      */
     disabled?: boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
-    /**
      * This property determine the number of stars displayed.
      */
     maxValue?: number;
@@ -4610,10 +4470,6 @@ declare namespace LocalJSX {
      * This attribute lets you specify if the element is disabled. If disabled, it will not fire any user interaction related event (for example, click event).
      */
     disabled?: boolean;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
     /**
      * The `input` event is emitted when a change to the element's value is committed by the user.
      */
@@ -4695,10 +4551,6 @@ declare namespace LocalJSX {
      */
     disabled?: boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
-    /**
      * The 'input' event is emitted when a change to the element's value is committed by the user.
      */
     onInput?: (event: GxSwitchCustomEvent<any>) => void;
@@ -4732,10 +4584,6 @@ declare namespace LocalJSX {
      * True to highlight control when an action is fired.
      */
     highlightable?: boolean;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
     /**
      * Fired when the active tab is changed
      */
@@ -4819,10 +4667,6 @@ declare namespace LocalJSX {
      */
     highlightable?: boolean;
     /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
-    /**
      * Emitted when the element is swiped.
      */
     onSwipe?: (event: GxTableCustomEvent<any>) => void;
@@ -4900,10 +4744,6 @@ declare namespace LocalJSX {
      * True to highlight control when an action is fired.
      */
     highlightable?: boolean;
-    /**
-     * This attribute lets you specify how this element will behave when hidden.  | Value        | Details                                                                     | | ------------ | --------------------------------------------------------------------------- | | `keep-space` | The element remains in the document flow, and it does occupy space.         | | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-     */
-    invisibleMode?: "collapse" | "keep-space";
     /**
      * True to cut text when it overflows, showing an ellipsis.
      */
