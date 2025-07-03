@@ -35,6 +35,14 @@
     @include text-align-with-shadow-DOM();
     @include valign-with-shadow-DOM();
 
+    // TODO: What happens with the Flex Container?
+    &[hidden]:not([invisible-mode="collapse"]) {
+      display: flex; // TODO: Do we need to set important?
+
+      // "!important" is needed to avoid "visibility: inherit" from "hydrated" class
+      visibility: hidden !important;
+    }
+
     flex-direction: row; // Do not change flex-direction. All alignments will break
 
     &.without-auto-grow-cell,
