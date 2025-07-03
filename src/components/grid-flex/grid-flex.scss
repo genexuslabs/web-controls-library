@@ -3,9 +3,10 @@
 
 // With "display: grid" we ensure that the layout doesn't break when using
 // relative size columns in the parent gx-table
-@include visibility-shadow-DOM(grid);
 
 :host {
+  display: grid;
+
   /**
    * @prop --gx-grid-flex-align-content: This aligns a flex container’s lines
    * within when there is extra space in the cross-axis, similar to how

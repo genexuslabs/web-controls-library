@@ -102,9 +102,8 @@ $gx-navbar-main-background-color: var(--primary-color, #212121);
   inset-inline-end: $gx-vertical-target-width;
 }
 
-@include visibility-shadow-DOM(block);
-
 :host {
+  display: block;
   @include elevation();
 
   // Unused properties?

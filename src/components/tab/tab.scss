@@ -1,8 +1,6 @@
 @import "../common/_base";
 @import "../common/_common-styling-config";
 
-@include visibility-shadow-DOM(grid);
-
 :host {
   /**
    * @prop --elevation: The size of the shadow for the tab component
@@ -52,6 +50,7 @@
   --gx-tabs-position--order: 0;
 
   @include elevation();
+  display: grid;
 
   // Implement tabs position
   grid-template-rows: min-content 1fr;

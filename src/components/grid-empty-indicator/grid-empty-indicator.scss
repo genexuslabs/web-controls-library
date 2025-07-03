@@ -7,7 +7,7 @@
   $align-items: null
 ) {
   & > .gx-empty-indicator {
-    @include visibility(flex);
+    display: flex;
     position: relative;
 
     > .gx-empty-item {

@@ -28,7 +28,7 @@ gx-map {
    */
   --gx-stroke-width: 2.5;
 
-  @include visibility(flex);
+  display: flex;
   height: 100%;
 
   & > .gxMap {

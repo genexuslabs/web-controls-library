@@ -12,10 +12,7 @@ import {
   HighlightableComponent,
   makeHighlightable
 } from "../common/highlightable";
-import {
-  Component as GxComponent,
-  VisibilityComponent
-} from "../common/interfaces";
+import { Component as GxComponent } from "../common/interfaces";
 
 import {
   AccessibleNameByComponent,
@@ -44,7 +41,6 @@ export class Tab
     GxComponent,
     AccessibleNameByComponent,
     AccessibleNameComponent,
-    VisibilityComponent,
     HighlightableComponent
 {
   /**
@@ -81,16 +77,6 @@ export class Tab
    * A CSS class to set as the `gx-tab` element class.
    */
   @Prop() readonly cssClass: string;
-
-  /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * True to highlight control when an action is fired.

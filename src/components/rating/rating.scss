@@ -13,31 +13,30 @@ $rating-selected-color: #e4ac13;
 */
 $rating-unselected-color: rgba(80, 80, 80, 0.4);
 
-@include visibility-shadow-DOM(flex);
-
 :host(.disabled) {
   pointer-events: none;
 }
 
 :host {
   /**
-   * @prop --star-width:
-   * Set the width of each star.
+  * @prop --star-width:
+  * Set the width of each star.
   */
   --star-width: 2em;
 
   /**
-   * @prop --star-heigth:
-   * Set the heigth of each star.
+  * @prop --star-heigth:
+  * Set the heigth of each star.
   */
   --star-heigth: auto;
 
   /**
-   * @prop --star-separation:
-   * This is for set the space between each star
+  * @prop --star-separation:
+  * This is for set the space between each star
   */
   --star-separation: 2px;
 
+  display: flex;
   @include transition-properties();
   flex: 1;
   align-self: stretch;

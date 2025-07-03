@@ -15,7 +15,7 @@ $space-between-container-and-label: min(0.35em, 7px);
 
 gx-checkbox {
   @include elevation();
-  @include visibility(flex);
+  display: flex;
 
   align-self: stretch;
 
