@@ -37,7 +37,9 @@
 
     // TODO: What happens with the Flex Container?
     &[hidden]:not([invisible-mode="collapse"]) {
-      display: flex; // TODO: Do we need to set important?
+      // "!important" is needed because we have to add [hidden] { display: none !important }
+      // in the component to support hidden style
+      display: flex !important;
 
       // "!important" is needed to avoid "visibility: inherit" from "hydrated" class
       visibility: hidden !important;
