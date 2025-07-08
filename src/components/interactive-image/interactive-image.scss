@@ -9,7 +9,7 @@ gx-interactive-image {
   height: auto;
   width: auto;
 
-  @include visibility(flex);
+  display: flex;
   overflow: hidden;
 
   img {

@@ -10,8 +10,7 @@ import {
 } from "@stencil/core";
 import {
   DisableableComponent,
-  Component as GxComponent,
-  VisibilityComponent
+  Component as GxComponent
 } from "../common/interfaces";
 import { RadioOptionRender } from "../renders/bootstrap/radio-option/radio-option-render";
 
@@ -20,9 +19,7 @@ import { RadioOptionRender } from "../renders/bootstrap/radio-option/radio-optio
   styleUrl: "radio-option.scss",
   tag: "gx-radio-option"
 })
-export class RadioOption
-  implements GxComponent, DisableableComponent, VisibilityComponent
-{
+export class RadioOption implements GxComponent, DisableableComponent {
   constructor() {
     this.renderer = new RadioOptionRender(this);
   }
@@ -40,16 +37,6 @@ export class RadioOption
    * Indicates that the control is selected by default.
    */
   @Prop({ mutable: true }) checked: boolean;
-
-  /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * This attribute lets you specify if the element is disabled.

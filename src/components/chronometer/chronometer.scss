@@ -1,9 +1,8 @@
 @import "../common/_base";
 @import "../common/_common-styling-config";
 
-@include visibility-shadow-DOM(inline-flex);
-
 :host {
+  display: inline-flex;
   @include elevation();
   flex: 1;
   text-align: start;

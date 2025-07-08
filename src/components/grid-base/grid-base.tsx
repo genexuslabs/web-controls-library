@@ -24,16 +24,6 @@ export interface GridBase
   cssClass: string;
 
   /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  invisibleMode: "collapse" | "keep-space";
-
-  /**
    * When set to `true`, the grid items will be loaded in inverse order, with
    * the first element at the bottom and the "Loading" message (infinite-scroll)
    * at the top.

@@ -17,10 +17,6 @@ export interface CssTransformedClassesWithoutFocus {
   vars: string;
 }
 
-export interface VisibilityComponent {
-  invisibleMode: "collapse" | "keep-space";
-}
-
 export interface DisableableComponent {
   disabled: boolean;
 }
@@ -30,10 +26,7 @@ export interface Component extends ComponentInterface {
   render: () => void;
 }
 
-export interface FormComponent
-  extends Component,
-    DisableableComponent,
-    VisibilityComponent {
+export interface FormComponent extends Component, DisableableComponent {
   input: EventEmitter;
   /**
    * Returns the DOM Control Id of the "labelable" element inside the component. This Id will be used for <label> 'for' attribute.

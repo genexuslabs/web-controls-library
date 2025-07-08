@@ -17,7 +17,7 @@
 }
 
 gx-select {
-  @include visibility(flex);
+  display: flex;
   @include elevation();
   flex: 1;
 

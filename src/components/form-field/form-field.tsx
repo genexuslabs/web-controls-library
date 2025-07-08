@@ -50,16 +50,6 @@ export class FormField implements GxComponent {
   @Prop() readonly cssClass: string = null;
 
   /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
-
-  /**
    * The text to set as the label of the field.
    */
   @Prop() readonly labelCaption: string;

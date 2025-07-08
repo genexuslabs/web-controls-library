@@ -37,16 +37,6 @@ export class Chronometer implements GxComponent {
   @Prop() readonly cssClass: string;
 
   /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
-
-  /**
    * When the chronometer reaches this value,
    * MaxValueText will be shown instead of the Chronometer value.
    */

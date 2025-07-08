@@ -3,12 +3,12 @@
 
 @include box-sizing();
 @include line-clamp();
-@include visibility-shadow-DOM(flex);
 
 :host {
   --elevation: 0;
   @include elevation();
 
+  display: flex;
   align-self: stretch;
   align-items: flex-start;
   position: relative;

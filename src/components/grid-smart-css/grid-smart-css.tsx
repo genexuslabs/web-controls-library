@@ -14,8 +14,6 @@ import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
 import { attachHorizontalScrollWithDragHandler } from "../common/utils";
 
-import { VisibilityComponent } from "../common/interfaces";
-
 import {
   AccessibleNameByComponent,
   AccessibleNameComponent
@@ -31,8 +29,7 @@ export class GridSmartCss
     GridBase,
     AccessibleNameByComponent,
     AccessibleNameComponent,
-    ComponentInterface,
-    VisibilityComponent
+    ComponentInterface
 {
   constructor() {
     this.handleGxInfinite = this.handleGxInfinite.bind(this);
@@ -82,16 +79,6 @@ export class GridSmartCss
    */
   @Prop({ reflect: true }) readonly direction: "vertical" | "horizontal" =
     "vertical";
-
-  /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * When set to `true`, the grid items will be loaded in inverse order, with

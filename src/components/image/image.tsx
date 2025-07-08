@@ -5,8 +5,7 @@ import {
 } from "../common/highlightable";
 import {
   DisableableComponent,
-  Component as GxComponent,
-  VisibilityComponent
+  Component as GxComponent
 } from "../common/interfaces";
 
 import { cssVariablesWatcher } from "../common/css-variables-watcher";
@@ -28,7 +27,6 @@ export class Image
     GxComponent,
     AccessibleNameComponent,
     DisableableComponent,
-    VisibilityComponent,
     HighlightableComponent
 {
   constructor() {
@@ -88,16 +86,6 @@ export class Image
    * (for example, click event).
    */
   @Prop() readonly disabled: boolean = false;
-
-  /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * True to lazy load the image, when it enters the viewport.

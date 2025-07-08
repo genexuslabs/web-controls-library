@@ -1,5 +1,4 @@
-import { Component, Element, Prop, h, Host } from "@stencil/core";
-import { Component as GxComponent } from "../common/interfaces";
+import { Component, Prop, h, Host } from "@stencil/core";
 
 import {
   AccessibleRoleCell,
@@ -11,9 +10,7 @@ import {
   styleUrl: "canvas-cell.scss",
   tag: "gx-canvas-cell"
 })
-export class CanvasCell implements GxComponent, AccessibleRoleCellComponent {
-  @Element() element: HTMLGxCanvasCellElement;
-
+export class CanvasCell implements AccessibleRoleCellComponent {
   /**
    * Specifies the semantics of the control. Specifying the Role allows
    * assistive technologies to give information about how to use the control to
@@ -59,42 +56,6 @@ export class CanvasCell implements GxComponent, AccessibleRoleCellComponent {
    * This attribute lets you specify the width of the control.
    */
   @Prop() readonly width: string = "100%";
-
-  private observer: MutationObserver;
-
-  private setupObserver(childElement: any) {
-    if (
-      childElement &&
-      childElement.getAttribute("invisible-mode") === "collapse"
-    ) {
-      this.observer = new MutationObserver(() => {
-        this.setVisibilityBasedOnChildElement(childElement);
-      });
-
-      this.observer.observe(childElement, {
-        attributes: true,
-        attributeFilter: ["hidden"],
-        childList: false,
-        subtree: false
-      });
-    }
-  }
-
-  private setVisibilityBasedOnChildElement(childElement: any) {
-    // "null" will fallback to the default visibility, which is "flex"
-    this.element.style.display = childElement.hidden ? "none" : null;
-  }
-
-  componentDidLoad() {
-    this.setupObserver(this.element.firstElementChild);
-  }
-
-  disconnectedCallback() {
-    if (this.observer) {
-      this.observer.disconnect();
-      this.observer = undefined;
-    }
-  }
 
   render() {
     return (

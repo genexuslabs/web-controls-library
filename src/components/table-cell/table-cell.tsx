@@ -1,5 +1,4 @@
-import { Component, Element, Prop, h, Host } from "@stencil/core";
-import { Component as GxComponent } from "../common/interfaces";
+import { Component, Prop, h, Host } from "@stencil/core";
 
 import {
   AccessibleRoleCell,
@@ -10,11 +9,7 @@ import {
   shadow: false,
   tag: "gx-table-cell"
 })
-export class TableCell implements GxComponent, AccessibleRoleCellComponent {
-  private observer: MutationObserver = null;
-
-  @Element() element: HTMLGxTableCellElement;
-
+export class TableCell implements AccessibleRoleCellComponent {
   /**
    * Specifies the semantics of the control. Specifying the Role allows
    * assistive technologies to give information about how to use the control to
@@ -50,53 +45,6 @@ export class TableCell implements GxComponent, AccessibleRoleCellComponent {
    */
   @Prop({ reflect: true }) readonly valign: "top" | "bottom" | "middle";
 
-  componentDidLoad() {
-    const childElement: any = this.element.firstElementChild;
-
-    if (childElement?.getAttribute("invisible-mode") !== "collapse") {
-      return;
-    }
-
-    this.setVisibilityBasedOnChildElement(childElement);
-
-    this.setupObserver(childElement);
-  }
-
-  /**
-   * Based on the visibility of the child element, it sets the visibility of
-   * the gx-table-cell control.
-   * @param childElement The direct child element of the control.
-   */
-  private setVisibilityBasedOnChildElement(childElement: any) {
-    // "null" will fallback to the default visibility, which is "flex"
-    this.element.style.display = childElement.hidden ? "none" : null;
-  }
-
-  /**
-   * Set a MutationObserver to watch for changes to the hidden attribute on the
-   * direct child element.
-   * @param childElement The direct child element of the control.
-   */
-  private setupObserver(childElement: any) {
-    this.observer = new MutationObserver(() => {
-      this.setVisibilityBasedOnChildElement(childElement);
-    });
-
-    this.observer.observe(childElement, {
-      attributes: true,
-      attributeFilter: ["hidden"],
-      childList: false,
-      subtree: false
-    });
-  }
-
-  disconnectedCallback() {
-    if (this.observer) {
-      this.observer.disconnect();
-      this.observer = null;
-    }
-  }
-
   render() {
     return (
       <Host
@@ -107,9 +55,7 @@ export class TableCell implements GxComponent, AccessibleRoleCellComponent {
           "min-height": this.minHeight,
           "max-height": this.maxHeight
         }}
-      >
-        <slot />
-      </Host>
+      ></Host>
     );
   }
 }

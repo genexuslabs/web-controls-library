@@ -1,34 +1,3 @@
-@mixin visibility($display) {
-  display: $display;
-
-  &[hidden] {
-    display: none !important;
-
-    &[invisible-mode="keep-space"] {
-      display: $display !important;
-      visibility: hidden;
-    }
-  }
-}
-
-// Same as "visibility" mixin, but for shadow DOM components
-@mixin visibility-shadow-DOM($display) {
-  :host {
-    display: $display;
-  }
-
-  :host([hidden]) {
-    display: none !important;
-  }
-
-  :host([hidden][invisible-mode="keep-space"]) {
-    display: $display !important;
-
-    // "!important" is needed to avoid "visibility: inherit" from "hydrated" class
-    visibility: hidden !important;
-  }
-}
-
 @mixin align-inner-control-in-cell() {
   display: flex;
 

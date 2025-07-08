@@ -3,8 +3,6 @@
 @import "../common/_common-styling-config";
 @import "../common/layout-styling-config.scss";
 
-@include visibility-shadow-DOM(inline-flex);
-
 $gx-navbar-active-background-color: #888;
 $gx-navbar-active-color: black;
 
@@ -39,6 +37,7 @@ $gx-navbar-active-color: black;
   --gx-navbar-item-icon-size-big: 24px;
   --gx-navbar-item-icon-size-small: 18px;
 
+  display: inline-flex;
   align-self: stretch;
   cursor: pointer;
   outline: none;

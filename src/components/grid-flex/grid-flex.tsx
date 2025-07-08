@@ -12,8 +12,6 @@ import {
 } from "@stencil/core";
 import { GridBase, GridBaseHelper } from "../grid-base/grid-base";
 
-import { VisibilityComponent } from "../common/interfaces";
-
 import {
   AccessibleNameByComponent,
   AccessibleNameComponent
@@ -64,8 +62,7 @@ export class GridFlex
     GridBase,
     AccessibleNameByComponent,
     AccessibleNameComponent,
-    ComponentInterface,
-    VisibilityComponent
+    ComponentInterface
 {
   /**
    * `true` if the `componentDidLoad()` method was called
@@ -179,16 +176,6 @@ export class GridFlex
    * | `wrap-reverse` | Flex items will wrap onto multiple lines from bottom to top.  |
    */
   @Prop() readonly flexWrap: FlexWrap = DEFAULT_FLEX_WRAP;
-
-  /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
 
   /**
    * This attribute lets you define the alignment along the main axis. It helps

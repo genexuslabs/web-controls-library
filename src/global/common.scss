@@ -28,6 +28,21 @@
   }
 
   // - - - - - - - - - - - - - - - - - - - -
+  // Invisible Mode (canvas, flex and table)
+  // - - - - - - - - - - - - - - - - - - - -
+  .gx-cell,
+  .flex-cell {
+    &[hidden]:not([invisible-mode="collapse"]) {
+      // "!important" is needed because we have to add [hidden] { display: none !important }
+      // in the component to support hidden style
+      display: flex !important;
+
+      // "!important" is needed to avoid "visibility: inherit" from "hydrated" class
+      visibility: hidden !important;
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - -
   //          Cells (table, canvas)
   // - - - - - - - - - - - - - - - - - - - -
   .gx-cell {

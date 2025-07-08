@@ -83,16 +83,6 @@ export class GxImageAnnotations {
   @Prop() readonly imageLabel = "Image to be annotated";
 
   /**
-   * This attribute lets you specify how this element will behave when hidden.
-   *
-   * | Value        | Details                                                                     |
-   * | ------------ | --------------------------------------------------------------------------- |
-   * | `keep-space` | The element remains in the document flow, and it does occupy space.         |
-   * | `collapse`   | The element is removed form the document flow, and it doesn't occupy space. |
-   */
-  @Prop() readonly invisibleMode: "collapse" | "keep-space" = "collapse";
-
-  /**
    * Specifies the lines that will be drawn on the gx-image-annotations control
    */
   @Prop() readonly lines: ImageAnnotationLine[] = [];

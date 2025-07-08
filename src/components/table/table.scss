@@ -2,8 +2,6 @@
 @import "../common/_common-styling-config.scss";
 @import "../common/layout-styling-config";
 
-@include visibility-shadow-DOM(grid);
-
 :host {
   --elevation: 0;
   --grid-template-areas: unset;
@@ -16,6 +14,8 @@
   --gx-overflow-style: #{$default-overflow-style};
 
   @include elevation();
+
+  display: grid;
 
   // We need to split the "grid-template" properties ("grid-template-area",
   // "grid-template-columns", "grid-template-rows") to avoid the optimization

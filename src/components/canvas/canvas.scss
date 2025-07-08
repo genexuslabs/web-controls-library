@@ -2,8 +2,6 @@
 @import "../common/_common-styling-config";
 @import "../common/layout-styling-config";
 
-@include visibility-shadow-DOM(block);
-
 :host {
   /**
    * @prop --gx-overflow-style: Determine if the overflow will be hidden or visible.
@@ -13,6 +11,7 @@
   --gx-overflow-style: #{$default-overflow-style};
 
   @include elevation();
+  display: block;
   position: relative;
   height: fit-content;
   overflow: var(--gx-overflow-style);

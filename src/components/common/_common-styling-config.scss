@@ -50,6 +50,8 @@
 }
 
 @mixin base-styling-for-application() {
+  // We have to add this CSS selector to override the display of each custom
+  // element when they have the hidden attribute
   [hidden] {
     display: none !important;
   }
