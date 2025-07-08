@@ -28,14 +28,10 @@
   }
 
   // - - - - - - - - - - - - - - - - - - - -
-  //          Cells (table, canvas)
+  // Invisible Mode (canvas, flex and table)
   // - - - - - - - - - - - - - - - - - - - -
-  .gx-cell {
-    @include align-inner-control-in-cell();
-    @include text-align-with-shadow-DOM();
-    @include valign-with-shadow-DOM();
-
-    // TODO: What happens with the Flex Container?
+  .gx-cell,
+  .flex-cell {
     &[hidden]:not([invisible-mode="collapse"]) {
       // "!important" is needed because we have to add [hidden] { display: none !important }
       // in the component to support hidden style
@@ -44,6 +40,15 @@
       // "!important" is needed to avoid "visibility: inherit" from "hydrated" class
       visibility: hidden !important;
     }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - -
+  //          Cells (table, canvas)
+  // - - - - - - - - - - - - - - - - - - - -
+  .gx-cell {
+    @include align-inner-control-in-cell();
+    @include text-align-with-shadow-DOM();
+    @include valign-with-shadow-DOM();
 
     flex-direction: row; // Do not change flex-direction. All alignments will break
 
