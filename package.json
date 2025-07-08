@@ -74,11 +74,6 @@
   "peerDependencies": {
     "@genexus/web-standard-functions": ">= 0.75.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged && lint-staged"
-    }
-  },
   "lint-staged": {
     "*.{tsx,ts,jsx,js,css,json,md}": [
       "prettier --write",

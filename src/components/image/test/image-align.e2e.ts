@@ -15,7 +15,6 @@ describe("gx-image alignment", () => {
     areas-template="'cell00' "
     columns-template="100px"
     rows-template="164px"
-    invisible-mode="keep-space"
   >
     <gx-table-cell
       area="cell00"
@@ -26,7 +25,6 @@ describe("gx-image alignment", () => {
         auto-grow="false"
         src="${testImage1}"
         alt="ctrlImage4"
-        invisible-mode="keep-space"
         style="--image-scale-type: none;"
       >
       </gx-image>

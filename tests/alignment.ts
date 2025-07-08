@@ -264,7 +264,7 @@ function testAlignment(
     </gx-table>`;
 
   const tableElement = (align: string, valign: string) => {
-    if (options.cellContainer == "gx-table-cell") {
+    if (options.cellContainer === "gx-table-cell") {
       return `
         <gx-table
           css-class="TableFancyTransparent_3"
@@ -272,7 +272,6 @@ function testAlignment(
           columns-template="196px"
           ${rowsTemplateInTable()}
           style="min-height: 112px"
-          invisible-mode="keep-space"
         >
           <gx-table-cell 
             area="cell00"
@@ -292,7 +291,6 @@ function testAlignment(
           css-class="TableFancyTransparent_3"
           width="198px"
           min-height="112px"
-          invisible-mode="keep-space"
           layout-is-ready
         >
           <gx-canvas-cell
@@ -315,7 +313,7 @@ function testAlignment(
       tableElement(options.align, options.valign);
     await page.setContent(pageContent);
 
-    if (delayToTakeScreenshot != 0) {
+    if (delayToTakeScreenshot !== 0) {
       await delay(delayToTakeScreenshot);
     }
 
