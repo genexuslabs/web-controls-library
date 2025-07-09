@@ -1,21 +1,24 @@
 /// Helper mixin to ease text alignment of shadow DOM components
 @mixin text-align-with-shadow-DOM() {
   &[align="left"] {
-    > gx-textblock {
+    > gx-textblock,
+    ch-textblock {
       justify-content: flex-start;
       text-align: start;
     }
   }
 
   &[align="center"] {
-    > gx-textblock {
+    > gx-textblock,
+    ch-textblock {
       justify-content: center;
       text-align: center;
     }
   }
 
   &[align="right"] {
-    > gx-textblock {
+    > gx-textblock,
+    ch-textblock {
       justify-content: flex-end;
       text-align: end;
     }
@@ -30,6 +33,10 @@
     > gx-form-field > ::part(gx-valign) {
       align-items: flex-start;
     }
+
+    > ch-textblock {
+      align-content: flex-start;
+    }
   }
 
   &[valign="middle"] {
@@ -38,6 +45,10 @@
     > gx-form-field > ::part(gx-valign) {
       align-items: center;
     }
+
+    > ch-textblock {
+      align-content: center;
+    }
   }
 
   &[valign="bottom"] {
@@ -45,6 +56,10 @@
     > ::part(gx-valign),
     > gx-form-field > ::part(gx-valign) {
       align-items: flex-end;
+    }
+
+    > ch-textblock {
+      align-content: flex-end;
     }
   }
 }

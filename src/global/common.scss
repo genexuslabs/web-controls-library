@@ -8,6 +8,13 @@
   @include base-styling-for-application();
   @include scrollbar-customization();
 
+  // Chameleon's TextBlock
+  ch-textblock {
+    // We need to stretch the textblock size to the parent sizes by default
+    inline-size: 100%;
+    align-self: stretch;
+  }
+
   // - - - - - - - - - - - - - - - - - - - -
   //               Card header
   // - - - - - - - - - - - - - - - - - - - -
